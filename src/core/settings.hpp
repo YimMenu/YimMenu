@@ -127,11 +127,12 @@ namespace big
 
 		struct tunables
 		{
-			bool disable_phone = false;
-			bool no_idle_kick  = false;
-			bool seamless_join = false;
+			bool disable_phone           = false;
+			bool no_idle_kick            = false;
+			bool seamless_join           = false;
+			bool dont_unload_online_maps = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(tunables, disable_phone, no_idle_kick, seamless_join)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(tunables, disable_phone, no_idle_kick, seamless_join, dont_unload_online_maps)
 		} tunables{};
 
 		struct notifications
@@ -306,47 +307,47 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player          = false;
-			bool force_wanted_level    = false;
-			bool free_cam              = false;
-			bool invisibility          = false;
-			bool local_visibility      = true;
-			bool never_wanted          = false;
-			bool no_ragdoll            = false;
-			bool noclip                = false;
+			bool clean_player                 = false;
+			bool force_wanted_level           = false;
+			bool free_cam                     = false;
+			bool invisibility                 = false;
+			bool local_visibility             = true;
+			bool never_wanted                 = false;
+			bool no_ragdoll                   = false;
+			bool noclip                       = false;
 			float noclip_aim_speed_multiplier = 0.25f;
 			float noclip_speed_multiplier     = 20.f;
-			bool off_radar             = false;
-			bool ghost_org             = false;
-			bool super_run             = false;
-			bool no_collision          = false;
-			bool unlimited_oxygen      = false;
-			bool no_water_collision    = false;
-			int wanted_level           = 0;
-			bool god_mode              = false;
-			bool part_water            = false;
-			bool proof_bullet          = false;
-			bool proof_fire            = false;
-			bool proof_collision       = false;
-			bool proof_melee           = false;
-			bool proof_explosion       = false;
-			bool proof_steam           = false;
-			bool proof_drown           = false;
-			bool proof_water           = false;
-			uint32_t proof_mask        = 0;
-			bool mobile_radio          = false;
-			bool fast_respawn          = false;
-			bool auto_tp               = false;
-			bool super_jump            = false;
-			bool beast_jump            = false;
-			bool healthregen           = false;
-			float healthregenrate      = 1.0f;
-			bool superman              = false;
-			bool custom_weapon_stop    = true;
-			bool prompt_ambient_animations = false;
-			std::string persist_outfit = "";
-			bool persist_outfits_mis   = false;
-      
+			bool off_radar                    = false;
+			bool ghost_org                    = false;
+			bool super_run                    = false;
+			bool no_collision                 = false;
+			bool unlimited_oxygen             = false;
+			bool no_water_collision           = false;
+			int wanted_level                  = 0;
+			bool god_mode                     = false;
+			bool part_water                   = false;
+			bool proof_bullet                 = false;
+			bool proof_fire                   = false;
+			bool proof_collision              = false;
+			bool proof_melee                  = false;
+			bool proof_explosion              = false;
+			bool proof_steam                  = false;
+			bool proof_drown                  = false;
+			bool proof_water                  = false;
+			uint32_t proof_mask               = 0;
+			bool mobile_radio                 = false;
+			bool fast_respawn                 = false;
+			bool auto_tp                      = false;
+			bool super_jump                   = false;
+			bool beast_jump                   = false;
+			bool healthregen                  = false;
+			float healthregenrate             = 1.0f;
+			bool superman                     = false;
+			bool custom_weapon_stop           = true;
+			bool prompt_ambient_animations    = false;
+			std::string persist_outfit        = "";
+			bool persist_outfits_mis          = false;
+
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -421,7 +422,7 @@ namespace big
 			bool anonymous_bounty      = true;
 
 			bool fast_join = false;
-
+			
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session)
 		} session{};
 

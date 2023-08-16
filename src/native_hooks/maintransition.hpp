@@ -52,6 +52,7 @@ namespace big
 		inline void ACTIVATE_FRONTEND_MENU(rage::scrNativeCallContext* src)
 		{
 			Hash menuhash = src->get_arg<Hash>(0);
+
 			if (g.tunables.seamless_join && menuhash != RAGE_JOAAT("FE_MENU_VERSION_EMPTY_NO_BACKGROUND"))
 				HUD::ACTIVATE_FRONTEND_MENU(menuhash, src->get_arg<BOOL>(1), src->get_arg<int>(2));
 
@@ -150,7 +151,24 @@ namespace big
 		// PLAYER_SWITCH END
 		//
 
+		/**
+		 * @brief Prevent weird reloading when using custom dlcs.
+		 * @note You should not be using custom dlcs like this in the first place.
+		 */
+		inline void GET_EVER_HAD_BAD_PACK_ORDER(rage::scrNativeCallContext* src)
+		{
+			// LOG(VERBOSE) << "DLC::GET_EVER_HAD_BAD_PACK_ORDER(); // Returns: " << DLC::GET_EVER_HAD_BAD_PACK_ORDER();
+			src->set_return_value<BOOL>(false);
+		}
 
+		
+		 //* @brief Prevent single player map from loading when going back from online.
+		inline void ON_ENTER_SP(rage::scrNativeCallContext* src)
+		{
+			if (!g.tunables.dont_unload_online_maps || !g.tunables.seamless_join)
+				DLC::ON_ENTER_SP();
+		}
+		
 		/**
 		 * 
 		 * @param src 

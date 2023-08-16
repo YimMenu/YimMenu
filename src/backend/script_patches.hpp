@@ -56,12 +56,48 @@ namespace big
 		    {RAGE_JOAAT("carmod_shop"), "2D 03 07 00 00 71 38 02", 5, {0x72, 0x2E, 0x03, 0x01}, &g.vehicle.ls_customs}); // allow all vehicles 2
 
 
+		/**
+		 * @brief Prevents infinite loading screen.
+		 * @code {.asm}
+		 * ; Can be found at:
+		 * ; Function hash: 0x853FDB0C
+		 * ; Has else if (func_1649() && CAM::IS_SCREEN_FADED_OUT() || func_4181() > 10000)
+		 * @endcode
+		 * 
+		 * @bug Does not prevent infinite loading screen.
+		 */
 		g_script_patcher_service->add_patch({RAGE_JOAAT("maintransition"),
-		    "2D 00 02 00 00 2C ? ? ? 56 ? ? 2C ? ? ? 74 58 ? ? 2C ? ? ? 73", 5, {0x72, 0x2E, 0x00, 0x01}, &g.tunables.seamless_join}); // prevents infinite loading screen
+		    "2D 00 02 00 00 2C ? ? ? 56 ? ? 2C ? ? ? 74 58 ? ? 2C ? ? ? 73",
+		    5,
+		    {0x72, 0x2E, 0x00, 0x01},
+		    &g.tunables.seamless_join});
+
+		/**
+		 * @brief Prevents intro animation from running.
+		 * @code {.asm}
+		 * ; Can be found at:
+		 * ; Function hash: 0xB92740F6
+		 * ; Has TASK_SCRIPTED_ANIMATION in OPEN_SEQUENCE_TASK.
+		 * @endcode
+		 * 
+		 * @authors Dayibbaba helped me find this function.
+		 * @return LEAVE 9, 0
+		 */
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "2D 09 53 00 00", 5, {0x2E, 0x09, 0x00}, &g.tunables.seamless_join}); // prevents intro animation from running
+		    {RAGE_JOAAT("freemode"), "2D 09 53 00 00", 5, {0x2E, 0x09, 0x00}, &g.tunables.seamless_join});
+
+		/**
+		 * @brief Prevents freezing after we skiped the intro animation.
+		 * @code {.asm}
+		 * ; Can be found at:
+		 * ; Function hash: 0x48A59AF2
+		 * ; Has if (ENTITY::IS_ENTITY_PLAYING_ANIM(uParam0->f_122, animDict, animName, 3))
+		 * @endcode
+		 *
+		 * @return PUSH_CONST_1; LEAVE 1, 1
+		 */
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "2D 01 06 00 00 38 00 41 ? 56", 5, {0x72, 0x2E, 0x01, 0x01}, &g.tunables.seamless_join}); // prevents freezing after we skiped the intro animation
+		    {RAGE_JOAAT("freemode"), "2D 01 06 00 00 38 00 41 ? 56", 5, {0x72, 0x2E, 0x01, 0x01}, &g.tunables.seamless_join});
 
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 		{
