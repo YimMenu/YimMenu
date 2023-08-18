@@ -7,10 +7,10 @@ namespace big
 		if (ImGui::BeginTabItem("HANDLING_TAB_OTHER"_T.data()))
 		{
 			ImGui::Text("HANDLING_ACCELERATION_MULTIPLIER"_T.data());
-			ImGui::DragFloat("###handling_acceleration", &g_local_player->m_vehicle->m_handling_data->m_acceleration, .01f, 1.f, 10.f);
+			ImGui::DragFloat("###handling_acceleration", &g_local_player->m_vehicle->m_handling_data->m_acceleration, .01f, .01f, 10.f);
 
 			ImGui::Text("HANDLING_DOWNFORCE_MULTIPLIER"_T.data());
-			ImGui::DragFloat("###handling_downforce", &g_local_player->m_vehicle->m_handling_data->m_downforce_multiplier, .01f, 0.f, 10.f);
+			ImGui::DragFloat("###handling_downforce", &g_local_player->m_vehicle->m_handling_data->m_downforce_multiplier, .01f, .01f, 10.f);
 
 			ImGui::Text("HANDLING_INERTIA_MULTIPLIER"_T.data());
 			float fInertiaMult[3];
