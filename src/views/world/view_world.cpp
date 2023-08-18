@@ -1,3 +1,4 @@
+#include "pointers.hpp"
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"
@@ -82,7 +83,7 @@ namespace big
 		ImGui::SeparatorText("Entities");
 
 		static bool included_entity_types[3];
-		static bool own_vehicle, deleting;
+		static bool own_vehicle, deleting, force;
 		static int quantity, remaining;
 
 		ImGui::Text("Include:");
@@ -93,7 +94,12 @@ namespace big
 		ImGui::Checkbox("Props", &included_entity_types[2]);
 
 		if (included_entity_types[0])
+		{
 			ImGui::Checkbox("Self vehicle", &own_vehicle);
+			ImGui::SameLine();
+		}
+
+		ImGui::Checkbox("Force", &force);
 
 		if (deleting)
 		{
@@ -122,8 +128,22 @@ namespace big
 							if (ent == self::veh && own_vehicle)
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
-						if (entity::take_control_of(ent, 25))
-							entity::delete_entity(ent);
+						if (force)
+						{
+							auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent);
+
+							switch (ptr->m_entity_type)
+							{
+							case 4: g_pointers->m_gta.m_delete_ped(reinterpret_cast<CPed*>(ptr)); break;
+							case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
+							case 5: g_pointers->m_gta.m_delete_object(reinterpret_cast<CObject*>(ptr), false); break;
+							}
+						}
+						else
+						{
+							if (entity::take_control_of(ent, 25))
+								entity::delete_entity(ent);
+						}
 					}
 
 					if (ENTITY::DOES_ENTITY_EXIST(ent))

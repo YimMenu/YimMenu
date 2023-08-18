@@ -175,4 +175,8 @@ namespace big::functions
 	using get_new_pool_item          = void* (*)(GenericPool* pool);
 	using construct_door_break_event = CDoorBreakEvent* (*)(CDoorBreakEvent* _this);
 	using queue_network_event        = void (*)(rage::netEventMgr* mgr, rage::netGameEvent* event);
+
+	using delete_ped     = bool (*)(CPed* ped);
+	using delete_vehicle = bool (*)(CVehicle* veh);
+	using delete_object  = bool (*)(CObject* object, bool unk);
 }

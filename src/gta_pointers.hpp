@@ -328,6 +328,10 @@ namespace big
 		functions::get_new_pool_item m_get_new_pool_item;
 		functions::construct_door_break_event m_construct_door_break_event;
 		functions::queue_network_event m_queue_network_event;
+
+		functions::delete_ped m_delete_ped;
+		functions::delete_vehicle m_delete_vehicle;
+		functions::delete_object m_delete_object;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

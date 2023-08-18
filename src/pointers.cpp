@@ -1402,6 +1402,33 @@ namespace big
                 g_pointers->m_gta.m_construct_door_break_event = ptr.as<functions::construct_door_break_event>();
             }
         },
+        // Delete Ped
+        {
+            "DP",
+            "48 83 EC 28 48 85 C9 74 12 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_ped = ptr.as<functions::delete_ped>();
+            }
+        },
+        // Delete Vehicle
+        {
+            "DV",
+            "48 85 C9 74 38 53 48 83 EC 20 80",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_vehicle = ptr.as<functions::delete_vehicle>();
+            }
+        },
+        // Delete Object
+        {
+            "DO",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 45 33 F6 40",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_object = ptr.as<functions::delete_object>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
