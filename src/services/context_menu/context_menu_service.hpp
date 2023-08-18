@@ -187,17 +187,9 @@ namespace big
 		            }},
 		        {"KICK",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("nfkick")));
-			            static player_command* command1 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("shkick")));
-			            static player_command* command2 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("endkick")));
-			            static player_command* command3 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("desync")));
-			            static player_command* command4 = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("breakup")));
+				    static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("multikick")));
 			            command->call(ped::get_player_from_ped(m_handle), {});
-			            command1->call(ped::get_player_from_ped(m_handle), {});
-			            command2->call(ped::get_player_from_ped(m_handle), {});
-			            command3->call(ped::get_player_from_ped(m_handle), {});
 			            script::get_current()->yield(500ms);
-			            command4->call(ped::get_player_from_ped(m_handle), {});
 		            }},
 		        {"DISARM",
 		            [this] {
