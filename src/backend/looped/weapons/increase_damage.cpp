@@ -25,13 +25,6 @@ namespace big
 				WEAPON::SET_WEAPON_DAMAGE_MODIFIER(weapon, g.weapons.increased_damage);
 			}
 		}
-
-		virtual void on_disable() override
-		{
-			Hash weapon{};
-			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon, 0);
-			WEAPON::SET_WEAPON_DAMAGE_MODIFIER(weapon, 1);
-		}
 	};
 
 	increased_damage
