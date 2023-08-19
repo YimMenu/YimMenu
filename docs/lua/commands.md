@@ -11,11 +11,15 @@ command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
 
 For a complete list of available command functions, please refer to the command table documentation.
 
-## Command Count: 212
+## Command Count: 215
 
 ### breakup 
  BREAKUP_KICK_DESC 
 Arg Count:  1
+
+### breakupall
+ BREAKUP_KICK_DESC 
+Arg Count:  0
 
 ### breakupcheating 
  BREAKUP_KICK_SHOW_CHEATING_DESC 
@@ -32,6 +36,10 @@ Arg Count:  0
 ### endkick 
  END_KICK_DESC 
 Arg Count:  1
+
+### endkickall
+ END_KICK_DESC 
+Arg Count:  0
 
 ### hostkick 
  Host kick that only works when host 
@@ -52,6 +60,10 @@ Arg Count:  1
 ### shkick 
  SCRIPT_HOST_KICK_DESC 
 Arg Count:  1
+
+### shkickall 
+ SCRIPT_HOST_KICK_DESC 
+Arg Count:  0
 
 ### multikick 
  MULTI_KICK_DESC 

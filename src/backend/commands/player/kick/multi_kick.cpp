@@ -20,7 +20,6 @@ namespace big
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-			script::get_current()->yield(700ms);
 
 			if (g_player_service->get_self()->is_host())
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
