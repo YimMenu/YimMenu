@@ -160,7 +160,7 @@ static const std::map<int, std::string> lsc_headlight_colors = {
     {XENON_PONY_PINK, "Pony Pink"},
     {XENON_HOT_PINK, "Hot Pink"},
     {XENON_PURPLE, "Purple"},
-    {XENON_BACKLIGHT, "Backlight"},
+    {XENON_BLACKLIGHT, "Blacklight"},
 };
 
 static const std::map<int, std::string> lsc_missing_horns = {
@@ -201,4 +201,5 @@ static const std::map<std::string, std::vector<int>> lsc_neon_rgb = {
     {"Pony Pink", {NEON_COLOR_PONYPINK}},
     {"Hot Pink", {NEON_COLOR_HOTPINK}},
     {"Purple", {NEON_COLOR_PURPLE}},
+    {"Blacklight", {NEON_COLOR_BLACKLIGHT}},
 };
