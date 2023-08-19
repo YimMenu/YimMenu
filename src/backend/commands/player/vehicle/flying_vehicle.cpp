@@ -29,5 +29,5 @@ namespace big
 		}
 	};
 
-	flying_vehicle g_flying_vehicle("flyingveh", "Flying Vehicle", "Catapults their car to  the sky.", 0);
+	flying_vehicle g_flying_vehicle("flyingveh", "Flying Vehicle", "Catapults the player's car to the sky", 0);
 }

@@ -3,242 +3,242 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_TASK_TASK_PAUSE( Ped ped, int ms )
+	static void LUA_NATIVE_TASK_TASK_PAUSE(Ped ped, int ms)
 	{
 		TASK::TASK_PAUSE(ped, ms);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STAND_STILL( Ped ped, int time )
+	static void LUA_NATIVE_TASK_TASK_STAND_STILL(Ped ped, int time)
 	{
 		TASK::TASK_STAND_STILL(ped, time);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_JUMP( Ped ped, bool usePlayerLaunchForce, bool doSuperJump, bool useFullSuperJumpForce )
+	static void LUA_NATIVE_TASK_TASK_JUMP(Ped ped, bool usePlayerLaunchForce, bool doSuperJump, bool useFullSuperJumpForce)
 	{
 		TASK::TASK_JUMP(ped, usePlayerLaunchForce, doSuperJump, useFullSuperJumpForce);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COWER( Ped ped, int duration )
+	static void LUA_NATIVE_TASK_TASK_COWER(Ped ped, int duration)
 	{
 		TASK::TASK_COWER(ped, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_HANDS_UP( Ped ped, int duration, Ped facingPed, int timeToFacePed, int flags )
+	static void LUA_NATIVE_TASK_TASK_HANDS_UP(Ped ped, int duration, Ped facingPed, int timeToFacePed, int flags)
 	{
 		TASK::TASK_HANDS_UP(ped, duration, facingPed, timeToFacePed, flags);
 	}
 
-	static void LUA_NATIVE_TASK_UPDATE_TASK_HANDS_UP_DURATION( Ped ped, int duration )
+	static void LUA_NATIVE_TASK_UPDATE_TASK_HANDS_UP_DURATION(Ped ped, int duration)
 	{
 		TASK::UPDATE_TASK_HANDS_UP_DURATION(ped, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_OPEN_VEHICLE_DOOR( Ped ped, Vehicle vehicle, int timeOut, int seat, float speed )
+	static void LUA_NATIVE_TASK_TASK_OPEN_VEHICLE_DOOR(Ped ped, Vehicle vehicle, int timeOut, int seat, float speed)
 	{
 		TASK::TASK_OPEN_VEHICLE_DOOR(ped, vehicle, timeOut, seat, speed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE( Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, const char* overrideEntryClipsetName )
+	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE(Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, const char* overrideEntryClipsetName)
 	{
 		TASK::TASK_ENTER_VEHICLE(ped, vehicle, timeout, seat, speed, flag, overrideEntryClipsetName);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_LEAVE_VEHICLE( Ped ped, Vehicle vehicle, int flags )
+	static void LUA_NATIVE_TASK_TASK_LEAVE_VEHICLE(Ped ped, Vehicle vehicle, int flags)
 	{
 		TASK::TASK_LEAVE_VEHICLE(ped, vehicle, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GET_OFF_BOAT( Ped ped, Vehicle boat )
+	static void LUA_NATIVE_TASK_TASK_GET_OFF_BOAT(Ped ped, Vehicle boat)
 	{
 		TASK::TASK_GET_OFF_BOAT(ped, boat);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SKY_DIVE( Ped ped, bool instant )
+	static void LUA_NATIVE_TASK_TASK_SKY_DIVE(Ped ped, bool instant)
 	{
 		TASK::TASK_SKY_DIVE(ped, instant);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PARACHUTE( Ped ped, bool giveParachuteItem, bool instant )
+	static void LUA_NATIVE_TASK_TASK_PARACHUTE(Ped ped, bool giveParachuteItem, bool instant)
 	{
 		TASK::TASK_PARACHUTE(ped, giveParachuteItem, instant);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PARACHUTE_TO_TARGET( Ped ped, float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_PARACHUTE_TO_TARGET(Ped ped, float x, float y, float z)
 	{
 		TASK::TASK_PARACHUTE_TO_TARGET(ped, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PARACHUTE_TASK_TARGET( Ped ped, float x, float y, float z )
+	static void LUA_NATIVE_TASK_SET_PARACHUTE_TASK_TARGET(Ped ped, float x, float y, float z)
 	{
 		TASK::SET_PARACHUTE_TASK_TARGET(ped, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PARACHUTE_TASK_THRUST( Ped ped, float thrust )
+	static void LUA_NATIVE_TASK_SET_PARACHUTE_TASK_THRUST(Ped ped, float thrust)
 	{
 		TASK::SET_PARACHUTE_TASK_THRUST(ped, thrust);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_RAPPEL_FROM_HELI( Ped ped, float minHeightAboveGround )
+	static void LUA_NATIVE_TASK_TASK_RAPPEL_FROM_HELI(Ped ped, float minHeightAboveGround)
 	{
 		TASK::TASK_RAPPEL_FROM_HELI(ped, minHeightAboveGround);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_TO_COORD( Ped ped, Vehicle vehicle, float x, float y, float z, float speed, Any p6, Hash vehicleModel, int drivingMode, float stopRange, float straightLineDistance )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_TO_COORD(Ped ped, Vehicle vehicle, float x, float y, float z, float speed, Any p6, Hash vehicleModel, int drivingMode, float stopRange, float straightLineDistance)
 	{
 		TASK::TASK_VEHICLE_DRIVE_TO_COORD(ped, vehicle, x, y, z, speed, p6, vehicleModel, drivingMode, stopRange, straightLineDistance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE( Ped ped, Vehicle vehicle, float x, float y, float z, float speed, int driveMode, float stopRange )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped ped, Vehicle vehicle, float x, float y, float z, float speed, int driveMode, float stopRange)
 	{
 		TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(ped, vehicle, x, y, z, speed, driveMode, stopRange);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_WANDER( Ped ped, Vehicle vehicle, float speed, int drivingStyle )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_DRIVE_WANDER(Ped ped, Vehicle vehicle, float speed, int drivingStyle)
 	{
 		TASK::TASK_VEHICLE_DRIVE_WANDER(ped, vehicle, speed, drivingStyle);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_TO_OFFSET_OF_ENTITY( Ped ped, Entity entity, float offsetX, float offsetY, float offsetZ, float movementSpeed, int timeout, float stoppingRange, bool persistFollowing )
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_TO_OFFSET_OF_ENTITY(Ped ped, Entity entity, float offsetX, float offsetY, float offsetZ, float movementSpeed, int timeout, float stoppingRange, bool persistFollowing)
 	{
 		TASK::TASK_FOLLOW_TO_OFFSET_OF_ENTITY(ped, entity, offsetX, offsetY, offsetZ, movementSpeed, timeout, stoppingRange, persistFollowing);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_STRAIGHT_TO_COORD( Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide )
+	static void LUA_NATIVE_TASK_TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
 	{
 		TASK::TASK_GO_STRAIGHT_TO_COORD(ped, x, y, z, speed, timeout, targetHeading, distanceToSlide);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY( Ped ped, Entity entity, float x, float y, float z, float moveBlendRatio, int time )
+	static void LUA_NATIVE_TASK_TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY(Ped ped, Entity entity, float x, float y, float z, float moveBlendRatio, int time)
 	{
 		TASK::TASK_GO_STRAIGHT_TO_COORD_RELATIVE_TO_ENTITY(ped, entity, x, y, z, moveBlendRatio, time);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_ACHIEVE_HEADING( Ped ped, float heading, int timeout )
+	static void LUA_NATIVE_TASK_TASK_ACHIEVE_HEADING(Ped ped, float heading, int timeout)
 	{
 		TASK::TASK_ACHIEVE_HEADING(ped, heading, timeout);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FLUSH_ROUTE(  )
+	static void LUA_NATIVE_TASK_TASK_FLUSH_ROUTE()
 	{
 		TASK::TASK_FLUSH_ROUTE();
 	}
 
-	static void LUA_NATIVE_TASK_TASK_EXTEND_ROUTE( float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_EXTEND_ROUTE(float x, float y, float z)
 	{
 		TASK::TASK_EXTEND_ROUTE(x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_POINT_ROUTE( Ped ped, float speed, int mode )
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_POINT_ROUTE(Ped ped, float speed, int mode)
 	{
 		TASK::TASK_FOLLOW_POINT_ROUTE(ped, speed, mode);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY( Entity entity, Entity target, int duration, float distance, float moveBlendRatio, float slowDownDistance, int flags )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY(Entity entity, Entity target, int duration, float distance, float moveBlendRatio, float slowDownDistance, int flags)
 	{
 		TASK::TASK_GO_TO_ENTITY(entity, target, duration, distance, moveBlendRatio, slowDownDistance, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SMART_FLEE_COORD( Ped ped, float x, float y, float z, float distance, int time, bool preferPavements, bool quitIfOutOfRange )
+	static void LUA_NATIVE_TASK_TASK_SMART_FLEE_COORD(Ped ped, float x, float y, float z, float distance, int time, bool preferPavements, bool quitIfOutOfRange)
 	{
 		TASK::TASK_SMART_FLEE_COORD(ped, x, y, z, distance, time, preferPavements, quitIfOutOfRange);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SMART_FLEE_PED( Ped ped, Ped fleeTarget, float safeDistance, int fleeTime, bool preferPavements, bool updateToNearestHatedPed )
+	static void LUA_NATIVE_TASK_TASK_SMART_FLEE_PED(Ped ped, Ped fleeTarget, float safeDistance, int fleeTime, bool preferPavements, bool updateToNearestHatedPed)
 	{
 		TASK::TASK_SMART_FLEE_PED(ped, fleeTarget, safeDistance, fleeTime, preferPavements, updateToNearestHatedPed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_REACT_AND_FLEE_PED( Ped ped, Ped fleeTarget )
+	static void LUA_NATIVE_TASK_TASK_REACT_AND_FLEE_PED(Ped ped, Ped fleeTarget)
 	{
 		TASK::TASK_REACT_AND_FLEE_PED(ped, fleeTarget);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SHOCKING_EVENT_REACT( Ped ped, int eventHandle )
+	static void LUA_NATIVE_TASK_TASK_SHOCKING_EVENT_REACT(Ped ped, int eventHandle)
 	{
 		TASK::TASK_SHOCKING_EVENT_REACT(ped, eventHandle);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WANDER_IN_AREA( Ped ped, float x, float y, float z, float radius, float minimalLength, float timeBetweenWalks )
+	static void LUA_NATIVE_TASK_TASK_WANDER_IN_AREA(Ped ped, float x, float y, float z, float radius, float minimalLength, float timeBetweenWalks)
 	{
 		TASK::TASK_WANDER_IN_AREA(ped, x, y, z, radius, minimalLength, timeBetweenWalks);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WANDER_STANDARD( Ped ped, float heading, int flags )
+	static void LUA_NATIVE_TASK_TASK_WANDER_STANDARD(Ped ped, float heading, int flags)
 	{
 		TASK::TASK_WANDER_STANDARD(ped, heading, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WANDER_SPECIFIC( Ped ped, const char* conditionalAnimGroupStr, const char* conditionalAnimStr, float heading )
+	static void LUA_NATIVE_TASK_TASK_WANDER_SPECIFIC(Ped ped, const char* conditionalAnimGroupStr, const char* conditionalAnimStr, float heading)
 	{
 		TASK::TASK_WANDER_SPECIFIC(ped, conditionalAnimGroupStr, conditionalAnimStr, heading);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_PARK( Ped ped, Vehicle vehicle, float x, float y, float z, float heading, int mode, float radius, bool keepEngineOn )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_PARK(Ped ped, Vehicle vehicle, float x, float y, float z, float heading, int mode, float radius, bool keepEngineOn)
 	{
 		TASK::TASK_VEHICLE_PARK(ped, vehicle, x, y, z, heading, mode, radius, keepEngineOn);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STEALTH_KILL( Ped killer, Ped target, Hash stealthKillActionResultHash, float desiredMoveBlendRatio, int stealthFlags )
+	static void LUA_NATIVE_TASK_TASK_STEALTH_KILL(Ped killer, Ped target, Hash stealthKillActionResultHash, float desiredMoveBlendRatio, int stealthFlags)
 	{
 		TASK::TASK_STEALTH_KILL(killer, target, stealthKillActionResultHash, desiredMoveBlendRatio, stealthFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANT_BOMB( Ped ped, float x, float y, float z, float heading )
+	static void LUA_NATIVE_TASK_TASK_PLANT_BOMB(Ped ped, float x, float y, float z, float heading)
 	{
 		TASK::TASK_PLANT_BOMB(ped, x, y, z, heading);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_NAV_MESH_TO_COORD( Ped ped, float x, float y, float z, float moveBlendRatio, int time, float targetRadius, int flags, float targetHeading )
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_NAV_MESH_TO_COORD(Ped ped, float x, float y, float z, float moveBlendRatio, int time, float targetRadius, int flags, float targetHeading)
 	{
 		TASK::TASK_FOLLOW_NAV_MESH_TO_COORD(ped, x, y, z, moveBlendRatio, time, targetRadius, flags, targetHeading);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED( Ped ped, float x, float y, float z, float moveBlendRatio, int time, float targetRadius, int flags, float slideToCoordHeading, float maxSlopeNavigable, float clampMaxSearchDistance, float targetHeading )
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(Ped ped, float x, float y, float z, float moveBlendRatio, int time, float targetRadius, int flags, float slideToCoordHeading, float maxSlopeNavigable, float clampMaxSearchDistance, float targetHeading)
 	{
 		TASK::TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(ped, x, y, z, moveBlendRatio, time, targetRadius, flags, slideToCoordHeading, maxSlopeNavigable, clampMaxSearchDistance, targetHeading);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_USE_CLIMBOVERS( Ped ped, bool Toggle )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped ped, bool Toggle)
 	{
 		TASK::SET_PED_PATH_CAN_USE_CLIMBOVERS(ped, Toggle);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_USE_LADDERS( Ped ped, bool Toggle )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_USE_LADDERS(Ped ped, bool Toggle)
 	{
 		TASK::SET_PED_PATH_CAN_USE_LADDERS(ped, Toggle);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_DROP_FROM_HEIGHT( Ped ped, bool Toggle )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped ped, bool Toggle)
 	{
 		TASK::SET_PED_PATH_CAN_DROP_FROM_HEIGHT(ped, Toggle);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_CLIMB_COST_MODIFIER( Ped ped, float modifier )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_CLIMB_COST_MODIFIER(Ped ped, float modifier)
 	{
 		TASK::SET_PED_PATH_CLIMB_COST_MODIFIER(ped, modifier);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_MAY_ENTER_WATER( Ped ped, bool mayEnterWater )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_MAY_ENTER_WATER(Ped ped, bool mayEnterWater)
 	{
 		TASK::SET_PED_PATH_MAY_ENTER_WATER(ped, mayEnterWater);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_PREFER_TO_AVOID_WATER( Ped ped, bool avoidWater )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_PREFER_TO_AVOID_WATER(Ped ped, bool avoidWater)
 	{
 		TASK::SET_PED_PATH_PREFER_TO_AVOID_WATER(ped, avoidWater);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_PATH_AVOID_FIRE( Ped ped, bool avoidFire )
+	static void LUA_NATIVE_TASK_SET_PED_PATH_AVOID_FIRE(Ped ped, bool avoidFire)
 	{
 		TASK::SET_PED_PATH_AVOID_FIRE(ped, avoidFire);
 	}
 
-	static void LUA_NATIVE_TASK_SET_GLOBAL_MIN_BIRD_FLIGHT_HEIGHT( float height )
+	static void LUA_NATIVE_TASK_SET_GLOBAL_MIN_BIRD_FLIGHT_HEIGHT(float height)
 	{
 		TASK::SET_GLOBAL_MIN_BIRD_FLIGHT_HEIGHT(height);
 	}
 
-	static std::tuple<int, float, bool> LUA_NATIVE_TASK_GET_NAVMESH_ROUTE_DISTANCE_REMAINING( Ped ped, float distanceRemaining, bool isPathReady )
+	static std::tuple<int, float, bool> LUA_NATIVE_TASK_GET_NAVMESH_ROUTE_DISTANCE_REMAINING(Ped ped, float distanceRemaining, bool isPathReady)
 	{
 		std::tuple<int, float, bool> return_values;
 		std::get<0>(return_values) = TASK::GET_NAVMESH_ROUTE_DISTANCE_REMAINING(ped, &distanceRemaining, (BOOL*)&isPathReady);
@@ -248,49 +248,49 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_TASK_GET_NAVMESH_ROUTE_RESULT( Ped ped )
+	static int LUA_NATIVE_TASK_GET_NAVMESH_ROUTE_RESULT(Ped ped)
 	{
 		auto retval = TASK::GET_NAVMESH_ROUTE_RESULT(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_CONTROLLED_VEHICLE_UNABLE_TO_GET_TO_ROAD( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_CONTROLLED_VEHICLE_UNABLE_TO_GET_TO_ROAD(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_CONTROLLED_VEHICLE_UNABLE_TO_GET_TO_ROAD(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS( Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS(Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets)
 	{
 		TASK::TASK_GO_TO_COORD_ANY_MEANS(ped, x, y, z, moveBlendRatio, vehicle, useLongRangeVehiclePathing, drivingFlags, maxRangeToShootTargets);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS( Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets, float extraVehToTargetDistToPreferVehicle, float driveStraightLineDistance, int extraFlags, float warpTimerMS )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS(Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets, float extraVehToTargetDistToPreferVehicle, float driveStraightLineDistance, int extraFlags, float warpTimerMS)
 	{
 		TASK::TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS(ped, x, y, z, moveBlendRatio, vehicle, useLongRangeVehiclePathing, drivingFlags, maxRangeToShootTargets, extraVehToTargetDistToPreferVehicle, driveStraightLineDistance, extraFlags, warpTimerMS);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED( Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets, float extraVehToTargetDistToPreferVehicle, float driveStraightLineDistance, int extraFlags, float cruiseSpeed, float targetArriveDist )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED(Ped ped, float x, float y, float z, float moveBlendRatio, Vehicle vehicle, bool useLongRangeVehiclePathing, int drivingFlags, float maxRangeToShootTargets, float extraVehToTargetDistToPreferVehicle, float driveStraightLineDistance, int extraFlags, float cruiseSpeed, float targetArriveDist)
 	{
 		TASK::TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED(ped, x, y, z, moveBlendRatio, vehicle, useLongRangeVehiclePathing, drivingFlags, maxRangeToShootTargets, extraVehToTargetDistToPreferVehicle, driveStraightLineDistance, extraFlags, cruiseSpeed, targetArriveDist);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM( Ped ped, const char* animDictionary, const char* animationName, float blendInSpeed, float blendOutSpeed, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ )
+	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM(Ped ped, const char* animDictionary, const char* animationName, float blendInSpeed, float blendOutSpeed, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ)
 	{
 		TASK::TASK_PLAY_ANIM(ped, animDictionary, animationName, blendInSpeed, blendOutSpeed, duration, flag, playbackRate, lockX, lockY, lockZ);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM_ADVANCED( Ped ped, const char* animDict, const char* animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float animEnterSpeed, float animExitSpeed, int duration, Any flag, float animTime, int rotOrder, int ikFlags )
+	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM_ADVANCED(Ped ped, const char* animDict, const char* animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float animEnterSpeed, float animExitSpeed, int duration, Any flag, float animTime, int rotOrder, int ikFlags)
 	{
 		TASK::TASK_PLAY_ANIM_ADVANCED(ped, animDict, animName, posX, posY, posZ, rotX, rotY, rotZ, animEnterSpeed, animExitSpeed, duration, flag, animTime, rotOrder, ikFlags);
 	}
 
-	static void LUA_NATIVE_TASK_STOP_ANIM_TASK( Entity entity, const char* animDictionary, const char* animationName, float blendDelta )
+	static void LUA_NATIVE_TASK_STOP_ANIM_TASK(Entity entity, const char* animDictionary, const char* animationName, float blendDelta)
 	{
 		TASK::STOP_ANIM_TASK(entity, animDictionary, animationName, blendDelta);
 	}
 
-	static std::tuple<int, int, int> LUA_NATIVE_TASK_TASK_SCRIPTED_ANIMATION( Ped ped, int priorityLowData, int priorityMidData, int priorityHighData, float blendInDelta, float blendOutDelta )
+	static std::tuple<int, int, int> LUA_NATIVE_TASK_TASK_SCRIPTED_ANIMATION(Ped ped, int priorityLowData, int priorityMidData, int priorityHighData, float blendInDelta, float blendOutDelta)
 	{
 		std::tuple<int, int, int> return_values;
 		TASK::TASK_SCRIPTED_ANIMATION(ped, &priorityLowData, &priorityMidData, &priorityHighData, blendInDelta, blendOutDelta);
@@ -301,7 +301,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, int, int> LUA_NATIVE_TASK_PLAY_ENTITY_SCRIPTED_ANIM( Entity entity, int priorityLowData, int priorityMidData, int priorityHighData, float blendInDelta, float blendOutDelta )
+	static std::tuple<int, int, int> LUA_NATIVE_TASK_PLAY_ENTITY_SCRIPTED_ANIM(Entity entity, int priorityLowData, int priorityMidData, int priorityHighData, float blendInDelta, float blendOutDelta)
 	{
 		std::tuple<int, int, int> return_values;
 		TASK::PLAY_ENTITY_SCRIPTED_ANIM(entity, &priorityLowData, &priorityMidData, &priorityHighData, blendInDelta, blendOutDelta);
@@ -312,811 +312,811 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_TASK_STOP_ANIM_PLAYBACK( Entity entity, int priority, bool secondary )
+	static void LUA_NATIVE_TASK_STOP_ANIM_PLAYBACK(Entity entity, int priority, bool secondary)
 	{
 		TASK::STOP_ANIM_PLAYBACK(entity, priority, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_SET_ANIM_WEIGHT( Entity entity, float weight, int priority, int index, bool secondary )
+	static void LUA_NATIVE_TASK_SET_ANIM_WEIGHT(Entity entity, float weight, int priority, int index, bool secondary)
 	{
 		TASK::SET_ANIM_WEIGHT(entity, weight, priority, index, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_SET_ANIM_PHASE( Entity entity, float phase, int priority, bool secondary )
+	static void LUA_NATIVE_TASK_SET_ANIM_PHASE(Entity entity, float phase, int priority, bool secondary)
 	{
 		TASK::SET_ANIM_PHASE(entity, phase, priority, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_SET_ANIM_RATE( Entity entity, float rate, int priority, bool secondary )
+	static void LUA_NATIVE_TASK_SET_ANIM_RATE(Entity entity, float rate, int priority, bool secondary)
 	{
 		TASK::SET_ANIM_RATE(entity, rate, priority, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_SET_ANIM_LOOPED( Entity entity, bool looped, int priority, bool secondary )
+	static void LUA_NATIVE_TASK_SET_ANIM_LOOPED(Entity entity, bool looped, int priority, bool secondary)
 	{
 		TASK::SET_ANIM_LOOPED(entity, looped, priority, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_PHONE_GESTURE_ANIMATION( Ped ped, const char* animDict, const char* animation, const char* boneMaskType, float blendInDuration, float blendOutDuration, bool isLooping, bool holdLastFrame )
+	static void LUA_NATIVE_TASK_TASK_PLAY_PHONE_GESTURE_ANIMATION(Ped ped, const char* animDict, const char* animation, const char* boneMaskType, float blendInDuration, float blendOutDuration, bool isLooping, bool holdLastFrame)
 	{
 		TASK::TASK_PLAY_PHONE_GESTURE_ANIMATION(ped, animDict, animation, boneMaskType, blendInDuration, blendOutDuration, isLooping, holdLastFrame);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STOP_PHONE_GESTURE_ANIMATION( Ped ped, float blendOutOverride )
+	static void LUA_NATIVE_TASK_TASK_STOP_PHONE_GESTURE_ANIMATION(Ped ped, float blendOutOverride)
 	{
 		TASK::TASK_STOP_PHONE_GESTURE_ANIMATION(ped, blendOutOverride);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PLAYING_PHONE_GESTURE_ANIM( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PLAYING_PHONE_GESTURE_ANIM(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PLAYING_PHONE_GESTURE_ANIM(ped);
 		return retval;
 	}
 
-	static float LUA_NATIVE_TASK_GET_PHONE_GESTURE_ANIM_CURRENT_TIME( Ped ped )
+	static float LUA_NATIVE_TASK_GET_PHONE_GESTURE_ANIM_CURRENT_TIME(Ped ped)
 	{
 		auto retval = TASK::GET_PHONE_GESTURE_ANIM_CURRENT_TIME(ped);
 		return retval;
 	}
 
-	static float LUA_NATIVE_TASK_GET_PHONE_GESTURE_ANIM_TOTAL_TIME( Ped ped )
+	static float LUA_NATIVE_TASK_GET_PHONE_GESTURE_ANIM_TOTAL_TIME(Ped ped)
 	{
 		auto retval = TASK::GET_PHONE_GESTURE_ANIM_TOTAL_TIME(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_PLAY_ANIM( Vehicle vehicle, const char* animationSet, const char* animationName )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_PLAY_ANIM(Vehicle vehicle, const char* animationSet, const char* animationName)
 	{
 		TASK::TASK_VEHICLE_PLAY_ANIM(vehicle, animationSet, animationName);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_LOOK_AT_COORD( Entity entity, float x, float y, float z, int duration, int flags, int priority )
+	static void LUA_NATIVE_TASK_TASK_LOOK_AT_COORD(Entity entity, float x, float y, float z, int duration, int flags, int priority)
 	{
 		TASK::TASK_LOOK_AT_COORD(entity, x, y, z, duration, flags, priority);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_LOOK_AT_ENTITY( Ped ped, Entity lookAt, int duration, int flags, int priority )
+	static void LUA_NATIVE_TASK_TASK_LOOK_AT_ENTITY(Ped ped, Entity lookAt, int duration, int flags, int priority)
 	{
 		TASK::TASK_LOOK_AT_ENTITY(ped, lookAt, duration, flags, priority);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_CLEAR_LOOK_AT( Ped ped )
+	static void LUA_NATIVE_TASK_TASK_CLEAR_LOOK_AT(Ped ped)
 	{
 		TASK::TASK_CLEAR_LOOK_AT(ped);
 	}
 
-	static int LUA_NATIVE_TASK_OPEN_SEQUENCE_TASK( int taskSequenceId )
+	static int LUA_NATIVE_TASK_OPEN_SEQUENCE_TASK(int taskSequenceId)
 	{
 		TASK::OPEN_SEQUENCE_TASK(&taskSequenceId);
 		return taskSequenceId;
 	}
 
-	static void LUA_NATIVE_TASK_CLOSE_SEQUENCE_TASK( int taskSequenceId )
+	static void LUA_NATIVE_TASK_CLOSE_SEQUENCE_TASK(int taskSequenceId)
 	{
 		TASK::CLOSE_SEQUENCE_TASK(taskSequenceId);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE( Ped ped, int taskSequenceId )
+	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE(Ped ped, int taskSequenceId)
 	{
 		TASK::TASK_PERFORM_SEQUENCE(ped, taskSequenceId);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE_LOCALLY( Ped ped, int taskSequenceId )
+	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE_LOCALLY(Ped ped, int taskSequenceId)
 	{
 		TASK::TASK_PERFORM_SEQUENCE_LOCALLY(ped, taskSequenceId);
 	}
 
-	static int LUA_NATIVE_TASK_CLEAR_SEQUENCE_TASK( int taskSequenceId )
+	static int LUA_NATIVE_TASK_CLEAR_SEQUENCE_TASK(int taskSequenceId)
 	{
 		TASK::CLEAR_SEQUENCE_TASK(&taskSequenceId);
 		return taskSequenceId;
 	}
 
-	static void LUA_NATIVE_TASK_SET_SEQUENCE_TO_REPEAT( int taskSequenceId, bool repeat )
+	static void LUA_NATIVE_TASK_SET_SEQUENCE_TO_REPEAT(int taskSequenceId, bool repeat)
 	{
 		TASK::SET_SEQUENCE_TO_REPEAT(taskSequenceId, repeat);
 	}
 
-	static int LUA_NATIVE_TASK_GET_SEQUENCE_PROGRESS( Ped ped )
+	static int LUA_NATIVE_TASK_GET_SEQUENCE_PROGRESS(Ped ped)
 	{
 		auto retval = TASK::GET_SEQUENCE_PROGRESS(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_GET_IS_TASK_ACTIVE( Ped ped, int taskIndex )
+	static bool LUA_NATIVE_TASK_GET_IS_TASK_ACTIVE(Ped ped, int taskIndex)
 	{
 		auto retval = (bool)TASK::GET_IS_TASK_ACTIVE(ped, taskIndex);
 		return retval;
 	}
 
-	static int LUA_NATIVE_TASK_GET_SCRIPT_TASK_STATUS( Ped ped, Hash taskHash )
+	static int LUA_NATIVE_TASK_GET_SCRIPT_TASK_STATUS(Ped ped, Hash taskHash)
 	{
 		auto retval = TASK::GET_SCRIPT_TASK_STATUS(ped, taskHash);
 		return retval;
 	}
 
-	static int LUA_NATIVE_TASK_GET_ACTIVE_VEHICLE_MISSION_TYPE( Vehicle vehicle )
+	static int LUA_NATIVE_TASK_GET_ACTIVE_VEHICLE_MISSION_TYPE(Vehicle vehicle)
 	{
 		auto retval = TASK::GET_ACTIVE_VEHICLE_MISSION_TYPE(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_LEAVE_ANY_VEHICLE( Ped ped, int delayTime, int flags )
+	static void LUA_NATIVE_TASK_TASK_LEAVE_ANY_VEHICLE(Ped ped, int delayTime, int flags)
 	{
 		TASK::TASK_LEAVE_ANY_VEHICLE(ped, delayTime, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_AIM_GUN_SCRIPTED( Ped ped, Hash scriptTask, bool disableBlockingClip, bool instantBlendToAim )
+	static void LUA_NATIVE_TASK_TASK_AIM_GUN_SCRIPTED(Ped ped, Hash scriptTask, bool disableBlockingClip, bool instantBlendToAim)
 	{
 		TASK::TASK_AIM_GUN_SCRIPTED(ped, scriptTask, disableBlockingClip, instantBlendToAim);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_AIM_GUN_SCRIPTED_WITH_TARGET( Ped ped, Ped target, float x, float y, float z, int gunTaskType, bool disableBlockingClip, bool forceAim )
+	static void LUA_NATIVE_TASK_TASK_AIM_GUN_SCRIPTED_WITH_TARGET(Ped ped, Ped target, float x, float y, float z, int gunTaskType, bool disableBlockingClip, bool forceAim)
 	{
 		TASK::TASK_AIM_GUN_SCRIPTED_WITH_TARGET(ped, target, x, y, z, gunTaskType, disableBlockingClip, forceAim);
 	}
 
-	static void LUA_NATIVE_TASK_UPDATE_TASK_AIM_GUN_SCRIPTED_TARGET( Ped ped, Ped target, float x, float y, float z, bool disableBlockingClip )
+	static void LUA_NATIVE_TASK_UPDATE_TASK_AIM_GUN_SCRIPTED_TARGET(Ped ped, Ped target, float x, float y, float z, bool disableBlockingClip)
 	{
 		TASK::UPDATE_TASK_AIM_GUN_SCRIPTED_TARGET(ped, target, x, y, z, disableBlockingClip);
 	}
 
-	static const char* LUA_NATIVE_TASK_GET_CLIP_SET_FOR_SCRIPTED_GUN_TASK( int gunTaskType )
+	static const char* LUA_NATIVE_TASK_GET_CLIP_SET_FOR_SCRIPTED_GUN_TASK(int gunTaskType)
 	{
 		auto retval = TASK::GET_CLIP_SET_FOR_SCRIPTED_GUN_TASK(gunTaskType);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_AIM_GUN_AT_ENTITY( Ped ped, Entity entity, int duration, bool instantBlendToAim )
+	static void LUA_NATIVE_TASK_TASK_AIM_GUN_AT_ENTITY(Ped ped, Entity entity, int duration, bool instantBlendToAim)
 	{
 		TASK::TASK_AIM_GUN_AT_ENTITY(ped, entity, duration, instantBlendToAim);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_TURN_PED_TO_FACE_ENTITY( Ped ped, Entity entity, int duration )
+	static void LUA_NATIVE_TASK_TASK_TURN_PED_TO_FACE_ENTITY(Ped ped, Entity entity, int duration)
 	{
 		TASK::TASK_TURN_PED_TO_FACE_ENTITY(ped, entity, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_AIM_GUN_AT_COORD( Ped ped, float x, float y, float z, int time, bool instantBlendToAim, bool playAnimIntro )
+	static void LUA_NATIVE_TASK_TASK_AIM_GUN_AT_COORD(Ped ped, float x, float y, float z, int time, bool instantBlendToAim, bool playAnimIntro)
 	{
 		TASK::TASK_AIM_GUN_AT_COORD(ped, x, y, z, time, instantBlendToAim, playAnimIntro);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SHOOT_AT_COORD( Ped ped, float x, float y, float z, int duration, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_SHOOT_AT_COORD(Ped ped, float x, float y, float z, int duration, Hash firingPattern)
 	{
 		TASK::TASK_SHOOT_AT_COORD(ped, x, y, z, duration, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT( Ped ped, Vehicle vehicle, bool useAlternateShuffle )
+	static void LUA_NATIVE_TASK_TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Ped ped, Vehicle vehicle, bool useAlternateShuffle)
 	{
 		TASK::TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(ped, vehicle, useAlternateShuffle);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_PED_TASKS( Ped ped )
+	static void LUA_NATIVE_TASK_CLEAR_PED_TASKS(Ped ped)
 	{
 		TASK::CLEAR_PED_TASKS(ped);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_PED_SECONDARY_TASK( Ped ped )
+	static void LUA_NATIVE_TASK_CLEAR_PED_SECONDARY_TASK(Ped ped)
 	{
 		TASK::CLEAR_PED_SECONDARY_TASK(ped);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_EVERYONE_LEAVE_VEHICLE( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_TASK_EVERYONE_LEAVE_VEHICLE(Vehicle vehicle)
 	{
 		TASK::TASK_EVERYONE_LEAVE_VEHICLE(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_OFFSET( Ped ped, Entity entity, int time, float seekRadius, float seekAngleDeg, float moveBlendRatio, int gotoEntityOffsetFlags )
+	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_OFFSET(Ped ped, Entity entity, int time, float seekRadius, float seekAngleDeg, float moveBlendRatio, int gotoEntityOffsetFlags)
 	{
 		TASK::TASK_GOTO_ENTITY_OFFSET(ped, entity, time, seekRadius, seekAngleDeg, moveBlendRatio, gotoEntityOffsetFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_OFFSET_XY( Ped ped, Entity entity, int duration, float targetRadius, float offsetX, float offsetY, float moveBlendRatio, int gotoEntityOffsetFlags )
+	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_OFFSET_XY(Ped ped, Entity entity, int duration, float targetRadius, float offsetX, float offsetY, float moveBlendRatio, int gotoEntityOffsetFlags)
 	{
 		TASK::TASK_GOTO_ENTITY_OFFSET_XY(ped, entity, duration, targetRadius, offsetX, offsetY, moveBlendRatio, gotoEntityOffsetFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_TURN_PED_TO_FACE_COORD( Ped ped, float x, float y, float z, int duration )
+	static void LUA_NATIVE_TASK_TASK_TURN_PED_TO_FACE_COORD(Ped ped, float x, float y, float z, int duration)
 	{
 		TASK::TASK_TURN_PED_TO_FACE_COORD(ped, x, y, z, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_TEMP_ACTION( Ped driver, Vehicle vehicle, int action, int time )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_TEMP_ACTION(Ped driver, Vehicle vehicle, int action, int time)
 	{
 		TASK::TASK_VEHICLE_TEMP_ACTION(driver, vehicle, action, time);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION( Ped driver, Vehicle vehicle, Vehicle vehicleTarget, int missionType, float cruiseSpeed, int drivingStyle, float targetReached, float straightLineDistance, bool DriveAgainstTraffic )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION(Ped driver, Vehicle vehicle, Vehicle vehicleTarget, int missionType, float cruiseSpeed, int drivingStyle, float targetReached, float straightLineDistance, bool DriveAgainstTraffic)
 	{
 		TASK::TASK_VEHICLE_MISSION(driver, vehicle, vehicleTarget, missionType, cruiseSpeed, drivingStyle, targetReached, straightLineDistance, DriveAgainstTraffic);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION_PED_TARGET( Ped ped, Vehicle vehicle, Ped pedTarget, int missionType, float maxSpeed, int drivingStyle, float minDistance, float straightLineDistance, bool DriveAgainstTraffic )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION_PED_TARGET(Ped ped, Vehicle vehicle, Ped pedTarget, int missionType, float maxSpeed, int drivingStyle, float minDistance, float straightLineDistance, bool DriveAgainstTraffic)
 	{
 		TASK::TASK_VEHICLE_MISSION_PED_TARGET(ped, vehicle, pedTarget, missionType, maxSpeed, drivingStyle, minDistance, straightLineDistance, DriveAgainstTraffic);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION_COORS_TARGET( Ped ped, Vehicle vehicle, float x, float y, float z, int mission, float cruiseSpeed, int drivingStyle, float targetReached, float straightLineDistance, bool DriveAgainstTraffic )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_MISSION_COORS_TARGET(Ped ped, Vehicle vehicle, float x, float y, float z, int mission, float cruiseSpeed, int drivingStyle, float targetReached, float straightLineDistance, bool DriveAgainstTraffic)
 	{
 		TASK::TASK_VEHICLE_MISSION_COORS_TARGET(ped, vehicle, x, y, z, mission, cruiseSpeed, drivingStyle, targetReached, straightLineDistance, DriveAgainstTraffic);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_ESCORT( Ped ped, Vehicle vehicle, Vehicle targetVehicle, int mode, float speed, int drivingStyle, float minDistance, int minHeightAboveTerrain, float noRoadsDistance )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_ESCORT(Ped ped, Vehicle vehicle, Vehicle targetVehicle, int mode, float speed, int drivingStyle, float minDistance, int minHeightAboveTerrain, float noRoadsDistance)
 	{
 		TASK::TASK_VEHICLE_ESCORT(ped, vehicle, targetVehicle, mode, speed, drivingStyle, minDistance, minHeightAboveTerrain, noRoadsDistance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW( Ped driver, Vehicle vehicle, Entity targetEntity, float speed, int drivingStyle, int minDistance )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW(Ped driver, Vehicle vehicle, Entity targetEntity, float speed, int drivingStyle, int minDistance)
 	{
 		TASK::TASK_VEHICLE_FOLLOW(driver, vehicle, targetEntity, speed, drivingStyle, minDistance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_CHASE( Ped driver, Entity targetEnt )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_CHASE(Ped driver, Entity targetEnt)
 	{
 		TASK::TASK_VEHICLE_CHASE(driver, targetEnt);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_HELI_PROTECT( Ped pilot, Vehicle vehicle, Entity entityToFollow, float targetSpeed, int drivingFlags, float radius, int altitude, int heliFlags )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_HELI_PROTECT(Ped pilot, Vehicle vehicle, Entity entityToFollow, float targetSpeed, int drivingFlags, float radius, int altitude, int heliFlags)
 	{
 		TASK::TASK_VEHICLE_HELI_PROTECT(pilot, vehicle, entityToFollow, targetSpeed, drivingFlags, radius, altitude, heliFlags);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG( Ped ped, int flag, bool set )
+	static void LUA_NATIVE_TASK_SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped ped, int flag, bool set)
 	{
 		TASK::SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(ped, flag, set);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE( Ped ped, float distance )
+	static void LUA_NATIVE_TASK_SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped ped, float distance)
 	{
 		TASK::SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(ped, distance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_HELI_CHASE( Ped pilot, Entity entityToFollow, float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_HELI_CHASE(Ped pilot, Entity entityToFollow, float x, float y, float z)
 	{
 		TASK::TASK_HELI_CHASE(pilot, entityToFollow, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANE_CHASE( Ped pilot, Entity entityToFollow, float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_PLANE_CHASE(Ped pilot, Entity entityToFollow, float x, float y, float z)
 	{
 		TASK::TASK_PLANE_CHASE(pilot, entityToFollow, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANE_LAND( Ped pilot, Vehicle plane, float runwayStartX, float runwayStartY, float runwayStartZ, float runwayEndX, float runwayEndY, float runwayEndZ )
+	static void LUA_NATIVE_TASK_TASK_PLANE_LAND(Ped pilot, Vehicle plane, float runwayStartX, float runwayStartY, float runwayStartZ, float runwayEndX, float runwayEndY, float runwayEndZ)
 	{
 		TASK::TASK_PLANE_LAND(pilot, plane, runwayStartX, runwayStartY, runwayStartZ, runwayEndX, runwayEndY, runwayEndZ);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_DEFAULT_PRIMARY_TASK( Ped ped )
+	static void LUA_NATIVE_TASK_CLEAR_DEFAULT_PRIMARY_TASK(Ped ped)
 	{
 		TASK::CLEAR_DEFAULT_PRIMARY_TASK(ped);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_PRIMARY_VEHICLE_TASK( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_CLEAR_PRIMARY_VEHICLE_TASK(Vehicle vehicle)
 	{
 		TASK::CLEAR_PRIMARY_VEHICLE_TASK(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_VEHICLE_CRASH_TASK( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_CLEAR_VEHICLE_CRASH_TASK(Vehicle vehicle)
 	{
 		TASK::CLEAR_VEHICLE_CRASH_TASK(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANE_GOTO_PRECISE_VTOL( Ped ped, Vehicle vehicle, float x, float y, float z, int flightHeight, int minHeightAboveTerrain, bool useDesiredOrientation, float desiredOrientation, bool autopilot )
+	static void LUA_NATIVE_TASK_TASK_PLANE_GOTO_PRECISE_VTOL(Ped ped, Vehicle vehicle, float x, float y, float z, int flightHeight, int minHeightAboveTerrain, bool useDesiredOrientation, float desiredOrientation, bool autopilot)
 	{
 		TASK::TASK_PLANE_GOTO_PRECISE_VTOL(ped, vehicle, x, y, z, flightHeight, minHeightAboveTerrain, useDesiredOrientation, desiredOrientation, autopilot);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SUBMARINE_GOTO_AND_STOP( Ped ped, Vehicle submarine, float x, float y, float z, bool autopilot )
+	static void LUA_NATIVE_TASK_TASK_SUBMARINE_GOTO_AND_STOP(Ped ped, Vehicle submarine, float x, float y, float z, bool autopilot)
 	{
 		TASK::TASK_SUBMARINE_GOTO_AND_STOP(ped, submarine, x, y, z, autopilot);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_HELI_MISSION( Ped pilot, Vehicle aircraft, Vehicle targetVehicle, Ped targetPed, float destinationX, float destinationY, float destinationZ, int missionFlag, float maxSpeed, float radius, float targetHeading, int maxHeight, int minHeight, float slowDownDistance, int behaviorFlags )
+	static void LUA_NATIVE_TASK_TASK_HELI_MISSION(Ped pilot, Vehicle aircraft, Vehicle targetVehicle, Ped targetPed, float destinationX, float destinationY, float destinationZ, int missionFlag, float maxSpeed, float radius, float targetHeading, int maxHeight, int minHeight, float slowDownDistance, int behaviorFlags)
 	{
 		TASK::TASK_HELI_MISSION(pilot, aircraft, targetVehicle, targetPed, destinationX, destinationY, destinationZ, missionFlag, maxSpeed, radius, targetHeading, maxHeight, minHeight, slowDownDistance, behaviorFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_HELI_ESCORT_HELI( Ped pilot, Vehicle heli1, Vehicle heli2, float offsetX, float offsetY, float offsetZ )
+	static void LUA_NATIVE_TASK_TASK_HELI_ESCORT_HELI(Ped pilot, Vehicle heli1, Vehicle heli2, float offsetX, float offsetY, float offsetZ)
 	{
 		TASK::TASK_HELI_ESCORT_HELI(pilot, heli1, heli2, offsetX, offsetY, offsetZ);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANE_MISSION( Ped pilot, Vehicle aircraft, Vehicle targetVehicle, Ped targetPed, float destinationX, float destinationY, float destinationZ, int missionFlag, float angularDrag, float targetReached, float targetHeading, float maxZ, float minZ, bool precise )
+	static void LUA_NATIVE_TASK_TASK_PLANE_MISSION(Ped pilot, Vehicle aircraft, Vehicle targetVehicle, Ped targetPed, float destinationX, float destinationY, float destinationZ, int missionFlag, float angularDrag, float targetReached, float targetHeading, float maxZ, float minZ, bool precise)
 	{
 		TASK::TASK_PLANE_MISSION(pilot, aircraft, targetVehicle, targetPed, destinationX, destinationY, destinationZ, missionFlag, angularDrag, targetReached, targetHeading, maxZ, minZ, precise);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLANE_TAXI( Ped pilot, Vehicle aircraft, float x, float y, float z, float cruiseSpeed, float targetReached )
+	static void LUA_NATIVE_TASK_TASK_PLANE_TAXI(Ped pilot, Vehicle aircraft, float x, float y, float z, float cruiseSpeed, float targetReached)
 	{
 		TASK::TASK_PLANE_TAXI(pilot, aircraft, x, y, z, cruiseSpeed, targetReached);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_BOAT_MISSION( Ped pedDriver, Vehicle vehicle, Vehicle targetVehicle, Ped targetPed, float x, float y, float z, int mission, float maxSpeed, int drivingStyle, float targetReached, Any boatFlags )
+	static void LUA_NATIVE_TASK_TASK_BOAT_MISSION(Ped pedDriver, Vehicle vehicle, Vehicle targetVehicle, Ped targetPed, float x, float y, float z, int mission, float maxSpeed, int drivingStyle, float targetReached, Any boatFlags)
 	{
 		TASK::TASK_BOAT_MISSION(pedDriver, vehicle, targetVehicle, targetPed, x, y, z, mission, maxSpeed, drivingStyle, targetReached, boatFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_DRIVE_BY( Ped driverPed, Ped targetPed, Vehicle targetVehicle, float targetX, float targetY, float targetZ, float distanceToShoot, int pedAccuracy, bool pushUnderneathDrivingTaskIfDriving, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_DRIVE_BY(Ped driverPed, Ped targetPed, Vehicle targetVehicle, float targetX, float targetY, float targetZ, float distanceToShoot, int pedAccuracy, bool pushUnderneathDrivingTaskIfDriving, Hash firingPattern)
 	{
 		TASK::TASK_DRIVE_BY(driverPed, targetPed, targetVehicle, targetX, targetY, targetZ, distanceToShoot, pedAccuracy, pushUnderneathDrivingTaskIfDriving, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_SET_DRIVEBY_TASK_TARGET( Ped shootingPed, Ped targetPed, Vehicle targetVehicle, float x, float y, float z )
+	static void LUA_NATIVE_TASK_SET_DRIVEBY_TASK_TARGET(Ped shootingPed, Ped targetPed, Vehicle targetVehicle, float x, float y, float z)
 	{
 		TASK::SET_DRIVEBY_TASK_TARGET(shootingPed, targetPed, targetVehicle, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK( Ped ped )
+	static void LUA_NATIVE_TASK_CLEAR_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(Ped ped)
 	{
 		TASK::CLEAR_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(ped);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_DRIVEBY_TASK_UNDERNEATH_DRIVING_TASK(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_CONTROL_MOUNTED_WEAPON( Ped ped )
+	static bool LUA_NATIVE_TASK_CONTROL_MOUNTED_WEAPON(Ped ped)
 	{
 		auto retval = (bool)TASK::CONTROL_MOUNTED_WEAPON(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_MOUNTED_WEAPON_TARGET( Ped shootingPed, Ped targetPed, Vehicle targetVehicle, float x, float y, float z, int taskMode, bool ignoreTargetVehDeadCheck )
+	static void LUA_NATIVE_TASK_SET_MOUNTED_WEAPON_TARGET(Ped shootingPed, Ped targetPed, Vehicle targetVehicle, float x, float y, float z, int taskMode, bool ignoreTargetVehDeadCheck)
 	{
 		TASK::SET_MOUNTED_WEAPON_TARGET(shootingPed, targetPed, targetVehicle, x, y, z, taskMode, ignoreTargetVehDeadCheck);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_MOUNTED_WEAPON_TASK_UNDERNEATH_DRIVING_TASK( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_MOUNTED_WEAPON_TASK_UNDERNEATH_DRIVING_TASK(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_MOUNTED_WEAPON_TASK_UNDERNEATH_DRIVING_TASK(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_MOBILE_PHONE( Ped ped, bool usePhone, int desiredPhoneMode )
+	static void LUA_NATIVE_TASK_TASK_USE_MOBILE_PHONE(Ped ped, bool usePhone, int desiredPhoneMode)
 	{
 		TASK::TASK_USE_MOBILE_PHONE(ped, usePhone, desiredPhoneMode);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_MOBILE_PHONE_TIMED( Ped ped, int duration )
+	static void LUA_NATIVE_TASK_TASK_USE_MOBILE_PHONE_TIMED(Ped ped, int duration)
 	{
 		TASK::TASK_USE_MOBILE_PHONE_TIMED(ped, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_CHAT_TO_PED( Ped ped, Ped target, int flags, float goToLocationX, float goToLocationY, float goToLocationZ, float headingDegs, float idleTime )
+	static void LUA_NATIVE_TASK_TASK_CHAT_TO_PED(Ped ped, Ped target, int flags, float goToLocationX, float goToLocationY, float goToLocationZ, float headingDegs, float idleTime)
 	{
 		TASK::TASK_CHAT_TO_PED(ped, target, flags, goToLocationX, goToLocationY, goToLocationZ, headingDegs, idleTime);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WARP_PED_INTO_VEHICLE( Ped ped, Vehicle vehicle, int seat )
+	static void LUA_NATIVE_TASK_TASK_WARP_PED_INTO_VEHICLE(Ped ped, Vehicle vehicle, int seat)
 	{
 		TASK::TASK_WARP_PED_INTO_VEHICLE(ped, vehicle, seat);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SHOOT_AT_ENTITY( Entity entity, Entity target, int duration, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_SHOOT_AT_ENTITY(Entity entity, Entity target, int duration, Hash firingPattern)
 	{
 		TASK::TASK_SHOOT_AT_ENTITY(entity, target, duration, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_CLIMB( Ped ped, bool usePlayerLaunchForce )
+	static void LUA_NATIVE_TASK_TASK_CLIMB(Ped ped, bool usePlayerLaunchForce)
 	{
 		TASK::TASK_CLIMB(ped, usePlayerLaunchForce);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_CLIMB_LADDER( Ped ped, bool fast )
+	static void LUA_NATIVE_TASK_TASK_CLIMB_LADDER(Ped ped, bool fast)
 	{
 		TASK::TASK_CLIMB_LADDER(ped, fast);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE( Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, const char* clipSet, Any p10 )
+	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, const char* clipSet, Any p10)
 	{
 		TASK::TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(ped, x1, y1, z1, x2, y2, z2, minZ, ropeHandle, clipSet, p10);
 	}
 
-	static int LUA_NATIVE_TASK_GET_TASK_RAPPEL_DOWN_WALL_STATE( Ped ped )
+	static int LUA_NATIVE_TASK_GET_TASK_RAPPEL_DOWN_WALL_STATE(Ped ped)
 	{
 		auto retval = TASK::GET_TASK_RAPPEL_DOWN_WALL_STATE(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_CLEAR_PED_TASKS_IMMEDIATELY( Ped ped )
+	static void LUA_NATIVE_TASK_CLEAR_PED_TASKS_IMMEDIATELY(Ped ped)
 	{
 		TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE_FROM_PROGRESS( Ped ped, int taskIndex, int progress1, int progress2 )
+	static void LUA_NATIVE_TASK_TASK_PERFORM_SEQUENCE_FROM_PROGRESS(Ped ped, int taskIndex, int progress1, int progress2)
 	{
 		TASK::TASK_PERFORM_SEQUENCE_FROM_PROGRESS(ped, taskIndex, progress1, progress2);
 	}
 
-	static void LUA_NATIVE_TASK_SET_NEXT_DESIRED_MOVE_STATE( float nextMoveState )
+	static void LUA_NATIVE_TASK_SET_NEXT_DESIRED_MOVE_STATE(float nextMoveState)
 	{
 		TASK::SET_NEXT_DESIRED_MOVE_STATE(nextMoveState);
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_DESIRED_MOVE_BLEND_RATIO( Ped ped, float newMoveBlendRatio )
+	static void LUA_NATIVE_TASK_SET_PED_DESIRED_MOVE_BLEND_RATIO(Ped ped, float newMoveBlendRatio)
 	{
 		TASK::SET_PED_DESIRED_MOVE_BLEND_RATIO(ped, newMoveBlendRatio);
 	}
 
-	static float LUA_NATIVE_TASK_GET_PED_DESIRED_MOVE_BLEND_RATIO( Ped ped )
+	static float LUA_NATIVE_TASK_GET_PED_DESIRED_MOVE_BLEND_RATIO(Ped ped)
 	{
 		auto retval = TASK::GET_PED_DESIRED_MOVE_BLEND_RATIO(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_AIMING( Ped ped, Entity target, float distanceToStopAt, float StartAimingDist )
+	static void LUA_NATIVE_TASK_TASK_GOTO_ENTITY_AIMING(Ped ped, Entity target, float distanceToStopAt, float StartAimingDist)
 	{
 		TASK::TASK_GOTO_ENTITY_AIMING(ped, target, distanceToStopAt, StartAimingDist);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SET_DECISION_MAKER( Ped ped, Hash decisionMakerId )
+	static void LUA_NATIVE_TASK_TASK_SET_DECISION_MAKER(Ped ped, Hash decisionMakerId)
 	{
 		TASK::TASK_SET_DECISION_MAKER(ped, decisionMakerId);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SET_SPHERE_DEFENSIVE_AREA( Ped ped, float x, float y, float z, float radius )
+	static void LUA_NATIVE_TASK_TASK_SET_SPHERE_DEFENSIVE_AREA(Ped ped, float x, float y, float z, float radius)
 	{
 		TASK::TASK_SET_SPHERE_DEFENSIVE_AREA(ped, x, y, z, radius);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_CLEAR_DEFENSIVE_AREA( Ped ped )
+	static void LUA_NATIVE_TASK_TASK_CLEAR_DEFENSIVE_AREA(Ped ped)
 	{
 		TASK::TASK_CLEAR_DEFENSIVE_AREA(ped);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PED_SLIDE_TO_COORD( Ped ped, float x, float y, float z, float heading, float speed )
+	static void LUA_NATIVE_TASK_TASK_PED_SLIDE_TO_COORD(Ped ped, float x, float y, float z, float heading, float speed)
 	{
 		TASK::TASK_PED_SLIDE_TO_COORD(ped, x, y, z, heading, speed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PED_SLIDE_TO_COORD_HDG_RATE( Ped ped, float x, float y, float z, float heading, float speed, float headingChangeRate )
+	static void LUA_NATIVE_TASK_TASK_PED_SLIDE_TO_COORD_HDG_RATE(Ped ped, float x, float y, float z, float heading, float speed, float headingChangeRate)
 	{
 		TASK::TASK_PED_SLIDE_TO_COORD_HDG_RATE(ped, x, y, z, heading, speed, headingChangeRate);
 	}
 
-	static ScrHandle LUA_NATIVE_TASK_ADD_COVER_POINT( float x, float y, float z, float direction, int usage, int height, int arc, bool isPriority )
+	static ScrHandle LUA_NATIVE_TASK_ADD_COVER_POINT(float x, float y, float z, float direction, int usage, int height, int arc, bool isPriority)
 	{
 		auto retval = TASK::ADD_COVER_POINT(x, y, z, direction, usage, height, arc, isPriority);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_COVER_POINT( ScrHandle coverpoint )
+	static void LUA_NATIVE_TASK_REMOVE_COVER_POINT(ScrHandle coverpoint)
 	{
 		TASK::REMOVE_COVER_POINT(coverpoint);
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCRIPTED_COVER_POINT_EXIST_AT_COORDS( float x, float y, float z )
+	static bool LUA_NATIVE_TASK_DOES_SCRIPTED_COVER_POINT_EXIST_AT_COORDS(float x, float y, float z)
 	{
 		auto retval = (bool)TASK::DOES_SCRIPTED_COVER_POINT_EXIST_AT_COORDS(x, y, z);
 		return retval;
 	}
 
-	static Vector3 LUA_NATIVE_TASK_GET_SCRIPTED_COVER_POINT_COORDS( ScrHandle coverpoint )
+	static Vector3 LUA_NATIVE_TASK_GET_SCRIPTED_COVER_POINT_COORDS(ScrHandle coverpoint)
 	{
 		auto retval = TASK::GET_SCRIPTED_COVER_POINT_COORDS(coverpoint);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_ADD_SCRIPTED_COVER_AREA( float x, float y, float z, float radius )
+	static void LUA_NATIVE_TASK_ADD_SCRIPTED_COVER_AREA(float x, float y, float z, float radius)
 	{
 		TASK::ADD_SCRIPTED_COVER_AREA(x, y, z, radius);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COMBAT_PED( Ped ped, Ped targetPed, int combatFlags, int threatResponseFlags )
+	static void LUA_NATIVE_TASK_TASK_COMBAT_PED(Ped ped, Ped targetPed, int combatFlags, int threatResponseFlags)
 	{
 		TASK::TASK_COMBAT_PED(ped, targetPed, combatFlags, threatResponseFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COMBAT_PED_TIMED( Ped ped, Ped target, int time, int flags )
+	static void LUA_NATIVE_TASK_TASK_COMBAT_PED_TIMED(Ped ped, Ped target, int time, int flags)
 	{
 		TASK::TASK_COMBAT_PED_TIMED(ped, target, time, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_FROM_POS( Ped ped, float x, float y, float z, int duration, bool allowPeekingAndFiring )
+	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_FROM_POS(Ped ped, float x, float y, float z, int duration, bool allowPeekingAndFiring)
 	{
 		TASK::TASK_SEEK_COVER_FROM_POS(ped, x, y, z, duration, allowPeekingAndFiring);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_FROM_PED( Ped ped, Ped target, int duration, bool allowPeekingAndFiring )
+	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_FROM_PED(Ped ped, Ped target, int duration, bool allowPeekingAndFiring)
 	{
 		TASK::TASK_SEEK_COVER_FROM_PED(ped, target, duration, allowPeekingAndFiring);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_TO_COVER_POINT( Ped ped, ScrHandle coverpoint, float x, float y, float z, int time, bool allowPeekingAndFiring )
+	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_TO_COVER_POINT(Ped ped, ScrHandle coverpoint, float x, float y, float z, int time, bool allowPeekingAndFiring)
 	{
 		TASK::TASK_SEEK_COVER_TO_COVER_POINT(ped, coverpoint, x, y, z, time, allowPeekingAndFiring);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_TO_COORDS( Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, int timeout, bool shortRoute )
+	static void LUA_NATIVE_TASK_TASK_SEEK_COVER_TO_COORDS(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, int timeout, bool shortRoute)
 	{
 		TASK::TASK_SEEK_COVER_TO_COORDS(ped, x1, y1, z1, x2, y2, z2, timeout, shortRoute);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PUT_PED_DIRECTLY_INTO_COVER( Ped ped, float x, float y, float z, int time, bool allowPeekingAndFiring, float blendInDuration, bool forceInitialFacingDirection, bool forceFaceLeft, int identifier, bool doEntry )
+	static void LUA_NATIVE_TASK_TASK_PUT_PED_DIRECTLY_INTO_COVER(Ped ped, float x, float y, float z, int time, bool allowPeekingAndFiring, float blendInDuration, bool forceInitialFacingDirection, bool forceFaceLeft, int identifier, bool doEntry)
 	{
 		TASK::TASK_PUT_PED_DIRECTLY_INTO_COVER(ped, x, y, z, time, allowPeekingAndFiring, blendInDuration, forceInitialFacingDirection, forceFaceLeft, identifier, doEntry);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WARP_PED_DIRECTLY_INTO_COVER( Ped ped, int time, bool allowPeekingAndFiring, bool forceInitialFacingDirection, bool forceFaceLeft, int identifier )
+	static void LUA_NATIVE_TASK_TASK_WARP_PED_DIRECTLY_INTO_COVER(Ped ped, int time, bool allowPeekingAndFiring, bool forceInitialFacingDirection, bool forceFaceLeft, int identifier)
 	{
 		TASK::TASK_WARP_PED_DIRECTLY_INTO_COVER(ped, time, allowPeekingAndFiring, forceInitialFacingDirection, forceFaceLeft, identifier);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_EXIT_COVER( Ped ped, int exitType, float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_EXIT_COVER(Ped ped, int exitType, float x, float y, float z)
 	{
 		TASK::TASK_EXIT_COVER(ped, exitType, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PUT_PED_DIRECTLY_INTO_MELEE( Ped ped, Ped meleeTarget, float blendInDuration, float timeInMelee, float strafePhaseSync, int aiCombatFlags )
+	static void LUA_NATIVE_TASK_TASK_PUT_PED_DIRECTLY_INTO_MELEE(Ped ped, Ped meleeTarget, float blendInDuration, float timeInMelee, float strafePhaseSync, int aiCombatFlags)
 	{
 		TASK::TASK_PUT_PED_DIRECTLY_INTO_MELEE(ped, meleeTarget, blendInDuration, timeInMelee, strafePhaseSync, aiCombatFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_TOGGLE_DUCK( Ped ped, int toggleType )
+	static void LUA_NATIVE_TASK_TASK_TOGGLE_DUCK(Ped ped, int toggleType)
 	{
 		TASK::TASK_TOGGLE_DUCK(ped, toggleType);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GUARD_CURRENT_POSITION( Ped ped, float maxPatrolProximity, float defensiveAreaRadius, bool setDefensiveArea )
+	static void LUA_NATIVE_TASK_TASK_GUARD_CURRENT_POSITION(Ped ped, float maxPatrolProximity, float defensiveAreaRadius, bool setDefensiveArea)
 	{
 		TASK::TASK_GUARD_CURRENT_POSITION(ped, maxPatrolProximity, defensiveAreaRadius, setDefensiveArea);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GUARD_ASSIGNED_DEFENSIVE_AREA( Ped ped, float x, float y, float z, float heading, float maxPatrolProximity, int timer )
+	static void LUA_NATIVE_TASK_TASK_GUARD_ASSIGNED_DEFENSIVE_AREA(Ped ped, float x, float y, float z, float heading, float maxPatrolProximity, int timer)
 	{
 		TASK::TASK_GUARD_ASSIGNED_DEFENSIVE_AREA(ped, x, y, z, heading, maxPatrolProximity, timer);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GUARD_SPHERE_DEFENSIVE_AREA( Ped ped, float defendPositionX, float defendPositionY, float defendPositionZ, float heading, float maxPatrolProximity, int time, float x, float y, float z, float defensiveAreaRadius )
+	static void LUA_NATIVE_TASK_TASK_GUARD_SPHERE_DEFENSIVE_AREA(Ped ped, float defendPositionX, float defendPositionY, float defendPositionZ, float heading, float maxPatrolProximity, int time, float x, float y, float z, float defensiveAreaRadius)
 	{
 		TASK::TASK_GUARD_SPHERE_DEFENSIVE_AREA(ped, defendPositionX, defendPositionY, defendPositionZ, heading, maxPatrolProximity, time, x, y, z, defensiveAreaRadius);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STAND_GUARD( Ped ped, float x, float y, float z, float heading, const char* scenarioName )
+	static void LUA_NATIVE_TASK_TASK_STAND_GUARD(Ped ped, float x, float y, float z, float heading, const char* scenarioName)
 	{
 		TASK::TASK_STAND_GUARD(ped, x, y, z, heading, scenarioName);
 	}
 
-	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_CRUISE_SPEED( Ped driver, float cruiseSpeed )
+	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_CRUISE_SPEED(Ped driver, float cruiseSpeed)
 	{
 		TASK::SET_DRIVE_TASK_CRUISE_SPEED(driver, cruiseSpeed);
 	}
 
-	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_MAX_CRUISE_SPEED( Ped ped, float speed )
+	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_MAX_CRUISE_SPEED(Ped ped, float speed)
 	{
 		TASK::SET_DRIVE_TASK_MAX_CRUISE_SPEED(ped, speed);
 	}
 
-	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_DRIVING_STYLE( Ped ped, int drivingStyle )
+	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_DRIVING_STYLE(Ped ped, int drivingStyle)
 	{
 		TASK::SET_DRIVE_TASK_DRIVING_STYLE(ped, drivingStyle);
 	}
 
-	static void LUA_NATIVE_TASK_ADD_COVER_BLOCKING_AREA( float startX, float startY, float startZ, float endX, float endY, float endZ, bool blockObjects, bool blockVehicles, bool blockMap, bool blockPlayer )
+	static void LUA_NATIVE_TASK_ADD_COVER_BLOCKING_AREA(float startX, float startY, float startZ, float endX, float endY, float endZ, bool blockObjects, bool blockVehicles, bool blockMap, bool blockPlayer)
 	{
 		TASK::ADD_COVER_BLOCKING_AREA(startX, startY, startZ, endX, endY, endZ, blockObjects, blockVehicles, blockMap, blockPlayer);
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_ALL_COVER_BLOCKING_AREAS(  )
+	static void LUA_NATIVE_TASK_REMOVE_ALL_COVER_BLOCKING_AREAS()
 	{
 		TASK::REMOVE_ALL_COVER_BLOCKING_AREAS();
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_COVER_BLOCKING_AREAS_AT_POSITION( float x, float y, float z )
+	static void LUA_NATIVE_TASK_REMOVE_COVER_BLOCKING_AREAS_AT_POSITION(float x, float y, float z)
 	{
 		TASK::REMOVE_COVER_BLOCKING_AREAS_AT_POSITION(x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_SPECIFIC_COVER_BLOCKING_AREAS( float startX, float startY, float startZ, float endX, float endY, float endZ, bool blockObjects, bool blockVehicles, bool blockMap, bool blockPlayer )
+	static void LUA_NATIVE_TASK_REMOVE_SPECIFIC_COVER_BLOCKING_AREAS(float startX, float startY, float startZ, float endX, float endY, float endZ, bool blockObjects, bool blockVehicles, bool blockMap, bool blockPlayer)
 	{
 		TASK::REMOVE_SPECIFIC_COVER_BLOCKING_AREAS(startX, startY, startZ, endX, endY, endZ, blockObjects, blockVehicles, blockMap, blockPlayer);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_IN_PLACE( Ped ped, const char* scenarioName, int unkDelay, bool playEnterAnim )
+	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_IN_PLACE(Ped ped, const char* scenarioName, int unkDelay, bool playEnterAnim)
 	{
 		TASK::TASK_START_SCENARIO_IN_PLACE(ped, scenarioName, unkDelay, playEnterAnim);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_AT_POSITION( Ped ped, const char* scenarioName, float x, float y, float z, float heading, int duration, bool sittingScenario, bool teleport )
+	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_AT_POSITION(Ped ped, const char* scenarioName, float x, float y, float z, float heading, int duration, bool sittingScenario, bool teleport)
 	{
 		TASK::TASK_START_SCENARIO_AT_POSITION(ped, scenarioName, x, y, z, heading, duration, sittingScenario, teleport);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_TO_COORD( Ped ped, float x, float y, float z, float distance, int duration )
+	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped ped, float x, float y, float z, float distance, int duration)
 	{
 		TASK::TASK_USE_NEAREST_SCENARIO_TO_COORD(ped, x, y, z, distance, duration);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP( Ped ped, float x, float y, float z, float radius, int timeToLeave )
+	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(Ped ped, float x, float y, float z, float radius, int timeToLeave)
 	{
 		TASK::TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP(ped, x, y, z, radius, timeToLeave);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD( Ped ped, float x, float y, float z, float maxRange, int timeToLeave )
+	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD(Ped ped, float x, float y, float z, float maxRange, int timeToLeave)
 	{
 		TASK::TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD(ped, x, y, z, maxRange, timeToLeave);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD_WARP( Ped ped, float x, float y, float z, float radius, int timeToLeave )
+	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD_WARP(Ped ped, float x, float y, float z, float radius, int timeToLeave)
 	{
 		TASK::TASK_USE_NEAREST_SCENARIO_CHAIN_TO_COORD_WARP(ped, x, y, z, radius, timeToLeave);
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCENARIO_EXIST_IN_AREA( float x, float y, float z, float radius, bool mustBeFree )
+	static bool LUA_NATIVE_TASK_DOES_SCENARIO_EXIST_IN_AREA(float x, float y, float z, float radius, bool mustBeFree)
 	{
 		auto retval = (bool)TASK::DOES_SCENARIO_EXIST_IN_AREA(x, y, z, radius, mustBeFree);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA( float x, float y, float z, const char* scenarioName, float radius, bool mustBeFree )
+	static bool LUA_NATIVE_TASK_DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(float x, float y, float z, const char* scenarioName, float radius, bool mustBeFree)
 	{
 		auto retval = (bool)TASK::DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(x, y, z, scenarioName, radius, mustBeFree);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_SCENARIO_OCCUPIED( float x, float y, float z, float maxRange, bool onlyUsersActuallyAtScenario )
+	static bool LUA_NATIVE_TASK_IS_SCENARIO_OCCUPIED(float x, float y, float z, float maxRange, bool onlyUsersActuallyAtScenario)
 	{
 		auto retval = (bool)TASK::IS_SCENARIO_OCCUPIED(x, y, z, maxRange, onlyUsersActuallyAtScenario);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_PED_HAS_USE_SCENARIO_TASK( Ped ped )
+	static bool LUA_NATIVE_TASK_PED_HAS_USE_SCENARIO_TASK(Ped ped)
 	{
 		auto retval = (bool)TASK::PED_HAS_USE_SCENARIO_TASK(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_PLAY_ANIM_ON_RUNNING_SCENARIO( Ped ped, const char* animDict, const char* animName )
+	static void LUA_NATIVE_TASK_PLAY_ANIM_ON_RUNNING_SCENARIO(Ped ped, const char* animDict, const char* animName)
 	{
 		TASK::PLAY_ANIM_ON_RUNNING_SCENARIO(ped, animDict, animName);
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCENARIO_GROUP_EXIST( const char* scenarioGroup )
+	static bool LUA_NATIVE_TASK_DOES_SCENARIO_GROUP_EXIST(const char* scenarioGroup)
 	{
 		auto retval = (bool)TASK::DOES_SCENARIO_GROUP_EXIST(scenarioGroup);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_SCENARIO_GROUP_ENABLED( const char* scenarioGroup )
+	static bool LUA_NATIVE_TASK_IS_SCENARIO_GROUP_ENABLED(const char* scenarioGroup)
 	{
 		auto retval = (bool)TASK::IS_SCENARIO_GROUP_ENABLED(scenarioGroup);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_SCENARIO_GROUP_ENABLED( const char* scenarioGroup, bool enabled )
+	static void LUA_NATIVE_TASK_SET_SCENARIO_GROUP_ENABLED(const char* scenarioGroup, bool enabled)
 	{
 		TASK::SET_SCENARIO_GROUP_ENABLED(scenarioGroup, enabled);
 	}
 
-	static void LUA_NATIVE_TASK_RESET_SCENARIO_GROUPS_ENABLED(  )
+	static void LUA_NATIVE_TASK_RESET_SCENARIO_GROUPS_ENABLED()
 	{
 		TASK::RESET_SCENARIO_GROUPS_ENABLED();
 	}
 
-	static void LUA_NATIVE_TASK_SET_EXCLUSIVE_SCENARIO_GROUP( const char* scenarioGroup )
+	static void LUA_NATIVE_TASK_SET_EXCLUSIVE_SCENARIO_GROUP(const char* scenarioGroup)
 	{
 		TASK::SET_EXCLUSIVE_SCENARIO_GROUP(scenarioGroup);
 	}
 
-	static void LUA_NATIVE_TASK_RESET_EXCLUSIVE_SCENARIO_GROUP(  )
+	static void LUA_NATIVE_TASK_RESET_EXCLUSIVE_SCENARIO_GROUP()
 	{
 		TASK::RESET_EXCLUSIVE_SCENARIO_GROUP();
 	}
 
-	static bool LUA_NATIVE_TASK_IS_SCENARIO_TYPE_ENABLED( const char* scenarioType )
+	static bool LUA_NATIVE_TASK_IS_SCENARIO_TYPE_ENABLED(const char* scenarioType)
 	{
 		auto retval = (bool)TASK::IS_SCENARIO_TYPE_ENABLED(scenarioType);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_SCENARIO_TYPE_ENABLED( const char* scenarioType, bool toggle )
+	static void LUA_NATIVE_TASK_SET_SCENARIO_TYPE_ENABLED(const char* scenarioType, bool toggle)
 	{
 		TASK::SET_SCENARIO_TYPE_ENABLED(scenarioType, toggle);
 	}
 
-	static void LUA_NATIVE_TASK_RESET_SCENARIO_TYPES_ENABLED(  )
+	static void LUA_NATIVE_TASK_RESET_SCENARIO_TYPES_ENABLED()
 	{
 		TASK::RESET_SCENARIO_TYPES_ENABLED();
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_ACTIVE_IN_SCENARIO( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_ACTIVE_IN_SCENARIO(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_ACTIVE_IN_SCENARIO(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_PLAYING_BASE_CLIP_IN_SCENARIO( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_PLAYING_BASE_CLIP_IN_SCENARIO(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_PLAYING_BASE_CLIP_IN_SCENARIO(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_PED_CAN_PLAY_AMBIENT_IDLES( Ped ped, bool blockIdleClips, bool removeIdleClipIfPlaying )
+	static void LUA_NATIVE_TASK_SET_PED_CAN_PLAY_AMBIENT_IDLES(Ped ped, bool blockIdleClips, bool removeIdleClipIfPlaying)
 	{
 		TASK::SET_PED_CAN_PLAY_AMBIENT_IDLES(ped, blockIdleClips, removeIdleClipIfPlaying);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_IN_AREA( Ped ped, float x, float y, float z, float radius, int combatFlags )
+	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_IN_AREA(Ped ped, float x, float y, float z, float radius, int combatFlags)
 	{
 		TASK::TASK_COMBAT_HATED_TARGETS_IN_AREA(ped, x, y, z, radius, combatFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_AROUND_PED( Ped ped, float radius, int combatFlags )
+	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped ped, float radius, int combatFlags)
 	{
 		TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(ped, radius, combatFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_AROUND_PED_TIMED( Ped ped, float radius, int time, int combatFlags )
+	static void LUA_NATIVE_TASK_TASK_COMBAT_HATED_TARGETS_AROUND_PED_TIMED(Ped ped, float radius, int time, int combatFlags)
 	{
 		TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED_TIMED(ped, radius, time, combatFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_THROW_PROJECTILE( Ped ped, float x, float y, float z, int ignoreCollisionEntityIndex, bool createInvincibleProjectile )
+	static void LUA_NATIVE_TASK_TASK_THROW_PROJECTILE(Ped ped, float x, float y, float z, int ignoreCollisionEntityIndex, bool createInvincibleProjectile)
 	{
 		TASK::TASK_THROW_PROJECTILE(ped, x, y, z, ignoreCollisionEntityIndex, createInvincibleProjectile);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SWAP_WEAPON( Ped ped, bool drawWeapon )
+	static void LUA_NATIVE_TASK_TASK_SWAP_WEAPON(Ped ped, bool drawWeapon)
 	{
 		TASK::TASK_SWAP_WEAPON(ped, drawWeapon);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_RELOAD_WEAPON( Ped ped, bool drawWeapon )
+	static void LUA_NATIVE_TASK_TASK_RELOAD_WEAPON(Ped ped, bool drawWeapon)
 	{
 		TASK::TASK_RELOAD_WEAPON(ped, drawWeapon);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_GETTING_UP( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_GETTING_UP(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_GETTING_UP(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WRITHE( Ped ped, Ped target, int minFireLoops, int startState, bool forceShootOnGround, int shootFromGroundTimer )
+	static void LUA_NATIVE_TASK_TASK_WRITHE(Ped ped, Ped target, int minFireLoops, int startState, bool forceShootOnGround, int shootFromGroundTimer)
 	{
 		TASK::TASK_WRITHE(ped, target, minFireLoops, startState, forceShootOnGround, shootFromGroundTimer);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_IN_WRITHE( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_IN_WRITHE(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_IN_WRITHE(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_OPEN_PATROL_ROUTE( const char* patrolRoute )
+	static void LUA_NATIVE_TASK_OPEN_PATROL_ROUTE(const char* patrolRoute)
 	{
 		TASK::OPEN_PATROL_ROUTE(patrolRoute);
 	}
 
-	static void LUA_NATIVE_TASK_CLOSE_PATROL_ROUTE(  )
+	static void LUA_NATIVE_TASK_CLOSE_PATROL_ROUTE()
 	{
 		TASK::CLOSE_PATROL_ROUTE();
 	}
 
-	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_NODE( int nodeId, const char* nodeType, float posX, float posY, float posZ, float headingX, float headingY, float headingZ, int duration )
+	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_NODE(int nodeId, const char* nodeType, float posX, float posY, float posZ, float headingX, float headingY, float headingZ, int duration)
 	{
 		TASK::ADD_PATROL_ROUTE_NODE(nodeId, nodeType, posX, posY, posZ, headingX, headingY, headingZ, duration);
 	}
 
-	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_LINK( int nodeId1, int nodeId2 )
+	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_LINK(int nodeId1, int nodeId2)
 	{
 		TASK::ADD_PATROL_ROUTE_LINK(nodeId1, nodeId2);
 	}
 
-	static void LUA_NATIVE_TASK_CREATE_PATROL_ROUTE(  )
+	static void LUA_NATIVE_TASK_CREATE_PATROL_ROUTE()
 	{
 		TASK::CREATE_PATROL_ROUTE();
 	}
 
-	static void LUA_NATIVE_TASK_DELETE_PATROL_ROUTE( const char* patrolRoute )
+	static void LUA_NATIVE_TASK_DELETE_PATROL_ROUTE(const char* patrolRoute)
 	{
 		TASK::DELETE_PATROL_ROUTE(patrolRoute);
 	}
 
-	static std::tuple<bool, int, int> LUA_NATIVE_TASK_GET_PATROL_TASK_INFO( Ped ped, int timeLeftAtNode, int nodeId )
+	static std::tuple<bool, int, int> LUA_NATIVE_TASK_GET_PATROL_TASK_INFO(Ped ped, int timeLeftAtNode, int nodeId)
 	{
 		std::tuple<bool, int, int> return_values;
 		std::get<0>(return_values) = (bool)TASK::GET_PATROL_TASK_INFO(ped, &timeLeftAtNode, &nodeId);
@@ -1126,98 +1126,98 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PATROL( Ped ped, const char* patrolRouteName, int alertState, bool canChatToPeds, bool useHeadLookAt )
+	static void LUA_NATIVE_TASK_TASK_PATROL(Ped ped, const char* patrolRouteName, int alertState, bool canChatToPeds, bool useHeadLookAt)
 	{
 		TASK::TASK_PATROL(ped, patrolRouteName, alertState, canChatToPeds, useHeadLookAt);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STAY_IN_COVER( Ped ped )
+	static void LUA_NATIVE_TASK_TASK_STAY_IN_COVER(Ped ped)
 	{
 		TASK::TASK_STAY_IN_COVER(ped);
 	}
 
-	static void LUA_NATIVE_TASK_ADD_VEHICLE_SUBTASK_ATTACK_COORD( Ped ped, float x, float y, float z )
+	static void LUA_NATIVE_TASK_ADD_VEHICLE_SUBTASK_ATTACK_COORD(Ped ped, float x, float y, float z)
 	{
 		TASK::ADD_VEHICLE_SUBTASK_ATTACK_COORD(ped, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_ADD_VEHICLE_SUBTASK_ATTACK_PED( Ped ped, Ped target )
+	static void LUA_NATIVE_TASK_ADD_VEHICLE_SUBTASK_ATTACK_PED(Ped ped, Ped target)
 	{
 		TASK::ADD_VEHICLE_SUBTASK_ATTACK_PED(ped, target);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_SHOOT_AT_PED( Ped ped, Ped target, float fireTolerance )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_SHOOT_AT_PED(Ped ped, Ped target, float fireTolerance)
 	{
 		TASK::TASK_VEHICLE_SHOOT_AT_PED(ped, target, fireTolerance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_AIM_AT_PED( Ped ped, Ped target )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_AIM_AT_PED(Ped ped, Ped target)
 	{
 		TASK::TASK_VEHICLE_AIM_AT_PED(ped, target);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_SHOOT_AT_COORD( Ped ped, float x, float y, float z, float fireTolerance )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_SHOOT_AT_COORD(Ped ped, float x, float y, float z, float fireTolerance)
 	{
 		TASK::TASK_VEHICLE_SHOOT_AT_COORD(ped, x, y, z, fireTolerance);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_AIM_AT_COORD( Ped ped, float x, float y, float z )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_AIM_AT_COORD(Ped ped, float x, float y, float z)
 	{
 		TASK::TASK_VEHICLE_AIM_AT_COORD(ped, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_GOTO_NAVMESH( Ped ped, Vehicle vehicle, float x, float y, float z, float speed, int behaviorFlag, float stoppingRange )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_GOTO_NAVMESH(Ped ped, Vehicle vehicle, float x, float y, float z, float speed, int behaviorFlag, float stoppingRange)
 	{
 		TASK::TASK_VEHICLE_GOTO_NAVMESH(ped, vehicle, x, y, z, speed, behaviorFlag, stoppingRange);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD( Ped ped, float x, float y, float z, float aimAtX, float aimAtY, float aimAtZ, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, int navFlags, bool instantBlendToAim, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD(Ped ped, float x, float y, float z, float aimAtX, float aimAtY, float aimAtZ, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, int navFlags, bool instantBlendToAim, Hash firingPattern)
 	{
 		TASK::TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD(ped, x, y, z, aimAtX, aimAtY, aimAtZ, moveBlendRatio, shoot, targetRadius, slowDistance, useNavMesh, navFlags, instantBlendToAim, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY( Ped ped, float x, float y, float z, Entity aimAtID, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, int navFlags, bool instantBlendToAim, Hash firingPattern, int time )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY(Ped ped, float x, float y, float z, Entity aimAtID, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, int navFlags, bool instantBlendToAim, Hash firingPattern, int time)
 	{
 		TASK::TASK_GO_TO_COORD_WHILE_AIMING_AT_ENTITY(ped, x, y, z, aimAtID, moveBlendRatio, shoot, targetRadius, slowDistance, useNavMesh, navFlags, instantBlendToAim, firingPattern, time);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_AND_AIM_AT_HATED_ENTITIES_NEAR_COORD( Ped pedHandle, float goToLocationX, float goToLocationY, float goToLocationZ, float focusLocationX, float focusLocationY, float focusLocationZ, float speed, bool shootAtEnemies, float distanceToStopAt, float noRoadsDistance, bool useNavMesh, int navFlags, int taskFlags, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_COORD_AND_AIM_AT_HATED_ENTITIES_NEAR_COORD(Ped pedHandle, float goToLocationX, float goToLocationY, float goToLocationZ, float focusLocationX, float focusLocationY, float focusLocationZ, float speed, bool shootAtEnemies, float distanceToStopAt, float noRoadsDistance, bool useNavMesh, int navFlags, int taskFlags, Hash firingPattern)
 	{
 		TASK::TASK_GO_TO_COORD_AND_AIM_AT_HATED_ENTITIES_NEAR_COORD(pedHandle, goToLocationX, goToLocationY, goToLocationZ, focusLocationX, focusLocationY, focusLocationZ, speed, shootAtEnemies, distanceToStopAt, noRoadsDistance, useNavMesh, navFlags, taskFlags, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_COORD( Ped ped, Entity entity, float aimX, float aimY, float aimZ, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, bool instantBlendToAim, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_COORD(Ped ped, Entity entity, float aimX, float aimY, float aimZ, float moveBlendRatio, bool shoot, float targetRadius, float slowDistance, bool useNavMesh, bool instantBlendToAim, Hash firingPattern)
 	{
 		TASK::TASK_GO_TO_ENTITY_WHILE_AIMING_AT_COORD(ped, entity, aimX, aimY, aimZ, moveBlendRatio, shoot, targetRadius, slowDistance, useNavMesh, instantBlendToAim, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY( Ped ped, Entity entityToWalkTo, Entity entityToAimAt, float speed, bool shootatEntity, float targetRadius, float slowDistance, bool useNavMesh, bool instantBlendToAim, Hash firingPattern )
+	static void LUA_NATIVE_TASK_TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY(Ped ped, Entity entityToWalkTo, Entity entityToAimAt, float speed, bool shootatEntity, float targetRadius, float slowDistance, bool useNavMesh, bool instantBlendToAim, Hash firingPattern)
 	{
 		TASK::TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY(ped, entityToWalkTo, entityToAimAt, speed, shootatEntity, targetRadius, slowDistance, useNavMesh, instantBlendToAim, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_SET_HIGH_FALL_TASK( Ped ped, int minTime, int maxTime, int entryType )
+	static void LUA_NATIVE_TASK_SET_HIGH_FALL_TASK(Ped ped, int minTime, int maxTime, int entryType)
 	{
 		TASK::SET_HIGH_FALL_TASK(ped, minTime, maxTime, entryType);
 	}
 
-	static void LUA_NATIVE_TASK_REQUEST_WAYPOINT_RECORDING( const char* name )
+	static void LUA_NATIVE_TASK_REQUEST_WAYPOINT_RECORDING(const char* name)
 	{
 		TASK::REQUEST_WAYPOINT_RECORDING(name);
 	}
 
-	static bool LUA_NATIVE_TASK_GET_IS_WAYPOINT_RECORDING_LOADED( const char* name )
+	static bool LUA_NATIVE_TASK_GET_IS_WAYPOINT_RECORDING_LOADED(const char* name)
 	{
 		auto retval = (bool)TASK::GET_IS_WAYPOINT_RECORDING_LOADED(name);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_WAYPOINT_RECORDING( const char* name )
+	static void LUA_NATIVE_TASK_REMOVE_WAYPOINT_RECORDING(const char* name)
 	{
 		TASK::REMOVE_WAYPOINT_RECORDING(name);
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_NUM_POINTS( const char* name, int points )
+	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_NUM_POINTS(const char* name, int points)
 	{
 		std::tuple<bool, int> return_values;
 		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_NUM_POINTS(name, &points);
@@ -1226,7 +1226,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Vector3> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_COORD( const char* name, int point, Vector3 coord )
+	static std::tuple<bool, Vector3> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_COORD(const char* name, int point, Vector3 coord)
 	{
 		std::tuple<bool, Vector3> return_values;
 		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_COORD(name, point, &coord);
@@ -1235,13 +1235,13 @@ namespace lua::native
 		return return_values;
 	}
 
-	static float LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_SPEED_AT_POINT( const char* name, int point )
+	static float LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_SPEED_AT_POINT(const char* name, int point)
 	{
 		auto retval = TASK::WAYPOINT_RECORDING_GET_SPEED_AT_POINT(name, point);
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT( const char* name, float x, float y, float z, int point )
+	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(const char* name, float x, float y, float z, int point)
 	{
 		std::tuple<bool, int> return_values;
 		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(name, x, y, z, &point);
@@ -1250,384 +1250,384 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_WAYPOINT_RECORDING( Ped ped, const char* name, int p2, int p3, int p4 )
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_WAYPOINT_RECORDING(Ped ped, const char* name, int p2, int p3, int p4)
 	{
 		TASK::TASK_FOLLOW_WAYPOINT_RECORDING(ped, name, p2, p3, p4);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_PED( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_PED(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_PED(ped);
 		return retval;
 	}
 
-	static int LUA_NATIVE_TASK_GET_PED_WAYPOINT_PROGRESS( Ped ped )
+	static int LUA_NATIVE_TASK_GET_PED_WAYPOINT_PROGRESS(Ped ped)
 	{
 		auto retval = TASK::GET_PED_WAYPOINT_PROGRESS(ped);
 		return retval;
 	}
 
-	static float LUA_NATIVE_TASK_GET_PED_WAYPOINT_DISTANCE( Any p0 )
+	static float LUA_NATIVE_TASK_GET_PED_WAYPOINT_DISTANCE(Any p0)
 	{
 		auto retval = TASK::GET_PED_WAYPOINT_DISTANCE(p0);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_SET_PED_WAYPOINT_ROUTE_OFFSET( Ped ped, float x, float y, float z )
+	static bool LUA_NATIVE_TASK_SET_PED_WAYPOINT_ROUTE_OFFSET(Ped ped, float x, float y, float z)
 	{
 		auto retval = (bool)TASK::SET_PED_WAYPOINT_ROUTE_OFFSET(ped, x, y, z);
 		return retval;
 	}
 
-	static float LUA_NATIVE_TASK_GET_WAYPOINT_DISTANCE_ALONG_ROUTE( const char* name, int point )
+	static float LUA_NATIVE_TASK_GET_WAYPOINT_DISTANCE_ALONG_ROUTE(const char* name, int point)
 	{
 		auto retval = TASK::GET_WAYPOINT_DISTANCE_ALONG_ROUTE(name, point);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_GET_IS_PAUSED( Any p0 )
+	static bool LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_GET_IS_PAUSED(Any p0)
 	{
 		auto retval = (bool)TASK::WAYPOINT_PLAYBACK_GET_IS_PAUSED(p0);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_PAUSE( Any p0, bool p1, bool p2 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_PAUSE(Any p0, bool p1, bool p2)
 	{
 		TASK::WAYPOINT_PLAYBACK_PAUSE(p0, p1, p2);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_RESUME( Any p0, bool p1, Any p2, Any p3 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_RESUME(Any p0, bool p1, Any p2, Any p3)
 	{
 		TASK::WAYPOINT_PLAYBACK_RESUME(p0, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_OVERRIDE_SPEED( Any p0, float p1, bool p2 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_OVERRIDE_SPEED(Any p0, float p1, bool p2)
 	{
 		TASK::WAYPOINT_PLAYBACK_OVERRIDE_SPEED(p0, p1, p2);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED( Any p0 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED(Any p0)
 	{
 		TASK::WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED(p0);
 	}
 
-	static void LUA_NATIVE_TASK_USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE( const char* name, bool p1, float p2, float p3 )
+	static void LUA_NATIVE_TASK_USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(const char* name, bool p1, float p2, float p3)
 	{
 		TASK::USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(name, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_AIMING_AT_PED( Ped ped, Ped target, bool p2 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_AIMING_AT_PED(Ped ped, Ped target, bool p2)
 	{
 		TASK::WAYPOINT_PLAYBACK_START_AIMING_AT_PED(ped, target, p2);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_AIMING_AT_COORD( Ped ped, float x, float y, float z, bool p4 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_AIMING_AT_COORD(Ped ped, float x, float y, float z, bool p4)
 	{
 		TASK::WAYPOINT_PLAYBACK_START_AIMING_AT_COORD(ped, x, y, z, p4);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_SHOOTING_AT_PED( Ped ped, Ped ped2, bool p2, bool p3 )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_SHOOTING_AT_PED(Ped ped, Ped ped2, bool p2, bool p3)
 	{
 		TASK::WAYPOINT_PLAYBACK_START_SHOOTING_AT_PED(ped, ped2, p2, p3);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_SHOOTING_AT_COORD( Ped ped, float x, float y, float z, bool p4, Hash firingPattern )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_SHOOTING_AT_COORD(Ped ped, float x, float y, float z, bool p4, Hash firingPattern)
 	{
 		TASK::WAYPOINT_PLAYBACK_START_SHOOTING_AT_COORD(ped, x, y, z, p4, firingPattern);
 	}
 
-	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_STOP_AIMING_OR_SHOOTING( Ped ped )
+	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_STOP_AIMING_OR_SHOOTING(Ped ped)
 	{
 		TASK::WAYPOINT_PLAYBACK_STOP_AIMING_OR_SHOOTING(ped);
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REQUEST_ROUTE( const char* route )
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REQUEST_ROUTE(const char* route)
 	{
 		TASK::ASSISTED_MOVEMENT_REQUEST_ROUTE(route);
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REMOVE_ROUTE( const char* route )
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REMOVE_ROUTE(const char* route)
 	{
 		TASK::ASSISTED_MOVEMENT_REMOVE_ROUTE(route);
 	}
 
-	static bool LUA_NATIVE_TASK_ASSISTED_MOVEMENT_IS_ROUTE_LOADED( const char* route )
+	static bool LUA_NATIVE_TASK_ASSISTED_MOVEMENT_IS_ROUTE_LOADED(const char* route)
 	{
 		auto retval = (bool)TASK::ASSISTED_MOVEMENT_IS_ROUTE_LOADED(route);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES( const char* route, int props )
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(const char* route, int props)
 	{
 		TASK::ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(route, props);
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_OVERRIDE_LOAD_DISTANCE_THIS_FRAME( float dist )
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_OVERRIDE_LOAD_DISTANCE_THIS_FRAME(float dist)
 	{
 		TASK::ASSISTED_MOVEMENT_OVERRIDE_LOAD_DISTANCE_THIS_FRAME(dist);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING( Ped ped, Vehicle vehicle, const char* WPRecording, int p3, int p4, int p5, int p6, float p7, bool p8, float p9 )
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(Ped ped, Vehicle vehicle, const char* WPRecording, int p3, int p4, int p5, int p6, float p7, bool p8, float p9)
 	{
 		TASK::TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(ped, vehicle, WPRecording, p3, p4, p5, p6, p7, p8, p9);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_VEHICLE( Vehicle vehicle )
+	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_VEHICLE(Vehicle vehicle)
 	{
 		auto retval = (bool)TASK::IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_VEHICLE(vehicle);
 		return retval;
 	}
 
-	static int LUA_NATIVE_TASK_GET_VEHICLE_WAYPOINT_PROGRESS( Vehicle vehicle )
+	static int LUA_NATIVE_TASK_GET_VEHICLE_WAYPOINT_PROGRESS(Vehicle vehicle)
 	{
 		auto retval = TASK::GET_VEHICLE_WAYPOINT_PROGRESS(vehicle);
 		return retval;
 	}
 
-	static int LUA_NATIVE_TASK_GET_VEHICLE_WAYPOINT_TARGET_POINT( Vehicle vehicle )
+	static int LUA_NATIVE_TASK_GET_VEHICLE_WAYPOINT_TARGET_POINT(Vehicle vehicle)
 	{
 		auto retval = TASK::GET_VEHICLE_WAYPOINT_TARGET_POINT(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_PAUSE( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_PAUSE(Vehicle vehicle)
 	{
 		TASK::VEHICLE_WAYPOINT_PLAYBACK_PAUSE(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_RESUME( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_RESUME(Vehicle vehicle)
 	{
 		TASK::VEHICLE_WAYPOINT_PLAYBACK_RESUME(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED( Vehicle vehicle )
+	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED(Vehicle vehicle)
 	{
 		TASK::VEHICLE_WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED(vehicle);
 	}
 
-	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_OVERRIDE_SPEED( Vehicle vehicle, float speed )
+	static void LUA_NATIVE_TASK_VEHICLE_WAYPOINT_PLAYBACK_OVERRIDE_SPEED(Vehicle vehicle, float speed)
 	{
 		TASK::VEHICLE_WAYPOINT_PLAYBACK_OVERRIDE_SPEED(vehicle, speed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS( Ped ped, bool toggle )
+	static void LUA_NATIVE_TASK_TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(Ped ped, bool toggle)
 	{
 		TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, toggle);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FORCE_MOTION_STATE( Ped ped, Hash state, bool forceRestart )
+	static void LUA_NATIVE_TASK_TASK_FORCE_MOTION_STATE(Ped ped, Hash state, bool forceRestart)
 	{
 		TASK::TASK_FORCE_MOTION_STATE(ped, state, forceRestart);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME( Ped ped, const char* task, float multiplier, bool allowOverrideCloneUpdate, const char* animDict, int flags )
+	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME(Ped ped, const char* task, float multiplier, bool allowOverrideCloneUpdate, const char* animDict, int flags)
 	{
 		TASK::TASK_MOVE_NETWORK_BY_NAME(ped, task, multiplier, allowOverrideCloneUpdate, animDict, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME( Ped ped, const char* network, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags )
+	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME(Ped ped, const char* network, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags)
 	{
 		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME(ped, network, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, animDict, flags);
 	}
 
-	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS( Ped ped, const char* network, int initialParameters, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags )
+	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(Ped ped, const char* network, int initialParameters, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags)
 	{
 		TASK::TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, blendDuration, allowOverrideCloneUpdate, animDict, flags);
 		return initialParameters;
 	}
 
-	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS( Ped ped, const char* network, int initialParameters, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* dictionary, int flags )
+	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(Ped ped, const char* network, int initialParameters, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* dictionary, int flags)
 	{
 		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, dictionary, flags);
 		return initialParameters;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_TASK_MOVE_NETWORK_ACTIVE( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_TASK_MOVE_NETWORK_ACTIVE(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_TASK_MOVE_NETWORK_ACTIVE(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_TASK_MOVE_NETWORK_READY_FOR_TRANSITION( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_TASK_MOVE_NETWORK_READY_FOR_TRANSITION(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_TASK_MOVE_NETWORK_READY_FOR_TRANSITION(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION( Ped ped, const char* name )
+	static bool LUA_NATIVE_TASK_REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(Ped ped, const char* name)
 	{
 		auto retval = (bool)TASK::REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(ped, name);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE( Ped ped, const char* state )
+	static bool LUA_NATIVE_TASK_SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(Ped ped, const char* state)
 	{
 		auto retval = (bool)TASK::SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(ped, state);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_STATE( Ped ped )
+	static const char* LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_STATE(Ped ped)
 	{
 		auto retval = TASK::GET_TASK_MOVE_NETWORK_STATE(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_ANIM_SET( Ped ped, Hash clipSet, Hash variableClipSet )
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_ANIM_SET(Ped ped, Hash clipSet, Hash variableClipSet)
 	{
 		TASK::SET_TASK_MOVE_NETWORK_ANIM_SET(ped, clipSet, variableClipSet);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT( Ped ped, const char* signalName, float value )
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, const char* signalName, float value)
 	{
 		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT( Ped ped, const char* signalName, float value )
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(Ped ped, const char* signalName, float value)
 	{
 		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(ped, signalName, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE( Ped ped, const char* signalName, float value )
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(Ped ped, const char* signalName, float value)
 	{
 		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(ped, signalName, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_BOOL( Ped ped, const char* signalName, bool value )
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, const char* signalName, bool value)
 	{
 		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName, value);
 	}
 
-	static float LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT( Ped ped, const char* signalName )
+	static float LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, const char* signalName)
 	{
 		auto retval = TASK::GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL( Ped ped, const char* signalName )
+	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, const char* signalName)
 	{
 		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_EVENT( Ped ped, const char* eventName )
+	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_EVENT(Ped ped, const char* eventName)
 	{
 		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_EVENT(ped, eventName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED( Ped ped, bool enable )
+	static bool LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(Ped ped, bool enable)
 	{
 		auto retval = (bool)TASK::SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(ped, enable);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_STILL( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_STILL(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_MOVE_BLEND_RATIO_STILL(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_WALKING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_WALKING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_MOVE_BLEND_RATIO_WALKING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_RUNNING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_RUNNING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_MOVE_BLEND_RATIO_RUNNING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_SPRINTING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_SPRINTING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_MOVE_BLEND_RATIO_SPRINTING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_STILL( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_STILL(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_STILL(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_WALKING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_WALKING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_WALKING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_RUNNING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_RUNNING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_RUNNING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_SPRINTING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_SPRINTING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_SPRINTING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_STRAFING( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_STRAFING(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_STRAFING(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SYNCHRONIZED_SCENE( Ped ped, int scene, const char* animDictionary, const char* animationName, float blendIn, float blendOut, int flags, int ragdollBlockingFlags, float moverBlendDelta, int ikFlags )
+	static void LUA_NATIVE_TASK_TASK_SYNCHRONIZED_SCENE(Ped ped, int scene, const char* animDictionary, const char* animationName, float blendIn, float blendOut, int flags, int ragdollBlockingFlags, float moverBlendDelta, int ikFlags)
 	{
 		TASK::TASK_SYNCHRONIZED_SCENE(ped, scene, animDictionary, animationName, blendIn, blendOut, flags, ragdollBlockingFlags, moverBlendDelta, ikFlags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_AGITATED_ACTION_CONFRONT_RESPONSE( Ped ped, Ped ped2 )
+	static void LUA_NATIVE_TASK_TASK_AGITATED_ACTION_CONFRONT_RESPONSE(Ped ped, Ped ped2)
 	{
 		TASK::TASK_AGITATED_ACTION_CONFRONT_RESPONSE(ped, ped2);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_ENTITY( Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, Entity targetEntity, float turnRate, float blendInDuration )
+	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_ENTITY(Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, Entity targetEntity, float turnRate, float blendInDuration)
 	{
 		TASK::TASK_SWEEP_AIM_ENTITY(ped, animDict, lowAnimName, medAnimName, hiAnimName, runtime, targetEntity, turnRate, blendInDuration);
 	}
 
-	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_ENTITY( Ped ped, Entity entity )
+	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_ENTITY(Ped ped, Entity entity)
 	{
 		TASK::UPDATE_TASK_SWEEP_AIM_ENTITY(ped, entity);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_POSITION( Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, float x, float y, float z, float turnRate, float blendInDuration )
+	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_POSITION(Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, float x, float y, float z, float turnRate, float blendInDuration)
 	{
 		TASK::TASK_SWEEP_AIM_POSITION(ped, animDict, lowAnimName, medAnimName, hiAnimName, runtime, x, y, z, turnRate, blendInDuration);
 	}
 
-	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_POSITION( Ped ped, float x, float y, float z )
+	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_POSITION(Ped ped, float x, float y, float z)
 	{
 		TASK::UPDATE_TASK_SWEEP_AIM_POSITION(ped, x, y, z);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_ARREST_PED( Ped ped, Ped target )
+	static void LUA_NATIVE_TASK_TASK_ARREST_PED(Ped ped, Ped target)
 	{
 		TASK::TASK_ARREST_PED(ped, target);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_RUNNING_ARREST_TASK( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_RUNNING_ARREST_TASK(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_RUNNING_ARREST_TASK(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_BEING_ARRESTED( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_BEING_ARRESTED(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_BEING_ARRESTED(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_UNCUFF_PED( Ped ped )
+	static void LUA_NATIVE_TASK_UNCUFF_PED(Ped ped)
 	{
 		TASK::UNCUFF_PED(ped);
 	}
 
-	static bool LUA_NATIVE_TASK_IS_PED_CUFFED( Ped ped )
+	static bool LUA_NATIVE_TASK_IS_PED_CUFFED(Ped ped)
 	{
 		auto retval = (bool)TASK::IS_PED_CUFFED(ped);
 		return retval;

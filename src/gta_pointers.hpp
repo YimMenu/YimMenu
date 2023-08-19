@@ -13,11 +13,16 @@ class CVehicleSeatMetadataMgr;
 class CVehicleDriveByMetadataMgr;
 class CBlipList;
 class TimecycleKeyframeData;
+class CTrainConfig;
 
 namespace rage
 {
 	template<typename T>
 	class atSingleton;
+
+	template<typename T>
+	class atArray;
+
 	class RageSecurity;
 	class netTime;
 	class rlGamerInfo;
@@ -162,7 +167,8 @@ namespace big
 
 		PVOID m_invalid_mods_crash_detour;
 		PVOID m_invalid_decal_crash;
-		PVOID m_task_parachute_object_0x270;
+		PVOID m_task_parachute_object;
+		PVOID m_task_ambient_clips;
 
 		int64_t** m_send_chat_ptr;
 		functions::send_chat_message m_send_chat_message;
@@ -209,6 +215,7 @@ namespace big
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
+		PVOID m_serialize_parachute_task;
 
 		functions::encode_session_info m_encode_session_info;
 		functions::decode_session_info m_decode_session_info;
@@ -300,6 +307,31 @@ namespace big
 		PVOID m_render_big_ped;
 
 		bool* m_force_relay_connections;
+
+		functions::remove_reference m_remove_reference;
+
+		PVOID m_read_bits_single;
+		void** m_sync_data_reader_vtable;
+
+		GenericPool** m_interior_proxy_pool;
+
+		rage::atArray<CTrainConfig>* m_train_config_array;
+
+		functions::activate_special_ability m_activate_special_ability;
+		PVOID m_activate_special_ability_patch;
+
+		functions::set_wanted_level m_set_wanted_level;
+
+		rage::netEventMgr** m_net_event_manager;
+		GenericPool** m_net_event_pool;
+		functions::check_event_queue m_check_event_queue;
+		functions::get_new_pool_item m_get_new_pool_item;
+		functions::construct_door_break_event m_construct_door_break_event;
+		functions::queue_network_event m_queue_network_event;
+
+		functions::delete_ped m_delete_ped;
+		functions::delete_vehicle m_delete_vehicle;
+		functions::delete_object m_delete_object;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

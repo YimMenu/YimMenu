@@ -30,9 +30,10 @@ class Arg:
 
 
 class NativeFunc:
-    def __init__(self, namespace, name, args, return_type):
+    def __init__(self, namespace, lua_name, cpp_name, args, return_type):
         self.namespace = namespace
-        self.name = name
+        self.lua_name = lua_name
+        self.cpp_name = cpp_name
         self.args = args
         self.return_type = return_type.replace("BOOL", "bool")
 
@@ -85,10 +86,10 @@ class NativeFunc:
             + "LUA_NATIVE_"
             + self.namespace
             + "_"
-            + self.name
-            + "( "
+            + self.lua_name
+            + "("
             + fixed_params
-            + " )"
+            + ")"
         )
 
         s += "\n"
@@ -108,9 +109,9 @@ class NativeFunc:
                 if self.return_type == "bool":
                     call_native += "(bool)"
 
-            call_native += self.namespace + "::" + self.name + "("
+            call_native += self.namespace + "::" + self.cpp_name + "("
         else:
-            call_native += self.namespace + "::" + self.name + "("
+            call_native += self.namespace + "::" + self.cpp_name + "("
 
         if len(self.args) > 0:
             for arg in self.args:
@@ -177,10 +178,10 @@ def get_natives_func_from_natives_hpp_file(natives_hpp):
         if "namespace " in line:
             current_namespace = line.replace("namespace ", "").strip()
             functions_per_namespaces[current_namespace] = []
-        elif "static" in line:
+        elif "NATIVE_DECL" in line:
             words = line.split()
 
-            # remove static from the words array
+            # remove NATIVE_DECL from the words array
             words.pop(0)
 
             func_name = ""
@@ -210,10 +211,15 @@ def get_natives_func_from_natives_hpp_file(natives_hpp):
                     i += 1
 
             return_type = (
-                line[: line.find(func_name)].replace("static", "").strip()
+                line[: line.find(func_name)].replace("NATIVE_DECL", "").strip()
             )
 
-            native_func = NativeFunc(current_namespace, func_name, args, return_type)
+            lua_name = func_name
+            if lua_name.startswith('_'):
+                lua_name = lua_name.removeprefix("_")
+                lua_name = lua_name + "_"
+
+            native_func = NativeFunc(current_namespace, lua_name, func_name, args, return_type)
 
             functions_per_namespaces[current_namespace].append(native_func)
 
@@ -270,7 +276,7 @@ def generate_native_binding_cpp_and_hpp_files(functions_per_namespaces):
 
         for native_func in native_funcs:
             i += 1
-            file_buffer += "\t\t"+ namespace_name+ '.set_function("'+ native_func.name+ '", '+ "LUA_NATIVE_"+ native_func.namespace+ "_"+ native_func.name+ ");\n"
+            file_buffer += "\t\t"+ namespace_name+ '.set_function("'+ native_func.lua_name+ '", '+ "LUA_NATIVE_"+ native_func.namespace+ "_"+ native_func.lua_name+ ");\n"
 
         file_buffer+= "\t}\n" 
         file_buffer+= "}\n"

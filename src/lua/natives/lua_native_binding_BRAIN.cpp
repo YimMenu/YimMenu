@@ -3,59 +3,59 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_BRAIN_ADD_SCRIPT_TO_RANDOM_PED( const char* name, Hash model, float p2, float p3 )
+	static void LUA_NATIVE_BRAIN_ADD_SCRIPT_TO_RANDOM_PED(const char* name, Hash model, float p2, float p3)
 	{
 		BRAIN::ADD_SCRIPT_TO_RANDOM_PED(name, model, p2, p3);
 	}
 
-	static void LUA_NATIVE_BRAIN_REGISTER_OBJECT_SCRIPT_BRAIN( const char* scriptName, Hash modelHash, int p2, float activationRange, int p4, int p5 )
+	static void LUA_NATIVE_BRAIN_REGISTER_OBJECT_SCRIPT_BRAIN(const char* scriptName, Hash modelHash, int p2, float activationRange, int p4, int p5)
 	{
 		BRAIN::REGISTER_OBJECT_SCRIPT_BRAIN(scriptName, modelHash, p2, activationRange, p4, p5);
 	}
 
-	static bool LUA_NATIVE_BRAIN_IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE( Object object )
+	static bool LUA_NATIVE_BRAIN_IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE(Object object)
 	{
 		auto retval = (bool)BRAIN::IS_OBJECT_WITHIN_BRAIN_ACTIVATION_RANGE(object);
 		return retval;
 	}
 
-	static void LUA_NATIVE_BRAIN_REGISTER_WORLD_POINT_SCRIPT_BRAIN( const char* scriptName, float activationRange, int p2 )
+	static void LUA_NATIVE_BRAIN_REGISTER_WORLD_POINT_SCRIPT_BRAIN(const char* scriptName, float activationRange, int p2)
 	{
 		BRAIN::REGISTER_WORLD_POINT_SCRIPT_BRAIN(scriptName, activationRange, p2);
 	}
 
-	static bool LUA_NATIVE_BRAIN_IS_WORLD_POINT_WITHIN_BRAIN_ACTIVATION_RANGE(  )
+	static bool LUA_NATIVE_BRAIN_IS_WORLD_POINT_WITHIN_BRAIN_ACTIVATION_RANGE()
 	{
 		auto retval = (bool)BRAIN::IS_WORLD_POINT_WITHIN_BRAIN_ACTIVATION_RANGE();
 		return retval;
 	}
 
-	static void LUA_NATIVE_BRAIN_ENABLE_SCRIPT_BRAIN_SET( int brainSet )
+	static void LUA_NATIVE_BRAIN_ENABLE_SCRIPT_BRAIN_SET(int brainSet)
 	{
 		BRAIN::ENABLE_SCRIPT_BRAIN_SET(brainSet);
 	}
 
-	static void LUA_NATIVE_BRAIN_DISABLE_SCRIPT_BRAIN_SET( int brainSet )
+	static void LUA_NATIVE_BRAIN_DISABLE_SCRIPT_BRAIN_SET(int brainSet)
 	{
 		BRAIN::DISABLE_SCRIPT_BRAIN_SET(brainSet);
 	}
 
-	static void LUA_NATIVE_BRAIN_REACTIVATE_ALL_WORLD_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE(  )
+	static void LUA_NATIVE_BRAIN_REACTIVATE_ALL_WORLD_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE()
 	{
 		BRAIN::REACTIVATE_ALL_WORLD_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE();
 	}
 
-	static void LUA_NATIVE_BRAIN_REACTIVATE_ALL_OBJECT_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE(  )
+	static void LUA_NATIVE_BRAIN_REACTIVATE_ALL_OBJECT_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE()
 	{
 		BRAIN::REACTIVATE_ALL_OBJECT_BRAINS_THAT_ARE_WAITING_TILL_OUT_OF_RANGE();
 	}
 
-	static void LUA_NATIVE_BRAIN_REACTIVATE_NAMED_WORLD_BRAINS_WAITING_TILL_OUT_OF_RANGE( const char* scriptName )
+	static void LUA_NATIVE_BRAIN_REACTIVATE_NAMED_WORLD_BRAINS_WAITING_TILL_OUT_OF_RANGE(const char* scriptName)
 	{
 		BRAIN::REACTIVATE_NAMED_WORLD_BRAINS_WAITING_TILL_OUT_OF_RANGE(scriptName);
 	}
 
-	static void LUA_NATIVE_BRAIN_REACTIVATE_NAMED_OBJECT_BRAINS_WAITING_TILL_OUT_OF_RANGE( const char* scriptName )
+	static void LUA_NATIVE_BRAIN_REACTIVATE_NAMED_OBJECT_BRAINS_WAITING_TILL_OUT_OF_RANGE(const char* scriptName)
 	{
 		BRAIN::REACTIVATE_NAMED_OBJECT_BRAINS_WAITING_TILL_OUT_OF_RANGE(scriptName);
 	}

@@ -215,6 +215,7 @@ namespace big
 			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g.session.off_radar_all);
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.session.never_wanted_all);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g.session.semi_godmode_all);
+			ImGui::Checkbox("Fix Vehicle", &g.session.vehicle_fix_all);
 			ImGui::Checkbox("EXPLOSION_KARMA"_T.data(), &g.session.explosion_karma);
 			ImGui::Checkbox("DAMAGE_KARMA"_T.data(), &g.session.damage_karma);
 			ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);

@@ -41,6 +41,6 @@ namespace big
 	};
 
 	flip_180
-		g_flip_180("flip180", "Rotate 180", "Rotates their car around", 0)
+		g_flip_180("flip180", "Rotate 180", "Rotates the player's car around", 0)
 			;
 }

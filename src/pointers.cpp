@@ -676,7 +676,7 @@ namespace big
         // Write Join Response Data
         {
             "WJRD",
-            "E8 ? ? ? ? 41 8B DF 84 C0",
+            "E8 ? ? ? ? 84 C0 74 07 40 84 FF 41 0F 95 C6",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_write_join_response_data = ptr.add(1).rip().as<functions::write_join_response_data>();
@@ -817,6 +817,15 @@ namespace big
                 g_pointers->m_gta.m_serialize_take_off_ped_variation_task = ptr.as<PVOID>();
             }
         },
+        // Serialize Parachute Task
+        {
+            "SPT",
+            "40 55 53 56 57 41 54 48 8B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_parachute_task = ptr.as<PVOID>();
+            }
+        },
         // Chat Data
         {
             "CD",
@@ -844,13 +853,22 @@ namespace big
                 g_pointers->m_gta.m_invalid_decal_crash = ptr.add(1).rip().as<PVOID>();
             }
         },
-        // Task Parachute Object 0x270
+        // Task Parachute Object
         {
-            "TPO270",
+            "TPO",
             "0F 88 ? ? ? ? 75 34",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_task_parachute_object_0x270 = ptr.sub(6).as<PVOID>();
+                g_pointers->m_gta.m_task_parachute_object = ptr.sub(6).as<PVOID>();
+            }
+        },
+        // Task Ambient Clips
+        {
+            "TAC",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 80 3D ? ? ? ? ? 41 8B D8 8B F2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_task_ambient_clips = ptr.as<PVOID>();
             }
         },
         // Encode Session Info
@@ -1299,6 +1317,118 @@ namespace big
                 g_pointers->m_gta.m_force_relay_connections = ptr.add(2).rip().as<bool*>();
             }
         },
+        // Read Bits Single
+        {
+            "RBS",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 41 57 33 FF",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_read_bits_single = ptr.as<PVOID*>();
+            }
+        },
+        // Remove Reference
+        {
+            "RR",
+            "48 89 5C 24 08 57 48 83 EC 20 80 3D ? ? ? ? ? 48 8B FA 48 8B D9 74 13",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_reference = ptr.as<functions::remove_reference>();
+            }
+        },
+        // Sync Data Reader Vtable
+        {
+            "RBS",
+            "48 8D 05 ? ? ? ? 48 8D 54 24 20 48 89 44 24 20 48 8D 44 24 40",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_sync_data_reader_vtable = ptr.add(3).rip().as<void**>();
+            }
+        },
+        // Interior Proxy Pool
+        {
+            "IPP",
+            "4C 8B 05 ? ? ? ? 4C 0F BF 0B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_interior_proxy_pool = ptr.add(3).rip().as<GenericPool**>();
+            }
+        },
+        // Train Config Array
+        {
+            "TCA",
+            "48 8D 0D ? ? ? ? E8 ? ? ? ? 44 88 64 24 30 4C 8D 8C 24 60 02 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_train_config_array = ptr.add(3).rip().as<rage::atArray<CTrainConfig>*>();
+            }
+        },
+        // Activate Special Ability
+        {
+            "ASA",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 33 DB 8B F2 48 8B F9 48 39 99 D0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_activate_special_ability = ptr.as<functions::activate_special_ability>();
+            }
+        },
+        // Set Wanted Level
+        {
+            "SWL",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 44 88 48 20 57 41 54 41 55 41 56 41 57 48 83 EC 30 4C 8B F1 48 8B 0D ? ? ? ? 44 8B E2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_wanted_level = ptr.as<functions::set_wanted_level>();
+            }
+        },
+        // Event Stuff
+        {
+            "NEM&CEQ&NEP&GNPI&QNE",
+            "48 39 99 D0 00 00 00 74 3C",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_net_event_manager = ptr.add(0xC).rip().as<rage::netEventMgr**>();
+                g_pointers->m_gta.m_check_event_queue = ptr.add(0x13).rip().as<functions::check_event_queue>();
+                g_pointers->m_gta.m_net_event_pool = ptr.add(0x1A).rip().as<GenericPool**>();
+                g_pointers->m_gta.m_get_new_pool_item = ptr.add(0x1F).rip().as<functions::get_new_pool_item>();
+                g_pointers->m_gta.m_queue_network_event = ptr.add(0x41).rip().as<functions::queue_network_event>();
+            }
+        },
+        // Construct Door Break Event
+        {
+            "CDBE",
+            "48 89 5C 24 08 57 48 83 EC 30 33 FF BA 1B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_construct_door_break_event = ptr.as<functions::construct_door_break_event>();
+            }
+        },
+        // Delete Ped
+        {
+            "DP",
+            "48 83 EC 28 48 85 C9 74 12 48",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_ped = ptr.as<functions::delete_ped>();
+            }
+        },
+        // Delete Vehicle
+        {
+            "DV",
+            "48 85 C9 74 38 53 48 83 EC 20 80",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_vehicle = ptr.as<functions::delete_vehicle>();
+            }
+        },
+        // Delete Object
+        {
+            "DO",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 30 45 33 F6 40",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_delete_object = ptr.as<functions::delete_object>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1490,6 +1620,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_free_event_error = ptr.add(0x31).as<PVOID>();
+            }
+        },
+        // Activate Special Ability Patch
+        {
+            "ASAP",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 0F B7 49 30 48 8B F2 E8 ? ? ? ? 33 DB 48 8B F8 48 85 C0 74 35",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_activate_special_ability_patch = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

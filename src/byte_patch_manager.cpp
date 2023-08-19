@@ -80,6 +80,9 @@ namespace big
 
 		// Prevent the game from crashing when flooded with outgoing events
 		memory::byte_patch::make(g_pointers->m_gta.m_free_event_error, std::vector{0x90, 0x90, 0x90, 0x90, 0x90})->apply();
+
+		// Always send the special ability event
+		memory::byte_patch::make(g_pointers->m_gta.m_activate_special_ability_patch, std::to_array({0xB0, 0x01, 0xC3}))->apply();
 	}
 
 	byte_patch_manager::byte_patch_manager()
