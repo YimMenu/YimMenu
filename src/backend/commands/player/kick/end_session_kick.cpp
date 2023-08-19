@@ -30,5 +30,5 @@ namespace big
 		}
 	};
 
-	end_session_kick g_end_session_kick("endkick", "END_KICK", "END_KICK_DESC", 0);
+	end_session_kick g_end_session_kick("endkick", "END_KICK", "END_KICK_DESC", 0, false);
 }

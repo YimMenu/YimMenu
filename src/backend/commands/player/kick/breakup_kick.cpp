@@ -35,7 +35,7 @@ namespace big
 		}
 	};
 
-	breakup_kick g_breakup_kick("breakup", "BREAKUP_KICK", "BREAKUP_KICK_DESC", 0);
+	breakup_kick g_breakup_kick("breakup", "BREAKUP_KICK", "BREAKUP_KICK_DESC", 0, false);
 	bool_command g_show_cheating_message("breakupcheating", "BREAKUP_KICK_SHOW_CHEATING", "BREAKUP_KICK_SHOW_CHEATING_DESC",
 	    g.session.show_cheating_message);
 }
