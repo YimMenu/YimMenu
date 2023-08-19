@@ -3,155 +3,155 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_AUDIO_PLAY_PED_RINGTONE( const char* ringtoneName, Ped ped, bool p2 )
+	static void LUA_NATIVE_AUDIO_PLAY_PED_RINGTONE(const char* ringtoneName, Ped ped, bool p2)
 	{
 		AUDIO::PLAY_PED_RINGTONE(ringtoneName, ped, p2);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_PED_RINGTONE_PLAYING( Ped ped )
+	static bool LUA_NATIVE_AUDIO_IS_PED_RINGTONE_PLAYING(Ped ped)
 	{
 		auto retval = (bool)AUDIO::IS_PED_RINGTONE_PLAYING(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_PED_RINGTONE( Ped ped )
+	static void LUA_NATIVE_AUDIO_STOP_PED_RINGTONE(Ped ped)
 	{
 		AUDIO::STOP_PED_RINGTONE(ped);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MOBILE_PHONE_CALL_ONGOING(  )
+	static bool LUA_NATIVE_AUDIO_IS_MOBILE_PHONE_CALL_ONGOING()
 	{
 		auto retval = (bool)AUDIO::IS_MOBILE_PHONE_CALL_ONGOING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MOBILE_INTERFERENCE_ACTIVE(  )
+	static bool LUA_NATIVE_AUDIO_IS_MOBILE_INTERFERENCE_ACTIVE()
 	{
 		auto retval = (bool)AUDIO::IS_MOBILE_INTERFERENCE_ACTIVE();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_CREATE_NEW_SCRIPTED_CONVERSATION(  )
+	static void LUA_NATIVE_AUDIO_CREATE_NEW_SCRIPTED_CONVERSATION()
 	{
 		AUDIO::CREATE_NEW_SCRIPTED_CONVERSATION();
 	}
 
-	static void LUA_NATIVE_AUDIO_ADD_LINE_TO_CONVERSATION( int index, const char* p1, const char* p2, int p3, int p4, bool p5, bool p6, bool p7, bool p8, int p9, bool p10, bool p11, bool p12 )
+	static void LUA_NATIVE_AUDIO_ADD_LINE_TO_CONVERSATION(int index, const char* p1, const char* p2, int p3, int p4, bool p5, bool p6, bool p7, bool p8, int p9, bool p10, bool p11, bool p12)
 	{
 		AUDIO::ADD_LINE_TO_CONVERSATION(index, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
 	}
 
-	static void LUA_NATIVE_AUDIO_ADD_PED_TO_CONVERSATION( int index, Ped ped, const char* p2 )
+	static void LUA_NATIVE_AUDIO_ADD_PED_TO_CONVERSATION(int index, Ped ped, const char* p2)
 	{
 		AUDIO::ADD_PED_TO_CONVERSATION(index, ped, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_POSITION_FOR_NULL_CONV_PED( Any p0, float p1, float p2, float p3 )
+	static void LUA_NATIVE_AUDIO_SET_POSITION_FOR_NULL_CONV_PED(Any p0, float p1, float p2, float p3)
 	{
 		AUDIO::SET_POSITION_FOR_NULL_CONV_PED(p0, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_ENTITY_FOR_NULL_CONV_PED( int p0, Entity entity )
+	static void LUA_NATIVE_AUDIO_SET_ENTITY_FOR_NULL_CONV_PED(int p0, Entity entity)
 	{
 		AUDIO::SET_ENTITY_FOR_NULL_CONV_PED(p0, entity);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_MICROPHONE_POSITION( bool toggle, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3 )
+	static void LUA_NATIVE_AUDIO_SET_MICROPHONE_POSITION(bool toggle, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
 	{
 		AUDIO::SET_MICROPHONE_POSITION(toggle, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_CONVERSATION_AUDIO_CONTROLLED_BY_ANIM( bool p0 )
+	static void LUA_NATIVE_AUDIO_SET_CONVERSATION_AUDIO_CONTROLLED_BY_ANIM(bool p0)
 	{
 		AUDIO::SET_CONVERSATION_AUDIO_CONTROLLED_BY_ANIM(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_CONVERSATION_AUDIO_PLACEHOLDER( bool p0 )
+	static void LUA_NATIVE_AUDIO_SET_CONVERSATION_AUDIO_PLACEHOLDER(bool p0)
 	{
 		AUDIO::SET_CONVERSATION_AUDIO_PLACEHOLDER(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_START_SCRIPT_PHONE_CONVERSATION( bool p0, bool p1 )
+	static void LUA_NATIVE_AUDIO_START_SCRIPT_PHONE_CONVERSATION(bool p0, bool p1)
 	{
 		AUDIO::START_SCRIPT_PHONE_CONVERSATION(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_PRELOAD_SCRIPT_PHONE_CONVERSATION( bool p0, bool p1 )
+	static void LUA_NATIVE_AUDIO_PRELOAD_SCRIPT_PHONE_CONVERSATION(bool p0, bool p1)
 	{
 		AUDIO::PRELOAD_SCRIPT_PHONE_CONVERSATION(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_START_SCRIPT_CONVERSATION( bool p0, bool p1, bool p2, bool p3 )
+	static void LUA_NATIVE_AUDIO_START_SCRIPT_CONVERSATION(bool p0, bool p1, bool p2, bool p3)
 	{
 		AUDIO::START_SCRIPT_CONVERSATION(p0, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_PRELOAD_SCRIPT_CONVERSATION( bool p0, bool p1, bool p2, bool p3 )
+	static void LUA_NATIVE_AUDIO_PRELOAD_SCRIPT_CONVERSATION(bool p0, bool p1, bool p2, bool p3)
 	{
 		AUDIO::PRELOAD_SCRIPT_CONVERSATION(p0, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_START_PRELOADED_CONVERSATION(  )
+	static void LUA_NATIVE_AUDIO_START_PRELOADED_CONVERSATION()
 	{
 		AUDIO::START_PRELOADED_CONVERSATION();
 	}
 
-	static bool LUA_NATIVE_AUDIO_GET_IS_PRELOADED_CONVERSATION_READY(  )
+	static bool LUA_NATIVE_AUDIO_GET_IS_PRELOADED_CONVERSATION_READY()
 	{
 		auto retval = (bool)AUDIO::GET_IS_PRELOADED_CONVERSATION_READY();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_CONVERSATION_ONGOING(  )
+	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_CONVERSATION_ONGOING()
 	{
 		auto retval = (bool)AUDIO::IS_SCRIPTED_CONVERSATION_ONGOING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_CONVERSATION_LOADED(  )
+	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_CONVERSATION_LOADED()
 	{
 		auto retval = (bool)AUDIO::IS_SCRIPTED_CONVERSATION_LOADED();
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_CURRENT_SCRIPTED_CONVERSATION_LINE(  )
+	static int LUA_NATIVE_AUDIO_GET_CURRENT_SCRIPTED_CONVERSATION_LINE()
 	{
 		auto retval = AUDIO::GET_CURRENT_SCRIPTED_CONVERSATION_LINE();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_PAUSE_SCRIPTED_CONVERSATION( bool p0 )
+	static void LUA_NATIVE_AUDIO_PAUSE_SCRIPTED_CONVERSATION(bool p0)
 	{
 		AUDIO::PAUSE_SCRIPTED_CONVERSATION(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_RESTART_SCRIPTED_CONVERSATION(  )
+	static void LUA_NATIVE_AUDIO_RESTART_SCRIPTED_CONVERSATION()
 	{
 		AUDIO::RESTART_SCRIPTED_CONVERSATION();
 	}
 
-	static int LUA_NATIVE_AUDIO_STOP_SCRIPTED_CONVERSATION( bool p0 )
+	static int LUA_NATIVE_AUDIO_STOP_SCRIPTED_CONVERSATION(bool p0)
 	{
 		auto retval = AUDIO::STOP_SCRIPTED_CONVERSATION(p0);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SKIP_TO_NEXT_SCRIPTED_CONVERSATION_LINE(  )
+	static void LUA_NATIVE_AUDIO_SKIP_TO_NEXT_SCRIPTED_CONVERSATION_LINE()
 	{
 		AUDIO::SKIP_TO_NEXT_SCRIPTED_CONVERSATION_LINE();
 	}
 
-	static void LUA_NATIVE_AUDIO_INTERRUPT_CONVERSATION( Ped ped, const char* voiceline, const char* speaker )
+	static void LUA_NATIVE_AUDIO_INTERRUPT_CONVERSATION(Ped ped, const char* voiceline, const char* speaker)
 	{
 		AUDIO::INTERRUPT_CONVERSATION(ped, voiceline, speaker);
 	}
 
-	static void LUA_NATIVE_AUDIO_INTERRUPT_CONVERSATION_AND_PAUSE( Ped ped, const char* p1, const char* speaker )
+	static void LUA_NATIVE_AUDIO_INTERRUPT_CONVERSATION_AND_PAUSE(Ped ped, const char* p1, const char* speaker)
 	{
 		AUDIO::INTERRUPT_CONVERSATION_AND_PAUSE(ped, p1, speaker);
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_AUDIO_GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE( Any p0 )
+	static std::tuple<int, Any> LUA_NATIVE_AUDIO_GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE(Any p0)
 	{
 		std::tuple<int, Any> return_values;
 		std::get<0>(return_values) = AUDIO::GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE(&p0);
@@ -160,621 +160,621 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_NO_DUCKING_FOR_CONVERSATION( bool p0 )
+	static void LUA_NATIVE_AUDIO_SET_NO_DUCKING_FOR_CONVERSATION(bool p0)
 	{
 		AUDIO::SET_NO_DUCKING_FOR_CONVERSATION(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_REGISTER_SCRIPT_WITH_AUDIO( int p0 )
+	static void LUA_NATIVE_AUDIO_REGISTER_SCRIPT_WITH_AUDIO(int p0)
 	{
 		AUDIO::REGISTER_SCRIPT_WITH_AUDIO(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNREGISTER_SCRIPT_WITH_AUDIO(  )
+	static void LUA_NATIVE_AUDIO_UNREGISTER_SCRIPT_WITH_AUDIO()
 	{
 		AUDIO::UNREGISTER_SCRIPT_WITH_AUDIO();
 	}
 
-	static bool LUA_NATIVE_AUDIO_REQUEST_MISSION_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_REQUEST_MISSION_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::REQUEST_MISSION_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_REQUEST_AMBIENT_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_REQUEST_AMBIENT_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::REQUEST_AMBIENT_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_REQUEST_SCRIPT_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_REQUEST_SCRIPT_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::REQUEST_SCRIPT_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_HINT_MISSION_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_HINT_MISSION_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::HINT_MISSION_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_HINT_AMBIENT_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_HINT_AMBIENT_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::HINT_AMBIENT_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_HINT_SCRIPT_AUDIO_BANK( const char* audioBank, bool p1, Any p2 )
+	static bool LUA_NATIVE_AUDIO_HINT_SCRIPT_AUDIO_BANK(const char* audioBank, bool p1, Any p2)
 	{
 		auto retval = (bool)AUDIO::HINT_SCRIPT_AUDIO_BANK(audioBank, p1, p2);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_MISSION_AUDIO_BANK(  )
+	static void LUA_NATIVE_AUDIO_RELEASE_MISSION_AUDIO_BANK()
 	{
 		AUDIO::RELEASE_MISSION_AUDIO_BANK();
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_AMBIENT_AUDIO_BANK(  )
+	static void LUA_NATIVE_AUDIO_RELEASE_AMBIENT_AUDIO_BANK()
 	{
 		AUDIO::RELEASE_AMBIENT_AUDIO_BANK();
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_NAMED_SCRIPT_AUDIO_BANK( const char* audioBank )
+	static void LUA_NATIVE_AUDIO_RELEASE_NAMED_SCRIPT_AUDIO_BANK(const char* audioBank)
 	{
 		AUDIO::RELEASE_NAMED_SCRIPT_AUDIO_BANK(audioBank);
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_SCRIPT_AUDIO_BANK(  )
+	static void LUA_NATIVE_AUDIO_RELEASE_SCRIPT_AUDIO_BANK()
 	{
 		AUDIO::RELEASE_SCRIPT_AUDIO_BANK();
 	}
 
-	static void LUA_NATIVE_AUDIO_UNHINT_AMBIENT_AUDIO_BANK(  )
+	static void LUA_NATIVE_AUDIO_UNHINT_AMBIENT_AUDIO_BANK()
 	{
 		AUDIO::UNHINT_AMBIENT_AUDIO_BANK();
 	}
 
-	static void LUA_NATIVE_AUDIO_UNHINT_SCRIPT_AUDIO_BANK(  )
+	static void LUA_NATIVE_AUDIO_UNHINT_SCRIPT_AUDIO_BANK()
 	{
 		AUDIO::UNHINT_SCRIPT_AUDIO_BANK();
 	}
 
-	static void LUA_NATIVE_AUDIO_UNHINT_NAMED_SCRIPT_AUDIO_BANK( const char* audioBank )
+	static void LUA_NATIVE_AUDIO_UNHINT_NAMED_SCRIPT_AUDIO_BANK(const char* audioBank)
 	{
 		AUDIO::UNHINT_NAMED_SCRIPT_AUDIO_BANK(audioBank);
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_SOUND_ID(  )
+	static int LUA_NATIVE_AUDIO_GET_SOUND_ID()
 	{
 		auto retval = AUDIO::GET_SOUND_ID();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_SOUND_ID( int soundId )
+	static void LUA_NATIVE_AUDIO_RELEASE_SOUND_ID(int soundId)
 	{
 		AUDIO::RELEASE_SOUND_ID(soundId);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_SOUND( int soundId, const char* audioName, const char* audioRef, bool p3, Any p4, bool p5 )
+	static void LUA_NATIVE_AUDIO_PLAY_SOUND(int soundId, const char* audioName, const char* audioRef, bool p3, Any p4, bool p5)
 	{
 		AUDIO::PLAY_SOUND(soundId, audioName, audioRef, p3, p4, p5);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FRONTEND( int soundId, const char* audioName, const char* audioRef, bool p3 )
+	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FRONTEND(int soundId, const char* audioName, const char* audioRef, bool p3)
 	{
 		AUDIO::PLAY_SOUND_FRONTEND(soundId, audioName, audioRef, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_DEFERRED_SOUND_FRONTEND( const char* soundName, const char* soundsetName )
+	static void LUA_NATIVE_AUDIO_PLAY_DEFERRED_SOUND_FRONTEND(const char* soundName, const char* soundsetName)
 	{
 		AUDIO::PLAY_DEFERRED_SOUND_FRONTEND(soundName, soundsetName);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_ENTITY( int soundId, const char* audioName, Entity entity, const char* audioRef, bool isNetwork, Any p5 )
+	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_ENTITY(int soundId, const char* audioName, Entity entity, const char* audioRef, bool isNetwork, Any p5)
 	{
 		AUDIO::PLAY_SOUND_FROM_ENTITY(soundId, audioName, entity, audioRef, isNetwork, p5);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_ENTITY_HASH( int soundId, Hash model, Entity entity, Hash soundSetHash, Any p4, Any p5 )
+	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_ENTITY_HASH(int soundId, Hash model, Entity entity, Hash soundSetHash, Any p4, Any p5)
 	{
 		AUDIO::PLAY_SOUND_FROM_ENTITY_HASH(soundId, model, entity, soundSetHash, p4, p5);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_COORD( int soundId, const char* audioName, float x, float y, float z, const char* audioRef, bool isNetwork, int range, bool p8 )
+	static void LUA_NATIVE_AUDIO_PLAY_SOUND_FROM_COORD(int soundId, const char* audioName, float x, float y, float z, const char* audioRef, bool isNetwork, int range, bool p8)
 	{
 		AUDIO::PLAY_SOUND_FROM_COORD(soundId, audioName, x, y, z, audioRef, isNetwork, range, p8);
 	}
 
-	static void LUA_NATIVE_AUDIO_UPDATE_SOUND_COORD( int soundId, float x, float y, float z )
+	static void LUA_NATIVE_AUDIO_UPDATE_SOUND_COORD(int soundId, float x, float y, float z)
 	{
 		AUDIO::UPDATE_SOUND_COORD(soundId, x, y, z);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_SOUND( int soundId )
+	static void LUA_NATIVE_AUDIO_STOP_SOUND(int soundId)
 	{
 		AUDIO::STOP_SOUND(soundId);
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_NETWORK_ID_FROM_SOUND_ID( int soundId )
+	static int LUA_NATIVE_AUDIO_GET_NETWORK_ID_FROM_SOUND_ID(int soundId)
 	{
 		auto retval = AUDIO::GET_NETWORK_ID_FROM_SOUND_ID(soundId);
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_SOUND_ID_FROM_NETWORK_ID( int netId )
+	static int LUA_NATIVE_AUDIO_GET_SOUND_ID_FROM_NETWORK_ID(int netId)
 	{
 		auto retval = AUDIO::GET_SOUND_ID_FROM_NETWORK_ID(netId);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_SOUND( int soundId, const char* variable, float p2 )
+	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_SOUND(int soundId, const char* variable, float p2)
 	{
 		AUDIO::SET_VARIABLE_ON_SOUND(soundId, variable, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_STREAM( const char* variable, float p1 )
+	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_STREAM(const char* variable, float p1)
 	{
 		AUDIO::SET_VARIABLE_ON_STREAM(variable, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_OVERRIDE_UNDERWATER_STREAM( const char* p0, bool p1 )
+	static void LUA_NATIVE_AUDIO_OVERRIDE_UNDERWATER_STREAM(const char* p0, bool p1)
 	{
 		AUDIO::OVERRIDE_UNDERWATER_STREAM(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_UNDER_WATER_STREAM( const char* variableName, float value )
+	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_UNDER_WATER_STREAM(const char* variableName, float value)
 	{
 		AUDIO::SET_VARIABLE_ON_UNDER_WATER_STREAM(variableName, value);
 	}
 
-	static bool LUA_NATIVE_AUDIO_HAS_SOUND_FINISHED( int soundId )
+	static bool LUA_NATIVE_AUDIO_HAS_SOUND_FINISHED(int soundId)
 	{
 		auto retval = (bool)AUDIO::HAS_SOUND_FINISHED(soundId);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_NATIVE( Ped ped, const char* speechName, const char* speechParam, Any p3 )
+	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_NATIVE(Ped ped, const char* speechName, const char* speechParam, Any p3)
 	{
 		AUDIO::PLAY_PED_AMBIENT_SPEECH_NATIVE(ped, speechName, speechParam, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_AND_CLONE_NATIVE( Ped ped, const char* speechName, const char* speechParam, Any p3 )
+	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_AND_CLONE_NATIVE(Ped ped, const char* speechName, const char* speechParam, Any p3)
 	{
 		AUDIO::PLAY_PED_AMBIENT_SPEECH_AND_CLONE_NATIVE(ped, speechName, speechParam, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE( Ped ped, const char* speechName, const char* voiceName, const char* speechParam, bool p4 )
+	static void LUA_NATIVE_AUDIO_PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(Ped ped, const char* speechName, const char* voiceName, const char* speechParam, bool p4)
 	{
 		AUDIO::PLAY_PED_AMBIENT_SPEECH_WITH_VOICE_NATIVE(ped, speechName, voiceName, speechParam, p4);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE( const char* speechName, const char* voiceName, float x, float y, float z, const char* speechParam )
+	static void LUA_NATIVE_AUDIO_PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE(const char* speechName, const char* voiceName, float x, float y, float z, const char* speechParam)
 	{
 		AUDIO::PLAY_AMBIENT_SPEECH_FROM_POSITION_NATIVE(speechName, voiceName, x, y, z, speechParam);
 	}
 
-	static void LUA_NATIVE_AUDIO_OVERRIDE_TREVOR_RAGE( const char* voiceEffect )
+	static void LUA_NATIVE_AUDIO_OVERRIDE_TREVOR_RAGE(const char* voiceEffect)
 	{
 		AUDIO::OVERRIDE_TREVOR_RAGE(voiceEffect);
 	}
 
-	static void LUA_NATIVE_AUDIO_RESET_TREVOR_RAGE(  )
+	static void LUA_NATIVE_AUDIO_RESET_TREVOR_RAGE()
 	{
 		AUDIO::RESET_TREVOR_RAGE();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PLAYER_ANGRY( Ped ped, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_PLAYER_ANGRY(Ped ped, bool toggle)
 	{
 		AUDIO::SET_PLAYER_ANGRY(ped, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_PAIN( Ped ped, int painID, int p1, Any p3 )
+	static void LUA_NATIVE_AUDIO_PLAY_PAIN(Ped ped, int painID, int p1, Any p3)
 	{
 		AUDIO::PLAY_PAIN(ped, painID, p1, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_RELEASE_WEAPON_AUDIO(  )
+	static void LUA_NATIVE_AUDIO_RELEASE_WEAPON_AUDIO()
 	{
 		AUDIO::RELEASE_WEAPON_AUDIO();
 	}
 
-	static void LUA_NATIVE_AUDIO_ACTIVATE_AUDIO_SLOWMO_MODE( const char* mode )
+	static void LUA_NATIVE_AUDIO_ACTIVATE_AUDIO_SLOWMO_MODE(const char* mode)
 	{
 		AUDIO::ACTIVATE_AUDIO_SLOWMO_MODE(mode);
 	}
 
-	static void LUA_NATIVE_AUDIO_DEACTIVATE_AUDIO_SLOWMO_MODE( const char* mode )
+	static void LUA_NATIVE_AUDIO_DEACTIVATE_AUDIO_SLOWMO_MODE(const char* mode)
 	{
 		AUDIO::DEACTIVATE_AUDIO_SLOWMO_MODE(mode);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_VOICE_NAME( Ped ped, const char* name )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_VOICE_NAME(Ped ped, const char* name)
 	{
 		AUDIO::SET_AMBIENT_VOICE_NAME(ped, name);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_VOICE_NAME_HASH( Ped ped, Hash hash )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_VOICE_NAME_HASH(Ped ped, Hash hash)
 	{
 		AUDIO::SET_AMBIENT_VOICE_NAME_HASH(ped, hash);
 	}
 
-	static Hash LUA_NATIVE_AUDIO_GET_AMBIENT_VOICE_NAME_HASH( Ped ped )
+	static Hash LUA_NATIVE_AUDIO_GET_AMBIENT_VOICE_NAME_HASH(Ped ped)
 	{
 		auto retval = AUDIO::GET_AMBIENT_VOICE_NAME_HASH(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_FULL( Ped ped )
+	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_FULL(Ped ped)
 	{
 		AUDIO::SET_PED_VOICE_FULL(ped);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_RACE_AND_VOICE_GROUP( Ped ped, int p1, Hash voiceGroup )
+	static void LUA_NATIVE_AUDIO_SET_PED_RACE_AND_VOICE_GROUP(Ped ped, int p1, Hash voiceGroup)
 	{
 		AUDIO::SET_PED_RACE_AND_VOICE_GROUP(ped, p1, voiceGroup);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_GROUP( Ped ped, Hash voiceGroupHash )
+	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_GROUP(Ped ped, Hash voiceGroupHash)
 	{
 		AUDIO::SET_PED_VOICE_GROUP(ped, voiceGroupHash);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_GROUP_FROM_RACE_TO_PVG( Ped ped, Hash voiceGroupHash )
+	static void LUA_NATIVE_AUDIO_SET_PED_VOICE_GROUP_FROM_RACE_TO_PVG(Ped ped, Hash voiceGroupHash)
 	{
 		AUDIO::SET_PED_VOICE_GROUP_FROM_RACE_TO_PVG(ped, voiceGroupHash);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_GENDER( Ped ped, bool p1 )
+	static void LUA_NATIVE_AUDIO_SET_PED_GENDER(Ped ped, bool p1)
 	{
 		AUDIO::SET_PED_GENDER(ped, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_CURRENT_PLAYING_SPEECH( Ped ped )
+	static void LUA_NATIVE_AUDIO_STOP_CURRENT_PLAYING_SPEECH(Ped ped)
 	{
 		AUDIO::STOP_CURRENT_PLAYING_SPEECH(ped);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_CURRENT_PLAYING_AMBIENT_SPEECH( Ped ped )
+	static void LUA_NATIVE_AUDIO_STOP_CURRENT_PLAYING_AMBIENT_SPEECH(Ped ped)
 	{
 		AUDIO::STOP_CURRENT_PLAYING_AMBIENT_SPEECH(ped);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_SPEECH_PLAYING( Ped ped )
+	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_SPEECH_PLAYING(Ped ped)
 	{
 		auto retval = (bool)AUDIO::IS_AMBIENT_SPEECH_PLAYING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_SPEECH_PLAYING( Ped p0 )
+	static bool LUA_NATIVE_AUDIO_IS_SCRIPTED_SPEECH_PLAYING(Ped p0)
 	{
 		auto retval = (bool)AUDIO::IS_SCRIPTED_SPEECH_PLAYING(p0);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_ANY_SPEECH_PLAYING( Ped ped )
+	static bool LUA_NATIVE_AUDIO_IS_ANY_SPEECH_PLAYING(Ped ped)
 	{
 		auto retval = (bool)AUDIO::IS_ANY_SPEECH_PLAYING(ped);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_ANY_POSITIONAL_SPEECH_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_IS_ANY_POSITIONAL_SPEECH_PLAYING()
 	{
 		auto retval = (bool)AUDIO::IS_ANY_POSITIONAL_SPEECH_PLAYING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_DOES_CONTEXT_EXIST_FOR_THIS_PED( Ped ped, const char* speechName, bool p2 )
+	static bool LUA_NATIVE_AUDIO_DOES_CONTEXT_EXIST_FOR_THIS_PED(Ped ped, const char* speechName, bool p2)
 	{
 		auto retval = (bool)AUDIO::DOES_CONTEXT_EXIST_FOR_THIS_PED(ped, speechName, p2);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_PED_IN_CURRENT_CONVERSATION( Ped ped )
+	static bool LUA_NATIVE_AUDIO_IS_PED_IN_CURRENT_CONVERSATION(Ped ped)
 	{
 		auto retval = (bool)AUDIO::IS_PED_IN_CURRENT_CONVERSATION(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_IS_DRUNK( Ped ped, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_PED_IS_DRUNK(Ped ped, bool toggle)
 	{
 		AUDIO::SET_PED_IS_DRUNK(ped, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_ANIMAL_VOCALIZATION( Ped pedHandle, int p1, const char* speechName )
+	static void LUA_NATIVE_AUDIO_PLAY_ANIMAL_VOCALIZATION(Ped pedHandle, int p1, const char* speechName)
 	{
 		AUDIO::PLAY_ANIMAL_VOCALIZATION(pedHandle, p1, speechName);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_ANIMAL_VOCALIZATION_PLAYING( Ped pedHandle )
+	static bool LUA_NATIVE_AUDIO_IS_ANIMAL_VOCALIZATION_PLAYING(Ped pedHandle)
 	{
 		auto retval = (bool)AUDIO::IS_ANIMAL_VOCALIZATION_PLAYING(pedHandle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_ANIMAL_MOOD( Ped animal, int mood )
+	static void LUA_NATIVE_AUDIO_SET_ANIMAL_MOOD(Ped animal, int mood)
 	{
 		AUDIO::SET_ANIMAL_MOOD(animal, mood);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MOBILE_PHONE_RADIO_ACTIVE(  )
+	static bool LUA_NATIVE_AUDIO_IS_MOBILE_PHONE_RADIO_ACTIVE()
 	{
 		auto retval = (bool)AUDIO::IS_MOBILE_PHONE_RADIO_ACTIVE();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_MOBILE_PHONE_RADIO_STATE( bool state )
+	static void LUA_NATIVE_AUDIO_SET_MOBILE_PHONE_RADIO_STATE(bool state)
 	{
 		AUDIO::SET_MOBILE_PHONE_RADIO_STATE(state);
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_INDEX(  )
+	static int LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_INDEX()
 	{
 		auto retval = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_NAME(  )
+	static const char* LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_NAME()
 	{
 		auto retval = AUDIO::GET_PLAYER_RADIO_STATION_NAME();
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_AUDIO_GET_RADIO_STATION_NAME( int radioStation )
+	static const char* LUA_NATIVE_AUDIO_GET_RADIO_STATION_NAME(int radioStation)
 	{
 		auto retval = AUDIO::GET_RADIO_STATION_NAME(radioStation);
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_GENRE(  )
+	static int LUA_NATIVE_AUDIO_GET_PLAYER_RADIO_STATION_GENRE()
 	{
 		auto retval = AUDIO::GET_PLAYER_RADIO_STATION_GENRE();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_RADIO_RETUNING(  )
+	static bool LUA_NATIVE_AUDIO_IS_RADIO_RETUNING()
 	{
 		auto retval = (bool)AUDIO::IS_RADIO_RETUNING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_RADIO_FADED_OUT(  )
+	static bool LUA_NATIVE_AUDIO_IS_RADIO_FADED_OUT()
 	{
 		auto retval = (bool)AUDIO::IS_RADIO_FADED_OUT();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_RETUNE_UP(  )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_RETUNE_UP()
 	{
 		AUDIO::SET_RADIO_RETUNE_UP();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_RETUNE_DOWN(  )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_RETUNE_DOWN()
 	{
 		AUDIO::SET_RADIO_RETUNE_DOWN();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_TO_STATION_NAME( const char* stationName )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_TO_STATION_NAME(const char* stationName)
 	{
 		AUDIO::SET_RADIO_TO_STATION_NAME(stationName);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEH_RADIO_STATION( Vehicle vehicle, const char* radioStation )
+	static void LUA_NATIVE_AUDIO_SET_VEH_RADIO_STATION(Vehicle vehicle, const char* radioStation)
 	{
 		AUDIO::SET_VEH_RADIO_STATION(vehicle, radioStation);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEH_HAS_NORMAL_RADIO( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_SET_VEH_HAS_NORMAL_RADIO(Vehicle vehicle)
 	{
 		AUDIO::SET_VEH_HAS_NORMAL_RADIO(vehicle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_VEHICLE_RADIO_ON( Vehicle vehicle )
+	static bool LUA_NATIVE_AUDIO_IS_VEHICLE_RADIO_ON(Vehicle vehicle)
 	{
 		auto retval = (bool)AUDIO::IS_VEHICLE_RADIO_ON(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEH_FORCED_RADIO_THIS_FRAME( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_SET_VEH_FORCED_RADIO_THIS_FRAME(Vehicle vehicle)
 	{
 		AUDIO::SET_VEH_FORCED_RADIO_THIS_FRAME(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_EMITTER_RADIO_STATION( const char* emitterName, const char* radioStation, Any p2 )
+	static void LUA_NATIVE_AUDIO_SET_EMITTER_RADIO_STATION(const char* emitterName, const char* radioStation, Any p2)
 	{
 		AUDIO::SET_EMITTER_RADIO_STATION(emitterName, radioStation, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_STATIC_EMITTER_ENABLED( const char* emitterName, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_STATIC_EMITTER_ENABLED(const char* emitterName, bool toggle)
 	{
 		AUDIO::SET_STATIC_EMITTER_ENABLED(emitterName, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_LINK_STATIC_EMITTER_TO_ENTITY( const char* emitterName, Entity entity )
+	static void LUA_NATIVE_AUDIO_LINK_STATIC_EMITTER_TO_ENTITY(const char* emitterName, Entity entity)
 	{
 		AUDIO::LINK_STATIC_EMITTER_TO_ENTITY(emitterName, entity);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_TO_STATION_INDEX( int radioStation )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_TO_STATION_INDEX(int radioStation)
 	{
 		AUDIO::SET_RADIO_TO_STATION_INDEX(radioStation);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_FRONTEND_RADIO_ACTIVE( bool active )
+	static void LUA_NATIVE_AUDIO_SET_FRONTEND_RADIO_ACTIVE(bool active)
 	{
 		AUDIO::SET_FRONTEND_RADIO_ACTIVE(active);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNLOCK_MISSION_NEWS_STORY( int newsStory )
+	static void LUA_NATIVE_AUDIO_UNLOCK_MISSION_NEWS_STORY(int newsStory)
 	{
 		AUDIO::UNLOCK_MISSION_NEWS_STORY(newsStory);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MISSION_NEWS_STORY_UNLOCKED( int newsStory )
+	static bool LUA_NATIVE_AUDIO_IS_MISSION_NEWS_STORY_UNLOCKED(int newsStory)
 	{
 		auto retval = (bool)AUDIO::IS_MISSION_NEWS_STORY_UNLOCKED(newsStory);
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_AUDIBLE_MUSIC_TRACK_TEXT_ID(  )
+	static int LUA_NATIVE_AUDIO_GET_AUDIBLE_MUSIC_TRACK_TEXT_ID()
 	{
 		auto retval = AUDIO::GET_AUDIBLE_MUSIC_TRACK_TEXT_ID();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_END_CREDITS_MUSIC( bool play )
+	static void LUA_NATIVE_AUDIO_PLAY_END_CREDITS_MUSIC(bool play)
 	{
 		AUDIO::PLAY_END_CREDITS_MUSIC(play);
 	}
 
-	static void LUA_NATIVE_AUDIO_SKIP_RADIO_FORWARD(  )
+	static void LUA_NATIVE_AUDIO_SKIP_RADIO_FORWARD()
 	{
 		AUDIO::SKIP_RADIO_FORWARD();
 	}
 
-	static void LUA_NATIVE_AUDIO_FREEZE_RADIO_STATION( const char* radioStation )
+	static void LUA_NATIVE_AUDIO_FREEZE_RADIO_STATION(const char* radioStation)
 	{
 		AUDIO::FREEZE_RADIO_STATION(radioStation);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNFREEZE_RADIO_STATION( const char* radioStation )
+	static void LUA_NATIVE_AUDIO_UNFREEZE_RADIO_STATION(const char* radioStation)
 	{
 		AUDIO::UNFREEZE_RADIO_STATION(radioStation);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_AUTO_UNFREEZE( bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_AUTO_UNFREEZE(bool toggle)
 	{
 		AUDIO::SET_RADIO_AUTO_UNFREEZE(toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_INITIAL_PLAYER_STATION( const char* radioStation )
+	static void LUA_NATIVE_AUDIO_SET_INITIAL_PLAYER_STATION(const char* radioStation)
 	{
 		AUDIO::SET_INITIAL_PLAYER_STATION(radioStation);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_USER_RADIO_CONTROL_ENABLED( bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_USER_RADIO_CONTROL_ENABLED(bool toggle)
 	{
 		AUDIO::SET_USER_RADIO_CONTROL_ENABLED(toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_TRACK( const char* radioStation, const char* radioTrack )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_TRACK(const char* radioStation, const char* radioTrack)
 	{
 		AUDIO::SET_RADIO_TRACK(radioStation, radioTrack);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_TRACK_WITH_START_OFFSET( const char* radioStationName, const char* mixName, int p2 )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_TRACK_WITH_START_OFFSET(const char* radioStationName, const char* mixName, int p2)
 	{
 		AUDIO::SET_RADIO_TRACK_WITH_START_OFFSET(radioStationName, mixName, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_NEXT_RADIO_TRACK( const char* radioName, const char* radioTrack, const char* p2, const char* p3 )
+	static void LUA_NATIVE_AUDIO_SET_NEXT_RADIO_TRACK(const char* radioName, const char* radioTrack, const char* p2, const char* p3)
 	{
 		AUDIO::SET_NEXT_RADIO_TRACK(radioName, radioTrack, p2, p3);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_RADIO_LOUD( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_RADIO_LOUD(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_VEHICLE_RADIO_LOUD(vehicle, toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_CAN_VEHICLE_RECEIVE_CB_RADIO( Vehicle vehicle )
+	static bool LUA_NATIVE_AUDIO_CAN_VEHICLE_RECEIVE_CB_RADIO(Vehicle vehicle)
 	{
 		auto retval = (bool)AUDIO::CAN_VEHICLE_RECEIVE_CB_RADIO(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY( bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(bool toggle)
 	{
 		AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_DOES_PLAYER_VEH_HAVE_RADIO(  )
+	static bool LUA_NATIVE_AUDIO_DOES_PLAYER_VEH_HAVE_RADIO()
 	{
 		auto retval = (bool)AUDIO::DOES_PLAYER_VEH_HAVE_RADIO();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_PLAYER_VEH_RADIO_ENABLE(  )
+	static bool LUA_NATIVE_AUDIO_IS_PLAYER_VEH_RADIO_ENABLE()
 	{
 		auto retval = (bool)AUDIO::IS_PLAYER_VEH_RADIO_ENABLE();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_RADIO_ENABLED( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_RADIO_ENABLED(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_VEHICLE_RADIO_ENABLED(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_POSITIONED_PLAYER_VEHICLE_RADIO_EMITTER_ENABLED( Any p0 )
+	static void LUA_NATIVE_AUDIO_SET_POSITIONED_PLAYER_VEHICLE_RADIO_EMITTER_ENABLED(Any p0)
 	{
 		AUDIO::SET_POSITIONED_PLAYER_VEHICLE_RADIO_EMITTER_ENABLED(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_CUSTOM_RADIO_TRACK_LIST( const char* radioStation, const char* trackListName, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_CUSTOM_RADIO_TRACK_LIST(const char* radioStation, const char* trackListName, bool p2)
 	{
 		AUDIO::SET_CUSTOM_RADIO_TRACK_LIST(radioStation, trackListName, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_CLEAR_CUSTOM_RADIO_TRACK_LIST( const char* radioStation )
+	static void LUA_NATIVE_AUDIO_CLEAR_CUSTOM_RADIO_TRACK_LIST(const char* radioStation)
 	{
 		AUDIO::CLEAR_CUSTOM_RADIO_TRACK_LIST(radioStation);
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_NUM_UNLOCKED_RADIO_STATIONS(  )
+	static int LUA_NATIVE_AUDIO_GET_NUM_UNLOCKED_RADIO_STATIONS()
 	{
 		auto retval = AUDIO::GET_NUM_UNLOCKED_RADIO_STATIONS();
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_FIND_RADIO_STATION_INDEX( Hash stationNameHash )
+	static int LUA_NATIVE_AUDIO_FIND_RADIO_STATION_INDEX(Hash stationNameHash)
 	{
 		auto retval = AUDIO::FIND_RADIO_STATION_INDEX(stationNameHash);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_STATION_MUSIC_ONLY( const char* radioStation, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_STATION_MUSIC_ONLY(const char* radioStation, bool toggle)
 	{
 		AUDIO::SET_RADIO_STATION_MUSIC_ONLY(radioStation, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_FRONTEND_FADE_TIME( float fadeTime )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_FRONTEND_FADE_TIME(float fadeTime)
 	{
 		AUDIO::SET_RADIO_FRONTEND_FADE_TIME(fadeTime);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNLOCK_RADIO_STATION_TRACK_LIST( const char* radioStation, const char* trackListName )
+	static void LUA_NATIVE_AUDIO_UNLOCK_RADIO_STATION_TRACK_LIST(const char* radioStation, const char* trackListName)
 	{
 		AUDIO::UNLOCK_RADIO_STATION_TRACK_LIST(radioStation, trackListName);
 	}
 
-	static void LUA_NATIVE_AUDIO_LOCK_RADIO_STATION_TRACK_LIST( const char* radioStation, const char* trackListName )
+	static void LUA_NATIVE_AUDIO_LOCK_RADIO_STATION_TRACK_LIST(const char* radioStation, const char* trackListName)
 	{
 		AUDIO::LOCK_RADIO_STATION_TRACK_LIST(radioStation, trackListName);
 	}
 
-	static void LUA_NATIVE_AUDIO_UPDATE_UNLOCKABLE_DJ_RADIO_TRACKS( bool enableMixes )
+	static void LUA_NATIVE_AUDIO_UPDATE_UNLOCKABLE_DJ_RADIO_TRACKS(bool enableMixes)
 	{
 		AUDIO::UPDATE_UNLOCKABLE_DJ_RADIO_TRACKS(enableMixes);
 	}
 
-	static void LUA_NATIVE_AUDIO_LOCK_RADIO_STATION( const char* radioStationName, bool toggle )
+	static void LUA_NATIVE_AUDIO_LOCK_RADIO_STATION(const char* radioStationName, bool toggle)
 	{
 		AUDIO::LOCK_RADIO_STATION(radioStationName, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_STATION_AS_FAVOURITE( const char* radioStation, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_STATION_AS_FAVOURITE(const char* radioStation, bool toggle)
 	{
 		AUDIO::SET_RADIO_STATION_AS_FAVOURITE(radioStation, toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_RADIO_STATION_FAVOURITED( const char* radioStation )
+	static bool LUA_NATIVE_AUDIO_IS_RADIO_STATION_FAVOURITED(const char* radioStation)
 	{
 		auto retval = (bool)AUDIO::IS_RADIO_STATION_FAVOURITED(radioStation);
 		return retval;
 	}
 
-	static std::tuple<bool, float, float, int> LUA_NATIVE_AUDIO_GET_NEXT_AUDIBLE_BEAT( float out1, float out2, int out3 )
+	static std::tuple<bool, float, float, int> LUA_NATIVE_AUDIO_GET_NEXT_AUDIBLE_BEAT(float out1, float out2, int out3)
 	{
 		std::tuple<bool, float, float, int> return_values;
 		std::get<0>(return_values) = (bool)AUDIO::GET_NEXT_AUDIBLE_BEAT(&out1, &out2, &out3);
@@ -785,682 +785,682 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_AUDIO_FORCE_MUSIC_TRACK_LIST( const char* radioStation, const char* trackListName, int milliseconds )
+	static void LUA_NATIVE_AUDIO_FORCE_MUSIC_TRACK_LIST(const char* radioStation, const char* trackListName, int milliseconds)
 	{
 		AUDIO::FORCE_MUSIC_TRACK_LIST(radioStation, trackListName, milliseconds);
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_CURRENT_TRACK_PLAY_TIME( const char* radioStationName )
+	static int LUA_NATIVE_AUDIO_GET_CURRENT_TRACK_PLAY_TIME(const char* radioStationName)
 	{
 		auto retval = AUDIO::GET_CURRENT_TRACK_PLAY_TIME(radioStationName);
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_AUDIO_GET_CURRENT_TRACK_SOUND_NAME( const char* radioStationName )
+	static Hash LUA_NATIVE_AUDIO_GET_CURRENT_TRACK_SOUND_NAME(const char* radioStationName)
 	{
 		auto retval = AUDIO::GET_CURRENT_TRACK_SOUND_NAME(radioStationName);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_MISSILE_WARNING_ENABLED( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_MISSILE_WARNING_ENABLED(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_VEHICLE_MISSILE_WARNING_ENABLED(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_STATE( const char* zoneName, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_STATE(const char* zoneName, bool p1, bool p2)
 	{
 		AUDIO::SET_AMBIENT_ZONE_STATE(zoneName, p1, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_CLEAR_AMBIENT_ZONE_STATE( const char* zoneName, bool p1 )
+	static void LUA_NATIVE_AUDIO_CLEAR_AMBIENT_ZONE_STATE(const char* zoneName, bool p1)
 	{
 		AUDIO::CLEAR_AMBIENT_ZONE_STATE(zoneName, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_LIST_STATE( const char* ambientZone, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_LIST_STATE(const char* ambientZone, bool p1, bool p2)
 	{
 		AUDIO::SET_AMBIENT_ZONE_LIST_STATE(ambientZone, p1, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_CLEAR_AMBIENT_ZONE_LIST_STATE( const char* ambientZone, bool p1 )
+	static void LUA_NATIVE_AUDIO_CLEAR_AMBIENT_ZONE_LIST_STATE(const char* ambientZone, bool p1)
 	{
 		AUDIO::CLEAR_AMBIENT_ZONE_LIST_STATE(ambientZone, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_STATE_PERSISTENT( const char* ambientZone, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_STATE_PERSISTENT(const char* ambientZone, bool p1, bool p2)
 	{
 		AUDIO::SET_AMBIENT_ZONE_STATE_PERSISTENT(ambientZone, p1, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_LIST_STATE_PERSISTENT( const char* ambientZone, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_AMBIENT_ZONE_LIST_STATE_PERSISTENT(const char* ambientZone, bool p1, bool p2)
 	{
 		AUDIO::SET_AMBIENT_ZONE_LIST_STATE_PERSISTENT(ambientZone, p1, p2);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_ZONE_ENABLED( const char* ambientZone )
+	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_ZONE_ENABLED(const char* ambientZone)
 	{
 		auto retval = (bool)AUDIO::IS_AMBIENT_ZONE_ENABLED(ambientZone);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_REFRESH_CLOSEST_OCEAN_SHORELINE(  )
+	static void LUA_NATIVE_AUDIO_REFRESH_CLOSEST_OCEAN_SHORELINE()
 	{
 		AUDIO::REFRESH_CLOSEST_OCEAN_SHORELINE();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_CUTSCENE_AUDIO_OVERRIDE( const char* name )
+	static void LUA_NATIVE_AUDIO_SET_CUTSCENE_AUDIO_OVERRIDE(const char* name)
 	{
 		AUDIO::SET_CUTSCENE_AUDIO_OVERRIDE(name);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_SYNCH_SCENE_AUDIO( const char* variableName, float value )
+	static void LUA_NATIVE_AUDIO_SET_VARIABLE_ON_SYNCH_SCENE_AUDIO(const char* variableName, float value)
 	{
 		AUDIO::SET_VARIABLE_ON_SYNCH_SCENE_AUDIO(variableName, value);
 	}
 
-	static int LUA_NATIVE_AUDIO_PLAY_POLICE_REPORT( const char* name, float p1 )
+	static int LUA_NATIVE_AUDIO_PLAY_POLICE_REPORT(const char* name, float p1)
 	{
 		auto retval = AUDIO::PLAY_POLICE_REPORT(name, p1);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_CANCEL_ALL_POLICE_REPORTS(  )
+	static void LUA_NATIVE_AUDIO_CANCEL_ALL_POLICE_REPORTS()
 	{
 		AUDIO::CANCEL_ALL_POLICE_REPORTS();
 	}
 
-	static void LUA_NATIVE_AUDIO_BLIP_SIREN( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_BLIP_SIREN(Vehicle vehicle)
 	{
 		AUDIO::BLIP_SIREN(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_OVERRIDE_VEH_HORN( Vehicle vehicle, bool override, int hornHash )
+	static void LUA_NATIVE_AUDIO_OVERRIDE_VEH_HORN(Vehicle vehicle, bool override, int hornHash)
 	{
 		AUDIO::OVERRIDE_VEH_HORN(vehicle, override, hornHash);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_HORN_ACTIVE( Vehicle vehicle )
+	static bool LUA_NATIVE_AUDIO_IS_HORN_ACTIVE(Vehicle vehicle)
 	{
 		auto retval = (bool)AUDIO::IS_HORN_ACTIVE(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AGGRESSIVE_HORNS( bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_AGGRESSIVE_HORNS(bool toggle)
 	{
 		AUDIO::SET_AGGRESSIVE_HORNS(toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_RADIO_POSITION_AUDIO_MUTE( bool p0 )
+	static void LUA_NATIVE_AUDIO_SET_RADIO_POSITION_AUDIO_MUTE(bool p0)
 	{
 		AUDIO::SET_RADIO_POSITION_AUDIO_MUTE(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_CONVERSATIONS_PERSIST( bool p0, bool p1 )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_CONVERSATIONS_PERSIST(bool p0, bool p1)
 	{
 		AUDIO::SET_VEHICLE_CONVERSATIONS_PERSIST(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_CONVERSATIONS_PERSIST_NEW( bool p0, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_CONVERSATIONS_PERSIST_NEW(bool p0, bool p1, bool p2)
 	{
 		AUDIO::SET_VEHICLE_CONVERSATIONS_PERSIST_NEW(p0, p1, p2);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_STREAM_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_IS_STREAM_PLAYING()
 	{
 		auto retval = (bool)AUDIO::IS_STREAM_PLAYING();
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_STREAM_PLAY_TIME(  )
+	static int LUA_NATIVE_AUDIO_GET_STREAM_PLAY_TIME()
 	{
 		auto retval = AUDIO::GET_STREAM_PLAY_TIME();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_LOAD_STREAM( const char* streamName, const char* soundSet )
+	static bool LUA_NATIVE_AUDIO_LOAD_STREAM(const char* streamName, const char* soundSet)
 	{
 		auto retval = (bool)AUDIO::LOAD_STREAM(streamName, soundSet);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_LOAD_STREAM_WITH_START_OFFSET( const char* streamName, int startOffset, const char* soundSet )
+	static bool LUA_NATIVE_AUDIO_LOAD_STREAM_WITH_START_OFFSET(const char* streamName, int startOffset, const char* soundSet)
 	{
 		auto retval = (bool)AUDIO::LOAD_STREAM_WITH_START_OFFSET(streamName, startOffset, soundSet);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_PED( Ped ped )
+	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_PED(Ped ped)
 	{
 		AUDIO::PLAY_STREAM_FROM_PED(ped);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_VEHICLE( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_VEHICLE(Vehicle vehicle)
 	{
 		AUDIO::PLAY_STREAM_FROM_VEHICLE(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_OBJECT( Object object )
+	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_OBJECT(Object object)
 	{
 		AUDIO::PLAY_STREAM_FROM_OBJECT(object);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FRONTEND(  )
+	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FRONTEND()
 	{
 		AUDIO::PLAY_STREAM_FRONTEND();
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_POSITION( float x, float y, float z )
+	static void LUA_NATIVE_AUDIO_PLAY_STREAM_FROM_POSITION(float x, float y, float z)
 	{
 		AUDIO::PLAY_STREAM_FROM_POSITION(x, y, z);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_STREAM(  )
+	static void LUA_NATIVE_AUDIO_STOP_STREAM()
 	{
 		AUDIO::STOP_STREAM();
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_PED_SPEAKING( Ped ped, bool shaking )
+	static void LUA_NATIVE_AUDIO_STOP_PED_SPEAKING(Ped ped, bool shaking)
 	{
 		AUDIO::STOP_PED_SPEAKING(ped, shaking);
 	}
 
-	static void LUA_NATIVE_AUDIO_BLOCK_ALL_SPEECH_FROM_PED( Ped ped, bool p1, bool p2 )
+	static void LUA_NATIVE_AUDIO_BLOCK_ALL_SPEECH_FROM_PED(Ped ped, bool p1, bool p2)
 	{
 		AUDIO::BLOCK_ALL_SPEECH_FROM_PED(ped, p1, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_PED_SPEAKING_SYNCED( Ped ped, bool p1 )
+	static void LUA_NATIVE_AUDIO_STOP_PED_SPEAKING_SYNCED(Ped ped, bool p1)
 	{
 		AUDIO::STOP_PED_SPEAKING_SYNCED(ped, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_DISABLE_PED_PAIN_AUDIO( Ped ped, bool toggle )
+	static void LUA_NATIVE_AUDIO_DISABLE_PED_PAIN_AUDIO(Ped ped, bool toggle)
 	{
 		AUDIO::DISABLE_PED_PAIN_AUDIO(ped, toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_SPEECH_DISABLED( Ped ped )
+	static bool LUA_NATIVE_AUDIO_IS_AMBIENT_SPEECH_DISABLED(Ped ped)
 	{
 		auto retval = (bool)AUDIO::IS_AMBIENT_SPEECH_DISABLED(ped);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_BLOCK_SPEECH_CONTEXT_GROUP( const char* p0, int p1 )
+	static void LUA_NATIVE_AUDIO_BLOCK_SPEECH_CONTEXT_GROUP(const char* p0, int p1)
 	{
 		AUDIO::BLOCK_SPEECH_CONTEXT_GROUP(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNBLOCK_SPEECH_CONTEXT_GROUP( const char* p0 )
+	static void LUA_NATIVE_AUDIO_UNBLOCK_SPEECH_CONTEXT_GROUP(const char* p0)
 	{
 		AUDIO::UNBLOCK_SPEECH_CONTEXT_GROUP(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_SIREN_WITH_NO_DRIVER( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_SIREN_WITH_NO_DRIVER(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_SIREN_WITH_NO_DRIVER(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_SIREN_BYPASS_MP_DRIVER_CHECK( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_SIREN_BYPASS_MP_DRIVER_CHECK(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_SIREN_BYPASS_MP_DRIVER_CHECK(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_TRIGGER_SIREN_AUDIO( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_TRIGGER_SIREN_AUDIO(Vehicle vehicle)
 	{
 		AUDIO::TRIGGER_SIREN_AUDIO(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_HORN_PERMANENTLY_ON( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_SET_HORN_PERMANENTLY_ON(Vehicle vehicle)
 	{
 		AUDIO::SET_HORN_PERMANENTLY_ON(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_HORN_ENABLED( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_HORN_ENABLED(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_HORN_ENABLED(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AUDIO_VEHICLE_PRIORITY( Vehicle vehicle, Any p1 )
+	static void LUA_NATIVE_AUDIO_SET_AUDIO_VEHICLE_PRIORITY(Vehicle vehicle, Any p1)
 	{
 		AUDIO::SET_AUDIO_VEHICLE_PRIORITY(vehicle, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_HORN_PERMANENTLY_ON_TIME( Vehicle vehicle, float time )
+	static void LUA_NATIVE_AUDIO_SET_HORN_PERMANENTLY_ON_TIME(Vehicle vehicle, float time)
 	{
 		AUDIO::SET_HORN_PERMANENTLY_ON_TIME(vehicle, time);
 	}
 
-	static void LUA_NATIVE_AUDIO_USE_SIREN_AS_HORN( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_USE_SIREN_AS_HORN(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::USE_SIREN_AS_HORN(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_FORCE_USE_AUDIO_GAME_OBJECT( Vehicle vehicle, const char* audioName )
+	static void LUA_NATIVE_AUDIO_FORCE_USE_AUDIO_GAME_OBJECT(Vehicle vehicle, const char* audioName)
 	{
 		AUDIO::FORCE_USE_AUDIO_GAME_OBJECT(vehicle, audioName);
 	}
 
-	static void LUA_NATIVE_AUDIO_PRELOAD_VEHICLE_AUDIO_BANK( Hash vehicleModel )
+	static void LUA_NATIVE_AUDIO_PRELOAD_VEHICLE_AUDIO_BANK(Hash vehicleModel)
 	{
 		AUDIO::PRELOAD_VEHICLE_AUDIO_BANK(vehicleModel);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_STARTUP_REV_SOUND( Vehicle vehicle, const char* p1, const char* p2 )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_STARTUP_REV_SOUND(Vehicle vehicle, const char* p1, const char* p2)
 	{
 		AUDIO::SET_VEHICLE_STARTUP_REV_SOUND(vehicle, p1, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_RESET_VEHICLE_STARTUP_REV_SOUND( Vehicle vehicle )
+	static void LUA_NATIVE_AUDIO_RESET_VEHICLE_STARTUP_REV_SOUND(Vehicle vehicle)
 	{
 		AUDIO::RESET_VEHICLE_STARTUP_REV_SOUND(vehicle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_FORCE_REVERSE_WARNING( Any p0, Any p1 )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_FORCE_REVERSE_WARNING(Any p0, Any p1)
 	{
 		AUDIO::SET_VEHICLE_FORCE_REVERSE_WARNING(p0, p1);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_VEHICLE_AUDIBLY_DAMAGED( Vehicle vehicle )
+	static bool LUA_NATIVE_AUDIO_IS_VEHICLE_AUDIBLY_DAMAGED(Vehicle vehicle)
 	{
 		auto retval = (bool)AUDIO::IS_VEHICLE_AUDIBLY_DAMAGED(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_AUDIO_ENGINE_DAMAGE_FACTOR( Vehicle vehicle, float damageFactor )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_AUDIO_ENGINE_DAMAGE_FACTOR(Vehicle vehicle, float damageFactor)
 	{
 		AUDIO::SET_VEHICLE_AUDIO_ENGINE_DAMAGE_FACTOR(vehicle, damageFactor);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_AUDIO_BODY_DAMAGE_FACTOR( Vehicle vehicle, float intensity )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_AUDIO_BODY_DAMAGE_FACTOR(Vehicle vehicle, float intensity)
 	{
 		AUDIO::SET_VEHICLE_AUDIO_BODY_DAMAGE_FACTOR(vehicle, intensity);
 	}
 
-	static void LUA_NATIVE_AUDIO_ENABLE_VEHICLE_FANBELT_DAMAGE( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_ENABLE_VEHICLE_FANBELT_DAMAGE(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::ENABLE_VEHICLE_FANBELT_DAMAGE(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_ENABLE_VEHICLE_EXHAUST_POPS( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_ENABLE_VEHICLE_EXHAUST_POPS(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::ENABLE_VEHICLE_EXHAUST_POPS(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_BOOST_ACTIVE( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_BOOST_ACTIVE(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_VEHICLE_BOOST_ACTIVE(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PLAYER_VEHICLE_ALARM_AUDIO_ACTIVE( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_PLAYER_VEHICLE_ALARM_AUDIO_ACTIVE(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::SET_PLAYER_VEHICLE_ALARM_AUDIO_ACTIVE(vehicle, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_SCRIPT_UPDATE_DOOR_AUDIO( Hash doorHash, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_SCRIPT_UPDATE_DOOR_AUDIO(Hash doorHash, bool toggle)
 	{
 		AUDIO::SET_SCRIPT_UPDATE_DOOR_AUDIO(doorHash, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_VEHICLE_DOOR_OPEN_SOUND( Vehicle vehicle, int doorId )
+	static void LUA_NATIVE_AUDIO_PLAY_VEHICLE_DOOR_OPEN_SOUND(Vehicle vehicle, int doorId)
 	{
 		AUDIO::PLAY_VEHICLE_DOOR_OPEN_SOUND(vehicle, doorId);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_VEHICLE_DOOR_CLOSE_SOUND( Vehicle vehicle, int doorId )
+	static void LUA_NATIVE_AUDIO_PLAY_VEHICLE_DOOR_CLOSE_SOUND(Vehicle vehicle, int doorId)
 	{
 		AUDIO::PLAY_VEHICLE_DOOR_CLOSE_SOUND(vehicle, doorId);
 	}
 
-	static void LUA_NATIVE_AUDIO_ENABLE_STALL_WARNING_SOUNDS( Vehicle vehicle, bool toggle )
+	static void LUA_NATIVE_AUDIO_ENABLE_STALL_WARNING_SOUNDS(Vehicle vehicle, bool toggle)
 	{
 		AUDIO::ENABLE_STALL_WARNING_SOUNDS(vehicle, toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_GAME_IN_CONTROL_OF_MUSIC(  )
+	static bool LUA_NATIVE_AUDIO_IS_GAME_IN_CONTROL_OF_MUSIC()
 	{
 		auto retval = (bool)AUDIO::IS_GAME_IN_CONTROL_OF_MUSIC();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_GPS_ACTIVE( bool active )
+	static void LUA_NATIVE_AUDIO_SET_GPS_ACTIVE(bool active)
 	{
 		AUDIO::SET_GPS_ACTIVE(active);
 	}
 
-	static void LUA_NATIVE_AUDIO_PLAY_MISSION_COMPLETE_AUDIO( const char* audioName )
+	static void LUA_NATIVE_AUDIO_PLAY_MISSION_COMPLETE_AUDIO(const char* audioName)
 	{
 		AUDIO::PLAY_MISSION_COMPLETE_AUDIO(audioName);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MISSION_COMPLETE_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_IS_MISSION_COMPLETE_PLAYING()
 	{
 		auto retval = (bool)AUDIO::IS_MISSION_COMPLETE_PLAYING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MISSION_COMPLETE_READY_FOR_UI(  )
+	static bool LUA_NATIVE_AUDIO_IS_MISSION_COMPLETE_READY_FOR_UI()
 	{
 		auto retval = (bool)AUDIO::IS_MISSION_COMPLETE_READY_FOR_UI();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_BLOCK_DEATH_JINGLE( bool toggle )
+	static void LUA_NATIVE_AUDIO_BLOCK_DEATH_JINGLE(bool toggle)
 	{
 		AUDIO::BLOCK_DEATH_JINGLE(toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_START_AUDIO_SCENE( const char* scene )
+	static bool LUA_NATIVE_AUDIO_START_AUDIO_SCENE(const char* scene)
 	{
 		auto retval = (bool)AUDIO::START_AUDIO_SCENE(scene);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_AUDIO_SCENE( const char* scene )
+	static void LUA_NATIVE_AUDIO_STOP_AUDIO_SCENE(const char* scene)
 	{
 		AUDIO::STOP_AUDIO_SCENE(scene);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_AUDIO_SCENES(  )
+	static void LUA_NATIVE_AUDIO_STOP_AUDIO_SCENES()
 	{
 		AUDIO::STOP_AUDIO_SCENES();
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_AUDIO_SCENE_ACTIVE( const char* scene )
+	static bool LUA_NATIVE_AUDIO_IS_AUDIO_SCENE_ACTIVE(const char* scene)
 	{
 		auto retval = (bool)AUDIO::IS_AUDIO_SCENE_ACTIVE(scene);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AUDIO_SCENE_VARIABLE( const char* scene, const char* variable, float value )
+	static void LUA_NATIVE_AUDIO_SET_AUDIO_SCENE_VARIABLE(const char* scene, const char* variable, float value)
 	{
 		AUDIO::SET_AUDIO_SCENE_VARIABLE(scene, variable, value);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AUDIO_SCRIPT_CLEANUP_TIME( int time )
+	static void LUA_NATIVE_AUDIO_SET_AUDIO_SCRIPT_CLEANUP_TIME(int time)
 	{
 		AUDIO::SET_AUDIO_SCRIPT_CLEANUP_TIME(time);
 	}
 
-	static void LUA_NATIVE_AUDIO_ADD_ENTITY_TO_AUDIO_MIX_GROUP( Entity entity, const char* groupName, float p2 )
+	static void LUA_NATIVE_AUDIO_ADD_ENTITY_TO_AUDIO_MIX_GROUP(Entity entity, const char* groupName, float p2)
 	{
 		AUDIO::ADD_ENTITY_TO_AUDIO_MIX_GROUP(entity, groupName, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_REMOVE_ENTITY_FROM_AUDIO_MIX_GROUP( Entity entity, float p1 )
+	static void LUA_NATIVE_AUDIO_REMOVE_ENTITY_FROM_AUDIO_MIX_GROUP(Entity entity, float p1)
 	{
 		AUDIO::REMOVE_ENTITY_FROM_AUDIO_MIX_GROUP(entity, p1);
 	}
 
-	static bool LUA_NATIVE_AUDIO_AUDIO_IS_MUSIC_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_AUDIO_IS_MUSIC_PLAYING()
 	{
 		auto retval = (bool)AUDIO::AUDIO_IS_MUSIC_PLAYING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_AUDIO_IS_SCRIPTED_MUSIC_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_AUDIO_IS_SCRIPTED_MUSIC_PLAYING()
 	{
 		auto retval = (bool)AUDIO::AUDIO_IS_SCRIPTED_MUSIC_PLAYING();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_PREPARE_MUSIC_EVENT( const char* eventName )
+	static bool LUA_NATIVE_AUDIO_PREPARE_MUSIC_EVENT(const char* eventName)
 	{
 		auto retval = (bool)AUDIO::PREPARE_MUSIC_EVENT(eventName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_CANCEL_MUSIC_EVENT( const char* eventName )
+	static bool LUA_NATIVE_AUDIO_CANCEL_MUSIC_EVENT(const char* eventName)
 	{
 		auto retval = (bool)AUDIO::CANCEL_MUSIC_EVENT(eventName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_TRIGGER_MUSIC_EVENT( const char* eventName )
+	static bool LUA_NATIVE_AUDIO_TRIGGER_MUSIC_EVENT(const char* eventName)
 	{
 		auto retval = (bool)AUDIO::TRIGGER_MUSIC_EVENT(eventName);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_MUSIC_ONESHOT_PLAYING(  )
+	static bool LUA_NATIVE_AUDIO_IS_MUSIC_ONESHOT_PLAYING()
 	{
 		auto retval = (bool)AUDIO::IS_MUSIC_ONESHOT_PLAYING();
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_MUSIC_PLAYTIME(  )
+	static int LUA_NATIVE_AUDIO_GET_MUSIC_PLAYTIME()
 	{
 		auto retval = AUDIO::GET_MUSIC_PLAYTIME();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_GLOBAL_RADIO_SIGNAL_LEVEL( Any p0 )
+	static void LUA_NATIVE_AUDIO_SET_GLOBAL_RADIO_SIGNAL_LEVEL(Any p0)
 	{
 		AUDIO::SET_GLOBAL_RADIO_SIGNAL_LEVEL(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_RECORD_BROKEN_GLASS( float x, float y, float z, float radius )
+	static void LUA_NATIVE_AUDIO_RECORD_BROKEN_GLASS(float x, float y, float z, float radius)
 	{
 		AUDIO::RECORD_BROKEN_GLASS(x, y, z, radius);
 	}
 
-	static void LUA_NATIVE_AUDIO_CLEAR_ALL_BROKEN_GLASS(  )
+	static void LUA_NATIVE_AUDIO_CLEAR_ALL_BROKEN_GLASS()
 	{
 		AUDIO::CLEAR_ALL_BROKEN_GLASS();
 	}
 
-	static void LUA_NATIVE_AUDIO_SCRIPT_OVERRIDES_WIND_ELEVATION( bool p0, Any p1 )
+	static void LUA_NATIVE_AUDIO_SCRIPT_OVERRIDES_WIND_ELEVATION(bool p0, Any p1)
 	{
 		AUDIO::SCRIPT_OVERRIDES_WIND_ELEVATION(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_WALLA_DENSITY( float p0, float p1 )
+	static void LUA_NATIVE_AUDIO_SET_PED_WALLA_DENSITY(float p0, float p1)
 	{
 		AUDIO::SET_PED_WALLA_DENSITY(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_INTERIOR_WALLA_DENSITY( float p0, float p1 )
+	static void LUA_NATIVE_AUDIO_SET_PED_INTERIOR_WALLA_DENSITY(float p0, float p1)
 	{
 		AUDIO::SET_PED_INTERIOR_WALLA_DENSITY(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_FORCE_PED_PANIC_WALLA(  )
+	static void LUA_NATIVE_AUDIO_FORCE_PED_PANIC_WALLA()
 	{
 		AUDIO::FORCE_PED_PANIC_WALLA();
 	}
 
-	static bool LUA_NATIVE_AUDIO_PREPARE_ALARM( const char* alarmName )
+	static bool LUA_NATIVE_AUDIO_PREPARE_ALARM(const char* alarmName)
 	{
 		auto retval = (bool)AUDIO::PREPARE_ALARM(alarmName);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_START_ALARM( const char* alarmName, bool p2 )
+	static void LUA_NATIVE_AUDIO_START_ALARM(const char* alarmName, bool p2)
 	{
 		AUDIO::START_ALARM(alarmName, p2);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_ALARM( const char* alarmName, bool toggle )
+	static void LUA_NATIVE_AUDIO_STOP_ALARM(const char* alarmName, bool toggle)
 	{
 		AUDIO::STOP_ALARM(alarmName, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_ALL_ALARMS( bool stop )
+	static void LUA_NATIVE_AUDIO_STOP_ALL_ALARMS(bool stop)
 	{
 		AUDIO::STOP_ALL_ALARMS(stop);
 	}
 
-	static bool LUA_NATIVE_AUDIO_IS_ALARM_PLAYING( const char* alarmName )
+	static bool LUA_NATIVE_AUDIO_IS_ALARM_PLAYING(const char* alarmName)
 	{
 		auto retval = (bool)AUDIO::IS_ALARM_PLAYING(alarmName);
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_AUDIO_GET_VEHICLE_DEFAULT_HORN( Vehicle vehicle )
+	static Hash LUA_NATIVE_AUDIO_GET_VEHICLE_DEFAULT_HORN(Vehicle vehicle)
 	{
 		auto retval = AUDIO::GET_VEHICLE_DEFAULT_HORN(vehicle);
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_AUDIO_GET_VEHICLE_DEFAULT_HORN_IGNORE_MODS( Vehicle vehicle )
+	static Hash LUA_NATIVE_AUDIO_GET_VEHICLE_DEFAULT_HORN_IGNORE_MODS(Vehicle vehicle)
 	{
 		auto retval = AUDIO::GET_VEHICLE_DEFAULT_HORN_IGNORE_MODS(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_RESET_PED_AUDIO_FLAGS( Ped ped )
+	static void LUA_NATIVE_AUDIO_RESET_PED_AUDIO_FLAGS(Ped ped)
 	{
 		AUDIO::RESET_PED_AUDIO_FLAGS(ped);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_FOOTSTEPS_EVENTS_ENABLED( Ped ped, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_PED_FOOTSTEPS_EVENTS_ENABLED(Ped ped, bool toggle)
 	{
 		AUDIO::SET_PED_FOOTSTEPS_EVENTS_ENABLED(ped, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PED_CLOTH_EVENTS_ENABLED( Ped ped, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_PED_CLOTH_EVENTS_ENABLED(Ped ped, bool toggle)
 	{
 		AUDIO::SET_PED_CLOTH_EVENTS_ENABLED(ped, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_OVERRIDE_PLAYER_GROUND_MATERIAL( Hash hash, bool toggle )
+	static void LUA_NATIVE_AUDIO_OVERRIDE_PLAYER_GROUND_MATERIAL(Hash hash, bool toggle)
 	{
 		AUDIO::OVERRIDE_PLAYER_GROUND_MATERIAL(hash, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_USE_FOOTSTEP_SCRIPT_SWEETENERS( Ped ped, bool p1, Hash hash )
+	static void LUA_NATIVE_AUDIO_USE_FOOTSTEP_SCRIPT_SWEETENERS(Ped ped, bool p1, Hash hash)
 	{
 		AUDIO::USE_FOOTSTEP_SCRIPT_SWEETENERS(ped, p1, hash);
 	}
 
-	static void LUA_NATIVE_AUDIO_OVERRIDE_MICROPHONE_SETTINGS( Hash hash, bool toggle )
+	static void LUA_NATIVE_AUDIO_OVERRIDE_MICROPHONE_SETTINGS(Hash hash, bool toggle)
 	{
 		AUDIO::OVERRIDE_MICROPHONE_SETTINGS(hash, toggle);
 	}
 
-	static void LUA_NATIVE_AUDIO_FREEZE_MICROPHONE(  )
+	static void LUA_NATIVE_AUDIO_FREEZE_MICROPHONE()
 	{
 		AUDIO::FREEZE_MICROPHONE();
 	}
 
-	static void LUA_NATIVE_AUDIO_DISTANT_COP_CAR_SIRENS( bool value )
+	static void LUA_NATIVE_AUDIO_DISTANT_COP_CAR_SIRENS(bool value)
 	{
 		AUDIO::DISTANT_COP_CAR_SIRENS(value);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_SIREN_CAN_BE_CONTROLLED_BY_AUDIO( Vehicle vehicle, bool p1 )
+	static void LUA_NATIVE_AUDIO_SET_SIREN_CAN_BE_CONTROLLED_BY_AUDIO(Vehicle vehicle, bool p1)
 	{
 		AUDIO::SET_SIREN_CAN_BE_CONTROLLED_BY_AUDIO(vehicle, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_ENABLE_STUNT_JUMP_AUDIO(  )
+	static void LUA_NATIVE_AUDIO_ENABLE_STUNT_JUMP_AUDIO()
 	{
 		AUDIO::ENABLE_STUNT_JUMP_AUDIO();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AUDIO_FLAG( const char* flagName, bool toggle )
+	static void LUA_NATIVE_AUDIO_SET_AUDIO_FLAG(const char* flagName, bool toggle)
 	{
 		AUDIO::SET_AUDIO_FLAG(flagName, toggle);
 	}
 
-	static bool LUA_NATIVE_AUDIO_PREPARE_SYNCHRONIZED_AUDIO_EVENT( const char* audioEvent, Any p1 )
+	static bool LUA_NATIVE_AUDIO_PREPARE_SYNCHRONIZED_AUDIO_EVENT(const char* audioEvent, Any p1)
 	{
 		auto retval = (bool)AUDIO::PREPARE_SYNCHRONIZED_AUDIO_EVENT(audioEvent, p1);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_PREPARE_SYNCHRONIZED_AUDIO_EVENT_FOR_SCENE( int sceneID, const char* audioEvent )
+	static bool LUA_NATIVE_AUDIO_PREPARE_SYNCHRONIZED_AUDIO_EVENT_FOR_SCENE(int sceneID, const char* audioEvent)
 	{
 		auto retval = (bool)AUDIO::PREPARE_SYNCHRONIZED_AUDIO_EVENT_FOR_SCENE(sceneID, audioEvent);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_PLAY_SYNCHRONIZED_AUDIO_EVENT( int sceneID )
+	static bool LUA_NATIVE_AUDIO_PLAY_SYNCHRONIZED_AUDIO_EVENT(int sceneID)
 	{
 		auto retval = (bool)AUDIO::PLAY_SYNCHRONIZED_AUDIO_EVENT(sceneID);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_STOP_SYNCHRONIZED_AUDIO_EVENT( int sceneID )
+	static bool LUA_NATIVE_AUDIO_STOP_SYNCHRONIZED_AUDIO_EVENT(int sceneID)
 	{
 		auto retval = (bool)AUDIO::STOP_SYNCHRONIZED_AUDIO_EVENT(sceneID);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_INIT_SYNCH_SCENE_AUDIO_WITH_POSITION( const char* audioEvent, float x, float y, float z )
+	static void LUA_NATIVE_AUDIO_INIT_SYNCH_SCENE_AUDIO_WITH_POSITION(const char* audioEvent, float x, float y, float z)
 	{
 		AUDIO::INIT_SYNCH_SCENE_AUDIO_WITH_POSITION(audioEvent, x, y, z);
 	}
 
-	static void LUA_NATIVE_AUDIO_INIT_SYNCH_SCENE_AUDIO_WITH_ENTITY( const char* audioEvent, Entity entity )
+	static void LUA_NATIVE_AUDIO_INIT_SYNCH_SCENE_AUDIO_WITH_ENTITY(const char* audioEvent, Entity entity)
 	{
 		AUDIO::INIT_SYNCH_SCENE_AUDIO_WITH_ENTITY(audioEvent, entity);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_AUDIO_SPECIAL_EFFECT_MODE( int mode )
+	static void LUA_NATIVE_AUDIO_SET_AUDIO_SPECIAL_EFFECT_MODE(int mode)
 	{
 		AUDIO::SET_AUDIO_SPECIAL_EFFECT_MODE(mode);
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_PORTAL_SETTINGS_OVERRIDE( const char* p0, const char* p1 )
+	static void LUA_NATIVE_AUDIO_SET_PORTAL_SETTINGS_OVERRIDE(const char* p0, const char* p1)
 	{
 		AUDIO::SET_PORTAL_SETTINGS_OVERRIDE(p0, p1);
 	}
 
-	static void LUA_NATIVE_AUDIO_REMOVE_PORTAL_SETTINGS_OVERRIDE( const char* p0 )
+	static void LUA_NATIVE_AUDIO_REMOVE_PORTAL_SETTINGS_OVERRIDE(const char* p0)
 	{
 		AUDIO::REMOVE_PORTAL_SETTINGS_OVERRIDE(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_SMOKE_GRENADE_EXPLOSION_SOUNDS(  )
+	static void LUA_NATIVE_AUDIO_STOP_SMOKE_GRENADE_EXPLOSION_SOUNDS()
 	{
 		AUDIO::STOP_SMOKE_GRENADE_EXPLOSION_SOUNDS();
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_MUSIC_VOL_SLIDER(  )
+	static int LUA_NATIVE_AUDIO_GET_MUSIC_VOL_SLIDER()
 	{
 		auto retval = AUDIO::GET_MUSIC_VOL_SLIDER();
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_REQUEST_TENNIS_BANKS( Ped ped )
+	static void LUA_NATIVE_AUDIO_REQUEST_TENNIS_BANKS(Ped ped)
 	{
 		AUDIO::REQUEST_TENNIS_BANKS(ped);
 	}
 
-	static void LUA_NATIVE_AUDIO_UNREQUEST_TENNIS_BANKS(  )
+	static void LUA_NATIVE_AUDIO_UNREQUEST_TENNIS_BANKS()
 	{
 		AUDIO::UNREQUEST_TENNIS_BANKS();
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_SKIP_MINIGUN_SPIN_UP_AUDIO( bool p0 )
+	static void LUA_NATIVE_AUDIO_SET_SKIP_MINIGUN_SPIN_UP_AUDIO(bool p0)
 	{
 		AUDIO::SET_SKIP_MINIGUN_SPIN_UP_AUDIO(p0);
 	}
 
-	static void LUA_NATIVE_AUDIO_STOP_CUTSCENE_AUDIO(  )
+	static void LUA_NATIVE_AUDIO_STOP_CUTSCENE_AUDIO()
 	{
 		AUDIO::STOP_CUTSCENE_AUDIO();
 	}
 
-	static bool LUA_NATIVE_AUDIO_HAS_LOADED_MP_DATA_SET(  )
+	static bool LUA_NATIVE_AUDIO_HAS_LOADED_MP_DATA_SET()
 	{
 		auto retval = (bool)AUDIO::HAS_LOADED_MP_DATA_SET();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_AUDIO_HAS_LOADED_SP_DATA_SET(  )
+	static bool LUA_NATIVE_AUDIO_HAS_LOADED_SP_DATA_SET()
 	{
 		auto retval = (bool)AUDIO::HAS_LOADED_SP_DATA_SET();
 		return retval;
 	}
 
-	static int LUA_NATIVE_AUDIO_GET_VEHICLE_HORN_SOUND_INDEX( Vehicle vehicle )
+	static int LUA_NATIVE_AUDIO_GET_VEHICLE_HORN_SOUND_INDEX(Vehicle vehicle)
 	{
 		auto retval = AUDIO::GET_VEHICLE_HORN_SOUND_INDEX(vehicle);
 		return retval;
 	}
 
-	static void LUA_NATIVE_AUDIO_SET_VEHICLE_HORN_SOUND_INDEX( Vehicle vehicle, int value )
+	static void LUA_NATIVE_AUDIO_SET_VEHICLE_HORN_SOUND_INDEX(Vehicle vehicle, int value)
 	{
 		AUDIO::SET_VEHICLE_HORN_SOUND_INDEX(vehicle, value);
 	}

@@ -140,7 +140,12 @@ namespace big
 					continue;
 				}
 				const auto module_info = get_module_by_address(addr);
-				m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen);
+
+				if (module_info->m_base == (uint64_t)GetModuleHandle(0))
+					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen) << " ("
+					       << module_info->m_path.filename().string() << "+" << HEX_TO_UPPER(addr - module_info->m_base) << ")";
+				else
+					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen);
 
 				continue;
 			}

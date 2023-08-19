@@ -3,7 +3,7 @@
 
 namespace lua::native
 {
-	static std::tuple<bool, float> LUA_NATIVE_WATER_GET_WATER_HEIGHT( float x, float y, float z, float height )
+	static std::tuple<bool, float> LUA_NATIVE_WATER_GET_WATER_HEIGHT(float x, float y, float z, float height)
 	{
 		std::tuple<bool, float> return_values;
 		std::get<0>(return_values) = (bool)WATER::GET_WATER_HEIGHT(x, y, z, &height);
@@ -12,7 +12,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_WATER_GET_WATER_HEIGHT_NO_WAVES( float x, float y, float z, float height )
+	static std::tuple<bool, float> LUA_NATIVE_WATER_GET_WATER_HEIGHT_NO_WAVES(float x, float y, float z, float height)
 	{
 		std::tuple<bool, float> return_values;
 		std::get<0>(return_values) = (bool)WATER::GET_WATER_HEIGHT_NO_WAVES(x, y, z, &height);
@@ -21,7 +21,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Vector3> LUA_NATIVE_WATER_TEST_PROBE_AGAINST_WATER( float x1, float y1, float z1, float x2, float y2, float z2, Vector3 result )
+	static std::tuple<bool, Vector3> LUA_NATIVE_WATER_TEST_PROBE_AGAINST_WATER(float x1, float y1, float z1, float x2, float y2, float z2, Vector3 result)
 	{
 		std::tuple<bool, Vector3> return_values;
 		std::get<0>(return_values) = (bool)WATER::TEST_PROBE_AGAINST_WATER(x1, y1, z1, x2, y2, z2, &result);
@@ -30,7 +30,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, float> LUA_NATIVE_WATER_TEST_PROBE_AGAINST_ALL_WATER( float x1, float y1, float z1, float x2, float y2, float z2, int flags, float waterHeight )
+	static std::tuple<int, float> LUA_NATIVE_WATER_TEST_PROBE_AGAINST_ALL_WATER(float x1, float y1, float z1, float x2, float y2, float z2, int flags, float waterHeight)
 	{
 		std::tuple<int, float> return_values;
 		std::get<0>(return_values) = WATER::TEST_PROBE_AGAINST_ALL_WATER(x1, y1, z1, x2, y2, z2, flags, &waterHeight);
@@ -39,7 +39,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, float> LUA_NATIVE_WATER_TEST_VERTICAL_PROBE_AGAINST_ALL_WATER( float x, float y, float z, int flags, float waterHeight )
+	static std::tuple<int, float> LUA_NATIVE_WATER_TEST_VERTICAL_PROBE_AGAINST_ALL_WATER(float x, float y, float z, int flags, float waterHeight)
 	{
 		std::tuple<int, float> return_values;
 		std::get<0>(return_values) = WATER::TEST_VERTICAL_PROBE_AGAINST_ALL_WATER(x, y, z, flags, &waterHeight);
@@ -48,39 +48,39 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_WATER_MODIFY_WATER( float x, float y, float radius, float height )
+	static void LUA_NATIVE_WATER_MODIFY_WATER(float x, float y, float radius, float height)
 	{
 		WATER::MODIFY_WATER(x, y, radius, height);
 	}
 
-	static int LUA_NATIVE_WATER_ADD_EXTRA_CALMING_QUAD( float xLow, float yLow, float xHigh, float yHigh, float height )
+	static int LUA_NATIVE_WATER_ADD_EXTRA_CALMING_QUAD(float xLow, float yLow, float xHigh, float yHigh, float height)
 	{
 		auto retval = WATER::ADD_EXTRA_CALMING_QUAD(xLow, yLow, xHigh, yHigh, height);
 		return retval;
 	}
 
-	static void LUA_NATIVE_WATER_REMOVE_EXTRA_CALMING_QUAD( int calmingQuad )
+	static void LUA_NATIVE_WATER_REMOVE_EXTRA_CALMING_QUAD(int calmingQuad)
 	{
 		WATER::REMOVE_EXTRA_CALMING_QUAD(calmingQuad);
 	}
 
-	static void LUA_NATIVE_WATER_SET_DEEP_OCEAN_SCALER( float intensity )
+	static void LUA_NATIVE_WATER_SET_DEEP_OCEAN_SCALER(float intensity)
 	{
 		WATER::SET_DEEP_OCEAN_SCALER(intensity);
 	}
 
-	static float LUA_NATIVE_WATER_GET_DEEP_OCEAN_SCALER(  )
+	static float LUA_NATIVE_WATER_GET_DEEP_OCEAN_SCALER()
 	{
 		auto retval = WATER::GET_DEEP_OCEAN_SCALER();
 		return retval;
 	}
 
-	static void LUA_NATIVE_WATER_SET_CALMED_WAVE_HEIGHT_SCALER( float height )
+	static void LUA_NATIVE_WATER_SET_CALMED_WAVE_HEIGHT_SCALER(float height)
 	{
 		WATER::SET_CALMED_WAVE_HEIGHT_SCALER(height);
 	}
 
-	static void LUA_NATIVE_WATER_RESET_DEEP_OCEAN_SCALER(  )
+	static void LUA_NATIVE_WATER_RESET_DEEP_OCEAN_SCALER()
 	{
 		WATER::RESET_DEEP_OCEAN_SCALER();
 	}

@@ -107,8 +107,8 @@ namespace big
 		std::string teleport_name_string = global_name;
 		if (!teleport_name_string.empty())
 		{
-			auto json         = get_globals_json();
-			json[global_name] = global_obj;
+			auto json                  = get_globals_json();
+			json[teleport_name_string] = global_obj;
 
 			auto file_path = g_file_manager.get_project_file("./globals.json").get_path();
 			std::ofstream file(file_path, std::ios::out | std::ios::trunc);

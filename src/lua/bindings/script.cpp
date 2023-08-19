@@ -65,7 +65,10 @@ namespace lua::script
 				    auto res = func(dummy_script_util);
 
 				    if (!res.valid())
+				    {
 					    big::g_lua_manager->handle_error(res, res.lua_state());
+					    break;
+				    }
 
 				    if (func.runnable())
 				    {
@@ -128,7 +131,10 @@ namespace lua::script
 				    auto res = func(dummy_script_util);
 
 				    if (!res.valid())
+				    {
 					    big::g_lua_manager->handle_error(res, res.lua_state());
+					    break;
+				    }
 
 				    if (func.runnable())
 				    {

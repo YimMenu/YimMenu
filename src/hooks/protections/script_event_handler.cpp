@@ -127,19 +127,27 @@ namespace big
 			break;
 		}
 		case eRemoteEvent::Notification:
+		{
 			switch (static_cast<eRemoteEvent>(args[2]))
 			{
-			case eRemoteEvent::NotificationMoneyBanked:
+			case eRemoteEvent::NotificationMoneyBanked: // never used
 			case eRemoteEvent::NotificationMoneyRemoved:
-			case eRemoteEvent::NotificationMoneyStolen:
-				if (g.protections.script_events.fake_deposit)
+			case eRemoteEvent::NotificationMoneyStolen: g.reactions.fake_deposit.process(plyr); return true;
+			case eRemoteEvent::NotificationCrash1:                             // this isn't used by the game
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
+				return true;
+			case eRemoteEvent::NotificationCrash2:
+				if (!gta_util::find_script_thread(RAGE_JOAAT("gb_salvage")))
 				{
-					g.reactions.fake_deposit.process(plyr);
+					// This looks like it's meant to trigger a sound crash by spamming too many notifications. We've already patched it, but the notifications are still annoying
+					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 					return true;
 				}
 				break;
 			}
+
 			break;
+		}
 		case eRemoteEvent::ForceMission:
 			if (g.protections.script_events.force_mission)
 			{
@@ -365,8 +373,8 @@ namespace big
 
 			if (!plyr->get_ped() || math::distance_between_vectors(*plyr->get_ped()->get_position(), *g_local_player->get_position()) > 75.0f)
 			{
-				g.reactions.send_to_interior.process(plyr);
-				return true;
+				// g.reactions.send_to_interior.process(plyr); false positives
+				return true; // this is fine, the game will reject our false positives anyway
 			}
 
 			break;
@@ -383,7 +391,8 @@ namespace big
 		{
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
+				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.trigger_business_raid.process(plyr);
 				}
@@ -396,7 +405,8 @@ namespace big
 			// TODO: Breaks stuff
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
+				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.start_script.process(plyr);
 					return true;

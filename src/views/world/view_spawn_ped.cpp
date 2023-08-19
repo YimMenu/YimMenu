@@ -224,7 +224,7 @@ namespace big
 			}
 		}
 
-		
+
 		ImGui::SeparatorText("PED_MODEL"_T.data());
 		{
 			ImGui::BeginGroup();
@@ -429,7 +429,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		
+
 		ImGui::SeparatorText("WEAPON"_T.data());
 		{
 			ImGui::BeginGroup();
@@ -489,9 +489,11 @@ namespace big
 
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo("##ped_weapon",
-				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ? "NO_WEAPONS"_T.data() :
-				            selected_ped_weapon_hash == 0                ? "ALL"_T.data() :
-				                                            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
+				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
+				            "NO_WEAPONS"_T.data() :
+				            selected_ped_weapon_hash == 0 ?
+				            "ALL"_T.data() :
+				            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
 				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -529,7 +531,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		
+
 		ImGui::SeparatorText("SPAWN_FOR"_T.data());
 		{
 			if (ImGui::BeginCombo("##ped_for",
@@ -657,6 +659,17 @@ namespace big
 			g.spoofing.spoof_player_model = true;
 			g.spoofing.player_model       = ped_model_buf;
 		});
+
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("This WILL break freemode missions and jobs");
+
+		if (g.spoofing.spoof_player_model)
+		{
+			ImGui::SameLine();
+			components::button("Unspoof Model", [] {
+				g.spoofing.spoof_player_model = false;
+			});
+		}
 
 		components::button("Cleanup Spawned Peds", [] {
 			for (auto& ped : spawned_peds)
