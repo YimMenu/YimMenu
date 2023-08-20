@@ -37,6 +37,8 @@ namespace big
 		std::optional<std::chrono::system_clock::time_point> queued_left_turn_signal;
 		std::optional<std::chrono::system_clock::time_point> queued_right_turn_signal;
 		bool hazzards = false;
+		bool left;
+		bool right;
 
 		void update_key_state(key_state& key_last_tick)
 		{
@@ -99,6 +101,10 @@ namespace big
 					VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::left, on);
 					VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::right, off);
 					break;
+
+				default:
+					VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::left, off);
+					VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::veh, signal_state::right, off);
 				}
 			}
 		}
@@ -112,18 +118,33 @@ namespace big
 		{
 			update_key_states();
 
-			if (left_signal_key.state == key_state::just_pressed || g.vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY)
+
+			if (left_signal_key.state == key_state::just_pressed && !left || g.vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_LEFT_ONLY)
 			    || queued_left_turn_signal.has_value() && queued_left_turn_signal.value() - std::chrono::system_clock::now() > 1500ms)
 			{
 				set_turn_signals(signal_state::left, true);
 				queued_left_turn_signal = std::nullopt;
+				left = true;
 			}
 
-			if (right_signal_key.state == key_state::just_pressed || g.vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY)
+			else if (left_signal_key.state == key_state::just_pressed && left || !g.vehicle.turn_signals)
+			{
+				set_turn_signals(signal_state::left, false);
+				left = false;
+			}
+
+			if (right_signal_key.state == key_state::just_pressed && !right || g.vehicle.auto_turn_signals && PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_MOVE_RIGHT_ONLY)
 			    || queued_right_turn_signal.has_value() && queued_right_turn_signal.value() - std::chrono::system_clock::now() > 1500ms)
 			{
 				set_turn_signals(signal_state::right, true);
 				queued_right_turn_signal = std::nullopt;
+				right = true;
+			}
+
+			else if (right_signal_key.state == key_state::just_pressed && right || !g.vehicle.turn_signals)
+			{
+				set_turn_signals(signal_state::right, false);
+				right = false;
 			}
 
 			if (hazzards_key.state == key_state::just_pressed && !hazzards)

@@ -55,6 +55,13 @@ namespace big::teleport
 		else
 		{
 			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
+
+			if (!hnd)
+				return false;
+
+			if (!g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object)
+				return false;
+
 			ENTITY::SET_ENTITY_VISIBLE(hnd, false, false);
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
 			ENTITY::FREEZE_ENTITY_POSITION(hnd, true);

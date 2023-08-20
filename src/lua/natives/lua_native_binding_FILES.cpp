@@ -3,13 +3,13 @@
 
 namespace lua::native
 {
-	static int LUA_NATIVE_FILES_GET_NUM_TATTOO_SHOP_DLC_ITEMS( int character )
+	static int LUA_NATIVE_FILES_GET_NUM_TATTOO_SHOP_DLC_ITEMS(int character)
 	{
 		auto retval = FILES::GET_NUM_TATTOO_SHOP_DLC_ITEMS(character);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_TATTOO_SHOP_DLC_ITEM_DATA( int characterType, int decorationIndex, Any outComponent )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_TATTOO_SHOP_DLC_ITEM_DATA(int characterType, int decorationIndex, Any outComponent)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_TATTOO_SHOP_DLC_ITEM_DATA(characterType, decorationIndex, &outComponent);
@@ -18,97 +18,97 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_FILES_GET_TATTOO_SHOP_DLC_ITEM_INDEX( Hash overlayHash, Any p1, int character )
+	static int LUA_NATIVE_FILES_GET_TATTOO_SHOP_DLC_ITEM_INDEX(Hash overlayHash, Any p1, int character)
 	{
 		auto retval = FILES::GET_TATTOO_SHOP_DLC_ITEM_INDEX(overlayHash, p1, character);
 		return retval;
 	}
 
-	static Any LUA_NATIVE_FILES_INIT_SHOP_PED_COMPONENT( Any outComponent )
+	static Any LUA_NATIVE_FILES_INIT_SHOP_PED_COMPONENT(Any outComponent)
 	{
 		FILES::INIT_SHOP_PED_COMPONENT(&outComponent);
 		return outComponent;
 	}
 
-	static Any LUA_NATIVE_FILES_INIT_SHOP_PED_PROP( Any outProp )
+	static Any LUA_NATIVE_FILES_INIT_SHOP_PED_PROP(Any outProp)
 	{
 		FILES::INIT_SHOP_PED_PROP(&outProp);
 		return outProp;
 	}
 
-	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_APPAREL_QUERY( int p0, int p1, int p2, int p3 )
+	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_APPAREL_QUERY(int p0, int p1, int p2, int p3)
 	{
 		auto retval = FILES::SETUP_SHOP_PED_APPAREL_QUERY(p0, p1, p2, p3);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_APPAREL_QUERY_TU( int character, int p1, int p2, bool p3, int p4, int componentId )
+	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_APPAREL_QUERY_TU(int character, int p1, int p2, bool p3, int p4, int componentId)
 	{
 		auto retval = FILES::SETUP_SHOP_PED_APPAREL_QUERY_TU(character, p1, p2, p3, p4, componentId);
 		return retval;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_COMPONENT( int componentId, Any outComponent )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_COMPONENT(int componentId, Any outComponent)
 	{
 		FILES::GET_SHOP_PED_QUERY_COMPONENT(componentId, &outComponent);
 		return outComponent;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_COMPONENT_INDEX( Hash componentHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_COMPONENT_INDEX(Hash componentHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_QUERY_COMPONENT_INDEX(componentHash);
 		return retval;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_COMPONENT( Hash componentHash, Any outComponent )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_COMPONENT(Hash componentHash, Any outComponent)
 	{
 		FILES::GET_SHOP_PED_COMPONENT(componentHash, &outComponent);
 		return outComponent;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_PROP( int componentId, Any outProp )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_PROP(int componentId, Any outProp)
 	{
 		FILES::GET_SHOP_PED_QUERY_PROP(componentId, &outProp);
 		return outProp;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_PROP_INDEX( Hash componentHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_PROP_INDEX(Hash componentHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_QUERY_PROP_INDEX(componentHash);
 		return retval;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_PROP( Hash componentHash, Any outProp )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_PROP(Hash componentHash, Any outProp)
 	{
 		FILES::GET_SHOP_PED_PROP(componentHash, &outProp);
 		return outProp;
 	}
 
-	static Hash LUA_NATIVE_FILES_GET_HASH_NAME_FOR_COMPONENT( Entity entity, int componentId, int drawableVariant, int textureVariant )
+	static Hash LUA_NATIVE_FILES_GET_HASH_NAME_FOR_COMPONENT(Entity entity, int componentId, int drawableVariant, int textureVariant)
 	{
 		auto retval = FILES::GET_HASH_NAME_FOR_COMPONENT(entity, componentId, drawableVariant, textureVariant);
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_FILES_GET_HASH_NAME_FOR_PROP( Entity entity, int componentId, int propIndex, int propTextureIndex )
+	static Hash LUA_NATIVE_FILES_GET_HASH_NAME_FOR_PROP(Entity entity, int componentId, int propIndex, int propTextureIndex)
 	{
 		auto retval = FILES::GET_HASH_NAME_FOR_PROP(entity, componentId, propIndex, propTextureIndex);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_VARIANT_COMPONENT_COUNT( Hash componentHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_VARIANT_COMPONENT_COUNT(Hash componentHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_APPAREL_VARIANT_COMPONENT_COUNT(componentHash);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_VARIANT_PROP_COUNT( Hash propHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_VARIANT_PROP_COUNT(Hash propHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_APPAREL_VARIANT_PROP_COUNT(propHash);
 		return retval;
 	}
 
-	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_VARIANT_COMPONENT( Hash componentHash, int variantComponentIndex, Hash nameHash, int enumValue, int componentType )
+	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_VARIANT_COMPONENT(Hash componentHash, int variantComponentIndex, Hash nameHash, int enumValue, int componentType)
 	{
 		std::tuple<Hash, int, int> return_values;
 		FILES::GET_VARIANT_COMPONENT(componentHash, variantComponentIndex, &nameHash, &enumValue, &componentType);
@@ -119,7 +119,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_VARIANT_PROP( Hash componentHash, int variantPropIndex, Hash nameHash, int enumValue, int anchorPoint )
+	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_VARIANT_PROP(Hash componentHash, int variantPropIndex, Hash nameHash, int enumValue, int anchorPoint)
 	{
 		std::tuple<Hash, int, int> return_values;
 		FILES::GET_VARIANT_PROP(componentHash, variantPropIndex, &nameHash, &enumValue, &anchorPoint);
@@ -130,19 +130,19 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_FORCED_COMPONENT_COUNT( Hash componentHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_FORCED_COMPONENT_COUNT(Hash componentHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_APPAREL_FORCED_COMPONENT_COUNT(componentHash);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_FORCED_PROP_COUNT( Hash componentHash )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_APPAREL_FORCED_PROP_COUNT(Hash componentHash)
 	{
 		auto retval = FILES::GET_SHOP_PED_APPAREL_FORCED_PROP_COUNT(componentHash);
 		return retval;
 	}
 
-	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_FORCED_COMPONENT( Hash componentHash, int forcedComponentIndex, Hash nameHash, int enumValue, int componentType )
+	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_FORCED_COMPONENT(Hash componentHash, int forcedComponentIndex, Hash nameHash, int enumValue, int componentType)
 	{
 		std::tuple<Hash, int, int> return_values;
 		FILES::GET_FORCED_COMPONENT(componentHash, forcedComponentIndex, &nameHash, &enumValue, &componentType);
@@ -153,7 +153,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_FORCED_PROP( Hash componentHash, int forcedPropIndex, Hash nameHash, int enumValue, int anchorPoint )
+	static std::tuple<Hash, int, int> LUA_NATIVE_FILES_GET_FORCED_PROP(Hash componentHash, int forcedPropIndex, Hash nameHash, int enumValue, int anchorPoint)
 	{
 		std::tuple<Hash, int, int> return_values;
 		FILES::GET_FORCED_PROP(componentHash, forcedPropIndex, &nameHash, &enumValue, &anchorPoint);
@@ -164,49 +164,49 @@ namespace lua::native
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_FILES_DOES_SHOP_PED_APPAREL_HAVE_RESTRICTION_TAG( Hash componentHash, Hash restrictionTagHash, int componentId )
+	static bool LUA_NATIVE_FILES_DOES_SHOP_PED_APPAREL_HAVE_RESTRICTION_TAG(Hash componentHash, Hash restrictionTagHash, int componentId)
 	{
 		auto retval = (bool)FILES::DOES_SHOP_PED_APPAREL_HAVE_RESTRICTION_TAG(componentHash, restrictionTagHash, componentId);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_FILES_DOES_CURRENT_PED_COMPONENT_HAVE_RESTRICTION_TAG( Ped ped, int componentId, Hash restrictionTagHash )
+	static bool LUA_NATIVE_FILES_DOES_CURRENT_PED_COMPONENT_HAVE_RESTRICTION_TAG(Ped ped, int componentId, Hash restrictionTagHash)
 	{
 		auto retval = (bool)FILES::DOES_CURRENT_PED_COMPONENT_HAVE_RESTRICTION_TAG(ped, componentId, restrictionTagHash);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_FILES_DOES_CURRENT_PED_PROP_HAVE_RESTRICTION_TAG( Ped ped, int componentId, Hash restrictionTagHash )
+	static bool LUA_NATIVE_FILES_DOES_CURRENT_PED_PROP_HAVE_RESTRICTION_TAG(Ped ped, int componentId, Hash restrictionTagHash)
 	{
 		auto retval = (bool)FILES::DOES_CURRENT_PED_PROP_HAVE_RESTRICTION_TAG(ped, componentId, restrictionTagHash);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_OUTFIT_QUERY( int character, bool p1 )
+	static int LUA_NATIVE_FILES_SETUP_SHOP_PED_OUTFIT_QUERY(int character, bool p1)
 	{
 		auto retval = FILES::SETUP_SHOP_PED_OUTFIT_QUERY(character, p1);
 		return retval;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_OUTFIT( int outfitIndex, Any outfit )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_QUERY_OUTFIT(int outfitIndex, Any outfit)
 	{
 		FILES::GET_SHOP_PED_QUERY_OUTFIT(outfitIndex, &outfit);
 		return outfit;
 	}
 
-	static Any LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT( Any p0, Any p1 )
+	static Any LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT(Any p0, Any p1)
 	{
 		FILES::GET_SHOP_PED_OUTFIT(p0, &p1);
 		return p1;
 	}
 
-	static int LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_LOCATE( Any p0 )
+	static int LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_LOCATE(Any p0)
 	{
 		auto retval = FILES::GET_SHOP_PED_OUTFIT_LOCATE(p0);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_PROP_VARIANT( Hash outfitHash, int variantIndex, Any outPropVariant )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_PROP_VARIANT(Hash outfitHash, int variantIndex, Any outPropVariant)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_SHOP_PED_OUTFIT_PROP_VARIANT(outfitHash, variantIndex, &outPropVariant);
@@ -215,7 +215,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_COMPONENT_VARIANT( Hash outfitHash, int variantIndex, Any outComponentVariant )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_SHOP_PED_OUTFIT_COMPONENT_VARIANT(Hash outfitHash, int variantIndex, Any outComponentVariant)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_SHOP_PED_OUTFIT_COMPONENT_VARIANT(outfitHash, variantIndex, &outComponentVariant);
@@ -224,19 +224,19 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_FILES_GET_NUM_DLC_VEHICLES(  )
+	static int LUA_NATIVE_FILES_GET_NUM_DLC_VEHICLES()
 	{
 		auto retval = FILES::GET_NUM_DLC_VEHICLES();
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_FILES_GET_DLC_VEHICLE_MODEL( int dlcVehicleIndex )
+	static Hash LUA_NATIVE_FILES_GET_DLC_VEHICLE_MODEL(int dlcVehicleIndex)
 	{
 		auto retval = FILES::GET_DLC_VEHICLE_MODEL(dlcVehicleIndex);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_VEHICLE_DATA( int dlcVehicleIndex, Any outData )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_VEHICLE_DATA(int dlcVehicleIndex, Any outData)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_DLC_VEHICLE_DATA(dlcVehicleIndex, &outData);
@@ -245,25 +245,25 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_FILES_GET_DLC_VEHICLE_FLAGS( int dlcVehicleIndex )
+	static int LUA_NATIVE_FILES_GET_DLC_VEHICLE_FLAGS(int dlcVehicleIndex)
 	{
 		auto retval = FILES::GET_DLC_VEHICLE_FLAGS(dlcVehicleIndex);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPONS(  )
+	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPONS()
 	{
 		auto retval = FILES::GET_NUM_DLC_WEAPONS();
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPONS_SP(  )
+	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPONS_SP()
 	{
 		auto retval = FILES::GET_NUM_DLC_WEAPONS_SP();
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_DATA( int dlcWeaponIndex, Any outData )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_DATA(int dlcWeaponIndex, Any outData)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_DLC_WEAPON_DATA(dlcWeaponIndex, &outData);
@@ -272,7 +272,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_DATA_SP( int dlcWeaponIndex, Any outData )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_DATA_SP(int dlcWeaponIndex, Any outData)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_DLC_WEAPON_DATA_SP(dlcWeaponIndex, &outData);
@@ -281,19 +281,19 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPON_COMPONENTS( int dlcWeaponIndex )
+	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPON_COMPONENTS(int dlcWeaponIndex)
 	{
 		auto retval = FILES::GET_NUM_DLC_WEAPON_COMPONENTS(dlcWeaponIndex);
 		return retval;
 	}
 
-	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPON_COMPONENTS_SP( int dlcWeaponIndex )
+	static int LUA_NATIVE_FILES_GET_NUM_DLC_WEAPON_COMPONENTS_SP(int dlcWeaponIndex)
 	{
 		auto retval = FILES::GET_NUM_DLC_WEAPON_COMPONENTS_SP(dlcWeaponIndex);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_COMPONENT_DATA( int dlcWeaponIndex, int dlcWeapCompIndex, Any ComponentDataPtr )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_COMPONENT_DATA(int dlcWeaponIndex, int dlcWeapCompIndex, Any ComponentDataPtr)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_DLC_WEAPON_COMPONENT_DATA(dlcWeaponIndex, dlcWeapCompIndex, &ComponentDataPtr);
@@ -302,7 +302,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_COMPONENT_DATA_SP( int dlcWeaponIndex, int dlcWeapCompIndex, Any ComponentDataPtr )
+	static std::tuple<bool, Any> LUA_NATIVE_FILES_GET_DLC_WEAPON_COMPONENT_DATA_SP(int dlcWeaponIndex, int dlcWeapCompIndex, Any ComponentDataPtr)
 	{
 		std::tuple<bool, Any> return_values;
 		std::get<0>(return_values) = (bool)FILES::GET_DLC_WEAPON_COMPONENT_DATA_SP(dlcWeaponIndex, dlcWeapCompIndex, &ComponentDataPtr);
@@ -311,30 +311,30 @@ namespace lua::native
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_FILES_IS_CONTENT_ITEM_LOCKED( Hash itemHash )
+	static bool LUA_NATIVE_FILES_IS_CONTENT_ITEM_LOCKED(Hash itemHash)
 	{
 		auto retval = (bool)FILES::IS_CONTENT_ITEM_LOCKED(itemHash);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_FILES_IS_DLC_VEHICLE_MOD( Hash hash )
+	static bool LUA_NATIVE_FILES_IS_DLC_VEHICLE_MOD(Hash hash)
 	{
 		auto retval = (bool)FILES::IS_DLC_VEHICLE_MOD(hash);
 		return retval;
 	}
 
-	static Hash LUA_NATIVE_FILES_GET_DLC_VEHICLE_MOD_LOCK_HASH( Hash hash )
+	static Hash LUA_NATIVE_FILES_GET_DLC_VEHICLE_MOD_LOCK_HASH(Hash hash)
 	{
 		auto retval = FILES::GET_DLC_VEHICLE_MOD_LOCK_HASH(hash);
 		return retval;
 	}
 
-	static void LUA_NATIVE_FILES_EXECUTE_CONTENT_CHANGESET_GROUP_FOR_ALL( Hash hash )
+	static void LUA_NATIVE_FILES_EXECUTE_CONTENT_CHANGESET_GROUP_FOR_ALL(Hash hash)
 	{
 		FILES::EXECUTE_CONTENT_CHANGESET_GROUP_FOR_ALL(hash);
 	}
 
-	static void LUA_NATIVE_FILES_REVERT_CONTENT_CHANGESET_GROUP_FOR_ALL( Hash hash )
+	static void LUA_NATIVE_FILES_REVERT_CONTENT_CHANGESET_GROUP_FOR_ALL(Hash hash)
 	{
 		FILES::REVERT_CONTENT_CHANGESET_GROUP_FOR_ALL(hash);
 	}

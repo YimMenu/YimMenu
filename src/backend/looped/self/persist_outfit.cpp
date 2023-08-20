@@ -1,8 +1,9 @@
 #include "backend/looped/looped.hpp"
-#include "services/outfit/outfit_service.hpp"
-#include "natives.hpp"
 #include "file_manager.hpp"
 #include "logger/logger.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
+#include "services/outfit/outfit_service.hpp"
 
 namespace big
 {
@@ -32,6 +33,7 @@ namespace big
 			i >> outfit;
 		}
 
-		outfit_service::apply_outfit(outfit, false);
+		if (outfit.contains("model") && outfit["model"].get<uint32_t>() == ENTITY::GET_ENTITY_MODEL(self::ped))
+			outfit_service::apply_outfit(outfit, false);
 	}
 }

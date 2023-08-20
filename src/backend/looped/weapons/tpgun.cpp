@@ -9,13 +9,13 @@ namespace big
 	{
 		if (g.weapons.custom_weapon == CustomWeapon::TP_GUN && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
-			Vector3 c; entity::raycast(&c);
-
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
 			{
 				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_ATTACK))
 				{
-					ENTITY::SET_ENTITY_COORDS(self::ped, c.x, c.y, c.z, 0, 0, 0, 0);
+					Vector3 c;
+					entity::raycast(&c);
+					PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, c.x, c.y, c.z);
 				}
 			}
 		}

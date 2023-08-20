@@ -8,41 +8,51 @@
 #pragma pack(push, 1)
 namespace rage
 {
+#pragma pack(push, 8)
 	class CSyncDataBase
 	{
 	public:
 		virtual ~CSyncDataBase()                                                     = default;
-		virtual bool SerializeDword(uint32_t* dword, int size)                       = 0;
-		virtual bool SerializeWord(uint16_t* word, int size)                         = 0;
-		virtual bool SerializeByte(uint8_t* byte, int size)                          = 0;
-		virtual bool SerializeInt32(int32_t* i, int size)                            = 0;
-		virtual bool SerializeInt16(int16_t* i, int size)                            = 0;
-		virtual bool SerializeSignedByte(int8_t* byte, int size)                     = 0;
-		virtual bool SerializeBool(bool* flag)                                       = 0;
-		virtual bool SerializeInt64(int64_t* i, int size)                            = 0;
-		virtual bool SerializeInt32Alt(int32_t* i, int size)                         = 0;
-		virtual bool SerializeInt16Alt(int16_t* i, int size)                         = 0;
-		virtual bool SerializeSignedByteAlt(int8_t* byte, int size)                  = 0;
-		virtual bool SerializeQword(uint64_t* qword, int size)                       = 0;
-		virtual bool SerializeDwordAlt(uint32_t* dword, int size)                    = 0;
-		virtual bool SerializeWordAlt(uint16_t* word, int size)                      = 0;
-		virtual bool SerializeByteAlt(uint8_t* byte, int size)                       = 0;
-		virtual bool SerializeSignedFloat(float* flt, float divisor, int size)       = 0;
-		virtual bool SerializeFloat(float* flt, float divisor, int size)             = 0;
-		virtual bool SerializeNetworkId(uint16_t* net_id)                            = 0;
-		virtual bool SerializeVector3(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeDword(uint32_t* dword, int size)                       = 0; // 1
+		virtual bool SerializeWord(uint16_t* word, int size)                         = 0; // 2
+		virtual bool SerializeByte(uint8_t* byte, int size)                          = 0; // 3
+		virtual bool SerializeInt32(int32_t* i, int size)                            = 0; // 4
+		virtual bool SerializeInt16(int16_t* i, int size)                            = 0; // 5
+		virtual bool SerializeSignedByte(int8_t* byte, int size)                     = 0; // 6
+		virtual bool SerializeBool(bool* flag)                                       = 0; // 7
+		virtual bool SerializeInt64(int64_t* i, int size)                            = 0; // 8
+		virtual bool SerializeInt32Alt(int32_t* i, int size)                         = 0; // 9
+		virtual bool SerializeInt16Alt(int16_t* i, int size)                         = 0; // 10
+		virtual bool SerializeSignedByteAlt(int8_t* byte, int size)                  = 0; // 11
+		virtual bool SerializeQword(uint64_t* qword, int size)                       = 0; // 12
+		virtual bool SerializeDwordAlt(uint32_t* dword, int size)                    = 0; // 13
+		virtual bool SerializeWordAlt(uint16_t* word, int size)                      = 0; // 14
+		virtual bool SerializeByteAlt(uint8_t* byte, int size)                       = 0; // 15
+		virtual bool SerializeSignedFloat(float* flt, float divisor, int size)       = 0; // 16
+		virtual bool SerializeFloat(float* flt, float divisor, int size)             = 0; // 17
+		virtual bool SerializeNetworkId(uint16_t* net_id)                            = 0; // 18
+		virtual bool SerializeVector3(rage::fvector3* vec3, float divisor, int size) = 0; // 19
 		virtual bool SerializeQuaternion(void* unk)                                  = 0; // i have no clue what that is
-		virtual bool SerializeVector3SignedZComponent(rage::fvector3* vec3, float divisor, int size) = 0;
+		virtual bool SerializeVector3SignedZComponent(rage::fvector3* vec3, float divisor, int size) = 0; // 21
 		virtual bool SerializeOrientation(rage::fvector4* vec4, float size) = 0; // yes, the size is a float
 		virtual bool SerializeArray(void* array, int size)                  = 0;
 		virtual bool SerializeString(char* str, int max_length)             = 0;
 		virtual bool IsSizeCalculator()                                     = 0;
 		virtual bool IsSizeCalculator2()                                    = 0;
 
-		void* unk_0x8;
-		void* syncLog;
-		datBitBuffer* buffer;
+		enum class Type
+		{
+			Reader = 1,
+			Writer,
+			SizeCalculator,
+			Logger
+		};
+
+		Type m_type;
+		void* m_sync_log;
+		datBitBuffer* m_buffer;
 	};
+#pragma pack(pop)
 
 	class netPlayer;
 
@@ -627,6 +637,7 @@ namespace rage
 		uint32_t m_0x28; // 0x28
 		char m_padding2[0x04];
 	};
+	static_assert(sizeof(rage::netGameEvent) == 0x30);
 }
 
 class CScriptedGameEvent : public rage::netGameEvent
@@ -643,5 +654,12 @@ class CNetworkIncrementStatEvent : public rage::netGameEvent
 public:
 	Hash m_stat;       // 0x30
 	uint32_t m_amount; // 0x34
+};
+
+class CDoorBreakEvent : public rage::netGameEvent
+{
+public:
+	std::uint16_t m_vehicle_id; // 0x30
+	std::uint8_t m_door_id;     // 0x32
 };
 #pragma pack(pop)

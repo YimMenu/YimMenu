@@ -60,6 +60,7 @@ namespace big
 		bool off_radar    = false;
 		bool never_wanted = false;
 		bool semi_godmode = false;
+		bool fix_vehicle  = false;
 
 		bool kill_loop       = false;
 		bool explosion_loop  = false;
@@ -78,12 +79,11 @@ namespace big
 
 		bool m_block_permanent_vehicles = false;
 
-		bool exposed_desync_protection = false;
-		bool is_modder                 = false;
-		bool block_join                = false;
-		int block_join_reason          = 0;
-		bool is_spammer                = false;
-		bool is_admin                  = false;
+		bool is_modder        = false;
+		bool block_join       = false;
+		int block_join_reason = 0;
+		bool is_spammer       = false;
+		bool is_admin         = false;
 		std::optional<uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
 		std::optional<uint32_t> time_difference;

@@ -1,6 +1,7 @@
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
 #include "gui/components/components.hpp"
+#include "hooking.hpp"
 #include "natives.hpp"
 #include "network/Network.hpp"
 #include "script.hpp"
@@ -10,8 +11,6 @@
 #include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
-
-#include "hooking.hpp"
 
 namespace big
 {
@@ -94,6 +93,18 @@ namespace big
 			ImGui::Checkbox("ImGui Demo", &g.window.demo);
 
 			components::command_button<"fastquit">();
+
+			if (ImGui::TreeNode("Fuzzer"))
+			{
+				ImGui::Checkbox("Enabled", &g.debug.fuzzer.enabled);
+
+				for (int i = 0; i < net_object_type_strs.size(); i++)
+				{
+					ImGui::Checkbox(net_object_type_strs[i], &g.debug.fuzzer.enabled_object_types[i]);
+				}
+
+				ImGui::TreePop();
+			}
 
 			if (ImGui::TreeNode("ADDRESSES"_T.data()))
 			{

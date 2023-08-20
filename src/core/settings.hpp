@@ -16,6 +16,7 @@
 
 
 class CNetGamePlayer;
+enum class eNetObjType;
 
 namespace rage
 {
@@ -67,17 +68,11 @@ namespace big
 		int friend_count = 0;
 		int player_count = 0;
 
-		CNetGamePlayer* m_syncing_player = nullptr;
-		std::unordered_map<uint64_t, uint64_t> m_spoofed_peer_ids;
+		CNetGamePlayer* m_syncing_player  = nullptr;
+		eNetObjType m_syncing_object_type = (eNetObjType)-1;
 
 		int m_remote_controller_vehicle = -1;
 		int m_remote_controlled_vehicle = -1;
-
-		/*
-		uint16_t m_tp_veh_net_id;
-		uint16_t m_tp_player_net_id;
-		rage::fvector3 m_tp_position;
-		*/
 
 		std::unordered_map<uint16_t, remote_player_teleport> m_remote_player_teleports;
 
@@ -120,6 +115,14 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(logs, metric_logs, packet_logs, script_hook_logs, script_event)
 			} logs{};
 
+			struct fuzzer
+			{
+				bool enabled = false;
+				bool enabled_object_types[14];
+				bool active                    = false;
+				int thread_id                  = 0;
+				std::int16_t syncing_object_id = -1;
+			} fuzzer{};
 			bool window_hook = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, window_hook)
@@ -255,7 +258,6 @@ namespace big
 				bool bounty                     = true;
 				bool ceo_money                  = true;
 				bool clear_wanted_level         = true;
-				bool fake_deposit               = true;
 				bool force_mission              = true;
 				bool force_teleport             = true;
 				bool gta_banner                 = false;
@@ -273,7 +275,7 @@ namespace big
 				bool start_activity             = true;
 				bool send_sms                   = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, fake_deposit, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
 
 			bool rid_join                = false;
@@ -305,47 +307,47 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
-			bool clean_player          = false;
-			bool force_wanted_level    = false;
-			bool free_cam              = false;
-			bool invisibility          = false;
-			bool local_visibility      = true;
-			bool never_wanted          = false;
-			bool no_ragdoll            = false;
-			bool noclip                = false;
+			bool clean_player                 = false;
+			bool force_wanted_level           = false;
+			bool free_cam                     = false;
+			bool invisibility                 = false;
+			bool local_visibility             = true;
+			bool never_wanted                 = false;
+			bool no_ragdoll                   = false;
+			bool noclip                       = false;
 			float noclip_aim_speed_multiplier = 0.25f;
 			float noclip_speed_multiplier     = 20.f;
-			bool off_radar             = false;
-			bool ghost_org             = false;
-			bool super_run             = false;
-			bool no_collision          = false;
-			bool unlimited_oxygen      = false;
-			bool no_water_collision    = false;
-			int wanted_level           = 0;
-			bool god_mode              = false;
-			bool part_water            = false;
-			bool proof_bullet          = false;
-			bool proof_fire            = false;
-			bool proof_collision       = false;
-			bool proof_melee           = false;
-			bool proof_explosion       = false;
-			bool proof_steam           = false;
-			bool proof_drown           = false;
-			bool proof_water           = false;
-			uint32_t proof_mask        = 0;
-			bool mobile_radio          = false;
-			bool fast_respawn          = false;
-			bool auto_tp               = false;
-			bool super_jump            = false;
-			bool beast_jump            = false;
-			bool healthregen           = false;
-			float healthregenrate      = 1.0f;
-			bool superman              = false;
-			bool custom_weapon_stop    = true;
-			bool prompt_ambient_animations = false;
-			std::string persist_outfit = "";
-			bool persist_outfits_mis   = false;
-      
+			bool off_radar                    = false;
+			bool ghost_org                    = false;
+			bool super_run                    = false;
+			bool no_collision                 = false;
+			bool unlimited_oxygen             = false;
+			bool no_water_collision           = false;
+			int wanted_level                  = 0;
+			bool god_mode                     = false;
+			bool part_water                   = false;
+			bool proof_bullet                 = false;
+			bool proof_fire                   = false;
+			bool proof_collision              = false;
+			bool proof_melee                  = false;
+			bool proof_explosion              = false;
+			bool proof_steam                  = false;
+			bool proof_drown                  = false;
+			bool proof_water                  = false;
+			uint32_t proof_mask               = 0;
+			bool mobile_radio                 = false;
+			bool fast_respawn                 = false;
+			bool auto_tp                      = false;
+			bool super_jump                   = false;
+			bool beast_jump                   = false;
+			bool healthregen                  = false;
+			float healthregenrate             = 1.0f;
+			bool superman                     = false;
+			bool custom_weapon_stop           = true;
+			bool prompt_ambient_animations    = false;
+			std::string persist_outfit        = "";
+			bool persist_outfits_mis          = false;
+
 			struct hud
 			{
 				bool color_override                                      = false;
@@ -415,6 +417,7 @@ namespace big
 			bool off_radar_all    = false;
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
+			bool vehicle_fix_all  = false;
 
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;
@@ -574,7 +577,9 @@ namespace big
 			bool override_weather = false;
 			int local_weather     = 0;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather)
+			bool blackout = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout)
 		} world{};
 
 		struct spoofing
@@ -596,8 +601,9 @@ namespace big
 			bool spoof_bad_sport = false;
 			int badsport_type    = 0;
 
-			bool spoof_player_model  = false;
-			std::string player_model = "";
+			bool spoof_player_model   = false;
+			std::string player_model  = "";
+			std::string player_outfit = "";
 
 			bool spoof_cheater = false;
 

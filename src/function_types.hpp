@@ -7,6 +7,8 @@ class sCloudFile;
 class CPlayerGameStateDataNode;
 class CVehicleGadgetDataNode;
 class CGameScriptHandlerNetComponent;
+class CDoorBreakEvent;
+class GenericPool;
 enum eVehicleGadgetType : uint32_t;
 
 namespace rage
@@ -28,6 +30,9 @@ namespace rage
 	class rlQueryPresenceAttributesContext;
 	enum class eThreadState : uint32_t;
 	class netArrayHandlerBase;
+	class fwRefAwareBase;
+	class netGameEvent;
+	class netEventMgr;
 }
 
 namespace datafile_commands
@@ -160,4 +165,18 @@ namespace big::functions
 	using connection_manager_try_free_memory = void (*)(rage::netConnectionManager* mgr);
 	using remove_message_from_queue          = void (*)(rage::netMessageQueue* queue, rage::netQueuedMessage* message);
 	using remove_message_from_unacked_reliables = void (*)(void* list, uint16_t* unk);
+
+	using remove_reference = void (*)(rage::fwRefAwareBase* object, void* reference);
+
+	using activate_special_ability = void (*)(CVehicle* vehicle, int special_ability_type);
+	using set_wanted_level = void (*)(CNetGamePlayer* player, int wanted_level, int unk, std::uint8_t unk_player_id);
+
+	using check_event_queue          = bool (*)(rage::netEventMgr* mgr, bool free);
+	using get_new_pool_item          = void* (*)(GenericPool* pool);
+	using construct_door_break_event = CDoorBreakEvent* (*)(CDoorBreakEvent* _this);
+	using queue_network_event        = void (*)(rage::netEventMgr* mgr, rage::netGameEvent* event);
+
+	using delete_ped     = bool (*)(CPed* ped);
+	using delete_vehicle = bool (*)(CVehicle* veh);
+	using delete_object  = bool (*)(CObject* object, bool unk);
 }

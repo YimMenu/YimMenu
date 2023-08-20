@@ -327,13 +327,20 @@ namespace big
 
 							if (selected_slot >= 0)
 							{
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-								owned_mods[selected_slot] = mod;
-
-								if (is_wheel_mod)
+								if (!VEHICLE::IS_VEHICLE_MOD_GEN9_EXCLUSIVE(player_vehicle, selected_slot, mod))
 								{
-									*wheel_stock_mod = mod;
-									*wheel_custom    = false;
+									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+									owned_mods[selected_slot] = mod;
+
+									if (is_wheel_mod)
+									{
+										*wheel_stock_mod = mod;
+										*wheel_custom    = false;
+									}
+								}
+								else
+								{
+									g_notification_service->push_error("LSC", "Selected mod is invalid");
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)

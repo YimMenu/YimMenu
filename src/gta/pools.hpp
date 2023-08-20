@@ -112,7 +112,7 @@ public:
 
 	inline UINT64 get_address(UINT32 i)
 	{
-		return mask(i) & (m_pool_address + i * m_item_size);
+		return mask(i) & (m_pool_address + (uint64_t)i * m_item_size);
 	}
 
 	inline int get_item_count()
