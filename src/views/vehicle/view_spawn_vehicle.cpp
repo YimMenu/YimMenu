@@ -151,7 +151,7 @@ namespace big
 							    vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
 							const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-							const auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
+							auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
 
 							if (veh == 0)
 							{
@@ -173,6 +173,7 @@ namespace big
 							}
 
 							g_model_preview_service->stop_preview();
+							ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 						});
 						ImGui::PopID();
 

@@ -1,10 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+on: [pull_request]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
   ci:
-    runs-on: [self-hosted, Windows]
+    runs-on: windows-latest
     name: CI
     steps:
       - uses: actions/checkout@v3
