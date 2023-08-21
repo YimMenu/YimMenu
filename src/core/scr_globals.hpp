@@ -38,7 +38,7 @@ namespace big::scr_globals
 
 	static inline const script_global offradar_time(2672524);
 
-	static inline const script_global tuneables(262145);
+	static inline const script_global session_info(1654054);
 }
 
 namespace big::scr_locals
