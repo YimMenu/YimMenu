@@ -175,14 +175,15 @@ namespace big::entity
 	inline bool load_ground_at_3dcoord(Vector3& location)
 	{
 		float groundZ;
-		const uint8_t attempts = 100;
-		bool done              = true;
+		const int attempts = 100;
+		bool done = false;
 
-		for (uint8_t i = 0; i < attempts; i++)
+		for (int i = 0; i < attempts; i++)
 		{
-			STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, 0.0f);
+			float ground_iteration = static_cast<float>(i * 10);
+			STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, ground_iteration);
 
-			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, 1000.f, &groundZ, false, false))
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, ground_iteration, &groundZ, false, false))
 			{
 				location.z = groundZ + 1.f;
 				done       = true;
@@ -200,7 +201,7 @@ namespace big::entity
 			script::get_current()->yield();
 		}
 
-		location.z = 200.0f;
+		location.z = 1000.f;
 
 		return false;
 	}
