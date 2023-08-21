@@ -228,6 +228,11 @@ namespace big
 			         g_notification_service->push("Context Menu",
 			             std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
 		        }},
+			{"EXPLODE",
+		         [this] {
+			         rage::fvector3 pos = *m_pointer->m_navigation->get_position();
+			         FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
+		        }},
 		        {"TP TO",
 		            [this] {
 			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
@@ -269,11 +274,6 @@ namespace big
 			            {
 				            entity::delete_entity(m_handle);
 			            }
-		        }},
-			{"EXPLODE",
-		         [this] {
-			         rage::fvector3 pos = *m_pointer->m_navigation->get_position();
-			         FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
 		        }}
 		    }};
 
