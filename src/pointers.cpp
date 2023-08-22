@@ -1630,6 +1630,15 @@ namespace big
             {
                 g_pointers->m_gta.m_activate_special_ability_patch = ptr.as<PVOID>();
             }
+        },
+        // Increase Heap Size
+        {
+            "MEM_HS",
+            "83 C8 01 48 8D 0D ? ? ? ? 41 B1 01 45 33 C0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_heap_size = ptr.add(17).as<PDWORD>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
