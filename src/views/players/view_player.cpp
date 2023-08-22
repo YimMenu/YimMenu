@@ -12,7 +12,7 @@ namespace big
 			player_ptr current_player     = g_player_service->get_selected();
 			navigation_struct& player_tab = g_gui_service->get_navigation().at(tabs::PLAYER);
 
-			strcpy(player_tab.name, current_player->get_name());
+			strcpy(player_tab.name, current_player->id() == self::id ? "player" : current_player->get_name());
 			strcat(player_tab.name, std::format(" ({})", std::to_string(current_player->id())).data());
 
 			if (current_player->is_host())

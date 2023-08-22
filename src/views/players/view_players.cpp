@@ -55,7 +55,7 @@ namespace big
 		const auto style = ImGui::GetStyle();
 		// branchless conditional calculation
 		const auto plyr_btn_width = 300.f - (style.ItemInnerSpacing.x * 2) - (has_scrollbar * style.ScrollbarSize);
-		if (ImGui::Button(plyr->get_name(), { plyr_btn_width, 0.f}))
+		if (ImGui::Button(plyr->id() == self::id ? "player" : plyr->get_name(), { plyr_btn_width, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
