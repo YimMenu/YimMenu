@@ -11,8 +11,8 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*scr_globals::session_info.at(1155).as<PINT>() = 0;
-			*scr_globals::session_info.at(1171).as<PINT>() = 0;
+			*scr_globals::session_info.at(1155).as<PINT>() = -1;
+			*scr_globals::session_info.at(1171).as<PINT>() = -1;
 			CAM::INVALIDATE_IDLE_CAM();
 			CAM::INVALIDATE_CINEMATIC_VEHICLE_IDLE_MODE();
 		}

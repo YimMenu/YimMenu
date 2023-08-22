@@ -25,7 +25,7 @@ namespace big
 		{
 			LOG(INFO) << "Original Memory Heap Size: " << original_heap_size << "MB";
 			DWORD old_heap_protect;
-			VirtualProtect(g_pointers->m_gta.m_heap_size, 4, PAGE_EXECUTE_READWRITE, &old_heap_protect);
+			VirtualProtect(g_pointers->m_gta.m_heap_size, 4, PAGE_READWRITE, &old_heap_protect);
 			*g_pointers->m_gta.m_heap_size = 650 * 1024 * 1024;
 			VirtualProtect(g_pointers->m_gta.m_heap_size, 4, old_heap_protect, &old_heap_protect);
 			LOG(INFO) << "Modified Memory Heap Size To: 650MB";
