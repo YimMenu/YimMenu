@@ -77,6 +77,7 @@ namespace big
 			}
 			components::command_checkbox<"vehnocollision">();
 			components::command_checkbox<"vehallweapons">();
+			components::command_checkbox<"allvehsinheists">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();

@@ -320,8 +320,6 @@ namespace big
 		functions::activate_special_ability m_activate_special_ability;
 		PVOID m_activate_special_ability_patch;
 
-		PDWORD m_heap_size;
-
 		functions::set_wanted_level m_set_wanted_level;
 
 		rage::netEventMgr** m_net_event_manager;
