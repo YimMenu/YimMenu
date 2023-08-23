@@ -41,6 +41,8 @@ namespace big
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 
+		components::command_checkbox<"passive">();
+
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
