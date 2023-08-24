@@ -62,7 +62,6 @@ namespace big
 				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
-				vehicle_extras = vehicle::get_vehicle_extras(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
 				std::map<int, std::string> tmp_slot_display_names;
@@ -282,22 +281,30 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
+		ImGui::EndGroup();
 
+		ImGui::SeparatorText("Vehicle Extras");
+		ImGui::BeginGroup();
 		int item_counter = 0;
-		for (auto& [extra, extra_enabled] : vehicle_extras)
+		for (int extra = MOD_EXTRA_1; extra >= MOD_EXTRA_14; extra--)
 		{
-			if (item_counter % 5 == 0)
-				ImGui::SameLine();
-			auto name = std::format("Extra #{}", extra);
-			if (ImGui::Checkbox(name.c_str(), &extra_enabled))
+			if (owned_mods.find(extra) != owned_mods.end()) //
 			{
-				g_fiber_pool->queue_job([extra, extra_enabled] {
-					VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, extra, !extra_enabled);
-				});
+				if ((item_counter % 5) != 0)
+					ImGui::SameLine();
+				int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+				auto name        = std::format("Extra #{}", gta_extra_id);
+				bool is_extra_enabled = owned_mods[extra] == 1;
+				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
+				{
+					owned_mods[extra] = is_extra_enabled;
+					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
+						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
+					});
+				}
+				item_counter++;
 			}
-			item_counter++;
 		}
-
 		ImGui::EndGroup();
 
 		if (selected_slot != -1)
