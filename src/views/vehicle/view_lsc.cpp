@@ -90,6 +90,8 @@ namespace big
 						{
 							continue;
 						}
+						slot_name.append("##");
+						slot_name.append(std::to_string(slot));
 						tmp_slot_display_names[slot] = slot_name;
 
 						std::map<int, std::string> mod_names;
