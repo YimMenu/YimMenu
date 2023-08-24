@@ -15,7 +15,7 @@ namespace big
 
 		virtual void on_disable() override
 		{
-			*script_global(20483).as<PBOOL>() = FALSE;
+			*scr_globals::mobile.as<PBOOL>() = FALSE;
 		}
 	};
 
