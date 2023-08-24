@@ -18,7 +18,6 @@ namespace big
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
-		static std::map<int, bool> vehicle_extras;
 		static std::map<std::string, std::vector<int>> front_wheel_map;
 		static std::map<std::string, std::vector<int>> rear_wheel_map;
 
@@ -286,9 +285,9 @@ namespace big
 		ImGui::SeparatorText("Vehicle Extras");
 		ImGui::BeginGroup();
 		int item_counter = 0;
-		for (int extra = MOD_EXTRA_1; extra >= MOD_EXTRA_14; extra--)
+		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
 		{
-			if (owned_mods.find(extra) != owned_mods.end()) //
+			if (owned_mods.find(extra) != owned_mods.end())
 			{
 				if ((item_counter % 5) != 0)
 					ImGui::SameLine();
