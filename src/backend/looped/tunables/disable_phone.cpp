@@ -10,12 +10,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*script_global(20483).as<bool*>() = true;
+			*scr_globals::mobile.as<PBOOL>() = TRUE;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(20483).as<bool*>() = false;
+			*scr_globals::mobile.as<PBOOL>() = FALSE;
 		}
 	};
 

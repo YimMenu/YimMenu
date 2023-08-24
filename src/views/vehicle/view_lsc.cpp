@@ -18,6 +18,7 @@ namespace big
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
+		static std::map<int, bool> vehicle_extras;
 		static std::map<std::string, std::vector<int>> front_wheel_map;
 		static std::map<std::string, std::vector<int>> rear_wheel_map;
 
@@ -61,6 +62,7 @@ namespace big
 				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
+				vehicle_extras = vehicle::get_vehicle_extras(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
 				std::map<int, std::string> tmp_slot_display_names;
@@ -90,6 +92,8 @@ namespace big
 						{
 							continue;
 						}
+						slot_name.append("##");
+						slot_name.append(std::to_string(slot));
 						tmp_slot_display_names[slot] = slot_name;
 
 						std::map<int, std::string> mod_names;
@@ -277,6 +281,21 @@ namespace big
 				}
 			}
 			ImGui::EndListBox();
+		}
+
+		int item_counter = 0;
+		for (auto& [extra, extra_enabled] : vehicle_extras)
+		{
+			if (item_counter % 5 == 0)
+				ImGui::SameLine();
+			auto name = std::format("Extra #{}", extra);
+			if (ImGui::Checkbox(name.c_str(), &extra_enabled))
+			{
+				g_fiber_pool->queue_job([extra, extra_enabled] {
+					VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, extra, !extra_enabled);
+				});
+			}
+			item_counter++;
 		}
 
 		ImGui::EndGroup();
