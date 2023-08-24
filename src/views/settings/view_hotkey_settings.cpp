@@ -26,6 +26,8 @@ namespace big
 			g_hotkey_service->update_hotkey("bringpv", g.settings.hotkeys.bringvehicle);
 		if (ImGui::Hotkey("Toggle invisibility", &g.settings.hotkeys.invis))
 			g_hotkey_service->update_hotkey("invis", g.settings.hotkeys.invis);
+		if (ImGui::Hotkey("Toggle passive mode", &g.settings.hotkeys.passive))
+			g_hotkey_service->update_hotkey("passive", g.settings.hotkeys.passive);
 		if (ImGui::Hotkey("Heal", &g.settings.hotkeys.heal))
 			g_hotkey_service->update_hotkey("heal", g.settings.hotkeys.heal);
 		if (ImGui::Hotkey("Fill Snacks", &g.settings.hotkeys.fill_inventory))

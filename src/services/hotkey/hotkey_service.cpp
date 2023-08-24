@@ -28,6 +28,7 @@ namespace big
 		register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
 		register_hotkey("objective", g.settings.hotkeys.teleport_objective, RAGE_JOAAT("objectivetp"));
 		register_hotkey("pvtp", g.settings.hotkeys.teleport_pv, RAGE_JOAAT("pvtp"));
+		register_hotkey("passive", g.settings.hotkeys.passive, RAGE_JOAAT("passive"));
 		register_hotkey("repairpv", g.settings.hotkeys.repairpv, RAGE_JOAAT("repairpv"));
 		register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, RAGE_JOAAT("skipcutscene"));
 		register_hotkey("superjump", g.settings.hotkeys.superjump, RAGE_JOAAT("superjump"));
