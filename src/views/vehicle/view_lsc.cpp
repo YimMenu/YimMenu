@@ -282,30 +282,6 @@ namespace big
 		}
 		ImGui::EndGroup();
 
-		ImGui::SeparatorText("Vehicle Extras");
-		ImGui::BeginGroup();
-		int item_counter = 0;
-		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
-		{
-			if (owned_mods.find(extra) != owned_mods.end())
-			{
-				if ((item_counter % 5) != 0)
-					ImGui::SameLine();
-				int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
-				auto name        = std::format("Extra #{}", gta_extra_id);
-				bool is_extra_enabled = owned_mods[extra] == 1;
-				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
-				{
-					owned_mods[extra] = is_extra_enabled;
-					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
-						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
-					});
-				}
-				item_counter++;
-			}
-		}
-		ImGui::EndGroup();
-
 		if (selected_slot != -1)
 		{
 			auto wheel_stock_mod = &front_wheel_stock_mod;
@@ -448,6 +424,36 @@ namespace big
 
 				ImGui::EndGroup();
 			}
+		}
+
+		int item_counter = 0;
+		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
+		{
+			if (owned_mods.find(extra) != owned_mods.end())
+			{
+				if (item_counter == 0)
+				{
+					ImGui::SeparatorText("Vehicle Extras");
+					ImGui::BeginGroup();
+				}
+				if ((item_counter % 5) != 0)
+					ImGui::SameLine();
+				int gta_extra_id      = (extra - MOD_EXTRA_0) * -1;
+				auto name             = std::format("Extra #{}", gta_extra_id);
+				bool is_extra_enabled = owned_mods[extra] == 1;
+				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
+				{
+					owned_mods[extra] = is_extra_enabled;
+					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
+						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
+					});
+				}
+				item_counter++;
+			}
+		}
+		if (item_counter != 0)
+		{
+			ImGui::EndGroup();
 		}
 
 		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());
