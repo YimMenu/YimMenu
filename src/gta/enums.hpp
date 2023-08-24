@@ -2041,3 +2041,12 @@ enum class GameMode : int32_t
 	Tennis        = 0xC,
 	ShootingRange = 0xD
 };
+
+enum CameraMode : int
+{
+	THIRD_PERSON_NEAR   = 0,
+	THIRD_PERSON_MEDIUM = 1,
+	THIRD_PERSON_FAR    = 2,
+	CINEMATIC           = 3,
+	FIRST_PERSON        = 4,
+};

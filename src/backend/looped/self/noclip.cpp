@@ -85,7 +85,7 @@ namespace big
 				ENTITY::FREEZE_ENTITY_POSITION(ent, false);
 
 				const auto is_aiming = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
-				if (is_aiming)
+				if (is_aiming || CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == CameraMode::FIRST_PERSON)
 				{
 					vel = vel * g.self.noclip_aim_speed_multiplier;
 
