@@ -563,6 +563,21 @@ namespace big::vehicle
 		return owned_mods;
 	}
 
+	inline std::map<int, bool> get_vehicle_extras(Vehicle vehicle)
+	{
+		std::map<int, bool> extras;
+
+		for (int i = 0; i <= 20; i++)
+		{
+			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, i))
+			{
+				extras[i] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, i);
+			}
+		}
+
+		return extras;
+	}
+
 	inline void teleport_into_vehicle(Vehicle veh)
 	{
 		PED::SET_PED_INTO_VEHICLE(self::ped, veh, -1);
