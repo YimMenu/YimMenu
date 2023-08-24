@@ -33,11 +33,11 @@ namespace big
 			}
 			else if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index != eSimpleInteriorIndex::SIMPLE_INTERIOR_INVALID)
 			{
-				*script_global(1950844).at(3347).as<Player*>() =
+				*scr_globals::interiors.at(3347).as<Player*>() =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Owner;
-				*script_global(1950844).at(3684).as<eSimpleInteriorIndex*>() =
+				*scr_globals::interiors.at(3684).as<eSimpleInteriorIndex*>() =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index;
-				*script_global(1950844).at(3683).as<bool*>() = true;
+				*scr_globals::interiors.at(3683).as<bool*>() = true;
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.InteriorSubtype =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.InteriorSubtype;
 			}

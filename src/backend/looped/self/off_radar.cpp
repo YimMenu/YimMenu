@@ -14,15 +14,15 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (g.self.ghost_org)
-				MISC::SET_BIT(script_global(2794162).at(4667).as<int*>(), 2);
+				MISC::SET_BIT(scr_globals::freemode_global.at(4667).as<int*>(), 2);
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = true;
-			*scr_globals::offradar_time.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*scr_globals::freemode_properties.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override
 		{
 			if (!g.self.ghost_org)
-				MISC::CLEAR_BIT(script_global(2794162).at(4667).as<int*>(), 2);
+				MISC::CLEAR_BIT(scr_globals::freemode_global.at(4667).as<int*>(), 2);
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = false;
 		}
 	};
