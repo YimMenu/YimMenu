@@ -20,7 +20,7 @@ namespace big
 			components::player_command_button<"ceokick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::button("Gooch Test", [] {
-				*script_global(1890378).at(289).at(1).as<Player*>() = g_player_service->get_selected()->id();
+				*scr_globals::gooch.at(289).at(1).as<Player*>() = g_player_service->get_selected()->id();
 				scripts::start_launcher_script(171);
 			});
 
