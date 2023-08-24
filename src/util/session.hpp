@@ -9,7 +9,6 @@
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "script.hpp"
 #include "script_function.hpp"
-#include "script_global.hpp"
 #include "services/api/api_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
@@ -45,14 +44,14 @@ namespace big::session
 		*scr_globals::sctv_spectator.as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
-			*script_global(1574589).at(2).as<int*>() = -1;
+			*scr_globals::session.at(2).as<int*>() = -1;
 		else
 		{
-			*script_global(1574589).at(2).as<int*>() = 0;
-			*script_global(1575020).as<int*>()       = (int)session;
+			*scr_globals::session.at(2).as<int*>() = 0;
+			*scr_globals::session2.as<int*>()       = (int)session;
 		}
 
-		*script_global(1574589).as<int*>() = 1;
+		*scr_globals::session.as<int*>() = 1;
 
 		if (*g_pointers->m_gta.m_is_session_started && session != eSessionType::LEAVE_ONLINE)
 		{
@@ -64,15 +63,15 @@ namespace big::session
 		}
 
 		scr_functions::reset_session_data({true, true});
-		*script_global(32284).as<int*>()   = 0;
-		*script_global(1574934).as<int*>() = 1;
-		*script_global(1574995).as<int*>() = 32;
+		*scr_globals::session3.as<int*>()   = 0;
+		*scr_globals::session4.as<int*>() = 1;
+		*scr_globals::session5.as<int*>() = 32;
 
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
-			*script_global(2694534).as<int*>() = 1;
+			*scr_globals::session6.as<int*>() = 1;
 			script::get_current()->yield(200ms);
-			*script_global(1574589).as<int*>() = 0;
+			*scr_globals::session.as<int*>() = 0;
 		}
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("pausemenu_multiplayer"));

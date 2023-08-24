@@ -14,6 +14,7 @@ namespace big::scr_globals
 	static inline const script_global globalplayer_bd(2657704);
 	static inline const script_global gpbd_fm_3(1895156);
 	static inline const script_global gpbd_fm_1(1853988);
+	static inline const script_global interiors(1950844);
 
 	static inline const script_global launcher_global(2756336);
 
@@ -32,15 +33,32 @@ namespace big::scr_globals
 	static inline const script_global sctv_spectator(2695969); // pausemenu_multiplayer function 0xE49C42EC
 
 	static inline const script_global vehicle_global(1586488);
-	static inline const script_global mechanic_global(2794162);
+
+	static inline const script_global freemode_properties(2672524);
+	static inline const script_global freemode_global(2794162);
 
 	static inline const script_global spawn_global(2694613);
-
-	static inline const script_global offradar_time(2672524);
 
 	static inline const script_global session_info(1654054);
 
 	static inline const script_global tuneables(262145);
+
+	static inline const script_global dance_state(1950837);
+
+	static inline const script_global mobile(20483);
+
+	static inline const script_global transaction_overlimit(20483);
+
+	static inline const script_global stats(2359296);
+
+	static inline const script_global session(1574589);
+	static inline const script_global session2(1575020);
+	static inline const script_global session3(32284);
+	static inline const script_global session4(1574934);
+	static inline const script_global session5(1574995);
+	static inline const script_global session6(2694534);
+
+	static inline const script_global gooch(1890378);
 }
 
 namespace big::scr_locals
