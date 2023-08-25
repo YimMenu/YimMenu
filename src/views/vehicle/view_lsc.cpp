@@ -18,7 +18,6 @@ namespace big
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
-		static std::map<int, bool> vehicle_extras;
 		static std::map<std::string, std::vector<int>> front_wheel_map;
 		static std::map<std::string, std::vector<int>> rear_wheel_map;
 
@@ -62,7 +61,6 @@ namespace big
 				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
-				vehicle_extras = vehicle::get_vehicle_extras(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
 				std::map<int, std::string> tmp_slot_display_names;
@@ -282,22 +280,6 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
-
-		int item_counter = 0;
-		for (auto& [extra, extra_enabled] : vehicle_extras)
-		{
-			if (item_counter % 5 == 0)
-				ImGui::SameLine();
-			auto name = std::format("Extra #{}", extra);
-			if (ImGui::Checkbox(name.c_str(), &extra_enabled))
-			{
-				g_fiber_pool->queue_job([extra, extra_enabled] {
-					VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, extra, !extra_enabled);
-				});
-			}
-			item_counter++;
-		}
-
 		ImGui::EndGroup();
 
 		if (selected_slot != -1)
@@ -442,6 +424,36 @@ namespace big
 
 				ImGui::EndGroup();
 			}
+		}
+
+		int item_counter = 0;
+		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
+		{
+			if (owned_mods.find(extra) != owned_mods.end())
+			{
+				if (item_counter == 0)
+				{
+					ImGui::SeparatorText("Vehicle Extras");
+					ImGui::BeginGroup();
+				}
+				if ((item_counter % 5) != 0)
+					ImGui::SameLine();
+				int gta_extra_id      = (extra - MOD_EXTRA_0) * -1;
+				auto name             = std::format("Extra #{}", gta_extra_id);
+				bool is_extra_enabled = owned_mods[extra] == 1;
+				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
+				{
+					owned_mods[extra] = is_extra_enabled;
+					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
+						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
+					});
+				}
+				item_counter++;
+			}
+		}
+		if (item_counter != 0)
+		{
+			ImGui::EndGroup();
 		}
 
 		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());

@@ -219,10 +219,9 @@ namespace big
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, vehicle_json[pearlescent_color_key], vehicle_json[wheel_color_key]);
 
 		std::map<int, bool> vehicle_extras = vehicle_json[vehicle_extras_key];
-		for (int i = 0; i <= 20; i++)
+		for (const auto& [extra, extra_enabled] : vehicle_extras)
 		{
-			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, i))
-				VEHICLE::SET_VEHICLE_EXTRA(vehicle, i, vehicle_extras[i]);
+			VEHICLE::SET_VEHICLE_EXTRA(vehicle, extra, extra_enabled);
 		}
 
 		if (!vehicle_json[vehicle_livery_key].is_null())
@@ -446,10 +445,12 @@ namespace big
 		vehicle_json[wheel_color_key]       = wheel_color;
 
 		std::map<int, bool> vehicle_extras;
-		for (int i = 0; i <= 20; i++)
+		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)
 		{
-			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, i))
-				vehicle_extras[i] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, i);
+			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, extra_iterator))
+			{
+				vehicle_extras[extra_iterator] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra_iterator);
+			}
 		}
 
 		vehicle_json[vehicle_extras_key] = vehicle_extras;
