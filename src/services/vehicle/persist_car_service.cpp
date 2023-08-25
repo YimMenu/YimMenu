@@ -221,7 +221,7 @@ namespace big
 		std::map<int, bool> vehicle_extras = vehicle_json[vehicle_extras_key];
 		for (const auto& [extra, extra_enabled] : vehicle_extras)
 		{
-			VEHICLE::SET_VEHICLE_EXTRA(vehicle, extra, !extra_enabled);
+			VEHICLE::SET_VEHICLE_EXTRA(vehicle, extra, extra_enabled);
 		}
 
 		if (!vehicle_json[vehicle_livery_key].is_null())
@@ -449,7 +449,7 @@ namespace big
 		{
 			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, extra_iterator))
 			{
-				vehicle_extras[extra_iterator] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra_iterator);
+				vehicle_extras[extra_iterator] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra_iterator);
 			}
 		}
 
