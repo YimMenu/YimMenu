@@ -8,12 +8,12 @@
 
 namespace big
 {
-	static void save_vehicle(char* vehicle_file_name_input)
+	static void save_vehicle(char* vehicle_file_name_input, char* folder_name)
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(self::veh))
 		{
 			const auto vehicle_file_name = std::string(vehicle_file_name_input).append(".json");
-			persist_car_service::save_vehicle(self::veh, vehicle_file_name);
+			persist_car_service::save_vehicle(self::veh, vehicle_file_name, folder_name);
 			ZeroMemory(vehicle_file_name_input, sizeof(vehicle_file_name_input));
 		}
 	}
@@ -22,7 +22,7 @@ namespace big
 	{
 		if (!selected_vehicle_file.empty())
 		{
-			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file);
+			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.vehicle.persist_vehicle_sub_folder);
 			if (!vehicle)
 			{
 				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
@@ -42,19 +42,41 @@ namespace big
 	{
 		static std::string selected_vehicle_file;
 
-		const auto vehicle_files = persist_car_service::list_files();
+		const auto vehicle_folders = persist_car_service::list_sub_folders();
+		const auto vehicle_files   = persist_car_service::list_files(g.vehicle.persist_vehicle_sub_folder);
+
+
+		auto folder_display = g.vehicle.persist_vehicle_sub_folder.empty() ? "ROOT"_T.data() : g.vehicle.persist_vehicle_sub_folder.c_str();
+		if (ImGui::BeginCombo("FOLDER"_T.data(), folder_display))
+		{
+			if (ImGui::Selectable("ROOT"_T.data(), g.vehicle.persist_vehicle_sub_folder == ""))
+				g.vehicle.persist_vehicle_sub_folder = "";
+
+			for (std::string folder_name : vehicle_folders)
+			{
+				if (ImGui::Selectable(folder_name.c_str(), g.vehicle.persist_vehicle_sub_folder == folder_name))
+					g.vehicle.persist_vehicle_sub_folder = folder_name;
+			}
+
+			ImGui::EndCombo();
+		}
 
 		ImGui::PushItemWidth(250);
 		ImGui::Text("SAVED_VEHICLES"_T.data());
 
-		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
+		static const auto over_30 = (30 * ImGui::GetTextLineHeightWithSpacing() + 2);
+		const auto box_height = vehicle_files.size() <= 30 ? (vehicle_files.size() * ImGui::GetTextLineHeightWithSpacing() + 2) : over_30;
+		if (ImGui::BeginListBox("##empty", ImVec2(300, box_height)))
 		{
 			for (const auto& pair : vehicle_files)
 			{
 				if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
-					selected_vehicle_file = pair, g_fiber_pool->queue_job([] {
+				{
+					selected_vehicle_file = pair;
+					g_fiber_pool->queue_job([] {
 						load_vehicle(selected_vehicle_file);
 					});
+				}
 			}
 
 			ImGui::EndListBox();
@@ -67,13 +89,24 @@ namespace big
 
 		components::small_text("VEHICLE_FILE_NAME"_T);
 		ImGui::PushItemWidth(250);
-		components::input_text_with_hint("##vehiclefilename", "VEHICLE_FILE_NAME_EXAMPLE"_T, vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
+		ImGui::InputText("##vehiclefilename", vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("VEHICLE_FILE_NAME_EXAMPLE"_T.data());
+		ImGui::PopItemWidth();
+
+        static char save_folder[50]{};
+		components::small_text("VEHICLE_FOLDER_NAME"_T);
+		ImGui::PushItemWidth(250);
+		ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
+		ImGui::PopItemWidth();
 
 		components::button("SAVE_VEHICLE"_T, [] {
 			if (!self::veh)
-				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "You must be in a vehicle. Please enter a vehicle before using load.");
+				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
-			save_vehicle(vehicle_file_name_input);
+			save_vehicle(vehicle_file_name_input, save_folder);
 		});
 
 		ImGui::EndGroup();

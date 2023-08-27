@@ -7,11 +7,12 @@ namespace big
 	class persist_car_service
 	{
 	public:
-		static std::vector<std::string> list_files();
+		static std::vector<std::string> list_files(std::string folder_name = "");
+		static std::vector<std::string> list_sub_folders();
 
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
-		static void save_vehicle(Vehicle vehicle, std::string_view file_name);
-		static Vehicle load_vehicle(std::string_view file_name);
+		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
+		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "");
 
 	private:
 		static constexpr auto model_attachment_key  = "model_attachment";
@@ -76,6 +77,6 @@ namespace big
 
 		static nlohmann::json get_vehicle_json(Vehicle vehicle);
 
-		static big::folder check_vehicle_folder();
+		static big::folder check_vehicle_folder(std::string folder_name = "");
 	};
 }
