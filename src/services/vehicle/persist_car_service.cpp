@@ -9,7 +9,7 @@
 
 namespace big
 {
-	void persist_car_service::save_vehicle(Vehicle vehicle, std::string_view file_name)
+	void persist_car_service::save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
@@ -18,7 +18,7 @@ namespace big
 			return;
 		}
 
-		const auto file = check_vehicle_folder().get_file(file_name);
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
 		std::ofstream file_stream(file.get_path(), std::ios::out | std::ios::trunc);
 
@@ -27,9 +27,9 @@ namespace big
 		file_stream.close();
 	}
 
-	Vehicle persist_car_service::load_vehicle(std::string_view file_name)
+	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name)
 	{
-		const auto file = check_vehicle_folder().get_file(file_name);
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
 		std::ifstream file_stream(file.get_path());
 
@@ -49,17 +49,31 @@ namespace big
 		return spawn_vehicle_full(vehicle_json, self::ped);
 	}
 
-	std::vector<std::string> persist_car_service::list_files()
+	std::vector<std::string> persist_car_service::list_files(std::string folder_name)
 	{
 		std::vector<std::string> file_paths;
 
-		const auto file_path = check_vehicle_folder();
+		const auto file_path = check_vehicle_folder(folder_name);
 		for (const auto& directory_entry : std::filesystem::directory_iterator(file_path.get_path()))
 			if (directory_entry.path().extension() == ".json")
 				file_paths.push_back(directory_entry.path().filename().generic_string());
 
 		return file_paths;
 	}
+
+	std::vector<std::string> persist_car_service::list_sub_folders()
+	{
+		std::vector<std::string> folders;
+
+		const auto file_path = check_vehicle_folder();
+		for (const auto& directory_entry : std::filesystem::directory_iterator(file_path.get_path()))
+			if (directory_entry.is_directory())
+				folders.push_back(directory_entry.path().filename().generic_string());
+
+		return folders;
+	}
+
+
 
 	Vehicle persist_car_service::clone_ped_car(Ped ped, Vehicle vehicle)
 	{
@@ -513,10 +527,8 @@ namespace big
 		return vehicle_json;
 	}
 
-	big::folder persist_car_service::check_vehicle_folder()
+	big::folder persist_car_service::check_vehicle_folder(std::string folder_name)
 	{
-		const auto folder = g_file_manager.get_project_folder("./saved_json_vehicles");
-
-		return folder;
+		return g_file_manager.get_project_folder("./saved_json_vehicles/" + folder_name);
 	}
 }

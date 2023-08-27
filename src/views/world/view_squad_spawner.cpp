@@ -315,7 +315,7 @@ namespace big
 			{
 				if (ImGui::Selectable("None", new_template.m_persistent_vehicle == "None"))
 					new_template.m_persistent_vehicle = "None";
-				for (auto& p : persist_car_service::list_files())
+				for (auto& p : persist_car_service::list_files(""))
 				{
 					if (ImGui::Selectable(p.data(), p == new_template.m_persistent_vehicle))
 						new_template.m_persistent_vehicle = p;
