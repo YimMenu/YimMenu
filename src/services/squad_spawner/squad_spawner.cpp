@@ -78,13 +78,13 @@ namespace big
 		}
 		else
 		{
-			const auto persistent_vehicles = persist_car_service::list_files("");
+			const auto persistent_vehicles = persist_car_service::list_files();
 
 			for (auto c : persistent_vehicles)
 			{
 				if (c == s.m_persistent_vehicle)
 				{
-					veh.first = persist_car_service::load_vehicle(c, "");
+					veh.first = persist_car_service::load_vehicle(c);
 					ENTITY::SET_ENTITY_COORDS(veh.first, s.m_spawn_pos.x, s.m_spawn_pos.y, s.m_spawn_pos.z, 0, 0, 0, 1);
 					break;
 				}
