@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 #include "script_global.hpp"
 
 namespace big
@@ -9,14 +10,13 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*script_global(1574582+1).as<bool*>() = true;
 			*script_global(1574582).as<bool*>() = true;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(1574582+1).as<bool*>() = false;
 			*script_global(1574582).as<bool*>() = false;
+			NETWORK::SET_LOCAL_PLAYER_AS_GHOST(false, false);
 		}
 	};
 
