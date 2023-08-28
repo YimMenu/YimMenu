@@ -1631,22 +1631,14 @@ namespace big
                 g_pointers->m_gta.m_activate_special_ability_patch = ptr.as<PVOID>();
             }
         },
-        // CDecalManager static instance
+        // ClearDecals
         {
             "DCLMGR",
-            "48 83 CB FF 48 8D 0D",
+            "48 8D 0D ? ? ? ? 41 83 C8 FF E8 ? ? ? ? 4C",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_decal_manager = ptr.add(7).rip().as<PVOID>();
-            }
-        },
-        // CDecalManager::Remove
-        {
-            "DCLMGRRM",
-            "E8 ? ? ? ? 4C 8B 76 10 ",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_decal_manager_remove = ptr.add(1).rip().as<functions::decal_manager_remove>();
+                g_pointers->m_gta.m_decal_manager = ptr.add(3).rip().as<PVOID>();
+                g_pointers->m_gta.m_decal_manager_remove = ptr.add(0xC).rip().as<functions::decal_manager_remove>();
             }
         }
         >(); // don't leave a trailing comma at the end
