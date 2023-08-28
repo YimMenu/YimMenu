@@ -332,6 +332,9 @@ namespace big
 		functions::delete_ped m_delete_ped;
 		functions::delete_vehicle m_delete_vehicle;
 		functions::delete_object m_delete_object;
+
+		functions::decal_manager_remove m_decal_manager_remove;
+		PVOID m_decal_manager;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

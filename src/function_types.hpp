@@ -31,6 +31,7 @@ namespace rage
 	enum class eThreadState : uint32_t;
 	class netArrayHandlerBase;
 	class fwRefAwareBase;
+	class fwEntity;
 	class netGameEvent;
 	class netEventMgr;
 }
@@ -179,4 +180,6 @@ namespace big::functions
 	using delete_ped     = bool (*)(CPed* ped);
 	using delete_vehicle = bool (*)(CVehicle* veh);
 	using delete_object  = bool (*)(CObject* object, bool unk);
+
+	using decal_manager_remove = void(*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
 }
