@@ -17,8 +17,7 @@ namespace big
 
 		virtual void on_disable() override
 		{
-			//NETWORK::SET_LOCAL_PLAYER_AS_GHOST(false, false);
-			*script_global(1574582+2).as<bool*>()          = true;
+			NETWORK::SET_LOCAL_PLAYER_AS_GHOST(false, false);
 			*script_global(1574582).as<bool*>() = false;
 			*scr_globals::tuneables.at(27371).as<int*>() = 30000;
 			
