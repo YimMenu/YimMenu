@@ -25,6 +25,7 @@ namespace big
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
 			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
+			ImGui::Checkbox("REACTION_FREE_CAMERA_HIGH"_T.data(), &reaction.timeout);
 			ImGui::TreePop();
 		}
 		ImGui::PopID();

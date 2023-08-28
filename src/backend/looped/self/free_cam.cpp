@@ -28,8 +28,10 @@ namespace big
 		virtual void on_enable() override
 		{
 			camera = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
-
-			position = CAM::GET_GAMEPLAY_CAM_COORD();
+			if(g.self.free_cam_high)
+				position = g.self.free_cam_high_pos;
+			else
+				position = CAM::GET_GAMEPLAY_CAM_COORD();
 			rotation = CAM::GET_GAMEPLAY_CAM_ROT(2);
 
 			ENTITY::FREEZE_ENTITY_POSITION(self::veh, true);
@@ -100,6 +102,7 @@ namespace big
 			STREAMING::CLEAR_FOCUS();
 
 			ENTITY::FREEZE_ENTITY_POSITION(camera, false);
+			g.self.free_cam_high = false;
 		}
 	};
 

@@ -308,6 +308,8 @@ namespace big
 			bool clean_player          = false;
 			bool force_wanted_level    = false;
 			bool free_cam              = false;
+			rage::fvector3 free_cam_high_pos;
+			bool free_cam_high   = false;
 			bool invisibility          = false;
 			bool local_visibility      = true;
 			bool never_wanted          = false;
