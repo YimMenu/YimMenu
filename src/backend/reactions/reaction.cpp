@@ -1,5 +1,6 @@
 #include "reaction.hpp"
 
+#include "backend/bool_command.hpp"
 #include "backend/player_command.hpp"
 #include "fiber_pool.hpp"
 #include "hooking.hpp"
@@ -7,6 +8,7 @@
 #include "script.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
+
 #include <random>
 
 namespace big
