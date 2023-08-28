@@ -25,7 +25,15 @@ namespace big
 					}
 				}
 
-				if (VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, TRUE) || VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_OFF_PARTS(veh) > 0)
+				for (int i = 0; i <= 14; i++)
+				{
+					if (VEHICLE::DOES_EXTRA_EXIST(veh, i) && VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(veh, i) && VEHICLE::IS_EXTRA_BROKEN_OFF(veh, i))
+					{
+						VEHICLE::SET_VEHICLE_FIXED(veh);
+					}
+				}
+
+				if (VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, TRUE) || VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, FALSE) || VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_LOOSEN_PARTS(veh) > 0)
 				{
 					VEHICLE::SET_VEHICLE_FIXED(veh);
 				}
@@ -33,16 +41,17 @@ namespace big
 				if (!VEHICLE::IS_VEHICLE_WINDOW_INTACT(veh, 7)) //Rear window
 					VEHICLE::FIX_VEHICLE_WINDOW(veh, 7);
 
-				int clan_logo_counter = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(veh, 0) * 10;
-				GRAPHICS::REMOVE_DECALS_FROM_VEHICLE(veh);
-				while (clan_logo_counter-- > 0 && !GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(veh, 0))
+				g_pointers->m_gta.m_decal_manager_remove(g_pointers->m_gta.m_decal_manager, g_pointers->m_gta.m_handle_to_ptr(veh), -1, 0, 0x0001E000);
+
+				if (!g.vehicle.god_mode)
 				{
-					vehicle_helper::add_clan_logo_to_vehicle(veh, self::ped);
-					script::get_current()->yield(10ms);
+					VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
 				}
 
-				VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
-				VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
+				if (!g.vehicle.keep_vehicle_clean)
+				{
+					VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
+				}
 			}
 		}
 	};
