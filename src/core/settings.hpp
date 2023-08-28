@@ -307,10 +307,12 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ipls, select)
 			} ipls{};
 
+			rage::fvector3 free_cam_high_pos;
 			bool clean_player                 = false;
 			bool force_wanted_level           = false;
 			bool passive                      = false;
 			bool free_cam                     = false;
+			bool free_cam_high                = false;
 			bool invisibility                 = false;
 			bool local_visibility             = true;
 			bool never_wanted                 = false;
