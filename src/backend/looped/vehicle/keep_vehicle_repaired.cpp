@@ -25,7 +25,15 @@ namespace big
 					}
 				}
 
-				if (VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, TRUE) || VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_OFF_PARTS(veh) > 0)
+				for (int i = 0; i <= 14; i++)
+				{
+					if (VEHICLE::DOES_EXTRA_EXIST(veh, i) && VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(veh, i) && VEHICLE::IS_EXTRA_BROKEN_OFF(veh, i))
+					{
+						VEHICLE::SET_VEHICLE_FIXED(veh);
+					}
+				}
+
+				if (VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, TRUE) || VEHICLE::IS_VEHICLE_BUMPER_BOUNCING(veh, FALSE) || VEHICLE::GET_VEHICLE_NUM_OF_BROKEN_LOOSEN_PARTS(veh) > 0)
 				{
 					VEHICLE::SET_VEHICLE_FIXED(veh);
 				}
