@@ -55,7 +55,7 @@ namespace big
 
 		if (free_camera_high_enabled && !g.self.free_cam)
 		{
-       		static std::mt19937 generator(std::random_device{}());
+			static std::mt19937 generator(std::random_device{}());
 
 			std::uniform_int_distribution<int> uniform_distribution_x(-2000, 3000);
 			std::uniform_int_distribution<int> uniform_distribution_y(-3000, 6000);
@@ -64,10 +64,10 @@ namespace big
 			g.self.free_cam_high_pos.x = uniform_distribution_x(generator);
 			g.self.free_cam_high_pos.y = uniform_distribution_y(generator);
 			g.self.free_cam_high_pos.z = uniform_distribution_z(generator);
-			g.self.free_cam_high = true;
+			g.self.free_cam_high       = true;
 
 			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::consteval_joaat("freecam")));
-			g.self.free_cam = true; // set to true so that command->refresh works
+			g.self.free_cam              = true; // set to true so that command->refresh works
 			command->refresh();
 		}
 	}
