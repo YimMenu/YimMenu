@@ -20,7 +20,8 @@ namespace big
 			NETWORK::SET_LOCAL_PLAYER_AS_GHOST(false, false);
 			*script_global(1574582).as<bool*>() = false;
 			*scr_globals::tuneables.at(27371).as<int*>() = 30000;
-			
+			PED::SET_PED_CONFIG_FLAG(self::ped, 342, true); // Disable NotAllowedToJackAnyPlayers
+			PED::SET_PED_CONFIG_FLAG(self::ped, 122, true); // Disable DisableMelee
 		}
 	};
 
