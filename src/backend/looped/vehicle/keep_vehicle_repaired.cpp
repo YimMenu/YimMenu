@@ -43,8 +43,15 @@ namespace big
 
 				g_pointers->m_gta.m_decal_manager_remove(g_pointers->m_gta.m_decal_manager, g_pointers->m_gta.m_handle_to_ptr(veh), -1, 0, 0x0001E000);
 
-				VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
-				VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
+				if (!g.vehicle.god_mode)
+				{
+					VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
+				}
+
+				if (!g.vehicle.keep_vehicle_clean)
+				{
+					VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
+				}
 			}
 		}
 	};

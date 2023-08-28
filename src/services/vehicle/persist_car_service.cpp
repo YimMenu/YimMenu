@@ -188,6 +188,8 @@ namespace big
 
 		const auto vehicle = big::vehicle::spawn(vehicle_hash, pos, ENTITY::GET_ENTITY_HEADING(ped));
 
+		script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
+
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
 		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
