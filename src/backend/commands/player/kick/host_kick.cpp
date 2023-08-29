@@ -14,6 +14,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (!g_player_service->get_self()->is_host())
 			{
 				g_notification_service->push_error("Host kick", "Host kick failed");
