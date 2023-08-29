@@ -20,6 +20,19 @@ namespace big
 		return hash == RAGE_JOAAT("slod_human") || hash == RAGE_JOAAT("slod_small_quadped") || hash == RAGE_JOAAT("slod_large_quadped");
 	}
 
+	inline bool is_nextgen_vehicle(rage::joaat_t hash)
+	{
+		constexpr auto nextgen_vehicles = std::to_array<rage::joaat_t>({ RAGE_JOAAT("cyclone2"), RAGE_JOAAT("ignus2"), RAGE_JOAAT("astron2"), RAGE_JOAAT("arbitergt"), RAGE_JOAAT("s95") });
+		for (const auto nextgen_veh_hash : nextgen_vehicles)
+		{
+			if (hash == nextgen_veh_hash)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
 		if (std::find(vec.begin(), vec.end(), str) != vec.end())
@@ -265,30 +278,8 @@ namespace big
 		};
 
 		LOG(INFO) << "Rebuilding cache started...";
-
-		std::vector<std::string> blacklisted_rpfs;
 		yim_fipackfile::add_wrapper_call_back([&](yim_fipackfile& rpf_wrapper, std::filesystem::path path) -> void {
-			if (std::find(blacklisted_rpfs.begin(), blacklisted_rpfs.end(), rpf_wrapper.get_name()) != blacklisted_rpfs.end())
-			{
-				return;
-			}
-
-			if (path.filename() == "setup2.xml")
-			{
-				std::string dlc_name;
-				rpf_wrapper.read_xml_file(path, [&dlc_name](pugi::xml_document& doc) {
-					const auto item = doc.select_node("/SSetupData/nameHash");
-					dlc_name        = item.node().text().as_string();
-				});
-
-				if (dlc_name == "mpG9EC")
-				{
-					LOG(VERBOSE) << "Bad DLC, skipping...";
-
-					blacklisted_rpfs.push_back(rpf_wrapper.get_name());
-				}
-			}
-			else if (path.filename() == "vehicles.meta")
+			if (path.filename() == "vehicles.meta")
 			{
 				rpf_wrapper.read_xml_file(path, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc) {
 					const auto& items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
@@ -298,6 +289,8 @@ namespace big
 
 						const auto name = item.child("modelName").text().as_string();
 						const auto hash = rage::joaat(name);
+						if (is_nextgen_vehicle(hash))
+							continue;
 
 						if (exists(mapped_vehicles, hash))
 							continue;
