@@ -22,7 +22,7 @@ namespace big
 
 	inline bool is_nextgen_vehicle(rage::joaat_t hash)
 	{
-		constexpr auto nextgen_vehicles = std::to_array<rage::joaat_t>({ RAGE_JOAAT("cyclone2"), RAGE_JOAAT("ignus2"), RAGE_JOAAT("astron2"), RAGE_JOAAT("arbitergt"), RAGE_JOAAT("s95") });
+		constexpr auto nextgen_vehicles = { RAGE_JOAAT("cyclone2"), RAGE_JOAAT("ignus2"), RAGE_JOAAT("astron2"), RAGE_JOAAT("arbitergt"), RAGE_JOAAT("s95") };
 		for (const auto nextgen_veh_hash : nextgen_vehicles)
 		{
 			if (hash == nextgen_veh_hash)
