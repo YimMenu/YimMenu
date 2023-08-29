@@ -266,7 +266,13 @@ namespace big
 
 		LOG(INFO) << "Rebuilding cache started...";
 
+		std::vector<std::string> blacklisted_rpfs;
 		yim_fipackfile::add_wrapper_call_back([&](yim_fipackfile& rpf_wrapper, std::filesystem::path path) -> void {
+			if (std::find(blacklisted_rpfs.begin(), blacklisted_rpfs.end(), rpf_wrapper.get_name()) != blacklisted_rpfs.end())
+			{
+				return;
+			}
+
 			if (path.filename() == "setup2.xml")
 			{
 				std::string dlc_name;
@@ -278,6 +284,8 @@ namespace big
 				if (dlc_name == "mpG9EC")
 				{
 					LOG(VERBOSE) << "Bad DLC, skipping...";
+
+					blacklisted_rpfs.push_back(rpf_wrapper.get_name());
 				}
 			}
 			else if (path.filename() == "vehicles.meta")
@@ -485,7 +493,7 @@ namespace big
 			yim_fipackfile::for_each_fipackfile();
 		}
 
-		static bool translate_lebel = false;
+		static bool translate_label = false;
 
 		g_fiber_pool->queue_job([&] {
 			for (auto& item : vehicles)
@@ -518,10 +526,10 @@ namespace big
 					peds.erase(it);
 				}
 			}
-			translate_lebel = true;
+			translate_label = true;
 		});
 
-		while (!translate_lebel)
+		while (!translate_label)
 		{
 			if (state() == eGtaDataUpdateState::UPDATING)
 				script::get_current()->yield();
