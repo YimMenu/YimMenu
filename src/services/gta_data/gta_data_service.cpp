@@ -9,30 +9,14 @@
 #include "thread_pool.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
+#include "util/protection.hpp"
 #include "util/session.hpp"
 #include "util/vehicle.hpp"
 #include "yim_fipackfile.hpp"
 
+
 namespace big
 {
-	inline bool is_crash_ped(rage::joaat_t hash)
-	{
-		return hash == RAGE_JOAAT("slod_human") || hash == RAGE_JOAAT("slod_small_quadped") || hash == RAGE_JOAAT("slod_large_quadped");
-	}
-
-	inline bool is_nextgen_vehicle(rage::joaat_t hash)
-	{
-		constexpr auto nextgen_vehicles = { RAGE_JOAAT("cyclone2"), RAGE_JOAAT("ignus2"), RAGE_JOAAT("astron2"), RAGE_JOAAT("arbitergt"), RAGE_JOAAT("s95") };
-		for (const auto nextgen_veh_hash : nextgen_vehicles)
-		{
-			if (hash == nextgen_veh_hash)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
 		if (std::find(vec.begin(), vec.end(), str) != vec.end())
@@ -239,7 +223,7 @@ namespace big
 			const auto name  = item.child("Name").text().as_string();
 			const auto hash  = rage::joaat(name);
 
-			if (is_crash_ped(hash))
+			if (protection::is_crash_ped(hash))
 				continue;
 
 			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
@@ -289,7 +273,7 @@ namespace big
 
 						const auto name = item.child("modelName").text().as_string();
 						const auto hash = rage::joaat(name);
-						if (is_nextgen_vehicle(hash))
+						if (protection::is_crash_vehicle(hash))
 							continue;
 
 						if (exists(mapped_vehicles, hash))
@@ -463,7 +447,7 @@ namespace big
 				const auto name = path.stem().string();
 				const auto hash = rage::joaat(name);
 
-				if (is_crash_ped(hash))
+				if (protection::is_crash_ped(hash))
 					return;
 
 				if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
