@@ -9,17 +9,14 @@
 #include "thread_pool.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
+#include "util/protection.hpp"
 #include "util/session.hpp"
 #include "util/vehicle.hpp"
 #include "yim_fipackfile.hpp"
 
+
 namespace big
 {
-	inline bool is_crash_ped(rage::joaat_t hash)
-	{
-		return hash == RAGE_JOAAT("slod_human") || hash == RAGE_JOAAT("slod_small_quadped") || hash == RAGE_JOAAT("slod_large_quadped");
-	}
-
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
 		if (std::find(vec.begin(), vec.end(), str) != vec.end())
@@ -31,7 +28,7 @@ namespace big
 
 	gta_data_service::gta_data_service() :
 	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 4),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 5),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -226,7 +223,7 @@ namespace big
 			const auto name  = item.child("Name").text().as_string();
 			const auto hash  = rage::joaat(name);
 
-			if (is_crash_ped(hash))
+			if (protection::is_crash_ped(hash))
 				continue;
 
 			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
@@ -265,22 +262,8 @@ namespace big
 		};
 
 		LOG(INFO) << "Rebuilding cache started...";
-
 		yim_fipackfile::add_wrapper_call_back([&](yim_fipackfile& rpf_wrapper, std::filesystem::path path) -> void {
-			if (path.filename() == "setup2.xml")
-			{
-				std::string dlc_name;
-				rpf_wrapper.read_xml_file(path, [&dlc_name](pugi::xml_document& doc) {
-					const auto item = doc.select_node("/SSetupData/nameHash");
-					dlc_name        = item.node().text().as_string();
-				});
-
-				if (dlc_name == "mpG9EC")
-				{
-					LOG(VERBOSE) << "Bad DLC, skipping...";
-				}
-			}
-			else if (path.filename() == "vehicles.meta")
+			if (path.filename() == "vehicles.meta")
 			{
 				rpf_wrapper.read_xml_file(path, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc) {
 					const auto& items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
@@ -290,6 +273,8 @@ namespace big
 
 						const auto name = item.child("modelName").text().as_string();
 						const auto hash = rage::joaat(name);
+						if (protection::is_crash_vehicle(hash))
+							continue;
 
 						if (exists(mapped_vehicles, hash))
 							continue;
@@ -462,7 +447,7 @@ namespace big
 				const auto name = path.stem().string();
 				const auto hash = rage::joaat(name);
 
-				if (is_crash_ped(hash))
+				if (protection::is_crash_ped(hash))
 					return;
 
 				if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
@@ -485,7 +470,7 @@ namespace big
 			yim_fipackfile::for_each_fipackfile();
 		}
 
-		static bool translate_lebel = false;
+		static bool translate_label = false;
 
 		g_fiber_pool->queue_job([&] {
 			for (auto& item : vehicles)
@@ -518,10 +503,10 @@ namespace big
 					peds.erase(it);
 				}
 			}
-			translate_lebel = true;
+			translate_label = true;
 		});
 
-		while (!translate_lebel)
+		while (!translate_label)
 		{
 			if (state() == eGtaDataUpdateState::UPDATING)
 				script::get_current()->yield();
