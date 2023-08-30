@@ -11,20 +11,15 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		virtual void on_enable() override
-		{
-			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1
-				|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller"))
-				|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
-				{
-					on_disable();
-					g.self.passive = false;
-					return;
-				}
-		}
 
 		virtual void on_tick() override
 		{
+			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
+			{
+				on_disable();
+				g.self.passive = false;
+				return;
+			}
 			*scr_globals::tuneables.at(27371).as<int*>() = 0; // End Passive Time = 0s
 			*script_global(1574582).as<bool*>() = true;
 		}
