@@ -41,8 +41,8 @@ namespace big
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 
-		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id);
-		components::command_checkbox<"passive">();
+		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1);
+			components::command_checkbox<"passive">();
 		ImGui::EndDisabled();
 
 		ImGui::EndGroup();
