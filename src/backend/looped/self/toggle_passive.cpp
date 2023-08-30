@@ -18,6 +18,7 @@ namespace big
 			{
 				on_disable();
 				g.self.passive = false;
+				g_notification_service->push_warning("Disabled passive mode", "Disabled passive mode because you started mission / joined CEO/MC");
 				return;
 			}
 			*scr_globals::tuneables.at(27371).as<int*>() = 0; // End Passive Time = 0s
