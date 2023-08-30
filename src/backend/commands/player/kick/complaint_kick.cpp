@@ -19,6 +19,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (gta_util::get_network()->m_game_session_ptr->is_host())
 			{
 				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(player->get_net_data()->m_host_token);
