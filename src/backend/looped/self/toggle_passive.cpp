@@ -2,12 +2,26 @@
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
+#include <script/globals/GPBD_FM_3.hpp>
+#include <gta_util.hpp>
 
 namespace big
 {
 	class toggle_passive : looped_command
 	{
 		using looped_command::looped_command;
+
+		virtual void on_enable() override
+		{
+			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1
+				|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller"))
+				|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
+				{
+					on_disable();
+					g.self.passive = false;
+					return;
+				}
+		}
 
 		virtual void on_tick() override
 		{
