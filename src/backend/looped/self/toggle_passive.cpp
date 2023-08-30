@@ -23,6 +23,7 @@ namespace big
 			PED::SET_PED_CONFIG_FLAG(self::ped, 342, false); // Disable NotAllowedToJackAnyPlayers
 			PED::SET_PED_CONFIG_FLAG(self::ped, 122, false); // Disable DisableMelee
 			PLAYER::SET_PLAYER_VEHICLE_DEFENSE_MODIFIER(self::ped, 1.f);
+			PED::SET_PED_CAN_BE_DRAGGED_OUT(self::ped, true);
 		}
 	};
 
