@@ -2,8 +2,8 @@
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
-#include <script/globals/GPBD_FM_3.hpp>
-#include <gta_util.hpp>
+#include "script/globals/GPBD_FM_3.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
