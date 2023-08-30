@@ -594,6 +594,8 @@ namespace big
 				g_model_preview_service->stop_preview();
 			}
 		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
 
 		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
 		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);

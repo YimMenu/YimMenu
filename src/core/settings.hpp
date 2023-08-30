@@ -474,8 +474,9 @@ namespace big
 			bool spawn_inside    = false;
 			bool spawn_maxed     = false;
 			std::string plate    = "";
+			int spawn_type       = 0;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_vehicle, preview_vehicle, spawn_inside, spawn_maxed, plate)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_vehicle, preview_vehicle, spawn_inside, spawn_maxed, plate, spawn_type)
 		} spawn_vehicle{};
 
 		struct clone_pv
@@ -489,6 +490,15 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate)
 		} clone_pv{};
+
+		struct persist_car
+		{
+			bool preview_vehicle                   = false;
+			bool spawn_inside                      = false;
+			std::string persist_vehicle_sub_folder = "";
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(persist_car, preview_vehicle, spawn_inside, persist_vehicle_sub_folder)
+		} persist_car{};
 
 		struct world
 		{
@@ -706,9 +716,8 @@ namespace big
 			bool unlimited_weapons                      = false;
 			bool siren_mute                             = false;
 			bool all_vehs_in_heists                     = false;
-			std::string persist_vehicle_sub_folder      = "";
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, persist_vehicle_sub_folder)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists)
 		} vehicle{};
 
 		struct weapons
@@ -993,7 +1002,7 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, enable_custom_sky_color, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
 		} vfx{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons, vfx)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, persist_car, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons, vfx)
 	};
 
 	inline auto g = menu_settings();

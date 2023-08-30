@@ -27,7 +27,7 @@ namespace big
 		file_stream.close();
 	}
 
-	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name)
+	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
 	{
 		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
@@ -46,7 +46,7 @@ namespace big
 			return NULL;
 		}
 
-		return spawn_vehicle_full(vehicle_json, self::ped);
+		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
 	}
 
 	std::vector<std::string> persist_car_service::list_files(std::string folder_name)
@@ -80,13 +80,13 @@ namespace big
 		return spawn_vehicle_full(get_full_vehicle_json(vehicle), ped);
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
-		const auto vehicle = spawn_vehicle(vehicle_json, ped);
+		const auto vehicle = spawn_vehicle(vehicle_json, ped, spawn_coords);
 
 		if (!vehicle_json[tow_key].is_null())
 		{
-			const auto tow = spawn_vehicle(vehicle_json[tow_key], ped);
+			const auto tow = spawn_vehicle(vehicle_json[tow_key], ped, spawn_coords);
 
 			auto pos = ENTITY::GET_ENTITY_COORDS(tow, true);
 			pos.x -= 10;
@@ -101,7 +101,7 @@ namespace big
 		}
 		else if (!vehicle_json[trailer_key].is_null())
 		{
-			const auto trailer = spawn_vehicle(vehicle_json[trailer_key], ped);
+			const auto trailer = spawn_vehicle(vehicle_json[trailer_key], ped, spawn_coords);
 			VEHICLE::ATTACH_VEHICLE_TO_TRAILER(vehicle, trailer, 1.0f);
 
 			const auto rotation = ENTITY::GET_ENTITY_ROTATION(trailer, 2);
@@ -114,9 +114,9 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
-		const auto vehicle = spawn_vehicle_json(vehicle_json, ped);
+		const auto vehicle = spawn_vehicle_json(vehicle_json, ped, spawn_coords);
 
 		std::vector<nlohmann::json> model_attachments = vehicle_json[model_attachments_key];
 		for (const auto& j : model_attachments)
@@ -180,15 +180,16 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
+		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
+		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-		const auto pos = ENTITY::GET_ENTITY_COORDS(self::ped, true);
+		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
 
-		const auto vehicle = big::vehicle::spawn(vehicle_hash, pos, ENTITY::GET_ENTITY_HEADING(ped));
-
-		script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
+		if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
+			script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);

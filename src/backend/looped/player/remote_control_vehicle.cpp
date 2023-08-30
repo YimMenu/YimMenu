@@ -29,7 +29,7 @@ namespace big
 		{
 			auto controlled = g.m_remote_controlled_vehicle;
 			auto controller = g.m_remote_controller_vehicle;
-			g_fiber_pool->queue_job([controlled, controller] {
+			g_fiber_pool->queue_job([controlled, &controller] {
 				if (entity::take_control_of(controlled))
 				{
 					ENTITY::SET_ENTITY_COLLISION(g.m_remote_controlled_vehicle, TRUE, TRUE);
