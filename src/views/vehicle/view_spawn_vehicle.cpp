@@ -9,8 +9,6 @@ namespace big
 {
 	void render_spawn_new_vehicle()
 	{
-		ImGui::SetWindowSize({0.f, (float)*g_pointers->m_gta.m_resolution_y}, ImGuiCond_Always);
-
 		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.spawn_vehicle.preview_vehicle))
 		{
 			if (!g.spawn_vehicle.preview_vehicle)
@@ -18,6 +16,8 @@ namespace big
 				g_model_preview_service->stop_preview();
 			}
 		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
 		ImGui::SameLine();
 		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
@@ -64,7 +64,43 @@ namespace big
 		ImGui::SetNextItemWidth(300.f);
 		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
 
-		if (ImGui::BeginListBox("###vehicles", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
+		vehicle_map calculated_map{};
+
+		if (g_gta_data_service->vehicles().size() > 0)
+		{
+			for (auto& item : g_gta_data_service->vehicles())
+			{
+				const auto& vehicle = item.second;
+
+				std::string display_name         = vehicle.m_display_name;
+				std::string display_manufacturer = vehicle.m_display_manufacturer;
+				std::string clazz                = vehicle.m_vehicle_class;
+
+				std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
+				std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
+
+				std::string lower_search = search;
+				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
+				if ((selected_class == -1 || class_arr[selected_class] == clazz) && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
+				{
+					calculated_map.emplace(item);
+				}
+			}
+		}
+		
+		static const auto over_30 = (30 * ImGui::GetTextLineHeightWithSpacing() + 2);
+		auto calculated_size = calculated_map.size();
+		if (calculated_map.size() == 0)
+		{
+			calculated_size++;
+		}
+		if (self::veh)
+		{
+			calculated_size++;
+		}
+		const auto box_height = calculated_size <= 30 ? (calculated_size * ImGui::GetTextLineHeightWithSpacing() + 2) : over_30;
+		if (ImGui::BeginListBox("###vehicles", {300, box_height}))
 		{
 			if (self::veh)
 			{
@@ -125,66 +161,50 @@ namespace big
 				}
 			}
 
-			const auto& item_arr = g_gta_data_service->vehicles();
-			if (item_arr.size() > 0)
+			if (calculated_map.size() > 0)
 			{
-				std::string lower_search = search;
-				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
-
-				for (auto& item : item_arr)
+				for (auto& item : calculated_map)
 				{
 					const auto& vehicle = item.second;
+					ImGui::PushID(vehicle.m_hash);
+					components::selectable(vehicle.m_display_name, false, [&vehicle] {
+						const auto spawn_location =
+						    vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
+						const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-					std::string display_name         = vehicle.m_display_name;
-					std::string display_manufacturer = vehicle.m_display_manufacturer;
-					std::string clazz                = vehicle.m_vehicle_class;
+						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
 
-					std::transform(display_name.begin(), display_name.end(), display_name.begin(), ::tolower);
-					std::transform(display_manufacturer.begin(), display_manufacturer.end(), display_manufacturer.begin(), ::tolower);
+						if (veh == 0)
+						{
+							g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+						}
+						else
+						{
+							if (g.spawn_vehicle.spawn_maxed)
+							{
+								vehicle::max_vehicle(veh);
+							}
 
-					if ((selected_class == -1 || class_arr[selected_class] == clazz)
-					    && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
+							vehicle::set_plate(veh, plate_buf);
+
+							if (g.spawn_vehicle.spawn_inside)
+							{
+								vehicle::teleport_into_vehicle(veh);
+							}
+						}
+
+						g_model_preview_service->stop_preview();
+						ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
+					});
+					ImGui::PopID();
+
+					if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
 					{
-						ImGui::PushID(vehicle.m_hash);
-						components::selectable(vehicle.m_display_name, false, [&vehicle] {
-							const auto spawn_location =
-							    vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
-							const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-							auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
-
-							if (veh == 0)
-							{
-								g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
-							}
-							else
-							{
-								if (g.spawn_vehicle.spawn_maxed)
-								{
-									vehicle::max_vehicle(veh);
-								}
-
-								vehicle::set_plate(veh, plate_buf);
-
-								if (g.spawn_vehicle.spawn_inside)
-								{
-									vehicle::teleport_into_vehicle(veh);
-								}
-							}
-
-							g_model_preview_service->stop_preview();
-							ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
-						});
-						ImGui::PopID();
-
-						if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
-						{
-							g_model_preview_service->stop_preview();
-						}
-						else if (ImGui::IsItemHovered())
-						{
-							g_model_preview_service->show_vehicle(vehicle.m_hash, g.spawn_vehicle.spawn_maxed);
-						}
+						g_model_preview_service->stop_preview();
+					}
+					else if (ImGui::IsItemHovered())
+					{
+						g_model_preview_service->show_vehicle(vehicle.m_hash, g.spawn_vehicle.spawn_maxed);
 					}
 				}
 			}
@@ -198,16 +218,15 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		static int spawn_type = 0;
-		ImGui::RadioButton("New", &spawn_type, 0);
+		ImGui::RadioButton("New", &g.spawn_vehicle.spawn_type, 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", &spawn_type, 1);
+		ImGui::RadioButton("Personal", &g.spawn_vehicle.spawn_type, 1);
 		ImGui::SameLine();
-		ImGui::RadioButton("Persistent", &spawn_type, 2);
+		ImGui::RadioButton("Persistent", &g.spawn_vehicle.spawn_type, 2);
 		ImGui::SameLine();
-		ImGui::RadioButton("Xml", &spawn_type, 3);
+		ImGui::RadioButton("Xml", &g.spawn_vehicle.spawn_type, 3);
 
-		switch (spawn_type)
+		switch (g.spawn_vehicle.spawn_type)
 		{
 		case 0: render_spawn_new_vehicle(); break;
 		case 1: view::pv(); break;

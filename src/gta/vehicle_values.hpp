@@ -444,7 +444,9 @@ enum CustomVehicleModType
 	MOD_EXTRA_11 = -211,
 	MOD_EXTRA_12 = -212,
 	MOD_EXTRA_13 = -213,
-	MOD_EXTRA_14 = -214
+	MOD_EXTRA_14 = -214,
+
+	MOD_HAS_CLAN_LOGO = -215
 };
 
 
