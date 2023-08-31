@@ -1518,8 +1518,6 @@ namespace big
 							}
 						}
 					}
-
-					return true;
 				}
 
 				break;
