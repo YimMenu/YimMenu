@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "script.hpp"
 #include "services/vehicle/persist_car_service.hpp"
+#include "services/model_preview/model_preview_service.hpp"
 #include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
@@ -22,13 +23,15 @@ namespace big
 	{
 		if (!selected_vehicle_file.empty())
 		{
-			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.vehicle.persist_vehicle_sub_folder);
+			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder);
 			if (!vehicle)
 			{
 				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
-			else if (g.spawn_vehicle.spawn_inside)
+			else if (g.persist_car.spawn_inside)
+			{
 				teleport::into_vehicle(vehicle);
+			}
 
 			selected_vehicle_file.clear();
 		}
@@ -43,25 +46,47 @@ namespace big
 		static std::string selected_vehicle_file;
 
 		const auto vehicle_folders = persist_car_service::list_sub_folders();
-		const auto vehicle_files   = persist_car_service::list_files(g.vehicle.persist_vehicle_sub_folder);
+		const auto vehicle_files   = persist_car_service::list_files(g.persist_car.persist_vehicle_sub_folder);
 
+		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.persist_car.preview_vehicle))
+		{
+			if (!g.persist_car.preview_vehicle)
+			{
+				g_model_preview_service->stop_preview();
+			}
+		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
+		ImGui::SameLine();
+		ImGui::Checkbox("SPAWN_IN"_T.data(), &g.persist_car.spawn_inside);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("SPAWN_IN_DESC"_T.data());
 
-		auto folder_display = g.vehicle.persist_vehicle_sub_folder.empty() ? "ROOT"_T.data() : g.vehicle.persist_vehicle_sub_folder.c_str();
+		ImGui::SetNextItemWidth(300.f);
+		auto folder_display = g.persist_car.persist_vehicle_sub_folder.empty() ?
+		    "ROOT"_T.data() :
+		    g.persist_car.persist_vehicle_sub_folder.c_str();
 		if (ImGui::BeginCombo("FOLDER"_T.data(), folder_display))
 		{
-			if (ImGui::Selectable("ROOT"_T.data(), g.vehicle.persist_vehicle_sub_folder == ""))
-				g.vehicle.persist_vehicle_sub_folder = "";
+			if (ImGui::Selectable("ROOT"_T.data(), g.persist_car.persist_vehicle_sub_folder == ""))
+				g.persist_car.persist_vehicle_sub_folder.clear();
 
 			for (std::string folder_name : vehicle_folders)
 			{
-				if (ImGui::Selectable(folder_name.c_str(), g.vehicle.persist_vehicle_sub_folder == folder_name))
-					g.vehicle.persist_vehicle_sub_folder = folder_name;
+				if (ImGui::Selectable(folder_name.c_str(), g.persist_car.persist_vehicle_sub_folder == folder_name))
+					g.persist_car.persist_vehicle_sub_folder = folder_name;
 			}
 
 			ImGui::EndCombo();
 		}
 
-		ImGui::PushItemWidth(250);
+		static char search[64];
+		ImGui::SetNextItemWidth(300.f);
+		components::input_text_with_hint("FILE_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
+		std::string lower_search = search;
+		std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
+
+		ImGui::SetNextItemWidth(250);
 		ImGui::Text("SAVED_VEHICLES"_T.data());
 
 		static const auto over_30 = (30 * ImGui::GetTextLineHeightWithSpacing() + 2);
@@ -70,12 +95,29 @@ namespace big
 		{
 			for (const auto& pair : vehicle_files)
 			{
-				if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
+				std::string pair_lower = pair;
+				std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
+				if (pair_lower.contains(lower_search))
 				{
-					selected_vehicle_file = pair;
-					g_fiber_pool->queue_job([] {
-						load_vehicle(selected_vehicle_file);
-					});
+					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
+					{
+						selected_vehicle_file = pair;
+						g_fiber_pool->queue_job([] {
+							load_vehicle(selected_vehicle_file);
+							g_model_preview_service->stop_preview();
+						});
+					}
+
+					if (!g.persist_car.preview_vehicle || (g.persist_car.preview_vehicle && !ImGui::IsAnyItemHovered()))
+					{
+						g_model_preview_service->stop_preview();
+					}
+					else if (ImGui::IsItemHovered())
+					{
+						g_fiber_pool->queue_job([pair] {
+							g_model_preview_service->show_vehicle_persisted(pair);
+						});
+					}
 				}
 			}
 
@@ -88,19 +130,17 @@ namespace big
 		static char vehicle_file_name_input[50]{};
 
 		components::small_text("VEHICLE_FILE_NAME"_T);
-		ImGui::PushItemWidth(250);
+		ImGui::SetNextItemWidth(250);
 		ImGui::InputText("##vehiclefilename", vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("VEHICLE_FILE_NAME_EXAMPLE"_T.data());
-		ImGui::PopItemWidth();
 
         static char save_folder[50]{};
 		components::small_text("VEHICLE_FOLDER_NAME"_T);
-		ImGui::PushItemWidth(250);
+		ImGui::SetNextItemWidth(250);
 		ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
-		ImGui::PopItemWidth();
 
 		components::button("SAVE_VEHICLE"_T, [] {
 			if (!self::veh)

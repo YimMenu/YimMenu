@@ -12,7 +12,7 @@ namespace big::entity
 	void cage_ped(Ped ped);
 	void clean_ped(Ped ped);
 	bool take_control_of(Entity ent, int timeout = 300);
-	void delete_entity(Entity ent);
+	void delete_entity(Entity& ent, bool force = false);
 	bool raycast(Entity* ent);
 	bool raycast(Vector3* endcoor);
 	bool network_has_control_of_entity(rage::netObject* net_object);
