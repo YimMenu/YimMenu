@@ -143,6 +143,14 @@ namespace big
 		UNK2                 = 1 << 16
 	};
 
+	enum eKnockOffVehicle
+	{
+		KNOCKOFFVEHICLE_DEFAULT,
+		KNOCKOFFVEHICLE_NEVER,
+		KNOCKOFFVEHICLE_EASY,
+		KNOCKOFFVEHICLE_HARD
+	};
+
 	enum class ePedTask
 	{
 		TASK_NONE,

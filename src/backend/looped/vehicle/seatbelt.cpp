@@ -10,13 +10,13 @@ namespace big
 		virtual void on_tick() override
 		{
 			PED::SET_PED_CONFIG_FLAG(self::ped, 32, false);
-			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, 1);
+			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, eKnockOffVehicle::KNOCKOFFVEHICLE_NEVER);
 		}
 
 		virtual void on_disable() override
 		{
 			PED::SET_PED_CONFIG_FLAG(self::ped, 32, true);
-			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, 0);
+			PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(self::ped, eKnockOffVehicle::KNOCKOFFVEHICLE_DEFAULT);
 		}
 	};
 
