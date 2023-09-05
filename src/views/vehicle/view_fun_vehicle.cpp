@@ -1,3 +1,5 @@
+#include "core/data/bullet_impact_types.hpp"
+#include "core/data/special_ammo_types.hpp"
 #include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
@@ -144,7 +146,7 @@ namespace big
 			{
 				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
 			}
-			else if (g.vehicle.keep_vehicle_repaired) 
+			else if (g.vehicle.keep_vehicle_repaired)
 			{
 				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
 			}
@@ -245,6 +247,104 @@ namespace big
 			{
 				g.vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g.vehicle.speed_unit);
 			}
+		}
+		ImGui::SeparatorText("Vehicle Weapons");
+		{
+			components::command_checkbox<"customvehweaps">();
+			components::options_modal("Custom vehicle weapons", [] {
+				eAmmoSpecialType selected_ammo          = g.vehicle.vehicle_ammo_special.type;
+				eExplosionTag selected_explosion        = g.vehicle.vehicle_ammo_special.explosion_tag;
+				eExplosionTag selected_rocket_explosion = g.vehicle.vehicle_ammo_special.rocket_explosion_tag;
+
+				ImGui::BeginGroup();
+				components::sub_title("Machine Gun");
+				if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
+				{
+					for (const auto& special_ammo : SPECIAL_AMMOS)
+					{
+						if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+						{
+							g.vehicle.vehicle_ammo_special.type = special_ammo.type;
+						}
+
+						if (special_ammo.type == selected_ammo)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+				if (ImGui::BeginCombo("BULLET_IMPACT"_T.data(), BULLET_IMPACTS[selected_explosion]))
+				{
+					for (const auto& [type, name] : BULLET_IMPACTS)
+					{
+						if (ImGui::Selectable(name, type == selected_explosion))
+						{
+							g.vehicle.vehicle_ammo_special.explosion_tag = type;
+						}
+
+						if (type == selected_explosion)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+				ImGui::InputFloat("Bullet Speed", &g.vehicle.vehicle_ammo_special.speed, 10, 100, "%.1f");
+				ImGui::InputFloat("Bullet Range", &g.vehicle.vehicle_ammo_special.weapon_range, 50, 100, "%.1f");
+				ImGui::InputFloat("Time Between Shots", &g.vehicle.vehicle_ammo_special.time_between_shots, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to fire consecutive shots on the same side. Related to rate of fire.");
+				ImGui::InputFloat("Alternate Wait Time", &g.vehicle.vehicle_ammo_special.alternate_wait_time, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to switch between sides. Related to rate of fire.");
+				ImGui::EndGroup();
+
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+				components::sub_title("Missile");
+				if (ImGui::BeginCombo("Explosion", BULLET_IMPACTS[selected_rocket_explosion]))
+				{
+					for (const auto& [type, name] : BULLET_IMPACTS)
+					{
+						if (ImGui::Selectable(name, type == selected_rocket_explosion))
+						{
+							g.vehicle.vehicle_ammo_special.rocket_explosion_tag = type;
+						}
+
+						if (type == selected_rocket_explosion)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+
+				ImGui::InputFloat("Reload Time", &g.vehicle.vehicle_ammo_special.rocket_reload_time, 0.1, 1, "%.1f");
+				ImGui::InputFloat("Missile Speed", &g.vehicle.vehicle_ammo_special.rocket_launch_speed, 10, 100, "%.1f");
+				ImGui::InputFloat("Lock-on Range", &g.vehicle.vehicle_ammo_special.rocket_lock_on_range, 50, 100, "%.1f");
+				ImGui::InputFloat("Missile Range", &g.vehicle.vehicle_ammo_special.rocket_range, 50, 100, "%.1f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Distance taken for missile to blowup if not hitting anything.");
+				ImGui::InputFloat("Time Before Homing", &g.vehicle.vehicle_ammo_special.rocket_time_before_homing, 0.01, 0.1, "%.2f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken before fired rockets start homing towards target.");
+				ImGui::InputFloat("Time Between Missiles", &g.vehicle.vehicle_ammo_special.rocket_time_between_shots, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to fire consecutive shots on the same side. Related to rate of fire.");
+				ImGui::InputFloat("Missile Alternate Time", &g.vehicle.vehicle_ammo_special.rocket_alternate_wait_time, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to switch between sides. Related to rate of fire.");
+				ImGui::InputFloat("Missile Lifetime", &g.vehicle.vehicle_ammo_special.rocket_lifetime, 0.1, 1, "%.1f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken for missile to blowup if not hitting anything.");
+				ImGui::Checkbox("Improve Tracking", &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Turn current vehicle missiles into chernobog missiles.");
+				ImGui::EndGroup();
+			});
 		}
 	}
 }

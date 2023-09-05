@@ -720,7 +720,7 @@ namespace big
 
 			struct vehicle_ammo_special
 			{
-				bool toggle                        = false;
+				bool enabled                       = false;
 				eAmmoSpecialType type              = eAmmoSpecialType::None;
 				eExplosionTag explosion_tag        = eExplosionTag::EXP_TAG_ROGUE_CANNON;
 				float speed                        = 2000;
@@ -730,13 +730,15 @@ namespace big
 				float rocket_time_between_shots    = 0.66;
 				float rocket_alternate_wait_time   = 0.66;
 				float rocket_lock_on_range         = 500;
+				float rocket_range                 = 1000;
 				float rocket_reload_time           = -1;
 				eExplosionTag rocket_explosion_tag = eExplosionTag::TANKSHELL;
 				float rocket_lifetime              = 15;
 				float rocket_launch_speed          = 1200;
+				float rocket_time_before_homing    = 0.15;
 				bool rocket_improve_tracking       = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, toggle, type, explosion_tag, speed, time_between_shots, alternate_wait_time, weapon_range, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_reload_time, rocket_explosion_tag, rocket_lifetime, rocket_launch_speed, rocket_improve_tracking)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, type, explosion_tag, speed, time_between_shots, alternate_wait_time, weapon_range, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_explosion_tag, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)
 			} vehicle_ammo_special{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, vehicle_ammo_special)

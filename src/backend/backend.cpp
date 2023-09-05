@@ -102,7 +102,6 @@ namespace big
 		{
 			looped::vehicle_auto_drive();
 			looped::vehicle_allow_all_weapons();
-			looped::vehicle_ammo_special_type();
 			looped::vehicle_boost_behavior();
 			looped::derail_train();
 			looped::drive_train();
