@@ -143,7 +143,7 @@ namespace big
 		UNK2                 = 1 << 16
 	};
 
-	enum eKnockOffVehicle
+	enum class eKnockOffVehicle
 	{
 		KNOCKOFFVEHICLE_DEFAULT,
 		KNOCKOFFVEHICLE_NEVER,
