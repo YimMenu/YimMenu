@@ -114,6 +114,12 @@ namespace big
 		}
 	}
 
+	void translation_service::update_n_reload_language_packs()
+	{
+		update_language_packs();
+		load_translations();
+	}
+
 	void translation_service::load_translations()
 	{
 		m_translations.clear();
