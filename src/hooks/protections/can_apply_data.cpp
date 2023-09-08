@@ -1312,9 +1312,15 @@ namespace big
 			case sync_node_id("CSectorDataNode"):
 			{
 				const auto sector_node = (CSectorDataNode*)(node);
-				if (sector_node->m_pos_x >= 711 || sector_node->m_pos_y >= 711)
+				int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
+				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
+				bool is_x_invalid      = (((posX + 149) + 8192) / 75) >= 255;
+				bool is_y_invalid      = (((posY + 149) + 8192) / 75) >= 255;
+				if (is_x_invalid || is_y_invalid)
 				{
-					notify::crash_blocked(sender, "invalid sector position (sector node)");
+					std::stringstream reason;
+					reason << "invalid sector position (sector node) " << ((is_x_invalid) ? "X was invalid " : "") << ((is_y_invalid) ? "Y was invalid" : "");
+					notify::crash_blocked(sender, reason.str().c_str());
 					return true;
 				}
 				break;
