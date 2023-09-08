@@ -282,7 +282,7 @@ namespace big
 			bool receive_pickup          = false;
 			bool admin_check             = true;
 			bool kick_rejoin             = true;
-			bool force_relay_connections = true;
+			bool force_relay_connections = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections)
 		} protections{};
