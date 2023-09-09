@@ -25,7 +25,7 @@ namespace big
 			if (g_player_service->get_self()->is_host())
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
 
-			if (player && !player->is_host() && !g_player_service->get_self()->is_host())
+			if (player && !g_player_service->get_self()->is_host() && player->is_valid() && !player->is_host())
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
 
 			if (g_player_service->get_self()->is_host())
