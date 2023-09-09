@@ -66,15 +66,18 @@ namespace big
 				apply_rocket(g.vehicle.vehicle_ammo_special);
 			}
 		}
+
 		virtual void on_disable() override
 		{
 			restore_mg();
 			restore_rocket();
 		}
+
 		bool is_weapon_mg(const CWeaponInfo* weapon_info)
 		{
 			return weapon_info->m_fire_type == eFireType::InstantHit || weapon_info->m_fire_type == eFireType::DelayedHit;
 		}
+
 		bool is_weapon_rocket(const CWeaponInfo* weapon_info)
 		{
 			if (weapon_info->m_fire_type != eFireType::ProjectTile)
@@ -84,6 +87,7 @@ namespace big
 			uint32_t trail_hash          = rocket_info->m_m_trail_fx_hash;
 			return (trail_hash == RAGE_JOAAT("proj_rpg_trail") || trail_hash == RAGE_JOAAT("proj_xm_thruster_rpg_trail"));
 		}
+
 		void restore_mg()
 		{
 			// apply the original bullet and impact type to the old weapon
@@ -98,6 +102,7 @@ namespace big
 				m_mg_weapon_info->m_weapon_range                   = m_mg_range;
 			}
 		}
+
 		void backup_mg(CWeaponInfo* weapon_info)
 		{
 			// backup the bullet and impact type of the new weapon
@@ -145,6 +150,7 @@ namespace big
 			m_mg_weapon_info->m_alternate_wait_time            = g_vehicle_ammo_settings.alternate_wait_time;
 			m_mg_weapon_info->m_weapon_range                   = g_vehicle_ammo_settings.weapon_range;
 		}
+
 		void restore_rocket()
 		{
 			if (m_rocket_weapon_info != nullptr)
@@ -166,6 +172,7 @@ namespace big
 				m_rocket_weapon_info                = nullptr;
 			}
 		}
+
 		void backup_rocket(CWeaponInfo* weapon_info)
 		{
 			m_rocket_weapon_info         = weapon_info;
@@ -183,6 +190,7 @@ namespace big
 			m_rocket_time_before_homing  = rocket_info->m_time_before_homing;
 			m_rocket_homing_params       = rocket_info->m_homing_rocket_params;
 		}
+
 		void apply_rocket(const vehicle_ammo_setting& g_vehicle_ammo_settings)
 		{
 			m_rocket_weapon_info->m_damage_type         = eDamageType::Explosive;
@@ -217,7 +225,7 @@ namespace big
 				rocket_info->m_homing_rocket_params.m_default_homing_rocket_break_lock_angle          = 0.2;
 				rocket_info->m_homing_rocket_params.m_default_homing_rocket_break_lock_angle_close    = 0.6;
 				rocket_info->m_homing_rocket_params.m_default_homing_rocket_break_lock_close_distance = 20.0;
-				rocket_info->m_homing_rocket_params.m_time_before_starting_homing = g_vehicle_ammo_settings.rocket_time_before_homing;
+				rocket_info->m_homing_rocket_params.m_time_before_starting_homing                     = 0.15;
 			}
 			else
 			{

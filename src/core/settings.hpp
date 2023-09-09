@@ -735,7 +735,7 @@ namespace big
 				eExplosionTag rocket_explosion_tag = eExplosionTag::TANKSHELL;
 				float rocket_lifetime              = 15;
 				float rocket_launch_speed          = 1200;
-				float rocket_time_before_homing    = 0.15;
+				float rocket_time_before_homing    = 0.75;
 				bool rocket_improve_tracking       = true;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, type, explosion_tag, speed, time_between_shots, alternate_wait_time, weapon_range, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_explosion_tag, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)

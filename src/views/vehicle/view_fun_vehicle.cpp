@@ -327,10 +327,10 @@ namespace big
 				ImGui::InputFloat("Lock-on Range", &g.vehicle.vehicle_ammo_special.rocket_lock_on_range, 50, 100, "%.1f");
 				ImGui::InputFloat("Missile Range", &g.vehicle.vehicle_ammo_special.rocket_range, 50, 100, "%.1f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Distance taken for missile to blowup if not hitting anything.");
+					ImGui::SetTooltip("Distance taken for missile to explode if not hitting anything.");
 				ImGui::InputFloat("Time Before Homing", &g.vehicle.vehicle_ammo_special.rocket_time_before_homing, 0.01, 0.1, "%.2f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Time taken before fired rockets start homing towards target.");
+					ImGui::SetTooltip("Time taken to lock-on to target.");
 				ImGui::InputFloat("Time Between Missiles", &g.vehicle.vehicle_ammo_special.rocket_time_between_shots, 0.001, 0.1, "%.3f");
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Time taken to fire consecutive shots on the same side. Related to rate of fire.");
@@ -339,7 +339,7 @@ namespace big
 					ImGui::SetTooltip("Time taken to switch between sides. Related to rate of fire.");
 				ImGui::InputFloat("Missile Lifetime", &g.vehicle.vehicle_ammo_special.rocket_lifetime, 0.1, 1, "%.1f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Time taken for missile to blowup if not hitting anything.");
+					ImGui::SetTooltip("Time taken for missile to explode if not hitting anything.");
 				ImGui::Checkbox("Improve Tracking", &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Turn current vehicle missiles into chernobog missiles.");
