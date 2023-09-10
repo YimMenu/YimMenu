@@ -162,11 +162,11 @@ namespace big
 		return false;
 	}
 
-	inline bool is_sane_override_pos(float x, float y, float z)
+	inline bool is_invalid_override_pos(float x, float y)
 	{
-		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) == 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) == 255;
+		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) >= 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) >= 255;
 
-		return !crash;
+		return crash;
 	}
 
 	inline std::string get_task_type_string(int type)
@@ -1345,13 +1345,9 @@ namespace big
 				const auto sector_node = (CSectorDataNode*)(node);
 				int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
 				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
-				bool is_x_invalid      = ((((posX+player_sector_pos_x) + 149) + 8192) / 75) >= 255;
-				bool is_y_invalid      = ((((posY+player_sector_pos_y) + 149) + 8192) / 75) >= 255;
-				if (is_x_invalid || is_y_invalid)
+				if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
 				{
-					std::stringstream reason;
-					reason << "invalid sector position (sector node) " << ((is_x_invalid) ? "X was invalid " : "") << ((is_y_invalid) ? "Y was invalid" : "");
-					notify::crash_blocked(sender, reason.str().c_str());
+					notify::crash_blocked(sender, "invalid sector position (sector node)");
 					return true;
 				}
 				break;
@@ -1360,9 +1356,7 @@ namespace big
 			{
 				const auto game_state_node = (CPlayerGameStateDataNode*)(node);
 				if (game_state_node->m_is_overriding_population_control_sphere
-				    && !is_sane_override_pos(game_state_node->m_population_control_sphere_x,
-				        game_state_node->m_population_control_sphere_y,
-				        game_state_node->m_population_control_sphere_z))
+				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x,game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
@@ -1562,7 +1556,7 @@ namespace big
 			case sync_node_id("CPlayerCameraDataNode"):
 			{
 				const auto camera_node = (CPlayerCameraDataNode*)(node);
-				if (!is_sane_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y, camera_node->m_free_cam_pos_z))
+				if (is_invalid_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (camera data node)");
