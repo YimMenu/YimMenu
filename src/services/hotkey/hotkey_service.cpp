@@ -94,7 +94,7 @@ namespace big
 		if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
 		{
 			auto& hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
-			if (const auto& it = hotkey_map.find(key); it != hotkey_map.end())
+			for (auto [ it, end ] = hotkey_map.equal_range(key); it != end; ++it)
 			{
 				if (auto& hotkey = it->second; hotkey.can_exec())
 				{

@@ -2004,6 +2004,14 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
+enum class eKnockOffVehicle
+{
+	KNOCKOFFVEHICLE_DEFAULT,
+	KNOCKOFFVEHICLE_NEVER,
+	KNOCKOFFVEHICLE_EASY,
+	KNOCKOFFVEHICLE_HARD
+};
+
 enum class eCombatAbilityLevel
 {
 	POOR,

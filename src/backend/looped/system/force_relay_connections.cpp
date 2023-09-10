@@ -18,6 +18,6 @@ namespace big
 		}
 	};
 
-	force_relay_connections g_force_relay_connections("forcerelays", "Force Relay Connections", "Hides your IP address by rerouting your connection through dedicated servers and other players",
+	force_relay_connections g_force_relay_connections("forcerelays", "FORCE_RELAY_CXN", "FORCE_RELAY_CXN_DESC",
 	    g.protections.force_relay_connections);
 }
