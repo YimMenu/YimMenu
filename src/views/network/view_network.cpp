@@ -484,7 +484,7 @@ namespace big
 		    },
 		    true,
 		    "TELEPORT"_T.data());
-		components::command_button<"emptysession">({}, "EMPTY_SESSION"_T.data());
+		components::command_button<"emptysession">();
 
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
