@@ -16,11 +16,31 @@
 namespace big
 {
 	hooking::hooking() :
-	    // Swapchain
-	    m_swapchain_hook(*g_pointers->m_gta.m_swapchain, hooks::swapchain_num_funcs)
+	    m_swapchain_hook(*g_pointers->m_gta.m_swapchain, hooks::swapchain_num_funcs),
+	    m_sync_data_reader_hook(g_pointers->m_gta.m_sync_data_reader_vtable, 27)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
+
+		m_sync_data_reader_hook.hook(1, &hooks::sync_reader_serialize_dword);
+		m_sync_data_reader_hook.hook(2, &hooks::sync_reader_serialize_word);
+		m_sync_data_reader_hook.hook(3, &hooks::sync_reader_serialize_byte);
+		m_sync_data_reader_hook.hook(4, &hooks::sync_reader_serialize_int32);
+		m_sync_data_reader_hook.hook(5, &hooks::sync_reader_serialize_int16);
+		m_sync_data_reader_hook.hook(6, &hooks::sync_reader_serialize_signed_byte);
+		m_sync_data_reader_hook.hook(7, &hooks::sync_reader_serialize_bool);
+		m_sync_data_reader_hook.hook(9, &hooks::sync_reader_serialize_int32);
+		m_sync_data_reader_hook.hook(10, &hooks::sync_reader_serialize_int16);
+		m_sync_data_reader_hook.hook(11, &hooks::sync_reader_serialize_signed_byte);
+		m_sync_data_reader_hook.hook(13, &hooks::sync_reader_serialize_dword);
+		m_sync_data_reader_hook.hook(14, &hooks::sync_reader_serialize_word);
+		m_sync_data_reader_hook.hook(15, &hooks::sync_reader_serialize_byte);
+		m_sync_data_reader_hook.hook(16, &hooks::sync_reader_serialize_signed_float);
+		m_sync_data_reader_hook.hook(17, &hooks::sync_reader_serialize_float);
+		m_sync_data_reader_hook.hook(18, &hooks::sync_reader_serialize_net_id);
+		m_sync_data_reader_hook.hook(19, &hooks::sync_reader_serialize_vec3);
+		m_sync_data_reader_hook.hook(21, &hooks::sync_reader_serialize_vec3_signed);
+		m_sync_data_reader_hook.hook(23, &hooks::sync_reader_serialize_array);
 
 		// The only instances in that vector at this point should only be the "lazy" hooks
 		// aka the ones that still don't have their m_target assigned
@@ -58,7 +78,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_gta.m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_gta.m_invalid_decal_crash);
-		detour_hook_helper::add<hooks::task_parachute_object_0x270>("TPO270", g_pointers->m_gta.m_task_parachute_object_0x270);
+		detour_hook_helper::add<hooks::task_parachute_object>("TPO", g_pointers->m_gta.m_task_parachute_object);
+		detour_hook_helper::add<hooks::task_ambient_clips>("TAC", g_pointers->m_gta.m_task_ambient_clips);
 
 		detour_hook_helper::add<hooks::update_presence_attribute_int>("UPAI", g_pointers->m_sc.m_update_presence_attribute_int);
 		detour_hook_helper::add<hooks::update_presence_attribute_string>("UPAS", g_pointers->m_sc.m_update_presence_attribute_string);
@@ -81,6 +102,7 @@ namespace big
 		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", g_pointers->m_gta.m_send_session_matchmaking_attributes);
 
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_gta.m_serialize_take_off_ped_variation_task);
+		detour_hook_helper::add<hooks::serialize_parachute_task>("SPT", g_pointers->m_gta.m_serialize_parachute_task);
 
 		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_gta.m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_gta.m_prepare_metric_for_sending);
@@ -122,6 +144,8 @@ namespace big
 		detour_hook_helper::add<hooks::render_entity>("RE", g_pointers->m_gta.m_render_entity);
 		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
 
+		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
+
 		g_hooking = this;
 	}
 
@@ -138,6 +162,7 @@ namespace big
 	void hooking::enable()
 	{
 		m_swapchain_hook.enable();
+		m_sync_data_reader_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
 
 		for (auto& detour_hook_helper : m_detour_hook_helpers)
@@ -160,6 +185,7 @@ namespace big
 		}
 
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
+		m_sync_data_reader_hook.disable();
 		m_swapchain_hook.disable();
 
 		MH_ApplyQueued();

@@ -28,7 +28,7 @@ namespace big
 			ImGui::Separator();
 
 			if (g.window.ingame_overlay.show_fps)
-				ImGui::Text("%.0f FPS", ImGui::GetIO().Framerate / 2);
+				ImGui::Text("%.0f FPS", ImGui::GetIO().Framerate);
 
 			if (CNetworkPlayerMgr* network_player_mgr = gta_util::get_network_player_mgr(); g.window.ingame_overlay.show_players)
 				ImGui::Text(std::format("Players: {}/{}", network_player_mgr->m_player_count, network_player_mgr->m_player_limit)

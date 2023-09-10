@@ -8,7 +8,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			std::string mpPrefix = local_player::get_mp_prefix();
 			STATS::STAT_SET_INT(rage::joaat(mpPrefix + "NO_BOUGHT_YUM_SNACKS"), 30, true);
@@ -22,5 +22,5 @@ namespace big
 		}
 	};
 
-	fill_inventory g_fill_inventory("fillsnacks", "Fill Inventory", "Refills snacks and armor", 0);
+	fill_inventory g_fill_inventory("fillsnacks", "FILL_INVENTORY", "FILL_INVENTORY_DESC", 0);
 }

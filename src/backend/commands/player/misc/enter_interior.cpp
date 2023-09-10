@@ -13,7 +13,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			int id = player->id();
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PropertyData.Index != -1)
@@ -33,11 +33,11 @@ namespace big
 			}
 			else if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index != eSimpleInteriorIndex::SIMPLE_INTERIOR_INVALID)
 			{
-				*script_global(1950844).at(3347).as<Player*>() =
+				*scr_globals::interiors.at(3347).as<Player*>() =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Owner;
-				*script_global(1950844).at(3684).as<eSimpleInteriorIndex*>() =
+				*scr_globals::interiors.at(3684).as<eSimpleInteriorIndex*>() =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index;
-				*script_global(1950844).at(3683).as<bool*>() = true;
+				*scr_globals::interiors.at(3683).as<bool*>() = true;
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.InteriorSubtype =
 				    scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.InteriorSubtype;
 			}

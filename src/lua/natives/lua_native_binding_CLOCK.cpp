@@ -3,80 +3,80 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_CLOCK_SET_CLOCK_TIME( int hour, int minute, int second )
+	static void LUA_NATIVE_CLOCK_SET_CLOCK_TIME(int hour, int minute, int second)
 	{
 		CLOCK::SET_CLOCK_TIME(hour, minute, second);
 	}
 
-	static void LUA_NATIVE_CLOCK_PAUSE_CLOCK( bool toggle )
+	static void LUA_NATIVE_CLOCK_PAUSE_CLOCK(bool toggle)
 	{
 		CLOCK::PAUSE_CLOCK(toggle);
 	}
 
-	static void LUA_NATIVE_CLOCK_ADVANCE_CLOCK_TIME_TO( int hour, int minute, int second )
+	static void LUA_NATIVE_CLOCK_ADVANCE_CLOCK_TIME_TO(int hour, int minute, int second)
 	{
 		CLOCK::ADVANCE_CLOCK_TIME_TO(hour, minute, second);
 	}
 
-	static void LUA_NATIVE_CLOCK_ADD_TO_CLOCK_TIME( int hours, int minutes, int seconds )
+	static void LUA_NATIVE_CLOCK_ADD_TO_CLOCK_TIME(int hours, int minutes, int seconds)
 	{
 		CLOCK::ADD_TO_CLOCK_TIME(hours, minutes, seconds);
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_HOURS(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_HOURS()
 	{
 		auto retval = CLOCK::GET_CLOCK_HOURS();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_MINUTES(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_MINUTES()
 	{
 		auto retval = CLOCK::GET_CLOCK_MINUTES();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_SECONDS(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_SECONDS()
 	{
 		auto retval = CLOCK::GET_CLOCK_SECONDS();
 		return retval;
 	}
 
-	static void LUA_NATIVE_CLOCK_SET_CLOCK_DATE( int day, int month, int year )
+	static void LUA_NATIVE_CLOCK_SET_CLOCK_DATE(int day, int month, int year)
 	{
 		CLOCK::SET_CLOCK_DATE(day, month, year);
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_DAY_OF_WEEK(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_DAY_OF_WEEK()
 	{
 		auto retval = CLOCK::GET_CLOCK_DAY_OF_WEEK();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_DAY_OF_MONTH(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_DAY_OF_MONTH()
 	{
 		auto retval = CLOCK::GET_CLOCK_DAY_OF_MONTH();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_MONTH(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_MONTH()
 	{
 		auto retval = CLOCK::GET_CLOCK_MONTH();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_CLOCK_YEAR(  )
+	static int LUA_NATIVE_CLOCK_GET_CLOCK_YEAR()
 	{
 		auto retval = CLOCK::GET_CLOCK_YEAR();
 		return retval;
 	}
 
-	static int LUA_NATIVE_CLOCK_GET_MILLISECONDS_PER_GAME_MINUTE(  )
+	static int LUA_NATIVE_CLOCK_GET_MILLISECONDS_PER_GAME_MINUTE()
 	{
 		auto retval = CLOCK::GET_MILLISECONDS_PER_GAME_MINUTE();
 		return retval;
 	}
 
-	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_POSIX_TIME( int year, int month, int day, int hour, int minute, int second )
+	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_POSIX_TIME(int year, int month, int day, int hour, int minute, int second)
 	{
 		std::tuple<int, int, int, int, int, int> return_values;
 		CLOCK::GET_POSIX_TIME(&year, &month, &day, &hour, &minute, &second);
@@ -90,7 +90,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_UTC_TIME( int year, int month, int day, int hour, int minute, int second )
+	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_UTC_TIME(int year, int month, int day, int hour, int minute, int second)
 	{
 		std::tuple<int, int, int, int, int, int> return_values;
 		CLOCK::GET_UTC_TIME(&year, &month, &day, &hour, &minute, &second);
@@ -104,7 +104,7 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_LOCAL_TIME( int year, int month, int day, int hour, int minute, int second )
+	static std::tuple<int, int, int, int, int, int> LUA_NATIVE_CLOCK_GET_LOCAL_TIME(int year, int month, int day, int hour, int minute, int second)
 	{
 		std::tuple<int, int, int, int, int, int> return_values;
 		CLOCK::GET_LOCAL_TIME(&year, &month, &day, &hour, &minute, &second);

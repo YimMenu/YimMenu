@@ -2,6 +2,9 @@
 
 namespace big
 {
+	// if this limit is hit you did something wrong coding wise.
+	constexpr auto MAX_POOL_SIZE = 32u;
+
 	struct thread_pool_job
 	{
 		std::function<void()> m_func;
@@ -17,21 +20,19 @@ namespace big
 		std::mutex m_lock;
 		std::vector<std::thread> m_thread_pool;
 
-		std::thread m_managing_thread;
-
-		std::atomic<size_t> m_available_thread_count;
+		std::atomic<size_t> m_allocated_thread_count;
 
 	public:
-		thread_pool();
+		// YimMenu only has 2 blocking threads, 4 should be sufficient but the pool should automatically allocate more if needed
+		thread_pool(const std::size_t preallocated_thread_count = 4);
 		~thread_pool();
 
 		void destroy();
 		void push(std::function<void()> func, std::source_location location = std::source_location::current());
 
 	private:
-		void create();
-		void done();
 		void run();
+		void rescale_thread_pool();
 	};
 
 	inline thread_pool* g_thread_pool{};

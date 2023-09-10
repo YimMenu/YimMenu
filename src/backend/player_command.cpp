@@ -10,7 +10,7 @@ namespace big
 	{
 	}
 
-	void player_all_component::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_all_component::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, &ctx] {
 			g_player_service->iterate([this, args, &ctx](const player_entry& player) {
@@ -19,7 +19,7 @@ namespace big
 		});
 	}
 
-	std::optional<std::vector<uint64_t>> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<command_arguments> player_all_component::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		return m_parent->parse_args_p(args, ctx);
 	}
@@ -31,16 +31,12 @@ namespace big
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
 	}
 
-	void player_command::execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		g_fiber_pool->queue_job([this, args, ctx] {
-			std::vector<uint64_t> new_args;
+			command_arguments new_args(m_num_args.value(), args);
 
-			// TODO: This looks ugly and inefficient
-			for (int i = 1; i < m_num_args; i++)
-				new_args.push_back(args[i]);
-
-			if (g_player_service->get_self()->id() == args[0])
+			if (g_player_service->get_self()->id() == args.get<int>(0))
 			{
 				execute(g_player_service->get_self(), new_args, ctx);
 				return;
@@ -48,25 +44,25 @@ namespace big
 
 			for (auto& plyr : g_player_service->players())
 			{
-				if (plyr.second->id() == args[0])
+				if (plyr.second->id() == args.get<uint8_t>(0))
 				{
 					execute(plyr.second, new_args, ctx);
 					return;
 				}
 			}
 
-			ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args[0]));
+			ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args.get<int>(0)));
 		});
 	}
 
-	std::optional<std::vector<uint64_t>> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
+	std::optional<command_arguments> player_command::parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx)
 	{
 		std::vector<std::string> new_args;
-		std::vector<uint64_t> result;
+		command_arguments result(m_num_args.value());
 
 		if (args[0] == "me" || args[0] == "self")
 		{
-			result.push_back(ctx->get_sender()->id());
+			result.push(ctx->get_sender()->id());
 		}
 		else
 		{
@@ -93,23 +89,26 @@ namespace big
 				return std::nullopt;
 			}
 
-			result.push_back(plyr_id);
+			result.push(plyr_id);
 		}
 
-		for (int i = 1; i < args.size(); i++)
-			new_args.push_back(args[i]);
+		std::copy(++args.begin(), args.end(), new_args.begin());
+		// for (int i = 1; i < args.size(); i++)
+		// 	new_args.push_back(args[i]);
 
 		auto res = parse_args_p(new_args, ctx);
+		// no value indicates a failure
 		if (!res.has_value())
 			return std::nullopt;
 
-		for (auto& p : res.value())
-			result.push_back(p);
+		const auto alt_args = res.value();
+		for (auto i = 0u; i < alt_args.size(); ++i)
+			result.push(alt_args.get(i));
 
 		return result;
 	}
 
-	void player_command::call(player_ptr player, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx)
+	void player_command::call(player_ptr player, const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
 		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))

@@ -70,8 +70,8 @@ namespace big
 		}
 
 		ImGui::PushItemWidth(300);
-		components::input_text_with_hint("Category", "Category", &category);
-		components::input_text_with_hint("Location name", "New location", &new_location_name);
+		components::input_text_with_hint("Category", "Category", category);
+		components::input_text_with_hint("Location name", "New location", new_location_name);
 		ImGui::PopItemWidth();
 
 		components::button("Save current location", [] {
@@ -140,7 +140,7 @@ namespace big
 		components::small_text("Double click to teleport\nShift click to delete");
 
 		ImGui::Spacing();
-		components::input_text_with_hint("##filter", "Search", &filter);
+		components::input_text_with_hint("##filter", "Search", filter);
 
 		ImGui::BeginGroup();
 		components::small_text("Categories");

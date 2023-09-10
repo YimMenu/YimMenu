@@ -7,13 +7,15 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override 
 		{
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (!g_player_service->get_self()->is_host())
 			{
 				g_notification_service->push_error("Host kick", "Host kick failed");
@@ -24,5 +26,5 @@ namespace big
 		}
 	};
 
-	host_kick g_host_kick("hostkick", "Host Kick", "Host kick that only works when host", 0, false);
+	host_kick g_host_kick("hostkick", "HOST_KICK", "HOST_KICK_DESC", 0, false);
 }

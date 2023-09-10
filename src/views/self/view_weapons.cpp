@@ -296,7 +296,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			static std::string input_file_name;
-			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", &input_file_name);
+			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", input_file_name);
 			components::button("Save Loadout", [] {
 				persist_weapons::save_weapons(input_file_name);
 				input_file_name.clear();

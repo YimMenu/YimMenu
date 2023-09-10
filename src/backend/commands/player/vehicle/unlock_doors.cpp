@@ -8,7 +8,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			if (PED::IS_PED_IN_ANY_VEHICLE(player->id(), false))
 			{
@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	unlock_vehicle g_unlock_vehicle("unlockveh", "Unlock Vehicle Doors", "Unlocks Vehicle Doors", 0);
+	unlock_vehicle g_unlock_vehicle("unlockveh", "Unlock Vehicle Doors", "Unlocks all vehicle doors", 0);
 }

@@ -5,11 +5,13 @@ namespace big
 {
 	class bool_command : public command
 	{
+		bool m_last_enabled = false;
+
 	protected:
 		bool& m_toggle;
 		bool m_show_notify;
-		virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
-		virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
 
 	public:
 		bool_command(const std::string& name, const std::string& label, const std::string& description, bool& toggle, bool show_notify = true);
@@ -18,14 +20,13 @@ namespace big
 			return m_toggle;
 		}
 
-		virtual void refresh(){};
-		virtual void enable()
-		{
-			m_toggle = true;
-		};
-		virtual void disable()
-		{
-			m_toggle = false;
-		};
+		virtual void on_enable(){};
+		virtual void on_disable(){};
+		virtual void refresh();
+
+		virtual void enable();
+		virtual void disable();
 	};
+
+	inline std::vector<bool_command*> g_bool_commands;
 }

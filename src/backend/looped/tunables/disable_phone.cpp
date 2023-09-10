@@ -10,14 +10,14 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*script_global(20483).as<bool*>() = true;
+			*scr_globals::mobile.as<PBOOL>() = TRUE;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(20483).as<bool*>() = false;
+			*scr_globals::mobile.as<PBOOL>() = FALSE;
 		}
 	};
 
-	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g.tunables.disable_phone);
+	disable_phone g_disable_phone("nophone", "DISABLE_PHONE", "DISABLE_PHONE_DESC", g.tunables.disable_phone);
 }

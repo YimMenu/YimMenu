@@ -9,7 +9,7 @@ namespace big
 	// rate limit script events to prevent crashes
 	static int offRadarPlayer    = 0;
 	static int neverWantedPlayer = 0;
-	void looped::player_good_options()
+	void looped::player_good_options() 
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return;
@@ -59,6 +59,18 @@ namespace big
 						}
 					}
 				}
+			});
+		}
+
+		if (g.session.vehicle_fix_all)
+		{
+			g_pointers->m_gta.m_give_pickup_rewards(-1, REWARD_VEHICLE_FIX);
+		}
+		else
+		{
+			g_player_service->iterate([](const player_entry& entry) {
+				if (entry.second->fix_vehicle)
+					g_pointers->m_gta.m_give_pickup_rewards(-1, REWARD_VEHICLE_FIX);
 			});
 		}
 	}

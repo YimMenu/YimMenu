@@ -15,6 +15,7 @@ namespace big
 		MOBILE,
 		OUTFIT_EDITOR,
 		OUTFIT_SLOTS,
+		ANIMATIONS,
 
 		VEHICLE,
 		HANDLING,
@@ -94,6 +95,7 @@ namespace big
 						}}},
 						{TAB_DECL(OUTFIT_EDITOR), view::outfit_editor}},
 		                {TAB_DECL(OUTFIT_SLOTS), view::outfit_slots}},
+						{TAB_DECL(ANIMATIONS), view::animations}},
 		            },
 		        },
 		    },

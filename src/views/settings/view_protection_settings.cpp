@@ -18,7 +18,6 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("BOUNTY"_T.data(), &g.protections.script_events.bounty);
 		ImGui::Checkbox("CEO_MONEY"_T.data(), &g.protections.script_events.ceo_money);
-		ImGui::Checkbox("FAKE_DEPOSIT"_T.data(), &g.protections.script_events.fake_deposit);
 		ImGui::Checkbox("FORCE_MISSION"_T.data(), &g.protections.script_events.force_mission);
 		ImGui::Checkbox("FORCE_TELEPORT"_T.data(), &g.protections.script_events.force_teleport);
 		ImGui::Checkbox("GTA_BANNER"_T.data(), &g.protections.script_events.gta_banner);
@@ -34,12 +33,12 @@ namespace big
 		ImGui::Checkbox("PERSONAL_VEHICLE_DESTROYED"_T.data(), &g.protections.script_events.personal_vehicle_destroyed);
 		ImGui::Checkbox("REMOTE_OFF_RADAR"_T.data(), &g.protections.script_events.remote_off_radar);
 		ImGui::Checkbox("ROTATE_CAM"_T.data(), &g.protections.script_events.rotate_cam);
-		ImGui::Checkbox("TELEPORT_TO_WAREHOUSE"_T.data(), &g.protections.script_events.teleport_to_warehouse);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
+		ImGui::Checkbox("TELEPORT_TO_WAREHOUSE"_T.data(), &g.protections.script_events.teleport_to_warehouse);
 		ImGui::Checkbox("START_ACTIVITY"_T.data(), &g.protections.script_events.start_activity);
 		ImGui::Checkbox("SEND_SMS"_T.data(), &g.protections.script_events.send_sms);
 		ImGui::Checkbox("SPECTATE"_T.data(), &g.protections.script_events.spectate);

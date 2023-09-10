@@ -9,7 +9,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			Entity ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
@@ -29,5 +29,5 @@ namespace big
 		}
 	};
 
-	flying_vehicle g_flying_vehicle("flyingveh", "Flying Vehicle", "Catapults their car to  the sky.", 0);
+	flying_vehicle g_flying_vehicle("flyingveh", "Flying Vehicle", "Catapults the player's car to the sky", 0);
 }

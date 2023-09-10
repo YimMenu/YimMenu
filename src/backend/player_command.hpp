@@ -11,8 +11,8 @@ namespace big
 		player_command* m_parent;
 
 	protected:
-		virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
-		virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
 
 	public:
 		player_all_component(player_command* parent, const std::string& name, const std::string& label, const std::string& description, std::optional<uint8_t> num_args);
@@ -24,16 +24,16 @@ namespace big
 		std::unique_ptr<player_all_component> m_all_component;
 
 	protected:
-		virtual void execute(const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
-		virtual std::optional<std::vector<uint64_t>> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
-		virtual std::optional<std::vector<uint64_t>> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>())
+		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual void execute(player_ptr player, const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) = 0;
+		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>()) override;
+		virtual std::optional<command_arguments> parse_args_p(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>())
 		{
-			return std::vector<uint64_t>();
+			return {0};
 		};
 
 	public:
-		void call(player_ptr player, const std::vector<uint64_t>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
+		void call(player_ptr player, const command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		player_command(const std::string& name, const std::string& label, const std::string& description, std::optional<uint8_t> num_args, bool make_all_version = true);
 	};
 }

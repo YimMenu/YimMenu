@@ -60,7 +60,7 @@ namespace big
 
 		if (g.self.dance_mode && g.m_dance_thread->m_handler)
 		{
-			*script_global(1950837).as<bool*>() = true;
+			*scr_globals::dance_state.as<PINT>() = TRUE; //Never once do the scripts read this as a boolean. It seems to be some kind of state the player is in. Runs from 4 to 35.
 			scr_functions::dance_loop.call(g.m_dance_thread, g.m_dance_program, {});
 		}
 	}

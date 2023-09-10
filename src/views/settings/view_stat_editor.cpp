@@ -279,7 +279,13 @@ namespace big
 				ImGui::Text("Example:\n$MPX_CHAR_NAME\n5:name\n$MPX_DEFAULT_STATS_SET\n1:0");
 				components::button("Import From Clipboard", [] {
 					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::vector<std::string> lines;
+					std::string line;
+					std::istringstream stream(clipboard_text);
+					while (std::getline(stream, line))
+					{
+						lines.push_back(line);
+					}
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)
@@ -371,8 +377,14 @@ namespace big
 				ImGui::Text("0:Int\n1:Bool");
 				ImGui::Text("Example:\n31786\n0:123\n31786 32786\n1:1");
 				components::button("Import From Clipboard", [] {
-					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::string clipboard_text = ImGui::GetClipboardText();
+					std::vector<std::string> lines;
+					std::string line;
+					std::istringstream stream(clipboard_text);
+					while (std::getline(stream, line))
+					{
+						lines.push_back(line);
+					}
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)

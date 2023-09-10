@@ -7,11 +7,11 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			CUTSCENE::STOP_CUTSCENE_IMMEDIATELY();
 		}
 	};
 
-	skip_cutscene g_skip_cutscene("skipcutscene", "Skip Cutscene", "Skips the currently playing cutscene", 0);
+	skip_cutscene g_skip_cutscene("skipcutscene", "SKIP_CUTSCENE", "SKIP_CUTSCENE_DESC", 0);
 }

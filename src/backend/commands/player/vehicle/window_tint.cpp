@@ -10,7 +10,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
@@ -24,5 +24,5 @@ namespace big
 		}
 	};
 
-	black_tint g_black_tint("blacktint", "Black Window Tint", "Makes their windows black.", 0);
+	black_tint g_black_tint("blacktint", "Black Window Tint", "Makes the player's vehicle windows black", 0);
 }

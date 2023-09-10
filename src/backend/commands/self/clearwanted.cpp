@@ -7,7 +7,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			if(g_local_player && g_local_player !=nullptr && !g.self.force_wanted_level)
 			{
@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	clear_wanted g_clear_wanted("clearwantedlvl", "Clear Wanted Level", "Clears your wanted level", 0);
+	clear_wanted g_clear_wanted("clearwantedlvl", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC_SELF", 0);
 }

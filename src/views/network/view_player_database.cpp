@@ -224,7 +224,7 @@ namespace big
 					ImGui::Text("Is Host Of Session: %s", selected->is_host_of_session ? "Yes" : "No");
 					ImGui::Text("Is Spectating: %s", selected->is_spectating ? "Yes" : "No");
 					ImGui::Text("In Job Lobby: %s", selected->transition_session_id != -1 ? "Yes" : "No");
-					ImGui::Text("Is Host Of Job Loby: %s", selected->is_host_of_transition_session ? "Yes" : "No");
+					ImGui::Text("Is Host Of Job Lobby: %s", selected->is_host_of_transition_session ? "Yes" : "No");
 					ImGui::Text("Current Mission Type: %s", player_database_service::get_game_mode_str(selected->game_mode));
 					if (selected->game_mode != GameMode::None && player_database_service::can_fetch_name(selected->game_mode))
 					{

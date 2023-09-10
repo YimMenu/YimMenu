@@ -17,7 +17,14 @@ namespace big
 		if (plyr && plyr->block_clone_create)
 			return;
 
-		g.m_syncing_player = src;
+		g.m_syncing_player      = src;
+		g.m_syncing_object_type = object_type;
+
+		g.debug.fuzzer.thread_id = GetCurrentThreadId();
+		if (g.debug.fuzzer.enabled_object_types[(int)object_type])
+			g.debug.fuzzer.active = true;
+		g.debug.fuzzer.syncing_object_id = object_id;
 		g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
+		g.debug.fuzzer.active = false;
 	}
 }

@@ -8,11 +8,11 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			entity::clean_ped(self::ped);
 		}
 	};
 
-	clean_player g_clean_player("clean", "Clean Player", "Cleans the player of wetness and decals", 0);
+	clean_player g_clean_player("clean", "CLEAN_PLAYER", "CLEAN_PLAYER_DESC", 0);
 }

@@ -30,7 +30,7 @@ namespace big
 		g_hooking->get_original<hooks::serialize_take_off_ped_variation_task>()(info, serializer);
 		if (!is_valid_parachute_model(info->m_prop_hash))
 		{
-			notify::crash_blocked(g.m_syncing_player, "invalid parachute");
+			notify::crash_blocked(g.m_syncing_player, "invalid parachute model");
 			info->m_prop_hash = 0;
 		}
 	}

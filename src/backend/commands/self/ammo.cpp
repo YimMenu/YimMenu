@@ -8,7 +8,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
 			{
@@ -18,5 +18,5 @@ namespace big
 			}
 		}
 	};
-	fill_ammo g_fill_ammo("fillammo", "Fill Ammo", "Fills all of your ammo.", 0);
+	fill_ammo g_fill_ammo("fillammo", "FILL_AMMO", "FILL_AMMO_DESC", 0);
 }
