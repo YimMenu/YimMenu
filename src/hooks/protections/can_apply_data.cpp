@@ -1135,6 +1135,34 @@ namespace big
 		return false;
 	}
 
+	bool get_player_sector_pos(rage::netSyncNodeBase* node, float& x, float& y, rage::netObject* object)
+	{
+		if (node->IsParentNode())
+		{
+			for (auto child = node->m_first_child; child; child = child->m_next_sibling)
+			{
+				if (get_player_sector_pos(child, x, y, object))
+					return true;
+			}
+		}
+		else if (node->IsDataNode())
+		{
+			const auto& node_id = sync_node_finder::find((eNetObjType)object->m_object_type, (uintptr_t)node);
+
+			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
+				return false;
+
+			if (node_id == sync_node_id("CPlayerSectorPosNode"))
+			{
+				CPlayerSectorPosNode* player_sector_pos_node = (CPlayerSectorPosNode*)(node);
+				x                                            = player_sector_pos_node->m_sector_pos.x;
+				y                                            = player_sector_pos_node->m_sector_pos.y;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -1311,11 +1339,14 @@ namespace big
 			}
 			case sync_node_id("CSectorDataNode"):
 			{
+				float player_sector_pos_x{}, player_sector_pos_y{};
+				get_player_sector_pos(node->m_root->m_next_sync_node, player_sector_pos_x, player_sector_pos_y, object);
+
 				const auto sector_node = (CSectorDataNode*)(node);
 				int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
 				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
-				bool is_x_invalid      = (((posX + 149) + 8192) / 75) >= 255;
-				bool is_y_invalid      = (((posY + 149) + 8192) / 75) >= 255;
+				bool is_x_invalid      = ((((posX+player_sector_pos_x) + 149) + 8192) / 75) >= 255;
+				bool is_y_invalid      = ((((posY+player_sector_pos_y) + 149) + 8192) / 75) >= 255;
 				if (is_x_invalid || is_y_invalid)
 				{
 					std::stringstream reason;
