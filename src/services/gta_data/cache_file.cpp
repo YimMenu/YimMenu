@@ -70,6 +70,10 @@ namespace big
 		if (!m_data)
 			return false;
 
+		LOG(VERBOSE) << "Checking if cache is up-to-date for " << m_cache_file.get_path().filename() << "\n\t\t"
+			<< "Cache Version " << (m_cache_version == m_cache_header.m_cache_version ? "match" : "mismatch") << " (file: " << m_cache_header.m_cache_version << ", menu: " << m_cache_version << ")\n\t\t"
+			<< "Game EXE Size " << (file_version == m_cache_header.m_file_version ? "match" : "mismatch") << " (file: " << m_cache_header.m_file_version << ", game: " << file_version << ")"; 
+
 		return m_cache_version == m_cache_header.m_cache_version && file_version == m_cache_header.m_file_version;
 	}
 
