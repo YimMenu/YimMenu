@@ -162,11 +162,11 @@ namespace big
 		return false;
 	}
 
-	inline bool is_sane_override_pos(float x, float y, float z)
+	inline bool is_invalid_override_pos(float x, float y)
 	{
-		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) == 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) == 255;
+		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) >= 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) >= 255;
 
-		return !crash;
+		return crash;
 	}
 
 	inline std::string get_task_type_string(int type)
@@ -1135,6 +1135,34 @@ namespace big
 		return false;
 	}
 
+	bool get_player_sector_pos(rage::netSyncNodeBase* node, float& x, float& y, rage::netObject* object)
+	{
+		if (node->IsParentNode())
+		{
+			for (auto child = node->m_first_child; child; child = child->m_next_sibling)
+			{
+				if (get_player_sector_pos(child, x, y, object))
+					return true;
+			}
+		}
+		else if (node->IsDataNode())
+		{
+			const auto& node_id = sync_node_finder::find((eNetObjType)object->m_object_type, (uintptr_t)node);
+
+			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
+				return false;
+
+			if (node_id == sync_node_id("CPlayerSectorPosNode"))
+			{
+				CPlayerSectorPosNode* player_sector_pos_node = (CPlayerSectorPosNode*)(node);
+				x                                            = player_sector_pos_node->m_sector_pos.x;
+				y                                            = player_sector_pos_node->m_sector_pos.y;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -1311,8 +1339,13 @@ namespace big
 			}
 			case sync_node_id("CSectorDataNode"):
 			{
+				float player_sector_pos_x{}, player_sector_pos_y{};
+				get_player_sector_pos(node->m_root->m_next_sync_node, player_sector_pos_x, player_sector_pos_y, object);
+
 				const auto sector_node = (CSectorDataNode*)(node);
-				if (sector_node->m_pos_x >= 711 || sector_node->m_pos_y >= 711)
+				int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
+				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
+				if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
 				{
 					notify::crash_blocked(sender, "invalid sector position (sector node)");
 					return true;
@@ -1323,9 +1356,7 @@ namespace big
 			{
 				const auto game_state_node = (CPlayerGameStateDataNode*)(node);
 				if (game_state_node->m_is_overriding_population_control_sphere
-				    && !is_sane_override_pos(game_state_node->m_population_control_sphere_x,
-				        game_state_node->m_population_control_sphere_y,
-				        game_state_node->m_population_control_sphere_z))
+				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x,game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
@@ -1525,7 +1556,7 @@ namespace big
 			case sync_node_id("CPlayerCameraDataNode"):
 			{
 				const auto camera_node = (CPlayerCameraDataNode*)(node);
-				if (!is_sane_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y, camera_node->m_free_cam_pos_z))
+				if (is_invalid_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (camera data node)");

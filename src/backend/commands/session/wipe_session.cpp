@@ -10,12 +10,13 @@ namespace big
 		using command::command;
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
-			g_player_service->iterate([](const player_entry& player) {
-				auto mgr = *g_pointers->m_gta.m_network_player_mgr;
-				mgr->RemovePlayer(player.second->get_net_game_player());
-			});
-			g_notification_service->push_success("Empty Session", "Completed");
+			const auto player_mgr = *g_pointers->m_gta.m_network_player_mgr;
+			for (const auto& plyr : g_player_service->players() | std::ranges::views::values)
+			{
+				player_mgr->RemovePlayer(plyr->get_net_game_player());
+			}
+			g_notification_service->push("Empty Session", "Completed");
 		}
 	};
-	empty_session g_empty_session("emptysession", "Remove All Players From Session", "Removes everyone from the session", 0);
+	empty_session g_empty_session("emptysession", "EMPTY_SESSION", "Removes everyone from the session", 0);
 }
