@@ -6,6 +6,7 @@ namespace big
 	{
 		using looped_command::looped_command;
 		using vehicle_ammo_setting = struct menu_settings::vehicle::vehicle_ammo_special;
+		using CWeaponInfoFlags = std::bitset<192>;
 		// mg
 		CWeaponInfo* m_mg_weapon_info = nullptr;
 		eDamageType m_mg_damage_type  = eDamageType::None;
@@ -17,13 +18,14 @@ namespace big
 		float m_mg_range                = 0;
 		// rocket
 		CWeaponInfo* m_rocket_weapon_info  = nullptr;
-		eDamageType m_rocket_damage_type   = eDamageType::Explosive;
-		float m_rocket_time_between_shots  = 0;
-		float m_rocket_alternate_wait_time = 0;
-		float m_rocket_lock_on_range       = 0;
-		float m_rocket_range               = 0;
-		float m_rocket_reload_time_mp      = 0;
-		float m_rocket_reload_time_sp      = 0;
+		eDamageType m_rocket_damage_type       = eDamageType::Explosive;
+		CWeaponInfoFlags m_rocket_weapon_flags = 0;
+		float m_rocket_time_between_shots      = 0;
+		float m_rocket_alternate_wait_time     = 0;
+		float m_rocket_lock_on_range           = 0;
+		float m_rocket_range                   = 0;
+		float m_rocket_reload_time_mp          = 0;
+		float m_rocket_reload_time_sp          = 0;
 		// rocket ammo
 		CAmmoRocketInfo::sExplosion m_rocket_explosion{};
 		float m_rocket_lifetime           = 0;
@@ -71,6 +73,11 @@ namespace big
 		{
 			restore_mg();
 			restore_rocket();
+		}
+
+		CWeaponInfoFlags& weapon_flags(CWeaponInfo* weapon_info)
+		{
+			return *((CWeaponInfoFlags*)((char*)weapon_info + 0x900));
 		}
 
 		bool is_weapon_mg(const CWeaponInfo* weapon_info)
@@ -162,6 +169,7 @@ namespace big
 				m_rocket_weapon_info->m_weapon_range        = m_rocket_range;
 				m_rocket_weapon_info->m_reload_time_mp      = m_rocket_reload_time_mp;
 				m_rocket_weapon_info->m_reload_time_sp      = m_rocket_reload_time_sp;
+				weapon_flags(m_rocket_weapon_info)          = m_rocket_weapon_flags;
 
 				CAmmoRocketInfo* rocket_info        = (CAmmoRocketInfo*)m_rocket_weapon_info->m_ammo_info;
 				rocket_info->m_explosion            = m_rocket_explosion;
@@ -182,6 +190,7 @@ namespace big
 			m_rocket_range               = weapon_info->m_weapon_range;
 			m_rocket_reload_time_mp      = weapon_info->m_reload_time_mp;
 			m_rocket_reload_time_sp      = weapon_info->m_reload_time_sp;
+			m_rocket_weapon_flags        = weapon_flags(weapon_info);
 
 			CAmmoRocketInfo* rocket_info = (CAmmoRocketInfo*)weapon_info->m_ammo_info;
 			m_rocket_explosion           = rocket_info->m_explosion;
@@ -226,12 +235,14 @@ namespace big
 				rocket_info->m_homing_rocket_params.m_default_homing_rocket_break_lock_angle_close    = 0.6;
 				rocket_info->m_homing_rocket_params.m_default_homing_rocket_break_lock_close_distance = 20.0;
 				rocket_info->m_homing_rocket_params.m_time_before_starting_homing                     = 0.15;
+				weapon_flags(m_rocket_weapon_info)[152]                                               = 1;
 			}
 			else
 			{
 				rocket_info->m_homing_rocket_params = m_rocket_homing_params;
+				weapon_flags(m_rocket_weapon_info)  = m_rocket_weapon_flags;
 			}
 		}
 	};
-	custom_vehicle_weapon g_custom_vehicle_weapon("customvehweaps", "Custom Vehicle Weapons", "Replaces the current vehicle weapons with custom ones.", g.vehicle.vehicle_ammo_special.enabled);
+	custom_vehicle_weapon g_custom_vehicle_weapon("customvehweaps", "CUSTOM_VEH_WEAPONS", "CUSTOM_VEH_WEAPONS_DESC", g.vehicle.vehicle_ammo_special.enabled);
 }
