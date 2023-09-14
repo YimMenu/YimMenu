@@ -40,7 +40,7 @@ namespace big
 		auto f1 = *(__int64*)(cb + 0x60);
 		auto f2 = *(__int64*)(cb + 0x100);
 
-		if (is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
+		if (!is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
 			return false;
 
 		// These must run, otherwise we'll at some point run out of sysMemSimpleAllocator memory.
