@@ -39,10 +39,6 @@ namespace big::scr_globals
 
 	static inline const script_global spawn_global(2694613);
 
-	static inline const script_global session_info(1654054);
-
-	static inline const script_global tuneables(262145);
-
 	static inline const script_global dance_state(1950837);
 
 	static inline const script_global mobile(20483);
@@ -59,6 +55,8 @@ namespace big::scr_globals
 	static inline const script_global session6(2694534);
 
 	static inline const script_global gooch(1890378);
+
+	static inline const script_global passive(1574582);
 }
 
 namespace big::scr_locals

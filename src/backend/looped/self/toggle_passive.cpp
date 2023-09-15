@@ -4,6 +4,7 @@
 #include "script_global.hpp"
 #include "script/globals/GPBD_FM_3.hpp"
 #include "gta_util.hpp"
+#include "services/tunables/tunables_service.hpp"
 
 namespace big
 {
@@ -21,15 +22,15 @@ namespace big
 				g_notification_service->push_warning("Disabled passive mode", "Disabled passive mode because you started mission / joined CEO/MC");
 				return;
 			}
-			*scr_globals::tuneables.at(27371).as<int*>() = 0; // End Passive Time = 0s
-			*script_global(1574582).as<bool*>() = true;
+			*g_tunables_service->get_tunable<int*>(-29732167) = 0; // End Passive Time = 0s
+			*scr_globals::passive.as<PBOOL>()                 = TRUE;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(1574582).as<bool*>() = false;
+			*scr_globals::passive.as<PBOOL>() = FALSE;
 			NETWORK::SET_LOCAL_PLAYER_AS_GHOST(false, false);
-			*scr_globals::tuneables.at(27371).as<int*>() = 30000;
+			*g_tunables_service->get_tunable<int*>(-29732167) = 30000;
 			PED::SET_PED_CONFIG_FLAG(self::ped, 342, false); // Disable NotAllowedToJackAnyPlayers
 			PED::SET_PED_CONFIG_FLAG(self::ped, 122, false); // Disable DisableMelee
 			PLAYER::SET_PLAYER_VEHICLE_DEFENSE_MODIFIER(self::ped, 1.f);
