@@ -24,14 +24,14 @@ namespace big
 				if (p_modified_weapon != weapon_mgr->m_weapon_info)
 				{
 					if (p_modified_weapon)
-						p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
+						p_modified_weapon->m_recoil_shake_amplitude = og_recoil_value;
 
 					p_modified_weapon = weapon_mgr->m_weapon_info;
 
 					if (weapon_mgr->m_weapon_info)
 					{
-						og_recoil_value = weapon_mgr->m_weapon_info->m_explosion_shake_amplitude;
-						weapon_mgr->m_weapon_info->m_explosion_shake_amplitude = 0.0f;
+						og_recoil_value = weapon_mgr->m_weapon_info->m_recoil_shake_amplitude;
+						weapon_mgr->m_weapon_info->m_recoil_shake_amplitude = 0.0f;
 					}
 				}
 			}
@@ -41,7 +41,7 @@ namespace big
 		{
 			if (g_local_player && p_modified_weapon)
 			{
-				p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
+				p_modified_weapon->m_recoil_shake_amplitude = og_recoil_value;
 				p_modified_weapon                              = nullptr;
 			}
 		}
