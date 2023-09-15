@@ -1640,15 +1640,6 @@ namespace big
                 g_pointers->m_gta.m_decal_manager = ptr.add(3).rip().as<PVOID>();
                 g_pointers->m_gta.m_decal_manager_remove = ptr.add(0xC).rip().as<functions::decal_manager_remove>();
             }
-        },
-        // Bonus Transaction
-        {
-            "BT",
-            "48 8D 05 ? ? ? ? 8D 4B 46",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_bonus_transaction = ptr.add(3).rip().as<uint8_t*>() + 0x60;
-            }
         }
         >(); // don't leave a trailing comma at the end
 

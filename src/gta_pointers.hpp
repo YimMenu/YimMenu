@@ -335,7 +335,6 @@ namespace big
 
 		functions::decal_manager_remove m_decal_manager_remove;
 		PVOID m_decal_manager;
-		uint8_t* m_bonus_transaction;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

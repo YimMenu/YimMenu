@@ -83,9 +83,6 @@ namespace big
 
 		// Always send the special ability event
 		memory::byte_patch::make(g_pointers->m_gta.m_activate_special_ability_patch, std::to_array({0xB0, 0x01, 0xC3}))->apply();
-
-		// Crash the game if the game manages to send a report
-		memory::byte_patch::make((PVOID)g_pointers->m_gta.m_bonus_transaction, std::vector(0x60, 0x0))->apply();
 	}
 
 	byte_patch_manager::byte_patch_manager()
