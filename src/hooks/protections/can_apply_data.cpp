@@ -1342,24 +1342,21 @@ namespace big
 			}
 			case sync_node_id("CSectorDataNode"):
 			{
-				float player_sector_pos_x{}, player_sector_pos_y{};
-				get_player_sector_pos(node->m_root->m_next_sync_node, player_sector_pos_x, player_sector_pos_y, object);
-
-				const auto sector_node = (CSectorDataNode*)(node);
-				int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
-				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
-				if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
+				if ((eNetObjType)object->m_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
 				{
-					std::stringstream crash_reason;
+					float player_sector_pos_x{}, player_sector_pos_y{};
+					get_player_sector_pos(node->m_root->m_next_sync_node, player_sector_pos_x, player_sector_pos_y, object);
 
-					crash_reason << "invalid sector position (sector node)"
-					             << " X: " << posX
-								 << " Y: " << posY
-					             << " player_sector_pos_x: " << player_sector_pos_x
-								 << " player_sector_pos_y: " << player_sector_pos_y;
-
-					notify::crash_blocked(sender, crash_reason.str().c_str());
-					return true;
+					const auto sector_node = (CSectorDataNode*)(node);
+					int posX               = (sector_node->m_pos_x - 512.0f) * 54.0f;
+					int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
+					if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
+					{
+						std::stringstream crash_reason;
+						crash_reason << "invalid sector position (sector node)" << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
+						notify::crash_blocked(sender, crash_reason.str().c_str());
+						return true;
+					}
 				}
 				break;
 			}
