@@ -164,9 +164,12 @@ namespace big
 
 	inline bool is_invalid_override_pos(float x, float y)
 	{
-		bool crash = ((int)round(fmaxf(0.0, (x + 149.0) - -8192.0) / 75.0)) >= 255 || ((int)round(fmaxf(0.0, (y + 149.0) - -8192.0) / 75.0)) >= 255;
+		std::uint32_t x_pos = (((x + 149) + 8192) / 75);
+		std::uint32_t y_pos = (((y + 149) + 8192) / 75);
+		bool is_x_valid     = x < UCHAR_MAX;
+		bool is_y_valid     = y < UCHAR_MAX;
 
-		return crash;
+		return is_x_valid && is_y_valid;
 	}
 
 	inline std::string get_task_type_string(int type)
@@ -1347,7 +1350,15 @@ namespace big
 				int posY               = (sector_node->m_pos_y - 512.0f) * 54.0f;
 				if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
 				{
-					notify::crash_blocked(sender, "invalid sector position (sector node)");
+					std::stringstream crash_reason;
+
+					crash_reason << "invalid sector position (sector node)"
+					             << " X: " << posX
+								 << " Y: " << posY
+					             << " player_sector_pos_x: " << player_sector_pos_x
+								 << " player_sector_pos_y: " << player_sector_pos_y;
+
+					notify::crash_blocked(sender, crash_reason.str().c_str());
 					return true;
 				}
 				break;
