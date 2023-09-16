@@ -166,8 +166,8 @@ namespace big
 	{
 		std::uint32_t x_pos = (((x + 149) + 8192) / 75);
 		std::uint32_t y_pos = (((y + 149) + 8192) / 75);
-		bool is_x_invalid     = x >= UCHAR_MAX;
-		bool is_y_invalid     = y >= UCHAR_MAX;
+		bool is_x_invalid   = x_pos >= UCHAR_MAX;
+		bool is_y_invalid   = y_pos >= UCHAR_MAX;
 
 		return is_x_invalid || is_y_invalid;
 	}
