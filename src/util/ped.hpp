@@ -540,8 +540,6 @@ namespace big::ped
 
 	inline void set_ped_random_component_variation(Ped ped)
 	{
-		static bool init_srand = (std::srand(std::chrono::system_clock::now().time_since_epoch().count()), true);
-
 		constexpr auto range = [](int lower_bound, int upper_bound) -> int {
 			return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
 		};

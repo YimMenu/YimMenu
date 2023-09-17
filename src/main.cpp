@@ -145,7 +145,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
-				g_script_mgr.remove_all_scripts();
+			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
@@ -194,8 +194,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
-				xml_vehicles_service_instance.reset();
-				LOG(INFO) << "Xml Vehicles Service reset.";
+			    xml_vehicles_service_instance.reset();
+			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();
