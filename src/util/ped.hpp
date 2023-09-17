@@ -540,10 +540,14 @@ namespace big::ped
 
 	inline void set_ped_random_component_variation(Ped ped)
 	{
-		auto range = [](int lower_bound, int upper_bound) -> int {
+		static bool init_srand = (std::srand(std::chrono::system_clock::now().time_since_epoch().count()), true);
+
+		constexpr auto range = [](int lower_bound, int upper_bound) -> int {
 			return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
 		};
+
 		outfit::components_t components;
+
 		for (auto& item : components.items)
 		{
 			int drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1;
