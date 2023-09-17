@@ -364,7 +364,7 @@ namespace big
 				std::array<bool, 22> hud_components_states = {false};
 				bool force_show_hud_element                = false;
 				bool force_show_hud                        = false;
-				std::atomic<int> typing                    = 0;
+				std::atomic_uint_fast8_t typing            = 0;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, color_override, color_override_initialized, hud_color_overrides, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud)
 			} hud{};
