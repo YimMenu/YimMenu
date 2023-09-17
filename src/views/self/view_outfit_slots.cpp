@@ -21,6 +21,8 @@ namespace big
 
 			ImGui::SetNextItemWidth(300);
 			ImGui::InputText("OUTFIT_NAME"_T.data(), outfit::get_slot_name_address(slot), 16);
+			if (ImGui::IsItemActive())
+				g.self.hud.typing = TYPING_TICKS;
 
 			static outfit::components_t components;
 			static outfit::props_t props;
