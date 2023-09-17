@@ -274,7 +274,7 @@ namespace big
 	void player_database_service::start_update_loop()
 	{
 		g_thread_pool->push([this] {
-			while (!big::g_running)
+			while (!g_running)
 				std::this_thread::yield();
 
 			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
