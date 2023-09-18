@@ -335,6 +335,8 @@ namespace big
 
 		functions::decal_manager_remove m_decal_manager_remove;
 		PVOID m_decal_manager;
+
+		bool* m_is_social_club_overlay_active;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

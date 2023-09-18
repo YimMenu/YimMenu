@@ -88,7 +88,7 @@ namespace big
 		if (g.cmd_executor.enabled)
 			return;
 
-		if (g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE() || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("cellphone_flashhand")) > 0 || HUD::IS_MP_TEXT_CHAT_TYPING())
+		if (g_gui->is_open() || *g_pointers->m_gta.m_is_social_club_overlay_active || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("cellphone_flashhand")) > 0 || HUD::IS_MP_TEXT_CHAT_TYPING())
 			return;
 
 		if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
