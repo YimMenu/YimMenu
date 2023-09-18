@@ -1640,6 +1640,15 @@ namespace big
                 g_pointers->m_gta.m_decal_manager = ptr.add(3).rip().as<PVOID>();
                 g_pointers->m_gta.m_decal_manager_remove = ptr.add(0xC).rip().as<functions::decal_manager_remove>();
             }
+        },
+        // Is Social Club Overlay Active
+        {
+            "ISCOA",
+            "88 1D ? ? ? ? E8 ? ? ? ? 33 F6",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_is_social_club_overlay_active = ptr.add(2).rip().as<bool*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
