@@ -4,6 +4,7 @@
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
+#include "http_client/http_client.hpp"
 #include "logger/exception_handler.hpp"
 #include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
@@ -34,6 +35,7 @@
 #include "thread_pool.hpp"
 #include "util/migrate.hpp"
 #include "version.hpp"
+
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -83,6 +85,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
+
+				g_http_client.init();
+				LOG(INFO) << "HTTP Client initialized.";
 
 			    g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
@@ -148,7 +153,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
-				g_script_mgr.remove_all_scripts();
+			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
@@ -200,8 +205,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
-				xml_vehicles_service_instance.reset();
-				LOG(INFO) << "Xml Vehicles Service reset.";
+			    xml_vehicles_service_instance.reset();
+			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();

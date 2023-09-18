@@ -2,10 +2,9 @@
 
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
+#include "http_client/http_client.hpp"
 #include "pointers.hpp"
 #include "thread_pool.hpp"
-
-#include <cpr/cpr.h>
 
 namespace big
 {
@@ -190,8 +189,7 @@ namespace big
 	{
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
-			cpr::Response response = download_file("/" + it->second.file);
-
+			const auto response = download_file("/" + it->second.file);
 			if (response.status_code == 200)
 			{
 				try
@@ -217,8 +215,7 @@ namespace big
 
 	bool translation_service::download_index()
 	{
-		cpr::Response response = download_file("/index.json");
-
+		const auto response = download_file("/index.json");
 		if (response.status_code == 200)
 		{
 			try
@@ -276,11 +273,9 @@ namespace big
 
 	cpr::Response translation_service::download_file(const std::string& filename)
 	{
-		cpr::Response response = cpr::Get(cpr::Url{m_url + filename});
-
+		auto response = g_http_client.get(m_url + filename);
 		if (response.status_code != 200)
-			response = cpr::Get(cpr::Url{m_fallback_url + filename});
-
+			response = g_http_client.get(m_fallback_url + filename);
 		return response;
 	}
 
