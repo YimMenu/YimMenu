@@ -138,6 +138,9 @@ namespace big
 	    m_file_path(g_file_manager.get_project_file("./players.json").get_path())
 	{
 		load();
+
+		start_update_loop();
+
 		g_player_database_service = this;
 	}
 
@@ -270,22 +273,26 @@ namespace big
 
 	void player_database_service::start_update_loop()
 	{
-		if (!g.player_db.update_player_online_states)
-			return;
-
 		g_thread_pool->push([this] {
+			while (!g_running)
+				std::this_thread::yield();
+
 			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
-			while (g_running && g.player_db.update_player_online_states)
+
+			while (g_running)
 			{
-				const auto cur = std::chrono::high_resolution_clock::now();
-				if (cur - last_update > 45s && !updating)
+				if (g.player_db.update_player_online_states)
 				{
-					updating = true;
-					g_fiber_pool->queue_job([this] {
-						update_player_states(true);
-						updating    = false;
-						last_update = std::chrono::high_resolution_clock::now();
-					});
+					const auto cur = std::chrono::high_resolution_clock::now();
+					if (cur - last_update > 45s && !updating)
+					{
+						updating = true;
+						g_fiber_pool->queue_job([this] {
+							update_player_states(true);
+							updating    = false;
+							last_update = std::chrono::high_resolution_clock::now();
+						});
+					}
 				}
 
 				std::this_thread::sleep_for(1s);

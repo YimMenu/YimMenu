@@ -47,7 +47,6 @@ namespace big
 	class menu_settings
 	{
 	public:
-		void destroy();
 		void init(const file& save_file);
 
 		void attempt_save();
@@ -59,8 +58,6 @@ namespace big
 		bool save();
 
 	private:
-		bool m_running;
-
 		file m_save_file;
 
 		nlohmann::json m_default_options;
