@@ -91,7 +91,7 @@ namespace big
 		bool is_using_cellphone = false;
 		for (auto script : *g_pointers->m_gta.m_script_threads)
 		{
-			if (script->m_script_hash == RAGE_JOAAT("cellphone_flashhand"))
+			if (script && script->m_script_hash == RAGE_JOAAT("cellphone_flashhand"))
 			{
 				is_using_cellphone = script->m_context.m_state == rage::eThreadState::running;
 			}
