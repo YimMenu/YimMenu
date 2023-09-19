@@ -39,6 +39,7 @@ namespace big
 		static void root();
 		static void self();
 		static void animations();
+		static void spawn_objects();
 		static void network();
 		static void missions();
 		static void player_database();
