@@ -298,8 +298,7 @@ namespace big
 
 		if (ImGui::TreeNode("Player Tracking"))
 		{
-			if (components::command_checkbox<"player_db_auto_update_states">("Enable"))
-				g_player_database_service->start_update_loop();
+			components::command_checkbox<"player_db_auto_update_states">("Enable");
 			ImGui::Checkbox("Notify When Online", &g.player_db.notify_when_online);
 			ImGui::Checkbox("Notify When Joinable", &g.player_db.notify_when_joinable);
 			ImGui::Checkbox("Notify When Unjoinable", &g.player_db.notify_when_unjoinable);
