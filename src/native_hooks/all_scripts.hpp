@@ -148,11 +148,12 @@ namespace big
 		{
 			Entity entity = src->get_arg<int>(0);
 			int health    = src->get_arg<int>(1);
+			int p2        = src->get_arg<int>(2);
 
 			if (g.self.god_mode && entity == self::ped)
 				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
 
-			ENTITY::SET_ENTITY_HEALTH(entity, health, NULL);
+			ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
