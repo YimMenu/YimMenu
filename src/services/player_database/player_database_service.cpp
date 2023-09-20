@@ -274,23 +274,29 @@ namespace big
 	void player_database_service::start_update_loop()
 	{
 		g_thread_pool->push([this] {
-			while (!g_running)
-				std::this_thread::yield();
+			// So that it doesnt immediately exit the first time.
+			static bool first_time = true;
+			if (first_time)
+			{
+				while (!g_running)
+				{
+					std::this_thread::yield();
+				}
+
+				first_time = false;
+			}
 
 			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
 
-			while (g_running)
+			while (g_running && g.player_db.update_player_online_states)
 			{
-				if (g.player_db.update_player_online_states)
+				const auto cur = std::chrono::high_resolution_clock::now();
+				if (cur - last_update > 45s && !updating)
 				{
-					const auto cur = std::chrono::high_resolution_clock::now();
-					if (cur - last_update > 45s && !updating)
-					{
-						g_fiber_pool->queue_job([this] {
-							update_player_states(true);
-							last_update = std::chrono::high_resolution_clock::now();
-						});
-					}
+					g_fiber_pool->queue_job([this] {
+						update_player_states(true);
+						last_update = std::chrono::high_resolution_clock::now();
+					});
 				}
 
 				std::this_thread::sleep_for(1s);
