@@ -368,7 +368,6 @@ namespace big
 
 		ImGui::SeparatorText("Spawn object");
 
-		static int sliderRange = 50;
 		static bool spawnedObjectLocationChanged, spawnedObjectRotationChanged;
 		static std::map<std::string, spawnObjs::SpawnedObject> spawnedObjList;
 		static bool hasAttachedEnityParametersChanged;
@@ -386,129 +385,140 @@ namespace big
 
 		if (spawnObjs::currentSpawnedObj)
 		{
-			components::small_text("The range for spObjLocX,Y,Z and attEntityX,Y,Z");
-			ImGui::InputInt("Slider Range", &sliderRange);
+			if (!spawnObjs::currentSpawnedObj->isAttached)
+			{
+				components::small_text("Spawned Object parameters");
 
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjLocX", &spawnObjs::currentSpawnedObj->xr, -sliderRange, sliderRange))
-				spawnedObjectLocationChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjLocY", &spawnObjs::currentSpawnedObj->yr, -sliderRange, sliderRange))
-				spawnedObjectLocationChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjLocZ", &spawnObjs::currentSpawnedObj->zr, -sliderRange, sliderRange))
-				spawnedObjectLocationChanged = true;
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjLocX", &spawnObjs::currentSpawnedObj->xr))
+					spawnedObjectLocationChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjLocY", &spawnObjs::currentSpawnedObj->yr))
+					spawnedObjectLocationChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjLocZ", &spawnObjs::currentSpawnedObj->zr))
+					spawnedObjectLocationChanged = true;
 
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjPitch", &spawnObjs::currentSpawnedObj->pitch, 0, 360))
-				spawnedObjectRotationChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjRoll", &spawnObjs::currentSpawnedObj->roll, 0, 360))
-				spawnedObjectRotationChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("spObjYaw", &spawnObjs::currentSpawnedObj->yaw, 0, 360))
-				spawnedObjectRotationChanged = true;
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjPitch", &spawnObjs::currentSpawnedObj->pitch))
+					spawnedObjectRotationChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjRoll", &spawnObjs::currentSpawnedObj->roll))
+					spawnedObjectRotationChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("spObjYaw", &spawnObjs::currentSpawnedObj->yaw))
+					spawnedObjectRotationChanged = true;
+			}
+
 
 			ImGui::SeparatorText("Attach selected spawned object");
 
-			if (ImGui::BeginCombo("BONE_CENTER", spawnObjs::currentSpawnedObj->bone.c_str()))
+			if (spawnObjs::currentSpawnedObj->isAttached)
 			{
-				for (auto p : boneCenter)
-					if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
-					{
-						spawnObjs::currentSpawnedObj->bone = p;
-						hasAttachedEnityParametersChanged  = true;
-					}
+				components::small_text("Attached Object parameters");
 
-				ImGui::EndCombo();
+				if (ImGui::BeginCombo("BONE_CENTER", spawnObjs::currentSpawnedObj->bone.c_str()))
+				{
+					for (auto p : boneCenter)
+						if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
+						{
+							spawnObjs::currentSpawnedObj->bone = p;
+							hasAttachedEnityParametersChanged  = true;
+						}
+
+					ImGui::EndCombo();
+				}
+				ImGui::SameLine();
+				if (ImGui::BeginCombo("BONE_SIDEWAYS", spawnObjs::currentSpawnedObj->bone.c_str()))
+				{
+					for (auto p : boneSideways)
+						if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
+						{
+							spawnObjs::currentSpawnedObj->bone = p;
+							hasAttachedEnityParametersChanged  = true;
+						}
+					ImGui::EndCombo();
+				}
+				ImGui::SameLine();
+				if (ImGui::Checkbox("isBoneLeftAttached", &spawnObjs::currentSpawnedObj->isLeftAttached))
+					hasAttachedEnityParametersChanged = true;
+
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityX", &spawnObjs::currentSpawnedObj->xa))
+					hasAttachedEnityParametersChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityY", &spawnObjs::currentSpawnedObj->ya))
+					hasAttachedEnityParametersChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityZ", &spawnObjs::currentSpawnedObj->za))
+					hasAttachedEnityParametersChanged = true;
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityRX", &spawnObjs::currentSpawnedObj->rxa))
+					hasAttachedEnityParametersChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityRY", &spawnObjs::currentSpawnedObj->rya))
+					hasAttachedEnityParametersChanged = true;
+				ImGui::SameLine();
+				ImGui::PushItemWidth(200);
+				if (ImGui::InputFloat("attEntityRZ", &spawnObjs::currentSpawnedObj->rza))
+					hasAttachedEnityParametersChanged = true;
 			}
-			ImGui::SameLine();
-			if (ImGui::BeginCombo("BONE_SIDEWAYS", spawnObjs::currentSpawnedObj->bone.c_str()))
-			{
-				for (auto p : boneSideways)
-					if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
+
+			if (!spawnObjs::currentSpawnedObj->isAttached)
+				components::button("attach to self", [&] {
+					try
 					{
-						spawnObjs::currentSpawnedObj->bone = p;
-						hasAttachedEnityParametersChanged  = true;
+						if (!spawnObjs::currentSpawnedObj->bone.length())
+							spawnObjs::currentSpawnedObj->bone = boneCenter[0];
+
+						auto entity = spawnObjs::getSelectedEntity();
+
+						ENTITY::ATTACH_ENTITY_TO_ENTITY(spawnObjs::currentSpawnedObj->ob,
+						    entity,
+						    getBoneIndex(entity,
+						        spawnObjs::currentSpawnedObj->bone.c_str(),
+						        spawnObjs::currentSpawnedObj->isLeftAttached),
+						    spawnObjs::currentSpawnedObj->xa,
+						    spawnObjs::currentSpawnedObj->ya,
+						    spawnObjs::currentSpawnedObj->za,
+						    spawnObjs::currentSpawnedObj->rxa,
+						    spawnObjs::currentSpawnedObj->rya,
+						    spawnObjs::currentSpawnedObj->rza,
+						    1,
+						    0,
+						    0,
+						    0,
+						    0,
+						    1,
+						    0);
+
+						spawnObjs::currentSpawnedObj->isAttached = true;
 					}
-				ImGui::EndCombo();
-			}
-			ImGui::SameLine();
-			if (ImGui::Checkbox("isBoneLeftAttached", &spawnObjs::currentSpawnedObj->isLeftAttached))
-				hasAttachedEnityParametersChanged = true;
-
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityX", &spawnObjs::currentSpawnedObj->xa, -sliderRange, sliderRange))
-				hasAttachedEnityParametersChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityY", &spawnObjs::currentSpawnedObj->ya, -sliderRange, sliderRange))
-				hasAttachedEnityParametersChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityZ", &spawnObjs::currentSpawnedObj->za, -sliderRange, sliderRange))
-				hasAttachedEnityParametersChanged = true;
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityRX", &spawnObjs::currentSpawnedObj->rxa, 0, 360))
-				hasAttachedEnityParametersChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityRY", &spawnObjs::currentSpawnedObj->rya, 0, 360))
-				hasAttachedEnityParametersChanged = true;
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			if (ImGui::SliderFloat("attEntityRZ", &spawnObjs::currentSpawnedObj->rza, 0, 360))
-				hasAttachedEnityParametersChanged = true;
-
-			components::button("attach to self", [&] {
-				try
-				{
-					if (!spawnObjs::currentSpawnedObj->bone.length())
-						spawnObjs::currentSpawnedObj->bone = boneCenter[0];
-
-					auto entity = spawnObjs::getSelectedEntity();
-
-					ENTITY::ATTACH_ENTITY_TO_ENTITY(spawnObjs::currentSpawnedObj->ob,
-					    entity,
-					    getBoneIndex(entity, spawnObjs::currentSpawnedObj->bone.c_str(), spawnObjs::currentSpawnedObj->isLeftAttached),
-					    spawnObjs::currentSpawnedObj->xa,
-					    spawnObjs::currentSpawnedObj->ya,
-					    spawnObjs::currentSpawnedObj->za,
-					    spawnObjs::currentSpawnedObj->rxa,
-					    spawnObjs::currentSpawnedObj->rya,
-					    spawnObjs::currentSpawnedObj->rza,
-					    1,
-					    0,
-					    0,
-					    0,
-					    0,
-					    1,
-					    0);
-
-					spawnObjs::currentSpawnedObj->isAttached = true;
-				}
-				catch (const std::exception& e)
-				{
-					LOG(WARNING) << "failed" << e.what();
-				}
-			});
-			ImGui::SameLine();
-			components::button("detach from self", [&] {
-				try
-				{
-					ENTITY::DETACH_ENTITY(spawnObjs::currentSpawnedObj->ob, 0, 0);
-					OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(spawnObjs::currentSpawnedObj->ob);
-					spawnObjs::currentSpawnedObj->isAttached = false;
-				}
-				catch (const std::exception& e)
-				{
-					LOG(WARNING) << "failed" << e.what();
-				}
-			});
+					catch (const std::exception& e)
+					{
+						LOG(WARNING) << "failed" << e.what();
+					}
+				});
+			else
+				components::button("detach from self", [&] {
+					try
+					{
+						ENTITY::DETACH_ENTITY(spawnObjs::currentSpawnedObj->ob, 0, 0);
+						OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(spawnObjs::currentSpawnedObj->ob);
+						spawnObjs::currentSpawnedObj->isAttached = false;
+					}
+					catch (const std::exception& e)
+					{
+						LOG(WARNING) << "failed" << e.what();
+					}
+				});
 
 			ImGui::SeparatorText("Spawned objs");
 
