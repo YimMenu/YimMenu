@@ -300,8 +300,10 @@ namespace big
 				const auto cur = std::chrono::high_resolution_clock::now();
 				if (cur - last_update > 45s && !updating)
 				{
+					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
+						updating = false;
 						last_update = std::chrono::high_resolution_clock::now();
 					});
 				}
@@ -313,17 +315,6 @@ namespace big
 
 	void player_database_service::update_player_states(bool tracked_only)
 	{
-		// So that we don't re-enter from another thread or w/e
-		// This function doesn't support that.
-		// Something to keep in mind if you add a return branch somewhere in here to make the updating bool false.
-		if (updating)
-		{
-			LOG(WARNING) << "Already updating player db states, aborting.";
-			return;
-		}
-
-		updating = true;
-
 		constexpr auto bucket_size = 100;
 
 		std::vector<std::vector<rage::rlScHandle>> gamer_handle_buckets{};
@@ -345,10 +336,7 @@ namespace big
 		}
 
 		if (i == 0)
-		{
-			updating = false;
 			return;
-		}
 
 		for (auto& bucket : gamer_handle_buckets)
 		{
@@ -507,8 +495,6 @@ namespace big
 				}
 			}
 		}
-
-		updating = false;
 	}
 
 	bool player_database_service::is_joinable_session(GSType type)
