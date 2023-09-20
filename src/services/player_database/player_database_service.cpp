@@ -273,12 +273,16 @@ namespace big
 
 	void player_database_service::start_update_loop()
 	{
+		// So that it doesnt immediately exit the first time.
+		static bool first_time = true;
+
 		if (!g.player_db.update_player_online_states)
+		{
+			first_time = false;
 			return;
+		}
 
 		g_thread_pool->push([this] {
-			// So that it doesnt immediately exit the first time.
-			static bool first_time = true;
 			if (first_time)
 			{
 				while (!g_running)
@@ -313,7 +317,10 @@ namespace big
 		// This function doesn't support that.
 		// Something to keep in mind if you add a return branch somewhere in here to make the updating bool false.
 		if (updating)
+		{
+			LOG(WARNING) << "Already updating player db states, aborting.";
 			return;
+		}
 
 		updating = true;
 
