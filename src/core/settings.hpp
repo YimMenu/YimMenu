@@ -435,6 +435,7 @@ namespace big
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
+				std::atomic<bool> is_mp_chat_active;
 				int menu_toggle             = VK_INSERT;
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
