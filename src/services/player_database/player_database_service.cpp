@@ -273,6 +273,9 @@ namespace big
 
 	void player_database_service::start_update_loop()
 	{
+		if (!g.player_db.update_player_online_states)
+			return;
+
 		g_thread_pool->push([this] {
 			// So that it doesnt immediately exit the first time.
 			static bool first_time = true;
