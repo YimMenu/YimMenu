@@ -83,9 +83,9 @@ namespace big::teleport
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
 				g_pointers->m_gta.m_clear_ped_tasks_network(player->get_ped(), true);
 
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 30; i++)
 			{
-				script::get_current()->yield(50ms);
+				script::get_current()->yield(25ms);
 
 				if (auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd))
 				{
@@ -94,6 +94,10 @@ namespace big::teleport
 						g_pointers->m_gta.m_migrate_object(player->get_net_game_player(), netobj, 3);
 					}
 				}
+
+				auto new_coords = ENTITY::GET_ENTITY_COORDS(hnd, true);
+				if (SYSTEM::VDIST2(coords.x, coords.y, coords.z, new_coords.x, new_coords.y, new_coords.z) < 20 * 20 && VEHICLE::GET_PED_IN_VEHICLE_SEAT(hnd, 0, true) == ent)
+					break;
 			}
 
 			entity::delete_entity(hnd);
