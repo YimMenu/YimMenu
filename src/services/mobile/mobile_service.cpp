@@ -220,32 +220,29 @@ namespace big
 		m_plate          = m_vehicle_idx.at(1).as<char*>();
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
 
-		if (!is_blacklisted_vehicle())
+		for (int property_iterator = 0; property_iterator < 35; property_iterator++)
 		{
-			for (int property_iterator = 0; property_iterator < 35; property_iterator++)
+			auto property_stat_state = get_property_stat_state(property_iterator);
+			if (property_stat_state > 0)
 			{
-				auto property_stat_state = get_property_stat_state(property_iterator);
-				if (property_stat_state > 0)
+				auto garage_size = get_property_garage_size(property_iterator);
+				auto garage_offset = get_property_garage_offset(property_iterator);
+				for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
 				{
-					auto garage_size = get_property_garage_size(property_iterator);
-					auto garage_offset = get_property_garage_offset(property_iterator);
-					for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
+					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
+					if (item_in_slot == idx)
 					{
-						auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
-						if (item_in_slot == idx)
+						auto static_property_string = get_static_property_name(property_iterator);
+						if (static_property_string.empty())
 						{
-							auto static_property_string = get_static_property_name(property_iterator);
-							if (static_property_string.empty())
-							{
-								m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
-							}
-							else
-							{
-								m_garage = static_property_string;
-							}
-							property_iterator = 999;
-							break;
+							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
 						}
+						else
+						{
+							m_garage = static_property_string;
+						}
+						property_iterator = 999;
+						break;
 					}
 				}
 			}
@@ -315,7 +312,7 @@ namespace big
 			case RAGE_JOAAT("pounder2"):
 			case RAGE_JOAAT("rcbandito"):
 			case RAGE_JOAAT("minitank"):
-				return g.clone_pv.spawn_clone;
+				return !g.clone_pv.spawn_clone;
 		}
 		return false;
 	}
@@ -339,15 +336,7 @@ namespace big
 
 		g_fiber_pool->queue_job([this] {
 			register_vehicles();
-			m_garages.clear();
-			for (const auto &[name, personal_vehicle_ptr] : g_mobile_service->personal_vehicles())
-			{
-				auto garage_name = personal_vehicle_ptr->get_garage();
-				if (!garage_name.empty())
-				{
-					m_garages.emplace(personal_vehicle_ptr->get_garage());
-				}
-			}
+			refresh_garages();
 		});
 	}
 
@@ -395,6 +384,22 @@ namespace big
 			{
 				m_personal_vehicles.erase(it->second);
 				m_pv_lookup.erase(i);
+			}
+		}
+	}
+
+	void mobile_service::refresh_garages()
+	{
+		m_garages.clear();
+		for (const auto& [name, personal_vehicle_ptr] : personal_vehicles())
+		{
+			if (!personal_vehicle_ptr->is_blacklisted_vehicle())
+			{
+				auto garage_name = personal_vehicle_ptr->get_garage();
+				if (!garage_name.empty())
+				{
+					m_garages.emplace(personal_vehicle_ptr->get_garage());
+				}
 			}
 		}
 	}

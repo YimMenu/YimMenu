@@ -29,7 +29,10 @@ namespace big
 
 		static char plate_buf[9] = {0};
 
-		ImGui::Checkbox("SPAWN_CLONE"_T.data(), &g.clone_pv.spawn_clone);
+		if (ImGui::Checkbox("SPAWN_CLONE"_T.data(), &g.clone_pv.spawn_clone))
+		{
+			g_mobile_service->refresh_garages();
+		}
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("SPAWN_CLONE_DESC"_T.data());
 		if (g.clone_pv.spawn_clone)
@@ -82,7 +85,7 @@ namespace big
 
 		ImGui::SetNextItemWidth(300.f);
 		std::string garage_display = g.clone_pv.garage.empty() ? "ALL"_T.data() : g.clone_pv.garage;
-		if (ImGui::BeginCombo("Garage", garage_display.c_str()))
+		if (ImGui::BeginCombo("GARAGE"_T.data(), garage_display.c_str()))
 		{
 			if (ImGui::Selectable("ALL"_T.data(), g.clone_pv.garage.empty()))
 			{

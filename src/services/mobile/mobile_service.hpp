@@ -8,7 +8,7 @@ namespace big
 		Hash m_hash;
 		int m_id;
 		std::string m_name;
-		std::string m_garage = "";
+		std::string m_garage{};
 		const char* m_plate;
 
 		script_global m_vehicle_idx;
@@ -54,6 +54,7 @@ namespace big
 			return m_garages;
 		}
 		void refresh_personal_vehicles();
+		void refresh_garages();
 		void register_vehicles();
 	};
 
