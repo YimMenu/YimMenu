@@ -8,7 +8,7 @@ namespace big
 		using command::command;
 
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
-		{;
+		{
 			STATS::STAT_SET_INT(rage::joaat(self::char_index + "NO_BOUGHT_YUM_SNACKS"), 30, true);
 			STATS::STAT_SET_INT(rage::joaat(self::char_index + "NO_BOUGHT_HEALTH_SNACKS"), 15, true);
 			STATS::STAT_SET_INT(rage::joaat(self::char_index + "NO_BOUGHT_EPIC_SNACKS"), 5, true);
