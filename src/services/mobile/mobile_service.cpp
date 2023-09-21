@@ -137,7 +137,7 @@ namespace big
 		{
 			return -1;
 		}
-		Hash stat_hash = STATS::_GET_STAT_HASH_FOR_CHARACTER_STAT(0, stat_to_lookup, g.player.character_slot);
+		Hash stat_hash = STATS::_GET_STAT_HASH_FOR_CHARACTER_STAT(0, stat_to_lookup, self::char_index);
 		int stat_value{};
 		if (STATS::STAT_GET_INT(stat_hash, &stat_value, -1))
 		{

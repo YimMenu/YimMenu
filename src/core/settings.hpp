@@ -227,10 +227,9 @@ namespace big
 
 		struct player
 		{
-			int character_slot = 1;
 			bool spectating    = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating)
 		} player{};
 
 		struct player_db
