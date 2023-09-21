@@ -488,8 +488,9 @@ namespace big
 			bool spawn_maxed     = false;
 			bool clone_plate     = false;
 			std::string plate    = "";
+			std::string garage   = "";
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate, garage)
 		} clone_pv{};
 
 		struct persist_car

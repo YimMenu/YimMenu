@@ -106,6 +106,28 @@ namespace big
 			ImGui::EndCombo();
 		}
 
+		ImGui::SetNextItemWidth(300.f);
+		std::string garage_display = g.clone_pv.garage.empty() ? "ALL"_T.data() : g.clone_pv.garage;
+		if (ImGui::BeginCombo("Garage", garage_display.c_str()))
+		{
+			if (ImGui::Selectable("ALL"_T.data(), g.clone_pv.garage.empty()))
+			{
+				g.clone_pv.garage.clear();
+			}
+			for (auto garage : g_mobile_service->garages())
+			{
+				if (ImGui::Selectable(garage.c_str(), garage == g.clone_pv.garage))
+				{
+					g.clone_pv.garage = garage;
+				}
+				if (garage == g.clone_pv.garage)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+
+			ImGui::EndCombo();
+		}
 
 		static char search[64];
 
@@ -138,7 +160,7 @@ namespace big
 				if ((selected_class == -1 || class_arr[selected_class] == vehicle_class)
 				    && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
 				{
-					if (!g.clone_pv.spawn_clone && is_blacklist_vehicle(personal_veh->get_hash()))
+					if (!g.clone_pv.spawn_clone && is_blacklist_vehicle(personal_veh->get_hash()) || !personal_veh->is_in_selected_garage())
 					{
 						continue;
 					}
