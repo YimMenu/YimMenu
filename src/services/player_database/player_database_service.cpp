@@ -327,7 +327,7 @@ namespace big
 
 		for (auto& bucket : gamer_handle_buckets)
 		{
-			rage::rlTaskStatus status{};
+			rage::rlScTaskStatus status{};
 
 			rage::rlQueryPresenceAttributesContext contexts[bucket_size][9]{};
 			rage::rlQueryPresenceAttributesContext* contexts_per_player[bucket_size]{};

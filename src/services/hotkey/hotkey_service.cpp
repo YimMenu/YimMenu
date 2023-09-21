@@ -88,7 +88,17 @@ namespace big
 		if (g.cmd_executor.enabled)
 			return;
 
-		if (g_gui->is_open() || *g_pointers->m_gta.m_is_social_club_overlay_active || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("cellphone_flashhand")) > 0 || HUD::IS_MP_TEXT_CHAT_TYPING())
+		bool is_using_cellphone = false;
+		for (auto script : *g_pointers->m_gta.m_script_threads)
+		{
+			if (script && script->m_script_hash == RAGE_JOAAT("cellphone_flashhand"))
+			{
+				is_using_cellphone = script->m_context.m_state == rage::eThreadState::running;
+			}
+		}
+
+		if (g_gui->is_open() || *g_pointers->m_gta.m_is_social_club_overlay_active || is_using_cellphone
+		    || g.settings.hotkeys.is_mp_chat_active)
 			return;
 
 		if (state == eKeyState::RELEASE || state == eKeyState::DOWN)

@@ -10,5 +10,6 @@ namespace big
 			PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
 			g.self.hud.typing--;
 		}
+		g.settings.hotkeys.is_mp_chat_active = HUD::IS_MP_TEXT_CHAT_TYPING();
 	}
 }
