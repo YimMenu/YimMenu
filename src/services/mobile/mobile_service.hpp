@@ -23,6 +23,7 @@ namespace big
 		[[nodiscard]] script_global get_vehicle_idx() const;
 		[[nodiscard]] std::string get_garage() const;
 		[[nodiscard]] bool is_in_selected_garage() const;
+		[[nodiscard]] bool is_blacklisted_vehicle() const;
 
 		void summon() const;
 	};

@@ -7,7 +7,8 @@
 
 namespace big
 {
-	int get_property_garage_offset(int property)
+	//None of these will get inlined as they are just a massive switch table, but we can ask anyway.
+	inline int get_property_garage_offset(int property)
 	{
 		switch (property)
 		{
@@ -45,7 +46,7 @@ namespace big
 		return 0;
 	}
 
-	int get_property_garage_size(int property)
+	inline int get_property_garage_size(int property)
 	{
 		switch (property)
 		{
@@ -54,7 +55,7 @@ namespace big
 			case 6:
 			case 15:
 			case 16:
-		    case 17:
+			case 17:
 			case 18:
 			case 19:
 			case 20:
@@ -82,7 +83,7 @@ namespace big
 		return 0;
 	}
 
-	int get_property_stat_state(int property)
+	inline int get_property_stat_state(int property)
 	{
 		int stat_to_lookup = -1;
 		switch (property)
@@ -147,11 +148,11 @@ namespace big
 					case 5: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_5"); //Fort Zancudo Hangar 3499
 				}
 			}
-		    case 13: //Facility
+			case 13: //Facility
 			{
-			    auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(300).as<PINT>();
-			    switch (facility_id)
-			    {
+				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(300).as<PINT>();
+				switch (facility_id)
+				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility
 					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_2"); //Route 68 Facility
 					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_3"); //Sandy Shores Facility
@@ -161,13 +162,13 @@ namespace big
 					case 7: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_8"); //Zancudo River Facility
 					case 8: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_9"); //Ron Alternates Wind Farm Facility
 					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_10"); //Land Act Reservoir Facility
-			    }
+				}
 			}
-		    case 14: //Nightclub
+			case 14: //Nightclub
 			{
-			    auto nightclub_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(354).as<PINT>();
-			    switch (nightclub_id)
-			    {
+				auto nightclub_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(354).as<PINT>();
+				switch (nightclub_id)
+				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_1"); //La Mesa Nightclub
 					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_2"); //Mission Row Nightclub
 					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_3"); //Strawberry Nightclub
@@ -178,21 +179,21 @@ namespace big
 					case 8: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_8"); //Downtown Vinewood Nightclub
 					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_9"); //Del Perro Nightclub
 					case 10: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_10"); //Vespucci Canals Nightclub
-			    }
+				}
 			}
-		    case 15: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR1"); //Nightclub B2
-		    case 16: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR2"); //Nightclub B3
-		    case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
-		    case 18: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F0"); //Arena Workshop
-		    case 19: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F1"); //Arena Workshop B1
-		    case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B1
-		    case 21: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CASINO_GARNAME"); //Casino Penthouse
-		    case 22: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARCADE_GARNAME"); //Arcade
-		    case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
-		    case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
-		    case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case 15: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR1"); //Nightclub B2
+			case 16: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR2"); //Nightclub B3
+			case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
+			case 18: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F0"); //Arena Workshop
+			case 19: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F1"); //Arena Workshop B1
+			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B1
+			case 21: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CASINO_GARNAME"); //Casino Penthouse
+			case 22: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARCADE_GARNAME"); //Arcade
+			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
+			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
+			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
 		}
-		return {};
+		return std::string();
 	}
 
 	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx) :
@@ -202,31 +203,32 @@ namespace big
 		m_plate          = m_vehicle_idx.at(1).as<char*>();
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
 
-		int capture_id;
-
-		for (int property_iterator = 0; property_iterator < 30; property_iterator++)
+		if (!is_blacklisted_vehicle())
 		{
-			auto property_stat_state = get_property_stat_state(property_iterator);
-			if (property_stat_state > 0)
+			for (int property_iterator = 0; property_iterator < 30; property_iterator++)
 			{
-				auto garage_size = get_property_garage_size(property_iterator);
-				for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
+				auto property_stat_state = get_property_stat_state(property_iterator);
+				if (property_stat_state > 0)
 				{
-					auto item_in_slot = *script_global(1945123).at(get_property_garage_offset(property_iterator)).at(garage_slot_iterator).as<PINT>() - 1;
-					if (item_in_slot == idx)
+					auto garage_size = get_property_garage_size(property_iterator);
+					auto garage_offset = get_property_garage_offset(property_iterator);
+					for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
 					{
-						auto static_property_string = get_static_property_name(property_iterator);						
-						if (static_property_string.empty())
+						auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
+						if (item_in_slot == idx)
 						{
-							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(script_global(1312228).at(property_stat_state, 1951).at(16).as<const char*>());
+							auto static_property_string = get_static_property_name(property_iterator);
+							if (static_property_string.empty())
+							{
+								m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
+							}
+							else
+							{
+								m_garage = static_property_string;
+							}
+							property_iterator = 999;
+							break;
 						}
-						else
-						{
-							m_garage = static_property_string;
-						}
-						capture_id        = item_in_slot;
-						property_iterator = 999;
-						break;
 					}
 				}
 			}
@@ -273,6 +275,32 @@ namespace big
 	bool personal_vehicle::is_in_selected_garage() const
 	{
 		return g.clone_pv.garage.empty() || m_garage == g.clone_pv.garage;
+	}
+
+	bool personal_vehicle::is_blacklisted_vehicle() const
+	{
+		switch (m_hash)
+		{
+			case RAGE_JOAAT("avenger"):
+			case RAGE_JOAAT("avenger3"):
+			case RAGE_JOAAT("hauler2"):
+			case RAGE_JOAAT("phantom3"):
+			case RAGE_JOAAT("trailersmall2"):
+			case RAGE_JOAAT("khanjali"):
+			case RAGE_JOAAT("chernobog"):
+			case RAGE_JOAAT("riot2"):
+			case RAGE_JOAAT("thruster"):
+			case RAGE_JOAAT("brickade2"):
+			case RAGE_JOAAT("manchez3"):
+			case RAGE_JOAAT("terbyte"):
+			case RAGE_JOAAT("speedo4"):
+			case RAGE_JOAAT("mule4"):
+			case RAGE_JOAAT("pounder2"):
+			case RAGE_JOAAT("rcbandito"):
+			case RAGE_JOAAT("minitank"):
+				return g.clone_pv.spawn_clone;
+		}
+		return false;
 	}
 
 	mobile_service::mobile_service()
