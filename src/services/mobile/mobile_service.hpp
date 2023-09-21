@@ -13,6 +13,8 @@ namespace big
 
 		script_global m_vehicle_idx;
 
+		std::string garage_ctor();
+
 	public:
 		personal_vehicle(int idx, script_global vehicle_idx);
 

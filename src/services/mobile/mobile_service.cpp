@@ -5,10 +5,11 @@
 #include "script.hpp"
 #include "util/mobile.hpp"
 
+#define MAX_GARAGE_NUM 29
+
 namespace big
 {
-	//None of these will get inlined as they are just a massive switch table, but we can ask anyway.
-	inline int get_property_garage_offset(int property)
+	int get_property_garage_offset(int property)
 	{
 		switch (property)
 		{
@@ -43,23 +44,23 @@ namespace big
 			case 28: return 350;
 			case 29: return 363;
 			//Singular property entities like the Terrorbyte.
-			case 30: return 156;
-			case 31: return 224;
-			case 32: return 223;
-			case 33: return 278;
+			case MAX_GARAGE_NUM+1: return 156;
+			case MAX_GARAGE_NUM+2: return 224;
+			case MAX_GARAGE_NUM+3: return 223;
+			case MAX_GARAGE_NUM+4: return 278;
 		}
 		return -1;
 	}
 
-	inline int get_property_garage_size(int property)
+	int get_property_garage_size(int property)
 	{
 		switch (property)
 		{
-			case 30:
-			case 32:
-			case 33:
+			case MAX_GARAGE_NUM+1:
+			case MAX_GARAGE_NUM+3:
+			case MAX_GARAGE_NUM+4:
 			case 14: return 1;
-			case 31: return 3;
+			case MAX_GARAGE_NUM+2: return 3;
 			case 11: return 8;
 			case 6:
 			case 15:
@@ -92,7 +93,7 @@ namespace big
 		return 0;
 	}
 
-	inline int get_property_stat_state(int property)
+	int get_property_stat_state(int property)
 	{
 		int stat_to_lookup = -1;
 		switch (property)
@@ -127,10 +128,10 @@ namespace big
 			case 27: stat_to_lookup = 10441; break;
 			case 28: stat_to_lookup = 10444; break;
 			case 29: stat_to_lookup = 10874; break;
-			case 30:
-			case 31:
-			case 32:
-			case 33: return 1;
+			case MAX_GARAGE_NUM+1:
+			case MAX_GARAGE_NUM+2:
+			case MAX_GARAGE_NUM+3:
+			case MAX_GARAGE_NUM+4: return 1;
 		}
 		if (stat_to_lookup == -1)
 		{
@@ -145,7 +146,7 @@ namespace big
 		return -1;
 	}
 
-	inline std::string get_static_property_name(int property)
+	std::string get_static_property_name(int property)
 	{
 		switch (property)
 		{
@@ -160,6 +161,7 @@ namespace big
 					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_4"); //Fort Zancudo Hangar 3497
 					case 5: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_5"); //Fort Zancudo Hangar 3499
 				}
+				break;
 			}
 			case 13: //Facility
 			{
@@ -176,6 +178,7 @@ namespace big
 					case 8: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_9"); //Ron Alternates Wind Farm Facility
 					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_10"); //Land Act Reservoir Facility
 				}
+				break;
 			}
 			case 14: //Nightclub
 			{
@@ -193,6 +196,7 @@ namespace big
 					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_9"); //Del Perro Nightclub
 					case 10: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_10"); //Vespucci Canals Nightclub
 				}
+				break;
 			}
 			case 15: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR1"); //Nightclub B2
 			case 16: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR2"); //Nightclub B3
@@ -205,10 +209,37 @@ namespace big
 			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
 			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
 			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
-			case 30: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
-			case 31: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
-			case 32: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
-			case 33: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_SUB"); //Kosatka
+			case MAX_GARAGE_NUM+1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
+			case MAX_GARAGE_NUM+2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
+			case MAX_GARAGE_NUM+3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
+			case MAX_GARAGE_NUM+4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_SUB"); //Kosatka
+		}
+		return std::string();
+	}
+
+	std::string personal_vehicle::garage_ctor()
+	{
+		for (int property_iterator = 0; property_iterator < MAX_GARAGE_NUM+5; property_iterator++)
+		{
+			auto property_stat_state = get_property_stat_state(property_iterator);
+			if (property_stat_state > 0) //Check if the player owns the property
+			{
+				auto garage_size = get_property_garage_size(property_iterator);
+				auto garage_offset = get_property_garage_offset(property_iterator);
+				for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
+				{
+					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
+					if (item_in_slot == m_id)
+					{
+						auto static_property_string = get_static_property_name(property_iterator);
+						if (static_property_string.empty())
+						{
+							return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
+						}
+						return static_property_string;
+					}
+				}
+			}
 		}
 		return std::string();
 	}
@@ -219,34 +250,7 @@ namespace big
 	{
 		m_plate          = m_vehicle_idx.at(1).as<char*>();
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
-
-		for (int property_iterator = 0; property_iterator < 35; property_iterator++)
-		{
-			auto property_stat_state = get_property_stat_state(property_iterator);
-			if (property_stat_state > 0)
-			{
-				auto garage_size = get_property_garage_size(property_iterator);
-				auto garage_offset = get_property_garage_offset(property_iterator);
-				for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
-				{
-					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
-					if (item_in_slot == idx)
-					{
-						auto static_property_string = get_static_property_name(property_iterator);
-						if (static_property_string.empty())
-						{
-							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
-						}
-						else
-						{
-							m_garage = static_property_string;
-						}
-						property_iterator = 999;
-						break;
-					}
-				}
-			}
-		}
+		m_garage         = garage_ctor();
 
 		m_name = std::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
 	}
