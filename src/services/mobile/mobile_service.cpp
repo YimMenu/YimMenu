@@ -17,7 +17,7 @@ namespace big
 			case 2: return 13 * 2;
 			case 3: return 13 * 3;
 			case 4: return 13 * 4;
-			case 5: return -1;
+			//Property 5 is not used.
 			case 6: return 65;
 			case 7: return 75;
 			case 8: return 88;
@@ -42,15 +42,24 @@ namespace big
 			case 27: return 337;
 			case 28: return 350;
 			case 29: return 363;
+			//Singular property entities like the Terrorbyte.
+			case 30: return 156;
+			case 31: return 224;
+			case 32: return 223;
+			case 33: return 278;
 		}
-		return 0;
+		return -1;
 	}
 
 	inline int get_property_garage_size(int property)
 	{
 		switch (property)
 		{
+			case 30:
+			case 32:
+			case 33:
 			case 14: return 1;
+			case 31: return 3;
 			case 11: return 8;
 			case 6:
 			case 15:
@@ -117,7 +126,11 @@ namespace big
 			case 26: stat_to_lookup = 9913; break;
 			case 27: stat_to_lookup = 10441; break;
 			case 28: stat_to_lookup = 10444; break;
-			case 29: stat_to_lookup = 10874;
+			case 29: stat_to_lookup = 10874; break;
+			case 30:
+			case 31:
+			case 32:
+			case 33: return 1;
 		}
 		if (stat_to_lookup == -1)
 		{
@@ -192,6 +205,10 @@ namespace big
 			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
 			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
 			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case 30: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
+			case 31: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
+			case 32: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
+			case 33: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_SUB"); //Kosatka
 		}
 		return std::string();
 	}
@@ -205,7 +222,7 @@ namespace big
 
 		if (!is_blacklisted_vehicle())
 		{
-			for (int property_iterator = 0; property_iterator < 30; property_iterator++)
+			for (int property_iterator = 0; property_iterator < 35; property_iterator++)
 			{
 				auto property_stat_state = get_property_stat_state(property_iterator);
 				if (property_stat_state > 0)
