@@ -44,10 +44,10 @@ namespace big
 			case 28: return 350;
 			case 29: return 363;
 			//Singular property entities like the Terrorbyte.
-			case MAX_GARAGE_NUM+1: return 156;
-			case MAX_GARAGE_NUM+2: return 224;
-			case MAX_GARAGE_NUM+3: return 223;
-			case MAX_GARAGE_NUM+4: return 278;
+			case MAX_GARAGE_NUM+1: return 155;
+			case MAX_GARAGE_NUM+2: return 223;
+			case MAX_GARAGE_NUM+3: return 222;
+			case MAX_GARAGE_NUM+4: return 277;
 		}
 		return -1;
 	}
