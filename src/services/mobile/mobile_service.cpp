@@ -199,7 +199,7 @@ namespace big
 		return std::string();
 	}
 
-	std::string personal_vehicle::garage_ctor()
+	void personal_vehicle::set_garage()
 	{
 		for (int property_iterator = 0; property_iterator < MAX_GARAGE_NUM+4; property_iterator++)
 		{
@@ -216,14 +216,17 @@ namespace big
 						auto static_property_string = get_static_property_name(property_iterator);
 						if (static_property_string.empty())
 						{
-							return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
+							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
 						}
-						return static_property_string;
+						else
+						{
+							m_garage = static_property_string;
+						}
+						return;
 					}
 				}
 			}
 		}
-		return std::string();
 	}
 
 	personal_vehicle::personal_vehicle(int idx, script_global vehicle_idx) :
@@ -232,7 +235,7 @@ namespace big
 	{
 		m_plate          = m_vehicle_idx.at(1).as<char*>();
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
-		m_garage         = garage_ctor();
+		set_garage();
 
 		m_name = std::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
 	}
@@ -355,6 +358,8 @@ namespace big
 						it->second = veh->get_display_name();
 						m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));
 					}
+
+					m_personal_vehicles[veh->get_display_name()]->set_garage();
 
 					continue;
 				}
