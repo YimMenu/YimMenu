@@ -4,11 +4,13 @@
 #include "natives.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "views/view.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 #include <network/netConnection.hpp>
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
+#include <vehicle/CVehicleModelInfo.hpp>
 
 namespace big
 {
@@ -48,7 +50,8 @@ namespace big
 			uint32_t ped_health      = 0;
 			uint32_t ped_maxhealth   = 0;
 			uint32_t veh_damage_bits = 0;
-			std::string mode_str     = "";
+			std::string mode_str{};
+			std::string vehicle_name{};
 
 			if (CPed* ped = g_player_service->get_selected()->get_ped(); ped != nullptr)
 			{
@@ -209,42 +212,47 @@ namespace big
 
 			ImGui::Text("PLAYER_INFO_PROOFS"_T.data(), mode_str.c_str());
 
-			mode_str = "";
-
-			if (auto vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
-			{
-				veh_damage_bits = vehicle->m_damage_bits;
-			}
+			mode_str.clear();
 
 			if (ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING)
 			{
-				if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
+				if (auto vehicle = g_player_service->get_selected()->get_current_vehicle(); vehicle != nullptr)
 				{
-					mode_str = "PLAYER_INFO_GOD"_T;
-				}
-				else
-				{
-					if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
-					{
-						mode_str += "PLAYER_INFO_COLLISION"_T;
-					}
-					if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
-					{
-						mode_str += "PLAYER_INFO_EXPLOSION"_T;
-					}
-				}
+					veh_damage_bits = vehicle->m_damage_bits;
 
-				if (mode_str.empty())
-				{
-					mode_str = "NO"_T;
+					if (CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(vehicle->m_model_info))
+					{
+						vehicle_name = g_gta_data_service->vehicles()[vehicle_model_info->m_name].m_display_name;
+					}
+
+					if (veh_damage_bits & (uint32_t)eEntityProofs::GOD)
+					{
+						mode_str = "PLAYER_INFO_GOD"_T;
+					}
+					else
+					{
+						if (veh_damage_bits & (uint32_t)eEntityProofs::COLLISION)
+						{
+							mode_str += "PLAYER_INFO_COLLISION"_T;
+						}
+						if (veh_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
+						{
+							mode_str += "PLAYER_INFO_EXPLOSION"_T;
+						}
+					}
+
+					if (mode_str.empty())
+					{
+						mode_str = "NO"_T;
+					}
 				}
 			}
 			else
 			{
-				mode_str = "PLAYER_INFO_NO_VEHICLE"_T;
+				vehicle_name = "PLAYER_INFO_NO_VEHICLE"_T;
 			}
 
-			ImGui::Text("PLAYER_INFO_VEHICLE_PROOFS"_T.data(), mode_str.c_str());
+			ImGui::Text("PLAYER_INFO_VEHICLE"_T.data(), vehicle_name.c_str(), mode_str.c_str());
 
 			if (auto net_player_data = g_player_service->get_selected()->get_net_data())
 			{
