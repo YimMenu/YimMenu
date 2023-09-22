@@ -72,13 +72,13 @@ namespace big
 			case 21:
 			case 22:
 			case 25: return 10;
+			case 13: return 11;
 			case 0:
 			case 1:
 			case 2:
 			case 3:
 			case 4:
 			case 7:
-			case 13:
 			case 23:
 			case 24:
 			case 27:
@@ -180,24 +180,7 @@ namespace big
 				}
 				break;
 			}
-			case 14: //Nightclub
-			{
-				auto nightclub_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(354).as<PINT>();
-				switch (nightclub_id)
-				{
-					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_1"); //La Mesa Nightclub
-					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_2"); //Mission Row Nightclub
-					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_3"); //Strawberry Nightclub
-					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_4"); //West Vinewood Nightclub
-					case 5: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_5"); //Cypress Flats Nightclub
-					case 6: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_6"); //LSIA Nightclub
-					case 7: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_7"); //Elysian Island Nightclub
-					case 8: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_8"); //Downtown Vinewood Nightclub
-					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_9"); //Del Perro Nightclub
-					case 10: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_NCLU_10"); //Vespucci Canals Nightclub
-				}
-				break;
-			}
+			case 14: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBG"); //Nightclub Service Entrance
 			case 15: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR1"); //Nightclub B2
 			case 16: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR2"); //Nightclub B3
 			case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
@@ -226,7 +209,7 @@ namespace big
 			{
 				auto garage_size = get_property_garage_size(property_iterator);
 				auto garage_offset = get_property_garage_offset(property_iterator);
-				for (int garage_slot_iterator = 0; garage_slot_iterator < garage_size; garage_slot_iterator++)
+				for (int garage_slot_iterator = 1; garage_slot_iterator <= garage_size; garage_slot_iterator++)
 				{
 					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
 					if (item_in_slot == m_id)
