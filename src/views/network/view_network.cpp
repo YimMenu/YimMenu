@@ -117,7 +117,8 @@ namespace big
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
 
-			if (ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session))
+			ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session);
+			if (g.session.lock_session)
 			{
 				ImGui::Checkbox("LOBBY_LOCK_ALLOW_FRIENDS"_T.data(), &g.session.allow_friends_into_locked_session);
 				if (ImGui::IsItemHovered())
