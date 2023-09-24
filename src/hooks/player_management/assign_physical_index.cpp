@@ -135,7 +135,7 @@ namespace big
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr, {});
 							g_notification_service->push_warning("Lock Session",
 							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
 						}
