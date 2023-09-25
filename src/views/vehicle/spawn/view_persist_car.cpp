@@ -44,6 +44,7 @@ namespace big
 	void view::persist_car()
 	{
 		static std::string selected_vehicle_file;
+		static char save_folder[50]{};
 
 		const auto vehicle_folders = persist_car_service::list_sub_folders();
 		const auto vehicle_files   = persist_car_service::list_files(g.persist_car.persist_vehicle_sub_folder);
@@ -73,8 +74,11 @@ namespace big
 
 			for (std::string folder_name : vehicle_folders)
 			{
-				if (ImGui::Selectable(folder_name.c_str(), g.persist_car.persist_vehicle_sub_folder == folder_name))
+				if (ImGui::Selectable(folder_name.c_str(), g.persist_car.persist_vehicle_sub_folder == folder_name)) {
 					g.persist_car.persist_vehicle_sub_folder = folder_name;
+					if(folder_name.length() < sizeof(save_folder))
+						strcpy(save_folder, folder_name.c_str());
+				}
 			}
 
 			ImGui::EndCombo();
@@ -137,7 +141,6 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("VEHICLE_FILE_NAME_EXAMPLE"_T.data());
 
-        static char save_folder[50]{};
 		components::small_text("VEHICLE_FOLDER_NAME"_T);
 		ImGui::SetNextItemWidth(250);
 		ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
