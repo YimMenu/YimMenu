@@ -47,7 +47,6 @@ namespace big
 	class menu_settings
 	{
 	public:
-		void destroy();
 		void init(const file& save_file);
 
 		void attempt_save();
@@ -59,8 +58,6 @@ namespace big
 		bool save();
 
 	private:
-		bool m_running;
-
 		file m_save_file;
 
 		nlohmann::json m_default_options;
@@ -230,10 +227,9 @@ namespace big
 
 		struct player
 		{
-			int character_slot = 1;
 			bool spectating    = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, character_slot, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating)
 		} player{};
 
 		struct player_db
@@ -438,6 +434,7 @@ namespace big
 			struct hotkeys
 			{
 				bool editing_menu_toggle    = false;
+				std::atomic<bool> is_mp_chat_active;
 				int menu_toggle             = VK_INSERT;
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
@@ -490,8 +487,9 @@ namespace big
 			bool spawn_maxed     = false;
 			bool clone_plate     = false;
 			std::string plate    = "";
+			std::string garage   = "";
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate, garage)
 		} clone_pv{};
 
 		struct persist_car

@@ -979,6 +979,15 @@ namespace big
                 g_pointers->m_gta.m_prepare_metric_for_sending = ptr.as<PVOID>();
             }
         },
+        // HTTP Start Request
+        {
+            "HSR",
+            "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 8B D9 48 81 C1 ? ? ? ? 48 8B F2 33 FF E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_http_start_request = ptr.as<PVOID>();
+            }
+        },
         // Send Packet
         {
             "SP",
@@ -1639,6 +1648,15 @@ namespace big
             {
                 g_pointers->m_gta.m_decal_manager = ptr.add(3).rip().as<PVOID>();
                 g_pointers->m_gta.m_decal_manager_remove = ptr.add(0xC).rip().as<functions::decal_manager_remove>();
+            }
+        },
+        // Is Social Club Overlay Active
+        {
+            "ISCOA",
+            "88 1D ? ? ? ? E8 ? ? ? ? 33 F6",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_is_social_club_overlay_active = ptr.add(2).rip().as<bool*>();
             }
         }
         >(); // don't leave a trailing comma at the end

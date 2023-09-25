@@ -15,9 +15,7 @@ namespace lua::stats
 	// Returns: integer: The current multiplayer character index (0 or 1).
 	static int get_character_index()
 	{
-		int character_index = 0;
-		STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
-		return character_index;
+		return self::char_index;
 	}
 
 	static Hash stat_text_to_hash(std::string& text)

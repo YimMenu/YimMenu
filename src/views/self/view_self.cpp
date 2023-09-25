@@ -3,7 +3,6 @@
 #include "fiber_pool.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
-#include "util/local_player.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 

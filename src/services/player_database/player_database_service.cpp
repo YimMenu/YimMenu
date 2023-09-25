@@ -138,6 +138,9 @@ namespace big
 	    m_file_path(g_file_manager.get_project_file("./players.json").get_path())
 	{
 		load();
+
+		start_update_loop();
+
 		g_player_database_service = this;
 	}
 
@@ -270,11 +273,28 @@ namespace big
 
 	void player_database_service::start_update_loop()
 	{
+		// So that it doesnt immediately exit the first time.
+		static bool first_time = true;
+
 		if (!g.player_db.update_player_online_states)
+		{
+			first_time = false;
 			return;
+		}
 
 		g_thread_pool->push([this] {
+			if (first_time)
+			{
+				while (!g_running)
+				{
+					std::this_thread::yield();
+				}
+
+				first_time = false;
+			}
+
 			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
+
 			while (g_running && g.player_db.update_player_online_states)
 			{
 				const auto cur = std::chrono::high_resolution_clock::now();
@@ -283,7 +303,7 @@ namespace big
 					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
-						updating    = false;
+						updating = false;
 						last_update = std::chrono::high_resolution_clock::now();
 					});
 				}
@@ -320,8 +340,9 @@ namespace big
 
 		for (auto& bucket : gamer_handle_buckets)
 		{
-			rage::rlTaskStatus status{};
+			rage::rlScTaskStatus status{};
 
+			// TODO: big sized object on the stack, might be a problem in the future
 			rage::rlQueryPresenceAttributesContext contexts[bucket_size][9]{};
 			rage::rlQueryPresenceAttributesContext* contexts_per_player[bucket_size]{};
 

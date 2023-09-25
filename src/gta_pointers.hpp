@@ -212,6 +212,8 @@ namespace big
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
+		PVOID m_http_start_request;
+
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
@@ -335,6 +337,8 @@ namespace big
 
 		functions::decal_manager_remove m_decal_manager_remove;
 		PVOID m_decal_manager;
+
+		bool* m_is_social_club_overlay_active;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

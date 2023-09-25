@@ -144,6 +144,18 @@ namespace big
 			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
 		}
 
+		void SET_ENTITY_HEALTH(rage::scrNativeCallContext* src)
+		{
+			Entity entity = src->get_arg<int>(0);
+			int health    = src->get_arg<int>(1);
+			int p2        = src->get_arg<int>(2);
+
+			if (g.self.god_mode && entity == self::ped)
+				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
+
+			ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
+		}
+
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);
