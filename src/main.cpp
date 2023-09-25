@@ -86,7 +86,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
 
-				g_http_client.init();
+				g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
 				LOG(INFO) << "HTTP Client initialized.";
 
 			    g_translation_service.init();

@@ -29,30 +29,51 @@ namespace big
 		return cpr::Post(url, headers, body, m_proxy, m_proxy_auth);
 	}
 
-	const std::string_view http_client::get_protocol()
+    bool http_client::init(file proxy_settings_file)
     {
-        return m_protocols[m_protocol];
+        m_proxy_settings_file = proxy_settings_file;
+        if (proxy_settings_file.exists())
+        {
+            auto settings_file = std::ifstream(proxy_settings_file.get_path(), std::ios::binary);
+            try
+            {
+                nlohmann::json j;
+                settings_file >> j;
+
+                const auto data = j.get<proxy_settings>();
+                return update_proxy(data.protocol, data.proxy_host, { data.user, data.password });
+            }
+            catch(const std::exception& e)
+            {
+                LOG(WARNING) << "Failed to parse proxy settings file: " << e.what();
+            }
+        }
+        return update_proxy(ProxyProtocol::NONE);
     }
 
-    bool http_client::init(ProxyProtocol protocol, std::string proxy_host, std::pair<const std::string, std::string> proxy_auth)
-    {
-        return update_proxy(protocol, proxy_host, proxy_auth);
-    }
-
-    bool http_client::update_proxy(ProxyProtocol protocol, std::string proxy_host, std::pair<const std::string, std::string> proxy_auth)
+    bool http_client::update_proxy(ProxyProtocol protocol, std::string proxy_host, std::pair<std::string, std::string> proxy_auth)
     {
         m_protocol = protocol;
+        m_proxy = {};
+        m_proxy_auth = {};
 
-        if (protocol == ProxyProtocol::NONE)
+        if (protocol != ProxyProtocol::NONE)
         {
-            m_proxy = {};
-            m_proxy_auth = {};
-
-            return true;
+            const auto protocol_type = m_protocols[protocol].data();
+            m_proxy = {{ protocol_type, proxy_host }};
+            m_proxy_auth = {{ protocol_type, cpr::EncodedAuthentication(proxy_auth.first, proxy_auth.second) }};
         }
-        const auto protocol_type = m_protocols[protocol].data();
-        m_proxy = {{ protocol_type, proxy_host }};
-        m_proxy_auth = {{ protocol_type, cpr::EncodedAuthentication(proxy_auth.first, proxy_auth.second) }};
+        m_proxy_settings = { proxy_host, m_protocol, proxy_auth.first, proxy_auth.second };
+
+        return true;
+    }
+
+    bool http_client::save() const
+    {
+        auto settings_file = std::ofstream(m_proxy_settings_file.get_path(), std::ios::binary | std::ios::trunc);
+
+        nlohmann::json j = m_proxy_settings;
+        settings_file << j;
 
         return true;
     }
