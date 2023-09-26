@@ -7,12 +7,20 @@ namespace big
     {
         NONE,
         HTTP,
-        HTTPS
+        HTTPS,
+        SOCKS4,
+        SOCKS4A,
+        SOCKS5,
+        SOCKS5H,
     };
     NLOHMANN_JSON_SERIALIZE_ENUM(ProxyProtocol, {
         { ProxyProtocol::NONE, "none" },
         { ProxyProtocol::HTTP, "http" },
-        { ProxyProtocol::HTTPS, "https" }
+        { ProxyProtocol::HTTPS, "https" },
+        { ProxyProtocol::SOCKS4, "socks4" },
+        { ProxyProtocol::SOCKS4A, "socks4a" },
+        { ProxyProtocol::SOCKS5, "socks5" },
+        { ProxyProtocol::SOCKS5H, "socks5h" },
     })
 
     struct proxy_settings
@@ -46,12 +54,20 @@ namespace big
         http_client& operator=(const http_client&) = delete;
         http_client& operator=(http_client&&) noexcept = delete;
 
+        const std::string_view protocol();
+        const std::unordered_map<ProxyProtocol, const std::string_view>& protocols() const;
+
         bool download(const cpr::Url& url, const std::filesystem::path& path, cpr::Header headers = {}, cpr::Parameters query_params = {});
         cpr::Response get(const cpr::Url& url, cpr::Header headers = {}, cpr::Parameters query_params = {});
         cpr::Response post(const cpr::Url& url, cpr::Header headers = {}, cpr::Body body = {});
         
+        proxy_settings& settings()
+        {
+            return m_proxy_settings;
+        }
+
         bool init(file proxy_settings_file);
-        bool update_proxy(ProxyProtocol protocol, std::string proxy_host = {}, std::pair<std::string, std::string> proxy_auth = {});
+        bool update_proxy(proxy_settings settings = {});
         bool save() const;
 
     private:
