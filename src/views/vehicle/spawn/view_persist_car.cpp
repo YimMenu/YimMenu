@@ -9,7 +9,7 @@
 
 namespace big
 {
-	static void save_vehicle(char* vehicle_file_name_input, char* folder_name)
+	static void save_vehicle(char* vehicle_file_name_input, const char* folder_name)
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(self::veh))
 		{
@@ -137,21 +137,33 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("VEHICLE_FILE_NAME_EXAMPLE"_T.data());
 
-        static char save_folder[50]{};
-		components::small_text("VEHICLE_FOLDER_NAME"_T);
-		ImGui::SetNextItemWidth(250);
-		ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
-		if (ImGui::IsItemActive())
-			g.self.hud.typing = TYPING_TICKS;
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
+		if (g.persist_car.persist_vehicle_sub_folder.empty())
+		{
+			static char save_folder[50]{};
+			components::small_text("VEHICLE_FOLDER_NAME"_T);
+			ImGui::SetNextItemWidth(250);
+			ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
+			if (ImGui::IsItemActive())
+				g.self.hud.typing = TYPING_TICKS;
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
 
-		components::button("SAVE_VEHICLE"_T, [] {
-			if (!self::veh)
-				return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+			components::button("SAVE_VEHICLE"_T, [] {
+				if (!self::veh)
+					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
-			save_vehicle(vehicle_file_name_input, save_folder);
-		});
+				save_vehicle(vehicle_file_name_input, save_folder);
+			});
+		}
+		else
+		{
+			components::button("SAVE_VEHICLE"_T, [] {
+				if (!self::veh)
+					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+
+				save_vehicle(vehicle_file_name_input, g.persist_car.persist_vehicle_sub_folder.c_str());
+			});
+		}
 
 		ImGui::EndGroup();
 	}

@@ -15,6 +15,7 @@ namespace big
 		static Vehicle player_vehicle = 0;
 		static bool ready             = true;
 
+		static Hash model;
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
@@ -58,7 +59,7 @@ namespace big
 
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
-				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
+				model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
@@ -262,6 +263,28 @@ namespace big
 			g_fiber_pool->queue_job([] {
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
+		}
+		rage::fvector3 blank;
+		float scale;
+		if (GetVehicleInfoForClanLogo(model, blank, blank, blank, scale))
+		{
+			auto has_clan_logo = (bool*)&owned_mods[MOD_HAS_CLAN_LOGO];
+			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), has_clan_logo))
+			{
+				if (*has_clan_logo)
+				{
+					g_fiber_pool->queue_job([] {
+						vehicle_helper::add_clan_logo_to_vehicle(player_vehicle, self::ped);
+					});
+				}
+				else
+				{
+					g_fiber_pool->queue_job([] {
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
+					});
+				}
+			}
 		}
 
 		ImGui::SeparatorText("Mod Slots");
