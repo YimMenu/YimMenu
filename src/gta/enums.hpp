@@ -2058,3 +2058,19 @@ enum CameraMode : int
 	CINEMATIC           = 3,
 	FIRST_PERSON        = 4,
 };
+
+enum ComponentId : int
+{
+	HEAD,
+	BEARD,
+	HAIR,
+	TORSO,
+	LEGS,
+	HANDS,
+	FOOT,
+	ACCESSORIES_NECK,
+	ACCESSORIES_1,
+	ACCESSORIES_2,
+	DECALS,
+	AUXILIARY
+};
