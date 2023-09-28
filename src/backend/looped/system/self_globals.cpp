@@ -16,6 +16,8 @@ namespace big
 
 		self::ped = PLAYER::PLAYER_PED_ID();
 
+		STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &self::char_index, true);
+
 		self::pos = ENTITY::GET_ENTITY_COORDS(self::ped, false /*Unused*/);
 
 		self::rot = ENTITY::GET_ENTITY_ROTATION(self::ped, 2);
