@@ -117,7 +117,8 @@ namespace big
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
 
-			if (ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session))
+			ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session);
+			if (g.session.lock_session)
 			{
 				ImGui::Checkbox("LOBBY_LOCK_ALLOW_FRIENDS"_T.data(), &g.session.allow_friends_into_locked_session);
 				if (ImGui::IsItemHovered())
@@ -215,6 +216,7 @@ namespace big
 			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g.session.off_radar_all);
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.session.never_wanted_all);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g.session.semi_godmode_all);
+			ImGui::Checkbox("Fix Vehicle", &g.session.vehicle_fix_all);
 			ImGui::Checkbox("EXPLOSION_KARMA"_T.data(), &g.session.explosion_karma);
 			ImGui::Checkbox("DAMAGE_KARMA"_T.data(), &g.session.damage_karma);
 			ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
@@ -483,7 +485,7 @@ namespace big
 		    },
 		    true,
 		    "TELEPORT"_T.data());
-		components::command_button<"emptysession">({}, "EMPTY_SESSION"_T.data());
+		components::command_button<"emptysession">();
 
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);

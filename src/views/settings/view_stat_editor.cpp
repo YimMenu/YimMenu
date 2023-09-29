@@ -27,7 +27,6 @@ namespace big::helper
 
 namespace big
 {
-	static int character_index = 0;
 	static int year, month, day, hour, minute, second, millisecond;
 
 	static char stat_int_read_result[256] = {};
@@ -100,7 +99,7 @@ namespace big
 		{
 			auto substr = text.substr(1);
 			if (substr.substr(0, 3) == "mpx")
-				substr[2] = character_index + '0';
+				substr[2] = self::char_index + '0';
 			return rage::joaat(substr);
 		}
 		return get_text_value<Hash>(text);
@@ -279,7 +278,13 @@ namespace big
 				ImGui::Text("Example:\n$MPX_CHAR_NAME\n5:name\n$MPX_DEFAULT_STATS_SET\n1:0");
 				components::button("Import From Clipboard", [] {
 					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::vector<std::string> lines;
+					std::string line;
+					std::istringstream stream(clipboard_text);
+					while (std::getline(stream, line))
+					{
+						lines.push_back(line);
+					}
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)
@@ -371,8 +376,14 @@ namespace big
 				ImGui::Text("0:Int\n1:Bool");
 				ImGui::Text("Example:\n31786\n0:123\n31786 32786\n1:1");
 				components::button("Import From Clipboard", [] {
-					std::string clipboard_text     = ImGui::GetClipboardText();
-					std::vector<std::string> lines = split(clipboard_text, '\n');
+					std::string clipboard_text = ImGui::GetClipboardText();
+					std::vector<std::string> lines;
+					std::string line;
+					std::istringstream stream(clipboard_text);
+					while (std::getline(stream, line))
+					{
+						lines.push_back(line);
+					}
 					if (!lines.size() || lines.size() % 2)
 						return;
 					for (size_t i = 0; i < lines.size(); i += 2)
@@ -428,7 +439,6 @@ namespace big
 		}(), true);
 
 		g_fiber_pool->queue_job([] {
-			STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &character_index, -1);
 			CLOCK::GET_POSIX_TIME(&year, &month, &day, &hour, &minute, &second);
 			if (g.stat_editor.stat.int_read)
 				strcpy_s(stat_int_read_result, sizeof(stat_int_read_result), helper::stat_get_int(stat_int_text).c_str());
@@ -459,7 +469,7 @@ namespace big
 		});
 
 		components::sub_title(std::format("Posix Time: {}-{}-{} {}:{}:{}", year, month, day, hour, minute, second));
-		components::sub_title(std::format("Character Index: {}", character_index));
+		components::sub_title(std::format("Character Index: {}", self::char_index));
 		components::sub_title("Be aware of stat limits, use with caution, modifying some stats are risky.");
 
 		if (ImGui::BeginTabBar("##stat_editor_tab_bar"))
@@ -593,7 +603,7 @@ namespace big::helper
 			index_max = index_v[1];
 		int value_n = get_text_value<int>(value);
 		for (int i = index_min; i <= index_max; i++)
-			STATS::SET_PACKED_STAT_INT_CODE(i, value_n, character_index);
+			STATS::SET_PACKED_STAT_INT_CODE(i, value_n, self::char_index);
 	}
 
 	void packed_stat_set_bool(std::string index, std::string value)
@@ -607,7 +617,7 @@ namespace big::helper
 			index_max = index_v[1];
 		int value_b = get_text_value<bool>(value);
 		for (int i = index_min; i <= index_max; i++)
-			STATS::SET_PACKED_STAT_BOOL_CODE(i, value_b, character_index);
+			STATS::SET_PACKED_STAT_BOOL_CODE(i, value_b, self::char_index);
 	}
 
 	std::string packed_stat_get_int(std::string index)
@@ -617,7 +627,7 @@ namespace big::helper
 		std::stringstream ss(index);
 		std::getline(ss, str, ' ');
 		if (str != "")
-			result = STATS::GET_PACKED_STAT_INT_CODE(get_text_value<int>(str), character_index);
+			result = STATS::GET_PACKED_STAT_INT_CODE(get_text_value<int>(str), self::char_index);
 		return std::to_string(result);
 	}
 
@@ -628,7 +638,7 @@ namespace big::helper
 		std::stringstream ss(index);
 		std::getline(ss, str, ' ');
 		if (str != "")
-			result = STATS::GET_PACKED_STAT_BOOL_CODE(get_text_value<int>(str), character_index);
+			result = STATS::GET_PACKED_STAT_BOOL_CODE(get_text_value<int>(str), self::char_index);
 		return std::to_string(result);
 	}
 }

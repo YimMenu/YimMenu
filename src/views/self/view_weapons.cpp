@@ -141,11 +141,7 @@ namespace big
 				g.weapons.vehicle_gun_model = vehicle_gun;
 			}
 			if (ImGui::IsItemActive())
-			{
-				g_fiber_pool->queue_job([] {
-					PAD::DISABLE_ALL_CONTROL_ACTIONS(0);
-				});
-			}
+				g.self.hud.typing = TYPING_TICKS;
 
 			break;
 		case CustomWeapon::PAINT_GUN:

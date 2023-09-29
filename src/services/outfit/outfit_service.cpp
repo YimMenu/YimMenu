@@ -1,6 +1,7 @@
-#include "util/outfit.hpp"
 #include "outfit_service.hpp"
+
 #include "natives.hpp"
+#include "util/outfit.hpp"
 
 namespace big
 {
@@ -50,15 +51,24 @@ namespace big
 		if (j.contains("blend_data") && was_components_set)
 		{
 			head_blend_data blend_data = j["blend_data"];
-			PED::SET_PED_HEAD_BLEND_DATA(self::ped, blend_data.shape_first_id, blend_data.shape_second_id,
-			    blend_data.shape_third_id, blend_data.skin_first_id, blend_data.skin_second_id, blend_data.skin_third_id,
-			    blend_data.shape_mix, blend_data.skin_mix, blend_data.third_mix, blend_data.is_parent);
+			PED::SET_PED_HEAD_BLEND_DATA(self::ped,
+			    blend_data.shape_first_id,
+			    blend_data.shape_second_id,
+			    blend_data.shape_third_id,
+			    blend_data.skin_first_id,
+			    blend_data.skin_second_id,
+			    blend_data.skin_third_id,
+			    blend_data.shape_mix,
+			    blend_data.skin_mix,
+			    blend_data.third_mix,
+			    blend_data.is_parent);
 		}
 	}
 	void outfit_service::save_outfit(std::string filename)
 	{
 		outfit::components_t components;
 		outfit::props_t props;
+		auto model = ENTITY::GET_ENTITY_MODEL(self::ped);
 
 		for (auto& item : components.items)
 		{
@@ -99,11 +109,16 @@ namespace big
 		}
 
 		head_blend_data blend_data{};
-		PED::GET_PED_HEAD_BLEND_DATA(self::ped, (Any*)&blend_data);
+
+		if (model == RAGE_JOAAT("mp_m_freemode_01") || model == RAGE_JOAAT("mp_f_freemode_01"))
+		{
+			PED::GET_PED_HEAD_BLEND_DATA(self::ped, (Any*)&blend_data);
+			j["blend_data"] = blend_data;
+		}
 
 		j["components"] = j_components;
 		j["props"]      = j_props;
-		j["blend_data"] = blend_data;
+		j["model"]      = model;
 
 		static folder saved_outfit_path = g_file_manager.get_project_folder("saved_outfits");
 		std::ofstream o(saved_outfit_path.get_file(filename).get_path());

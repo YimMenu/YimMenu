@@ -122,11 +122,11 @@ namespace big
 
 		try
 		{
-			LOG(INFO) << "gta_folder: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+			LOG(VERBOSE) << "GTA install directory: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
 		}
 		catch (const std::exception& e)
 		{
-			LOG(WARNING) << "Failed printing gta_folder: " << e.what();
+			LOG(WARNING) << "Failed printing GTA install directory: " << e.what();
 		}
 
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))

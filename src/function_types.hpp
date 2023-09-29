@@ -7,6 +7,8 @@ class sCloudFile;
 class CPlayerGameStateDataNode;
 class CVehicleGadgetDataNode;
 class CGameScriptHandlerNetComponent;
+class CDoorBreakEvent;
+class GenericPool;
 enum eVehicleGadgetType : uint32_t;
 
 namespace rage
@@ -28,6 +30,16 @@ namespace rage
 	class rlQueryPresenceAttributesContext;
 	enum class eThreadState : uint32_t;
 	class netArrayHandlerBase;
+	class fwRefAwareBase;
+	class fwEntity;
+	class netGameEvent;
+	class netEventMgr;
+	struct rlScTaskStatus
+	{
+		void* pad  = 0;
+		int status = 0;
+		int unk    = 0;
+	};
 }
 
 namespace datafile_commands
@@ -102,7 +114,7 @@ namespace big::functions
 	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
-	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlTaskStatus* state);
+	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using generate_uuid = bool (*)(uint64_t* uuid);
@@ -160,4 +172,20 @@ namespace big::functions
 	using connection_manager_try_free_memory = void (*)(rage::netConnectionManager* mgr);
 	using remove_message_from_queue          = void (*)(rage::netMessageQueue* queue, rage::netQueuedMessage* message);
 	using remove_message_from_unacked_reliables = void (*)(void* list, uint16_t* unk);
+
+	using remove_reference = void (*)(rage::fwRefAwareBase* object, void* reference);
+
+	using activate_special_ability = void (*)(CVehicle* vehicle, int special_ability_type);
+	using set_wanted_level = void (*)(CNetGamePlayer* player, int wanted_level, int unk, std::uint8_t unk_player_id);
+
+	using check_event_queue          = bool (*)(rage::netEventMgr* mgr, bool free);
+	using get_new_pool_item          = void* (*)(GenericPool* pool);
+	using construct_door_break_event = CDoorBreakEvent* (*)(CDoorBreakEvent* _this);
+	using queue_network_event        = void (*)(rage::netEventMgr* mgr, rage::netGameEvent* event);
+
+	using delete_ped     = bool (*)(CPed* ped);
+	using delete_vehicle = bool (*)(CVehicle* veh);
+	using delete_object  = bool (*)(CObject* object, bool unk);
+
+	using decal_manager_remove = void(*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
 }

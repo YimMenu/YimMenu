@@ -18,6 +18,7 @@ namespace big
 	{
 	public:
 		static void hud_transition_state();
+		static void hud_disable_input();
 
 		static void player_good_options();
 		static void player_toxic_options();

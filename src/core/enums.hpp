@@ -191,6 +191,8 @@ namespace big
 		NotificationMoneyBanked  = 94410750,   // TICK_TC_BANK
 		NotificationMoneyRemoved = -242911964, // TICK_TC_REMO
 		NotificationMoneyStolen  = -295926414, // TICK_TC_STOL
+		NotificationCrash1       = -994541138, // AMCH_ATTEMPT2
+		NotificationCrash2       = 782258655,  // GBSAL_COLL
 
 		DestroyPersonalVehicle = 109434679, // CnC_PV_THEFT
 		TriggerCEORaid         = -1906536929,

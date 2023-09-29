@@ -29,7 +29,6 @@ namespace big
 
 		if (new_index == static_cast<uint8_t>(-1))
 		{
-			g.m_spoofed_peer_ids.erase(player->get_net_data()->m_host_token);
 			g_player_service->player_leave(player);
 
 			if (net_player_data)
@@ -136,7 +135,7 @@ namespace big
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr, {});
 							g_notification_service->push_warning("Lock Session",
 							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
 						}

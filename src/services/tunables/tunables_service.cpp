@@ -14,26 +14,6 @@ namespace big
 	tunables_service::tunables_service() :
 	    m_cache_file(g_file_manager.get_project_file("./cache/tunables.bin"), 1)
 	{
-		m_cache_file.load();
-
-		if (m_cache_file.up_to_date(memory::module("GTA5.exe").size()))
-		{
-			LOG(INFO) << "Loading tunables from cache";
-			m_loading = true;
-
-			g_thread_pool->push([this] {
-				while (!g_pointers->m_gta.m_script_globals[1])
-				{
-					if (!m_loading || !g_running)
-						return;
-
-					std::this_thread::yield();
-				}
-
-				load();
-			});
-		}
-
 		g_tunables_service = this;
 	}
 
@@ -48,6 +28,16 @@ namespace big
 		while (true)
 		{
 			script::get_current()->yield();
+
+			m_cache_file.load();
+
+			if (m_cache_file.up_to_date(memory::module("GTA5.exe").size()))
+			{
+				LOG(INFO) << "Loading tunables from cache";
+				m_loading = true;
+
+				load();
+			}
 
 			if (m_initialized || m_loading)
 				return;

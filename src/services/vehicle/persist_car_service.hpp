@@ -7,11 +7,12 @@ namespace big
 	class persist_car_service
 	{
 	public:
-		static std::vector<std::string> list_files();
+		static std::vector<std::string> list_files(std::string folder_name = "");
+		static std::vector<std::string> list_sub_folders();
 
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
-		static void save_vehicle(Vehicle vehicle, std::string_view file_name);
-		static Vehicle load_vehicle(std::string_view file_name);
+		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
+		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
 
 	private:
 		static constexpr auto model_attachment_key  = "model_attachment";
@@ -63,9 +64,9 @@ namespace big
 		static constexpr auto clan_logo_key = "clan_logo";
 
 
-		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped);
-		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped);
-		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped);
+		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
+		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords);
+		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
 
 		static nlohmann::json get_full_vehicle_json(Vehicle vehicle);
 
@@ -76,6 +77,6 @@ namespace big
 
 		static nlohmann::json get_vehicle_json(Vehicle vehicle);
 
-		static big::folder check_vehicle_folder();
+		static big::folder check_vehicle_folder(std::string folder_name = "");
 	};
 }

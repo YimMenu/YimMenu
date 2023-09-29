@@ -46,9 +46,6 @@ namespace big
 			case RAGE_JOAAT("MP1_AWD_FMRALLYWONNAV"):
 			case RAGE_JOAAT("MP1_AWD_FMWINSEARACE"):
 			case RAGE_JOAAT("MP1_AWD_FMWINAIRRACE"): *out = 1; break;
-			case RAGE_JOAAT("SP0_TOTAL_CASH"):
-			case RAGE_JOAAT("SP1_TOTAL_CASH"):
-			case RAGE_JOAAT("SP2_TOTAL_CASH"): *out = 999999; break;
 			default: src->set_return_value<BOOL>(STATS::STAT_GET_INT(hash, out, src->get_arg<int>(2))); break;
 			}
 		}

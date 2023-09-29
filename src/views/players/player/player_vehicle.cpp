@@ -36,9 +36,19 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"closedoors">(g_player_service->get_selected(), {});
 
+			components::player_command_button<"breakdoors">(g_player_service->get_selected(), {});
+
 			components::player_command_button<"upgradeveh">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"downgradeveh">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"svehjump">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"svehboost">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"sshuntleft">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"sshuntright">(g_player_service->get_selected(), {});
 
 			components::player_command_button<"rcplayer">(g_player_service->get_selected());
 

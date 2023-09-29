@@ -16,9 +16,13 @@ namespace big
 
 		ImGui::SetNextItemWidth(width);
 		ImGui::InputText("Dst", dst_text, IM_ARRAYSIZE(dst_text));
+		if (ImGui::IsItemActive())
+			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(width);
 		ImGui::InputText("Src", src_text, IM_ARRAYSIZE(src_text));
+		if (ImGui::IsItemActive())
+			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
 		if (ImGui::Button("Add/Change"))

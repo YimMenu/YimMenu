@@ -17,6 +17,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (!scripts::force_host(RAGE_JOAAT("freemode")))
 			{
 				g_notification_service->push_error("Kick", "Force script host failed!");

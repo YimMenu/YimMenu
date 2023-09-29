@@ -52,7 +52,7 @@ namespace big
 		if (components::button("Force Update Languages"))
 		{
 			g_thread_pool->push([] {
-				g_translation_service.update_language_packs();
+				g_translation_service.update_n_reload_language_packs();
 
 				g_notification_service->push_success("Translations", "Finished updating translations.");
 			});
@@ -66,7 +66,5 @@ namespace big
 			g.write_default_config();
 			g.load();
 		}
-
-
 	}
 }
