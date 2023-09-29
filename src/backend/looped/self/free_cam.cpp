@@ -99,7 +99,7 @@ namespace big
 			CAM::DESTROY_CAM(camera, false);
 			STREAMING::CLEAR_FOCUS();
 
-			ENTITY::FREEZE_ENTITY_POSITION(camera, false);
+			ENTITY::FREEZE_ENTITY_POSITION(self::veh, false);
 		}
 	};
 

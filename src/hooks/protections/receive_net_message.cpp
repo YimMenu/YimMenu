@@ -167,17 +167,6 @@ namespace big
 				}
 				break;
 			}
-			case rage::eNetMessage::MsgNetComplaint:
-			{
-				uint64_t host_token{};
-				buffer.ReadQWord(&host_token, 64);
-				if (player && host_token != player->get_net_data()->m_host_token && !player->exposed_desync_protection)
-				{
-					session::add_infraction(player, Infraction::DESYNC_PROTECTION);
-					player->exposed_desync_protection = true;
-				}
-				return true;
-			}
 			case rage::eNetMessage::MsgScriptHostRequest:
 			{
 				CGameScriptId script;
@@ -202,16 +191,6 @@ namespace big
 					player->player_time_value_received_time = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
 					if (!player->time_difference || time_diff > player->time_difference.value())
 						player->time_difference = time_diff;
-				}
-				break;
-			}
-			case rage::eNetMessage::MsgTransitionGamerInstruction:
-			{
-				// it doesn't work but a certain p2c uses it
-				if (is_kick_instruction(buffer))
-				{
-					g.reactions.gamer_instruction_kick.process(player);
-					return true;
 				}
 				break;
 			}

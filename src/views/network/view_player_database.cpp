@@ -120,6 +120,8 @@ namespace big
 				{
 					current_player->name = name_buf;
 				}
+				if (ImGui::IsItemActive())
+					g.self.hud.typing = TYPING_TICKS;
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
@@ -189,6 +191,8 @@ namespace big
 					current_player->notes = note_buffer;
 					notes_dirty           = true;
 				}
+				if (ImGui::IsItemActive())
+					g.self.hud.typing = TYPING_TICKS;
 
 				ImGui::Checkbox("Join Redirect", &current_player->join_redirect);
 				if (ImGui::IsItemHovered())
@@ -224,7 +228,7 @@ namespace big
 					ImGui::Text("Is Host Of Session: %s", selected->is_host_of_session ? "Yes" : "No");
 					ImGui::Text("Is Spectating: %s", selected->is_spectating ? "Yes" : "No");
 					ImGui::Text("In Job Lobby: %s", selected->transition_session_id != -1 ? "Yes" : "No");
-					ImGui::Text("Is Host Of Job Loby: %s", selected->is_host_of_transition_session ? "Yes" : "No");
+					ImGui::Text("Is Host Of Job Lobby: %s", selected->is_host_of_transition_session ? "Yes" : "No");
 					ImGui::Text("Current Mission Type: %s", player_database_service::get_game_mode_str(selected->game_mode));
 					if (selected->game_mode != GameMode::None && player_database_service::can_fetch_name(selected->game_mode))
 					{
@@ -296,6 +300,7 @@ namespace big
 		{
 			if (components::command_checkbox<"player_db_auto_update_states">("Enable"))
 				g_player_database_service->start_update_loop();
+
 			ImGui::Checkbox("Notify When Online", &g.player_db.notify_when_online);
 			ImGui::Checkbox("Notify When Joinable", &g.player_db.notify_when_joinable);
 			ImGui::Checkbox("Notify When Unjoinable", &g.player_db.notify_when_unjoinable);

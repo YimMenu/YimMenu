@@ -16,6 +16,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			const size_t arg_count  = 15;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::InteriorControl, (int64_t)self::id, (int64_t)(int)-1};
 

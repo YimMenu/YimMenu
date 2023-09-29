@@ -1,3 +1,5 @@
+#include "core/data/bullet_impact_types.hpp"
+#include "core/data/special_ammo_types.hpp"
 #include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
@@ -144,7 +146,7 @@ namespace big
 			{
 				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
 			}
-			else if (g.vehicle.keep_vehicle_repaired) 
+			else if (g.vehicle.keep_vehicle_repaired)
 			{
 				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
 			}
@@ -245,6 +247,105 @@ namespace big
 			{
 				g.vehicle.fly.speed = vehicle::speed_to_mps(fly_speed_user_unit, g.vehicle.speed_unit);
 			}
+		}
+		ImGui::SeparatorText("CUSTOM_VEH_WEAPONS"_T.data());
+		{
+			components::command_checkbox<"customvehweaps">(std::format("{}##customvehweaps", "ENABLED"_T));
+			components::options_modal("CUSTOM_VEH_WEAPONS"_T.data(), [] {
+				eAmmoSpecialType selected_ammo          = g.vehicle.vehicle_ammo_special.type;
+				eExplosionTag selected_explosion        = g.vehicle.vehicle_ammo_special.explosion_tag;
+				eExplosionTag selected_rocket_explosion = g.vehicle.vehicle_ammo_special.rocket_explosion_tag;
+
+				ImGui::BeginGroup();
+				components::sub_title("CUSTOM_VEH_WEAPONS_MG"_T.data());
+				if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
+				{
+					for (const auto& special_ammo : SPECIAL_AMMOS)
+					{
+						if (ImGui::Selectable(special_ammo.name, special_ammo.type == selected_ammo))
+						{
+							g.vehicle.vehicle_ammo_special.type = special_ammo.type;
+						}
+
+						if (special_ammo.type == selected_ammo)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+				if (ImGui::BeginCombo("BULLET_IMPACT"_T.data(), BULLET_IMPACTS[selected_explosion]))
+				{
+					for (const auto& [type, name] : BULLET_IMPACTS)
+					{
+						if (ImGui::Selectable(name, type == selected_explosion))
+						{
+							g.vehicle.vehicle_ammo_special.explosion_tag = type;
+						}
+
+						if (type == selected_explosion)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_SPEED"_T.data(), &g.vehicle.vehicle_ammo_special.speed, 10, 100, "%.1f");
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_RANGE"_T.data(), &g.vehicle.vehicle_ammo_special.weapon_range, 50, 100, "%.1f");
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_TBS"_T.data(), &g.vehicle.vehicle_ammo_special.time_between_shots, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_AWT"_T.data(), &g.vehicle.vehicle_ammo_special.alternate_wait_time, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
+				ImGui::EndGroup();
+
+				ImGui::SameLine();
+				ImGui::BeginGroup();
+				components::sub_title("CUSTOM_VEH_WEAPONS_MISSILE"_T.data());
+				if (ImGui::BeginCombo(std::format("{}##customvehweaps", "EXPLOSION"_T).data(), BULLET_IMPACTS[selected_rocket_explosion]))
+				{
+					for (const auto& [type, name] : BULLET_IMPACTS)
+					{
+						if (ImGui::Selectable(name, type == selected_rocket_explosion))
+						{
+							g.vehicle.vehicle_ammo_special.rocket_explosion_tag = type;
+						}
+
+						if (type == selected_rocket_explosion)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_RELOAD_TIME"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_reload_time, 0.1, 1, "%.1f");
+				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_SPEED"_T).data(),
+				    &g.vehicle.vehicle_ammo_special.rocket_launch_speed, 10, 100, "%.1f");
+				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_RANGE"_T).data(),
+				    &g.vehicle.vehicle_ammo_special.rocket_range, 50, 100, "%.1f");
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_LOCKON_RANGE"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_lock_on_range, 50, 100, "%.1f");
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_LOCKON_TIME"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_time_before_homing, 0.01, 0.1, "%.2f");
+				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_TBS"_T).data(),
+				    &g.vehicle.vehicle_ammo_special.rocket_time_between_shots, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
+				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_AWT"_T).data(),
+				    &g.vehicle.vehicle_ammo_special.rocket_alternate_wait_time, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
+				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_LIFETIME"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_lifetime, 0.1, 1, "%.1f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_LIFETIME_DESC"_T.data());
+				ImGui::Checkbox("CUSTOM_VEH_WEAPONS_SMART_MISSILE"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_SMART_MISSILE_DESC"_T.data());
+				ImGui::EndGroup();
+			});
 		}
 	}
 }

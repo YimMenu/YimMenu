@@ -3,7 +3,6 @@
 #include "fiber_pool.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
-#include "util/local_player.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 
@@ -40,6 +39,13 @@ namespace big
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
+
+		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1
+			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller"))
+			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
+
+			components::command_checkbox<"passive">();
+		ImGui::EndDisabled();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();

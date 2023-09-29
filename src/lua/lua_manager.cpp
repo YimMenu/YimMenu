@@ -88,6 +88,12 @@ namespace big
 
 	void lua_manager::load_module(const std::filesystem::path& module_path)
 	{
+		if (!std::filesystem::exists(module_path))
+		{
+			LOG(WARNING) << reinterpret_cast<const char*>(module_path.u8string().c_str()) << " does not exist in the filesystem. Not loading it.";
+			return;
+		}
+
 		std::lock_guard guard(m_module_lock);
 
 		const auto module_name = module_path.filename().string();

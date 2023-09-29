@@ -3,18 +3,18 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_SYSTEM_WAIT( int ms )
+	static void LUA_NATIVE_SYSTEM_WAIT(int ms)
 	{
 		SYSTEM::WAIT(ms);
 	}
 
-	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT( const char* scriptName, int stackSize )
+	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT(const char* scriptName, int stackSize)
 	{
 		auto retval = SYSTEM::START_NEW_SCRIPT(scriptName, stackSize);
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_ARGS( const char* scriptName, Any args, int argCount, int stackSize )
+	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_ARGS(const char* scriptName, Any args, int argCount, int stackSize)
 	{
 		std::tuple<int, Any> return_values;
 		std::get<0>(return_values) = SYSTEM::START_NEW_SCRIPT_WITH_ARGS(scriptName, &args, argCount, stackSize);
@@ -23,13 +23,13 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_NAME_HASH( Hash scriptHash, int stackSize )
+	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_NAME_HASH(Hash scriptHash, int stackSize)
 	{
 		auto retval = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(scriptHash, stackSize);
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS( Hash scriptHash, Any args, int argCount, int stackSize )
+	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(Hash scriptHash, Any args, int argCount, int stackSize)
 	{
 		std::tuple<int, Any> return_values;
 		std::get<0>(return_values) = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(scriptHash, &args, argCount, stackSize);
@@ -38,125 +38,125 @@ namespace lua::native
 		return return_values;
 	}
 
-	static int LUA_NATIVE_SYSTEM_TIMERA(  )
+	static int LUA_NATIVE_SYSTEM_TIMERA()
 	{
 		auto retval = SYSTEM::TIMERA();
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_TIMERB(  )
+	static int LUA_NATIVE_SYSTEM_TIMERB()
 	{
 		auto retval = SYSTEM::TIMERB();
 		return retval;
 	}
 
-	static void LUA_NATIVE_SYSTEM_SETTIMERA( int value )
+	static void LUA_NATIVE_SYSTEM_SETTIMERA(int value)
 	{
 		SYSTEM::SETTIMERA(value);
 	}
 
-	static void LUA_NATIVE_SYSTEM_SETTIMERB( int value )
+	static void LUA_NATIVE_SYSTEM_SETTIMERB(int value)
 	{
 		SYSTEM::SETTIMERB(value);
 	}
 
-	static float LUA_NATIVE_SYSTEM_TIMESTEP(  )
+	static float LUA_NATIVE_SYSTEM_TIMESTEP()
 	{
 		auto retval = SYSTEM::TIMESTEP();
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_SIN( float value )
+	static float LUA_NATIVE_SYSTEM_SIN(float value)
 	{
 		auto retval = SYSTEM::SIN(value);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_COS( float value )
+	static float LUA_NATIVE_SYSTEM_COS(float value)
 	{
 		auto retval = SYSTEM::COS(value);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_SQRT( float value )
+	static float LUA_NATIVE_SYSTEM_SQRT(float value)
 	{
 		auto retval = SYSTEM::SQRT(value);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_POW( float base, float exponent )
+	static float LUA_NATIVE_SYSTEM_POW(float base, float exponent)
 	{
 		auto retval = SYSTEM::POW(base, exponent);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_LOG10( float value )
+	static float LUA_NATIVE_SYSTEM_LOG10(float value)
 	{
 		auto retval = SYSTEM::LOG10(value);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_VMAG( float x, float y, float z )
+	static float LUA_NATIVE_SYSTEM_VMAG(float x, float y, float z)
 	{
 		auto retval = SYSTEM::VMAG(x, y, z);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_VMAG2( float x, float y, float z )
+	static float LUA_NATIVE_SYSTEM_VMAG2(float x, float y, float z)
 	{
 		auto retval = SYSTEM::VMAG2(x, y, z);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_VDIST( float x1, float y1, float z1, float x2, float y2, float z2 )
+	static float LUA_NATIVE_SYSTEM_VDIST(float x1, float y1, float z1, float x2, float y2, float z2)
 	{
 		auto retval = SYSTEM::VDIST(x1, y1, z1, x2, y2, z2);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_VDIST2( float x1, float y1, float z1, float x2, float y2, float z2 )
+	static float LUA_NATIVE_SYSTEM_VDIST2(float x1, float y1, float z1, float x2, float y2, float z2)
 	{
 		auto retval = SYSTEM::VDIST2(x1, y1, z1, x2, y2, z2);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_SHIFT_LEFT( int value, int bitShift )
+	static int LUA_NATIVE_SYSTEM_SHIFT_LEFT(int value, int bitShift)
 	{
 		auto retval = SYSTEM::SHIFT_LEFT(value, bitShift);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_SHIFT_RIGHT( int value, int bitShift )
+	static int LUA_NATIVE_SYSTEM_SHIFT_RIGHT(int value, int bitShift)
 	{
 		auto retval = SYSTEM::SHIFT_RIGHT(value, bitShift);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_FLOOR( float value )
+	static int LUA_NATIVE_SYSTEM_FLOOR(float value)
 	{
 		auto retval = SYSTEM::FLOOR(value);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_CEIL( float value )
+	static int LUA_NATIVE_SYSTEM_CEIL(float value)
 	{
 		auto retval = SYSTEM::CEIL(value);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SYSTEM_ROUND( float value )
+	static int LUA_NATIVE_SYSTEM_ROUND(float value)
 	{
 		auto retval = SYSTEM::ROUND(value);
 		return retval;
 	}
 
-	static float LUA_NATIVE_SYSTEM_TO_FLOAT( int value )
+	static float LUA_NATIVE_SYSTEM_TO_FLOAT(int value)
 	{
 		auto retval = SYSTEM::TO_FLOAT(value);
 		return retval;
 	}
 
-	static void LUA_NATIVE_SYSTEM_SET_THIS_THREAD_PRIORITY( int priority )
+	static void LUA_NATIVE_SYSTEM_SET_THIS_THREAD_PRIORITY(int priority)
 	{
 		SYSTEM::SET_THIS_THREAD_PRIORITY(priority);
 	}

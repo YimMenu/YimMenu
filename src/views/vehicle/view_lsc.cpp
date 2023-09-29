@@ -15,6 +15,7 @@ namespace big
 		static Vehicle player_vehicle = 0;
 		static bool ready             = true;
 
+		static Hash model;
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
@@ -58,7 +59,7 @@ namespace big
 
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
-				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
+				model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
@@ -90,6 +91,8 @@ namespace big
 						{
 							continue;
 						}
+						slot_name.append("##");
+						slot_name.append(std::to_string(slot));
 						tmp_slot_display_names[slot] = slot_name;
 
 						std::map<int, std::string> mod_names;
@@ -255,11 +258,33 @@ namespace big
 			});
 		}
 		ImGui::SameLine();
-		if (ImGui::Checkbox("TIRESMOKE"_T.data(), (bool*)&owned_mods[MOD_TYRE_SMOKE]))
+		if (ImGui::Checkbox("TIRE_SMOKE"_T.data(), (bool*)&owned_mods[MOD_TYRE_SMOKE]))
 		{
 			g_fiber_pool->queue_job([] {
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
+		}
+		rage::fvector3 blank;
+		float scale;
+		if (GetVehicleInfoForClanLogo(model, blank, blank, blank, scale))
+		{
+			auto has_clan_logo = (bool*)&owned_mods[MOD_HAS_CLAN_LOGO];
+			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), has_clan_logo))
+			{
+				if (*has_clan_logo)
+				{
+					g_fiber_pool->queue_job([] {
+						vehicle_helper::add_clan_logo_to_vehicle(player_vehicle, self::ped);
+					});
+				}
+				else
+				{
+					g_fiber_pool->queue_job([] {
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
+					});
+				}
+			}
 		}
 
 		ImGui::SeparatorText("Mod Slots");
@@ -278,7 +303,6 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
-
 		ImGui::EndGroup();
 
 		if (selected_slot != -1)
@@ -327,13 +351,20 @@ namespace big
 
 							if (selected_slot >= 0)
 							{
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-								owned_mods[selected_slot] = mod;
-
-								if (is_wheel_mod)
+								if (!VEHICLE::IS_VEHICLE_MOD_GEN9_EXCLUSIVE(player_vehicle, selected_slot, mod))
 								{
-									*wheel_stock_mod = mod;
-									*wheel_custom    = false;
+									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+									owned_mods[selected_slot] = mod;
+
+									if (is_wheel_mod)
+									{
+										*wheel_stock_mod = mod;
+										*wheel_custom    = false;
+									}
+								}
+								else
+								{
+									g_notification_service->push_error("LSC", "Selected mod is invalid");
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)
@@ -416,6 +447,36 @@ namespace big
 
 				ImGui::EndGroup();
 			}
+		}
+
+		int item_counter = 0;
+		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
+		{
+			if (owned_mods.find(extra) != owned_mods.end())
+			{
+				if (item_counter == 0)
+				{
+					ImGui::SeparatorText("Vehicle Extras");
+					ImGui::BeginGroup();
+				}
+				if ((item_counter % 5) != 0)
+					ImGui::SameLine();
+				int gta_extra_id      = (extra - MOD_EXTRA_0) * -1;
+				auto name             = std::format("Extra #{}", gta_extra_id);
+				bool is_extra_enabled = owned_mods[extra] == 1;
+				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
+				{
+					owned_mods[extra] = is_extra_enabled;
+					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
+						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
+					});
+				}
+				item_counter++;
+			}
+		}
+		if (item_counter != 0)
+		{
+			ImGui::EndGroup();
 		}
 
 		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());

@@ -35,21 +35,32 @@ namespace big
 		return value == 0xE9;
 	}
 
-	bool is_unwanted_dependency(__int64 cb)
+	bool is_unwanted_dependency(__int64 cb, uint64_t caller_addr_offset)
 	{
 		auto f1 = *(__int64*)(cb + 0x60);
 		auto f2 = *(__int64*)(cb + 0x100);
-		auto f3 = *(__int64*)(cb + 0x1A0);
 
-		if (!is_address_in_game_region(f1) || !is_address_in_game_region(f2) || !is_address_in_game_region(f3))
+		if (!is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
 			return false;
 
-		return is_jump(f1) || is_jump(f2) || is_jump(f3);
+		// These must run, otherwise we'll at some point run out of sysMemSimpleAllocator memory.
+		if (caller_addr_offset == 0xAA03D4 || caller_addr_offset == 0xAA0A21 || caller_addr_offset == 0xAA0902)
+		{
+			return false;
+		}
+
+		return is_jump(f1) || is_jump(f2);
 	}
 
 	void hooks::queue_dependency(void* dependency)
 	{
-		if (is_unwanted_dependency((__int64)dependency))
+		uint64_t caller_addr_offset = (uint64_t)_ReturnAddress();
+
+		static auto module_base = (uint64_t)GetModuleHandle(0);
+
+		caller_addr_offset -= module_base;
+
+		if (is_unwanted_dependency((__int64)dependency, caller_addr_offset))
 		{
 			return;
 		}

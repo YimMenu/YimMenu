@@ -33,5 +33,5 @@ namespace big
 		}
 	};
 
-	burst_tyres g_burst_tyres("burstwheels", "Burst Vehicle Tyres", "Removes their tyres.", 0);
+	burst_tyres g_burst_tyres("burstwheels", "Burst Vehicle Tyres", "Removes their tyres", 0);
 }

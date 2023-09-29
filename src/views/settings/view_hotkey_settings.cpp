@@ -11,10 +11,12 @@ namespace big
 		if (ImGui::Hotkey("Menu Toggle", &g.settings.hotkeys.menu_toggle))
 			g.settings.hotkeys.editing_menu_toggle = true; // make our menu reappear
 
-		if (ImGui::Hotkey("Teleport to waypoint", &g.settings.hotkeys.teleport_waypoint))
+		if (ImGui::Hotkey("Teleport to Waypoint", &g.settings.hotkeys.teleport_waypoint))
 			g_hotkey_service->update_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint);
-		if (ImGui::Hotkey("Teleport to objective", &g.settings.hotkeys.teleport_objective))
+		if (ImGui::Hotkey("Teleport to Objective", &g.settings.hotkeys.teleport_objective))
 			g_hotkey_service->update_hotkey("objective", g.settings.hotkeys.teleport_objective);
+		if (ImGui::Hotkey("Teleport to Selected", &g.settings.hotkeys.teleport_selected))
+			g_hotkey_service->update_hotkey("highlighttp", g.settings.hotkeys.teleport_selected);
 		if (ImGui::Hotkey("Teleport into PV", &g.settings.hotkeys.teleport_pv))
 			g_hotkey_service->update_hotkey("pvtp", g.settings.hotkeys.teleport_pv);
 
@@ -24,6 +26,8 @@ namespace big
 			g_hotkey_service->update_hotkey("bringpv", g.settings.hotkeys.bringvehicle);
 		if (ImGui::Hotkey("Toggle invisibility", &g.settings.hotkeys.invis))
 			g_hotkey_service->update_hotkey("invis", g.settings.hotkeys.invis);
+		if (ImGui::Hotkey("Toggle passive mode", &g.settings.hotkeys.passive))
+			g_hotkey_service->update_hotkey("passive", g.settings.hotkeys.passive);
 		if (ImGui::Hotkey("Heal", &g.settings.hotkeys.heal))
 			g_hotkey_service->update_hotkey("heal", g.settings.hotkeys.heal);
 		if (ImGui::Hotkey("Fill Snacks", &g.settings.hotkeys.fill_inventory))

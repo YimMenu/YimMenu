@@ -1,5 +1,7 @@
 #include "backend/looped_command.hpp"
 #include "services/tunables/tunables_service.hpp"
+#include "core/scr_globals.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -7,7 +9,7 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		std::array<int*, 8> m_tunables = { nullptr };
+		std::array<int*, 8> m_tunables = {nullptr};
 		std::array<int, 8> m_restore;
 		bool m_ready_to_use;
 
@@ -43,14 +45,14 @@ namespace big
 			}
 		}
 
-        virtual void on_disable() override
-        {
+		virtual void on_disable() override
+		{
 			for (int i = 0; m_ready_to_use && i < m_restore.size(); ++i)
 			{
 				if (m_tunables[i])
 					*m_tunables[i] = m_restore[i];
 			}
-        }
+		}
 	};
 
 	no_idle_kick g_no_idle_kick("noidlekick", "NO_IDLE_KICK", "Prevents you from being kicked while idling.", g.tunables.no_idle_kick);

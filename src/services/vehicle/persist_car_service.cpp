@@ -9,7 +9,7 @@
 
 namespace big
 {
-	void persist_car_service::save_vehicle(Vehicle vehicle, std::string_view file_name)
+	void persist_car_service::save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
@@ -18,7 +18,7 @@ namespace big
 			return;
 		}
 
-		const auto file = check_vehicle_folder().get_file(file_name);
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
 		std::ofstream file_stream(file.get_path(), std::ios::out | std::ios::trunc);
 
@@ -27,9 +27,9 @@ namespace big
 		file_stream.close();
 	}
 
-	Vehicle persist_car_service::load_vehicle(std::string_view file_name)
+	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
 	{
-		const auto file = check_vehicle_folder().get_file(file_name);
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
 		std::ifstream file_stream(file.get_path());
 
@@ -46,14 +46,14 @@ namespace big
 			return NULL;
 		}
 
-		return spawn_vehicle_full(vehicle_json, self::ped);
+		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
 	}
 
-	std::vector<std::string> persist_car_service::list_files()
+	std::vector<std::string> persist_car_service::list_files(std::string folder_name)
 	{
 		std::vector<std::string> file_paths;
 
-		const auto file_path = check_vehicle_folder();
+		const auto file_path = check_vehicle_folder(folder_name);
 		for (const auto& directory_entry : std::filesystem::directory_iterator(file_path.get_path()))
 			if (directory_entry.path().extension() == ".json")
 				file_paths.push_back(directory_entry.path().filename().generic_string());
@@ -61,18 +61,32 @@ namespace big
 		return file_paths;
 	}
 
+	std::vector<std::string> persist_car_service::list_sub_folders()
+	{
+		std::vector<std::string> folders;
+
+		const auto file_path = check_vehicle_folder();
+		for (const auto& directory_entry : std::filesystem::directory_iterator(file_path.get_path()))
+			if (directory_entry.is_directory())
+				folders.push_back(directory_entry.path().filename().generic_string());
+
+		return folders;
+	}
+
+
+
 	Vehicle persist_car_service::clone_ped_car(Ped ped, Vehicle vehicle)
 	{
 		return spawn_vehicle_full(get_full_vehicle_json(vehicle), ped);
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
-		const auto vehicle = spawn_vehicle(vehicle_json, ped);
+		const auto vehicle = spawn_vehicle(vehicle_json, ped, spawn_coords);
 
 		if (!vehicle_json[tow_key].is_null())
 		{
-			const auto tow = spawn_vehicle(vehicle_json[tow_key], ped);
+			const auto tow = spawn_vehicle(vehicle_json[tow_key], ped, spawn_coords);
 
 			auto pos = ENTITY::GET_ENTITY_COORDS(tow, true);
 			pos.x -= 10;
@@ -87,7 +101,7 @@ namespace big
 		}
 		else if (!vehicle_json[trailer_key].is_null())
 		{
-			const auto trailer = spawn_vehicle(vehicle_json[trailer_key], ped);
+			const auto trailer = spawn_vehicle(vehicle_json[trailer_key], ped, spawn_coords);
 			VEHICLE::ATTACH_VEHICLE_TO_TRAILER(vehicle, trailer, 1.0f);
 
 			const auto rotation = ENTITY::GET_ENTITY_ROTATION(trailer, 2);
@@ -100,9 +114,9 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
-		const auto vehicle = spawn_vehicle_json(vehicle_json, ped);
+		const auto vehicle = spawn_vehicle_json(vehicle_json, ped, spawn_coords);
 
 		std::vector<nlohmann::json> model_attachments = vehicle_json[model_attachments_key];
 		for (const auto& j : model_attachments)
@@ -166,13 +180,16 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped)
+	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
+		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
+		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-		const auto pos = ENTITY::GET_ENTITY_COORDS(self::ped, true);
+		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
 
-		const auto vehicle = big::vehicle::spawn(vehicle_hash, pos, ENTITY::GET_ENTITY_HEADING(ped));
+		if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
+			script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
@@ -219,10 +236,9 @@ namespace big
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, vehicle_json[pearlescent_color_key], vehicle_json[wheel_color_key]);
 
 		std::map<int, bool> vehicle_extras = vehicle_json[vehicle_extras_key];
-		for (int i = 0; i <= 20; i++)
+		for (const auto& [extra, extra_enabled] : vehicle_extras)
 		{
-			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, i))
-				VEHICLE::SET_VEHICLE_EXTRA(vehicle, i, vehicle_extras[i]);
+			VEHICLE::SET_VEHICLE_EXTRA(vehicle, extra, extra_enabled);
 		}
 
 		if (!vehicle_json[vehicle_livery_key].is_null())
@@ -446,10 +462,12 @@ namespace big
 		vehicle_json[wheel_color_key]       = wheel_color;
 
 		std::map<int, bool> vehicle_extras;
-		for (int i = 0; i <= 20; i++)
+		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)
 		{
-			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, i))
-				vehicle_extras[i] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, i);
+			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, extra_iterator))
+			{
+				vehicle_extras[extra_iterator] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra_iterator);
+			}
 		}
 
 		vehicle_json[vehicle_extras_key] = vehicle_extras;
@@ -512,10 +530,8 @@ namespace big
 		return vehicle_json;
 	}
 
-	big::folder persist_car_service::check_vehicle_folder()
+	big::folder persist_car_service::check_vehicle_folder(std::string folder_name)
 	{
-		const auto folder = g_file_manager.get_project_folder("./saved_json_vehicles");
-
-		return folder;
+		return g_file_manager.get_project_folder("./saved_json_vehicles/" + folder_name);
 	}
 }

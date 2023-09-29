@@ -142,13 +142,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    g_running = true;
 
-			    // start update loop after setting g_running to true to prevent it from exiting instantly
-			    g_player_database_service->start_update_loop();
-
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
-				g_script_mgr.remove_all_scripts();
+			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
@@ -159,9 +156,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    // cleans up the thread responsible for saving settings
-			    g.destroy();
 
 			    // Make sure that all threads created don't have any blocking loops
 			    // otherwise make sure that they have stopped executing
@@ -200,8 +194,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
-				xml_vehicles_service_instance.reset();
-				LOG(INFO) << "Xml Vehicles Service reset.";
+			    xml_vehicles_service_instance.reset();
+			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();

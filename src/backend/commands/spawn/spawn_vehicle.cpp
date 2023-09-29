@@ -38,7 +38,7 @@ namespace big
 			        PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
 			const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(ctx->get_sender()->id()));
 
-			const auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);
+			auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);
 
 			if (veh == 0)
 			{
@@ -55,13 +55,14 @@ namespace big
 				{
 					vehicle::teleport_into_vehicle(veh);
 				}
+				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 			}
 		}
 	};
 
 	spawn_vehicle g_spawn_vehicle("spawn", "Spawn Vehicle", "Spawn a vehicle with the specified model", 1);
-	bool_command g_spawn_maxed("spawnmaxed", "Spawn Maxed", "Controls whether the vehicle spawned will have its mods maxed out",
+	bool_command g_spawn_maxed("spawnmaxed", "SPAWN_MAXED", "SPAWN_MAXED_DESC",
 	    g.spawn_vehicle.spawn_maxed);
-	bool_command g_spawn_inside("spawnin", "Spawn Inside", "Controls whether the player should be set inside the vehicle after it spawns",
+	bool_command g_spawn_inside("spawnin", "SPAWN_IN", "SPAWN_IN_DESC",
 	    g.spawn_vehicle.spawn_inside);
 }

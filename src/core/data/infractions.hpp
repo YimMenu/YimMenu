@@ -6,12 +6,12 @@ namespace big
 	// Add new values to the bottom
 	enum class Infraction
 	{
-		DESYNC_PROTECTION,
+		DESYNC_PROTECTION,             // do not use
 		BREAKUP_KICK_DETECTED,         // do not use
 		LOST_CONNECTION_KICK_DETECTED, // do not use
 		SPOOFED_ROCKSTAR_ID,           // do not use
 		TRIGGERED_ANTICHEAT,
-		TRIED_CRASH_PLAYER, // do not use
+		TRIED_CRASH_PLAYER,
 		TRIED_KICK_PLAYER,
 		BLAME_EXPLOSION_DETECTED, // do not use (for now)
 		ATTACKING_WITH_GODMODE,
@@ -20,6 +20,8 @@ namespace big
 		SPOOFED_DATA,
 		SPOOFED_HOST_TOKEN,
 		INVALID_PLAYER_MODEL,
+		SUPER_JUMP,
+		UNDEAD_OTR,
 	};
 
 	inline std::unordered_map<Infraction, const char*> infraction_desc = {
@@ -37,5 +39,7 @@ namespace big
 	    {Infraction::SPOOFED_DATA, "Had spoofed data"},
 	    {Infraction::SPOOFED_HOST_TOKEN, "Had spoofed their host token"},
 	    {Infraction::INVALID_PLAYER_MODEL, "Had used an invalid player model"},
+	    {Infraction::SUPER_JUMP, "Had used super jump"},
+	    {Infraction::UNDEAD_OTR, "Had used undead OTR"},
 	};
 }
