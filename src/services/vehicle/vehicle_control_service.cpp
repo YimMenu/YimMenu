@@ -99,8 +99,6 @@ namespace big
 
 		veh.convertibelstate = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(veh.handle);
 		veh.engine           = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
-		veh.radio            = AUDIO::IS_VEHICLE_RADIO_ON(veh.handle);
-		veh.radiochannel     = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
 		
 		if (g.window.vehicle_control.render_distance_on_veh
 		    && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true)) > 10.f)
