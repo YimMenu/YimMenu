@@ -61,13 +61,17 @@ namespace spawnObjs
 	struct SpawnedObject
 	{
 		std::string objName;
-		float x, y, z;
-		float xr, yr, zr;
+
+		float x, y, z; // real location of object
+		
+		float xr, yr, zr; // offset location of object
 		float pitch, roll, yaw;
+
 		bool isAttached;
 		bool isLeftAttached;
 		std::string bone;
-		float xa, ya, za, rxa, rya, rza;
+		float xa, ya, za, rxa, rya, rza; // attachment related offsets & rotations
+
 		Object ob;
 	};
 
@@ -251,11 +255,42 @@ namespace spawnObjs
 		}
 		catch (std::exception e)
 		{
-			LOG(WARNING) << "Failed fetching all scenarios: " << e.what();
+			LOG(WARNING) << "Failed fetching all objectList: " << e.what();
 		}
 	}
 
-	SpawnedObject spawnObj(std::string objStr, SpawnedObject ob1 = SpawnedObject())
+	void attachEntity(const SpawnedObject& object, Entity entity)
+	{
+		ENTITY::ATTACH_ENTITY_TO_ENTITY(object.ob,
+		    entity,
+		    getBoneIndex(entity, object.bone.c_str(), object.isLeftAttached),
+		    object.xa,
+		    object.ya,
+		    object.za,
+		    object.rxa,
+		    object.rya,
+		    object.rza,
+		    false, // Unknown
+		    false, // useSoftPinning
+		    false, // collision
+		    false, // isPed
+		    2,     // rotationOrder
+		    true,  // syncRot
+		    0      // Unknown
+		);
+	}
+
+	void setEntityRotation(const SpawnedObject& object)
+	{
+		ENTITY::SET_ENTITY_ROTATION(object.ob, object.pitch, object.roll, object.yaw, 0, false);
+	}
+
+	void setEntityCoords(const SpawnedObject& object)
+	{
+		ENTITY::SET_ENTITY_COORDS(object.ob, object.x + object.xr, object.y + object.yr, object.z + object.zr, false, false, false, false);
+	}
+
+	SpawnedObject spawnObj(std::string objStr, SpawnedObject object = SpawnedObject())
 	{
 		rage::joaat_t objectHash = isHexadecimal(objStr) ? std::stoul(objStr, nullptr, 16) : rage::joaat(objStr);
 		Entity entity            = getSelectedEntity();
@@ -265,22 +300,22 @@ namespace spawnObjs
 		OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(ob);
 		location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ob, 0, 0, 0);
 
-		// LOG(WARNING) << "Object spawned" << objStr << " " << ob;
+		// LOG(VERBOSE) << "Object spawned" << objStr << " " << ob;
 
-		ob1.objName = objStr;
-		ob1.x       = location.x;
-		ob1.y       = location.y;
-		ob1.z       = location.z;
-		ob1.ob      = ob;
+		object.objName = objStr;
+		object.x       = location.x;
+		object.y       = location.y;
+		object.z       = location.z;
+		object.ob      = ob;
 
-		if (ob1.xr || ob1.yr || ob1.zr)
-			ENTITY::SET_ENTITY_COORDS(ob, ob1.x + ob1.xr, ob1.y + ob1.yr, ob1.z + ob1.zr, 0, 0, 0, 1);
-		if (ob1.pitch || ob1.roll || ob1.yaw)
-			ENTITY::SET_ENTITY_ROTATION(spawnObjs::currentSpawnedObj->ob, ob1.pitch, ob1.roll, ob1.yaw, 0, 1);
-		if (ob1.isAttached)
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(ob1.ob, entity, getBoneIndex(entity, ob1.bone.c_str(), ob1.isLeftAttached), ob1.xa, ob1.ya, ob1.za, ob1.rxa, ob1.rya, ob1.rza, 1, 0, 0, 0, 0, 1, 0);
+		if (object.xr || object.yr || object.zr)
+			setEntityCoords(object);
+		if (object.pitch || object.roll || object.yaw)
+			setEntityRotation(object);
+		if (object.isAttached)
+			attachEntity(object, entity);
 
-		return ob1;
+		return object;
 	}
 }
 
@@ -478,26 +513,7 @@ namespace big
 						if (!spawnObjs::currentSpawnedObj->bone.length())
 							spawnObjs::currentSpawnedObj->bone = boneCenter[0];
 
-						auto entity = spawnObjs::getSelectedEntity();
-
-						ENTITY::ATTACH_ENTITY_TO_ENTITY(spawnObjs::currentSpawnedObj->ob,
-						    entity,
-						    getBoneIndex(entity,
-						        spawnObjs::currentSpawnedObj->bone.c_str(),
-						        spawnObjs::currentSpawnedObj->isLeftAttached),
-						    spawnObjs::currentSpawnedObj->xa,
-						    spawnObjs::currentSpawnedObj->ya,
-						    spawnObjs::currentSpawnedObj->za,
-						    spawnObjs::currentSpawnedObj->rxa,
-						    spawnObjs::currentSpawnedObj->rya,
-						    spawnObjs::currentSpawnedObj->rza,
-						    1,
-						    0,
-						    0,
-						    0,
-						    0,
-						    1,
-						    0);
+						spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
 
 						spawnObjs::currentSpawnedObj->isAttached = true;
 					}
@@ -663,46 +679,17 @@ namespace big
 		if (spawnedObjectLocationChanged)
 		{
 			spawnedObjectLocationChanged = false;
-			ENTITY::SET_ENTITY_COORDS(spawnObjs::currentSpawnedObj->ob,
-			    spawnObjs::currentSpawnedObj->x + spawnObjs::currentSpawnedObj->xr,
-			    spawnObjs::currentSpawnedObj->y + spawnObjs::currentSpawnedObj->yr,
-			    spawnObjs::currentSpawnedObj->z + spawnObjs::currentSpawnedObj->zr,
-			    0,
-			    0,
-			    0,
-			    1);
+			spawnObjs::setEntityCoords(*spawnObjs::currentSpawnedObj);
 		}
 		if (spawnedObjectRotationChanged)
 		{
 			spawnedObjectRotationChanged = false;
-			ENTITY::SET_ENTITY_ROTATION(spawnObjs::currentSpawnedObj->ob,
-			    spawnObjs::currentSpawnedObj->pitch,
-			    spawnObjs::currentSpawnedObj->roll,
-			    spawnObjs::currentSpawnedObj->yaw,
-			    0,
-			    1);
+			spawnObjs::setEntityRotation(*spawnObjs::currentSpawnedObj);
 		}
 		if (hasAttachedEnityParametersChanged && spawnObjs::currentSpawnedObj->isAttached)
 		{
 			hasAttachedEnityParametersChanged = false;
-			auto entity                       = spawnObjs::getSelectedEntity();
-
-			ENTITY::ATTACH_ENTITY_TO_ENTITY(spawnObjs::currentSpawnedObj->ob,
-			    entity,
-			    getBoneIndex(entity, spawnObjs::currentSpawnedObj->bone.c_str(), spawnObjs::currentSpawnedObj->isLeftAttached),
-			    spawnObjs::currentSpawnedObj->xa,
-			    spawnObjs::currentSpawnedObj->ya,
-			    spawnObjs::currentSpawnedObj->za,
-			    spawnObjs::currentSpawnedObj->rxa,
-			    spawnObjs::currentSpawnedObj->rya,
-			    spawnObjs::currentSpawnedObj->rza,
-			    1,
-			    0,
-			    0,
-			    0,
-			    0,
-			    1,
-			    0);
+			spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
 		}
 
 		if (!std::string(savedObjectToDelete).empty())
