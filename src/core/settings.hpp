@@ -370,11 +370,11 @@ namespace big
 			struct super_hero_fly
 			{
 				bool enabled         = false;
-				bool gradual         = false;
+				bool gradual         = true;
 				bool explosions      = true;
-				bool auto_land       = true;
+				bool auto_land       = false;
 				bool charge          = true;
-				bool ptfx            = false;
+				bool ptfx            = true;
 				float fly_speed      = 15.f;
 				float initial_launch = 15.f;
 

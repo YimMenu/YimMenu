@@ -79,6 +79,22 @@ namespace big
 
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"mobileradio">();
+		components::command_checkbox<"superherofly">();
+		components::options_modal("Super hero fly options", [] {
+
+			ImGui::Text("Press Q to launch or hold it to charge.\nPress Q once in flight to cancel or hold to initiate a charged landing.");
+			ImGui::Separator();
+
+			ImGui::Checkbox("Gradual speed", &g.self.super_hero_fly.gradual);
+			ImGui::Checkbox("Explosions", &g.self.super_hero_fly.explosions);
+			ImGui::Checkbox("Auto land", &g.self.super_hero_fly.auto_land);
+			ImGui::Checkbox("Charge launch", &g.self.super_hero_fly.charge);
+			ImGui::Checkbox("Charge ptfx", &g.self.super_hero_fly.ptfx);
+			ImGui::SetNextItemWidth(150);
+			ImGui::InputFloat("Speed", &g.self.super_hero_fly.fly_speed, 1, 50);
+			ImGui::SetNextItemWidth(150);
+			ImGui::InputFloat("Initial launch", &g.self.super_hero_fly.initial_launch, 1, 50);
+		});
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 

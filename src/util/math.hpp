@@ -1,5 +1,6 @@
 #pragma once
 #include "pointers.hpp"
+#include "natives.hpp"
 
 namespace big::math
 {
