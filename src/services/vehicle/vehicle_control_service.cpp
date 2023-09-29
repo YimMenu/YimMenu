@@ -71,6 +71,9 @@ namespace big
 
 	controlled_vehicle vehicle_control::update_vehicle(Vehicle veh)
 	{
+		if(!ENTITY::DOES_ENTITY_EXIST(veh))
+			return {};
+		
 		controlled_vehicle new_veh{};
 
 		new_veh.handle = veh;
@@ -79,6 +82,7 @@ namespace big
 		new_veh.doorCount     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
 		new_veh.lockstate     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
 		new_veh.isconvertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
+
 		update_controlled_vehicle_doors(new_veh);
 		update_controlled_vehicle_lights(new_veh);
 
@@ -97,7 +101,7 @@ namespace big
 		veh.engine           = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
 		veh.radio            = AUDIO::IS_VEHICLE_RADIO_ON(veh.handle);
 		veh.radiochannel     = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
-
+		
 		if (g.window.vehicle_control.render_distance_on_veh
 		    && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true)) > 10.f)
 			vehicle_control::render_distance_on_vehicle();
@@ -367,7 +371,8 @@ namespace big
 
 	void vehicle_control::get_personal_vehicle()
 	{
-		m_controlled_vehicle = vehicle_control::update_vehicle(mobile::mechanic::get_personal_vehicle());
+		if(ENTITY::DOES_ENTITY_EXIST(mobile::mechanic::get_personal_vehicle()))
+			m_controlled_vehicle = vehicle_control::update_vehicle(mobile::mechanic::get_personal_vehicle());
 	}
 
 	void vehicle_control::get_closest_vehicle()

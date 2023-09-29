@@ -43,8 +43,6 @@ namespace big
 		bool engine;
 		bool neons[4];
 		bool isconvertible;
-		bool radio;
-		int radiochannel;
 		int convertibelstate;
 		int headlights, highbeams;
 	};

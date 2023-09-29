@@ -105,7 +105,6 @@ namespace big
 			ImGui::PopID();
 		}
 
-
 		ImGui::EndGroup();
 	}
 
@@ -210,7 +209,7 @@ namespace big
 					g_vehicle_control_service.vehicle_operation([i] {
 						vehicle::operate_vehicle_neons(g_vehicle_control_service.m_controlled_vehicle.handle,
 						    i,
-						    g_vehicle_control_service.m_controlled_vehicle.neons[i]);
+						    !g_vehicle_control_service.m_controlled_vehicle.neons[i]);
 					});
 				});
 			}
@@ -294,6 +293,7 @@ namespace big
 		}
 
 		ImGui::SameLine();
+
 		ImGui::Text("Engine: %s", g_vehicle_control_service.m_controlled_vehicle.engine ? "Running" : "Off");
 
 		components::button(g_vehicle_control_service.m_driver_performing_task ? "Cancel" : "Summon", [] {
