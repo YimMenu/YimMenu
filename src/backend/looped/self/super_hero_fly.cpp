@@ -400,5 +400,5 @@ namespace big
 		}
 	};
 
-	super_hero_fly g_super_hero_fly("superherofly", "Super Hero Fly", "Fly like a super hero", g.self.super_hero_fly.enabled, ScriptCategory::LARGE);
+	super_hero_fly g_super_hero_fly("superherofly", "Super Hero Fly", "Fly like a super hero", g.self.super_hero_fly.enabled);
 }
