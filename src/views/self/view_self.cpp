@@ -79,7 +79,6 @@ namespace big
 
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"mobileradio">();
-		components::command_checkbox<"superman">();
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
