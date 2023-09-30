@@ -63,7 +63,7 @@ namespace spawnObjs
 		std::string objName;
 
 		float x, y, z; // real location of object
-		
+
 		float xr, yr, zr; // offset location of object
 		float pitch, roll, yaw;
 
@@ -538,24 +538,31 @@ namespace big
 
 			ImGui::SeparatorText("Spawned objs");
 
-			components::small_text("Shift click to delete a given spawned object");
+			// components::small_text("Shift click to delete a given spawned object");
+
+			components::button("Clear all spawned objects", [&] {
+				spawnObjs::currentSpawnedObj = NULL;
+
+				for (auto element : spawnedObjList)
+					entity::delete_entity(element.second.ob);
+
+				spawnedObjList.clear();
+			});
 
 			if (ImGui::BeginListBox("##spawnedObjList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 			{
 				for (auto element : spawnedObjList)
 					if (ImGui::Selectable(element.first.c_str(), element.second.ob == spawnObjs::currentSpawnedObj->ob))
 					{
-						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-						{
-							big::entity::delete_entity(element.second.ob);
-							spawnedObjList.erase(element.first);
-							if (spawnedObjList.size() == 0)
-								spawnObjs::currentSpawnedObj = NULL;
-						}
-						else
-						{
-							spawnObjs::currentSpawnedObj = &spawnedObjList[element.first];
-						}
+						// if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && spawnedObjList.contains(element.first.c_str()))
+						// {
+						// 	big::entity::delete_entity(element.second.ob);
+						// 	spawnedObjList.erase(element.first);
+						// 	if (spawnedObjList.size() == 0)
+						// 		spawnObjs::currentSpawnedObj = NULL;
+						// }
+						// else
+						spawnObjs::currentSpawnedObj = &spawnedObjList[element.first];
 					}
 
 				ImGui::EndListBox();
@@ -660,16 +667,27 @@ namespace big
 		{
 			ImGui::SeparatorText("Spawned Collections");
 
+			// components::small_text("Shift click to delete a given spawned collection");
+
+			components::button("Clear all spawned collections", [&] {
+				for (int i = 0; i < spawnedCollections.size(); ++i)
+					for (auto obj : spawnedCollections[i].objects)
+						entity::delete_entity(obj);
+
+				spawnedCollections.clear();
+			});
+
 			if (ImGui::BeginListBox("##spawnedCollections", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 			{
 				for (int i = 0; i < spawnedCollections.size(); ++i)
-					if (ImGui::Selectable(spawnedCollections[i].name.c_str(), false))
-						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-						{
-							for (auto obj : spawnedCollections[i].objects)
-								entity::delete_entity(obj);
-							spawnedCollections.erase(spawnedCollections.begin() + i);
-						}
+					ImGui::Selectable(spawnedCollections[i].name.c_str(), false);
+				// TODO: check if this code below is not code twice
+				// if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+				// {
+				// 	for (auto obj : spawnedCollections[i].objects)
+				// 		entity::delete_entity(obj);
+				// 	spawnedCollections.erase(spawnedCollections.begin() + i);
+				// }
 				ImGui::EndListBox();
 			}
 		}
