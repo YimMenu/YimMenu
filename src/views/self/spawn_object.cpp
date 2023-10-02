@@ -338,6 +338,7 @@ namespace big
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##searchObj", "search", searchObjectText);
+		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		components::button("load objects list", [&] {
 			spawnObjs::loadObjList(objectList);
@@ -361,6 +362,7 @@ namespace big
 		components::input_text_with_hint("##selectedObjec", "selectedObjectNameOrHash", selectedObjectNameOrHash);
 		components::small_text("custom name you want to give to the object");
 		components::input_text_with_hint("##customObjectName", "customObjectName", customObjectName);
+		ImGui::PopItemWidth();
 		components::button("save###saveObjectBtn", [&] {
 			std::string name    = trimString(selectedObjectNameOrHash);
 			std::string newName = trimString(customObjectName);
@@ -428,25 +430,21 @@ namespace big
 				if (ImGui::InputFloat("spObjLocX", &spawnObjs::currentSpawnedObj->xr))
 					spawnedObjectLocationChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("spObjLocY", &spawnObjs::currentSpawnedObj->yr))
 					spawnedObjectLocationChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("spObjLocZ", &spawnObjs::currentSpawnedObj->zr))
 					spawnedObjectLocationChanged = true;
 
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("spObjPitch", &spawnObjs::currentSpawnedObj->pitch))
 					spawnedObjectRotationChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("spObjRoll", &spawnObjs::currentSpawnedObj->roll))
 					spawnedObjectRotationChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("spObjYaw", &spawnObjs::currentSpawnedObj->yaw))
 					spawnedObjectRotationChanged = true;
+				ImGui::PopItemWidth();
 			}
 
 
@@ -486,24 +484,21 @@ namespace big
 				if (ImGui::InputFloat("attEntityX", &spawnObjs::currentSpawnedObj->xa))
 					hasAttachedEnityParametersChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("attEntityY", &spawnObjs::currentSpawnedObj->ya))
 					hasAttachedEnityParametersChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("attEntityZ", &spawnObjs::currentSpawnedObj->za))
 					hasAttachedEnityParametersChanged = true;
-				ImGui::PushItemWidth(200);
+
 				if (ImGui::InputFloat("attEntityRX", &spawnObjs::currentSpawnedObj->rxa))
 					hasAttachedEnityParametersChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("attEntityRY", &spawnObjs::currentSpawnedObj->rya))
 					hasAttachedEnityParametersChanged = true;
 				ImGui::SameLine();
-				ImGui::PushItemWidth(200);
 				if (ImGui::InputFloat("attEntityRZ", &spawnObjs::currentSpawnedObj->rza))
 					hasAttachedEnityParametersChanged = true;
+				ImGui::PopItemWidth();
 			}
 
 			if (!spawnObjs::currentSpawnedObj->isAttached)
@@ -578,6 +573,7 @@ namespace big
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##collectionName", "collectionName", collectionName);
+		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		components::button("Create###createCollecBtn", [&] {
 			std::string name = trimString(collectionName);
