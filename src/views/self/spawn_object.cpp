@@ -693,17 +693,23 @@ namespace big
 		if (spawnedObjectLocationChanged)
 		{
 			spawnedObjectLocationChanged = false;
-			spawnObjs::setEntityCoords(*spawnObjs::currentSpawnedObj);
+			g_fiber_pool->queue_job([&] {
+				spawnObjs::setEntityCoords(*spawnObjs::currentSpawnedObj);
+			});
 		}
 		if (spawnedObjectRotationChanged)
 		{
 			spawnedObjectRotationChanged = false;
-			spawnObjs::setEntityRotation(*spawnObjs::currentSpawnedObj);
+			g_fiber_pool->queue_job([&] {
+				spawnObjs::setEntityRotation(*spawnObjs::currentSpawnedObj);
+			});
 		}
 		if (hasAttachedEnityParametersChanged && spawnObjs::currentSpawnedObj->isAttached)
 		{
 			hasAttachedEnityParametersChanged = false;
-			spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
+			g_fiber_pool->queue_job([&] {
+				spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
+			});
 		}
 
 		if (!std::string(savedObjectToDelete).empty())
