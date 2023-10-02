@@ -112,13 +112,14 @@ namespace big
 		ImGui::SameLine();
 		ImGui::PushItemWidth(400);
 		ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
+
+		ImGui::PushItemWidth(200);
+		components::input_text_with_hint("##searchDicText", "searchDic", searchDicText);
+		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		components::button("Load ptfx effects", [&] {
 			ptfxEffects::loadEffects(animDictCompactObjs);
 		});
-
-		ImGui::PushItemWidth(200);
-		components::input_text_with_hint("##searchDicText", "searchDic", searchDicText);
 
 		ImGui::BeginGroup();
 		components::small_text("DictionaryName");
@@ -158,8 +159,8 @@ namespace big
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##groupName", "groupName", groupName);
-		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##customEffectName", "customEffectName", customEffectName);
+		ImGui::PopItemWidth();
 		components::button("save", [&] {
 			std::string _groupName = trimString(groupName);
 			std::string effectName = trimString(customEffectName);
