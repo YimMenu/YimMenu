@@ -1,11 +1,12 @@
 #pragma once
 #include "common.hpp"
+#include "memory/handle.hpp"
 
 namespace big
 {
 	class call_hook_memory
 	{
-		uint8_t* m_memory;
+		memory::handle m_memory;
 		int m_offset;
 
 	public:
