@@ -18,5 +18,7 @@ namespace big
 		static void system_spoofing();
 
 		static void vehicle_auto_drive();
+
+		static void casino();
 	};
 }
