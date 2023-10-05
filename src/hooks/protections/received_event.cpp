@@ -6,7 +6,7 @@
 #include "util/math.hpp"
 #include "util/mobile.hpp"
 #include "util/notify.hpp"
-#include "util/toxic.hpp"
+#include "util/session.hpp"
 
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
@@ -182,38 +182,6 @@ namespace big
 
 		if (damageType == 3 && (damageFlags & (1 << 1)) == 0)
 			hitGlobalId = g_local_player ? g_local_player->m_net_object->m_object_id : 0;
-
-		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object
-		    && (g_local_player->m_net_object->m_object_id == hitGlobalId
-		        || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
-		{
-			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos] {
-				auto player = g_player_service->get_by_id(id);
-
-				if (!player->is_valid() || !player->get_ped())
-					return;
-
-				g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(),
-				    player->get_ped(),
-				    (rage::fvector3*)&localPos,
-				    hitComponent,
-				    overrideDefaultDamage,
-				    weaponType,
-				    weaponDamage,
-				    tyreIndex,
-				    suspensionIndex,
-				    damageFlags,
-				    actionResultName,
-				    actionResultId,
-				    f104,
-				    hitEntityWeapon,
-				    hitWeaponAmmoAttachment,
-				    silenced,
-				    false,
-				    player->get_ped()->m_navigation->get_position());
-			});
-		}
 	}
 
 	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -331,22 +299,13 @@ namespace big
 			&& player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object
 			&& ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
-			g_notification_service->push_error("WARNING"_T.data(),
-				std::vformat("BLAMED_FOR_EXPLOSION"_T,
+			g_notification_service->push_error("Warning!",
+				std::vformat("{} blamed {} for explosion",
 					std::make_format_args(player->get_name(),
 						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
 			// too many false positives, disabling it
 			//session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			return;
-		}
-
-		if (g.session.explosion_karma && g_local_player
-			&& math::distance_between_vectors({posX, posY, posZ}, *g_local_player->m_navigation->get_position()) < 3.0f)
-		{
-			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible] {
-				toxic::blame_explode_player(g_player_service->get_self(), g_player_service->get_by_id(id), explosionType, damageScale, isAudible, isInvisible, cameraShake);
-			});
 		}
 
 		// clang-format on
@@ -582,8 +541,8 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				g_notification_service->push_warning("Protections",
+				    std::vformat("{} tried to remove a weapon.", std::make_format_args(source_player->get_name())));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -597,8 +556,8 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				g_notification_service->push_warning("Protections",
+				    std::vformat("{} tried to remove all weapons.", std::make_format_args(source_player->get_name())));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}

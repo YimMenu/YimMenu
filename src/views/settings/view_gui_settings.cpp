@@ -1,18 +1,19 @@
 #include "gui.hpp"
 #include "renderer.hpp"
 #include "views/view.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
 	void view::gui_settings()
 	{
-		components::sub_title("SETTINGS_UI_SCALE"_T);
+		components::sub_title("UI Scale");
 		if (ImGui::SliderFloat("##gui-scale", &g.window.gui_scale, 0.75f, 1.5f, "%.2f"))
 			g_renderer->rescale(g.window.gui_scale);
 
-		components::sub_title("SETTINGS_UI_COLOR"_T);
+		components::sub_title("Colors");
 		static ImVec4 col_gui = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
-		if (ImGui::ColorEdit4("SETTINGS_UI_COLOR_PICKER"_T.data(), (float*)&col_gui, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
+		if (ImGui::ColorEdit4("Gui Color", (float*)&col_gui, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 		{
 			g.window.background_color = ImGui::ColorConvertFloat4ToU32(col_gui);
 		}
@@ -43,18 +44,12 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("Show FPS", &g.window.ingame_overlay.show_fps);
-		ImGui::Checkbox("Show Players", &g.window.ingame_overlay.show_players);
-		ImGui::Checkbox("Show Time", &g.window.ingame_overlay.show_time);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Show time is currently disabled as it caused problems for some users.");
 		ImGui::Checkbox("Show Indicators", &g.window.ingame_overlay.show_indicators);
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("Show Replay Interface", &g.window.ingame_overlay.show_replay_interface);
-		ImGui::Checkbox("Show Position", &g.window.ingame_overlay.show_position);
 		ImGui::Checkbox("Show Game Version", &g.window.ingame_overlay.show_game_versions);
 
 		ImGui::EndGroup();
@@ -65,20 +60,8 @@ namespace big
 			{
 				ImGui::BeginGroup();
 				ImGui::Checkbox("Show Player Godmode", &g.window.ingame_overlay_indicators.show_player_godmode);
-				ImGui::Checkbox("Show Off Radar", &g.window.ingame_overlay_indicators.show_off_radar);
 				ImGui::Checkbox("Show Vehicle Godmode", &g.window.ingame_overlay_indicators.show_vehicle_godmode);
-				ImGui::Checkbox("Show Never Wanted", &g.window.ingame_overlay_indicators.show_never_wanted);
-				ImGui::EndGroup();
-
-				ImGui::SameLine();
-
-				ImGui::BeginGroup();
-				ImGui::Checkbox("Show Infinite Ammo", &g.window.ingame_overlay_indicators.show_infinite_ammo);
-				ImGui::Checkbox("Show Always Full Ammo", &g.window.ingame_overlay_indicators.show_always_full_ammo);
-				ImGui::Checkbox("Show Infinite Magazine", &g.window.ingame_overlay_indicators.show_infinite_mag);
-				ImGui::Checkbox("Show Aimbot", &g.window.ingame_overlay_indicators.show_aimbot);
-				ImGui::Checkbox("Show Triggerbot", &g.window.ingame_overlay_indicators.show_triggerbot);
-				ImGui::Checkbox("Show Invisibility", &g.window.ingame_overlay_indicators.show_invisibility);
+				ImGui::Checkbox("Show Ammo Details", &g.window.ingame_overlay_indicators.show_ammo);
 				ImGui::EndGroup();
 
 				ImGui::TreePop();

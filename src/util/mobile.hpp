@@ -1,14 +1,16 @@
 #pragma once
 #include "core/enums.hpp"
 #include "core/scr_globals.hpp"
+#include "core/settings.hpp"
 #include "globals.hpp"
 #include "gta_util.hpp"
 #include "misc.hpp"
 #include "natives.hpp"
 #include "notify.hpp"
 #include "script.hpp"
-#include "core/scr_globals.hpp"
 #include "script_local.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "util/mobile.hpp"
 #include "vehicle.hpp"
 
 namespace big::mobile

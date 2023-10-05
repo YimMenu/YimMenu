@@ -1,7 +1,5 @@
 #include "pattern.hpp"
 
-#include "../common.hpp"
-
 namespace memory
 {
 	std::optional<uint8_t> to_hex(char const c)

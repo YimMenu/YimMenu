@@ -1,6 +1,6 @@
 #include "gui.hpp"
 
-#include "common.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
@@ -17,7 +17,6 @@ namespace big
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
 		g_renderer->add_dx_callback(view::overlay, -3);
-		g_renderer->add_dx_callback(view::cmd_executor, -4);
 		g_renderer->add_dx_callback(
 		    [this] {
 			    dx_on_tick();
@@ -27,14 +26,7 @@ namespace big
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
-		g_renderer->add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-			if (g.cmd_executor.enabled && msg == WM_KEYUP && wparam == VK_ESCAPE)
-			{
-				g.cmd_executor.enabled = false;
-			}
-		});
 
-		g_renderer->add_dx_callback(view::vehicle_control, 3);
 		g_renderer->add_dx_callback(esp::draw, 2); // TODO: move to ESP service
 		g_renderer->add_dx_callback(view::context_menu, 1);
 
@@ -237,9 +229,7 @@ namespace big
 				SetCursorPos(cursor_coords.x, cursor_coords.y);
 			}
 
-			toggle(g.settings.hotkeys.editing_menu_toggle || !m_is_open);
-			if (g.settings.hotkeys.editing_menu_toggle)
-				g.settings.hotkeys.editing_menu_toggle = false;
+			toggle(!m_is_open);
 		}
 	}
 

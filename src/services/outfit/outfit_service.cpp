@@ -1,5 +1,6 @@
 #include "outfit_service.hpp"
 
+#include "gta/joaat.hpp"
 #include "natives.hpp"
 #include "util/outfit.hpp"
 

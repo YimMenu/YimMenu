@@ -1,8 +1,6 @@
 #pragma once
 #include "script.hpp"
 
-#include "common.hpp"
-
 namespace big
 {
 	script::script(const func_t func, const std::string& name, const bool toggleable, const std::optional<std::size_t> stack_size) :

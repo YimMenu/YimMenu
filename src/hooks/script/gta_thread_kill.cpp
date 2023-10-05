@@ -1,5 +1,7 @@
 #include "hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
+#include "core/settings.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -13,18 +15,6 @@ namespace big
 		if (g.notifications.gta_thread_kill.notify)
 			g_notification_service->push("Script Thread Termination",
 			    std::format("Script Thread '{}' terminated.", thread->m_name));
-
-		if (thread == g.m_hunt_the_beast_thread)
-			g.m_hunt_the_beast_thread = nullptr;
-
-		if (thread == g.m_dance_thread)
-			g.m_dance_thread = nullptr;
-
-		if (thread == g.m_mission_creator_thread)
-			g.m_mission_creator_thread = nullptr;
-
-		if (thread == g.m_modshop_thread)
-			g.m_modshop_thread = nullptr;
 
 		return result;
 	}

@@ -8,9 +8,7 @@ namespace big
     {
     public:
 		static void save_weapons(std::string loadout_name);
-		static void set_weapon_loadout(std::string loadout_name);
 		static std::vector<std::string> list_weapon_loadouts();
-		static void check_player_has_weapons();
 		static void give_player_loadout(std::string loadout_name);
 	private:
 		static weaponloadout_json get_loadout(std::string loadout_name);

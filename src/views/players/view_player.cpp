@@ -1,11 +1,12 @@
 #include "services/gui/gui_service.hpp"
 #include "views/view.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
 	void view::view_player()
 	{
-		ImGui::Checkbox("SPECTATE"_T.data(), &g.player.spectating);
+		ImGui::Checkbox("Spectate", &g.player.spectating);
 
 		if (g_player_service->get_selected()->is_valid())
 		{
@@ -29,12 +30,8 @@ namespace big
 			view::player_teleport();
 
 			view::player_kick();
-			ImGui::SameLine();
-			view::player_toxic();
 
 			view::player_misc();
-			ImGui::SameLine();
-			view::player_vehicle();
 		}
 	}
 }

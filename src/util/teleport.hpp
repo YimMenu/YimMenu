@@ -1,8 +1,10 @@
 #pragma once
 #include "blip.hpp"
+#include "core/settings.hpp"
 #include "entity.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_object_mgr.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
 #include "vehicle.hpp"
 
@@ -24,7 +26,7 @@ namespace big::teleport
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());
+			g_notification_service->push_warning("Teleport", "Player is dead, you can't teleport them.");
 			return false;
 		}
 
@@ -47,7 +49,7 @@ namespace big::teleport
 			}
 			else
 			{
-				g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
+				g_notification_service->push_warning("Teleport", "Failed to take control of entity.");
 			}
 
 			return true;
@@ -83,9 +85,9 @@ namespace big::teleport
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
 				g_pointers->m_gta.m_clear_ped_tasks_network(player->get_ped(), true);
 
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 30; i++)
 			{
-				script::get_current()->yield(50ms);
+				script::get_current()->yield(25ms);
 
 				if (auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd))
 				{
@@ -94,6 +96,10 @@ namespace big::teleport
 						g_pointers->m_gta.m_migrate_object(player->get_net_game_player(), netobj, 3);
 					}
 				}
+
+				auto new_coords = ENTITY::GET_ENTITY_COORDS(hnd, true);
+				if (SYSTEM::VDIST2(coords.x, coords.y, coords.z, new_coords.x, new_coords.y, new_coords.z) < 20 * 20 && VEHICLE::GET_PED_IN_VEHICLE_SEAT(hnd, 0, true) == ent)
+					break;
 			}
 
 			entity::delete_entity(hnd);
@@ -115,7 +121,7 @@ namespace big::teleport
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_INVALID_VEHICLE"_T.data());
+			g_notification_service->push_warning("Teleport", "Invalid Vehicle");
 
 			return false;
 		}
@@ -128,7 +134,7 @@ namespace big::teleport
 
 		if (seat_index == 255)
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_SEATS_FREE"_T.data());
+			g_notification_service->push_warning("Teleport", "There are no seats available in this vehicle for you.");
 
 			return false;
 		}
@@ -185,7 +191,7 @@ namespace big::teleport
 	{
 		if (!to_blip((int)BlipIcons::Waypoint))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
+			g_notification_service->push_warning("Teleport",  "No waypoint found.");
 
 			return false;
 		}
@@ -198,36 +204,11 @@ namespace big::teleport
 
 		if (!blip::get_objective_location(location))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_OBJECTIVE"_T.data());
+			g_notification_service->push_warning("Teleport", "No objective found.");
 			return false;
 		}
 
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
-
-		return false;
-	}
-
-	inline bool to_highlighted_blip()
-	{
-		if (!*g_pointers->m_gta.m_is_session_started)
-		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
-			return false;
-		}
-
-		auto blip = blip::get_selected_blip();
-		if (blip == nullptr)
-		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
-			return false;
-		}
-		Entity entity = self::ped;
-		if (PED::GET_PED_CONFIG_FLAG(self::ped, 62, TRUE))
-		{
-			entity = self::veh;
-		}
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
-		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
 
 		return false;
 	}

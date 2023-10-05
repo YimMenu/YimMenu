@@ -1,7 +1,5 @@
 #include "vmt_hook.hpp"
 
-#include "common.hpp"
-
 namespace big
 {
 	vmt_hook::vmt_hook(void* obj, std::size_t num_funcs) :

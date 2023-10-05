@@ -1,6 +1,6 @@
 #include "renderer.hpp"
 
-#include "common.hpp"
+#include "core/settings.hpp"
 #include "file_manager.hpp"
 #include "fonts/fonts.hpp"
 #include "gui.hpp"

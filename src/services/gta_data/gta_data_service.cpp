@@ -14,6 +14,7 @@
 #include "util/vehicle.hpp"
 #include "yim_fipackfile.hpp"
 
+#include <algorithm>
 
 namespace big
 {
@@ -28,7 +29,7 @@ namespace big
 
 	gta_data_service::gta_data_service() :
 	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 5),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 6),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -271,7 +272,8 @@ namespace big
 					{
 						const auto item = item_node.node();
 
-						const auto name = item.child("modelName").text().as_string();
+						std::string name = item.child("modelName").text().as_string();
+						std::transform(name.begin(), name.end(), name.begin(), ::toupper);
 						const auto hash = rage::joaat(name);
 						if (protection::is_crash_vehicle(hash))
 							continue;
@@ -281,7 +283,7 @@ namespace big
 						mapped_vehicles.emplace_back(hash);
 
 						auto veh = vehicle_item{};
-						std::strncpy(veh.m_name, name, sizeof(veh.m_name));
+						std::strncpy(veh.m_name, name.c_str(), sizeof(veh.m_name));
 
 						const auto manufacturer_display = item.child("vehicleMakeName").text().as_string();
 						std::strncpy(veh.m_display_manufacturer, manufacturer_display, sizeof(veh.m_display_manufacturer));
@@ -408,7 +410,7 @@ namespace big
 							weapon.m_weapon_type = category + 6;
 						}
 
-						if (is_gun || weapon.m_weapon_type == "MELEE" || weapon.m_weapon_type == "UNARMED")
+						if (is_gun || weapon.m_weapon_type == "Melee" || weapon.m_weapon_type == "UNARMED")
 						{
 							const std::string reward_prefix = "REWARD_";
 							weapon.m_reward_hash            = rage::joaat(reward_prefix + name);

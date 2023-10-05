@@ -3,13 +3,14 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
-#include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
+#include "core/data/infractions.hpp"
 
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
+#include "core/settings.hpp"
 
 namespace big
 {
@@ -61,19 +62,12 @@ namespace big
 			g_gui_service->set_selected(tabs::PLAYER);
 			g.window.switched_view = true;
 		}
-		if (ImGui::IsItemHovered()
-		    && g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id) != nullptr)
+		if (ImGui::IsItemHovered() && !plyr->infractions.empty())
 		{
-			auto sorted_player =
-			    g_player_database_service->get_player_by_rockstar_id(plyr->get_net_data()->m_gamer_handle.m_rockstar_id);
-
-			if (!sorted_player->infractions.empty())
-			{
-				ImGui::BeginTooltip();
-				for (auto infraction : sorted_player->infractions)
-					ImGui::BulletText(infraction_desc[(Infraction)infraction]);
-				ImGui::EndTooltip();
-			}
+			ImGui::BeginTooltip();
+			for (auto infraction : plyr->infractions)
+				ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+			ImGui::EndTooltip();
 		}
 
 		ImGui::PopID();

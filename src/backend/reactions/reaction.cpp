@@ -5,7 +5,6 @@
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
 
 namespace big
@@ -23,17 +22,6 @@ namespace big
 		{
 			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
 			LOG(WARNING) << std::format("Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
-		}
-
-		if (add_to_player_db)
-		{
-			auto entry = g_player_database_service->get_or_create_player(player);
-
-			if (block_joins)
-			{
-				entry->block_join = true;
-				g_player_database_service->save();
-			}
 		}
 
 		if (kick)  
@@ -58,23 +46,6 @@ namespace big
 	{
 		if (!player->is_valid())
 			return;
-
-		if (announce_in_chat)
-		{
-			g_fiber_pool->queue_job([player, this] {
-				char chat[255];
-				snprintf(chat,
-				    sizeof(chat),
-				    std::format("{} {}", g.session.chat_output_prefix, m_announce_message).data(),
-				    player->get_name());
-
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-				        g_player_service->get_self()->get_net_data(),
-				        chat,
-				        false))
-					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
-			});
-		}
 
 		if (notify)
 		{

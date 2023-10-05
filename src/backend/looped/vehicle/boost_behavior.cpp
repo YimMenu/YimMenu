@@ -1,21 +1,22 @@
-#include "backend/looped/looped.hpp"
-#include "core/enums.hpp"
-#include "gta/enums.hpp"
+#include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 namespace big
 {
-	void looped::vehicle_boost_behavior()
+	class veh_boost : looped_command
 	{
-		auto* const vehicle = g_local_player->m_vehicle;
+		using looped_command::looped_command;
 
-		bool is_rocket = VEHICLE::GET_HAS_ROCKET_BOOST(self::veh);
-		bool is_kers   = VEHICLE::GET_VEHICLE_HAS_KERS(self::veh);
-
-		if (vehicle && (is_rocket || is_kers))
+		virtual void on_tick() override
 		{
-			if (g.vehicle.boost_behavior == eBoostBehaviors::INSTANT_REFIL) // Instant Refill
+			auto* const vehicle = g_local_player->m_vehicle;
+
+			if (vehicle)
 			{
+				bool is_rocket = VEHICLE::GET_HAS_ROCKET_BOOST(self::veh);
+				bool is_kers   = VEHICLE::GET_VEHICLE_HAS_KERS(self::veh);
+
 				if (is_rocket && (vehicle->m_boost == 0.f || !vehicle->m_boost_state))
 				{
 					vehicle->m_boost_allow_recharge = true;
@@ -26,31 +27,8 @@ namespace big
 					vehicle->m_kers_boost = vehicle->m_kers_boost_max;
 				}
 			}
-			else if (g.vehicle.boost_behavior == eBoostBehaviors::INFINITE_BOOST)// Infinite
-			{
-				vehicle->m_boost_allow_recharge = true;
-				vehicle->m_boost                = 3.f;
-				vehicle->m_kers_boost           = vehicle->m_kers_boost_max - 0.01f;
-			}
-			else if (g.vehicle.boost_behavior == eBoostBehaviors::HOLD_FOR_INFINITE) //Hold for Boost
-			{
-				if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_ROCKET_BOOST) || PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_VEH_FLY_BOOST))
-				{
-					if (is_rocket && vehicle->m_boost_state)
-					{
-						vehicle->m_boost_allow_recharge = true;
-						vehicle->m_boost                = 3.f;
-					}
-					else if (is_kers)
-					{
-						vehicle->m_kers_boost = vehicle->m_kers_boost_max - 0.01f;
-					}
-				}
-				else if (is_rocket && vehicle->m_boost_state)
-				{
-					vehicle->m_boost_state = false;
-				}
-			}
 		}
-	}
+	};
+
+	veh_boost g_veh_boost("veh_boost", "Boost Auto-Recharge", "Instantly refill rocket or kers boost", g.vehicle.veh_boost);
 }

@@ -1,5 +1,6 @@
 #include "matchmaking_service.hpp"
 
+#include "core/settings.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"

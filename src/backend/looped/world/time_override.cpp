@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"

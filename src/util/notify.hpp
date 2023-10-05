@@ -1,10 +1,12 @@
 #pragma once
+#include "core/settings.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
 
 #include <script/HudColor.hpp>
@@ -64,11 +66,6 @@ namespace big::notify
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
-	}
-
-	inline void player_joined(CNetGamePlayer* net_game_player)
-	{
-		above_map(std::format("<C>{}</C> joined.", net_game_player->get_name()));
 	}
 
 	inline void draw_chat(char* msg, const char* player_name, bool is_team)

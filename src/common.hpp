@@ -54,12 +54,10 @@
 
 #include "logger/logger.hpp"
 
-#include "core/settings.hpp"
 #include "gta/natives.hpp"
 #include "ped/CPed.hpp"
 
-#include "services/notifications/notification_service.hpp"
-#include "services/translation_service/translation_service.hpp"
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 // clang-format on
 
@@ -80,7 +78,6 @@ namespace self
 	inline Ped ped;
 	inline Player id;
 	inline Vector3 pos;
-	inline Vector3 rot;
 	inline Vehicle veh;
 }
 

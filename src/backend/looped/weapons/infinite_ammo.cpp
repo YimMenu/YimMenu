@@ -1,13 +1,14 @@
 #include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 namespace big
 {
-	class infinite_ammo : looped_command
+	class infinite_ammo : bool_command
 	{
-		using looped_command::looped_command;
+		using bool_command::bool_command;
 
-		virtual void on_tick() override
+		virtual void on_enable() override
 		{
 			WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, NULL);
 		}
@@ -18,5 +19,5 @@ namespace big
 		}
 	};
 
-	infinite_ammo g_infinite_ammo("infammo", "Infinite Ammo", "Never run out of ammo again", g.weapons.infinite_ammo);
+	infinite_ammo g_infinite_ammo("infammo", "Freeze Ammo", "(clip + refill) = ammo = constant", g.weapons.infinite_ammo);
 }

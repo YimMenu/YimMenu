@@ -1,9 +1,8 @@
 #include "views/view.hpp"
 
-#include "lua/lua_manager.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
-#include "services/translation_service/translation_service.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
@@ -11,11 +10,8 @@ namespace big
 	{
 		const auto selected = g_gui_service->get_selected();
 
-		if (selected->func == nullptr &&
-			(g_lua_manager && !g_lua_manager->has_gui_to_draw(selected->hash)))
-		{
+		if(selected->name[0] == '\0' && selected->func == nullptr)
 			return;
-		}
 
 		constexpr float alpha = 1.f;
 
@@ -27,25 +23,14 @@ namespace big
 
 		if (ImGui::Begin("main", nullptr, window_flags))
 		{
-			const char* key = nullptr;
-			if (key = g_translation_service.get_translation(selected->hash).data(); !key)
-				key = selected->name;
-
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, alpha);
-			components::title(key);
+			components::title(selected->name);
 			ImGui::Separator();
 
 			if (selected->func)
 			{
 				selected->func();
-
-				const auto has_lua_gui_to_draw = g_lua_manager && g_lua_manager->has_gui_to_draw(selected->hash);
-				if (has_lua_gui_to_draw)
-					ImGui::Separator();
 			}
-
-			if (g_lua_manager)
-				g_lua_manager->draw_gui(selected->hash);
 
 			ImGui::PopStyleVar();
 		}

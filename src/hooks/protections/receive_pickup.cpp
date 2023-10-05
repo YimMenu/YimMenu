@@ -1,4 +1,6 @@
+#include "core/settings.hpp"
 #include "hooking.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -6,7 +8,7 @@ namespace big
 	{
 		if (g.protections.receive_pickup)
 		{
-			g_notification_service->push_error("PROTECTIONS"_T.data(), "Blocked pickup");
+			g_notification_service->push_error("Protections", "Blocked pickup");
 			return false;
 		}
 

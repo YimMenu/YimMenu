@@ -1,5 +1,7 @@
 #include "pointers.hpp"
 #include "views/view.hpp"
+#include "core/settings.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {

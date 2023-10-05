@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -24,6 +25,6 @@ namespace big
 		}
 	};
 
-	keep_engine_running g_keep_engine_running("keepengine", "KEEP_ENGINE", "KEEP_ENGINE_DESC",
+	keep_engine_running g_keep_engine_running("keepengine", "Keep Engine Running", "Keeps the engine running when you exit the vehicle",
 	    g.vehicle.keep_engine_running);
 }

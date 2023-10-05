@@ -1,5 +1,7 @@
 #include "default_command_context.hpp"
 
+#include "services/notifications/notification_service.hpp"
+
 namespace big
 {
 	player_ptr default_command_context::get_sender() const

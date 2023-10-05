@@ -1,6 +1,5 @@
 #include "packet.hpp"
 
-#include "common.hpp"
 #include "gta_util.hpp"
 #include "services/players/player_service.hpp"
 

@@ -3,6 +3,7 @@
 #include "pointers.hpp"
 #include "util/entity.hpp"
 #include "gta/enums.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {

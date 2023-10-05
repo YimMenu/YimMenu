@@ -1,13 +1,12 @@
 #include "notification_service.hpp"
 
-#include "widgets/imgui_hotkey.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
 	notification_service::notification_service()
 	{
-		push("NOTIFICATION_WELCOME_TITLE"_T.data(),
-		    std::vformat("NOTIFICATION_WELCOME_TEXT"_T, std::make_format_args(ImGui::key_names[g.settings.hotkeys.menu_toggle])));
+		push("Welcome", "Loaded YimMenu. Press 'Insert' key to open");
 
 		g_notification_service = this;
 	}

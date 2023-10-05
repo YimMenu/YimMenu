@@ -1,4 +1,5 @@
 #include "custom_text_callbacks.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {

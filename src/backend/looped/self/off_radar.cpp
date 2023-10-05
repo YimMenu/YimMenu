@@ -1,6 +1,7 @@
-#include "backend/looped_command.hpp"
 #include "backend/bool_command.hpp"
+#include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
@@ -27,6 +28,6 @@ namespace big
 		}
 	};
 
-	off_radar g_off_radar("otr", "OFF_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
-	bool_command ghost_org("ghostorg", "GHOST_ORG", "GHOST_ORG_DESC", g.self.ghost_org);
+	off_radar g_off_radar("otr", "Off Radar", "Hides your blip from other players", g.self.off_radar);
+	bool_command ghost_org("ghostorg", "Ghost Org", "Use Ghost Organization instead of standard off radar.", g.self.ghost_org);
 }

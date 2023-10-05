@@ -1,5 +1,6 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -26,5 +27,5 @@ namespace big
 		}
 	};
 
-	host_kick g_host_kick("hostkick", "HOST_KICK", "HOST_KICK_DESC", 0, false);
+	host_kick g_host_kick("hostkick", "Host Kick", "Host kick that only works when host", 0, false);
 }

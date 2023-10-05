@@ -4,7 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "services/script_connection/script_connection_service.hpp" // for the stack size
+#include "services/script_connection/script_connection.hpp" // for the stack size
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "thread_pool.hpp"
 #include "util/scripts.hpp"

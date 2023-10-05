@@ -212,6 +212,8 @@ namespace big
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
+		PVOID m_http_start_request;
+
 		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;

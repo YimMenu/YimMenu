@@ -1,5 +1,6 @@
 #include "services/gui/gui_service.hpp"
 #include "views/view.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
@@ -15,8 +16,7 @@ namespace big
 			{
 				switch (nav_item.first)
 				{
-				case tabs::PLAYER:
-				case tabs::DEBUG: continue;
+				case tabs::PLAYER: continue;
 				default: components::nav_item(nav_item, 0);
 				}
 			}

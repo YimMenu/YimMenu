@@ -1,7 +1,10 @@
 #include "persist_weapons.hpp"
-#include "services/gta_data/gta_data_service.hpp"
+
+#include "core/settings.hpp"
 #include "gta/weapons.hpp"
 #include "natives.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -56,39 +59,6 @@ namespace big
 		std::ofstream file_stream(file.get_path(), std::ios::out | std::ios::trunc);
 		file_stream << json_output_file.dump(4);
 		file_stream.close();
-	}
-
-	void persist_weapons::set_weapon_loadout(std::string loadout_name)
-	{
-		if (loadout_name.empty())
-			return;
-
-		g.persist_weapons.weapon_loadout_file = loadout_name;
-		persist_weapon_loadout                = get_loadout(loadout_name);
-	}
-
-	void persist_weapons::check_player_has_weapons()
-	{
-		if (!g.persist_weapons.enabled)
-		{
-			return;
-		}
-
-		if (persist_weapon_loadout.weapons.empty())
-		{
-			if (g.persist_weapons.weapon_loadout_file.empty())
-			{
-				return;
-			}
-			persist_weapon_loadout = get_loadout(g.persist_weapons.weapon_loadout_file);
-		}
-
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr || g_local_player->m_player_info->m_game_state == eGameState::InMPCutscene || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())
-		{
-			return;
-		}
-
-		give_Loadout(persist_weapon_loadout);
 	}
 
 	void persist_weapons::give_player_loadout(std::string loadout_name)

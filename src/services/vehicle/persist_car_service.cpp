@@ -1,7 +1,9 @@
 #include "persist_car_service.hpp"
 
 #include "base/CObject.hpp"
+#include "core/settings.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "util/misc.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
@@ -13,8 +15,7 @@ namespace big
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
-			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(),
-			    "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
+			g_notification_service->push_warning("Persist Car","Tried to save a vehicle which does not exist");
 			return;
 		}
 
@@ -42,7 +43,7 @@ namespace big
 		}
 		catch (std::exception& e)
 		{
-			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
+			g_notification_service->push_warning("Persist Car", "Failed to load JSON file");
 			return NULL;
 		}
 
@@ -290,10 +291,6 @@ namespace big
 
 			VEHICLE::SET_VEHICLE_EXTRA_COLOUR_6(vehicle, vehicle_json[dash_color_key]);
 
-			const BOOL have_clan_logo = vehicle_json[clan_logo_key];
-			if (have_clan_logo)
-				vehicle_helper::add_clan_logo_to_vehicle(vehicle, ped);
-
 			VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, vehicle_json[headlight_color_key]);
 		}
 
@@ -441,7 +438,7 @@ namespace big
 		auto radio_station = AUDIO::GET_PLAYER_RADIO_STATION_NAME();
 
 		if (!radio_station)
-			radio_station = "OFF";
+			radio_station = "Off";
 
 		vehicle_json[radio_station_key] = radio_station;
 
@@ -523,7 +520,6 @@ namespace big
 			vehicle_json[interior_color_key] = interior_color;
 			vehicle_json[dash_color_key]     = dashboard_color;
 
-			vehicle_json[clan_logo_key]       = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
 			vehicle_json[headlight_color_key] = VEHICLE::GET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle);
 		}
 

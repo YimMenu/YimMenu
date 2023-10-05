@@ -1,9 +1,9 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
 
 namespace big
@@ -21,14 +21,11 @@ namespace big
 
 		inline bool can_update_location()
 		{
-			return !(g.cmd_executor.enabled || g.self.free_cam);
+			return !g.self.free_cam;
 		}
 
 		virtual void on_tick() override
 		{
-			if (g_orbital_drone_service.initialized())
-				return;
-
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
@@ -118,5 +115,5 @@ namespace big
 		}
 	};
 
-	noclip g_noclip("noclip", "NO_CLIP", "NO_CLIP_DESC", g.self.noclip);
+	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g.self.noclip);
 }

@@ -1,29 +1,8 @@
 #include "vehicle.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big::vehicle
 {
-	float mps_to_speed(float mps, SpeedUnit speed_unit)
-	{
-		switch (speed_unit)
-		{
-		case SpeedUnit::KMPH: return mps * 3.6f; break;
-		case SpeedUnit::MIPH: return mps * 2.2369f; break;
-		}
-
-		return mps;
-	}
-
-	float speed_to_mps(float speed, SpeedUnit speed_unit)
-	{
-		switch (speed_unit)
-		{
-		case SpeedUnit::KMPH: return speed / 3.6f; break;
-		case SpeedUnit::MIPH: return speed / 2.2369f; break;
-		}
-
-		return speed;
-	}
-
 	Vector3 get_spawn_location(bool spawn_inside, Hash hash, Ped ped)
 	{
 		float y_offset = 0;
@@ -56,13 +35,13 @@ namespace big::vehicle
 	void bring(Vehicle veh, Vector3 location, bool put_in, int seatIdx)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
-			return g_notification_service->push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
+			return g_notification_service->push_error("Vehicle", "Vehicle is not a valid one.");
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		entity::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
@@ -355,8 +334,6 @@ namespace big::vehicle
 			owned_mods[extra] = val_77 >> (gta_extra_id - 1) & 1;
 		}
 
-		owned_mods[MOD_HAS_CLAN_LOGO] = (val_103 & (1 << 8)) != 0;
-
 		return owned_mods;
 	}
 
@@ -451,11 +428,6 @@ namespace big::vehicle
 			}
 		}
 
-		if (owned_mods[MOD_HAS_CLAN_LOGO] != 0)
-		{
-			vehicle_helper::add_clan_logo_to_vehicle(vehicle, self::ped);
-		}
-
 		return vehicle;
 	}
 
@@ -539,8 +511,6 @@ namespace big::vehicle
 			}
 		}
 
-		owned_mods[MOD_HAS_CLAN_LOGO] = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(vehicle, 0);
-
 		return owned_mods;
 	}
 
@@ -614,7 +584,7 @@ namespace big::vehicle
 		if (current_vehicle)
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
+			return g_notification_service->push_warning("Vehicle", "Please enter a vehicle.");
 	}
 
 	void downgrade(Vehicle vehicle)
@@ -624,54 +594,6 @@ namespace big::vehicle
 		{
 			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
 		}
-	}
-
-	bool remote_control_vehicle(Vehicle veh)
-	{
-		if (!entity::take_control_of(veh, 4000))
-		{
-			g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-			return false;
-		}
-
-		if (g.m_remote_controlled_vehicle == veh)
-		{
-			return false;
-		}
-
-		Hash model      = ENTITY::GET_ENTITY_MODEL(veh);
-		Vehicle spawned = vehicle::spawn(model, self::pos, 0.0f);
-
-		ENTITY::SET_ENTITY_ALPHA(spawned, 0, FALSE);
-		if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model))
-			ENTITY::SET_ENTITY_VISIBLE(spawned, FALSE, FALSE);
-		ENTITY::SET_ENTITY_INVINCIBLE(spawned, TRUE);
-
-		float heading    = ENTITY::GET_ENTITY_HEADING(veh);
-		Vector3 rotation = ENTITY::GET_ENTITY_ROTATION(veh, 2);
-		Vector3 coords   = ENTITY::GET_ENTITY_COORDS(veh, FALSE);
-		Vector3 velocity = ENTITY::GET_ENTITY_VELOCITY(veh);
-
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(spawned, coords.x, coords.y, coords.z, FALSE, FALSE, FALSE);
-		ENTITY::SET_ENTITY_HEADING(spawned, heading);
-		ENTITY::SET_ENTITY_ROTATION(spawned, rotation.x, rotation.y, rotation.z, 2, TRUE);
-
-		ENTITY::SET_ENTITY_VISIBLE(veh, TRUE, FALSE);
-
-		ENTITY::SET_ENTITY_COLLISION(veh, FALSE, FALSE);
-		ENTITY::SET_ENTITY_INVINCIBLE(veh, TRUE);
-		VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, 4);
-		VEHICLE::SET_VEHICLE_MAX_SPEED(veh, 0.0001f);
-		ENTITY::ATTACH_ENTITY_TO_ENTITY(veh, spawned, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, FALSE, FALSE, FALSE, FALSE, 0, TRUE, FALSE);
-		PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), spawned, -1);
-
-		VEHICLE::SET_VEHICLE_ENGINE_ON(spawned, TRUE, TRUE, FALSE);
-		ENTITY::SET_ENTITY_VELOCITY(spawned, velocity.x, velocity.y, velocity.z);
-		VEHICLE::COPY_VEHICLE_DAMAGES(veh, spawned);
-
-		g.m_remote_controller_vehicle = spawned;
-		g.m_remote_controlled_vehicle = veh;
-		return true;
 	}
 
 	/*

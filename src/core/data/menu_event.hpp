@@ -6,6 +6,5 @@ enum class menu_event
     PlayerJoin,
     PlayerMgrInit,
     PlayerMgrShutdown,
-    ChatMessageReceived,
     ScriptedGameEventReceived,
 };
