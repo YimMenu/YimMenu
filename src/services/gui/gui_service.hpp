@@ -16,7 +16,6 @@ namespace big
 		OUTFIT_EDITOR,
 		OUTFIT_SLOTS,
 		ANIMATIONS,
-		SPAWN_OBJECTS,
 
 		VEHICLE,
 		HANDLING,
@@ -36,6 +35,7 @@ namespace big
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		VFX,
+		SPAWN_OBJECTS,
 
 		NETWORK,
 		MISSIONS,
@@ -97,7 +97,6 @@ namespace big
 						{TAB_DECL(OUTFIT_EDITOR), view::outfit_editor}},
 		                {TAB_DECL(OUTFIT_SLOTS), view::outfit_slots}},
 						{TAB_DECL(ANIMATIONS), view::animations}},
-						{TAB_DECL(SPAWN_OBJECTS), view::spawn_objects}}
 		            },
 		        },
 		    },
@@ -131,6 +130,7 @@ namespace big
 						{TAB_DECL(BLACKHOLE), view::blackhole}},
 						{TAB_DECL(MODEL_SWAPPER), view::model_swapper}},
 						{TAB_DECL(VFX), view::vfx}},
+						{TAB_DECL(SPAWN_OBJECTS), view::spawn_objects}},
 		            },
 		        },
 		    },
