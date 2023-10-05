@@ -13,6 +13,7 @@ namespace big
 		CUSTOM_TELEPORT,
 		OUTFIT_EDITOR,
 		ANIMATIONS,
+		CASINO,
 
 		VEHICLE,
 		SPAWN_VEHICLE,
@@ -61,6 +62,7 @@ namespace big
 		                {tabs::TELEPORT, {"Teleport", view::teleport, {{tabs::CUSTOM_TELEPORT, {"Custom Teleport", view::custom_teleport}}}}},
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
+						{tabs::CASINO, {"Casino", view::casino}},
 		            },
 		        },
 		    },

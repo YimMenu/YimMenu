@@ -36,6 +36,7 @@ namespace big
 		static void spawn_objects();
 		static void network();
 		static void session_browser();
+		static void casino();
 		static void vehicle();
 		static void spawn_vehicle();
 		static void pv();

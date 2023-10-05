@@ -88,6 +88,17 @@ namespace big
 		}
 	}
 
+	void backend::world_loop()
+	{
+		LOG(INFO) << "Starting script: World";
+
+		while (g_running)
+		{
+			looped::casino();
+			script::get_current()->yield();
+		}
+	}
+
 	void backend::tunables_script()
 	{
 		g_tunables_service->run_script();
