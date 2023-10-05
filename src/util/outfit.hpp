@@ -15,31 +15,31 @@ namespace big::outfit
 
 	struct components_t
 	{
-		std::vector<outfit_t> items = {{0, "OUTFIT_HEAD"_T.data()},
-		    {1, "OUTFIT_BERD"_T.data()},
-		    {2, "OUTFIT_HAIR"_T.data()},
-		    {3, "OUTFIT_UPPR"_T.data()},
-		    {4, "OUTFIT_LOWR"_T.data()},
-		    {5, "OUTFIT_HAND"_T.data()},
-		    {6, "OUTFIT_FEET"_T.data()},
-		    {7, "OUTFIT_TEEF"_T.data()},
-		    {8, "OUTFIT_ACCS"_T.data()},
-		    {9, "OUTFIT_TASK"_T.data()},
-		    {10, "OUTFIT_DECL"_T.data()},
-		    {11, "OUTFIT_JBIB"_T.data()}};
+		std::vector<outfit_t> items = {{0, "HEAD"},
+		    {1, "BERD"},
+		    {2, "HAIR"},
+		    {3, "UPPR"},
+		    {4, "LOWR"},
+		    {5, "HAND"},
+		    {6, "FEET"},
+		    {7, "TEEF"},
+		    {8, "ACCS"},
+		    {9, "TASK"},
+		    {10, "DECL"},
+		    {11, "JBIB"}};
 	};
 
 	struct props_t
 	{
-		std::vector<outfit_t> items = {{0, "OUTFIT_HEAD"_T.data()},
-		    {1, "OUTFIT_GLASSES"_T.data()},
-		    {2, "OUTFIT_EARS"_T.data()},
-		    {3, "OUTFIT_UNK1"_T.data()},
-		    {4, "OUTFIT_UNK2"_T.data()},
-		    {5, "OUTFIT_UNK3"_T.data()},
-		    {6, "OUTFIT_WATCH"_T.data()},
-		    {7, "OUTFIT_WRIST"_T.data()},
-		    {8, "OUTFIT_UNK4"_T.data()}};
+		std::vector<outfit_t> items = {{0, "HEAD"},
+		    {1, "GLASSES"},
+		    {2, "EARS"},
+		    {3, "UNK1"},
+		    {4, "UNK2"},
+		    {5, "UNK3"},
+		    {6, "WATCH"},
+		    {7, "WRIST"},
+		    {8, "UNK4"}};
 	};
 
 	inline void check_bounds_drawable(outfit_t* item)

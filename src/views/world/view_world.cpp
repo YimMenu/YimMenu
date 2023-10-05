@@ -1,29 +1,19 @@
-#include "pointers.hpp"
+
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"
-#include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
 	void view::world()
 	{
-		ImGui::SeparatorText("GUI_TAB_TIME_N_WEATHER"_T.data());
+		ImGui::SeparatorText("Time And Weather");
 		{
 			view::time_and_weather();
 		}
 
 		ImGui::SeparatorText("Peds");
-
-		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
-			for (auto peds : entity::get_entities(false, true))
-			{
-				if (!PED::IS_PED_A_PLAYER(peds))
-					ped::kill_ped(peds);
-			}
-		});
-		ImGui::SameLine();
 
 		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("Kill Enemies", [] {
 			for (auto ped : entity::get_entities(false, true))
@@ -40,45 +30,7 @@ namespace big
 		// Nearby Ped Loops / Toggles
 		components::command_checkbox<"pedsignore">();
 		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrain">();
-		ImGui::SameLine(265.f);
-		components::command_checkbox<"riotmode">();
-		components::command_checkbox<"highalert">();
-		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrush">();
-		ImGui::SameLine();
-		components::command_checkbox<"autodisarm">();
-		components::options_modal("Auto Disarm", [] {
-			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
-		});
-
-		ImGui::SeparatorText("Vehicles");
-		components::sub_title("Vehicles");
-
-		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("Max Upgrade", [] {
-			for (auto vehs : entity::get_entities(true, false))
-			{
-				if (entity::take_control_of(vehs))
-				{
-					vehicle::max_vehicle(vehs);
-					script::get_current()->yield();
-				}
-			}
-		});
-		ImGui::SameLine();
-
-		components::button<ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("Downgrade", [] {
-			for (auto vehs : entity::get_entities(true, false))
-			{
-				if (entity::take_control_of(vehs))
-				{
-					vehicle::downgrade(vehs);
-					script::get_current()->yield();
-				}
-			}
-		});
-
-		components::command_checkbox<"vehiclerain">();
+		components::command_checkbox<"autodisarm">();	
 
 		ImGui::SeparatorText("Entities");
 

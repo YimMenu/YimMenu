@@ -320,7 +320,7 @@ namespace big
 #define LOG_FIELD_H(type, field) LOG(INFO) << "\t" << #field << ": " << HEX_TO_UPPER((((type*)(node))->field));
 #define LOG_FIELD(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field));
 #define LOG_FIELD_C(type, field) LOG(INFO) << "\t" << #field << ": " << (int)((((type*)(node))->field));
-#define LOG_FIELD_B(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field) ? "YES" : "NO");
+#define LOG_FIELD_B(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field) ? "Yes" : "No");
 #define LOG_FIELD_V3(type, field)                                                                                    \
 	LOG(INFO) << "\t" << #field << ": X: " << ((((type*)(node))->field)).x << " Y: " << ((((type*)(node))->field)).y \
 	          << " Z: " << ((((type*)(node))->field)).z;
@@ -1185,9 +1185,6 @@ namespace big
 			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
 				return false;
 
-			if (g.debug.fuzzer.active && g.debug.fuzzer.enabled || sender_plyr && sender_plyr->log_clones)
-				log_node(node_id, sender_plyr, (CProjectBaseSyncDataNode*)node, object);
-
 			switch (node_id)
 			{
 			case sync_node_id("CVehicleCreationDataNode"):
@@ -1429,8 +1426,6 @@ namespace big
 						{
 							if (target->id() == self::id)
 								g.reactions.spectate.process(sender_plyr);
-							else
-								g.reactions.spectate_others.process(sender_plyr, target);
 
 							sender_plyr->spectating_player = target->id();
 						}

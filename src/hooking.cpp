@@ -1,6 +1,5 @@
 #include "hooking.hpp"
 
-#include "common.hpp"
 #include "function_types.hpp"
 #include "gta/script_thread.hpp"
 #include "gui.hpp"
@@ -53,8 +52,6 @@ namespace big
 
 		detour_hook_helper::add<hooks::get_label_text>("GLT", g_pointers->m_gta.m_get_label_text);
 
-		detour_hook_helper::add<hooks::write_player_game_state_data_node>("WPGSDN", g_pointers->m_gta.m_write_player_game_state_data_node);
-
 		detour_hook_helper::add<hooks::gta_thread_start>("GTS", g_pointers->m_gta.m_gta_thread_start);
 		detour_hook_helper::add<hooks::gta_thread_kill>("GTK", g_pointers->m_gta.m_gta_thread_kill);
 		detour_hook_helper::add<hooks::init_native_tables>("INT", g_pointers->m_gta.m_init_native_tables);
@@ -74,7 +71,6 @@ namespace big
 		detour_hook_helper::add<hooks::can_apply_data>("CAD", g_pointers->m_gta.m_can_apply_data);
 
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_gta.m_get_network_event_data);
-		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_gta.m_write_player_gamer_data_node);
 
 		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_gta.m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_gta.m_invalid_decal_crash);
@@ -99,13 +95,12 @@ namespace big
 
 		detour_hook_helper::add<hooks::broadcast_net_array>("BNA", g_pointers->m_gta.m_broadcast_net_array);
 
-		detour_hook_helper::add<hooks::send_session_matchmaking_attributes>("SSMA", g_pointers->m_gta.m_send_session_matchmaking_attributes);
-
 		detour_hook_helper::add<hooks::serialize_take_off_ped_variation_task>("STOPVT", g_pointers->m_gta.m_serialize_take_off_ped_variation_task);
 		detour_hook_helper::add<hooks::serialize_parachute_task>("SPT", g_pointers->m_gta.m_serialize_parachute_task);
 
 		detour_hook_helper::add<hooks::queue_dependency>("QD", g_pointers->m_gta.m_queue_dependency);
 		detour_hook_helper::add<hooks::prepare_metric_for_sending>("PMFS", g_pointers->m_gta.m_prepare_metric_for_sending);
+		detour_hook_helper::add<hooks::http_start_request>("HSR", g_pointers->m_gta.m_http_start_request);
 
 		detour_hook_helper::add<hooks::fragment_physics_crash_2>("FPC2", g_pointers->m_gta.m_fragment_physics_crash_2);
 
@@ -113,30 +108,11 @@ namespace big
 
 		detour_hook_helper::add<hooks::receive_pickup>("RPI", g_pointers->m_gta.m_receive_pickup);
 
-		detour_hook_helper::add<hooks::write_player_camera_data_node>("WPCDN", g_pointers->m_gta.m_write_player_camera_data_node);
-
-		detour_hook_helper::add<hooks::send_player_card_stats>("SPCS", g_pointers->m_gta.m_send_player_card_stats);
-		detour_hook_helper::add<hooks::serialize_stats>("SS", g_pointers->m_gta.m_serialize_stats);
-
-		detour_hook_helper::add<hooks::write_player_creation_data_node>("WPCDN", g_pointers->m_gta.m_write_player_creation_data_node);
-		detour_hook_helper::add<hooks::write_player_appearance_data_node>("WPADN", g_pointers->m_gta.m_write_player_appearance_data_node);
-
-		detour_hook_helper::add<hooks::get_model_info>("GMI", g_pointers->m_gta.m_get_model_info);
-
-		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_gta.m_taskjump_constructor);
-
-		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_gta.m_enumerate_audio_devices);
-		detour_hook_helper::add<hooks::direct_sound_capture_create>("DSCC", g_pointers->m_gta.m_direct_sound_capture_create);
-
 		detour_hook_helper::add<hooks::write_vehicle_proximity_migration_data_node>("WVPMDN", g_pointers->m_gta.m_write_vehicle_proximity_migration_data_node);
 
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
 
-		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
-
 		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
-
-		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
 
 		detour_hook_helper::add<hooks::allocate_memory_reliable>("AMR", g_pointers->m_gta.m_allocate_memory_reliable);
 

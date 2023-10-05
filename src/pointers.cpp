@@ -979,6 +979,15 @@ namespace big
                 g_pointers->m_gta.m_prepare_metric_for_sending = ptr.as<PVOID>();
             }
         },
+        // HTTP Start Request
+        {
+            "HSR",
+            "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 8B D9 48 81 C1 ? ? ? ? 48 8B F2 33 FF E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_http_start_request = ptr.as<PVOID>();
+            }
+        },
         // Send Packet
         {
             "SP",

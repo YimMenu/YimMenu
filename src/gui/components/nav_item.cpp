@@ -1,6 +1,6 @@
 #include "components.hpp"
+#include "core/settings.hpp"
 #include "services/gui/gui_service.hpp"
-#include "services/translation_service/translation_service.hpp"
 
 namespace big
 {
@@ -15,9 +15,7 @@ namespace big
 		if (current_tab)
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.29f, 0.45f, 0.69f, 1.f));
 
-		const char* key = nullptr;
-		if (key = g_translation_service.get_translation(navItem.second.name).data(); !key)
-			key = navItem.second.name;
+		const char* key = navItem.second.name;
 		if (components::nav_button(key))
 			g_gui_service->set_selected(navItem.first);
 

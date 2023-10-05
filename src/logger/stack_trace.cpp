@@ -1,5 +1,6 @@
 #include "stack_trace.hpp"
 
+#include "core/settings.hpp"
 #include "gta/script_thread.hpp"
 #include "memory/module.hpp"
 

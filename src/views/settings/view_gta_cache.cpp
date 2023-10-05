@@ -1,8 +1,5 @@
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
+
 #include "services/gta_data/gta_data_service.hpp"
-#include "thread_pool.hpp"
 #include "views/view.hpp"
 
 namespace big

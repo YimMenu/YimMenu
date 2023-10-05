@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {

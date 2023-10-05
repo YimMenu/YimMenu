@@ -1,3 +1,4 @@
+#include "core/settings.hpp"
 #include "fonts/fonts.hpp"
 #include "gui/components/components.hpp"
 

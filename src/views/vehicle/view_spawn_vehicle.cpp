@@ -1,24 +1,15 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
-#include "services/model_preview/model_preview_service.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
 	void render_spawn_new_vehicle()
 	{
-		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.spawn_vehicle.preview_vehicle))
-		{
-			if (!g.spawn_vehicle.preview_vehicle)
-			{
-				g_model_preview_service->stop_preview();
-			}
-		}
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
-		ImGui::SameLine();
 		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
 		components::command_checkbox<"spawnmaxed">();
@@ -27,7 +18,7 @@ namespace big
 		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("PLATE"_T, "PLATE_NUMBER"_T, plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
+		components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
 			g.spawn_vehicle.plate = plate_buf;
 		});
 
@@ -35,10 +26,10 @@ namespace big
 		const auto& class_arr     = g_gta_data_service->vehicle_classes();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("VEHICLE_CLASS"_T.data(),
-		        selected_class == -1 ? "ALL"_T.data() : class_arr[selected_class].c_str()))
+		if (ImGui::BeginCombo("Vehicle Class",
+		        selected_class == -1 ? "All" : class_arr[selected_class].c_str()))
 		{
-			if (ImGui::Selectable("ALL"_T.data(), selected_class == -1))
+			if (ImGui::Selectable("All", selected_class == -1))
 			{
 				selected_class = -1;
 			}
@@ -62,7 +53,7 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		vehicle_map calculated_map{};
 
@@ -114,7 +105,7 @@ namespace big
 				{
 					const auto& item = g_gta_data_service->vehicle_by_hash(veh_hash);
 
-					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, std::make_format_args(item.m_display_name)), false, [] {
+					components::selectable(std::vformat("Current Vehicle [{}]", std::make_format_args(item.m_display_name)), false, [] {
 						if (self::veh)
 						{
 							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, veh_hash);
@@ -126,7 +117,7 @@ namespace big
 
 							if (veh == 0)
 							{
-								g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+								g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 							}
 							else
 							{
@@ -143,21 +134,7 @@ namespace big
 								}
 							}
 						}
-
-						g_model_preview_service->stop_preview();
 					});
-
-					if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
-					{
-						g_model_preview_service->stop_preview();
-					}
-					else if (ImGui::IsItemHovered())
-					{
-						g_fiber_pool->queue_job([] {
-							g_model_preview_service->show_vehicle(vehicle::get_owned_mods_from_vehicle(self::veh),
-							    g.spawn_vehicle.spawn_maxed);
-						});
-					}
 				}
 			}
 
@@ -176,7 +153,7 @@ namespace big
 
 						if (veh == 0)
 						{
-							g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+							g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 						}
 						else
 						{
@@ -193,24 +170,14 @@ namespace big
 							}
 						}
 
-						g_model_preview_service->stop_preview();
 						ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 					});
 					ImGui::PopID();
-
-					if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
-					{
-						g_model_preview_service->stop_preview();
-					}
-					else if (ImGui::IsItemHovered())
-					{
-						g_model_preview_service->show_vehicle(vehicle.m_hash, g.spawn_vehicle.spawn_maxed);
-					}
 				}
 			}
 			else
 			{
-				ImGui::Text("NO_VEHICLE_IN_REGISTRY"_T.data());
+				ImGui::Text("No vehicles in registry.");
 			}
 			ImGui::EndListBox();
 		}
@@ -218,20 +185,17 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		ImGui::RadioButton("New", &g.spawn_vehicle.spawn_type, 0);
+		ImGui::RadioButton("New", &g.spawn_vehicle_type, 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", &g.spawn_vehicle.spawn_type, 1);
+		ImGui::RadioButton("Personal", &g.spawn_vehicle_type, 1);
 		ImGui::SameLine();
-		ImGui::RadioButton("Persistent", &g.spawn_vehicle.spawn_type, 2);
-		ImGui::SameLine();
-		ImGui::RadioButton("Xml", &g.spawn_vehicle.spawn_type, 3);
+		ImGui::RadioButton("Persistent", &g.spawn_vehicle_type, 2);
 
-		switch (g.spawn_vehicle.spawn_type)
+		switch (g.spawn_vehicle_type)
 		{
 		case 0: render_spawn_new_vehicle(); break;
 		case 1: view::pv(); break;
 		case 2: view::persist_car(); break;
-		case 3: view::xml_vehicles(); break;
 		}
 	}
 }

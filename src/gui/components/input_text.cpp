@@ -1,3 +1,4 @@
+#include "core/settings.hpp"
 #include "fiber_pool.hpp"
 #include "gui/components/components.hpp"
 #include "natives.hpp"

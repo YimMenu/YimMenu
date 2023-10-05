@@ -1,7 +1,5 @@
 #include "services/custom_teleport/custom_teleport_service.hpp"
-#include "util/math.hpp"
 #include "util/teleport.hpp"
-#include "util/blip.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -112,7 +110,7 @@ namespace big
 			}
 			else if (!*g_pointers->m_gta.m_is_session_started)
 			{
-				g_notification_service->push_warning("Custom Teleport", "TELEPORT_NOT_ONLINE"_T.data());
+				g_notification_service->push_warning("Custom Teleport", "You need to be online to use this feature.");
 				return;
 			}
 			else

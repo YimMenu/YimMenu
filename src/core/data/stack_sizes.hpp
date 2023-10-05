@@ -5,7 +5,7 @@ namespace big
 	constexpr inline static const std::pair<const char*, int> stack_sizes[] = {
 	    {"MICRO", 128},
 	    {"MINI", 512},
-	    {"DEFAULT", 1424},
+	    {"Default", 1424},
 	    {"SPECIAL_ABILITY", 1828},
 	    {"FRIEND", 2050},
 	    {"SHOP", 2324},

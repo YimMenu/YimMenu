@@ -9,7 +9,6 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "script_global.hpp"
-#include "services/vehicle_helper/vehicle_helper.hpp"
 
 namespace big::vehicle
 {
@@ -18,8 +17,8 @@ namespace big::vehicle
 		inline static memory::byte_patch* m_patch;
 	};
 
-	float mps_to_speed(float mps, SpeedUnit speed_unit);
-	float speed_to_mps(float speed, SpeedUnit speed_unit);
+	inline float mps_to_miph(float mps) { return mps * 2.2369f; }
+	inline float miph_to_mps(float miph) { return miph / 2.2369f; }
 	Vector3 get_spawn_location(bool spawn_inside, Hash hash, Ped ped = self::ped);
 	void set_mp_bitset(Vehicle veh);
 	void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1);

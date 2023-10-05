@@ -1,14 +1,15 @@
 #include "views/view.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
-	void draw_pair_option(const std::string_view name, decltype(g.notifications.gta_thread_kill)& option)
+	void draw_pair_option(const std::string_view name, decltype(g.notifications.player_join)& option)
 	{
 		ImGui::Text(name.data());
 
 		ImGui::PushID(name.data());
-		ImGui::Checkbox("LOG"_T.data(), &option.log);
-		ImGui::Checkbox("NOTIFY"_T.data(), &option.notify);
+		ImGui::Checkbox("Log", &option.log);
+		ImGui::Checkbox("Notify", &option.notify);
 		ImGui::PopID();
 	}
 
@@ -17,14 +18,10 @@ namespace big
 		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
-			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
-			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
-			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
-			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
-			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
-			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
+			ImGui::Checkbox("Notify", &reaction.notify);
+			ImGui::Checkbox("Log", &reaction.log);
+			ImGui::Checkbox("Kick Player", &reaction.kick);
+			ImGui::Checkbox("Timeout", &reaction.timeout);
 			ImGui::TreePop();
 		}
 		ImGui::PopID();
@@ -36,22 +33,18 @@ namespace big
 		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
-			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
-			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
-			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
-			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
-			ImGui::Checkbox("REACTION_KICK_ATTACKER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("Notify", &reaction.notify);
+			ImGui::Checkbox("Log", &reaction.log);
+			ImGui::Checkbox("Kick Attacker", &reaction.kick);
 
 			if (reaction.m_blockable || reaction.m_karmaable)
 				ImGui::Separator();
 
 			if (reaction.m_blockable)
-				ImGui::Checkbox("BLOCK"_T.data(), &reaction.block);
+				ImGui::Checkbox("Block", &reaction.block);
 
 			if (reaction.m_karmaable)
-				ImGui::Checkbox("KARMA"_T.data(), &reaction.karma);
+				ImGui::Checkbox("Karma", &reaction.karma);
 
 			ImGui::TreePop();
 		}
@@ -60,8 +53,7 @@ namespace big
 
 	void view::reaction_settings()
 	{
-		components::title("SETTINGS_REACTIONS"_T);
-		draw_reaction(g.reactions.bounty);
+		components::title("Reactions");
 		draw_reaction(g.reactions.ceo_kick);
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.clear_wanted_level);
@@ -100,41 +92,32 @@ namespace big
 		draw_reaction(g.reactions.clear_ped_tasks);
 		draw_reaction(g.reactions.remote_ragdoll);
 		draw_reaction(g.reactions.kick_vote);
+
 		draw_reaction(g.reactions.modder_detection);
 		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
+		
 		draw_reaction(g.reactions.report);
 		draw_reaction(g.reactions.report_cash_spawn);
 		draw_reaction(g.reactions.request_control_event);
 		draw_reaction(g.reactions.spectate);
-		draw_interloper_reaction(g.reactions.spectate_others);
+
 		ImGui::Separator();
 		draw_reaction(g.reactions.gamer_instruction_kick);
 
-		components::title("SETTINGS_NOTIFICATIONS"_T);
-		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);
+		components::title("Notifications");
+		components::sub_title("GTA Threads");
 
-		draw_pair_option("SETTINGS_NOTIFY_GTA_THREADS_TERMINATE"_T, g.notifications.gta_thread_kill);
-		draw_pair_option("SETTINGS_NOTIFY_GTA_THREADS_START"_T, g.notifications.gta_thread_start);
+		draw_pair_option("Terminate", g.notifications.gta_thread_kill);
+		draw_pair_option("Start", g.notifications.gta_thread_start);
 
-		components::sub_title("SETTINGS_NOTIFY_PLAYER_MGR"_T);
+		components::sub_title("Network Player Manager");
 
-		ImGui::Text("SETTINGS_NOTIFY_PLAYER_JOIN"_T.data());
+		draw_pair_option("Player Join", g.notifications.player_leave);
+		draw_pair_option("Player Leave", g.notifications.player_leave);
 
-		ImGui::Checkbox("SETTINGS_NOTIFY_PLAYER_JOIN_ABOVE_MAP"_T.data(), &g.notifications.player_join.above_map);
-		ImGui::Checkbox("LOG"_T.data(), &g.notifications.player_join.log);
-		ImGui::Checkbox("NOTIFY"_T.data(), &g.notifications.player_join.notify);
+		components::sub_title("Other");
 
-		draw_pair_option("SETTINGS_NOTIFY_PLAYER_LEAVE"_T, g.notifications.player_leave);
-
-		draw_pair_option("SETTINGS_NOTIFY_PLAYER_MGR_INIT"_T, g.notifications.network_player_mgr_init);
-		draw_pair_option("SETTINGS_NOTIFY_PLAYER_MGR_SHUTDOWN"_T, g.notifications.network_player_mgr_shutdown);
-
-		components::sub_title("SETTINGS_NOTIFY_OTHER"_T);
-
-		draw_pair_option("SETTINGS_NOTIFY_TRANSACTION_RATE_LIMIT"_T, g.notifications.transaction_rate_limit);
-		draw_pair_option("SETTINGS_NOTIFY_MISMATCH_SYNC_TYPE"_T, g.notifications.mismatch_sync_type);
-		draw_pair_option("SETTINGS_NOTIFY_OUT_OF_ALLOWED_RANGE_SYNC_TYPE"_T, g.notifications.out_of_allowed_range_sync_type);
-		draw_pair_option("SETTINGS_NOTIFY_INVALID_SYNC"_T, g.notifications.invalid_sync);
+		draw_pair_option("Transaction Error / Rate Limit", g.notifications.transaction_rate_limit);
 	}
 
 }

@@ -117,8 +117,6 @@ public:
 
 	virtual void* send_host_migration_event(CNetGamePlayer* player) = 0;
 
-	virtual void* player_joined(void**, void* msg_ctx) = 0;
-
 	virtual void* player_joined_ack(void**, void* msg_ctx) = 0;
 
 	virtual bool _0x38(void*, void*) = 0;// join_script?

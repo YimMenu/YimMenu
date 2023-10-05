@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 namespace big

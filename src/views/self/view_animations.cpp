@@ -1,6 +1,5 @@
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "util/animations.hpp"
-#include "views/debug/view_debug.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -40,12 +39,12 @@ namespace big
 		ImGui::PushItemWidth(250);
 		components::input_text_with_hint("##dict", "Dict", g_ped_animation_service.current_animation.dict);
 		components::options_modal(
-		    "Debug animations",
+		    "All animations",
 		    [] {
-			    debug::animations(&g_ped_animation_service.current_animation.dict, &g_ped_animation_service.current_animation.anim);
+			    animations::list_all_anims(&g_ped_animation_service.current_animation.dict, &g_ped_animation_service.current_animation.anim);
 		    },
 		    true,
-		    "List From Debug");
+		    "List all anims");
 		components::input_text_with_hint("##anim", "Anim", g_ped_animation_service.current_animation.anim);
 
 		ImGui::SameLine();
@@ -66,20 +65,9 @@ namespace big
 				ImGui::SetTooltip("-1 will make the duration indefinite, assuming it is looped");
 			ImGui::PopItemWidth();
 
-			ImGui::Checkbox("Ambient", &g_ped_animation_service.current_animation.ambient);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Current location and rotation will be saved and used");
 
-			if (g_ped_animation_service.current_animation.ambient)
-			{
-				g_ped_animation_service.current_animation.pos[0] = self::pos.x;
-				g_ped_animation_service.current_animation.pos[1] = self::pos.y;
-				g_ped_animation_service.current_animation.pos[2] = self::pos.z;
-
-				g_ped_animation_service.current_animation.rot[0] = self::rot.x;
-				g_ped_animation_service.current_animation.rot[1] = self::rot.y;
-				g_ped_animation_service.current_animation.rot[2] = self::rot.z;
-			}
 			else
 			{
 				g_ped_animation_service.current_animation.pos[0] = 0;
@@ -180,12 +168,6 @@ namespace big
 
 		components::small_text("Double click to play\nShift click to delete");
 
-		ImGui::SameLine();
-
-		ImGui::Checkbox("Prompt Ambient", &g.self.prompt_ambient_animations);
-		if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Ambient animations will be prompted if you are close to one");
-
 		static std::string filter;
 
 		ImGui::BeginGroup();
@@ -248,8 +230,6 @@ namespace big
 
 						ImGui::Text(std::format("Dict: {}\nAnim: {}", p.dict, p.anim).data());
 
-						if (p.ambient)
-							ImGui::BulletText("Ambient animation");
 						ImGui::EndTooltip();
 					}
 				}

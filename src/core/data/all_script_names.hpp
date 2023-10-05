@@ -1,4 +1,5 @@
 #pragma once
+#include "gta/joaat.hpp"
 
 namespace big
 {
@@ -117,7 +118,7 @@ namespace big
 	    RAGE_JOAAT("GB_SMUGGLER"),
 	    RAGE_JOAAT("GB_SMUGGLER"),
 	    RAGE_JOAAT("GB_GANGOPS"),
-	    RAGE_JOAAT("BUSINESS_BATTLES"),
+	    RAGE_JOAAT("Business Battles"),
 	    RAGE_JOAAT("BUSINESS_BATTLES_SELL"),
 	    RAGE_JOAAT("BUSINESS_BATTLES_DEFEND"),
 	    RAGE_JOAAT("GB_SECURITY_VAN"),

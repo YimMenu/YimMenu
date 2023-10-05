@@ -1,16 +1,17 @@
 #include "backend/looped_command.hpp"
 #include "natives.hpp"
+#include "core/settings.hpp"
 
 namespace big
 {
-	class infinite_mag : looped_command
+	class infinite_mag : bool_command
 	{
-		using looped_command::looped_command;
+		using bool_command::bool_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
 		float og_recoil_value          = 0.0f;
 
-		virtual void on_tick() override
+		virtual void on_enable() override
 		{
 			WEAPON::SET_PED_INFINITE_AMMO_CLIP(self::ped, TRUE);
 		}
@@ -21,5 +22,5 @@ namespace big
 		}
 	};
 
-	infinite_mag g_infinite_mag("infclip", "Infinite Clip", "Shoot forever without needing to reload", g.weapons.infinite_mag);
+	infinite_mag g_infinite_mag("infclip", "Freeze Clip", "Freeze clip ammo (no reload)", g.weapons.infinite_mag);
 }

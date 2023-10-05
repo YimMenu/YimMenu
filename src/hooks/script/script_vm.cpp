@@ -1,4 +1,5 @@
 #include "core/scr_globals.hpp"
+#include "core/settings.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
@@ -42,12 +43,6 @@ namespace big
 			{
 				old_shop_index = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex;
 				old_cayo_flags = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags;
-
-				if (g.spoofing.hide_from_player_list)
-				{
-					scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex = -1;
-					scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = 1;
-				}
 			}
 
 			g.in_script_vm = false;

@@ -1,9 +1,11 @@
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "script_global.hpp"
-#include "script/globals/GPBD_FM_3.hpp"
+#include "core/settings.hpp"
 #include "gta_util.hpp"
+#include "natives.hpp"
+#include "script/globals/GPBD_FM_3.hpp"
+#include "script_global.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 
 namespace big
@@ -38,5 +40,5 @@ namespace big
 		}
 	};
 
-	toggle_passive g_toggle_passive("passive", "PASSIVE", "PASSIVE_DESC", g.self.passive);
+	toggle_passive g_toggle_passive("passive", "Passive Mode", "Instantly toggle passive mode", g.self.passive);
 }

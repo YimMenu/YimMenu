@@ -39,8 +39,6 @@ namespace big::scr_globals
 
 	static inline const script_global spawn_global(2694613);
 
-	static inline const script_global dance_state(1950837);
-
 	static inline const script_global mobile(20483);
 
 	static inline const script_global transaction_overlimit(20483);
@@ -57,6 +55,9 @@ namespace big::scr_globals
 	static inline const script_global gooch(1890378);
 
 	static inline const script_global passive(1574582);
+
+	static inline const script_global property_garage(1945123);
+	static inline const script_global property_names(1312228);
 }
 
 namespace big::scr_locals

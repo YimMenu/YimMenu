@@ -1,4 +1,5 @@
 #pragma once
+#include <rage/rlSessionInfo.hpp>
 
 namespace big
 {

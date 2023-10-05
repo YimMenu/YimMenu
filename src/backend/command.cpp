@@ -41,11 +41,9 @@ namespace big
 		constexpr bool generate_command_documentation = false;
 		if constexpr (generate_command_documentation)
 		{
-			auto translated_label = g_translation_service.get_translation(m_label);
-			auto translated_desc  = g_translation_service.get_translation(m_description);
-			if (!translated_label.empty())
+			if (!m_label.empty())
 			{
-				LOG(INFO) << "Command | " << m_name << " | " << translated_label << " | " << translated_desc << " | "
+				LOG(INFO) << "Command | " << m_name << " | " << m_label << " | " << m_description << " | "
 				          << std::to_string(m_num_args.value_or(0));
 			}
 		}

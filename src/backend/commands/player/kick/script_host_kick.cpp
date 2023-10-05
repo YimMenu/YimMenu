@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/scripts.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -29,5 +30,5 @@ namespace big
 		}
 	};
 
-	script_host_kick g_script_host_kick("shkick", "SCRIPT_HOST_KICK", "SCRIPT_HOST_KICK_DESC", 0, false);
+	script_host_kick g_script_host_kick("shkick", "Script Host Kick", "Blocked by most menus", 0, false);
 }

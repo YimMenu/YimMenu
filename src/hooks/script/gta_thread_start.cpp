@@ -1,5 +1,7 @@
 #include "hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
+#include "core/settings.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {

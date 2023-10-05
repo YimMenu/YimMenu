@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 
 #include <ped/CPedIntelligence.hpp>
@@ -16,5 +17,5 @@ namespace big
 		}
 	};
 
-	unlimited_oxygen g_unlimited_oxygen("infoxy", "UNLIMITED_OXYGEN", "UNLIMITED_OXYGEN_DESC", g.self.unlimited_oxygen);
+	unlimited_oxygen g_unlimited_oxygen("infoxy", "Unlimited Oxygen", "Allows you to stay underwater without losing oxygen", g.self.unlimited_oxygen);
 }

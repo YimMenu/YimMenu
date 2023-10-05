@@ -1,7 +1,6 @@
 #pragma once
 #include "entity.hpp"
 #include "gta/enums.hpp"
-#include "local_player.hpp"
 #include "math.hpp"
 #include "natives.hpp"
 #include "outfit.hpp"
@@ -469,15 +468,26 @@ namespace big::ped
 
 	inline bool steal_outfit(const Ped target)
 	{
-		Ped ped = self::ped;
+		outfit::components_t components;
 
-		if (ENTITY::GET_ENTITY_MODEL(ped) != ENTITY::GET_ENTITY_MODEL(target))
+		for (auto item : components.items)
 		{
-			return false;
+			if (item.id != 2)
+			{
+				auto draw    = PED::GET_PED_DRAWABLE_VARIATION(target, item.id);
+				auto texture = PED::GET_PED_TEXTURE_VARIATION(target, item.id);
+				auto palette = PED::GET_PED_PALETTE_VARIATION(target, item.id);
+
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, draw, texture, palette);
+			}
 		}
-		for (int i = 0; i < 12; i++)
+
+		PED::CLEAR_ALL_PED_PROPS(self::ped, 0);
+
+		outfit::props_t props;
+		for (auto& item : props.items)
 		{
-			PED::SET_PED_COMPONENT_VARIATION(ped, i, PED::GET_PED_DRAWABLE_VARIATION(target, i), PED::GET_PED_TEXTURE_VARIATION(target, i), PED::GET_PED_PALETTE_VARIATION(target, i));
+			PED::SET_PED_PROP_INDEX(self::ped, item.id, PED::GET_PED_PROP_INDEX(target, item.id, 1), PED::GET_PED_PROP_TEXTURE_INDEX(target, item.id), TRUE, 1);
 		}
 
 		return true;

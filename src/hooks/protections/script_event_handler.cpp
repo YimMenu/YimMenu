@@ -3,7 +3,6 @@
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
-#include "lua/lua_manager.hpp"
 #include "util/math.hpp"
 #include "util/session.hpp"
 
@@ -66,27 +65,8 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
-		if (g_lua_manager && g_lua_manager->get_module_count() > 0)
-		{
-			std::vector<int32_t> script_event_args;
-
-			for (int i = 0; i < scripted_game_event->m_args_size; i++)
-				script_event_args.push_back(args[i]);
-
-			auto event_ret = g_lua_manager->trigger_event<menu_event::ScriptedGameEventReceived, bool>((int)player->m_player_id, script_event_args);
-			if (event_ret.has_value())
-				return true; // don't care, block event if any bool is returned
-		}
-
 		switch (hash)
 		{
-		case eRemoteEvent::Bounty:
-			if (g.protections.script_events.bounty && args[2] == self::id)
-			{
-				g.reactions.bounty.process(plyr);
-				return true;
-			}
-			break;
 		case eRemoteEvent::CeoKick:
 			if (player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
 			{
@@ -424,27 +404,6 @@ namespace big
 			g.reactions.tse_sender_mismatch.process(plyr);
 			return true;
 		}
-
-		if (g.debug.logs.script_event.logs
-		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
-		{
-			std::string script_args = "{ ";
-			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
-			{
-				if (i)
-					script_args += ", ";
-
-				script_args += std::to_string((int)args[i]);
-			}
-			script_args += " };";
-
-			LOG(VERBOSE) << "Script Event:\n"
-			             << "\tPlayer: " << player->get_name() << "\n"
-			             << "\tArgs: " << script_args;
-		}
-
-		if (g.debug.logs.script_event.block_all)
-			return true;
 
 		return false;
 	}

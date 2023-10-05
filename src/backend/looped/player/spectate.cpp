@@ -1,4 +1,5 @@
 #include "backend/looped/looped.hpp"
+#include "core/settings.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
@@ -12,7 +13,7 @@ namespace big
 		const auto vehicle = self::veh;
 		const auto ped     = self::ped;
 
-		if (!g_player_service->get_selected()->is_valid() || !g.player.spectating)
+		if (!g.player.spectating || !g_player_service->get_selected()->is_valid())
 		{
 			if (g.player.spectating)
 				g.player.spectating = false;

@@ -18,7 +18,6 @@ namespace big
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
 			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
 			script::get_current()->yield(700ms);
 
@@ -29,10 +28,9 @@ namespace big
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
 
 			if (g_player_service->get_self()->is_host())
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-				    NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+				NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 		}
 	};
 
-	multi_kick g_multi_kick("multikick", "MULTI_KICK", "MULTI_KICK_DESC", 0, false);
+	multi_kick g_multi_kick("multikick", "Multi kick", "Kick the player using all available methods", 0, false);
 }
