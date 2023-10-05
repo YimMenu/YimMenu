@@ -24,7 +24,8 @@ namespace big
 
 	void looped::casino()
 	{
-		if(g_gui_service->get_selected_tab().at(0) != tabs::CASINO) return;
+		if (g_gui_service->get_selected_tab().empty() || g_gui_service->get_selected_tab().back() != tabs::CASINO)
+			return;
 
 		// if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::joaat("casino_slots")) != 0)
 		// {
