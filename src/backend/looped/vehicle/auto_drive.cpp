@@ -61,7 +61,7 @@ namespace big
 					TASK::CLEAR_PED_TASKS(self::ped);
 
 					has_driving_settings_changed = false;
-					is_driving                   = false; // start driving again in next tick
+					is_driving                   = false; // start driving again in next tick if !interupted
 				}
 
 				if (interupted)

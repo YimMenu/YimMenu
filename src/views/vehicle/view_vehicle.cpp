@@ -19,27 +19,26 @@ namespace big
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(self::veh);
 		});
 
-		ImGui::Separator();
-
+		ImGui::Spacing();
 		components::command_button<"pvtp">();
-		ImGui::SameLine();
-		components::command_checkbox<"keepengine">();
-
+		ImGui::Spacing();
+		
 		ImGui::SeparatorText("General");
 		{
 			ImGui::BeginGroup();
 			{
 				components::command_checkbox<"vehgodmode">();
 				components::command_checkbox<"vehjump">();
-				components::command_checkbox<"allvehsinheists">();
+				components::command_checkbox<"blockhoming">();
+				components::command_checkbox<"keepengine">();
 			}
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			{
-				components::command_checkbox<"blockhoming">();
 				components::command_checkbox<"seatbelt">();
 				components::command_checkbox<"veh_boost">();
+				components::command_checkbox<"allvehsinheists">();
 			}
 			ImGui::EndGroup();
 		}

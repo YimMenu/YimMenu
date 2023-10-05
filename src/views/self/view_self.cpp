@@ -21,18 +21,35 @@ namespace big
 		components::command_button<"skipcutscene">();
 		ImGui::SameLine();
 		components::command_button<"clearwantedlvl">();
+
+		ImGui::Spacing();
 		components::command_button<"clean">();
+		ImGui::Spacing();
 
 		ImGui::BeginGroup();
 		components::command_checkbox<"godmode">();
-		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
+		components::command_checkbox<"noragdoll">();
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
-		
+
 		ImGui::BeginGroup();
+		components::command_checkbox<"noidlekick">();
+		components::command_checkbox<"otr">();
+		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
+			components::command_checkbox<"ghostorg">();
+
+		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
+		components::command_checkbox<"passive">();
+		ImGui::EndDisabled();
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		components::command_checkbox<"freecam">();
 		components::command_checkbox<"noclip">();
 		components::options_modal("Noclip", [] {
 			ImGui::Separator();
@@ -44,10 +61,6 @@ namespace big
 			ImGui::SliderFloat("##noclipspeedmult", &g.self.noclip_speed_multiplier, 1.f, 100.f);
 			ImGui::EndGroup();
 		});
-		
-		components::command_checkbox<"noragdoll">();
-		components::command_checkbox<"noidlekick">();
-
 		ImGui::Checkbox("Context Menu Enabled", &g.context_menu.enabled);
 		components::options_modal("Context Menu Enabled", [] {
 			ImGui::Text("Allowed Entity Types:");
@@ -78,7 +91,6 @@ namespace big
 				}
 			}
 		});
-
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("OTHERS###otherselfOptions");
@@ -104,13 +116,5 @@ namespace big
 		components::button("Hide Radar", [] {
 			HUD::DISPLAY_RADAR(hideRadar = !hideRadar);
 		});
-
-		components::command_checkbox<"otr">();
-		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
-			components::command_checkbox<"ghostorg">();
-
-		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
-		components::command_checkbox<"passive">();
-		ImGui::EndDisabled();
 	}
 }
