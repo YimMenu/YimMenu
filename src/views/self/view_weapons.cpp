@@ -10,15 +10,12 @@ namespace big
 {
 	void view::weapons()
 	{
-		ImGui::SeparatorText("Ammo");
-
-		ImGui::BeginGroup();
-
 		components::command_button<"fillammo">();
+
+		ImGui::SeparatorText("General");
+
 		components::command_checkbox<"infammo">();
 		components::command_checkbox<"infclip">();
-
-		ImGui::EndGroup();
 
 		ImGui::SeparatorText("Misc");
 
@@ -40,6 +37,8 @@ namespace big
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
 		});
+
+		ImGui::Spacing();
 
 		if (ImGui::CollapsingHeader("Ammunation"))
 		{
@@ -117,6 +116,8 @@ namespace big
 				WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
 			});
 		}
+		
+		ImGui::Spacing();
 
 		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{

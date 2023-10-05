@@ -23,7 +23,7 @@ namespace big
 				int& is_lowrider_ref = is_lowrider; // Helper reference
 
 				g_fiber_pool->queue_job([&is_lowrider_ref]() {
-					if (VEHICLE::GET_HAS_RETRACTABLE_WHEELS(self::veh))
+					if (VEHICLE::IS_TOGGLE_MOD_ON(self::veh, 18))
 						is_lowrider_ref = 2;
 				});
 			}
@@ -41,7 +41,7 @@ namespace big
 
 			ImGui::BeginGroup();
 			{
-				for (int i = 0; i < sizeof(wheelIndexes); ++i)
+				for (int i = 0; i < 4; ++i)
 				{
 					components::button("Raise Wheel " + std::to_string(i + 1) + " (smooth)", [&, wheelIndex = wheelIndexes[i]] {
 						bool raised = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex) < maxWheelRaiseFactor ? false : true;
@@ -78,11 +78,9 @@ namespace big
 					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 4, 1, maxWheelRaiseFactor, 0);
 					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 5, 1, maxWheelRaiseFactor, 0);
 				});
-				ImGui::SameLine();
 				components::button("Lower all wheels (smooth)", [&] {
 					VEHICLE::SET_HYDRAULIC_VEHICLE_STATE(self::veh, 0);
 				});
-				ImGui::SameLine();
 				components::button("Jump wheels", [&] {
 					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 0, maxWheelRaiseFactor);
 					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 1, maxWheelRaiseFactor);
@@ -95,6 +93,7 @@ namespace big
 					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 5, 0);
 				});
 			}
+			ImGui::EndGroup();
 		}
 		else
 			components::small_text("Please sit in a lowrider vehicle");
@@ -139,8 +138,13 @@ namespace big
 				if (!it.second)
 					ImGui::BeginDisabled();
 
-				components::button(idx >= 0 ? ("Seat " + std::to_string(idx + 1)) : "Driver", [idx] {
-					PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
+				bool& is_veh_checked_ref = is_veh_checked; // Helper reference
+
+				components::button(idx >= 0 ? ("Seat " + std::to_string(idx + 1)) : "Driver", [idx, &is_veh_checked_ref] {
+					if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, idx, true))
+						PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
+						
+					is_veh_checked_ref = false; // recheck available seats
 				});
 
 				if (!it.second)
@@ -170,7 +174,7 @@ namespace big
 
 				if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g.vehicle.auto_drive_style]))
 				{
-					for (int i = 0; i < sizeof(driving_style_names); i++)
+					for (int i = 0; i < 2; i++)
 						if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
 							g.vehicle.auto_drive_style = (AutoDriveStyle)i;
 					ImGui::EndCombo();
