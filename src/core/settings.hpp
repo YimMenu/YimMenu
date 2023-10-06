@@ -266,6 +266,12 @@ namespace big
 			int local_weather = 0;
 		} world{};
 
+		struct spoofing
+		{
+			bool spoof_hide_god      = true;
+			bool spoof_hide_spectate = true;
+		} spoofing{};
+
 		struct vehicle
 		{
 			bool god_mode            = false;
