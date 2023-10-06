@@ -3,170 +3,130 @@
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
-const int wheelIndexes[4]         = {0, 1, 4, 5};
+constexpr int wheelIndexes[4]     = {0, 1, 4, 5};
 const char* driving_style_names[] = {"Law-Abiding", "The Road Is Yours"};
+
+constexpr auto MAX_VEHICLE_DOORS = 6;
+const char* const doornames[MAX_VEHICLE_DOORS]{
+    "Front left",
+    "Front right",
+    "Back left",
+    "Back right",
+    "Bonnet",
+    "Trunk",
+};
 
 namespace big
 {
-	void view_low_rider_veh_controls()
+	void view::fun_vehicle()
 	{
-		ImGui::SeparatorText("Lowrider vehicle controls");
-
 		static int is_lowrider = 1; // 0 = no, 1 = undefined, 2 = yes
 
 		if (self::veh)
 		{
-			if (is_lowrider == 1)
+			if (ImGui::CollapsingHeader("Vehicle controls"))
 			{
-				is_lowrider = 0;
+				static Vehicle last_veh;
 
-				int& is_lowrider_ref = is_lowrider; // Helper reference
+				if (last_veh != self::veh)
+					last_veh = self::veh;
 
-				g_fiber_pool->queue_job([&is_lowrider_ref]() {
-					if (VEHICLE::IS_TOGGLE_MOD_ON(self::veh, 18))
-						is_lowrider_ref = 2;
-				});
-			}
-		}
-		else if (is_lowrider != 1)
-			is_lowrider = 1;
-
-		if (is_lowrider == 2)
-		{
-			static float maxWheelRaiseFactor;
-
-			ImGui::PushItemWidth(200);
-			ImGui::SliderFloat("maxWheelRaiseFactor", &maxWheelRaiseFactor, 1, 4);
-			ImGui::PopItemWidth();
-
-			ImGui::BeginGroup();
-			{
-				for (int i = 0; i < 4; ++i)
+				ImGui::SeparatorText("Doors");
 				{
-					components::button("Raise Wheel " + std::to_string(i + 1) + " (smooth)", [&, wheelIndex = wheelIndexes[i]] {
-						bool raised = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex) < maxWheelRaiseFactor ? false : true;
-						if (raised)
-							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 0, maxWheelRaiseFactor, 1);
-						else
-						{
-							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 4, maxWheelRaiseFactor, 1);
-							script::get_current()->yield(250ms);
-							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 1, maxWheelRaiseFactor, 1);
-						}
+					components::button("Open All", [=] {
+						vehicle::operate_vehicle_door(last_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
 					});
-					// ImGui::SameLine();
-					// components::button("Raise Wheel " + std::to_string(i + 1) + " (instant)", [&, wheelIndex = wheelIndexes[i]] {
-					// 	bool raised = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex) < maxWheelRaiseFactor ? false : true;
-					// 	VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex, raised ? 0 : maxWheelRaiseFactor);
-					// });
+					ImGui::SameLine();
+					components::button("Close All", [=] {
+						vehicle::operate_vehicle_door(last_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
+					});
+					for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
+					{
+						ImGui::Text(doornames[i]);
+						ImGui::SameLine();
+						ImGui::PushID(i);
+						components::button("Toggle", [=] {
+							vehicle::operate_vehicle_door(last_veh, (eDoorId)i, !(VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(last_veh, i) > 0.0f));
+						});
+						ImGui::PopID();
+					}
+				}
+				ImGui::SeparatorText("Windows");
+				{
+					components::button("Roll Down All", [] {
+						vehicle::operate_vehicle_window(last_veh, eWindowId::WINDOW_INVALID_ID, true);
+					});
+					ImGui::SameLine();
+					components::button("Roll Up All", [] {
+						vehicle::operate_vehicle_window(last_veh, eWindowId::WINDOW_INVALID_ID, false);
+					});
+				}
+				ImGui::SeparatorText("lights");
+				{
+					components::button("Interior lights on", [] {
+						VEHICLE::SET_VEHICLE_INTERIORLIGHT(last_veh, true);
+					});
+					ImGui::SameLine();
+					components::button("Interior lights off", [] {
+						VEHICLE::SET_VEHICLE_INTERIORLIGHT(last_veh, false);
+					});
 				}
 			}
-			ImGui::EndGroup();
-
-			ImGui::SameLine();
-
-			ImGui::BeginGroup();
+			ImGui::Spacing();
+			if (ImGui::CollapsingHeader("Seat Changer"))
 			{
-				components::button("Raise all wheels (smooth)", [&] {
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 0, 4, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 1, 4, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 4, 4, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 5, 4, maxWheelRaiseFactor, 0);
+				static bool is_veh_checked;
+				static std::map<int, bool> seats;
 
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 0, 1, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 1, 1, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 4, 1, maxWheelRaiseFactor, 0);
-					VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 5, 1, maxWheelRaiseFactor, 0);
-				});
-				components::button("Lower all wheels (smooth)", [&] {
-					VEHICLE::SET_HYDRAULIC_VEHICLE_STATE(self::veh, 0);
-				});
-				components::button("Jump wheels", [&] {
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 0, maxWheelRaiseFactor);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 1, maxWheelRaiseFactor);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 4, maxWheelRaiseFactor);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 5, maxWheelRaiseFactor);
-					script::get_current()->yield(250ms);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 0, 0);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 1, 0);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 4, 0);
-					VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 5, 0);
-				});
+				if (self::veh)
+				{
+					if (!is_veh_checked)
+					{
+						is_veh_checked = true;
+						g_fiber_pool->queue_job([] {
+							std::map<int, bool> tmp_seats;
+
+							int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
+
+							for (int i = -1; i < num_of_seats; i++)
+								tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
+
+							seats = tmp_seats;
+						});
+					}
+				}
+				else if (is_veh_checked)
+				{
+					is_veh_checked = false;
+					seats.clear();
+				}
+
+				for (auto& it : seats)
+				{
+					int idx = it.first;
+
+					if (!it.second)
+						ImGui::BeginDisabled();
+
+					bool& is_veh_checked_ref = is_veh_checked; // Helper reference
+
+					components::button(idx >= 0 ? ("Seat " + std::to_string(idx + 1)) : "Driver", [idx, &is_veh_checked_ref] {
+						if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, idx, true))
+							PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
+
+						is_veh_checked_ref = false; // recheck available seats
+					});
+
+					if (!it.second)
+						ImGui::EndDisabled();
+
+					if ((idx + 2) % 5 != 0)
+						ImGui::SameLine();
+				}
+				ImGui::NewLine();
 			}
-			ImGui::EndGroup();
-		}
-		else
-			components::small_text("Please sit in a lowrider vehicle");
-	}
-
-	void view_seat_changer()
-	{
-		ImGui::SeparatorText("Seat Changer");
-
-		static bool is_veh_checked;
-		static std::map<int, bool> seats;
-
-		if (self::veh)
-		{
-			if (!is_veh_checked)
-			{
-				is_veh_checked = true;
-				g_fiber_pool->queue_job([] {
-					std::map<int, bool> tmp_seats;
-
-					int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
-
-					for (int i = -1; i < num_of_seats; i++)
-						tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
-
-					seats = tmp_seats;
-				});
-			}
-		}
-		else if (is_veh_checked)
-		{
-			is_veh_checked = false;
-			seats.clear();
-		}
-
-		if (seats.size())
-		{
-			for (auto& it : seats)
-			{
-				int idx = it.first;
-
-				if (!it.second)
-					ImGui::BeginDisabled();
-
-				bool& is_veh_checked_ref = is_veh_checked; // Helper reference
-
-				components::button(idx >= 0 ? ("Seat " + std::to_string(idx + 1)) : "Driver", [idx, &is_veh_checked_ref] {
-					if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, idx, true))
-						PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
-						
-					is_veh_checked_ref = false; // recheck available seats
-				});
-
-				if (!it.second)
-					ImGui::EndDisabled();
-
-				if ((idx + 2) % 5 != 0)
-					ImGui::SameLine();
-			}
-			ImGui::NewLine();
-		}
-		else
-			components::small_text("Please sit in a vehicle");
-	}
-
-	void view::fun_vehicle()
-	{
-		view_seat_changer();
-
-		ImGui::Spacing();
-		ImGui::SeparatorText("Auto Drive");
-		{
-			if (self::veh)
+			ImGui::Spacing();
+			if (ImGui::CollapsingHeader("Auto Drive"))
 			{
 				float auto_drive_speed_in_miph = vehicle::mps_to_miph(g.vehicle.auto_drive_speed);
 				if (ImGui::SliderFloat("Top Speed (mi/h)", &auto_drive_speed_in_miph, 2.2369f, 335.535f, "%.1f"))
@@ -186,11 +146,93 @@ namespace big
 				if (components::button("To Waypoint"))
 					g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 			}
-			else
-				components::small_text("Please sit in a vehicle");
-		}
+			ImGui::Spacing();
+			if (ImGui::CollapsingHeader("Lowrider Vehicle controls"))
+			{
+				if (is_lowrider == 1)
+				{
+					is_lowrider          = 0;
+					int& is_lowrider_ref = is_lowrider; // Helper reference
+					g_fiber_pool->queue_job([&is_lowrider_ref]() {
+						if (VEHICLE::IS_TOGGLE_MOD_ON(self::veh, 18))
+							is_lowrider_ref = 2;
+					});
+				}
 
-		ImGui::Spacing();
-		view_low_rider_veh_controls();
+				if (is_lowrider == 2)
+				{
+					static float maxWheelRaiseFactor;
+
+					ImGui::PushItemWidth(200);
+					ImGui::SliderFloat("maxWheelRaiseFactor", &maxWheelRaiseFactor, 1, 4);
+					ImGui::PopItemWidth();
+
+					ImGui::BeginGroup();
+					{
+						for (int i = 0; i < 4; ++i)
+						{
+							components::button("Raise Wheel " + std::to_string(i + 1) + " (smooth)", [&, wheelIndex = wheelIndexes[i]] {
+								bool raised = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex) < maxWheelRaiseFactor ? false : true;
+								if (raised)
+									VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 0, maxWheelRaiseFactor, 1);
+								else
+								{
+									VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 4, maxWheelRaiseFactor, 1);
+									script::get_current()->yield(250ms);
+									VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, wheelIndex, 1, maxWheelRaiseFactor, 1);
+								}
+							});
+							// ImGui::SameLine();
+							// components::button("Raise Wheel " + std::to_string(i + 1) + " (instant)", [&, wheelIndex = wheelIndexes[i]] {
+							// 	bool raised = VEHICLE::GET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex) < maxWheelRaiseFactor ? false : true;
+							// 	VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, wheelIndex, raised ? 0 : maxWheelRaiseFactor);
+							// });
+						}
+					}
+					ImGui::EndGroup();
+
+					ImGui::SameLine();
+
+					ImGui::BeginGroup();
+					{
+						components::button("Raise all wheels (smooth)", [&] {
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 0, 4, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 1, 4, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 4, 4, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 5, 4, maxWheelRaiseFactor, 0);
+
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 0, 1, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 1, 1, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 4, 1, maxWheelRaiseFactor, 0);
+							VEHICLE::SET_HYDRAULIC_WHEEL_STATE(self::veh, 5, 1, maxWheelRaiseFactor, 0);
+						});
+						components::button("Lower all wheels (smooth)", [&] {
+							VEHICLE::SET_HYDRAULIC_VEHICLE_STATE(self::veh, 0);
+						});
+						components::button("Jump wheels", [&] {
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 0, maxWheelRaiseFactor);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 1, maxWheelRaiseFactor);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 4, maxWheelRaiseFactor);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 5, maxWheelRaiseFactor);
+							script::get_current()->yield(250ms);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 0, 0);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 1, 0);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 4, 0);
+							VEHICLE::SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR(self::veh, 5, 0);
+						});
+					}
+					ImGui::EndGroup();
+				}
+				else
+					components::small_text("Please sit in a lowrider vehicle");
+			}
+		}
+		else
+		{
+			components::small_text("Please sit in a vehicle");
+
+			if (is_lowrider != 1)
+				is_lowrider = 1;
+		}
 	}
 }

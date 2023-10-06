@@ -8,20 +8,26 @@
 #include "util/session.hpp"
 #include "views/view.hpp"
 
+inline void ver_Space()
+{
+	ImGui::Dummy(ImVec2(0.0f, ImGui::GetTextLineHeight()));
+}
+
 namespace big
 {
 	void view::network()
 	{
 		ImGui::BeginGroup();
 		{
-			components::sub_title("Rid Joiner");
-			if (ImGui::BeginListBox("##ridjoiner", get_listbox_dimensions()))
+			ImGui::BeginGroup();
 			{
+				components::sub_title("Rid Joiner");
+
 				static uint64_t rid = 0;
 				static char username[20];
 				static char base64[500]{};
 
-				ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5);
+				ImGui::PushItemWidth(200);
 
 				ImGui::InputScalar("##inputrid", ImGuiDataType_U64, &rid);
 				ImGui::SameLine();
@@ -51,16 +57,38 @@ namespace big
 				});
 
 				ImGui::PopItemWidth();
-				ImGui::EndListBox();
 			}
+			ImGui::EndGroup();
+			ver_Space();
+			ImGui::BeginGroup();
+			{
+				components::sub_title("Misc");
+				ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
+				{
+					ImGui::Checkbox("Block others from joining session", &g.session.lock_session);
+					if (g.session.lock_session)
+						ImGui::Checkbox("Allow Friends", &g.session.allow_friends_into_locked_session);
+				}
+				ImGui::EndDisabled();
+				components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players, "Reveals players that are off the radar");
+				ImGui::Checkbox("Force Thunder globally", &g.session.force_thunder);
+				ImGui::Checkbox("Hide God Mode", &g.spoofing.spoof_hide_god);
+				ImGui::Checkbox("Hide Spectate", &g.spoofing.spoof_hide_spectate);
+			}
+			ImGui::EndGroup();
 		}
 		ImGui::EndGroup();
-		ImGui::SameLine();
+
+		ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
+
 		ImGui::BeginGroup();
 		{
-			components::sub_title("Session Switcher");
-			if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
+			ImGui::BeginGroup();
 			{
+				components::sub_title("Session Switcher");
+
+				ImGui::PushItemWidth(300);
+
 				if (ImGui::BeginCombo("##regionswitcher", "Regions"))
 				{
 					for (const auto& region_type : regions)
@@ -75,44 +103,21 @@ namespace big
 						session::join_type(session_type.id);
 					});
 
-				ImGui::EndListBox();
+				ImGui::PopItemWidth();
 			}
-		}
-		ImGui::EndGroup();
-
-		ImGui::BeginGroup();
-		{
-			components::sub_title("Misc");
-			if (ImGui::BeginListBox("##miscsession", get_listbox_dimensions()))
+			ImGui::EndGroup();
+			ver_Space();
+			ImGui::BeginGroup();
 			{
-				ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
-				{
-					ImGui::Checkbox("Block others from joining session", &g.session.lock_session);
-					if (g.session.lock_session)
-						ImGui::Checkbox("Allow Friends", &g.session.allow_friends_into_locked_session);
-				}
-				ImGui::EndDisabled();
-				components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players, "Reveals players that are off the radar");
-				ImGui::Checkbox("Force Thunder globally", &g.session.force_thunder);
-				ImGui::Checkbox("Hide God Mode", &g.spoofing.spoof_hide_god);
-				ImGui::Checkbox("Hide Spectate", &g.spoofing.spoof_hide_spectate);
+				components::sub_title("Chat");
 
-				ImGui::EndListBox();
-			}
-		}
-		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-		{
-			components::sub_title("Chat");
-			if (ImGui::BeginListBox("##chat", get_listbox_dimensions()))
-			{
 				static bool log_chat_messages, is_team;
 				static char msg[256];
 
 				ImGui::Checkbox("Log Messages (to file)", &g.session.log_chat_messages);
+				ImGui::PushItemWidth(300);
 				components::input_text_with_hint("##message", "Message", msg, sizeof(msg));
-
+				ImGui::PopItemWidth();
 				ImGui::Checkbox("Is Team Message", &is_team);
 				ImGui::SameLine();
 				components::button("Send Message", [] {
@@ -123,32 +128,33 @@ namespace big
 						        is_team))
 							notify::draw_chat(msg, net_game_player->get_name(), is_team);
 				});
-
-				ImGui::EndListBox();
 			}
-		}
-		ImGui::EndGroup();
+			ImGui::EndGroup();
+			ver_Space();
+			ImGui::BeginGroup();
+			{
+				components::sub_title("Force Host");
 
-		ImGui::BeginGroup();
-		{
-			components::sub_title("Force Host");
-			ImGui::Checkbox("Force Session Host", &g.session.force_session_host);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked");
+				ImGui::Checkbox("Force Session Host", &g.session.force_session_host);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked");
 
-			if (ImGui::Checkbox("Force Script Host", &g.session.force_script_host))
-				if (g.session.force_script_host)
-					g_fiber_pool->queue_job([] {
-						scripts::force_host(RAGE_JOAAT("freemode"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
-							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
+				if (ImGui::Checkbox("Force Script Host", &g.session.force_script_host))
+					if (g.session.force_script_host)
+						g_fiber_pool->queue_job([] {
+							scripts::force_host(RAGE_JOAAT("freemode"));
+							if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
+								((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 
-						scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
-							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
-					});
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("This might break freemode missions and interiors. Use with caution");
+							scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
+							if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher"));
+							    script && script->m_net_component)
+								((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
+						});
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("This might break freemode missions and interiors. Use with caution");
+			}
+			ImGui::EndGroup();
 		}
 		ImGui::EndGroup();
 	}
