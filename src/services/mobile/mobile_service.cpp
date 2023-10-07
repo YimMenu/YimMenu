@@ -358,8 +358,10 @@ namespace big
 						it->second = veh->get_display_name();
 						m_personal_vehicles.emplace(veh->get_display_name(), std::move(veh));
 					}
-
-					m_personal_vehicles[veh->get_display_name()]->set_garage();
+					else
+					{
+						m_personal_vehicles[veh->get_display_name()]->set_garage();
+					}
 
 					continue;
 				}
