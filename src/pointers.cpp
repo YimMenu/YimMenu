@@ -1685,6 +1685,15 @@ namespace big
             {
                 g_pointers->m_gta.m_remove_player_from_sender_list_caller_2 = ptr.as<PVOID>();
             }
+        },
+        // Game Skeleton Update
+        {
+            "GSU",
+            "40 53 48 83 EC 20 48 8B 59 20 EB 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

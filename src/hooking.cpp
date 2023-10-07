@@ -149,6 +149,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
 
+		detour_hook_helper::add<hooks::game_skeleton_update>("GSU", g_pointers->m_gta.m_game_skeleton_update);
+
 		g_hooking = this;
 	}
 
