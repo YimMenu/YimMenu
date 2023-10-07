@@ -1438,6 +1438,15 @@ namespace big
                 g_pointers->m_gta.m_delete_object = ptr.as<functions::delete_object>();
             }
         },
+        // Remove Player From Sender List
+        {
+            "RPFSL",
+            "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 33 F6 48 8B FA 48 8B D9 66 39 71 08 76",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_player_from_sender_list = ptr.as<functions::remove_player_from_sender_list>();
+            }
+        },
         // Max Wanted Level
         {
             "MWL",
@@ -1657,6 +1666,33 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_is_social_club_overlay_active = ptr.add(2).rip().as<bool*>();
+            }
+        },
+        // Remove Player From Sender List Caller 1
+        {
+            "RPFSLC1",
+            "E8 ? ? ? ? 84 C0 74 0D B0 01 EB 1E",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_player_from_sender_list_caller_1 = ptr.as<PVOID>();
+            }
+        },
+        // Remove Player From Sender List Caller 2
+        {
+            "RPFSLC2",
+            "E8 ? ? ? ? 84 C0 74 0A B0 01 EB 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_remove_player_from_sender_list_caller_2 = ptr.as<PVOID>();
+            }
+        },
+        // Game Skeleton Update
+        {
+            "GSU",
+            "40 53 48 83 EC 20 48 8B 59 20 EB 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end
