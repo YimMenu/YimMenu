@@ -149,6 +149,11 @@ namespace big
 			ImGui::Spacing();
 			if (ImGui::CollapsingHeader("Lowrider Vehicle controls"))
 			{
+				static bool force;
+
+				ImGui::Checkbox("force###forceLowrider", &force);
+				ImGui::Spacing();
+
 				if (is_lowrider == 1)
 				{
 					is_lowrider          = 0;
@@ -159,7 +164,7 @@ namespace big
 					});
 				}
 
-				if (is_lowrider == 2)
+				if (force || is_lowrider == 2)
 				{
 					static float maxWheelRaiseFactor;
 

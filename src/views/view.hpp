@@ -50,10 +50,5 @@ namespace big
 		static void gta_data();
 		static void world();
 		static void gta_cache();
-
-		static void player_info();
-		static void player_teleport();
-		static void player_kick();
-		static void player_misc();
 	};
 }
