@@ -34,6 +34,7 @@ namespace big
 		static void self();
 		static void animations();
 		static void spawn_objects();
+		static void ptfx_effects();
 		static void network();
 		static void session_browser();
 		static void casino();

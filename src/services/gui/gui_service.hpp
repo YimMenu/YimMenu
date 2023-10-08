@@ -14,6 +14,7 @@ namespace big
 		OUTFIT_EDITOR,
 		ANIMATIONS,
 		CASINO,
+		PTFX_EFFECTS,
 
 		VEHICLE,
 		SPAWN_VEHICLE,
@@ -62,7 +63,8 @@ namespace big
 		                {tabs::TELEPORT, {"Teleport", view::teleport, {{tabs::CUSTOM_TELEPORT, {"Custom Teleport", view::custom_teleport}}}}},
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
-						{tabs::CASINO, {"Casino", view::casino}},
+		                {tabs::CASINO, {"Casino", view::casino}},
+		                {tabs::PTFX_EFFECTS, {"Ptfx Effects", view::ptfx_effects}},
 		            },
 		        },
 		    },
