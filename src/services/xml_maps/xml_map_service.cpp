@@ -266,15 +266,25 @@ namespace big
 				VEHICLE::SET_VEHICLE_DOOR_BROKEN(ent, 6, trunk2_broken);
 		}
 
+		VEHICLE::SET_VEHICLE_MOD_KIT(ent, 0);
 		if (auto mods = properties.child("Mods"); !mods.empty())
 		{
 			int mod_type = 0;
 			for (auto mod = mods.first_child(); mod; mod = mod.next_sibling())
 			{
-				auto mod_index = mod.child("index").text().as_int();
-				auto mod_value = mod.child("value").text().as_int();
+				if (mod_type >= 17 && mod_type <= 22)
+				{
+					VEHICLE::TOGGLE_VEHICLE_MOD(ent, mod_type, mod.text().as_bool());
+					mod_type++;
+					continue;
+				}
 
-				VEHICLE::SET_VEHICLE_MOD(ent, mod_type, mod_index, 0);
+				std::string text = mod.text().as_string();
+				size_t comma_pos      = text.find(",");
+				int first_val         = std::stoi(text.substr(0, comma_pos));
+
+				auto mod_value = mod.child("value").text().as_int();
+				VEHICLE::SET_VEHICLE_MOD(ent, mod_type, first_val, 0);
 				mod_type++;
 			}
 		}
