@@ -49,11 +49,9 @@ namespace big
 					const auto cm_start_x = static_cast<float>(*g_pointers->m_gta.m_resolution_x) * context_screen_x + (67.5f * context_target_multplr);
 					const auto cm_start_y = static_cast<float>(*g_pointers->m_gta.m_resolution_y) * context_screen_y - (175.f * context_target_multplr);
 
-					const auto cm_col = ImGui::ColorConvertFloat4ToU32({0.549f, 0.639f, 0.710f, 0.3f});
-
 					draw_list->AddRectFilled({cm_start_x - 2.f, cm_start_y},
 					    {cm_start_x + 2.f + cm->menu_size.x, cm_start_y + cm->menu_size.y},
-					    cm_col,
+					    g.window.background_color,
 					    5.f);
 
 					for (uint32_t i = 0; i < cm->options.size(); i++)

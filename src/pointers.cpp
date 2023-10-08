@@ -1689,7 +1689,7 @@ namespace big
         // Game Skeleton Update
         {
             "GSU",
-            "40 53 48 83 EC 20 48 8B 59 20 EB 0D",
+            "40 53 48 83 EC 20 48 8B 81 40 01",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();

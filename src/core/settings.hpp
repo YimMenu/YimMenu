@@ -45,7 +45,6 @@ namespace big
 		nlohmann::json m_options;
 
 	public:
-
 		CNetGamePlayer* m_syncing_player  = nullptr;
 		eNetObjType m_syncing_object_type = (eNetObjType)-1;
 
@@ -171,6 +170,14 @@ namespace big
 
 		struct self
 		{
+			struct ptfx_effects
+			{
+				bool show          = false;
+				float size         = 0.2f;
+				const char* asset  = "scr_agencyheist";
+				const char* effect = "scr_fbi_mop_drips";
+			} ptfx_effects{};
+
 			bool passive                      = false;
 			bool free_cam                     = false;
 			bool no_ragdoll                   = false;
@@ -356,7 +363,7 @@ namespace big
 			bool distance                   = true;
 			ImU32 default_color             = 4285713522;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, default_color)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, distance, default_color)
 		} esp{};
 
 		struct session_browser
