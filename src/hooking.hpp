@@ -7,6 +7,7 @@
 #include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 #include "vtable_hook.hpp"
+#include "call_hook.hpp"
 
 #include <network/netConnection.hpp>
 
@@ -180,6 +181,9 @@ namespace big
 		static bool sync_reader_serialize_vec3(void* _this, rage::fvector3* vec, float divisor, int size);
 		static bool sync_reader_serialize_vec3_signed(void* _this, rage::fvector3* vec, float divisor, int size);
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
+
+		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
+		static void game_skeleton_update(__int64 update_group);
 	};
 
 	class minhook_keepalive
@@ -269,6 +273,8 @@ namespace big
 
 		vmt_hook m_swapchain_hook;
 		vtable_hook m_sync_data_reader_hook;
+		call_hook m_remove_player_from_sender_list_caller_1_hook;
+		call_hook m_remove_player_from_sender_list_caller_2_hook;
 
 		WNDPROC m_og_wndproc = nullptr;
 
