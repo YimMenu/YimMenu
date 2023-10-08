@@ -273,6 +273,7 @@ namespace big
 
 		vmt_hook m_swapchain_hook;
 		vtable_hook m_sync_data_reader_hook;
+		vtable_hook m_game_skeleton_update_hook;
 		call_hook m_remove_player_from_sender_list_caller_1_hook;
 		call_hook m_remove_player_from_sender_list_caller_2_hook;
 

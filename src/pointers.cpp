@@ -1689,10 +1689,10 @@ namespace big
         // Game Skeleton Update
         {
             "GSU",
-            "40 53 48 83 EC 20 48 8B 59 20 EB 0D",
+            "48 8D 05 ? ? ? ? 48 8B F9 8B F2",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
+                g_pointers->m_gta.m_game_skeleton_update_group_vtable = ptr.add(3).rip().as<void**>();
             }
         }
         >(); // don't leave a trailing comma at the end
