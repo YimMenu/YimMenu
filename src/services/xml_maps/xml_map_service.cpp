@@ -284,12 +284,12 @@ namespace big
 	{
 		auto properties = ped_node.child("PedProperties");
 
-		auto is_still         = properties.child("IsStill").text().as_bool();
-		auto can_ragdoll      = properties.child("CanRagdoll").text().as_bool();
-		auto armour           = properties.child("Armour").text().as_float();
-		auto current_weapon   = properties.child("CurrentWeapon").text().as_uint();
-		
-		if(is_still)
+		auto is_still       = properties.child("IsStill").text().as_bool();
+		auto can_ragdoll    = properties.child("CanRagdoll").text().as_bool();
+		auto armour         = properties.child("Armour").text().as_float();
+		auto current_weapon = properties.child("CurrentWeapon").text().as_uint();
+
+		if (is_still)
 		{
 			TASK::CLEAR_PED_TASKS_IMMEDIATELY(ent);
 			TASK::TASK_STAND_STILL(ent, -1);
@@ -306,10 +306,10 @@ namespace big
 		for (auto prop_node : ped_props.children())
 		{
 			std::string prop_text = prop_node.text().as_string();
-			size_t comma_pos = prop_text.find(",");
-			int first_val = std::stoi(prop_text.substr(0, comma_pos));
-			int second_val = std::stoi(prop_text.substr(comma_pos + 1));
-			
+			size_t comma_pos      = prop_text.find(",");
+			int first_val         = std::stoi(prop_text.substr(0, comma_pos));
+			int second_val        = std::stoi(prop_text.substr(comma_pos + 1));
+
 			PED::SET_PED_PROP_INDEX(ent, prop_index, first_val, second_val, true, 0);
 			prop_index++;
 		}
@@ -320,24 +320,30 @@ namespace big
 		for (auto prop_node : ped_props.children())
 		{
 			std::string prop_text = prop_node.text().as_string();
-			size_t comma_pos = prop_text.find(",");
-			int first_val = std::stoi(prop_text.substr(0, comma_pos));
-			int second_val = std::stoi(prop_text.substr(comma_pos + 1));
-			
+			size_t comma_pos      = prop_text.find(",");
+			int first_val         = std::stoi(prop_text.substr(0, comma_pos));
+			int second_val        = std::stoi(prop_text.substr(comma_pos + 1));
+
 			PED::SET_PED_COMPONENT_VARIATION(ent, comp_index, first_val, second_val, 0);
 			comp_index++;
 		}
 
-		if(properties.child("ScenarioActive").text().as_bool())
+		if (properties.child("ScenarioActive").text().as_bool())
 		{
 			TASK::CLEAR_PED_TASKS_IMMEDIATELY(ent);
 			TASK::TASK_START_SCENARIO_IN_PLACE(ent, properties.child("ScenarioName").text().as_string(), 0, true);
 		}
-		
-		if(properties.child("AnimActive").text().as_bool())
+
+		if (properties.child("AnimActive").text().as_bool())
 		{
 			TASK::CLEAR_PED_TASKS_IMMEDIATELY(ent);
-			ped::ped_play_animation(ent, properties.child("AnimDict").text().as_string(), properties.child("AnimName").text().as_string(), 8.0f, -8.0f, -1, 1);
+			ped::ped_play_animation(ent,
+			    properties.child("AnimDict").text().as_string(),
+			    properties.child("AnimName").text().as_string(),
+			    8.0f,
+			    -8.0f,
+			    -1,
+			    1);
 		}
 	}
 
@@ -455,7 +461,7 @@ namespace big
 				MISC::SET_WEATHER_TYPE_OVERTIME_PERSIST(name, 3);
 			}
 		}
-		
+
 		if (ref_coords)
 		{
 			reference_coords.x = ref_coords.child("X").text().as_float();
@@ -474,9 +480,6 @@ namespace big
 			{
 				initial_to_current_handle_map.insert(
 				    std::pair<std::uint32_t, std::uint32_t>(node.child("InitialHandle").text().as_uint(), spawn_entity(node)));
-
-				LOG(INFO) << "Spawning entity: " << node.child("ModelHash").text().as_uint() << " with initial handle "
-				          << node.child("InitialHandle").text().as_uint() << std::endl;
 			}
 
 			//Attachments
@@ -498,8 +501,6 @@ namespace big
 						Vector3 rotation = {rot.child("Pitch").text().as_float(),
 						    rot.child("Roll").text().as_float(),
 						    rot.child("Yaw").text().as_float()};
-
-						LOG(INFO) << "Attaching " << node.child("ModelHash").text().as_uint() << " to " << attatched_to << std::endl;
 
 						ENTITY::ATTACH_ENTITY_TO_ENTITY(
 						    initial_to_current_handle_map.at(node.child("InitialHandle").text().as_uint()),
