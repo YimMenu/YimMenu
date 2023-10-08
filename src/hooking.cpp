@@ -18,7 +18,6 @@ namespace big
 	hooking::hooking() :
 	    m_swapchain_hook(*g_pointers->m_gta.m_swapchain, hooks::swapchain_num_funcs),
 	    m_sync_data_reader_hook(g_pointers->m_gta.m_sync_data_reader_vtable, 27),
-	    m_game_skeleton_update_hook(g_pointers->m_gta.m_game_skeleton_update_group_vtable, 2),
 	    m_remove_player_from_sender_list_caller_1_hook(g_pointers->m_gta.m_remove_player_from_sender_list_caller_1, hooks::remove_player_from_sender_list),
 	    m_remove_player_from_sender_list_caller_2_hook(g_pointers->m_gta.m_remove_player_from_sender_list_caller_2, hooks::remove_player_from_sender_list)
 	{
@@ -44,8 +43,6 @@ namespace big
 		m_sync_data_reader_hook.hook(19, &hooks::sync_reader_serialize_vec3);
 		m_sync_data_reader_hook.hook(21, &hooks::sync_reader_serialize_vec3_signed);
 		m_sync_data_reader_hook.hook(23, &hooks::sync_reader_serialize_array);
-
-		m_game_skeleton_update_hook.hook(1, &hooks::game_skeleton_update);
 
 		// The only instances in that vector at this point should only be the "lazy" hooks
 		// aka the ones that still don't have their m_target assigned
@@ -152,6 +149,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
 
+		detour_hook_helper::add<hooks::game_skeleton_update>("GSU", g_pointers->m_gta.m_game_skeleton_update);
+
 		g_hooking = this;
 	}
 
@@ -169,7 +168,6 @@ namespace big
 	{
 		m_swapchain_hook.enable();
 		m_sync_data_reader_hook.enable();
-		m_game_skeleton_update_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
 		m_remove_player_from_sender_list_caller_1_hook.enable();
 		m_remove_player_from_sender_list_caller_2_hook.enable();
@@ -196,7 +194,6 @@ namespace big
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_sync_data_reader_hook.disable();
 		m_swapchain_hook.disable();
-		m_game_skeleton_update_hook.disable();
 		m_remove_player_from_sender_list_caller_1_hook.disable();
 		m_remove_player_from_sender_list_caller_2_hook.disable();
 

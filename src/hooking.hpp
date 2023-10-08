@@ -183,7 +183,7 @@ namespace big
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
 
 		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
-		static void game_skeleton_update(__int64 update_group);
+		static void game_skeleton_update(__int64 skeleton, int type);
 	};
 
 	class minhook_keepalive
@@ -273,7 +273,6 @@ namespace big
 
 		vmt_hook m_swapchain_hook;
 		vtable_hook m_sync_data_reader_hook;
-		vtable_hook m_game_skeleton_update_hook;
 		call_hook m_remove_player_from_sender_list_caller_1_hook;
 		call_hook m_remove_player_from_sender_list_caller_2_hook;
 
