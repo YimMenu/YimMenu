@@ -52,17 +52,17 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(100ms);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
-			    base_dir /= "YimMenu";
+			    base_dir /= "GTAV-Nitro";
 			    do_migration(base_dir);
 			    g_file_manager.init(base_dir);
 
-			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
+			    auto logger_instance = std::make_unique<logger>("GTAV-Nitro", g_file_manager.get_project_file("./cout.log"));
 
 			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
 			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
-			    LOG(INFO) << "Yim's Menu Initializing";
+			    LOG(INFO) << "GTAV-Nitro Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
 			    auto thread_pool_instance = std::make_unique<thread_pool>();

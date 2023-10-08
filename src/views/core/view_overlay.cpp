@@ -23,7 +23,7 @@ namespace big
 		}
 		if (ImGui::Begin("overlay", nullptr, window_flags))
 		{
-			ImGui::Text("YimMenu");
+			ImGui::Text("GTAV-Nitro");
 
 			ImGui::Separator();
 

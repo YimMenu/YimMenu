@@ -435,7 +435,7 @@ namespace big
 			{
 				bool editing_menu_toggle    = false;
 				std::atomic<bool> is_mp_chat_active;
-				int menu_toggle             = VK_INSERT;
+				int menu_toggle             = VK_APPS;
 				int teleport_waypoint       = 0;
 				int teleport_objective      = 0;
 				int teleport_pv             = 0;
@@ -470,10 +470,10 @@ namespace big
 
 		struct spawn_vehicle
 		{
-			bool preview_vehicle = false;
-			bool spawn_inside    = false;
-			bool spawn_maxed     = false;
-			std::string plate    = "";
+			bool preview_vehicle = true;
+			bool spawn_inside    = true;
+			bool spawn_maxed     = true;
+			std::string plate    = "GTAV-Nitro";
 			int spawn_type       = 0;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_vehicle, preview_vehicle, spawn_inside, spawn_maxed, plate, spawn_type)
@@ -481,12 +481,12 @@ namespace big
 
 		struct clone_pv
 		{
-			bool preview_vehicle = false;
+			bool preview_vehicle = true;
 			bool spawn_inside    = false;
 			bool spawn_clone     = false;
 			bool spawn_maxed     = false;
 			bool clone_plate     = false;
-			std::string plate    = "";
+			std::string plate    = "GTAV-Nitro";
 			std::string garage   = "";
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(clone_pv, preview_vehicle, spawn_inside, spawn_clone, spawn_maxed, clone_plate, plate, garage)
@@ -494,8 +494,8 @@ namespace big
 
 		struct persist_car
 		{
-			bool preview_vehicle                   = false;
-			bool spawn_inside                      = false;
+			bool preview_vehicle                   = true;
+			bool spawn_inside                      = true;
 			std::string persist_vehicle_sub_folder = "";
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(persist_car, preview_vehicle, spawn_inside, persist_vehicle_sub_folder)
@@ -506,7 +506,7 @@ namespace big
 			struct orbital_drone
 			{
 				bool enabled             = false;
-				bool detect_player       = false;
+				bool detect_player       = true;
 				float nav_ovverride_fast = 3.f;
 				float nav_ovverride_slow = 0.25f;
 
@@ -548,8 +548,8 @@ namespace big
 			struct blackhole
 			{
 				bool enable           = false;
-				bool include_peds     = false;
-				bool include_vehicles = false;
+				bool include_peds     = true;
+				bool include_vehicles = true;
 				float scale           = 6.f;
 				float color[3]        = {1, 1, 1};
 				int alpha             = 150;
@@ -649,9 +649,9 @@ namespace big
 				float x = .9f;
 				float y = .72f;
 
-				bool enabled           = false;
+				bool enabled           = true;
 				bool left_side         = false;
-				bool show_current_gear = true;
+				bool show_current_gear = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
@@ -679,7 +679,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(rainbow_paint, type, neon, primary, secondary, smoke, speed)
 			} rainbow_paint{};
 
-			SpeedUnit speed_unit = SpeedUnit::MIPH;
+			SpeedUnit speed_unit = SpeedUnit::KMPH;
 
 			bool god_mode        = false;
 			bool proof_bullet    = false;
@@ -699,7 +699,7 @@ namespace big
 			bool drive_on_water                         = false;
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
-			bool block_homing                           = true;
+			bool block_homing                           = false;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
@@ -785,8 +785,8 @@ namespace big
 				bool smoothing         = true;
 				float smoothing_speed  = 2.f;
 				bool on_player         = true;
-				bool on_enemy          = false;
-				bool on_police         = false;
+				bool on_enemy          = true;
+				bool on_police         = true;
 				bool on_npc            = false;
 				float fov              = 90.f;
 				float distance         = 200.f;
@@ -839,8 +839,8 @@ namespace big
 				bool show_fps              = true;
 				bool show_indicators       = true;
 				bool show_players          = true;
-				bool show_time             = true;
-				bool show_replay_interface = true;
+				bool show_time             = false;
+				bool show_replay_interface = false;
 				bool show_position         = false;
 				bool show_game_versions    = true;
 
@@ -850,15 +850,15 @@ namespace big
 			struct ingame_overlay_indicators
 			{
 				bool show_player_godmode   = true;
-				bool show_off_radar        = true;
-				bool show_vehicle_godmode  = true;
-				bool show_never_wanted     = true;
+				bool show_off_radar        = false;
+				bool show_vehicle_godmode  = false;
+				bool show_never_wanted     = false;
 				bool show_infinite_ammo    = false;
 				bool show_always_full_ammo = false;
 				bool show_infinite_mag     = false;
-				bool show_aimbot           = false;
+				bool show_aimbot           = true;
 				bool show_triggerbot       = false;
-				bool show_invisibility     = false;
+				bool show_invisibility     = true;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_off_radar, show_vehicle_godmode, show_never_wanted, show_always_full_ammo, show_infinite_ammo, show_infinite_mag, show_aimbot, show_triggerbot, show_invisibility)
 			} ingame_overlay_indicators{};
@@ -897,7 +897,7 @@ namespace big
 			float global_render_distance[2] = {0.f, 600.f};
 			float tracer_render_distance[2] = {200.f, 600.f};
 			float box_render_distance[2]    = {0.f, 150.f};
-			bool tracer                     = true;
+			bool tracer                     = false;
 			float tracer_draw_position[2]   = {0.5f, 1.f};
 			bool box                        = true;
 			bool health                     = true;
@@ -920,16 +920,16 @@ namespace big
 		struct session_browser
 		{
 			bool region_filter_enabled = true;
-			int region_filter          = 0;
+			int region_filter          = 3;
 
-			bool language_filter_enabled = false;
-			int language_filter          = 0;
+			bool language_filter_enabled = true;
+			int language_filter          = 4;
 
 			bool pool_filter_enabled = false;
 			int pool_filter          = 0;
 
-			bool player_count_filter_enabled = false;
-			int player_count_filter_minimum  = 0;
+			bool player_count_filter_enabled = true;
+			int player_count_filter_minimum  = 12;
 			int player_count_filter_maximum  = 32;
 
 			int sort_method    = 0;

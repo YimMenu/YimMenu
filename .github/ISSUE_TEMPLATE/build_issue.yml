@@ -1,5 +1,5 @@
 name: Build issue
-description: Report a problem with building YimMenu
+description: Report a problem with building GTAV-Nitro
 title: "[Build]: "
 labels: build
 body:
@@ -22,7 +22,7 @@ body:
 - type: dropdown
   attributes:
     label: IDE/Compiler
-    description: Which IDE do you use to build YimMenu?
+    description: Which IDE do you use to build GTAV-Nitro?
     multiple: false
     options:
       - Visual Studio 2022
@@ -46,8 +46,8 @@ body:
         required: true
 - type: checkboxes
   attributes:
-    label: YimMenu Source Code
-    description: You confirm that you haven't modified YimMenu and are building the latest version of the source code.
+    label: GTAV-Nitro Source Code
+    description: You confirm that you haven't modified GTAV-Nitro and are building the latest version of the source code.
     options:
-      - label: I've confirmed this is an issue with building unmodified YimMenu.
+      - label: I've confirmed this is an issue with building unmodified GTAV-Nitro.
         required: true
