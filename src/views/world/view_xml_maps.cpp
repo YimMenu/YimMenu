@@ -5,6 +5,11 @@ namespace big
 {
    void view::xml_maps()
    {
+        components::button("Refresh", [] {
+            g_fiber_pool->queue_job([] {
+                g_xml_map_service->fetch_xml_files();
+            });
+        });
         if(ImGui::BeginListBox("##xmlmaps", get_listbox_dimensions()))
         {
             for (auto& [name, xml_map] : g_xml_map_service->m_all_xml_maps)
