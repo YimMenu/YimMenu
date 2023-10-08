@@ -1,4 +1,6 @@
+#include "core/settings.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "util/strings.hpp"
 #include "views/view.hpp"
 
@@ -155,7 +157,7 @@ namespace big
 
 		ImGui::SeparatorText("Save an effect");
 
-		static std::string groupName, customEffectName, selectedGroupName;
+		static std::string groupName, customEffectName, selectedGroupName, selectedGroupEffect;
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##groupName", "groupName", groupName);
@@ -175,7 +177,19 @@ namespace big
 					ptfxEffects::loadSavedEffects(savedEffects);
 
 				if (savedEffects.find(_groupName) != savedEffects.end())
-					savedEffects[_groupName].push_back(effect);
+				{
+					auto& effects = savedEffects[_groupName];
+
+					auto it = std::find_if(effects.begin(), effects.end(), [&effectName](const ptfxEffects::Effect& effect) {
+						return effect.name == effectName;
+					});
+
+					// if effect already present
+					if (it != effects.end())
+						*it = effect;
+					else
+						savedEffects[_groupName].push_back(effect);
+				}
 				else
 					savedEffects[_groupName] = std::vector({effect});
 
@@ -220,7 +234,7 @@ namespace big
 			{
 				auto& effect = savedEffects[selectedGroupName][i];
 
-				if (ImGui::Selectable(effect.name.c_str(), false))
+				if (ImGui::Selectable(effect.name.c_str(), effect.name == selectedGroupEffect))
 				{
 					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					{
@@ -229,9 +243,10 @@ namespace big
 					}
 					else
 					{
-						g.self.ptfx_effects.asset  = effect.dict.c_str();
-						g.self.ptfx_effects.effect = effect.effect.c_str();
-						g.self.ptfx_effects.size   = effect.size;
+						selectedGroupEffect = customEffectName = effect.name;
+						g.self.ptfx_effects.asset              = effect.dict.c_str();
+						g.self.ptfx_effects.effect             = effect.effect.c_str();
+						g.self.ptfx_effects.size               = effect.size;
 					}
 				}
 			}
