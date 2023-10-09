@@ -290,10 +290,17 @@ namespace spawnObjs
 		ENTITY::SET_ENTITY_COORDS(object.ob, object.x + object.xr, object.y + object.yr, object.z + object.zr, false, false, false, false);
 	}
 
-	SpawnedObject spawnObj(std::string objStr, SpawnedObject object = SpawnedObject())
+	std::optional<SpawnedObject> spawnObj(std::string objStr, SpawnedObject object = SpawnedObject())
 	{
 		rage::joaat_t objectHash = isHexadecimal(objStr) ? std::stoul(objStr, nullptr, 16) : rage::joaat(objStr);
-		Entity entity            = getSelectedEntity();
+
+		if (!STREAMING::IS_MODEL_VALID(objectHash))
+		{
+			LOG(WARNING) << objectHash << " is not a valid object" << std::endl;
+			return std::nullopt;
+		}
+
+		Entity entity = getSelectedEntity();
 
 		Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(entity, 0, 1.f, 0);
 		Object ob        = big::world_model::spawn(objectHash, location, *big::g_pointers->m_gta.m_is_session_started);
@@ -413,10 +420,14 @@ namespace big
 			std::string v = trimString(selectedObjectNameOrHash);
 			if (v.size() > 0)
 			{
-				spawnObjs::SpawnedObject o   = spawnObjs::spawnObj(v);
-				std::string name             = getFriendlyTimeRightNow() + " " + v + std::to_string(o.ob);
-				spawnedObjList[name]         = o;
-				spawnObjs::currentSpawnedObj = &spawnedObjList[name];
+				std::optional<spawnObjs::SpawnedObject> result = spawnObjs::spawnObj(v);
+				if (result.has_value())
+				{
+					spawnObjs::SpawnedObject o   = result.value();
+					std::string name             = getFriendlyTimeRightNow() + " " + v + std::to_string(o.ob);
+					spawnedObjList[name]         = o;
+					spawnObjs::currentSpawnedObj = &spawnedObjList[name];
+				}
 			}
 		});
 
@@ -606,8 +617,12 @@ namespace big
 
 				for (auto obj : objs)
 				{
-					spawnObjs::SpawnedObject o = spawnObjs::spawnObj(obj.objName, obj);
-					spawnedCollection.objects.push_back(o.ob);
+					std::optional<spawnObjs::SpawnedObject> result = spawnObjs::spawnObj(obj.objName, obj);
+					if (result.has_value())
+					{
+						spawnObjs::SpawnedObject o = result.value();
+						spawnedCollection.objects.push_back(o.ob);
+					}
 				}
 				spawnedCollections.push_back(spawnedCollection);
 			});
