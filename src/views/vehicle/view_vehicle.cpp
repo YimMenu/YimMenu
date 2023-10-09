@@ -42,6 +42,33 @@ namespace big
 		ImGui::SeparatorText("###others");
 		{
 			components::command_checkbox<"allvehsinheists">();
+
+			components::command_checkbox<"customvehweaps">();
+			components::options_modal("Custom Vehicle Weapons", [] {
+				components::sub_title("Missile");
+
+				ImGui::InputFloat("Reload Time", &g.vehicle.vehicle_ammo_special.rocket_reload_time, 0.1, 1, "%.1f");
+				ImGui::InputFloat("Speed##rocket", &g.vehicle.vehicle_ammo_special.rocket_launch_speed, 10, 100, "%.1f");
+				ImGui::InputFloat("Range##rocket", &g.vehicle.vehicle_ammo_special.rocket_range, 50, 100, "%.1f");
+				ImGui::InputFloat("Lock-on Range", &g.vehicle.vehicle_ammo_special.rocket_lock_on_range, 50, 100, "%.1f");
+				ImGui::InputFloat("Lock-on Time", &g.vehicle.vehicle_ammo_special.rocket_time_before_homing, 0.01, 0.1, "%.2f");
+
+				ImGui::InputFloat("Time Between Shots##rocket", &g.vehicle.vehicle_ammo_special.rocket_time_between_shots, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to fire consecutive shots on the same side. Related to rate of fire.");
+
+				ImGui::InputFloat("Alternate Wait Time##rocket", &g.vehicle.vehicle_ammo_special.rocket_alternate_wait_time, 0.001, 0.1, "%.3f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken to switch between sides. Related to rate of fire.");
+
+				ImGui::InputFloat("Life Time", &g.vehicle.vehicle_ammo_special.rocket_lifetime, 0.1, 1, "%.1f");
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Time taken for missile to explode if not hitting anything.");
+
+				ImGui::Checkbox("Smart Missiles", &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Improves current missile's tracking ability.");
+			});
 		}
 	}
 }

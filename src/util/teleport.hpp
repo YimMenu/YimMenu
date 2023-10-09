@@ -10,24 +10,21 @@
 
 namespace big::teleport
 {
-	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords, Vector3 euler = {0, 0, 0})
+	inline void bring_player(player_ptr player)
 	{
-		Entity ent;
+		if (!*g_pointers->m_gta.m_is_session_started)
+		{
+			g_notification_service->push_warning("Teleport", "Session has not started");
+			return;
+		}
 
-		if (*g_pointers->m_gta.m_is_session_started)
-			ent = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
-		else
-			ent = PLAYER::PLAYER_PED_ID();
-
-		bool is_local_player = (ent == self::ped || ent == self::veh);
-
-		if (is_local_player)
-			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
+		Entity ent     = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
+		Vector3 coords = self::pos;
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
 			g_notification_service->push_warning("Teleport", "Player is dead, you can't teleport them.");
-			return false;
+			return;
 		}
 
 		if (PED::IS_PED_IN_ANY_VEHICLE(ent, true))
@@ -35,34 +32,18 @@ namespace big::teleport
 			ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 			if (entity::take_control_of(ent))
-			{
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coords.x, coords.y, coords.z, TRUE, TRUE, TRUE);
-				if (euler.x + euler.y + euler.z != 0.0f)
-				{
-					ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-					if (is_local_player)
-					{
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-					}
-				}
-			}
 			else
-			{
 				g_notification_service->push_warning("Teleport", "Failed to take control of entity.");
-			}
-
-			return true;
 		}
 		else
 		{
 			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
 
-			if (!hnd)
-				return false;
-
-			if (!g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object)
-				return false;
+			if (!hnd && !g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object) {
+				g_notification_service->push_warning("Teleport", "Failed!");
+				return;
+			}
 
 			ENTITY::SET_ENTITY_VISIBLE(hnd, false, false);
 			ENTITY::SET_ENTITY_COLLISION(hnd, false, false);
@@ -71,15 +52,7 @@ namespace big::teleport
 			auto obj_id                      = player->get_ped()->m_net_object->m_object_id;
 			auto veh_id                      = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
-
 			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
-
-			if (is_local_player)
-			{
-				ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-			}
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
@@ -90,12 +63,8 @@ namespace big::teleport
 				script::get_current()->yield(25ms);
 
 				if (auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd))
-				{
 					if (auto netobj = ptr->m_net_object)
-					{
 						g_pointers->m_gta.m_migrate_object(player->get_net_game_player(), netobj, 3);
-					}
-				}
 
 				auto new_coords = ENTITY::GET_ENTITY_COORDS(hnd, true);
 				if (SYSTEM::VDIST2(coords.x, coords.y, coords.z, new_coords.x, new_coords.y, new_coords.z) < 20 * 20 && VEHICLE::GET_PED_IN_VEHICLE_SEAT(hnd, 0, true) == ent)
@@ -108,13 +77,8 @@ namespace big::teleport
 				return obj.first == veh_id;
 			});
 
-			return true;
+			return;
 		}
-	}
-
-	inline bool bring_player(player_ptr player)
-	{
-		return teleport_player_to_coords(player, self::pos);
 	}
 
 	inline bool into_vehicle(Vehicle veh)
@@ -122,11 +86,11 @@ namespace big::teleport
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
 			g_notification_service->push_warning("Teleport", "Invalid Vehicle");
-
 			return false;
 		}
 
 		int seat_index = 255;
+
 		if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, -1, true))
 			seat_index = -1;
 		else if (VEHICLE::IS_VEHICLE_SEAT_FREE(veh, -2, true))
@@ -135,27 +99,27 @@ namespace big::teleport
 		if (seat_index == 255)
 		{
 			g_notification_service->push_warning("Teleport", "There are no seats available in this vehicle for you.");
-
 			return false;
 		}
 
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(veh, true);
 		entity::load_ground_at_3dcoord(location);
 
-		Ped ped = self::ped;
-
-		ENTITY::SET_ENTITY_COORDS(ped, location.x, location.y, location.z, 0, 0, 0, 0);
+		ENTITY::SET_ENTITY_COORDS(self::ped, location.x, location.y, location.z, 0, 0, 0, 0);
 
 		script::get_current()->yield();
 
-		PED::SET_PED_INTO_VEHICLE(ped, veh, seat_index);
+		PED::SET_PED_INTO_VEHICLE(self::ped, veh, seat_index);
 
 		return true;
 	}
 
-	inline void to_coords(Vector3 location)
+	inline void to_coords(Vector3 location, bool load_ground = false)
 	{
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
+		if (load_ground)
+			entity::load_ground_at_3dcoord(location);
+
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
 	}
 
 	inline bool to_blip(int sprite, int color = -1)
@@ -165,34 +129,22 @@ namespace big::teleport
 		if (!blip::get_blip_location(location, sprite, color))
 			return false;
 
-		if (sprite == (int)BlipIcons::Waypoint)
-			entity::load_ground_at_3dcoord(location);
-
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location, sprite == (int)BlipIcons::Waypoint);
 
 		return true;
 	}
 
-	inline bool to_entity(Entity ent)
+	inline void to_player(Player player)
 	{
-		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
-
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
-
-		return true;
-	}
-
-	inline bool to_player(Player player)
-	{
-		return to_entity(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player));
+		Vector3 location = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player), true);
+		to_coords(location);
 	}
 
 	inline bool to_waypoint()
 	{
 		if (!to_blip((int)BlipIcons::Waypoint))
 		{
-			g_notification_service->push_warning("Teleport",  "No waypoint found.");
-
+			g_notification_service->push_warning("Teleport", "No waypoint found.");
 			return false;
 		}
 		return true;
@@ -208,28 +160,7 @@ namespace big::teleport
 			return false;
 		}
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
-
-		return false;
-	}
-
-	inline bool tp_on_top(Entity ent, bool match_velocity)
-	{
-		if (!ENTITY::DOES_ENTITY_EXIST(ent))
-			return false;
-
-		Vector3 ent_dimensions_max{}, ent_dimensions_min{}, ent_pos{};
-
-		MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(ent), &ent_dimensions_min, &ent_dimensions_max);
-		ent_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, 0, 0, ent_dimensions_max.z);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, ent_pos.x, ent_pos.y, ent_pos.z, 0, 0, 0);
-
-		if (match_velocity)
-		{
-			auto ent_velocity = ENTITY::GET_ENTITY_VELOCITY(ent);
-			ENTITY::SET_ENTITY_VELOCITY(self::ped, ent_velocity.x, ent_velocity.y, ent_velocity.z);
-		}
-
-		return false;
+		to_coords(location, true);
+		return true;
 	}
 }

@@ -41,6 +41,9 @@ namespace big
 					strcat(player_tab.name, " [MOD]");
 			}
 
+			if (current_player->id() == self::id)
+				return;
+
 			ImGui::BeginGroup();
 			{
 				ImGui::BeginGroup();
@@ -126,7 +129,7 @@ namespace big
 					components::player_command_button<"joinceo">(g_player_service->get_selected());
 
 					ImGui::Spacing();
-					
+
 					components::player_command_button<"givehealth">(g_player_service->get_selected());
 					ImGui::SameLine();
 					components::player_command_button<"givearmor">(g_player_service->get_selected());
