@@ -182,7 +182,7 @@ namespace big
 							if (ImGui::IsMouseDoubleClicked(0))
 							{
 								g_fiber_pool->queue_job([l] {
-									teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z}, {l.yaw, l.pitch, l.roll});
+									teleport::to_coords({l.x, l.y, l.z}, true);
 								});
 							}
 						}

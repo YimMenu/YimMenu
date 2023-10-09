@@ -293,13 +293,35 @@ namespace big
 			AutoDriveStyle auto_drive_style             = AutoDriveStyle::LAW_ABIDING;
 			float auto_drive_speed                      = 8;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, auto_drive_destination, auto_drive_style, auto_drive_speed)
+			struct vehicle_ammo_special
+			{
+				bool enabled                     = false;
+				float rocket_reload_time         = -1;
+				float rocket_launch_speed        = 1200;
+				float rocket_range               = 1000;
+				float rocket_lock_on_range       = 500;
+				float rocket_time_before_homing  = 0.75;
+				float rocket_time_between_shots  = 0.66;
+				float rocket_alternate_wait_time = 0.66;
+				float rocket_lifetime            = 15;
+				bool rocket_improve_tracking     = true;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)
+			} vehicle_ammo_special{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, auto_drive_destination, auto_drive_style, auto_drive_speed, vehicle_ammo_special)
 		} vehicle{};
 
 		struct weapons
 		{
 			bool infinite_ammo = false;
 			bool infinite_mag  = false;
+
+			struct aimbot
+			{
+				bool enable    = false;
+				float distance = 1000.f;
+			} aimbot{};
 		} weapons{};
 
 		struct window

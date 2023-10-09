@@ -1,10 +1,10 @@
 
+#include "core/settings.hpp"
 #include "gta/joaat.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/persist_weapons/persist_weapons.hpp"
 #include "views/view.hpp"
-#include "core/settings.hpp"
 
 namespace big
 {
@@ -13,30 +13,36 @@ namespace big
 		components::command_button<"fillammo">();
 
 		ImGui::SeparatorText("General");
-
-		components::command_checkbox<"infammo">();
-		components::command_checkbox<"infclip">();
+		{
+			components::command_checkbox<"infammo">();
+			components::command_checkbox<"infclip">();
+		}
 
 		ImGui::SeparatorText("Misc");
+		{
+			components::command_checkbox<"aimbot">();
+			ImGui::SetNextItemWidth(350);
+			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::Spacing();
+			components::button("Get All Weapons", [] {
+				for (const auto& [_, weapon] : g_gta_data_service->weapons())
+				{
+					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
+				}
 
-		components::button("Get All Weapons", [] {
-			for (const auto& [_, weapon] : g_gta_data_service->weapons())
-			{
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
-			}
-
-			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
-			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
-		});
-		ImGui::SameLine();
-		components::button("Remove Current Weapon", [] {
-			Hash weaponHash;
-			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
-			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
-			{
-				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
-			}
-		});
+				constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
+			});
+			ImGui::SameLine();
+			components::button("Remove Current Weapon", [] {
+				Hash weaponHash;
+				WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
+				if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
+				{
+					WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
+				}
+			});
+		}
 
 		ImGui::Spacing();
 
@@ -82,7 +88,7 @@ namespace big
 				{
 					for (std::string attachment : weapon.m_attachments)
 					{
-						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+						weapon_component attachment_component = g_gta_data_service->weapon_component_by_name(attachment);
 						std::string attachment_name = attachment_component.m_display_name;
 						Hash attachment_hash        = attachment_component.m_hash;
 						if (attachment_hash == NULL)
@@ -116,7 +122,7 @@ namespace big
 				WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
 			});
 		}
-		
+
 		ImGui::Spacing();
 
 		if (ImGui::CollapsingHeader("Persist Weapons"))

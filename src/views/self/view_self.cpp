@@ -17,9 +17,9 @@ namespace big
 			components::command_button<"suicide">();
 			ImGui::SameLine();
 			components::command_button<"clearwantedlvl">();
-		}
-		ImGui::SeparatorText("###Player_Damage");
-		{
+
+			ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
+
 			components::command_button<"heal">();
 			ImGui::SameLine();
 			components::command_button<"clean">();
