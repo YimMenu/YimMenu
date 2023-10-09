@@ -36,9 +36,12 @@ namespace big
 			{
 				components::command_checkbox<"seatbelt">();
 				components::command_checkbox<"veh_boost">();
-				components::command_checkbox<"allvehsinheists">();
 			}
 			ImGui::EndGroup();
+		}
+		ImGui::SeparatorText("###others");
+		{
+			components::command_checkbox<"allvehsinheists">();
 		}
 	}
 }

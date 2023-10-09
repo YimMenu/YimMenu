@@ -117,12 +117,16 @@ namespace big
 				{
 					components::sub_title("Misc");
 
-					components::player_command_button<"joinceo">(g_player_service->get_selected());
-					ImGui::SameLine();
 					components::player_command_button<"copyoutfit">(g_player_service->get_selected());
 					ImGui::SameLine();
 					components::player_command_button<"clearwanted">(g_player_service->get_selected());
 
+					ImGui::Spacing();
+
+					components::player_command_button<"joinceo">(g_player_service->get_selected());
+
+					ImGui::Spacing();
+					
 					components::player_command_button<"givehealth">(g_player_service->get_selected());
 					ImGui::SameLine();
 					components::player_command_button<"givearmor">(g_player_service->get_selected());
@@ -140,11 +144,10 @@ namespace big
 					else
 					{
 						components::player_command_button<"shkick">(g_player_service->get_selected());
+						ver_Space();
 						components::player_command_button<"nfkick">(g_player_service->get_selected());
 						components::player_command_button<"endkick">(g_player_service->get_selected());
 						components::player_command_button<"desync">(g_player_service->get_selected());
-
-						components::player_command_button<"multikick">(g_player_service->get_selected());
 					}
 				}
 				ImGui::EndGroup();

@@ -10,23 +10,24 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Misc"))
 		{
+			ImGui::Spacing();
 			components::button("Network Bail", [] {
 				NETWORK::NETWORK_BAIL(16, 0, 0);
 			});
-
+			ImGui::Spacing();
 			components::button("Refresh Interior", [] {
 				Interior interior = INTERIOR::GET_INTERIOR_AT_COORDS(self::pos.x, self::pos.y, self::pos.z);
 				INTERIOR::REFRESH_INTERIOR(interior);
 			});
-
+			ImGui::Spacing();
 			components::button("Network Shutdown and Load Most Recent Save", [] {
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});
-
+			ImGui::Spacing();
 			components::button("Remove Black Screen", [] {
 				CAM::DO_SCREEN_FADE_IN(0);
 			});
-
+			ImGui::Spacing();
 			components::button("TP to Safe Position", [] {
 				Vector3 safepos{};
 				float heading;
@@ -35,10 +36,10 @@ namespace big
 				else
 					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
 			});
-
-			ImGui::Checkbox("ImGui Demo", &g.window.demo);
-
+			ImGui::Spacing();
 			components::command_button<"fastquit">();
+			ImGui::Spacing();
+			ImGui::Checkbox("ImGui Demo", &g.window.demo);
 
 			ImGui::EndTabItem();
 		}
