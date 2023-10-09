@@ -27,8 +27,7 @@ namespace big
 		if (kick)  
 		{
 			g_fiber_pool->queue_job([player] {
-				
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
 			});
 		}
 

@@ -95,7 +95,9 @@ namespace big
 		        tabs::SETTINGS,
 		        {
 		            "Settings",
-		            nullptr,
+		            [this] {
+			            this->set_selected(tabs::ESP_SETTINGS);
+		            },
 		            {
 		                {tabs::ESP_SETTINGS, {"ESP", view::esp_settings}},
 		                {tabs::GTA_CACHE_SETTINGS, {"GTA Cache", view::gta_cache}},
