@@ -2,9 +2,11 @@
 
 namespace big
 {
-	// Add new values to the bottom
+	// Lua API: Infraction
 	enum class Infraction
 	{
+		// Add new values to the bottom (before CUSTOM_REASON though)
+
 		DESYNC_PROTECTION,             // do not use
 		BREAKUP_KICK_DETECTED,         // do not use
 		LOST_CONNECTION_KICK_DETECTED, // do not use
