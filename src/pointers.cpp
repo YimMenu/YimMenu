@@ -1708,6 +1708,7 @@ namespace big
 
         constexpr auto batch_and_hash = memory::make_batch<
         // Presence Data
+        // Update instructions: Scan 48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 41 8B E9 and xref it to get to the vtable. Xref the vtable and generate a new signature
         {
             "PD",
             "48 8D 05 ? ? ? ? 48 8B D9 48 89 01 48 83 C1 08 E8 ? ? ? ? 33 C0",
@@ -1719,7 +1720,6 @@ namespace big
             }
         },
         // Start Get Presence Attributes
-        // Update instructions: Scan 48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 41 8B E9 and xref it to get to the vtable. Xref the vtable and generate a new signature
         {
             "SGPA",
             "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 40 33 DB 49",
