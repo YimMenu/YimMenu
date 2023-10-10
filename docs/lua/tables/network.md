@@ -86,7 +86,7 @@ Flags the given player as a modder in our local database.
 - **Parameters:**
   - `player_idx` (integer): Index of the player.
   - `reason` (Infraction): Reason why the player is flagged as a modder, if the infraction is CUSTOM_REASON, then the custom_reason string is added in the local database. For a full list of the possible infraction reasons to use, please check the infraction page.
-  - `custom_reason` (string): The custom reason why the player is flagged as a modder. Ignored if the infraction is not CUSTOM_REASON.
+  - `custom_reason` (string): Optional, required only when the infraction is CUSTOM_REASON. The custom reason why the player is flagged as a modder.
 
 **Example Usage:**
 ```lua
