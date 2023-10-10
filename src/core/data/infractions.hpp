@@ -21,6 +21,9 @@ namespace big
 		INVALID_PLAYER_MODEL,
 		SUPER_JUMP,
 		UNDEAD_OTR,
-		CUSTOM_REASON, // So that lua scripts can add a custom runtime reason
+
+		// So that lua scripts can add a custom runtime reason.
+		// Keep it last for doc gen.
+		CUSTOM_REASON,
 	};
 }
