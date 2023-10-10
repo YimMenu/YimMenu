@@ -101,14 +101,22 @@ namespace lua::network
 		return -1;
 	}
 
+	static void flag_player_as_modder(int player_idx, big::Infraction reason)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+		{
+			big::session::add_infraction(player, reason);
+		}
+	}
+
 	// Lua API: Function
 	// Table: network
 	// Name: flag_player_as_modder
 	// Param: player_idx: integer: Index of the player.
 	// Param: reason: Infraction: Reason why the player is flagged as a modder, if the infraction is CUSTOM_REASON, then the custom_reason string is added in the local database. For a full list of the possible infraction reasons to use, please check the infraction page.
-	// Param: custom_reason: string: The custom reason why the player is flagged as a modder. Ignored if the infraction is not CUSTOM_REASON.
+	// Param: custom_reason: string: Optional, required only when the infraction is CUSTOM_REASON. The custom reason why the player is flagged as a modder.
 	// Flags the given player as a modder in our local database.
-	static void flag_player_as_modder(int player_idx, big::Infraction reason, const std::string& custom_reason)
+	static void flag_player_as_modder_custom_reason(int player_idx, big::Infraction reason, const std::string& custom_reason)
 	{
 		if (auto player = big::g_player_service->get_by_id(player_idx))
 		{
@@ -202,10 +210,10 @@ namespace lua::network
 		ns["set_all_player_coords"]                    = set_all_player_coords;
 		ns["get_selected_player"]                      = get_selected_player;
 		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
-		ns["flag_player_as_modder"]                    = flag_player_as_modder;
-		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
-		ns["get_flagged_modder_reason"]                = get_flagged_modder_reason;
-		ns["force_script_host"]                        = force_script_host;
-		ns["send_chat_message"]                        = send_chat_message;
+		ns["flag_player_as_modder"]       = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
+		ns["is_player_flagged_as_modder"] = is_player_flagged_as_modder;
+		ns["get_flagged_modder_reason"]   = get_flagged_modder_reason;
+		ns["force_script_host"]           = force_script_host;
+		ns["send_chat_message"]           = send_chat_message;
 	}
 }
