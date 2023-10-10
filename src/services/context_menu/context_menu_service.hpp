@@ -77,9 +77,14 @@ namespace big
 		        {"HALT",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
-			            {
 				            VEHICLE::BRING_VEHICLE_TO_HALT(m_handle, 1, 5, true);
-			            }
+			            else
+				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+		            }},
+		        {"UNLOCK",
+		            [this] {
+			            if (entity::take_control_of(m_handle))
+				            VEHICLE::SET_VEHICLE_DOORS_LOCKED(m_handle, (int)eVehicleLockState::VEHICLELOCK_NONE);
 			            else
 				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
 		            }},

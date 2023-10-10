@@ -1,4 +1,5 @@
 #include "vehicle.hpp"
+
 #include "services/notifications/notification_service.hpp"
 
 namespace big::vehicle
@@ -154,69 +155,6 @@ namespace big::vehicle
 		return veh;
 	}
 
-	Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading)
-	{
-		Vector3 tmpLocation = {location.x, location.y, 1200.0f};
-		if (location.z > 1000.0f && location.z < 1400.0)
-		{
-			tmpLocation.z = 800.0f;
-		}
-
-		// vehicle data
-		for (const auto& [idx, val] : data)
-		{
-			if (idx >= 0 && idx < 142)
-			{
-				*scr_globals::spawn_global.at(27).at(idx).as<int32_t*>() = val;
-			}
-		}
-
-		// permission fix
-		*scr_globals::spawn_global.at(27).at(1).as<int32_t*>() = 0;
-
-		// personal car flag
-		*scr_globals::spawn_global.at(27).at(94).as<int32_t*>() = 14;
-		*scr_globals::spawn_global.at(27).at(95).as<int32_t*>() = 2;
-
-		// mmi
-		*scr_globals::spawn_global.at(27).at(103).as<int32_t*>() = 0;
-
-		// spawn location
-		*scr_globals::spawn_global.at(7).at(0).as<float*>() = tmpLocation.x;
-		*scr_globals::spawn_global.at(7).at(1).as<float*>() = tmpLocation.y;
-		*scr_globals::spawn_global.at(7).at(2).as<float*>() = tmpLocation.z;
-
-		// spawn non pegasus
-		*scr_globals::spawn_global.at(3).as<int*>() = 0;
-
-		// spawn signal
-		int* spawn_signal                               = scr_globals::spawn_global.at(2).as<int32_t*>();
-		*scr_globals::spawn_global.at(5).as<int32_t*>() = 1;
-		*spawn_signal                                   = 1;
-
-		// wait until the vehicle is spawned
-		for (size_t retry = 0; *spawn_signal != 0 && retry < 200; retry++)
-		{
-			script::get_current()->yield(10ms);
-		}
-
-		if (*spawn_signal == 1)
-		{
-			return 0;
-		}
-
-		auto veh = vehicle::get_closest_to_location(tmpLocation, 200);
-		if (veh == 0)
-		{
-			return 0;
-		}
-
-		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_HEADING(veh, heading);
-
-		return veh;
-	}
-
 	std::map<int, int32_t> get_owned_mods_from_vehicle_idx(script_global vehicle_idx)
 	{
 		std::map<int, int32_t> owned_mods;
@@ -336,7 +274,6 @@ namespace big::vehicle
 
 		return owned_mods;
 	}
-
 
 	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked)
 	{
@@ -579,138 +516,17 @@ namespace big::vehicle
 		}
 	}
 
-	void set_engine_state(Vehicle current_vehicle, bool state, bool immediately, bool disable_auto_start)
-	{
-		if (current_vehicle)
-			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
-		else
-			return g_notification_service->push_warning("Vehicle", "Please enter a vehicle.");
-	}
-
-	void downgrade(Vehicle vehicle)
-	{
-		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		for (int i = 0; i < 50; i++)
-		{
-			VEHICLE::REMOVE_VEHICLE_MOD(vehicle, i);
-		}
-	}
-
-	/*
-	 Set doorId to eDoorId::VEH_EXT_DOOR_INVALID_ID or simply -1 to apply to all vehicle doors.
-	*/
-	bool change_vehicle_door_lock_state(Vehicle veh, eDoorId doorId, eVehicleLockState state)
-	{
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{
-			if (doorId == eDoorId::VEH_EXT_DOOR_INVALID_ID)
-			{
-				VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, (int)state);
-				for (int i = 0; i < 6; i++)
-					VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, i, (int)state);
-				return VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh) == (int)state;
-			}
-			else
-			{
-				if (VEHICLE::GET_IS_DOOR_VALID(veh, (int)doorId))
-					VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, (int)doorId, (int)state);
-
-				return VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh, (int)doorId) == (int)state;
-			}
-		}
-
-		return false;
-	}
-
 	/*
 	* Set 'open' to false to close the door.
 	* Set doorId to eDoorId::VEH_EXT_DOOR_INVALID_ID or simply -1 to apply to all doors.
 	*/
-	bool operate_vehicle_door(Vehicle veh, eDoorId doorId, bool open)
+	void operate_vehicle_door(Vehicle veh, eDoorId doorId, bool open)
 	{
-		bool success = false;
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{
-			for (int i = 0; i < 6; i++)
-			{
-				if (doorId == eDoorId::VEH_EXT_DOOR_INVALID_ID || (int)doorId == i)
-				{
-					if (VEHICLE::GET_IS_DOOR_VALID(veh, i))
-					{
-						if (open)
-							VEHICLE::SET_VEHICLE_DOOR_OPEN(veh, i, false, false);
-						else
-							VEHICLE::SET_VEHICLE_DOOR_SHUT(veh, i, false);
-					}
-					success = true;
-				}
-			}
-		}
-		return success;
-	}
-
-	bool operate_vehicle_window(Vehicle veh, eWindowId windowId, bool open)
-	{
-		bool success = false;
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				if (windowId == eWindowId::WINDOW_INVALID_ID)
-				{
-					if (open)
-						VEHICLE::ROLL_DOWN_WINDOWS(veh);
-					else
-						VEHICLE::ROLL_UP_WINDOW(veh, i);
-				}
-
-				if ((int)windowId == i)
-				{
-					if (open)
-						VEHICLE::ROLL_DOWN_WINDOW(veh, i);
-					else
-						VEHICLE::ROLL_UP_WINDOW(veh, i);
-
-					success = true;
-				}
-			}
-		}
-		return success;
-	}
-
-	bool operate_vehicle_headlights(Vehicle veh, bool lights, bool highbeams)
-	{
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{
-			VEHICLE::SET_VEHICLE_FULLBEAM(veh, highbeams);
-			VEHICLE::SET_VEHICLE_LIGHTS(veh, lights ? 3 : 4);
-			int regular, highbeam;
-			VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh, &regular, &highbeam);
-			return regular == (int)lights && (int)highbeams == highbeam;
-		}
-
-		return false;
-	}
-
-	/*
-	* Input index -1 to apply to all neons.
-	*/
-	bool operate_vehicle_neons(Vehicle veh, int index, bool toggle)
-	{
-		bool success = false;
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
-		{
-			VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
-			for (int i = 0; i < 4; i++)
-			{
-				if (index == -1 || index == i)
-				{
-					VEHICLE::SET_VEHICLE_NEON_ENABLED(veh, index, toggle);
-					success = true;
-				}
-			}
-		}
-
-		return success;
+		for (int i = 0; i < 6; i++)
+			if ((doorId == eDoorId::VEH_EXT_DOOR_INVALID_ID || (int)doorId == i) && VEHICLE::GET_IS_DOOR_VALID(veh, i))
+				if (open)
+					VEHICLE::SET_VEHICLE_DOOR_OPEN(veh, i, false, false);
+				else
+					VEHICLE::SET_VEHICLE_DOOR_SHUT(veh, i, false);
 	}
 }

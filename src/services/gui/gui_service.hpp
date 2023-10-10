@@ -15,8 +15,10 @@ namespace big
 		ANIMATIONS,
 		CASINO,
 		PTFX_EFFECTS,
+		SCENARIOS,
 
 		VEHICLE,
+		LSC,
 		SPAWN_VEHICLE,
 		FUN_VEHICLE,
 
@@ -65,6 +67,7 @@ namespace big
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
 		                {tabs::CASINO, {"Casino", view::casino}},
 		                {tabs::PTFX_EFFECTS, {"Ptfx Effects", view::ptfx_effects}},
+		                {tabs::SCENARIOS, {"Scenarios", view::scenarios}},
 		            },
 		        },
 		    },
@@ -74,6 +77,7 @@ namespace big
 		            "Vehicle",
 		            view::vehicle,
 		            {
+		                {tabs::LSC, {"LSC", view::lsc}},
 		                {tabs::SPAWN_VEHICLE, {"Spawn Vehicle", view::spawn_vehicle}},
 		                {tabs::FUN_VEHICLE, {"Fun Features", view::fun_vehicle}},
 		            },

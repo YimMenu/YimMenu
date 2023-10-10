@@ -35,10 +35,12 @@ namespace big
 		static void animations();
 		static void spawn_objects();
 		static void ptfx_effects();
+		static void scenarios();
 		static void network();
 		static void session_browser();
 		static void casino();
 		static void vehicle();
+		static void lsc();
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
