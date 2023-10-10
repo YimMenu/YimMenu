@@ -13,8 +13,10 @@ namespace big
 		CUSTOM_TELEPORT,
 		OUTFIT_EDITOR,
 		ANIMATIONS,
+		SCENARIOS,
 
 		VEHICLE,
+		LSC,
 		SPAWN_VEHICLE,
 		FUN_VEHICLE,
 
@@ -60,6 +62,7 @@ namespace big
 		                {tabs::TELEPORT, {"Teleport", view::teleport, {{tabs::CUSTOM_TELEPORT, {"Custom Teleport", view::custom_teleport}}}}},
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
+		                {tabs::SCENARIOS, {"Scenarios", view::scenarios}},
 		            },
 		        },
 		    },
@@ -69,6 +72,7 @@ namespace big
 		            "Vehicle",
 		            view::vehicle,
 		            {
+		                {tabs::LSC, {"LSC", view::lsc}},
 		                {tabs::SPAWN_VEHICLE, {"Spawn Vehicle", view::spawn_vehicle}},
 		                {tabs::FUN_VEHICLE, {"Fun Features", view::fun_vehicle}},
 		            },

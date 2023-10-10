@@ -20,85 +20,101 @@ namespace big
 {
 	void view::fun_vehicle()
 	{
-		static int is_lowrider = 1; // 0 = no, 1 = undefined, 2 = yes
-
-		if (self::veh)
+		if (ImGui::CollapsingHeader("Vehicle controls"))
 		{
-			if (ImGui::CollapsingHeader("Vehicle controls"))
+			static Vehicle curr_veh;
+			static eVehicleLockState door_locked_state;
+
+			if (self::veh && curr_veh != self::veh)
 			{
-				static Vehicle last_veh;
+				curr_veh          = self::veh;
+				door_locked_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(curr_veh);
+			}
 
-				if (last_veh != self::veh)
-					last_veh = self::veh;
-
+			if (curr_veh)
+			{
+				ImGui::SeparatorText("Engine");
+				{
+					components::button("Engine On", [] {
+						VEHICLE::SET_VEHICLE_ENGINE_ON(curr_veh, true, true, false);
+					});
+					ImGui::SameLine();
+					components::button("Engine Off", [] {
+						VEHICLE::SET_VEHICLE_ENGINE_ON(curr_veh, false, true, false);
+					});
+				}
 				ImGui::SeparatorText("Doors");
 				{
+					components::button(door_locked_state == eVehicleLockState::VEHICLELOCK_LOCKED ? "Unlock doors" : "Lock doors", [=] {
+						if (door_locked_state == eVehicleLockState::VEHICLELOCK_LOCKED)
+							VEHICLE::SET_VEHICLE_DOORS_LOCKED(curr_veh, (int)eVehicleLockState::VEHICLELOCK_NONE);
+						else
+							VEHICLE::SET_VEHICLE_DOORS_LOCKED(curr_veh, (int)eVehicleLockState::VEHICLELOCK_LOCKED);
+						door_locked_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(curr_veh);
+					});
+
 					components::button("Open All", [=] {
-						vehicle::operate_vehicle_door(last_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
+						vehicle::operate_vehicle_door(curr_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
 					});
 					ImGui::SameLine();
 					components::button("Close All", [=] {
-						vehicle::operate_vehicle_door(last_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
+						vehicle::operate_vehicle_door(curr_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
 					});
 					for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
 					{
-						ImGui::Text(doornames[i]);
-						ImGui::SameLine();
-						ImGui::PushID(i);
-						components::button("Toggle", [=] {
-							vehicle::operate_vehicle_door(last_veh, (eDoorId)i, !(VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(last_veh, i) > 0.0f));
+						components::button(doornames[i], [=] {
+							vehicle::operate_vehicle_door(curr_veh, (eDoorId)i, !(VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(curr_veh, i) > 0.0f));
 						});
-						ImGui::PopID();
+						if (i % 2 == 0)
+							ImGui::SameLine();
 					}
 				}
 				ImGui::SeparatorText("Windows");
 				{
 					components::button("Roll Down All", [] {
-						vehicle::operate_vehicle_window(last_veh, eWindowId::WINDOW_INVALID_ID, true);
+						VEHICLE::ROLL_DOWN_WINDOWS(curr_veh);
 					});
 					ImGui::SameLine();
 					components::button("Roll Up All", [] {
-						vehicle::operate_vehicle_window(last_veh, eWindowId::WINDOW_INVALID_ID, false);
+						for (int i = 0; i < 4; i++)
+							VEHICLE::ROLL_UP_WINDOW(curr_veh, i);
 					});
 				}
 				ImGui::SeparatorText("lights");
 				{
 					components::button("Interior lights on", [] {
-						VEHICLE::SET_VEHICLE_INTERIORLIGHT(last_veh, true);
+						VEHICLE::SET_VEHICLE_INTERIORLIGHT(curr_veh, true);
 					});
 					ImGui::SameLine();
 					components::button("Interior lights off", [] {
-						VEHICLE::SET_VEHICLE_INTERIORLIGHT(last_veh, false);
+						VEHICLE::SET_VEHICLE_INTERIORLIGHT(curr_veh, false);
 					});
 				}
 			}
-			ImGui::Spacing();
-			if (ImGui::CollapsingHeader("Seat Changer"))
+			else
+				components::small_text("Please sit in a vehicle");
+		}
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Seat Changer"))
+		{
+			static bool is_veh_checked;
+			static std::map<int, bool> seats;
+
+			if (self::veh)
 			{
-				static bool is_veh_checked;
-				static std::map<int, bool> seats;
-
-				if (self::veh)
+				if (!is_veh_checked)
 				{
-					if (!is_veh_checked)
-					{
-						is_veh_checked = true;
-						g_fiber_pool->queue_job([] {
-							std::map<int, bool> tmp_seats;
+					is_veh_checked = true;
+					g_fiber_pool->queue_job([] {
+						std::map<int, bool> tmp_seats;
 
-							int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
+						int num_of_seats = VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(self::veh);
 
-							for (int i = -1; i < num_of_seats; i++)
-								tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
+						for (int i = -1; i < num_of_seats; i++)
+							tmp_seats[i] = VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, i, true);
 
-							seats = tmp_seats;
-						});
-					}
-				}
-				else if (is_veh_checked)
-				{
-					is_veh_checked = false;
-					seats.clear();
+						seats = tmp_seats;
+					});
 				}
 
 				for (auto& it : seats)
@@ -125,8 +141,20 @@ namespace big
 				}
 				ImGui::NewLine();
 			}
-			ImGui::Spacing();
-			if (ImGui::CollapsingHeader("Auto Drive"))
+			else
+			{
+				components::small_text("Please sit in a vehicle");
+				if (is_veh_checked)
+				{
+					is_veh_checked = false;
+					seats.clear();
+				}
+			}
+		}
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Auto Drive"))
+		{
+			if (self::veh)
 			{
 				float auto_drive_speed_in_miph = vehicle::mps_to_miph(g.vehicle.auto_drive_speed);
 				if (ImGui::SliderFloat("Top Speed (mi/h)", &auto_drive_speed_in_miph, 2.2369f, 335.535f, "%.1f"))
@@ -146,14 +174,17 @@ namespace big
 				if (components::button("To Waypoint"))
 					g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 			}
-			ImGui::Spacing();
-			if (ImGui::CollapsingHeader("Lowrider Vehicle controls"))
+			else
+				components::small_text("Please sit in a vehicle");
+		}
+		ImGui::Spacing();
+		if (ImGui::CollapsingHeader("Lowrider Vehicle controls"))
+		{
+			static int is_lowrider = 1; // 0 = no, 1 = undefined, 2 = yes
+			static bool force;
+
+			if (self::veh)
 			{
-				static bool force;
-
-				ImGui::Checkbox("force###forceLowrider", &force);
-				ImGui::Spacing();
-
 				if (is_lowrider == 1)
 				{
 					is_lowrider          = 0;
@@ -164,13 +195,15 @@ namespace big
 					});
 				}
 
+				ImGui::Checkbox("force###forceLowrider", &force);
+				ImGui::Spacing();
+
 				if (force || is_lowrider == 2)
 				{
 					static float maxWheelRaiseFactor;
 
-					ImGui::PushItemWidth(200);
+					ImGui::SetNextItemWidth(200);
 					ImGui::SliderFloat("maxWheelRaiseFactor", &maxWheelRaiseFactor, 1, 4);
-					ImGui::PopItemWidth();
 
 					ImGui::BeginGroup();
 					{
@@ -195,9 +228,7 @@ namespace big
 						}
 					}
 					ImGui::EndGroup();
-
 					ImGui::SameLine();
-
 					ImGui::BeginGroup();
 					{
 						components::button("Raise all wheels (smooth)", [&] {
@@ -231,13 +262,12 @@ namespace big
 				else
 					components::small_text("Please sit in a lowrider vehicle");
 			}
-		}
-		else
-		{
-			components::small_text("Please sit in a vehicle");
-
-			if (is_lowrider != 1)
-				is_lowrider = 1;
+			else
+			{
+				components::small_text("Please sit in a vehicle");
+				if (is_lowrider != 1)
+					is_lowrider = 1;
+			}
 		}
 	}
 }

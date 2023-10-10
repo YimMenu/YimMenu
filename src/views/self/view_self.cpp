@@ -38,6 +38,7 @@ namespace big
 			ImGui::BeginGroup();
 			{
 				components::command_checkbox<"noidlekick">();
+				components::command_checkbox<"cleanloop">();
 				if (*g_pointers->m_gta.m_is_session_started)
 				{
 					components::command_checkbox<"otr">();

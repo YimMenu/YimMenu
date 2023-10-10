@@ -14,8 +14,18 @@ namespace big
 
 		ImGui::SeparatorText("General");
 		{
-			components::command_checkbox<"infammo">();
-			components::command_checkbox<"infclip">();
+			ImGui::BeginGroup();
+			{
+				components::command_checkbox<"infammo">();
+				components::command_checkbox<"infclip">();
+			}
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			{
+				components::command_checkbox<"rapidfire">();
+			}
+			ImGui::EndGroup();
 		}
 
 		ImGui::SeparatorText("Misc");

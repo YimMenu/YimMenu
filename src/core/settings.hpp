@@ -188,6 +188,7 @@ namespace big
 			bool ghost_org                    = false;
 			bool unlimited_oxygen             = false;
 			bool god_mode                     = false;
+			bool clean_player                 = false;
 
 			struct hud
 			{
@@ -316,6 +317,7 @@ namespace big
 		{
 			bool infinite_ammo = false;
 			bool infinite_mag  = false;
+			bool rapid_fire    = false;
 
 			struct aimbot
 			{

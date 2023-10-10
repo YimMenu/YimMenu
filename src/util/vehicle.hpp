@@ -26,33 +26,16 @@ namespace big::vehicle
 	bool set_plate(Vehicle veh, const char* plate);
 	bool repair(Vehicle veh);
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false);
-	Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading);
 	std::map<int, int32_t> get_owned_mods_from_vehicle_idx(script_global vehicle_idx);
 	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked = true);
 	std::map<int, int32_t> get_owned_mods_from_vehicle(Vehicle vehicle);
 	void teleport_into_vehicle(Vehicle veh);
 	void max_vehicle(Vehicle veh);
 	void max_vehicle_performance(Vehicle veh);
-	void set_engine_state(Vehicle current_vehicle, bool state, bool immediately, bool disable_auto_start);
-	void downgrade(Vehicle vehicle);
-	bool remote_control_vehicle(Vehicle veh);
-	
-	/*
-	 Set doorId to eDoorId::VEH_EXT_DOOR_INVALID_ID or simply -1 to apply to all vehicle doors.
-	*/
-	bool change_vehicle_door_lock_state(Vehicle veh, eDoorId doorId, eVehicleLockState state);
 
 	/*
 	* Set 'open' to false to close the door.
 	* Set doorId to eDoorId::VEH_EXT_DOOR_INVALID_ID or simply -1 to apply to all doors.
 	*/
-	bool operate_vehicle_door(Vehicle veh, eDoorId doorId, bool open);
-	bool operate_vehicle_window(Vehicle veh, eWindowId windowId, bool open);
-
-	bool operate_vehicle_headlights(Vehicle veh, bool lights, bool highbeams);
-
-	/*
-	* Input index -1 to apply to all neons.
-	*/
-	bool operate_vehicle_neons(Vehicle veh, int index, bool toggle);
+	void operate_vehicle_door(Vehicle veh, eDoorId doorId, bool open);
 }

@@ -33,9 +33,11 @@ namespace big
 		static void root();
 		static void self();
 		static void animations();
+		static void scenarios();
 		static void network();
 		static void session_browser();
 		static void vehicle();
+		static void lsc();
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
