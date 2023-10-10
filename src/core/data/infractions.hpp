@@ -5,7 +5,7 @@ namespace big
 	// Lua API: Infraction
 	enum class Infraction
 	{
-		// Add new values to the bottom (before CUSTOM_REASON though)
+		// Add new values to the bottom (for serialization)
 
 		DESYNC_PROTECTION,             // do not use
 		BREAKUP_KICK_DETECTED,         // do not use
@@ -23,9 +23,7 @@ namespace big
 		INVALID_PLAYER_MODEL,
 		SUPER_JUMP,
 		UNDEAD_OTR,
-
 		// So that lua scripts can add a custom runtime reason.
-		// Keep it last for doc gen.
 		CUSTOM_REASON,
 	};
 }
