@@ -2,6 +2,11 @@
 
 All the infraction from the menu are listed below, used as parameter for adding an infraction to a given player, for flagging them as modder.
 
+**Example Usage:**
+```lua
+network.flag_player_as_modder(player_index, infraction.CUSTOM_REASON, "My custom reason on why the player is flagged as a modder")
+```
+
 ## Infraction Count: 12
 
 ### `TRIGGERED_ANTICHEAT`
