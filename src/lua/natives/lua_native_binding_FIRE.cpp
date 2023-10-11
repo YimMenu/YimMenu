@@ -1,5 +1,6 @@
 #include "lua_native_binding.hpp"
 #include "natives.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 
 namespace lua::native
 {
@@ -63,7 +64,11 @@ namespace lua::native
 
 	static void LUA_NATIVE_FIRE_ADD_OWNED_EXPLOSION(Ped ped, float x, float y, float z, int explosionType, float damageScale, bool isAudible, bool isInvisible, float cameraShake)
 	{
+		big::explosion_anti_cheat_bypass::apply();
+
 		FIRE::ADD_OWNED_EXPLOSION(ped, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake);
+
+		big::explosion_anti_cheat_bypass::restore();
 	}
 
 	static void LUA_NATIVE_FIRE_ADD_EXPLOSION_WITH_USER_VFX(float x, float y, float z, int explosionType, Hash explosionFx, float damageScale, bool isAudible, bool isInvisible, float cameraShake)
