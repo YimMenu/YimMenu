@@ -1,5 +1,7 @@
 #include "vehicle.hpp"
 
+#include "blip.hpp"
+#include "entity.hpp"
 #include "services/notifications/notification_service.hpp"
 
 namespace big::vehicle
@@ -21,6 +23,17 @@ namespace big::vehicle
 		}
 
 		return ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, y_offset, 0.f);
+	}
+
+	std::optional<Vector3> get_waypoint_location()
+	{
+		Vector3 location;
+
+		if (!blip::get_blip_location(location, (int)BlipIcons::Waypoint, -1))
+			return std::nullopt;
+
+		entity::load_ground_at_3dcoord(location);
+		return location;
 	}
 
 	void set_mp_bitset(Vehicle veh)

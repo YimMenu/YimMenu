@@ -38,6 +38,13 @@ namespace big
 				selected_slot = -1;
 
 				g_fiber_pool->queue_job([] {
+					if (!HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED("MOD_MNU", 10))
+					{
+						HUD::CLEAR_ADDITIONAL_TEXT(10, TRUE);
+						HUD::REQUEST_ADDITIONAL_TEXT("MOD_MNU", 10);
+						script::get_current()->yield();
+					}
+
 					model      = ENTITY::GET_ENTITY_MODEL(current_veh);
 					owned_mods = vehicle::get_owned_mods_from_vehicle(current_veh);
 					is_bennys = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
@@ -49,16 +56,13 @@ namespace big
 					std::map<std::string, std::vector<int>> tmp_front_wheel_map;
 					std::map<std::string, std::vector<int>> tmp_rear_wheel_map;
 
-					{
-						tmp_slot_display_names[MOD_PLATE_STYLE] = "Plate Style";
-						tmp_slot_display_names[MOD_WINDOW_TINT] = "Window Tint";
-						tmp_slot_display_names[MOD_WHEEL_TYPE]  = "Wheel Type";
+					tmp_slot_display_names[MOD_PLATE_STYLE] = "Plate Style";
+					tmp_slot_display_names[MOD_WINDOW_TINT] = "Window Tint";
+					tmp_slot_display_names[MOD_WHEEL_TYPE]  = "Wheel Type";
 
-						tmp_mod_display_names[MOD_PLATE_STYLE].insert(lsc_plate_styles.begin(), lsc_plate_styles.end());
-						tmp_mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(),
-						    lsc_window_tint_types.end());
-						tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
-					}
+					tmp_mod_display_names[MOD_PLATE_STYLE].insert(lsc_plate_styles.begin(), lsc_plate_styles.end());
+					tmp_mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(), lsc_window_tint_types.end());
+					tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
 					for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 					{

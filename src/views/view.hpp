@@ -36,11 +36,12 @@ namespace big
 		static void scenarios();
 		static void network();
 		static void session_browser();
+		static void recent_modders();
 		static void vehicle();
 		static void lsc();
 		static void spawn_vehicle();
 		static void pv();
-		static void persist_car();
+		static void persist_car(bool);
 		static void fun_vehicle();
 		static void time_and_weather();
 		static void teleport();

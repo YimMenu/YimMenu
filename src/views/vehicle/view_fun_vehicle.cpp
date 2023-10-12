@@ -27,8 +27,12 @@ namespace big
 
 			if (self::veh && curr_veh != self::veh)
 			{
-				curr_veh          = self::veh;
-				door_locked_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(curr_veh);
+				curr_veh = self::veh;
+
+				eVehicleLockState& door_locked_state_ref = door_locked_state; // Helper reference
+				g_fiber_pool->queue_job([&door_locked_state_ref] {
+					door_locked_state_ref = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(curr_veh);
+				});
 			}
 
 			if (curr_veh)
