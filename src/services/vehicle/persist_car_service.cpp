@@ -492,10 +492,7 @@ namespace big
 						VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, &tire_smoke_color[0], &tire_smoke_color[1], &tire_smoke_color[2]);
 						vehicle_json[tire_smoke_color_key] = tire_smoke_color;
 					}
-					else
-					{
-						vehicle_json[mod_names[i]] = "TOGGLE";
-					}
+					vehicle_json[mod_names[i]] = "TOGGLE";
 				}
 
 				if (VEHICLE::GET_VEHICLE_MOD(vehicle, i) != -1)
