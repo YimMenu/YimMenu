@@ -8,6 +8,10 @@ namespace big
 	{
 		static RecentModder* selected;
 
+		components::button("Clear List", [] {
+			recent_modders_list.clear();
+		});
+
 		if (ImGui::BeginListBox("##recent_modders", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
 			for (auto& pair : recent_modders_list)
