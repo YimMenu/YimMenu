@@ -12,7 +12,7 @@ namespace big
 
 		ImGui::SeparatorText("SETTINGS_LANGUAGES"_T.data());
 
-		if (ImGui::BeginCombo("Menu Language", language_entries.at(current_pack).name.c_str()))
+		if (language_entries.contains(current_pack) && ImGui::BeginCombo("Menu Language", language_entries.at(current_pack).name.c_str()))
 		{
 			for (auto& i : language_entries)
 			{
