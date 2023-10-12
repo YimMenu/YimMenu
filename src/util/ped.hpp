@@ -466,13 +466,13 @@ namespace big::ped
 		return true;
 	}
 
-	inline bool steal_outfit(const Ped target)
+	inline void steal_outfit(const Ped target)
 	{
-		outfit::components_t components;
+		if (ENTITY::GET_ENTITY_MODEL(target) != ENTITY::GET_ENTITY_MODEL(self::ped))
+			return;
 
-		for (auto item : components.items)
-		{
-			if (item.id != 2)
+		for (auto item : outfit::components_t().items)
+			if (item.id != 2) // dont apply hair
 			{
 				auto draw    = PED::GET_PED_DRAWABLE_VARIATION(target, item.id);
 				auto texture = PED::GET_PED_TEXTURE_VARIATION(target, item.id);
@@ -480,17 +480,11 @@ namespace big::ped
 
 				PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, draw, texture, palette);
 			}
-		}
 
 		PED::CLEAR_ALL_PED_PROPS(self::ped, 0);
 
-		outfit::props_t props;
-		for (auto& item : props.items)
-		{
+		for (auto& item : outfit::props_t().items)
 			PED::SET_PED_PROP_INDEX(self::ped, item.id, PED::GET_PED_PROP_INDEX(target, item.id, 1), PED::GET_PED_PROP_TEXTURE_INDEX(target, item.id), TRUE, 1);
-		}
-
-		return true;
 	}
 
 	inline void steal_identity(const Ped target)
@@ -600,7 +594,7 @@ namespace big::ped
 	inline void ped_play_animation(Ped ped, const std::string_view& animDict, const std::string_view& animName, float speed = 4.f, float speedMultiplier = -4.f, int duration = -1, int flag = 0, float playbackRate = 0, bool lockPos = false, Vector3 pos = {}, Vector3 rot = {}, int ik_flags = 0)
 	{
 		if (load_animation_dict(animDict.data()))
-			if(pos.x == 0 && pos.y == 0 && pos.z == 0)
+			if (pos.x == 0 && pos.y == 0 && pos.z == 0)
 				TASK::TASK_PLAY_ANIM(ped, animDict.data(), animName.data(), speed, speedMultiplier, duration, flag, playbackRate, lockPos, lockPos, lockPos);
 			else
 				TASK::TASK_PLAY_ANIM_ADVANCED(ped, animDict.data(), animName.data(), pos.x, pos.y, pos.z, rot.x, rot.y, rot.z, speed, speedMultiplier, duration, flag, playbackRate, lockPos, ik_flags);
