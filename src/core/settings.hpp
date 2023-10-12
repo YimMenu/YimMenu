@@ -7,6 +7,11 @@
 #include <rage/rlSessionInfo.hpp>
 
 #define TYPING_TICKS 3
+#define ROCKET_LAUNCH_SPEED 1200
+#define ROCKET_RANGE 1000
+#define ROCKET_LOCK_ON_RANGE 500
+#define ROCKET_TIME_BEFORE_HOMING 0.75
+#define ROCKET_LIFETIME 15
 
 class CNetGamePlayer;
 enum class eNetObjType;
@@ -296,21 +301,23 @@ namespace big
 
 			struct vehicle_ammo_special
 			{
-				bool enabled                     = false;
-				float rocket_reload_time         = -1;
-				float rocket_launch_speed        = 1200;
-				float rocket_range               = 1000;
-				float rocket_lock_on_range       = 500;
-				float rocket_time_before_homing  = 0.75;
-				float rocket_time_between_shots  = 0.66;
-				float rocket_alternate_wait_time = 0.66;
-				float rocket_lifetime            = 15;
-				bool rocket_improve_tracking     = true;
+				bool enabled                 = false;
+				bool rocket_improve_tracking = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)
+				float rocket_launch_speed       = ROCKET_LAUNCH_SPEED;
+				float rocket_range              = ROCKET_RANGE;
+				float rocket_lock_on_range      = ROCKET_LOCK_ON_RANGE;
+				float rocket_time_before_homing = ROCKET_TIME_BEFORE_HOMING;
+				float rocket_lifetime           = ROCKET_LIFETIME;
+
+				float m_rocket_launch_speed       = 0;
+				float m_rocket_range              = 0;
+				float m_rocket_lock_on_range      = 0;
+				float m_rocket_time_before_homing = 0;
+				float m_rocket_lifetime           = 0;
 			} vehicle_ammo_special{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, auto_drive_destination, auto_drive_style, auto_drive_speed, vehicle_ammo_special)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, auto_drive_destination, auto_drive_style, auto_drive_speed)
 		} vehicle{};
 
 		struct weapons

@@ -6,7 +6,6 @@
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
-// #include "packet.hpp"
 #include "pointers.hpp"
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "script.hpp"
@@ -14,14 +13,12 @@
 #include "services/api/api_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
+#include "services/recent_modders.cpp"
 #include "thread_pool.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
 
 #include <network/Network.hpp>
-// #include <network/snConnectToPeerTask.hpp>
-// #include <rage/rlQueryPresenceAttributesContext.hpp>
-// #include <rage/rlScHandle.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 
 namespace big::session
@@ -38,7 +35,7 @@ namespace big::session
 		else
 		{
 			*scr_globals::session.at(2).as<int*>() = 0;
-			*scr_globals::session2.as<int*>()       = (int)session;
+			*scr_globals::session2.as<int*>()      = (int)session;
 		}
 
 		*scr_globals::session.as<int*>() = 1;
@@ -53,7 +50,7 @@ namespace big::session
 		}
 
 		scr_functions::reset_session_data({true, true});
-		*scr_globals::session3.as<int*>()   = 0;
+		*scr_globals::session3.as<int*>() = 0;
 		*scr_globals::session4.as<int*>() = 1;
 		*scr_globals::session5.as<int*>() = 32;
 
@@ -155,6 +152,11 @@ namespace big::session
 			player->is_modder = true;
 			player->infractions.insert((int)infraction);
 			g.reactions.modder_detection.process(player);
+
+			auto rockstar_id = player->get_net_data()->m_gamer_handle.m_rockstar_id;
+			auto recent_modder = recent_modders_list.find(rockstar_id);
+			if (recent_modder == recent_modders_list.end())
+				recent_modders_list[rockstar_id] = {player->get_name(), rockstar_id, false};
 		}
 	}
 

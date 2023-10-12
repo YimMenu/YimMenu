@@ -15,11 +15,16 @@ namespace big
 		}
 	}
 
-	static void load_vehicle(std::string& selected_vehicle_file)
+	static void load_vehicle(std::string& selected_vehicle_file, bool spawn_at_waypoint)
 	{
 		if (!selected_vehicle_file.empty())
 		{
-			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder);
+			std::optional<Vector3> waypoint_location;
+			if (spawn_at_waypoint)
+				waypoint_location = vehicle::get_waypoint_location();
+
+			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder, waypoint_location);
+
 			if (!vehicle)
 			{
 				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
@@ -46,7 +51,7 @@ namespace big
 		});
 	}
 
-	void view::persist_car()
+	void view::persist_car(bool spawn_at_waypoint)
 	{
 		static std::string selected_vehicle_file;
 
@@ -58,9 +63,8 @@ namespace big
 			ImGui::SetTooltip("Controls whether the player should be set inside the vehicle after it spawns");
 
 		ImGui::SetNextItemWidth(300.f);
-		auto folder_display = g.persist_car.persist_vehicle_sub_folder.empty() ?
-		    "Root" :
-		    g.persist_car.persist_vehicle_sub_folder.c_str();
+		auto folder_display =
+		    g.persist_car.persist_vehicle_sub_folder.empty() ? "Root" : g.persist_car.persist_vehicle_sub_folder.c_str();
 		if (ImGui::BeginCombo("Folder", folder_display))
 		{
 			if (ImGui::Selectable("Root", g.persist_car.persist_vehicle_sub_folder == ""))
@@ -97,8 +101,8 @@ namespace big
 					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
 					{
 						selected_vehicle_file = pair;
-						g_fiber_pool->queue_job([] {
-							load_vehicle(selected_vehicle_file);
+						g_fiber_pool->queue_job([spawn_at_waypoint] {
+							load_vehicle(selected_vehicle_file, spawn_at_waypoint);
 						});
 					}
 				}
