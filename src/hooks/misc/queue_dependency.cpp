@@ -43,12 +43,6 @@ namespace big
 		if (!is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
 			return false;
 
-		// These must run, otherwise we'll at some point run out of sysMemSimpleAllocator memory.
-		if (caller_addr_offset == 0xAA03D4 || caller_addr_offset == 0xAA0A21 || caller_addr_offset == 0xAA0902)
-		{
-			return false;
-		}
-
 		return is_jump(f1) || is_jump(f2);
 	}
 
