@@ -6,6 +6,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
 #include "util/scripts.hpp"
+#include "util/session.hpp"
 #include "util/system.hpp"
 #include "util/teleport.hpp"
 
@@ -100,19 +101,26 @@ namespace lua::network
 		return -1;
 	}
 
+	static void flag_player_as_modder(int player_idx, big::Infraction reason)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+		{
+			big::session::add_infraction(player, reason);
+		}
+	}
+
 	// Lua API: Function
 	// Table: network
 	// Name: flag_player_as_modder
 	// Param: player_idx: integer: Index of the player.
+	// Param: reason: Infraction: Reason why the player is flagged as a modder, if the infraction is CUSTOM_REASON, then the custom_reason string is added in the local database. For a full list of the possible infraction reasons to use, please check the infraction page.
+	// Param: custom_reason: string: Optional, required only when the infraction is CUSTOM_REASON. The custom reason why the player is flagged as a modder.
 	// Flags the given player as a modder in our local database.
-	static void flag_player_as_modder(int player_idx)
+	static void flag_player_as_modder_custom_reason(int player_idx, big::Infraction reason, const std::string& custom_reason)
 	{
 		if (auto player = big::g_player_service->get_by_id(player_idx))
 		{
-			auto pers       = big::g_player_database_service->get_or_create_player(player);
-			pers->is_modder = true;
-			big::g_player_database_service->save();
-			player->is_modder = true;
+			big::session::add_infraction(player, reason, custom_reason);
 		}
 	}
 
@@ -127,6 +135,21 @@ namespace lua::network
 			return player->is_modder;
 
 		return false;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_flagged_modder_reason
+	// Param: player_idx: integer: Index of the player.
+	// Returns: string: Returns a string which contains the reason(s) why the player is flagged as a modder.
+	static std::string get_flagged_modder_reason(int player_idx)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+		{
+			return big::g_player_database_service->get_or_create_player(player)->get_all_infraction_descriptions();
+		}
+
+		return "";
 	}
 
 	// Lua API: Function
@@ -158,16 +181,39 @@ namespace lua::network
 
 	void bind(sol::state& state)
 	{
-		auto ns                                        = state["network"].get_or_create<sol::table>();
+		state.new_enum<big::Infraction>("infraction",
+		    {
+		        {"ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST", big::Infraction::ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST},
+		        {"ATTACKING_WITH_GODMODE", big::Infraction::ATTACKING_WITH_GODMODE},
+		        {"ATTACKING_WITH_INVISIBILITY", big::Infraction::ATTACKING_WITH_INVISIBILITY},
+		        {"BLAME_EXPLOSION_DETECTED", big::Infraction::BLAME_EXPLOSION_DETECTED},
+		        {"BREAKUP_KICK_DETECTED", big::Infraction::BREAKUP_KICK_DETECTED},
+		        {"CUSTOM_REASON", big::Infraction::CUSTOM_REASON},
+		        {"DESYNC_PROTECTION", big::Infraction::DESYNC_PROTECTION},
+		        {"INVALID_PLAYER_MODEL", big::Infraction::INVALID_PLAYER_MODEL},
+		        {"LOST_CONNECTION_KICK_DETECTED", big::Infraction::LOST_CONNECTION_KICK_DETECTED},
+		        {"SPOOFED_DATA", big::Infraction::SPOOFED_DATA},
+		        {"SPOOFED_HOST_TOKEN", big::Infraction::SPOOFED_HOST_TOKEN},
+		        {"SPOOFED_ROCKSTAR_ID", big::Infraction::SPOOFED_ROCKSTAR_ID},
+		        {"SUPER_JUMP", big::Infraction::SUPER_JUMP},
+		        {"TRIED_CRASH_PLAYER", big::Infraction::TRIED_CRASH_PLAYER},
+		        {"TRIED_KICK_PLAYER", big::Infraction::TRIED_KICK_PLAYER},
+		        {"TRIGGERED_ANTICHEAT", big::Infraction::TRIGGERED_ANTICHEAT},
+		        {"UNDEAD_OTR", big::Infraction::UNDEAD_OTR},
+		    });
+
+		auto ns = state["network"].get_or_create<sol::table>();
+
 		ns["trigger_script_event"]                     = trigger_script_event;
 		ns["give_pickup_rewards"]                      = give_pickup_rewards;
 		ns["set_player_coords"]                        = set_player_coords;
 		ns["set_all_player_coords"]                    = set_all_player_coords;
 		ns["get_selected_player"]                      = get_selected_player;
 		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
-		ns["flag_player_as_modder"]                    = flag_player_as_modder;
-		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
-		ns["force_script_host"]                        = force_script_host;
-		ns["send_chat_message"]                        = send_chat_message;
+		ns["flag_player_as_modder"]       = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
+		ns["is_player_flagged_as_modder"] = is_player_flagged_as_modder;
+		ns["get_flagged_modder_reason"]   = get_flagged_modder_reason;
+		ns["force_script_host"]           = force_script_host;
+		ns["send_chat_message"]           = send_chat_message;
 	}
 }
