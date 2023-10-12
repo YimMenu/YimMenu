@@ -65,3 +65,26 @@ add_compile_definitions(YimMenu
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"
 )
+
+find_package(Python3 COMPONENTS Interpreter)
+if(Python3_FOUND)
+    set(SETTINGS_HPP_FILE "${SRC_DIR}/core/settings.hpp")
+    set(SETTINGS_JSON_GEN_PY_SCRIPT "${SRC_DIR}/core/settings_json_serde_gen.py")
+    set(SETTINGS_JSON_GEN_PY_SCRIPT_DUMMY_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/dummy_settings_json_output.txt")
+
+    add_custom_command(
+        OUTPUT ${SETTINGS_JSON_GEN_PY_SCRIPT_DUMMY_OUTPUT}
+        COMMAND ${Python3_EXECUTABLE} ${SETTINGS_JSON_GEN_PY_SCRIPT} ${SETTINGS_HPP_FILE}
+        DEPENDS ${SETTINGS_HPP_FILE}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        VERBATIM
+    )
+
+    add_custom_target(
+        settings_json_gen ALL
+        COMMENT "Running python settings.hpp json macro generator if settings.hpp was modified."
+        DEPENDS ${SETTINGS_JSON_GEN_PY_SCRIPT_DUMMY_OUTPUT}
+    )
+else()
+    message("Not generating settings.hpp json macros, Python not found.")
+endif()
