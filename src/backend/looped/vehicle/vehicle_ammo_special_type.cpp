@@ -5,7 +5,7 @@ namespace big
 	class custom_vehicle_weapon : looped_command
 	{
 		using looped_command::looped_command;
-		using vehicle_ammo_setting = struct menu_settings::vehicle::vehicle_ammo_special;
+		using vehicle_ammo_setting = struct menu_settings::vehicle_t::vehicle_ammo_special_t;
 		using CWeaponInfoFlags = std::bitset<192>;
 		// mg
 		CWeaponInfo* m_mg_weapon_info = nullptr;

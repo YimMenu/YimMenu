@@ -166,7 +166,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (ImGui::BeginCombo("Effect", g.self.ptfx_effects.effect))
+			if (ImGui::BeginCombo("Effect", g.self.ptfx_effects.effect.c_str()))
 			{
 				for (const auto& ptfx_type : ptfx_named[g.self.ptfx_effects.select].effect_names)
 				{
