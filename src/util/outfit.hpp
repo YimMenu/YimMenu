@@ -34,12 +34,8 @@ namespace big::outfit
 		std::vector<outfit_t> items = {{0, "HEAD"},
 		    {1, "GLASSES"},
 		    {2, "EARS"},
-		    {3, "UNK1"},
-		    {4, "UNK2"},
-		    {5, "UNK3"},
 		    {6, "WATCH"},
-		    {7, "WRIST"},
-		    {8, "UNK4"}};
+		    {7, "WRIST"}};
 	};
 
 	inline void check_bounds_drawable(outfit_t* item)
