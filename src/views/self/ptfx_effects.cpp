@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/data/ptfx_effects.hpp"
 #include "pointers.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "util/strings.hpp"
@@ -113,7 +113,7 @@ namespace big
 		components::command_checkbox<"ptfx">();
 		ImGui::SameLine();
 		ImGui::PushItemWidth(400);
-		ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
+		ImGui::SliderFloat("PTFX Size", &g_ptfx_effects.size, 0.1f, 2.f);
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##searchDicText", "searchDic", searchDicText);
@@ -145,10 +145,10 @@ namespace big
 		if (selecDicIndex != -1 && ImGui::BeginListBox("##effectNames", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
 			for (auto& effectName : animDictCompactObjs[selecDicIndex].EffectNames)
-				if (ImGui::Selectable(effectName.c_str(), effectName == g.self.ptfx_effects.effect))
+				if (ImGui::Selectable(effectName.c_str(), effectName == g_ptfx_effects.effect))
 				{
-					g.self.ptfx_effects.asset  = animDictCompactObjs[selecDicIndex].DictionaryName.c_str();
-					g.self.ptfx_effects.effect = effectName.c_str();
+					g_ptfx_effects.asset  = animDictCompactObjs[selecDicIndex].DictionaryName.c_str();
+					g_ptfx_effects.effect = effectName.c_str();
 				}
 
 			ImGui::EndListBox();
@@ -166,12 +166,12 @@ namespace big
 		components::button("save", [&] {
 			std::string _groupName = trimString(groupName);
 			std::string effectName = trimString(customEffectName);
-			std::string currDict   = g.self.ptfx_effects.asset;
-			std::string currEffect = g.self.ptfx_effects.effect;
+			std::string currDict   = g_ptfx_effects.asset;
+			std::string currEffect = g_ptfx_effects.effect;
 
 			if (_groupName.size() > 0 && effectName.size() > 0 && currDict.size() > 0 && currEffect.size() > 0)
 			{
-				ptfxEffects::Effect effect = {effectName, currDict, currEffect, g.self.ptfx_effects.size};
+				ptfxEffects::Effect effect = {effectName, currDict, currEffect, g_ptfx_effects.size};
 
 				if (savedEffects.size() == 0)
 					ptfxEffects::loadSavedEffects(savedEffects);
@@ -244,9 +244,9 @@ namespace big
 					else
 					{
 						selectedGroupEffect = customEffectName = effect.name;
-						g.self.ptfx_effects.asset              = effect.dict.c_str();
-						g.self.ptfx_effects.effect             = effect.effect.c_str();
-						g.self.ptfx_effects.size               = effect.size;
+						g_ptfx_effects.asset              = effect.dict.c_str();
+						g_ptfx_effects.effect             = effect.effect.c_str();
+						g_ptfx_effects.size               = effect.size;
 					}
 				}
 			}
