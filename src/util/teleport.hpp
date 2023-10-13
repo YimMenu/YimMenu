@@ -40,7 +40,8 @@ namespace big::teleport
 		{
 			auto hnd = vehicle::spawn(VEHICLE_RCBANDITO, *player->get_ped()->get_position(), 0.0f, true);
 
-			if (!hnd && !g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object) {
+			if (!hnd && !g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object)
+			{
 				g_notification_service->push_warning("Teleport", "Failed!");
 				return;
 			}
@@ -119,7 +120,7 @@ namespace big::teleport
 		if (load_ground)
 			entity::load_ground_at_3dcoord(location);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
 	}
 
 	inline bool to_blip(int sprite, int color = -1)
