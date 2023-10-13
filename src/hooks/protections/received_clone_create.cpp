@@ -1,3 +1,4 @@
+#include "core/data/syncing_player.hpp"
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
@@ -17,8 +18,8 @@ namespace big
 		if (plyr && plyr->block_clone_create)
 			return;
 
-		g.m_syncing_player      = src;
-		g.m_syncing_object_type = object_type;
+		m_syncing_player      = src;
+		m_syncing_object_type = object_type;
 
 		g_hooking->get_original<hooks::received_clone_create>()(mgr, src, dst, object_type, object_id, object_flag, buffer, timestamp);
 	}

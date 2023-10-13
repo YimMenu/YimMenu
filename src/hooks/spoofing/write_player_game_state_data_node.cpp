@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/data/spoofing.hpp"
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
@@ -26,7 +26,7 @@ namespace big
 	{
 		g_hooking->get_original<write_player_game_state_data_node>()(player, node);
 
-		if (g.spoofing.spoof_hide_god && !is_in_cutscene() && !is_in_interior())
+		if (g_spoofing.spoof_hide_god && !is_in_cutscene() && !is_in_interior())
 		{
 			node->m_is_invincible   = false;
 			node->m_bullet_proof    = false;
@@ -38,7 +38,7 @@ namespace big
 			node->m_water_proof     = false;
 		}
 
-		if (g.spoofing.spoof_hide_spectate)
+		if (g_spoofing.spoof_hide_spectate)
 		{
 			node->m_is_spectating     = false;
 			node->m_spectating_net_id = 0;

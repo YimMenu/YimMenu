@@ -3,7 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
-#include "core/settings.hpp"
+#include "core/settings/session.hpp"
 
 namespace big
 {
@@ -11,7 +11,7 @@ namespace big
 
 	void looped::session_force_thunder()
 	{
-		bool used = g.session.force_thunder && *g_pointers->m_gta.m_is_session_started;
+		bool used = g_session.force_thunder && *g_pointers->m_gta.m_is_session_started;
 		if (!bLastForceThunderEnabled && used)
 		{
 			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("freemode")) && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)

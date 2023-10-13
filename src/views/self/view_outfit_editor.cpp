@@ -1,11 +1,11 @@
+#include "core/data/hud.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "services/outfit/outfit_service.hpp"
 #include "util/outfit.hpp"
 #include "util/ped.hpp"
 #include "views/view.hpp"
-#include "services/outfit/outfit_service.hpp"
-#include "services/notifications/notification_service.hpp"
-#include "core/settings.hpp"
 
 namespace big
 {
@@ -185,7 +185,7 @@ namespace big
 
 		ImGui::InputText("##outfit_name", outfit_name, sizeof(outfit_name));
 		if (ImGui::IsItemActive())
-			g.self.hud.typing = TYPING_TICKS;
+			g_hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
 		components::button("Save Current", [] {

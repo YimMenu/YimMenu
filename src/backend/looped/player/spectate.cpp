@@ -1,5 +1,5 @@
 #include "backend/looped/looped.hpp"
-#include "core/settings.hpp"
+#include "core/data/player.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
@@ -8,15 +8,15 @@ namespace big
 {
 	static bool bReset = true;
 
-	void looped::player_spectate() 
+	void looped::player_spectate()
 	{
 		const auto vehicle = self::veh;
 		const auto ped     = self::ped;
 
-		if (!g.player.spectating || !g_player_service->get_selected()->is_valid())
+		if (!g_player.spectating || !g_player_service->get_selected()->is_valid())
 		{
-			if (g.player.spectating)
-				g.player.spectating = false;
+			if (g_player.spectating)
+				g_player.spectating = false;
 
 			if (!bReset)
 			{

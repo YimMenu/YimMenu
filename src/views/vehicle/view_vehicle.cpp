@@ -1,3 +1,4 @@
+#include "core/data/vehicle_ammo_special.hpp"
 #include "util/mobile.hpp"
 #include "views/view.hpp"
 
@@ -57,61 +58,61 @@ namespace big
 				components::sub_title("Missile");
 
 				render_range_comp("Speed##rocket",
-				    g.vehicle.vehicle_ammo_special.rocket_launch_speed,
+				    g_vehicle_ammo_special.rocket_launch_speed,
 				    10,
 				    100,
 				    "%.1f",
-				    g.vehicle.vehicle_ammo_special.m_rocket_launch_speed,
+				    g_vehicle_ammo_special.m_rocket_launch_speed,
 				    ROCKET_LAUNCH_SPEED);
 				render_range_comp("Range##rocket",
-				    g.vehicle.vehicle_ammo_special.rocket_range,
+				    g_vehicle_ammo_special.rocket_range,
 				    50,
 				    100,
 				    "%.1f",
-				    g.vehicle.vehicle_ammo_special.m_rocket_range,
+				    g_vehicle_ammo_special.m_rocket_range,
 				    ROCKET_RANGE);
 				render_range_comp("Lock-on Range",
-				    g.vehicle.vehicle_ammo_special.rocket_lock_on_range,
+				    g_vehicle_ammo_special.rocket_lock_on_range,
 				    50,
 				    100,
 				    "%.1f",
-				    g.vehicle.vehicle_ammo_special.m_rocket_lock_on_range,
+				    g_vehicle_ammo_special.m_rocket_lock_on_range,
 				    ROCKET_LOCK_ON_RANGE);
 				render_range_comp("Lock-on Time",
-				    g.vehicle.vehicle_ammo_special.rocket_time_before_homing,
+				    g_vehicle_ammo_special.rocket_time_before_homing,
 				    0.01,
 				    0.1,
 				    "%.2f",
-				    g.vehicle.vehicle_ammo_special.m_rocket_time_before_homing,
+				    g_vehicle_ammo_special.m_rocket_time_before_homing,
 				    ROCKET_TIME_BEFORE_HOMING);
 				render_range_comp("Life Time",
-				    g.vehicle.vehicle_ammo_special.rocket_lifetime,
+				    g_vehicle_ammo_special.rocket_lifetime,
 				    0.1,
 				    1,
 				    "%.1f",
-				    g.vehicle.vehicle_ammo_special.m_rocket_lifetime,
+				    g_vehicle_ammo_special.m_rocket_lifetime,
 				    ROCKET_LIFETIME);
 
-				ImGui::Checkbox("Smart Missiles", &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
+				ImGui::Checkbox("Smart Missiles", &g_vehicle_ammo_special.rocket_improve_tracking);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Improves current missile's tracking ability.");
 
 				ImGui::Spacing();
 
 				components::button("Apply Original", [] {
-					g.vehicle.vehicle_ammo_special.rocket_launch_speed = g.vehicle.vehicle_ammo_special.m_rocket_launch_speed;
-					g.vehicle.vehicle_ammo_special.rocket_range = g.vehicle.vehicle_ammo_special.m_rocket_range;
-					g.vehicle.vehicle_ammo_special.rocket_lock_on_range = g.vehicle.vehicle_ammo_special.m_rocket_lock_on_range;
-					g.vehicle.vehicle_ammo_special.rocket_time_before_homing = g.vehicle.vehicle_ammo_special.m_rocket_time_before_homing;
-					g.vehicle.vehicle_ammo_special.rocket_lifetime = g.vehicle.vehicle_ammo_special.m_rocket_lifetime;
+					g_vehicle_ammo_special.rocket_launch_speed  = g_vehicle_ammo_special.m_rocket_launch_speed;
+					g_vehicle_ammo_special.rocket_range         = g_vehicle_ammo_special.m_rocket_range;
+					g_vehicle_ammo_special.rocket_lock_on_range = g_vehicle_ammo_special.m_rocket_lock_on_range;
+					g_vehicle_ammo_special.rocket_time_before_homing = g_vehicle_ammo_special.m_rocket_time_before_homing;
+					g_vehicle_ammo_special.rocket_lifetime = g_vehicle_ammo_special.m_rocket_lifetime;
 				});
 				ImGui::SameLine();
 				components::button("Apply Defaults", [] {
-					g.vehicle.vehicle_ammo_special.rocket_launch_speed       = ROCKET_LAUNCH_SPEED;
-					g.vehicle.vehicle_ammo_special.rocket_range              = ROCKET_RANGE;
-					g.vehicle.vehicle_ammo_special.rocket_lock_on_range      = ROCKET_LOCK_ON_RANGE;
-					g.vehicle.vehicle_ammo_special.rocket_time_before_homing = ROCKET_TIME_BEFORE_HOMING;
-					g.vehicle.vehicle_ammo_special.rocket_lifetime           = ROCKET_LIFETIME;
+					g_vehicle_ammo_special.rocket_launch_speed       = ROCKET_LAUNCH_SPEED;
+					g_vehicle_ammo_special.rocket_range              = ROCKET_RANGE;
+					g_vehicle_ammo_special.rocket_lock_on_range      = ROCKET_LOCK_ON_RANGE;
+					g_vehicle_ammo_special.rocket_time_before_homing = ROCKET_TIME_BEFORE_HOMING;
+					g_vehicle_ammo_special.rocket_lifetime           = ROCKET_LIFETIME;
 				});
 			});
 		}

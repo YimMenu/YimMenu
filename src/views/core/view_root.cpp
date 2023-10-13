@@ -1,5 +1,4 @@
 #include "views/view.hpp"
-#include "core/settings.hpp"
 
 namespace big
 {
@@ -9,8 +8,5 @@ namespace big
 		view::navigation();
 		view::players();
 		view::active_view();
-
-		if (g.window.demo) // It is not the YimMenu way.
-			ImGui::ShowDemoWindow(&g.window.demo);
 	}
 }

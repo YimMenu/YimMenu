@@ -1,4 +1,5 @@
-#include "core/settings.hpp"
+#include "core/data/player.hpp"
+#include "core/data/spoofing.hpp"
 #include "hooking.hpp"
 
 #include <netsync/nodes/player/CPlayerCameraDataNode.hpp>
@@ -9,7 +10,7 @@ namespace big
 	{
 		g_hooking->get_original<hooks::write_player_camera_data_node>()(player, node);
 
-		if (g.spoofing.spoof_hide_spectate && g.player.spectating)
+		if (g_spoofing.spoof_hide_spectate && g_player.spectating)
 		{
 			node->m_free_cam_pos_x += 50.0f;
 			node->m_free_cam_pos_y -= 50.0f;

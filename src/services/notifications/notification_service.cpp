@@ -1,7 +1,5 @@
 #include "notification_service.hpp"
 
-#include "core/settings.hpp"
-
 namespace big
 {
 	notification_service::notification_service()

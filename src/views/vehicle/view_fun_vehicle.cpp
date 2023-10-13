@@ -1,5 +1,5 @@
 #include "core/enums.hpp"
-#include "core/settings.hpp"
+#include "core/settings/vehicle.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
@@ -160,23 +160,23 @@ namespace big
 		{
 			if (self::veh)
 			{
-				float auto_drive_speed_in_miph = vehicle::mps_to_miph(g.vehicle.auto_drive_speed);
+				float auto_drive_speed_in_miph = vehicle::mps_to_miph(g_vehicle.auto_drive_speed);
 				if (ImGui::SliderFloat("Top Speed (mi/h)", &auto_drive_speed_in_miph, 2.2369f, 335.535f, "%.1f"))
-					g.vehicle.auto_drive_speed = vehicle::miph_to_mps(auto_drive_speed_in_miph);
+					g_vehicle.auto_drive_speed = vehicle::miph_to_mps(auto_drive_speed_in_miph);
 
-				if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g.vehicle.auto_drive_style]))
+				if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g_vehicle.auto_drive_style]))
 				{
 					for (int i = 0; i < 2; i++)
-						if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
-							g.vehicle.auto_drive_style = (AutoDriveStyle)i;
+						if (ImGui::Selectable(driving_style_names[i], g_vehicle.auto_drive_style == (AutoDriveStyle)i))
+							g_vehicle.auto_drive_style = (AutoDriveStyle)i;
 					ImGui::EndCombo();
 				}
 
 				if (components::button("To Objective"))
-					g.vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
+					g_vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
 				ImGui::SameLine();
 				if (components::button("To Waypoint"))
-					g.vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
+					g_vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 			}
 			else
 				components::small_text("Please sit in a vehicle");

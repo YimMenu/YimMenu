@@ -1,4 +1,3 @@
-#include "core/settings.hpp"
 #include "fiber_pool.hpp"
 #include "function_types.hpp"
 #include "hooking.hpp"

@@ -1,5 +1,6 @@
 
-#include "core/settings.hpp"
+#include "core/data/weapons.hpp"
+#include "core/data/persist_weapons.hpp"
 #include "gta/joaat.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -32,7 +33,7 @@ namespace big
 		{
 			components::command_checkbox<"aimbot">();
 			ImGui::SetNextItemWidth(350);
-			ImGui::SliderFloat("Distance", &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::SliderFloat("Distance", &g_weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
 			ImGui::Spacing();
 			components::button("Get All Weapons", [] {
 				for (const auto& [_, weapon] : g_gta_data_service->weapons())
@@ -137,7 +138,7 @@ namespace big
 
 		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{
-			static std::string selected_loadout = g.persist_weapons.weapon_loadout_file;
+			static std::string selected_loadout = g_persist_weapons.weapon_loadout_file;
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginListBox("Saved Loadouts", ImVec2(200, 200)))
 			{
@@ -163,7 +164,7 @@ namespace big
 				persist_weapons::give_player_loadout(selected_loadout);
 			});
 			ImGui::SameLine();
-			ImGui::Text(std::format("Current Loadout: {}:", g.persist_weapons.weapon_loadout_file).data());
+			ImGui::Text(std::format("Current Loadout: {}:", g_persist_weapons.weapon_loadout_file).data());
 			ImGui::EndGroup();
 			ImGui::PopItemWidth();
 		}

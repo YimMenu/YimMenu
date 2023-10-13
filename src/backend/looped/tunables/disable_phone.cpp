@@ -1,6 +1,6 @@
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
+#include "core/data/tunables.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g.tunables.disable_phone);
+	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g_tunables.disable_phone);
 }

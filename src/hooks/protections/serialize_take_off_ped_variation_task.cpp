@@ -1,3 +1,4 @@
+#include "core/data/syncing_player.hpp"
 #include "hooking.hpp"
 #include "util/notify.hpp"
 
@@ -30,7 +31,7 @@ namespace big
 		g_hooking->get_original<hooks::serialize_take_off_ped_variation_task>()(info, serializer);
 		if (!is_valid_parachute_model(info->m_prop_hash))
 		{
-			notify::crash_blocked(g.m_syncing_player, "invalid parachute model");
+			notify::crash_blocked(m_syncing_player, "invalid parachute model");
 			info->m_prop_hash = 0;
 		}
 	}

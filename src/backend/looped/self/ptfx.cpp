@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/data/ptfx_effects.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 
@@ -29,7 +29,7 @@ namespace big
 				    0.f,
 				    0.f,
 				    (int)ptfx_bone,
-				    g.self.ptfx_effects.size,
+				    g_ptfx_effects.size,
 				    1,
 				    1,
 				    1);
@@ -50,7 +50,7 @@ namespace big
 				    0.f,
 				    0.f,
 				    0.f,
-				    g.self.ptfx_effects.size,
+				    g_ptfx_effects.size,
 				    0.f,
 				    0.f,
 				    0.f,
@@ -61,9 +61,9 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (self::veh == 0)
-				show_player_ptfx_effect(g.self.ptfx_effects.asset, g.self.ptfx_effects.effect);
+				show_player_ptfx_effect(g_ptfx_effects.asset, g_ptfx_effects.effect);
 			else
-				show_vehicle_ptfx_effect(g.self.ptfx_effects.asset, g.self.ptfx_effects.effect);
+				show_vehicle_ptfx_effect(g_ptfx_effects.asset, g_ptfx_effects.effect);
 		}
 
 		virtual void on_disable() override
@@ -72,5 +72,5 @@ namespace big
 		}
 	};
 
-	ptfx_looped g_ptfx_looped("ptfx", "Enable PTFX", "Shows nice PTFX on your character and vehicle", g.self.ptfx_effects.show);
+	ptfx_looped g_ptfx_looped("ptfx", "Enable PTFX", "Shows nice PTFX on your character and vehicle", g_ptfx_effects.show);
 }

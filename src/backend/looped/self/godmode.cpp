@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/settings/self.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -22,5 +22,5 @@ namespace big
 		}
 	};
 
-	godmode g_godmode("godmode", "God Mode", "Prevents you from taking any form of damage", g.self.god_mode);
+	godmode g_godmode("godmode", "God Mode", "Prevents you from taking any form of damage", g_self.god_mode);
 }

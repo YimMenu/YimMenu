@@ -1,4 +1,5 @@
 #pragma once
+#include "core/settings/session.hpp"
 #include "script_function.hpp"
 
 namespace big
@@ -21,7 +22,7 @@ namespace big
 		inline void IS_PLAYER_PLAYING(rage::scrNativeCallContext* src)
 		{
 			// block undead OTR
-			if (g.session.decloak_players && src->get_arg<Player>(0) != self::id && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			if (g_session.decloak_players && src->get_arg<Player>(0) != self::id && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 				src->set_return_value<BOOL>(TRUE);
 			else
 				src->set_return_value<BOOL>(PLAYER::IS_PLAYER_PLAYING(src->get_arg<Player>(0)));
@@ -35,7 +36,7 @@ namespace big
 			}
 			else
 			{
-				if (g.session.force_script_host && NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA())
+				if (g_session.force_script_host && NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA())
 				{
 					auto hash = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
 					g_fiber_pool->queue_job([hash] {

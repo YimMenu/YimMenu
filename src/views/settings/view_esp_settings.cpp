@@ -1,25 +1,25 @@
 #include "views/view.hpp"
-#include "core/settings.hpp"
+#include "core/settings/esp.hpp"
 
 namespace big
 {
 	void view::esp_settings()
 	{
-		ImGui::Checkbox("ESP Enabled", &g.esp.enabled);
+		ImGui::Checkbox("ESP Enabled", &g_esp.enabled);
 
-		if (g.esp.enabled)
+		if (g_esp.enabled)
 		{
 			ImGui::Text("Global Render Distance (min, max)");
-			ImGui::SliderFloat2("###Global Render Distance", g.esp.global_render_distance, 0.f, 1500.f);
+			ImGui::SliderFloat2("###Global Render Distance", g_esp.global_render_distance, 0.f, 1500.f);
 
-			ImGui::Checkbox("Show Player Distance", &g.esp.distance);
+			ImGui::Checkbox("Show Player Distance", &g_esp.distance);
 
-			static ImVec4 col_default    = ImGui::ColorConvertU32ToFloat4(g.esp.default_color);
+			static ImVec4 col_default    = ImGui::ColorConvertU32ToFloat4(g_esp.default_color);
 
 			ImGui::Text("Default Color:");
 			if (ImGui::ColorEdit4("###Default ESP Color##esp_picker", (float*)&col_default, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 			{
-				g.esp.default_color = ImGui::ColorConvertFloat4ToU32(col_default);
+				g_esp.default_color = ImGui::ColorConvertFloat4ToU32(col_default);
 			}
 		}
 	}

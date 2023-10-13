@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/data/hud.hpp"
 #include "fiber_pool.hpp"
 #include "gui/components/components.hpp"
 #include "natives.hpp"
@@ -12,6 +12,6 @@ namespace big
 				g_fiber_pool->queue_job(std::move(cb));
 
 		if (ImGui::IsItemActive())
-			g.self.hud.typing = TYPING_TICKS;
+			g_hud.typing = TYPING_TICKS;
 	}
 }

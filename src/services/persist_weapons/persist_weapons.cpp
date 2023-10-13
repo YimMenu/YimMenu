@@ -1,6 +1,6 @@
 #include "persist_weapons.hpp"
 
-#include "core/settings.hpp"
+#include "core/data/persist_weapons.hpp"
 #include "gta/weapons.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -86,13 +86,13 @@ namespace big
 			catch (std::exception& e)
 			{
 				g_notification_service->push_warning("Persist Weapons", "Failed to load JSON file from disk.");
-				LOG(WARNING) << "Persist Weapons failed to load JSON file: " << g.persist_weapons.weapon_loadout_file << " because " << e.what();
+				LOG(WARNING) << "Persist Weapons failed to load JSON file: " << g_persist_weapons.weapon_loadout_file << " because " << e.what();
 			}
 		}
 		else
 		{
-			g.persist_weapons.weapon_loadout_file.clear();
-			LOG(WARNING) << "persist_weapons cannot open file" << g.persist_weapons.weapon_loadout_file;
+			g_persist_weapons.weapon_loadout_file.clear();
+			LOG(WARNING) << "persist_weapons cannot open file" << g_persist_weapons.weapon_loadout_file;
 		}
 		return {};
 	}

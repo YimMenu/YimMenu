@@ -2,7 +2,7 @@
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/pools.hpp"
-#include "core/settings.hpp"
+#include "core/data/world.hpp"
 #include "services/notifications/notification_service.hpp"
 
 namespace big
@@ -37,5 +37,5 @@ namespace big
 		}
 	};
 
-	auto_disarm g_auto_disarm("autodisarm", "Auto Disarm", "Disarm nearby pedestrians", g.world.nearby.auto_disarm.enable);
+	auto_disarm g_auto_disarm("autodisarm", "Auto Disarm", "Disarm nearby pedestrians", g_world.nearby.auto_disarm.enable);
 }

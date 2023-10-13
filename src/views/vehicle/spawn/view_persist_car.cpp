@@ -1,3 +1,5 @@
+#include "core/data/hud.hpp"
+#include "core/data/persist_car.hpp"
 #include "fiber_pool.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "util/teleport.hpp"
@@ -23,13 +25,13 @@ namespace big
 			if (spawn_at_waypoint)
 				waypoint_location = vehicle::get_waypoint_location();
 
-			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder, waypoint_location);
+			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g_persist_car.persist_vehicle_sub_folder, waypoint_location);
 
 			if (!vehicle)
 			{
 				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
 			}
-			else if (g.persist_car.spawn_inside)
+			else if (g_persist_car.spawn_inside)
 			{
 				teleport::into_vehicle(vehicle);
 			}
@@ -56,24 +58,24 @@ namespace big
 		static std::string selected_vehicle_file;
 
 		const auto vehicle_folders = persist_car_service::list_sub_folders();
-		const auto vehicle_files   = persist_car_service::list_files(g.persist_car.persist_vehicle_sub_folder);
+		const auto vehicle_files   = persist_car_service::list_files(g_persist_car.persist_vehicle_sub_folder);
 
-		ImGui::Checkbox("Spawn Inside", &g.persist_car.spawn_inside);
+		ImGui::Checkbox("Spawn Inside", &g_persist_car.spawn_inside);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Controls whether the player should be set inside the vehicle after it spawns");
 
 		ImGui::SetNextItemWidth(300.f);
 		auto folder_display =
-		    g.persist_car.persist_vehicle_sub_folder.empty() ? "Root" : g.persist_car.persist_vehicle_sub_folder.c_str();
+		    g_persist_car.persist_vehicle_sub_folder.empty() ? "Root" : g_persist_car.persist_vehicle_sub_folder.c_str();
 		if (ImGui::BeginCombo("Folder", folder_display))
 		{
-			if (ImGui::Selectable("Root", g.persist_car.persist_vehicle_sub_folder == ""))
-				g.persist_car.persist_vehicle_sub_folder.clear();
+			if (ImGui::Selectable("Root", g_persist_car.persist_vehicle_sub_folder == ""))
+				g_persist_car.persist_vehicle_sub_folder.clear();
 
 			for (std::string folder_name : vehicle_folders)
 			{
-				if (ImGui::Selectable(folder_name.c_str(), g.persist_car.persist_vehicle_sub_folder == folder_name))
-					g.persist_car.persist_vehicle_sub_folder = folder_name;
+				if (ImGui::Selectable(folder_name.c_str(), g_persist_car.persist_vehicle_sub_folder == folder_name))
+					g_persist_car.persist_vehicle_sub_folder = folder_name;
 			}
 
 			ImGui::EndCombo();
@@ -120,18 +122,18 @@ namespace big
 		ImGui::SetNextItemWidth(250);
 		ImGui::InputText("##vehiclefilename", vehicle_file_name_input, IM_ARRAYSIZE(vehicle_file_name_input));
 		if (ImGui::IsItemActive())
-			g.self.hud.typing = TYPING_TICKS;
+			g_hud.typing = TYPING_TICKS;
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Ex: My Cool Car");
 
-		if (g.persist_car.persist_vehicle_sub_folder.empty())
+		if (g_persist_car.persist_vehicle_sub_folder.empty())
 		{
 			static char save_folder[50]{};
 			components::small_text("Vehicle Folder Name");
 			ImGui::SetNextItemWidth(250);
 			ImGui::InputText("##foldername", save_folder, IM_ARRAYSIZE(save_folder));
 			if (ImGui::IsItemActive())
-				g.self.hud.typing = TYPING_TICKS;
+				g_hud.typing = TYPING_TICKS;
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("Ex: My Cool Car Collection (Leave this blank for Root)");
 
@@ -139,7 +141,7 @@ namespace big
 		}
 		else
 		{
-			save_vehicle_button(vehicle_file_name_input, g.persist_car.persist_vehicle_sub_folder.c_str());
+			save_vehicle_button(vehicle_file_name_input, g_persist_car.persist_vehicle_sub_folder.c_str());
 		}
 
 		ImGui::EndGroup();

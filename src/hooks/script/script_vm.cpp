@@ -1,5 +1,6 @@
+#include "core/data/script_vm.hpp"
+
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
@@ -32,7 +33,7 @@ namespace big
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = old_cayo_flags;
 			}
 
-			g.in_script_vm = true;
+			g_in_script_vm = true;
 		}
 
 		~script_vm_guard()
@@ -45,7 +46,7 @@ namespace big
 				old_cayo_flags = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags;
 			}
 
-			g.in_script_vm = false;
+			g_in_script_vm = false;
 		}
 	};
 

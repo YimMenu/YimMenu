@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/data/remote_player_teleport.hpp"
 #include "gta/net_array.hpp"
 #include "hooking.hpp"
 #include "script_global.hpp"
@@ -14,8 +14,8 @@ namespace big
 
 		g_hooking->get_original<hooks::write_vehicle_proximity_migration_data_node>()(veh, node);
 
-		if (auto it = g.m_remote_player_teleports.find(vehicle->m_net_object->m_object_id);
-		    it != g.m_remote_player_teleports.end())
+		if (auto it = m_remote_player_teleports.find(vehicle->m_net_object->m_object_id);
+		    it != m_remote_player_teleports.end())
 		{
 			node->m_has_occupants[0]  = true;
 			node->m_occupants[0]      = it->second.m_player_net_id;

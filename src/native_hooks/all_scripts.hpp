@@ -1,5 +1,7 @@
 #pragma once
 #include "core/scr_globals.hpp"
+#include "core/data/world.hpp"
+#include "core/settings/self.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "hooking.hpp"
@@ -49,7 +51,7 @@ namespace big
 
 		void NETWORK_OVERRIDE_CLOCK_TIME(rage::scrNativeCallContext* src)
 		{
-			if (g.world.custom_time.override_time)
+			if (g_world.custom_time.override_time)
 				return;
 
 			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
@@ -61,7 +63,7 @@ namespace big
 			int health    = src->get_arg<int>(1);
 			int p2        = src->get_arg<int>(2);
 
-			if (g.self.god_mode && entity == self::ped)
+			if (g_self.god_mode && entity == self::ped)
 				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
 
 			ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
