@@ -154,9 +154,9 @@ namespace big::session
 			g.reactions.modder_detection.process(player);
 
 			auto rockstar_id = player->get_net_data()->m_gamer_handle.m_rockstar_id;
-			auto recent_modder = recent_modders_list.find(rockstar_id);
-			if (recent_modder == recent_modders_list.end())
-				recent_modders_list[rockstar_id] = {player->get_name(), rockstar_id, false};
+			auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);
+			if (recent_modder == recent_modders_nm::recent_modders_list.end())
+				recent_modders_nm::recent_modders_list[rockstar_id] = {player->get_name(), rockstar_id, false};
 		}
 	}
 

@@ -79,9 +79,9 @@ namespace big
 			g_fiber_pool->queue_job([id, rockstar_id] {
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
-					auto recent_modder = recent_modders_list.find(rockstar_id);
+					auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);
 
-					if (recent_modder != recent_modders_list.end() && recent_modder->second.block_join
+					if (recent_modder != recent_modders_nm::recent_modders_list.end() && recent_modder->second.block_join
 					    && *g_pointers->m_gta.m_is_session_started)
 					{
 						if (g_player_service->get_self()->is_host())

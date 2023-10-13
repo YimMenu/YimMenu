@@ -9,7 +9,7 @@
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "thread_pool.hpp"
-
+#include "services/recent_modders.cpp"
 
 namespace big
 {
@@ -22,6 +22,7 @@ namespace big
 
 		g_custom_teleport_service.fetch_saved_locations();
 		g_ped_animation_service.fetch_saved_animations();
+		recent_modders_nm::load_blocked_list();
 
 		while (g_running)
 		{
