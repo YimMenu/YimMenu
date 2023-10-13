@@ -1,6 +1,7 @@
 #include "backend/command.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
+#include "core/settings/session.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
@@ -116,7 +117,7 @@ namespace big
 				}
 				else
 				{
-					if (g.session.log_chat_messages)
+					if (g_session.log_chat_messages)
 						spam::log_chat(message, player);
 
 					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
@@ -154,7 +155,7 @@ namespace big
 				CGameScriptId script;
 				script_id_deserialize(script, buffer);
 
-				if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (script.m_hash == RAGE_JOAAT("freemode") && g_session.force_script_host)
 					return true;
 
 				break;

@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/settings/protections.hpp"
 #include "hooking.hpp"
 #include "services/notifications/notification_service.hpp"
 
@@ -6,7 +6,7 @@ namespace big
 {
 	bool hooks::receive_pickup(rage::netObject* object, void* unk, CPed* ped)
 	{
-		if (g.protections.receive_pickup)
+		if (g_protections.receive_pickup)
 		{
 			g_notification_service->push_error("Protections", "Blocked pickup");
 			return false;

@@ -1,8 +1,8 @@
+#include "core/settings/window.hpp"
 #include "gui/components/components.hpp"
 #include "network/Network.hpp"
-#include "util/pathfind.hpp"
 #include "services/notifications/notification_service.hpp"
-#include "core/settings.hpp"
+#include "util/pathfind.hpp"
 
 namespace big
 {
@@ -10,6 +10,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("Misc"))
 		{
+			static bool imGui_demo = false;
+
 			ImGui::Spacing();
 			components::button("Network Bail", [] {
 				NETWORK::NETWORK_BAIL(16, 0, 0);
@@ -39,7 +41,10 @@ namespace big
 			ImGui::Spacing();
 			components::command_button<"fastquit">();
 			ImGui::Spacing();
-			ImGui::Checkbox("ImGui Demo", &g.window.demo);
+			ImGui::Checkbox("ImGui Demo", &imGui_demo);
+
+			if (imGui_demo)
+				ImGui::ShowDemoWindow(&imGui_demo);
 
 			ImGui::EndTabItem();
 		}

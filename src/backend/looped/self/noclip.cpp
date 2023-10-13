@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/settings/self.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
@@ -21,7 +21,7 @@ namespace big
 
 		inline bool can_update_location()
 		{
-			return !g.self.free_cam;
+			return !g_self.free_cam;
 		}
 
 		virtual void on_tick() override
@@ -84,7 +84,7 @@ namespace big
 				const auto is_aiming = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
 				if (is_aiming || CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == CameraMode::FIRST_PERSON)
 				{
-					vel = vel * g.self.noclip_aim_speed_multiplier;
+					vel = vel * g_self.noclip_aim_speed_multiplier;
 
 					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
 
@@ -93,7 +93,7 @@ namespace big
 				}
 				else
 				{
-					vel = vel * g.self.noclip_speed_multiplier;
+					vel = vel * g_self.noclip_speed_multiplier;
 
 					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
 					vel.x             = offset.x - location.x;
@@ -115,5 +115,5 @@ namespace big
 		}
 	};
 
-	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g.self.noclip);
+	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g_self.noclip);
 }

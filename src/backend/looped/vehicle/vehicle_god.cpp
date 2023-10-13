@@ -1,5 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
+#include "core/settings/vehicle.hpp"
 #include "natives.hpp"
 #include "util/mobile.hpp"
 
@@ -111,5 +112,6 @@ namespace big
 		}
 	};
 
-	vehicle_godmode g_vehicle_godmode("vehgodmode", "God Mode", "Prevents your vehicle from taking any form of damage", g.vehicle.god_mode);
+	vehicle_godmode
+	    g_vehicle_godmode("vehgodmode", "God Mode", "Prevents your vehicle from taking any form of damage", g_vehicle.god_mode);
 }

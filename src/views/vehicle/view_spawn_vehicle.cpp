@@ -1,4 +1,4 @@
-#include "core/settings.hpp"
+#include "core/data/spawn_vehicle.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -13,14 +13,6 @@ namespace big
 		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
 		components::command_checkbox<"spawnmaxed">();
-
-		static char plate_buf[9] = {0};
-		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);
-
-		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("Plate", "Plate Number", plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
-			g.spawn_vehicle.plate = plate_buf;
-		});
 
 		static int selected_class = -1;
 		const auto& class_arr     = g_gta_data_service->vehicle_classes();
@@ -93,51 +85,6 @@ namespace big
 		const auto box_height = calculated_size <= 30 ? (calculated_size * ImGui::GetTextLineHeightWithSpacing() + 2) : over_30;
 		if (ImGui::BeginListBox("###vehicles", {300, box_height}))
 		{
-			if (self::veh)
-			{
-				static auto veh_hash = 0;
-
-				g_fiber_pool->queue_job([] {
-					veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
-				});
-
-				if (veh_hash)
-				{
-					const auto& item = g_gta_data_service->vehicle_by_hash(veh_hash);
-
-					components::selectable(std::vformat("Current Vehicle [{}]", std::make_format_args(item.m_display_name)), false, [] {
-						if (self::veh)
-						{
-							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, veh_hash);
-							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-							auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
-
-							auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
-
-							if (veh == 0)
-							{
-								g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
-							}
-							else
-							{
-								if (g.spawn_vehicle.spawn_maxed)
-								{
-									vehicle::max_vehicle(veh);
-								}
-
-								vehicle::set_plate(veh, plate_buf);
-
-								if (g.spawn_vehicle.spawn_inside)
-								{
-									vehicle::teleport_into_vehicle(veh);
-								}
-							}
-						}
-					});
-				}
-			}
-
 			if (calculated_map.size() > 0)
 			{
 				for (auto& item : calculated_map)
@@ -151,29 +98,20 @@ namespace big
 						if (spawn_at_waypoint && (waypoint_location = vehicle::get_waypoint_location()).has_value())
 							spawn_location = waypoint_location.value();
 						else
-							spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
+							spawn_location = vehicle::get_spawn_location(g_spawn_vehicle.spawn_inside, vehicle.m_hash);
 
 						const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
 
 						if (veh == 0)
-						{
 							g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
-						}
 						else
 						{
-							if (g.spawn_vehicle.spawn_maxed)
-							{
+							if (g_spawn_vehicle.spawn_maxed)
 								vehicle::max_vehicle(veh);
-							}
-
-							vehicle::set_plate(veh, plate_buf);
-
-							if (g.spawn_vehicle.spawn_inside)
-							{
+							if (g_spawn_vehicle.spawn_inside)
 								vehicle::teleport_into_vehicle(veh);
-							}
 						}
 
 						ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
@@ -192,16 +130,17 @@ namespace big
 	void view::spawn_vehicle()
 	{
 		static bool spawn_at_waypoint;
+		static int spawn_vehicle_type;
 
-		ImGui::RadioButton("New", &g.spawn_vehicle_type, 0);
+		ImGui::RadioButton("New", &spawn_vehicle_type, 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", &g.spawn_vehicle_type, 1);
+		ImGui::RadioButton("Personal", &spawn_vehicle_type, 1);
 		ImGui::SameLine();
-		ImGui::RadioButton("Persistent", &g.spawn_vehicle_type, 2);
+		ImGui::RadioButton("Persistent", &spawn_vehicle_type, 2);
 		ImGui::Spacing();
 		ImGui::Checkbox("Spawn at waypoint", &spawn_at_waypoint);
 
-		switch (g.spawn_vehicle_type)
+		switch (spawn_vehicle_type)
 		{
 		case 0: render_spawn_new_vehicle(spawn_at_waypoint); break;
 		case 1: view::pv(); break;

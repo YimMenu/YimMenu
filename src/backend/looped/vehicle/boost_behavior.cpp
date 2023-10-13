@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/settings/vehicle.hpp"
 #include "natives.hpp"
 
 namespace big
@@ -30,5 +30,5 @@ namespace big
 		}
 	};
 
-	veh_boost g_veh_boost("veh_boost", "Boost Auto-Recharge", "Instantly refill rocket or kers boost", g.vehicle.veh_boost);
+	veh_boost g_veh_boost("veh_boost", "Boost Auto-Recharge", "Instantly refill rocket or kers boost", g_vehicle.veh_boost);
 }

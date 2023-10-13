@@ -1,3 +1,6 @@
+#include "core/settings/window.hpp"
+#include "core/settings/context_menu.hpp"
+#include "core/settings/esp.hpp"
 #include "gui.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "view.hpp"
@@ -7,7 +10,7 @@ namespace big
 	static void draw_model_bounding_box(ImDrawList* draw_list, const model_bounding_box_screen_space& m_model_bounding_box_screen_space)
 	{
 		const auto& box   = g_context_menu_service->m_model_bounding_box_screen_space;
-		const auto& color = g.context_menu.bounding_box_color;
+		const auto& color = g_context_menu.bounding_box_color;
 
 		draw_list->AddLine(box.edge1, box.edge2, color);
 		draw_list->AddLine(box.edge1, box.edge4, color);
@@ -38,7 +41,7 @@ namespace big
 				auto& context_target_pos = *g_context_menu_service->m_pointer->m_navigation->get_position();
 
 				const auto context_target_distance = math::calculate_distance_from_game_cam(context_target_pos);
-				const auto context_target_multplr = context_target_distance > g.esp.global_render_distance[1] ? -1.f : 6.17757f / context_target_distance;
+				const auto context_target_multplr = context_target_distance > g_esp.global_render_distance[1] ? -1.f : 6.17757f / context_target_distance;
 
 				if (g_pointers->m_gta.m_get_screen_coords_for_world_coords(context_target_pos.data, &context_screen_x, &context_screen_y))
 				{
@@ -51,18 +54,18 @@ namespace big
 
 					draw_list->AddRectFilled({cm_start_x - 2.f, cm_start_y},
 					    {cm_start_x + 2.f + cm->menu_size.x, cm_start_y + cm->menu_size.y},
-					    g.window.background_color,
+					    g_window.background_color,
 					    5.f);
 
 					for (uint32_t i = 0; i < cm->options.size(); i++)
 					{
 						const auto co = cm->options.at(i);
 						draw_list->AddText({cm_start_x + 7.f, cm_start_y + (20.f * static_cast<float>(i)) + 5.f},
-						    cm->current_option == i ? g.context_menu.selected_option_color : ImGui::ColorConvertFloat4ToU32({1.f, 1.f, 1.f, 1.f}),
+						    cm->current_option == i ? g_context_menu.selected_option_color : ImGui::ColorConvertFloat4ToU32({1.f, 1.f, 1.f, 1.f}),
 						    co.name.c_str());
 					}
 
-					if (g.context_menu.bounding_box_enabled)
+					if (g_context_menu.bounding_box_enabled)
 						draw_model_bounding_box(draw_list, g_context_menu_service->m_model_bounding_box_screen_space);
 				}
 			}

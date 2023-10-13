@@ -1,7 +1,7 @@
 #include "persist_car_service.hpp"
 
 #include "base/CObject.hpp"
-#include "core/settings.hpp"
+#include "core/data/persist_car.hpp"
 #include "pointers.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "util/misc.hpp"
@@ -184,7 +184,7 @@ namespace big
 	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
-		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
+		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g_persist_car.spawn_inside, vehicle_hash);
 		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);

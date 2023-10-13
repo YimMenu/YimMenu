@@ -3,7 +3,7 @@
 #include "pointers.hpp"
 #include "util/entity.hpp"
 #include "gta/enums.hpp"
-#include "core/settings.hpp"
+#include "core/data/world.hpp"
 
 namespace big
 {
@@ -37,6 +37,6 @@ namespace big
 	};
 
 	ignore g_ignore("pedsignore", "Ignore", "Nearby peds will ignore you and become oblivious to your actions",
-	    g.world.nearby.ignore);
+	    g_world.nearby.ignore);
 
 }

@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/data/vehicle_ammo_special.hpp"
 
 #include <bitset>
 #include <weapon/CAmmoInfo.hpp>
@@ -64,16 +64,16 @@ namespace big
 		{
 			if (m_rocket_weapon_info != nullptr)
 			{
-				m_rocket_weapon_info->m_weapon_range  = g.vehicle.vehicle_ammo_special.m_rocket_range;
-				m_rocket_weapon_info->m_lock_on_range = g.vehicle.vehicle_ammo_special.m_rocket_lock_on_range;
+				m_rocket_weapon_info->m_weapon_range  = g_vehicle_ammo_special.m_rocket_range;
+				m_rocket_weapon_info->m_lock_on_range = g_vehicle_ammo_special.m_rocket_lock_on_range;
 
 				weapon_flags(m_rocket_weapon_info) = m_rocket_weapon_flags;
 
 				CAmmoRocketInfo* rocket_info = (CAmmoRocketInfo*)m_rocket_weapon_info->m_ammo_info;
 
-				rocket_info->m_launch_speed       = g.vehicle.vehicle_ammo_special.m_rocket_launch_speed;
-				rocket_info->m_time_before_homing = g.vehicle.vehicle_ammo_special.m_rocket_time_before_homing;
-				rocket_info->m_lifetime           = g.vehicle.vehicle_ammo_special.m_rocket_lifetime;
+				rocket_info->m_launch_speed       = g_vehicle_ammo_special.m_rocket_launch_speed;
+				rocket_info->m_time_before_homing = g_vehicle_ammo_special.m_rocket_time_before_homing;
+				rocket_info->m_lifetime           = g_vehicle_ammo_special.m_rocket_lifetime;
 
 				rocket_info->m_homing_rocket_params = m_rocket_homing_params;
 
@@ -83,33 +83,33 @@ namespace big
 
 		void backup_rocket(CWeaponInfo* weapon_info)
 		{
-			m_rocket_weapon_info                                  = weapon_info;
-			g.vehicle.vehicle_ammo_special.m_rocket_range         = weapon_info->m_weapon_range;
-			g.vehicle.vehicle_ammo_special.m_rocket_lock_on_range = weapon_info->m_lock_on_range;
+			m_rocket_weapon_info                          = weapon_info;
+			g_vehicle_ammo_special.m_rocket_range         = weapon_info->m_weapon_range;
+			g_vehicle_ammo_special.m_rocket_lock_on_range = weapon_info->m_lock_on_range;
 
 			m_rocket_weapon_flags = weapon_flags(weapon_info);
 
 			CAmmoRocketInfo* rocket_info = (CAmmoRocketInfo*)weapon_info->m_ammo_info;
 
-			g.vehicle.vehicle_ammo_special.m_rocket_launch_speed       = rocket_info->m_launch_speed;
-			g.vehicle.vehicle_ammo_special.m_rocket_time_before_homing = rocket_info->m_time_before_homing;
-			g.vehicle.vehicle_ammo_special.m_rocket_lifetime           = rocket_info->m_lifetime;
+			g_vehicle_ammo_special.m_rocket_launch_speed       = rocket_info->m_launch_speed;
+			g_vehicle_ammo_special.m_rocket_time_before_homing = rocket_info->m_time_before_homing;
+			g_vehicle_ammo_special.m_rocket_lifetime           = rocket_info->m_lifetime;
 
 			m_rocket_homing_params = rocket_info->m_homing_rocket_params;
 		}
 
 		void apply_rocket()
 		{
-			m_rocket_weapon_info->m_weapon_range  = g.vehicle.vehicle_ammo_special.rocket_range;
-			m_rocket_weapon_info->m_lock_on_range = g.vehicle.vehicle_ammo_special.rocket_lock_on_range;
+			m_rocket_weapon_info->m_weapon_range  = g_vehicle_ammo_special.rocket_range;
+			m_rocket_weapon_info->m_lock_on_range = g_vehicle_ammo_special.rocket_lock_on_range;
 
 			CAmmoRocketInfo* rocket_info = (CAmmoRocketInfo*)m_rocket_weapon_info->m_ammo_info;
 
-			rocket_info->m_launch_speed       = g.vehicle.vehicle_ammo_special.rocket_launch_speed;
-			rocket_info->m_time_before_homing = g.vehicle.vehicle_ammo_special.rocket_time_before_homing;
-			rocket_info->m_lifetime           = g.vehicle.vehicle_ammo_special.rocket_lifetime;
+			rocket_info->m_launch_speed       = g_vehicle_ammo_special.rocket_launch_speed;
+			rocket_info->m_time_before_homing = g_vehicle_ammo_special.rocket_time_before_homing;
+			rocket_info->m_lifetime           = g_vehicle_ammo_special.rocket_lifetime;
 
-			if (g.vehicle.vehicle_ammo_special.rocket_improve_tracking)
+			if (g_vehicle_ammo_special.rocket_improve_tracking)
 			{
 				rocket_info->m_homing_rocket_params.m_should_use_homing_params_from_info              = true;
 				rocket_info->m_homing_rocket_params.m_turn_rate_modifier                              = 4.0;
@@ -128,5 +128,5 @@ namespace big
 		}
 	};
 	custom_vehicle_weapon g_custom_vehicle_weapon("customvehweaps", "Custom Vehicle Weapons", "Replaces the current vehicle weapons with custom ones.",
-	    g.vehicle.vehicle_ammo_special.enabled);
+	    g_vehicle_ammo_special.enabled);
 }

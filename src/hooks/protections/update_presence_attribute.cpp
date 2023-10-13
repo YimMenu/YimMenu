@@ -1,11 +1,11 @@
 #include "hooking.hpp"
-#include "core/settings.hpp"
+#include "core/settings/protections.hpp"
 
 namespace big
 {
 	inline bool block_session_presence()
 	{
-		return g.protections.rid_join;
+		return g_protections.rid_join;
 	}
 
 	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value)

@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
+#include "core/settings/vehicle.hpp"
 #include "pointers.hpp"
 #include "services/tunables/tunables_service.hpp"
 
@@ -28,5 +28,5 @@ namespace big
 		}
 	};
 
-	allvehsinheists g_allvehsinheists("allvehsinheists", "Allow All Vehicles", "Allows All Vehicles that have been banned from being used in heists or missions.", g.vehicle.all_vehs_in_heists);
+	allvehsinheists g_allvehsinheists("allvehsinheists", "Allow All Vehicles", "Allows All Vehicles that have been banned from being used in heists or missions.", g_vehicle.all_vehs_in_heists);
 }

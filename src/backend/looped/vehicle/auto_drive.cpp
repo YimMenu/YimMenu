@@ -1,11 +1,10 @@
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
-#include "core/settings.hpp"
+#include "core/settings/vehicle.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/blip.hpp"
 #include "util/vehicle.hpp"
-
 
 namespace big
 {
@@ -19,26 +18,26 @@ namespace big
 		static Vector3 waypoint;
 
 		// start driving if destination is there
-		if (g.vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
+		if (g_vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
 			if (!self::veh)
 			{
-				g.vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
+				g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 				has_driving_settings_changed     = false;
 				is_driving                       = false;
 			}
 
 			// check for changing driving settings
-			if (current_driving_flag != driving_style_flags[g.vehicle.auto_drive_style] || current_speed != g.vehicle.auto_drive_speed)
+			if (current_driving_flag != driving_style_flags[g_vehicle.auto_drive_style] || current_speed != g_vehicle.auto_drive_speed)
 			{
-				current_driving_flag         = driving_style_flags[g.vehicle.auto_drive_style];
-				current_speed                = g.vehicle.auto_drive_speed;
+				current_driving_flag         = driving_style_flags[g_vehicle.auto_drive_style];
+				current_speed                = g_vehicle.auto_drive_speed;
 				has_driving_settings_changed = true;
 			}
 
 			if (!is_driving)
 			{
-				bool does_waypoint_exist = g.vehicle.auto_drive_destination == AutoDriveDestination::OBJECTITVE ? blip::get_objective_location(waypoint) : blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
+				bool does_waypoint_exist = g_vehicle.auto_drive_destination == AutoDriveDestination::OBJECTITVE ? blip::get_objective_location(waypoint) : blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
 
 				if (does_waypoint_exist)
 				{
@@ -47,7 +46,7 @@ namespace big
 				}
 				else
 				{
-					g.vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
+					g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 					has_driving_settings_changed     = false;
 				}
 			}
@@ -65,7 +64,7 @@ namespace big
 				}
 
 				if (interupted)
-					g.vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
+					g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 			}
 		}
 	}

@@ -23,6 +23,7 @@
 #include "thread_pool.hpp"
 #include "util/migrate.hpp"
 #include "version.hpp"
+#include "core/settings.hpp"
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -57,7 +58,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
 
-			    g.init(g_file_manager.get_project_file("./settings.json"));
+			    g_menu_settings.init(g_file_manager.get_project_file("./settings.json"));
 			    LOG(INFO) << "Settings Loaded.";
 
 			    auto pointers_instance = std::make_unique<pointers>();

@@ -1,6 +1,6 @@
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
+#include "core/settings/self.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
 #include "script/globals/GPBD_FM_3.hpp"
@@ -20,7 +20,7 @@ namespace big
 			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
 			{
 				on_disable();
-				g.self.passive = false;
+				g_self.passive = false;
 				g_notification_service->push_warning("Disabled passive mode", "Disabled passive mode because you started mission / joined CEO/MC");
 				return;
 			}
@@ -40,5 +40,5 @@ namespace big
 		}
 	};
 
-	toggle_passive g_toggle_passive("passive", "Passive Mode", "Instantly toggle passive mode", g.self.passive);
+	toggle_passive g_toggle_passive("passive", "Passive Mode", "Instantly toggle passive mode", g_self.passive);
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include "core/data/all_script_names.hpp"
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
 #include "gta/script_handler.hpp"
@@ -78,15 +77,6 @@ namespace big::scripts
 		}
 
 		return true;
-	}
-
-	inline int launcher_index_from_hash(rage::joaat_t script_hash)
-	{
-		for (int i = 0; i < launcher_scripts.size(); i++)
-			if (launcher_scripts[i] == script_hash)
-				return i;
-
-		return -1;
 	}
 
 	// force launcher script over the lobby, take two

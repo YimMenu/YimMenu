@@ -1,8 +1,10 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+
+#include <imgui.h>
 
 constexpr float smoothing_speed = 4.f;
 constexpr float fov             = 90.f;
@@ -32,7 +34,7 @@ namespace big
 					        world_position.x,
 					        world_position.y,
 					        world_position.z)
-					    > (g.weapons.aimbot.distance * g.weapons.aimbot.distance))
+					    > (g_weapons.aimbot.distance * g_weapons.aimbot.distance))
 						continue; // If the entity is further than our preset distance then just skip it
 
 					if (PED::IS_PED_A_PLAYER(ped)) // check if its a player
@@ -128,5 +130,5 @@ namespace big
 		}
 	};
 
-	aimbot g_aimbot("aimbot", "Aimbot", "Lock on and kill", g.weapons.aimbot.enable);
+	aimbot g_aimbot("aimbot", "Aimbot", "Lock on and kill", g_weapons.aimbot.enable);
 }

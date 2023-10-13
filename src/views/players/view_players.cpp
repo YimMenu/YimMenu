@@ -10,7 +10,7 @@
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include "core/settings.hpp"
+#include "core/settings/window.hpp"
 
 namespace big
 {
@@ -36,7 +36,7 @@ namespace big
 
 		// calculate icons width
 		const auto window = ImGui::GetCurrentWindow();
-		ImGui::PushFont(g.window.font_icon);
+		ImGui::PushFont(g_window.font_icon);
 		const auto icons_size = ImGui::CalcTextSize(player_iconsc, player_icons_end);
 		const ImVec2 icons_pos(window->DC.CursorPos.x + 300.0f - 32.0f - icons_size.x, window->DC.CursorPos.y + 2.0f);
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
@@ -60,7 +60,7 @@ namespace big
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
-			g.window.switched_view = true;
+			g_window.switched_view = true;
 		}
 		if (ImGui::IsItemHovered() && !plyr->infractions.empty())
 		{
@@ -80,7 +80,7 @@ namespace big
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button
-		ImGui::PushFont(g.window.font_icon);
+		ImGui::PushFont(g_window.font_icon);
 		ImGui::RenderTextWrapped(icons_box.Min, player_iconsc, player_icons_end, icons_size.x);
 		ImGui::PopFont();
 	}

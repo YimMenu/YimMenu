@@ -1,4 +1,5 @@
 #pragma once
+#include "core/settings/session.hpp"
 #include "native_hooks.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
@@ -9,10 +10,10 @@ namespace big
 	{
 		inline void NETWORK_SESSION_HOST(rage::scrNativeCallContext* src)
 		{
-			if (g.session.join_queued)
+			if (g_session.join_queued)
 			{
-				g_pointers->m_gta.m_join_session_by_info(*g_pointers->m_gta.m_network, &g.session.info, 1, 1 | 2, nullptr, 0);
-				g.session.join_queued = false;
+				g_pointers->m_gta.m_join_session_by_info(*g_pointers->m_gta.m_network, &g_session.info, 1, 1 | 2, nullptr, 0);
+				g_session.join_queued = false;
 				src->set_return_value<BOOL>(TRUE);
 			}
 			else

@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/settings/self.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
@@ -23,7 +23,7 @@ namespace big
 
 		inline bool can_update_location()
 		{
-			return !g.self.noclip;
+			return !g_self.noclip;
 		}
 
 		virtual void on_enable() override
@@ -104,5 +104,5 @@ namespace big
 		}
 	};
 
-	free_cam g_free_cam("freecam", "Freecam", "Detaches the camera from the player and allows you to move it around freely", g.self.free_cam);
+	free_cam g_free_cam("freecam", "Freecam", "Detaches the camera from the player and allows you to move it around freely", g_self.free_cam);
 }

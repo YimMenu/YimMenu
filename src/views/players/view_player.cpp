@@ -1,6 +1,6 @@
 #include "core/data/language_codes.hpp"
+#include "core/data/player.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
 #include "natives.hpp"
 #include "services/gui/gui_service.hpp"
 #include "views/view.hpp"
@@ -48,7 +48,7 @@ namespace big
 			{
 				ImGui::BeginGroup();
 				{
-					ImGui::Checkbox("Spectate", &g.player.spectating);
+					ImGui::Checkbox("Spectate", &g_player.spectating);
 					ImGui::Spacing();
 
 					components::sub_title("Info");

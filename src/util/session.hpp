@@ -1,7 +1,7 @@
 #pragma once
 #include "core/data/infractions.hpp"
 #include "core/data/session_types.hpp"
-#include "core/settings.hpp"
+#include "core/settings/session.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
@@ -17,6 +17,7 @@
 #include "thread_pool.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
+#include "core/settings/reactions.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -91,12 +92,12 @@ namespace big::session
 			return;
 		}
 
-		g.session.join_queued = true;
-		g.session.info        = info;
+		g_session.join_queued = true;
+		g_session.info        = info;
 		session::join_type({eSessionType::NEW_PUBLIC});
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
-			g.session.join_queued = false;
+			g_session.join_queued = false;
 			g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
 		}
 		return;
@@ -151,7 +152,7 @@ namespace big::session
 		{
 			player->is_modder = true;
 			player->infractions.insert((int)infraction);
-			g.reactions.modder_detection.process(player);
+			g_reactions.modder_detection.process(player);
 
 			auto rockstar_id = player->get_net_data()->m_gamer_handle.m_rockstar_id;
 			auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);

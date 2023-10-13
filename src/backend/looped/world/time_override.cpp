@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings.hpp"
+#include "core/data/world.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
@@ -13,9 +13,9 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(g.world.custom_time.hour,
-			    g.world.custom_time.minute,
-			    g.world.custom_time.second);
+			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(g_world.custom_time.hour,
+			    g_world.custom_time.minute,
+			    g_world.custom_time.second);
 		}
 
 		virtual void on_disable() override
@@ -25,5 +25,5 @@ namespace big
 	};
 
 	time_override g_time_override("timeoverride", "Override Time", "Overrides current time. This is local and cannot be seen by other players",
-	    g.world.custom_time.override_time);
+	    g_world.custom_time.override_time);
 }

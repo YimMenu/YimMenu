@@ -1,4 +1,6 @@
 #include "core/data/region_codes.hpp"
+#include "core/settings/session.hpp"
+#include "core/data/spoofing.hpp"
 #include "fiber_pool.hpp"
 #include "function_types.hpp"
 #include "gta_util.hpp"
@@ -65,15 +67,15 @@ namespace big
 				components::sub_title("Misc");
 				ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 				{
-					ImGui::Checkbox("Block others from joining session", &g.session.lock_session);
-					if (g.session.lock_session)
-						ImGui::Checkbox("Allow Friends", &g.session.allow_friends_into_locked_session);
+					ImGui::Checkbox("Block others from joining session", &g_session.lock_session);
+					if (g_session.lock_session)
+						ImGui::Checkbox("Allow Friends", &g_session.allow_friends_into_locked_session);
 				}
 				ImGui::EndDisabled();
-				components::script_patch_checkbox("Reveal OTR Players", &g.session.decloak_players, "Reveals players that are off the radar");
-				ImGui::Checkbox("Force Thunder globally", &g.session.force_thunder);
-				ImGui::Checkbox("Hide God Mode", &g.spoofing.spoof_hide_god);
-				ImGui::Checkbox("Hide Spectate", &g.spoofing.spoof_hide_spectate);
+				components::script_patch_checkbox("Reveal OTR Players", &g_session.decloak_players, "Reveals players that are off the radar");
+				ImGui::Checkbox("Force Thunder globally", &g_session.force_thunder);
+				ImGui::Checkbox("Hide God Mode", &g_spoofing.spoof_hide_god);
+				ImGui::Checkbox("Hide Spectate", &g_spoofing.spoof_hide_spectate);
 			}
 			ImGui::EndGroup();
 		}
@@ -114,7 +116,7 @@ namespace big
 				static bool log_chat_messages, is_team;
 				static char msg[256];
 
-				ImGui::Checkbox("Log Messages (to file)", &g.session.log_chat_messages);
+				ImGui::Checkbox("Log Messages (to file)", &g_session.log_chat_messages);
 				ImGui::PushItemWidth(300);
 				components::input_text_with_hint("##message", "Message", msg, sizeof(msg));
 				ImGui::PopItemWidth();
@@ -135,12 +137,12 @@ namespace big
 			{
 				components::sub_title("Force Host");
 
-				ImGui::Checkbox("Force Session Host", &g.session.force_session_host);
+				ImGui::Checkbox("Force Session Host", &g_session.force_session_host);
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Join another session to apply changes. The original host of the session must leave or be kicked");
 
-				if (ImGui::Checkbox("Force Script Host", &g.session.force_script_host))
-					if (g.session.force_script_host)
+				if (ImGui::Checkbox("Force Script Host", &g_session.force_script_host))
+					if (g_session.force_script_host)
 						g_fiber_pool->queue_job([] {
 							scripts::force_host(RAGE_JOAAT("freemode"));
 							if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)

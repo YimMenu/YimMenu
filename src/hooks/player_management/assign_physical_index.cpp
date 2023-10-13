@@ -1,5 +1,8 @@
 #include "backend/player_command.hpp"
 #include "core/data/admin_rids.hpp"
+#include "core/settings/notifications.hpp"
+#include "core/settings/protections.hpp"
+#include "core/settings/session.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
@@ -33,10 +36,10 @@ namespace big
 
 			if (net_player_data)
 			{
-				if (g.notifications.player_leave.log)
+				if (g_notifications.player_leave.log)
 					LOG(INFO) << "Player left '" << net_player_data->m_name << "' freeing slot #" << (int)player->m_player_id << " with Rockstar ID: " << rockstar_id;
 
-				if (g.notifications.player_leave.notify)
+				if (g_notifications.player_leave.notify)
 				{
 					g_notification_service->push("Player Left",
 					    std::vformat("{} freeing slot", std::make_format_args(net_player_data->m_name)));
@@ -50,7 +53,7 @@ namespace big
 		g_player_service->player_join(player);
 		if (net_player_data)
 		{
-			if (g.protections.admin_check)
+			if (g_protections.admin_check)
 			{
 				if (admin_rids.contains(rockstar_id))
 				{
@@ -65,10 +68,10 @@ namespace big
 				}
 			}
 
-			if (g.notifications.player_join.log)
+			if (g_notifications.player_join.log)
 				LOG(INFO) << "Player joined '" << net_player_data->m_name << "' allocating slot #" << (int)player->m_player_id << " with Rockstar ID: " << rockstar_id;
 
-			if (g.notifications.player_join.notify)
+			if (g_notifications.player_join.notify)
 			{
 				g_notification_service->push("Player Joined",
 				    std::vformat("{} taking slot", std::make_format_args(net_player_data->m_name)));
@@ -90,9 +93,9 @@ namespace big
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
 					}
 
-					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
+					if (g_session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
 					{
-						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
+						if (plyr->is_friend() && g_session.allow_friends_into_locked_session)
 						{
 							g_notification_service->push_success("Lock Session",
 							    std::format("A friend with the name of {} has been allowed to join the locked session",

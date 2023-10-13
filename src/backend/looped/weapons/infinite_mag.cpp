@@ -1,6 +1,6 @@
 #include "backend/looped_command.hpp"
 #include "natives.hpp"
-#include "core/settings.hpp"
+#include "core/data/weapons.hpp"
 
 namespace big
 {
@@ -22,5 +22,5 @@ namespace big
 		}
 	};
 
-	infinite_mag g_infinite_mag("infclip", "Freeze Clip", "Freeze clip ammo (no reload)", g.weapons.infinite_mag);
+	infinite_mag g_infinite_mag("infclip", "Freeze Clip", "Freeze clip ammo (no reload)", g_weapons.infinite_mag);
 }

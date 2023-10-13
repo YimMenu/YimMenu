@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings.hpp"
+#include "core/settings/session.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
 
@@ -14,12 +14,12 @@ namespace big
 	static bool bLastForceHost = false;
 	void looped::system_spoofing()
 	{
-		if (bLastForceHost != g.session.force_session_host && gta_util::get_network()->m_game_session_state == 0)
+		if (bLastForceHost != g_session.force_session_host && gta_util::get_network()->m_game_session_state == 0)
 		{
 			uint64_t host_token;
 			g_pointers->m_gta.m_generate_uuid(&host_token);
 
-			host_token = g.session.force_session_host ? (rand() % 10000) : host_token;
+			host_token = g_session.force_session_host ? (rand() % 10000) : host_token;
 
 			*g_pointers->m_gta.m_host_token = host_token;
 
@@ -33,7 +33,7 @@ namespace big
 			if (g_local_player && g_local_player->m_player_info)
 				g_local_player->m_player_info->m_net_player_data.m_host_token = host_token;
 
-			bLastForceHost = g.session.force_session_host;
+			bLastForceHost = g_session.force_session_host;
 		}
 	}
 }

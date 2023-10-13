@@ -1,9 +1,10 @@
+#include "core/settings/notifications.hpp"
 #include "views/view.hpp"
-#include "core/settings.hpp"
+#include "core/settings/reactions.hpp"
 
 namespace big
 {
-	void draw_pair_option(const std::string_view name, decltype(g.notifications.player_join)& option)
+	void draw_pair_option(const std::string_view name, decltype(g_notifications.player_join)& option)
 	{
 		ImGui::Text(name.data());
 
@@ -54,70 +55,70 @@ namespace big
 	void view::reaction_settings()
 	{
 		components::title("Reactions");
-		draw_reaction(g.reactions.ceo_kick);
-		draw_reaction(g.reactions.ceo_money);
-		draw_reaction(g.reactions.clear_wanted_level);
-		draw_reaction(g.reactions.crash);
-		draw_reaction(g.reactions.end_session_kick);
-		draw_reaction(g.reactions.destroy_personal_vehicle);
-		draw_reaction(g.reactions.fake_deposit);
-		draw_reaction(g.reactions.force_mission);
-		draw_reaction(g.reactions.force_teleport);
-		draw_reaction(g.reactions.give_collectible);
-		draw_reaction(g.reactions.gta_banner);
-		draw_reaction(g.reactions.kick_from_interior);
-		draw_reaction(g.reactions.mc_teleport);
-		draw_reaction(g.reactions.network_bail);
-		draw_reaction(g.reactions.null_function_kick);
-		draw_reaction(g.reactions.personal_vehicle_destroyed);
-		draw_reaction(g.reactions.remote_off_radar);
-		draw_reaction(g.reactions.rotate_cam);
-		draw_reaction(g.reactions.send_to_cutscene);
-		draw_reaction(g.reactions.send_to_location);
-		draw_reaction(g.reactions.send_to_interior);
-		draw_reaction(g.reactions.sound_spam);
-		draw_reaction(g.reactions.spectate_notification);
-		draw_reaction(g.reactions.start_activity);
-		draw_reaction(g.reactions.start_script);
-		draw_reaction(g.reactions.teleport_to_warehouse);
-		draw_reaction(g.reactions.transaction_error);
-		draw_reaction(g.reactions.trigger_business_raid);
-		draw_reaction(g.reactions.tse_freeze);
-		draw_reaction(g.reactions.tse_sender_mismatch);
-		draw_reaction(g.reactions.vehicle_kick);
-		draw_reaction(g.reactions.turn_into_beast);
-		draw_reaction(g.reactions.remote_wanted_level);
-		draw_interloper_reaction(g.reactions.remote_wanted_level_others);
+		draw_reaction(g_reactions.ceo_kick);
+		draw_reaction(g_reactions.ceo_money);
+		draw_reaction(g_reactions.clear_wanted_level);
+		draw_reaction(g_reactions.crash);
+		draw_reaction(g_reactions.end_session_kick);
+		draw_reaction(g_reactions.destroy_personal_vehicle);
+		draw_reaction(g_reactions.fake_deposit);
+		draw_reaction(g_reactions.force_mission);
+		draw_reaction(g_reactions.force_teleport);
+		draw_reaction(g_reactions.give_collectible);
+		draw_reaction(g_reactions.gta_banner);
+		draw_reaction(g_reactions.kick_from_interior);
+		draw_reaction(g_reactions.mc_teleport);
+		draw_reaction(g_reactions.network_bail);
+		draw_reaction(g_reactions.null_function_kick);
+		draw_reaction(g_reactions.personal_vehicle_destroyed);
+		draw_reaction(g_reactions.remote_off_radar);
+		draw_reaction(g_reactions.rotate_cam);
+		draw_reaction(g_reactions.send_to_cutscene);
+		draw_reaction(g_reactions.send_to_location);
+		draw_reaction(g_reactions.send_to_interior);
+		draw_reaction(g_reactions.sound_spam);
+		draw_reaction(g_reactions.spectate_notification);
+		draw_reaction(g_reactions.start_activity);
+		draw_reaction(g_reactions.start_script);
+		draw_reaction(g_reactions.teleport_to_warehouse);
+		draw_reaction(g_reactions.transaction_error);
+		draw_reaction(g_reactions.trigger_business_raid);
+		draw_reaction(g_reactions.tse_freeze);
+		draw_reaction(g_reactions.tse_sender_mismatch);
+		draw_reaction(g_reactions.vehicle_kick);
+		draw_reaction(g_reactions.turn_into_beast);
+		draw_reaction(g_reactions.remote_wanted_level);
+		draw_interloper_reaction(g_reactions.remote_wanted_level_others);
 		ImGui::Separator();
-		draw_reaction(g.reactions.clear_ped_tasks);
-		draw_reaction(g.reactions.remote_ragdoll);
-		draw_reaction(g.reactions.kick_vote);
+		draw_reaction(g_reactions.clear_ped_tasks);
+		draw_reaction(g_reactions.remote_ragdoll);
+		draw_reaction(g_reactions.kick_vote);
 
-		draw_reaction(g.reactions.modder_detection);
-		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
-		
-		draw_reaction(g.reactions.report);
-		draw_reaction(g.reactions.report_cash_spawn);
-		draw_reaction(g.reactions.request_control_event);
-		draw_reaction(g.reactions.spectate);
+		draw_reaction(g_reactions.modder_detection);
+		draw_reaction(g_reactions.game_anti_cheat_modder_detection);
+
+		draw_reaction(g_reactions.report);
+		draw_reaction(g_reactions.report_cash_spawn);
+		draw_reaction(g_reactions.request_control_event);
+		draw_reaction(g_reactions.spectate);
 
 		ImGui::Separator();
-		draw_reaction(g.reactions.gamer_instruction_kick);
+		draw_reaction(g_reactions.gamer_instruction_kick);
 
 		components::title("Notifications");
 		components::sub_title("GTA Threads");
 
-		draw_pair_option("Terminate", g.notifications.gta_thread_kill);
-		draw_pair_option("Start", g.notifications.gta_thread_start);
+		draw_pair_option("Terminate", g_notifications.gta_thread_kill);
+		draw_pair_option("Start", g_notifications.gta_thread_start);
 
 		components::sub_title("Network Player Manager");
 
-		draw_pair_option("Player Join", g.notifications.player_leave);
-		draw_pair_option("Player Leave", g.notifications.player_leave);
+		draw_pair_option("Player Join", g_notifications.player_leave);
+		draw_pair_option("Player Leave", g_notifications.player_leave);
 
 		components::sub_title("Other");
 
-		draw_pair_option("Transaction Error / Rate Limit", g.notifications.transaction_rate_limit);
+		draw_pair_option("Transaction Error / Rate Limit", g_notifications.transaction_rate_limit);
 	}
 
 }

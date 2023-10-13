@@ -1,4 +1,3 @@
-#include "core/settings.hpp"
 #include "pointers.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/notifications/notification_service.hpp"

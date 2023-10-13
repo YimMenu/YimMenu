@@ -1,13 +1,13 @@
 #include "fiber_pool.hpp"
 #include "views/view.hpp"
 #include "script_mgr.hpp"
-#include "core/settings.hpp"
+#include "core/settings/window.hpp"
 
 namespace big
 {
 	void view::heading()
 	{
-		ImGui::SetNextWindowSize({300.f * g.window.gui_scale, 80.f * g.window.gui_scale});
+		ImGui::SetNextWindowSize({300.f * g_window.gui_scale, 80.f * g_window.gui_scale});
 		ImGui::SetNextWindowPos({10.f, 10.f});
 		if (ImGui::Begin("menu_heading", nullptr, window_flags | ImGuiWindowFlags_NoScrollbar))
 		{
@@ -21,7 +21,7 @@ namespace big
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::SetCursorPos(
-			    {(300.f * g.window.gui_scale) - ImGui::CalcTextSize("Unload").x - ImGui::GetStyle().ItemSpacing.x,
+			    {(300.f * g_window.gui_scale) - ImGui::CalcTextSize("Unload").x - ImGui::GetStyle().ItemSpacing.x,
 			        ImGui::GetStyle().WindowPadding.y / 2 + ImGui::GetStyle().ItemSpacing.y + (ImGui::CalcTextSize("W").y / 2)});
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("Unload"))
