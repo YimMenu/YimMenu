@@ -71,7 +71,7 @@ namespace big
 			{
 				ImGui::BeginTooltip();
 				for (auto infraction : sorted_player->infractions)
-					ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+					ImGui::BulletText(sorted_player->get_infraction_description(infraction));
 				ImGui::EndTooltip();
 			}
 		}

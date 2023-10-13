@@ -182,7 +182,7 @@ namespace big
 
 					for (auto& infraction : current_player->infractions)
 					{
-						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+						ImGui::BulletText(current_player->get_infraction_description(infraction));
 					}
 				}
 
