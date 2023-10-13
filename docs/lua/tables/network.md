@@ -2,7 +2,7 @@
 
 Table containing helper functions for network related features.
 
-## Functions (10)
+## Functions (11)
 
 ### `trigger_script_event(bitset, _args)`
 
@@ -79,16 +79,18 @@ integer = network.get_selected_player()
 integer = network.get_selected_database_player_rockstar_id()
 ```
 
-### `flag_player_as_modder(player_idx)`
+### `flag_player_as_modder(player_idx, reason, custom_reason)`
 
 Flags the given player as a modder in our local database.
 
 - **Parameters:**
   - `player_idx` (integer): Index of the player.
+  - `reason` (Infraction): Reason why the player is flagged as a modder, if the infraction is CUSTOM_REASON, then the custom_reason string is added in the local database. For a full list of the possible infraction reasons to use, please check the infraction page.
+  - `custom_reason` (string): Optional, required only when the infraction is CUSTOM_REASON. The custom reason why the player is flagged as a modder.
 
 **Example Usage:**
 ```lua
-network.flag_player_as_modder(player_idx)
+network.flag_player_as_modder(player_idx, reason, custom_reason)
 ```
 
 ### `is_player_flagged_as_modder(player_idx)`
@@ -102,6 +104,19 @@ network.flag_player_as_modder(player_idx)
 **Example Usage:**
 ```lua
 boolean = network.is_player_flagged_as_modder(player_idx)
+```
+
+### `get_flagged_modder_reason(player_idx)`
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+
+- **Returns:**
+  - `string`: Returns a string which contains the reason(s) why the player is flagged as a modder.
+
+**Example Usage:**
+```lua
+string = network.get_flagged_modder_reason(player_idx)
 ```
 
 ### `force_script_host(script_name)`
