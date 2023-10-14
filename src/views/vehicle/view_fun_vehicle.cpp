@@ -172,11 +172,13 @@ namespace big
 					ImGui::EndCombo();
 				}
 
+				ImGui::BeginDisabled(g_vehicle.is_auto_driving);
 				if (components::button("To Objective"))
 					g_vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
 				ImGui::SameLine();
 				if (components::button("To Waypoint"))
 					g_vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
+				ImGui::EndDisabled();
 			}
 			else
 				components::small_text("Please sit in a vehicle");

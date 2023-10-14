@@ -2,6 +2,7 @@
 #include "core/data/player.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
+#include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
 #include "views/view.hpp"
 
@@ -41,69 +42,64 @@ namespace big
 					strcat(player_tab.name, " [MOD]");
 			}
 
-			if (current_player->id() == self::id)
-				return;
-
 			ImGui::BeginGroup();
 			{
-				ImGui::BeginGroup();
-				{
-					ImGui::Checkbox("Spectate", &g_player.spectating);
-					ImGui::Spacing();
+				components::sub_title("Info");
+				components::options_modal(
+				    "Extra Info",
+				    [] {
+					    ImGui::BeginGroup();
 
-					components::sub_title("Info");
-					components::options_modal(
-					    "Extra Info",
-					    [] {
-						    ImGui::BeginGroup();
+					    auto id = g_player_service->get_selected()->id();
 
-						    auto id = g_player_service->get_selected()->id();
+					    if (id != -1)
+					    {
+						    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
+						    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
 
-						    if (id != -1)
-						    {
-							    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
-							    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
+						    const auto money  = reinterpret_cast<uint64_t&>(stats.Money);
+						    const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
 
-							    const auto money  = reinterpret_cast<uint64_t&>(stats.Money);
-							    const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
+						    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
+							    ImGui::Text("Language: %s", languages[boss_goon.Language].name);
 
-							    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
-								    ImGui::Text("Language: %s", languages[boss_goon.Language].name);
+						    ImGui::Text("Money In Wallet: %llu", wallet);
+						    ImGui::Text("Money In Bank: %llu", money - wallet);
+						    ImGui::Text("Total Money: %llu", money);
+						    ImGui::Text("Rank: %d (RP %d)", stats.Rank, stats.RP);
+						    ImGui::Text("K/D Ratio: %f", stats.KdRatio);
+						    ImGui::Text("Kills On Players: %d", stats.KillsOnPlayers);
+						    ImGui::Text("Deaths By Players: %d", stats.DeathsByPlayers);
+					    }
+					    ImGui::EndGroup();
 
-							    ImGui::Text("Money In Wallet: %llu", wallet);
-							    ImGui::Text("Money In Bank: %llu", money - wallet);
-							    ImGui::Text("Total Money: %llu", money);
-							    ImGui::Text("Rank: %d (RP %d)", stats.Rank, stats.RP);
-							    ImGui::Text("K/D Ratio: %f", stats.KdRatio);
-							    ImGui::Text("Kills On Players: %d", stats.KillsOnPlayers);
-							    ImGui::Text("Deaths By Players: %d", stats.DeathsByPlayers);
-						    }
-						    ImGui::EndGroup();
+					    ImGui::Separator();
 
-						    ImGui::Separator();
-
-						    ImGui::Checkbox("Block Explosions", &g_player_service->get_selected()->block_explosions);
-						    ImGui::Checkbox("Block Clone Creates", &g_player_service->get_selected()->block_clone_create);
-						    ImGui::Checkbox("Block Clone Syncs", &g_player_service->get_selected()->block_clone_sync);
-						    ImGui::Checkbox("Block Network Events", &g_player_service->get_selected()->block_net_events);
-						    ImGui::Checkbox("Log Clones", &g_player_service->get_selected()->log_clones);
-					    },
-					    false);
-					ImGui::SameLine();
-					components::button("SC Profile", [] {
-						uint64_t gamerHandle[13];
-						NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
-						NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
-					});
-				}
-				ImGui::EndGroup();
+					    ImGui::Checkbox("Block Explosions", &g_player_service->get_selected()->block_explosions);
+					    ImGui::Checkbox("Block Clone Creates", &g_player_service->get_selected()->block_clone_create);
+					    ImGui::Checkbox("Block Clone Syncs", &g_player_service->get_selected()->block_clone_sync);
+					    ImGui::Checkbox("Block Network Events", &g_player_service->get_selected()->block_net_events);
+					    ImGui::Checkbox("Log Clones", &g_player_service->get_selected()->log_clones);
+				    },
+				    false);
+				ImGui::SameLine();
+				components::button("SC Profile", [] {
+					uint64_t gamerHandle[13];
+					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
+					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
+				});
 			}
 			ImGui::EndGroup();
 
-			ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
+			if (current_player->id() == self::id)
+				return;
+
+			ImGui::SameLine(0, *g_pointers->m_gta.m_resolution_x * 0.4);
 
 			ImGui::BeginGroup();
 			{
+				ImGui::Checkbox("Spectate", &g_player.spectating);
+				ImGui::Spacing();
 				ImGui::BeginGroup();
 				{
 					components::sub_title("Teleport");

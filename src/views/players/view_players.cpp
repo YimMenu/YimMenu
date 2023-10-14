@@ -60,7 +60,6 @@ namespace big
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
-			g_window.switched_view = true;
 		}
 		if (ImGui::IsItemHovered() && !plyr->infractions.empty())
 		{

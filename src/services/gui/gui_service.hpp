@@ -53,7 +53,6 @@ namespace big
 	class gui_service final
 	{
 		std::vector<tabs> current_tab{};
-		bool switched_view = true;
 
 		std::map<tabs, navigation_struct> nav = {
 		    {
@@ -138,7 +137,6 @@ namespace big
 
 		navigation_struct* get_selected();
 		std::vector<tabs>& get_selected_tab();
-		bool has_switched_view();
 		void set_selected(tabs);
 		void set_nav_size(int);
 		void increment_nav_size();

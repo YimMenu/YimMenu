@@ -17,7 +17,6 @@ namespace big
 		ImFont* font_icon      = nullptr;
 
 		bool demo          = false;
-		bool switched_view = true;
 
 		struct ingame_overlay
 		{
@@ -40,6 +39,6 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_vehicle_godmode, show_ammo)
 		} ingame_overlay_indicators{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(g_window_t, background_color, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, ingame_overlay_indicators)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(g_window_t, background_color, text_color, button_color, frame_color, gui_scale, ingame_overlay, ingame_overlay_indicators)
 	} g_window{};
 }
