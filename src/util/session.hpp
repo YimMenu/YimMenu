@@ -1,6 +1,7 @@
 #pragma once
 #include "core/data/infractions.hpp"
 #include "core/data/session_types.hpp"
+#include "core/settings/reactions.hpp"
 #include "core/settings/session.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
@@ -14,10 +15,10 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/recent_modders.cpp"
+#include "services/gui/gui_service.hpp"
 #include "thread_pool.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
-#include "core/settings/reactions.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -148,13 +149,19 @@ namespace big::session
 
 	inline void add_infraction(player_ptr player, Infraction infraction)
 	{
+		if (infraction == Infraction::TRIED_CRASH_PLAYER || infraction == Infraction::TRIED_KICK_PLAYER)
+		{
+			g_gui_service->set_selected(tabs::PLAYER);
+			g_player_service->set_selected(player);
+		}
+
 		if (!player->infractions.contains((int)infraction))
 		{
 			player->is_modder = true;
 			player->infractions.insert((int)infraction);
 			g_reactions.modder_detection.process(player);
 
-			auto rockstar_id = player->get_net_data()->m_gamer_handle.m_rockstar_id;
+			auto rockstar_id   = player->get_net_data()->m_gamer_handle.m_rockstar_id;
 			auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);
 			if (recent_modder == recent_modders_nm::recent_modders_list.end())
 				recent_modders_nm::recent_modders_list[rockstar_id] = {player->get_name(), rockstar_id, false};
