@@ -16,7 +16,7 @@ namespace big
 				{
 					if (ImGui::Checkbox(script->name(), script->toggle_ptr()))
 					{
-						g_notification_service->push(std::string(script->name()).append(" script"), script->is_enabled() ? "Resumed" : "Halted");
+						g_notification_service->push(std::string(script->name()).append("VIEW_DEBUG_SCRIPTS_SCRIPT"_T.data()), script->is_enabled() ? "VIEW_DEBUG_SCRIPTS_RESUMED"_T.data() : "VIEW_DEBUG_SCRIPTS_HALTED"_T.data());
 					}
 				}
 			});

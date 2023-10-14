@@ -12,7 +12,7 @@ namespace big
 
 		ImGui::SeparatorText("SETTINGS_LANGUAGES"_T.data());
 
-		if (language_entries.contains(current_pack) && ImGui::BeginCombo("Menu Language", language_entries.at(current_pack).name.c_str()))
+		if (language_entries.contains(current_pack) && ImGui::BeginCombo("VIEW_SETTINGS_MENU_LANGUAGE"_T.data(), language_entries.at(current_pack).name.c_str()))
 		{
 			for (auto& i : language_entries)
 			{
@@ -27,7 +27,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Game Language", languages[*g_pointers->m_gta.m_language].name))
+		if (ImGui::BeginCombo("VIEW_SETTINGS_GAME_LANGUAGE"_T.data(), languages[*g_pointers->m_gta.m_language].name))
 		{
 			for (auto& language : languages)
 			{
@@ -49,19 +49,19 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (components::button("Force Update Languages"))
+		if (components::button("VIEW_SETTINGS_FORCE_UPDATE_LANGUAGES"_T))
 		{
 			g_thread_pool->push([] {
 				g_translation_service.update_n_reload_language_packs();
 
-				g_notification_service->push_success("Translations", "Finished updating translations.");
+				g_notification_service->push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
 			});
 		}
 
 		ImGui::SeparatorText("SETTINGS_MISC"_T.data());
 		ImGui::Checkbox("SETTINGS_MISC_DEV_DLC"_T.data(), &g.settings.dev_dlc);
 
-		if (ImGui::Button("Reset Settings"))
+		if (ImGui::Button("VIEW_SETTINGS_RESET"_T.data()))
 		{
 			g.write_default_config();
 			g.load();

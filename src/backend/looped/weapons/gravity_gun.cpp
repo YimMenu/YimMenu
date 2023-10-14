@@ -65,7 +65,7 @@ namespace big
 				{
 					if (ENTITY::IS_ENTITY_A_PED(ent_to_add) && PED::IS_PED_A_PLAYER(ent_to_add))
 					{
-						g_notification_service->push_warning("Weapons", "You can't move player entities!");
+						g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_PLAYER"_T.data());
 					}
 					else
 					{
@@ -79,7 +79,7 @@ namespace big
 
 						if (temp_dist > 500)
 						{
-							g_notification_service->push_warning("Weapons", "Entity is too far.");
+							g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_TOO_FAR"_T.data());
 						}
 						else
 						{
@@ -87,7 +87,7 @@ namespace big
 							{
 								TASK::SET_HIGH_FALL_TASK(ent_to_add, 0, 0, 0);
 
-								g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
+								g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_SET"_T.data());
 							}
 
 							ents.push_back(ent_to_add);
@@ -121,7 +121,7 @@ namespace big
 
 			ents.clear();
 
-			g_notification_service->push_success("Weapons", "Released entity.");
+			g_notification_service->push_success("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_UNSET"_T.data());
 		}
 	}
 }

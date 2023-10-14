@@ -53,21 +53,21 @@ namespace big
 			ImGui::SetTooltip("BLOCK_RID_JOINING_DESCRIPTION"_T.data());
 		ImGui::Checkbox("RECEIVE_PICKUP"_T.data(), &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
+			ImGui::SetTooltip("VIEW_PROTECTION_SETTINGS_RECEIVE_PICKUP_TOOLTIP"_T.data());
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
-		ImGui::Checkbox("Kick Rejoin", &g.protections.kick_rejoin);
+		ImGui::Checkbox("VIEW_PROTECTION_SETTINGS_KICK_REJOIN"_T.data(), &g.protections.kick_rejoin);
 		components::command_checkbox<"forcerelays">();
 		ImGui::EndGroup();
 
-		ImGui::SeparatorText("Options");
+		ImGui::SeparatorText("VIEW_PROTECTION_SETTINGS_OPTIONS"_T.data());
 		ImGui::BeginGroup();
-		if (ImGui::Button("Enable All Protections"))
+		if (ImGui::Button("VIEW_PROTECTION_SETTINGS_ENABLE_ALL_PROTECTIONS"_T.data()))
 			set_all_protections(true);
 		ImGui::SameLine();
-		if (ImGui::Button("Disable All Protections"))
+		if (ImGui::Button("VIEW_PROTECTION_SETTINGS_DISABLE_ALL_PROTECTIONS"_T.data()))
 			set_all_protections(false);
 		ImGui::SameLine();
-		if (ImGui::Button("Reset Protections"))
+		if (ImGui::Button("VIEW_PROTECTION_SETTINGS_RESET_PROTECTIONS"_T.data()))
 			reset_protections();
 		ImGui::EndGroup();
 	};

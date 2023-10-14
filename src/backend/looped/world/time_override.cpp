@@ -23,6 +23,5 @@ namespace big
 		}
 	};
 
-	time_override g_time_override("timeoverride", "Override Time", "Overrides current time. This is local and cannot be seen by other players",
-	    g.world.custom_time.override_time);
+	time_override g_time_override("timeoverride", "BACKEND_LOOPED_WORLD_OVERRIDE_TIME", "BACKEND_LOOPED_WORLD_OVERRIDE_TIME_DESC", g.world.custom_time.override_time);
 }
