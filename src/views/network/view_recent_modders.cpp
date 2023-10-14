@@ -1,11 +1,29 @@
 #include "pointers.hpp"
+#include "services/api/api_service.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/recent_modders.cpp"
+#include "thread_pool.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
 	void view::recent_modders()
 	{
+		static char player_name[64];
+
+		ImGui::SetNextItemWidth(300);
+		components::input_text("Player Name", player_name, sizeof(player_name));
+		components::button("Add to block list", [] {
+			g_thread_pool->push([] {
+				uint64_t rockstar_id;
+
+				if (!g_api_service->get_rid_from_username(player_name, rockstar_id))
+					g_notification_service->push_error("New Player Entry", "User could not be found.");
+				else
+					recent_modders_nm::recent_modders_list[rockstar_id] = {player_name, rockstar_id, true};
+			});
+		});
+
 		static recent_modders_nm::recent_modder* selected;
 		ImGui::NewLine();
 		ImGui::BeginGroup();

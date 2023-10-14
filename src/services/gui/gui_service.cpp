@@ -37,11 +37,6 @@ namespace big
 		return current_tab;
 	}
 
-	bool gui_service::has_switched_view()
-	{
-		return switched_view;
-	}
-
 	void gui_service::set_selected(tabs tab)
 	{
 		if (current_tab.empty())

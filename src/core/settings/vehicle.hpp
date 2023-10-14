@@ -16,6 +16,7 @@ namespace big
 		AutoDriveDestination auto_drive_destination = AutoDriveDestination::STOPPED;
 		AutoDriveStyle auto_drive_style             = AutoDriveStyle::LAW_ABIDING;
 		float auto_drive_speed                      = 8;
+		bool is_auto_driving                        = false;
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(g_vehicle_t, auto_drive_destination, auto_drive_style, auto_drive_speed)
 	} g_vehicle{};

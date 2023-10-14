@@ -115,6 +115,16 @@ namespace big
 					g_vehicle_ammo_special.rocket_lifetime           = ROCKET_LIFETIME;
 				});
 			});
+
+			ImGui::Spacing();
+
+			components::button("Freeze", [&] {
+				ENTITY::FREEZE_ENTITY_POSITION(self::veh, true);
+			});
+			ImGui::SameLine();
+			components::button("UnFreeze", [&] {
+				ENTITY::FREEZE_ENTITY_POSITION(self::veh, false);
+			});
 		}
 	}
 }

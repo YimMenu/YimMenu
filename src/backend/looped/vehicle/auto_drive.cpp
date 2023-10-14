@@ -12,9 +12,10 @@ namespace big
 
 	void looped::vehicle_auto_drive()
 	{
-		static int current_driving_flag          = driving_style_flags[AutoDriveStyle::LAW_ABIDING];
-		static float current_speed               = 8;
-		static bool has_driving_settings_changed = false, is_driving = false;
+		static int current_driving_flag = driving_style_flags[AutoDriveStyle::LAW_ABIDING];
+		static float current_speed      = 8;
+
+		static bool has_driving_settings_changed = false;
 		static Vector3 waypoint;
 
 		// start driving if destination is there
@@ -24,7 +25,7 @@ namespace big
 			{
 				g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
 				has_driving_settings_changed     = false;
-				is_driving                       = false;
+				g_vehicle.is_auto_driving        = false;
 			}
 
 			// check for changing driving settings
@@ -35,14 +36,14 @@ namespace big
 				has_driving_settings_changed = true;
 			}
 
-			if (!is_driving)
+			if (!g_vehicle.is_auto_driving)
 			{
 				bool does_waypoint_exist = g_vehicle.auto_drive_destination == AutoDriveDestination::OBJECTITVE ? blip::get_objective_location(waypoint) : blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
 
 				if (does_waypoint_exist)
 				{
 					TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(self::ped, self::veh, waypoint.x, waypoint.y, waypoint.z, current_speed, current_driving_flag, 20);
-					is_driving = true;
+					g_vehicle.is_auto_driving = true;
 				}
 				else
 				{
@@ -60,7 +61,7 @@ namespace big
 					TASK::CLEAR_PED_TASKS(self::ped);
 
 					has_driving_settings_changed = false;
-					is_driving                   = false; // start driving again in next tick if !interupted
+					g_vehicle.is_auto_driving    = false; // start driving again in next tick if !interupted
 				}
 
 				if (interupted)

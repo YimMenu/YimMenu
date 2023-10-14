@@ -1,8 +1,7 @@
 #pragma once
-#include "backend/command.hpp"
-#include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "services/gui/gui_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "services/vehicle/persist_car_service.hpp"
@@ -148,6 +147,7 @@ namespace big
 		    {},
 		    {{"SET SELECTED",
 		         [this] {
+			         g_gui_service->set_selected(tabs::PLAYER);
 			         g_player_service->set_selected(ped::get_player_from_ped(m_handle));
 		         }},
 		        {"STEAL OUTFIT", [this] {
