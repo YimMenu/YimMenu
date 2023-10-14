@@ -44,6 +44,8 @@ namespace big
 
 			ImGui::BeginGroup();
 			{
+				ImGui::Checkbox("Spectate", &g_player.spectating);
+				ImGui::Spacing();
 				components::sub_title("Info");
 				components::options_modal(
 				    "Extra Info",
@@ -98,8 +100,6 @@ namespace big
 
 			ImGui::BeginGroup();
 			{
-				ImGui::Checkbox("Spectate", &g_player.spectating);
-				ImGui::Spacing();
 				ImGui::BeginGroup();
 				{
 					components::sub_title("Teleport");
