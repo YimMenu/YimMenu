@@ -8,8 +8,9 @@ namespace big
 	class proxy_mgr
 	{
 	private:
-		ProxyProtocol m_protocol = ProxyProtocol::NONE;
+		// protocols supported by CURL
         std::unordered_map<ProxyProtocol, std::string> m_protocols;
+		// protocols to be proxied
 		std::array<const std::string, 2> m_supported_protocols = { "http", "https" };
 
 		proxy_settings m_proxy_settings;
