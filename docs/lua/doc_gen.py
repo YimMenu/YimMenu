@@ -18,6 +18,7 @@ class DocKind(Enum):
     Constructor = "constructor"
     Function = "function"
     Tabs = "tabs"
+    Infraction = "infraction"
 
 
 class Table:
@@ -324,7 +325,10 @@ def parse_lua_api_doc(folder_path):
                                 .lower()
                             )
 
-                            if doc_kind is not DocKind.Tabs:
+                            if (
+                                doc_kind is not DocKind.Tabs
+                                and doc_kind is not DocKind.Infraction
+                            ):
                                 continue
 
                         if doc_kind is not None and "//" in line:
@@ -367,7 +371,10 @@ def parse_lua_api_doc(folder_path):
                                         line,
                                         line_lower,
                                     )
-                                case DocKind.Tabs: parse_tabs_doc(file)
+                                case DocKind.Tabs:
+                                    parse_tabs_doc(file)
+                                case DocKind.Infraction:
+                                    parse_infraction_doc(file)
                                 case _:
                                     # print("unsupported doc kind: " + str(doc_kind))
                                     pass
@@ -386,6 +393,7 @@ def parse_table_doc(cur_table, line, line_lower):
 
     return cur_table
 
+
 def parse_class_doc(cur_class, line, line_lower):
     if is_lua_doc_comment_startswith(line_lower, "name"):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
@@ -402,28 +410,43 @@ def parse_class_doc(cur_class, line, line_lower):
 
 
 def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
-    if is_lua_doc_comment_startswith(line_lower, "table") and lua_api_comment_separator in line_lower:
+    if (
+        is_lua_doc_comment_startswith(line_lower, "table")
+        and lua_api_comment_separator in line_lower
+    ):
         table_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_table = make_table(table_name)
 
         cur_function = Function("Didnt get name yet", cur_table, [], None, "", "")
         cur_table.functions.append(cur_function)
-    elif is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "class")
+        and lua_api_comment_separator in line_lower
+    ):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_class = make_class(class_name)
 
         cur_function = Function("Didnt get name yet", cur_class, [], None, "", "")
         cur_class.functions.append(cur_function)
-    elif is_lua_doc_comment_startswith(line_lower, "name") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "name")
+        and lua_api_comment_separator in line_lower
+    ):
         function_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_function.name = function_name
 
         if function_name not in functions:
             functions[function_name] = cur_function
-    elif is_lua_doc_comment_startswith(line_lower, "param") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "param")
+        and lua_api_comment_separator in line_lower
+    ):
         parameter = make_parameter_from_doc_line(line)
         cur_function.parameters.append(parameter)
-    elif is_lua_doc_comment_startswith(line_lower, "return") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "return")
+        and lua_api_comment_separator in line_lower
+    ):
         return_info = line.split(lua_api_comment_separator, 2)
         try:
             cur_function.return_type = return_info[1].strip()
@@ -439,19 +462,28 @@ def parse_function_doc(cur_function, cur_table, cur_class, line, line_lower):
 
 
 def parse_field_doc(cur_field, cur_table, cur_class, line, line_lower):
-    if is_lua_doc_comment_startswith(line_lower, "table") and lua_api_comment_separator in line_lower:
+    if (
+        is_lua_doc_comment_startswith(line_lower, "table")
+        and lua_api_comment_separator in line_lower
+    ):
         table_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_table = make_table(table_name)
 
         cur_field = Field("Didnt get name yet", "", "")
         cur_table.fields.append(cur_field)
-    elif is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "class")
+        and lua_api_comment_separator in line_lower
+    ):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_class = make_class(class_name)
 
         cur_field = Field("Didnt get name yet", "", "")
         cur_class.fields.append(cur_field)
-    elif is_lua_doc_comment_startswith(line_lower, "field") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "field")
+        and lua_api_comment_separator in line_lower
+    ):
         field_info = line.split(lua_api_comment_separator, 2)
         cur_field.name = field_info[1].strip()
         cur_field.type_ = field_info[2].strip()
@@ -467,13 +499,19 @@ def parse_field_doc(cur_field, cur_table, cur_class, line, line_lower):
 
 
 def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
-    if is_lua_doc_comment_startswith(line_lower, "class") and lua_api_comment_separator in line_lower:
+    if (
+        is_lua_doc_comment_startswith(line_lower, "class")
+        and lua_api_comment_separator in line_lower
+    ):
         class_name = line.split(lua_api_comment_separator, 1)[1].strip()
         cur_class = make_class(class_name)
 
         cur_constructor = Constructor(cur_class, [], "")
         cur_class.constructors.append(cur_constructor)
-    elif is_lua_doc_comment_startswith(line_lower, "param") and lua_api_comment_separator in line_lower:
+    elif (
+        is_lua_doc_comment_startswith(line_lower, "param")
+        and lua_api_comment_separator in line_lower
+    ):
         parameter = make_parameter_from_doc_line(line)
         cur_constructor.parameters.append(parameter)
     else:
@@ -485,6 +523,8 @@ def parse_constructor_doc(cur_constructor, cur_class, line, line_lower):
 
 
 tabs_enum = []
+
+
 def parse_tabs_doc(file):
     start_parsing = False
     for line in file:
@@ -503,7 +543,29 @@ def parse_tabs_doc(file):
                 continue
             else:
                 tabs_enum.append(line.replace(",", "").strip())
-            
+
+
+infraction_enum = []
+
+
+def parse_infraction_doc(file):
+    start_parsing = False
+    for line in file:
+        if "enum class" in line.lower():
+            start_parsing = True
+            continue
+
+        if start_parsing:
+            if "};" in line.lower():
+                return
+            if "{" == line.lower().strip():
+                continue
+            if "//" in line.lower():
+                continue
+            if "" == line.lower().strip():
+                continue
+            else:
+                infraction_enum.append(line.replace(",", "").strip())
 
 
 def make_parameter_from_doc_line(line):
@@ -519,12 +581,14 @@ def make_parameter_from_doc_line(line):
 
     return Parameter(param_name, param_type, param_desc)
 
+
 def sanitize_description(line):
-    if line.startswith("// ") and line[3] != ' ':
+    if line.startswith("// ") and line[3] != " ":
         line = line[3:]
     if line.startswith("//"):
         line = line[2:]
     return line.rstrip()
+
 
 def is_lua_doc_comment_startswith(line_lower, starts_with_text):
     return line_lower.replace("//", "").strip().startswith(starts_with_text)
@@ -550,7 +614,8 @@ if os.path.exists(tabs_file_name):
     os.remove(tabs_file_name)
 f = open(tabs_file_name, "a")
 
-f.write("""# Tabs
+f.write(
+    """# Tabs
 
 All the tabs from the menu are listed below, used as parameter for adding gui elements to them.
 
@@ -565,13 +630,39 @@ end)
 
 For a complete list of available gui functions, please refer to the tab class documentation and the gui table documentation.
 
-""")
+"""
+)
 
 f.write(f"## Tab Count: {len(tabs_enum)}\n\n")
 
 # Minus the first, because it's the `NONE` tab, minus the last one because it's for runtime defined tabs.
-for i in range(1, len(tabs_enum) - 1 ):
+for i in range(1, len(tabs_enum) - 1):
     f.write("### `GUI_TAB_" + tabs_enum[i] + "`\n")
+
+f.close()
+
+infraction_file_name = f"../lua/infraction.md"
+if os.path.exists(infraction_file_name):
+    os.remove(infraction_file_name)
+f = open(infraction_file_name, "a")
+
+f.write(
+    """# Infraction
+
+All the infraction from the menu are listed below, used as parameter for adding an infraction to a given player, for flagging them as modder.
+
+**Example Usage:**
+```lua
+network.flag_player_as_modder(player_index, infraction.CUSTOM_REASON, "My custom reason on why the player is flagged as a modder")
+```
+
+"""
+)
+
+f.write(f"## Infraction Count: {len(infraction_enum)}\n\n")
+
+for i in range(0, len(infraction_enum)):
+    f.write("### `" + infraction_enum[i] + "`\n")
 
 f.close()
 
@@ -589,13 +680,13 @@ for class_name, class_ in classes.items():
     f.close()
 
 
-
 commands_file_name = f"./commands.md"
 if os.path.exists(commands_file_name):
     os.remove(commands_file_name)
 f = open(commands_file_name, "a")
 
-f.write("""# Commands
+f.write(
+    """# Commands
 
 All the current commands from the menu are listed below.
 
@@ -608,7 +699,8 @@ command.call_player(somePlayerIndex, "spawn", {joaat("adder")})
 
 For a complete list of available command functions, please refer to the command table documentation.
 
-""")
+"""
+)
 
 
 commands = []

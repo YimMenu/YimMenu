@@ -30,7 +30,8 @@ namespace big
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
-		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
+		const auto gpbd_fm_3 = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>();
+		if (g.self.off_radar && *g_pointers->m_gta.m_is_session_started && gpbd_fm_3->Entries[self::id].BossGoon.Boss == self::id)
 			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
@@ -40,11 +41,13 @@ namespace big
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
 
-		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1
-			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller"))
-			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
-
-			components::command_checkbox<"passive">();
+		// clang-format off
+		ImGui::BeginDisabled(!*g_pointers->m_gta.m_is_session_started ||
+			gpbd_fm_3->Entries[self::id].BossGoon.Boss != -1 ||
+			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) ||
+			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
+		// clang-format on
+		components::command_checkbox<"passive">();
 		ImGui::EndDisabled();
 
 		ImGui::EndGroup();

@@ -183,7 +183,7 @@ namespace big
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
 
 		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
-		static void game_skeleton_update(__int64 update_group);
+		static void game_skeleton_update(__int64 skeleton, int type);
 	};
 
 	class minhook_keepalive

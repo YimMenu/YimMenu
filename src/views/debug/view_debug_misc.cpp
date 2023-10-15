@@ -109,7 +109,7 @@ namespace big
 			if (ImGui::TreeNode("ADDRESSES"_T.data()))
 			{
 				uint64_t local_cped = (uint64_t)g_local_player;
-				ImGui::InputScalar("Local_CPED"_T.data(), ImGuiDataType_U64, &local_cped, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
+				ImGui::InputScalar("LOCAL_CPED"_T.data(), ImGuiDataType_U64, &local_cped, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 
 				if (g_local_player)
 				{
