@@ -3,13 +3,14 @@
 namespace big
 {
 	http_client::http_client() :
-	    m_proxy_mgr()
+	    m_proxy_mgr(m_session)
 	{
+		m_session.SetConnectTimeout(CONNECT_TIMEOUT);
+		m_session.SetTimeout(REQUEST_TIMEOUT);
 	}
 
 	bool http_client::download(const cpr::Url& url, const std::filesystem::path& path, cpr::Header headers, cpr::Parameters query_params)
 	{
-		m_proxy_mgr.apply_proxy_to_session(m_session);
 		m_session.SetUrl(url);
 		m_session.SetHeader(headers);
 		m_session.SetParameters(query_params);
@@ -22,7 +23,6 @@ namespace big
 
 	cpr::Response http_client::get(const cpr::Url& url, cpr::Header headers, cpr::Parameters query_params)
 	{
-		m_proxy_mgr.apply_proxy_to_session(m_session);
 		m_session.SetUrl(url);
 		m_session.SetHeader(headers);
 		m_session.SetParameters(query_params);
@@ -32,7 +32,6 @@ namespace big
 
 	cpr::Response http_client::post(const cpr::Url& url, cpr::Header headers, cpr::Body body)
 	{
-		m_proxy_mgr.apply_proxy_to_session(m_session);
 		m_session.SetUrl(url);
 		m_session.SetHeader(headers);
 		m_session.SetBody(body);
