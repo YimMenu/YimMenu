@@ -60,7 +60,7 @@ namespace big
 
 		m_proxy_settings.creds = {};
 
-		apply_proxy_to_session(m_session);
+		apply_proxy_to_session();
 		save();
 	}
 
@@ -74,7 +74,7 @@ namespace big
 		m_proxy_settings.creds.user       = user;
 		m_proxy_settings.creds.password   = password;
 
-		apply_proxy_to_session(m_session);
+		apply_proxy_to_session();
 		save();
 	}
 
@@ -95,12 +95,12 @@ namespace big
 		return m_protocols.at(protocol);
 	}
 
-	void proxy_mgr::apply_proxy_to_session(cpr::Session& session) const
+	void proxy_mgr::apply_proxy_to_session()
 	{
 		if (m_proxy_settings.protocol == ProxyProtocol::NONE)
 		{
-			session.SetProxies({});
-			session.SetProxyAuth({});
+			m_session.SetProxies({});
+			m_session.SetProxyAuth({});
 
 			return;
 		}
@@ -118,9 +118,9 @@ namespace big
 			}
 		}
 
-		session.SetProxies(proxies);
+		m_session.SetProxies(proxies);
 		if (m_proxy_settings.creds.uses_creds)
-			session.SetProxyAuth(proxy_auths);
+			m_session.SetProxyAuth(proxy_auths);
 	}
 
 	std::string proxy_mgr::build_url(const std::string& host, const std::string& port) const

@@ -34,7 +34,7 @@ namespace big
 		{ return m_proxy_settings; }
 
 	private:
-        void apply_proxy_to_session(cpr::Session& session) const;
+        void apply_proxy_to_session();
 		std::string build_url(const std::string& host, const std::string& port) const;
 		bool save();
 
