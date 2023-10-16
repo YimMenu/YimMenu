@@ -2,7 +2,8 @@
 
 namespace big
 {
-	proxy_mgr::proxy_mgr() :
+	proxy_mgr::proxy_mgr(cpr::Session& session) :
+	    m_session(session),
 	    m_protocols({
 	        {ProxyProtocol::NONE, "none"},
 	        {ProxyProtocol::HTTP, "http"},
@@ -13,34 +14,6 @@ namespace big
 	        {ProxyProtocol::SOCKS5, "socks5h"},
 	    })
 	{
-	}
-
-	void proxy_mgr::apply_proxy_to_session(cpr::Session& session) const
-	{
-		if (m_proxy_settings.protocol == ProxyProtocol::NONE)
-		{
-			session.SetProxies({});
-			session.SetProxyAuth({});
-
-			return;
-		}
-
-		std::map<std::string, std::string> proxies;
-		std::map<std::string, cpr::EncodedAuthentication> proxy_auths;
-		const auto proxy_auth = cpr::EncodedAuthentication{m_proxy_settings.creds.user, m_proxy_settings.creds.password};
-
-		for (const auto& supported_protocol : m_supported_protocols)
-		{
-			proxies.insert({ supported_protocol, build_url(m_proxy_settings.proxy_host, std::to_string(m_proxy_settings.proxy_port)) });
-			if (m_proxy_settings.creds.uses_creds)
-			{
-				proxy_auths.insert({ supported_protocol, proxy_auth });
-			}
-		}
-
-		session.SetProxies(proxies);
-		if (m_proxy_settings.creds.uses_creds)
-			session.SetProxyAuth(proxy_auths);
 	}
 
 	bool proxy_mgr::load(file proxy_settings_file)
@@ -85,6 +58,9 @@ namespace big
 		m_proxy_settings.proxy_host = host;
 		m_proxy_settings.proxy_port = port;
 
+		m_proxy_settings.creds = {};
+
+		apply_proxy_to_session(m_session);
 		save();
 	}
 
@@ -94,6 +70,11 @@ namespace big
 		m_proxy_settings.proxy_host = host;
 		m_proxy_settings.proxy_port = port;
 
+		m_proxy_settings.creds.uses_creds = true;
+		m_proxy_settings.creds.user       = user;
+		m_proxy_settings.creds.password   = password;
+
+		apply_proxy_to_session(m_session);
 		save();
 	}
 
@@ -112,6 +93,34 @@ namespace big
 	const std::string& proxy_mgr::protocol_str(ProxyProtocol protocol) const
 	{
 		return m_protocols.at(protocol);
+	}
+
+	void proxy_mgr::apply_proxy_to_session(cpr::Session& session) const
+	{
+		if (m_proxy_settings.protocol == ProxyProtocol::NONE)
+		{
+			session.SetProxies({});
+			session.SetProxyAuth({});
+
+			return;
+		}
+
+		std::map<std::string, std::string> proxies;
+		std::map<std::string, cpr::EncodedAuthentication> proxy_auths;
+		const auto proxy_auth = cpr::EncodedAuthentication{m_proxy_settings.creds.user, m_proxy_settings.creds.password};
+
+		for (const auto& supported_protocol : m_supported_protocols)
+		{
+			proxies.insert({supported_protocol, build_url(m_proxy_settings.proxy_host, std::to_string(m_proxy_settings.proxy_port))});
+			if (m_proxy_settings.creds.uses_creds)
+			{
+				proxy_auths.insert({supported_protocol, proxy_auth});
+			}
+		}
+
+		session.SetProxies(proxies);
+		if (m_proxy_settings.creds.uses_creds)
+			session.SetProxyAuth(proxy_auths);
 	}
 
 	std::string proxy_mgr::build_url(const std::string& host, const std::string& port) const

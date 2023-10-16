@@ -8,6 +8,7 @@ namespace big
 	class proxy_mgr
 	{
 	private:
+		cpr::Session& m_session;
 		// protocols supported by CURL
         std::unordered_map<ProxyProtocol, std::string> m_protocols;
 		// protocols to be proxied
@@ -17,9 +18,7 @@ namespace big
         file m_proxy_settings_file;
 
 	public:
-		proxy_mgr();
-
-        void apply_proxy_to_session(cpr::Session& session) const;
+		proxy_mgr(cpr::Session& session);
 
 		bool load(file proxy_settings_file);
 		void update(const std::string& host, const int port, const ProxyProtocol protocol);
@@ -35,6 +34,7 @@ namespace big
 		{ return m_proxy_settings; }
 
 	private:
+        void apply_proxy_to_session(cpr::Session& session) const;
 		std::string build_url(const std::string& host, const std::string& port) const;
 		bool save();
 
