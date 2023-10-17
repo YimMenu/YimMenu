@@ -9,9 +9,9 @@ namespace big
 	        {ProxyProtocol::HTTP, "http"},
 	        {ProxyProtocol::HTTPS, "https"},
 	        {ProxyProtocol::SOCKS4, "socks4"},
-	        {ProxyProtocol::SOCKS4, "socks4a"},
+	        {ProxyProtocol::SOCKS4A, "socks4a"},
 	        {ProxyProtocol::SOCKS5, "socks5"},
-	        {ProxyProtocol::SOCKS5, "socks5h"},
+	        {ProxyProtocol::SOCKS5H, "socks5h"},
 	    })
 	{
 	}
