@@ -154,7 +154,7 @@ namespace big
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_ReadGlobal:
-						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T.data(), item.global_name).c_str());
+						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T, item.global_name).c_str());
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);

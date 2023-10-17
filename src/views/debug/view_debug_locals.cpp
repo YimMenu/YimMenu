@@ -216,7 +216,7 @@ namespace big
 					else
 					{
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-						ImGui::Text(std::format("{} {}", local_.m_script_thread_name, "VIEW_DEBUG_MISC_FIBER_POOL_USAGE"_T).c_str());
+						ImGui::Text(std::format("{} {}", local_.m_script_thread_name, "VIEW_DEBUG_LOCALS_SCRIPT_IS_NOT_RUNNING"_T).c_str());
 						ImGui::PopStyleColor();
 					}
 					if (components::button("DELETE"_T))
