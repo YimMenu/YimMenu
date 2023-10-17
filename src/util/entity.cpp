@@ -103,14 +103,14 @@ namespace big::entity
 		if (!hnd || !hnd->m_net_object || !*g_pointers->m_gta.m_is_session_started)
 			return false;
 
-		if (network_has_control_of_entity(hnd->m_net_object))
+		if (hnd && network_has_control_of_entity(hnd->m_net_object))
 			return true;
 
 		for (int i = 0; i < timeout; i++)
 		{
 			g_pointers->m_gta.m_request_control(hnd->m_net_object);
 
-			if (network_has_control_of_entity(hnd->m_net_object))
+			if (hnd && network_has_control_of_entity(hnd->m_net_object))
 				return true;
 
 			if (timeout != 0)

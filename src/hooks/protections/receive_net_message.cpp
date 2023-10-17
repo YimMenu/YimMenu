@@ -1,5 +1,6 @@
 #include "backend/command.hpp"
 #include "backend/player_command.hpp"
+#include "core/data/custom_chat_buffer.hpp"
 #include "core/data/packet_types.hpp"
 #include "core/settings/session.hpp"
 #include "gta/net_game_event.hpp"
@@ -117,8 +118,10 @@ namespace big
 				}
 				else
 				{
-					if (g_session.log_chat_messages)
+					if (g_session.log_chat_messages_to_file)
 						spam::log_chat(message, player);
+					if (g_session.log_chat_messages_to_textbox)
+						g_custom_chat_buffer.append_msg(player->get_name(), message);
 
 					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
 					{

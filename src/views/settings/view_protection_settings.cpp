@@ -59,9 +59,6 @@ namespace big
 
 		ImGui::SeparatorText("Options");
 		ImGui::BeginGroup();
-		if (ImGui::Button("Enable All Protections"))
-			set_all_protections(true);
-		ImGui::SameLine();
 		if (ImGui::Button("Disable All Protections"))
 			set_all_protections(false);
 		ImGui::SameLine();

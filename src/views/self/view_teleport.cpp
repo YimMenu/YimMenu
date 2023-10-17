@@ -38,10 +38,5 @@ namespace big
 		components::button("Teleport", [] {
 			teleport::to_coords({new_location[0], new_location[1], new_location[2]}, true);
 		});
-
-		ImGui::Spacing();
-		ImGui::SeparatorText("Vehicles:");
-		ImGui::Spacing();
-		components::command_button<"pvtp">();
 	}
 }

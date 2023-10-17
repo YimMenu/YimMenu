@@ -1,6 +1,6 @@
 
-#include "core/data/weapons.hpp"
 #include "core/data/persist_weapons.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/joaat.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -17,14 +17,18 @@ namespace big
 		{
 			ImGui::BeginGroup();
 			{
+				ImGui::BeginDisabled(g_weapons.rapid_fire);
 				components::command_checkbox<"infammo">();
 				components::command_checkbox<"infclip">();
+				ImGui::EndDisabled();
 			}
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			{
+				ImGui::BeginDisabled(g_weapons.infinite_ammo || g_weapons.infinite_mag);
 				components::command_checkbox<"rapidfire">();
+				ImGui::EndDisabled();
 			}
 			ImGui::EndGroup();
 		}

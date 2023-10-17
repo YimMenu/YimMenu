@@ -1,12 +1,15 @@
 #pragma once
-#include <rage/rlSessionInfo.hpp>
 #include "core/enums.hpp"
+
+#include <rage/rlSessionInfo.hpp>
 
 namespace big
 {
 	inline struct g_session_t
 	{
-		bool log_chat_messages                 = false;
+		bool log_chat_messages_to_file    = false;
+		bool log_chat_messages_to_textbox = false;
+
 		bool decloak_players                   = false;
 		bool force_session_host                = false;
 		bool force_script_host                 = false;
@@ -20,6 +23,6 @@ namespace big
 		bool join_queued = false;
 		rage::rlSessionInfo info;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(g_session_t, log_chat_messages)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(g_session_t, log_chat_messages_to_file, log_chat_messages_to_textbox)
 	} g_session{};
 }
