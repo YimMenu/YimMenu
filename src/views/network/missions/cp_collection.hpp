@@ -7,7 +7,7 @@ namespace big
 {
 	inline void render_cp_collection_ui()
 	{
-		components::sub_title("VIEW_NET_MISSIONS_CHECKPOINTS");
+		components::sub_title("VIEW_NET_MISSIONS_CHECKPOINTS"_T);
 
 		ImGui::PushID(1);
 		components::button("VIEW_NET_MISSIONS_START_EVENT"_T, [] {

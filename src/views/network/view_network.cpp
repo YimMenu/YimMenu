@@ -178,7 +178,7 @@ namespace big
 			ImGui::Checkbox("CHAT_COMMANDS"_T.data(), &g.session.chat_commands);
 			if (g.session.chat_commands)
 			{
-				components::small_text("DEFAULT_CMD_PERMISSIONS"_T.data());
+				components::small_text("DEFAULT_CMD_PERMISSIONS"_T);
 				if (ImGui::BeginCombo("##defualtchatcommands", COMMAND_ACCESS_LEVELS[g.session.chat_command_default_access_level]))
 				{
 					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
@@ -223,7 +223,7 @@ namespace big
 			ImGui::Checkbox("DISABLE_TRAFFIC"_T.data(), &g.session.disable_traffic);
 			ImGui::Checkbox("FORCE_THUNDER"_T.data(), &g.session.force_thunder);
 
-			components::small_text("WANTED_LVL"_T.data());
+			components::small_text("WANTED_LVL"_T);
 			ImGui::SetNextItemWidth(150);
 			if (ImGui::SliderInt("##wantedlevel", &global_wanted_level, 0, 5))
 			{
@@ -240,7 +240,7 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		components::small_text("WARP_TIME"_T.data());
+		components::small_text("WARP_TIME"_T);
 
 		components::button("PLUS_1_MINUTE"_T, [] {
 			toxic::warp_time_forward_all(60 * 1000);
@@ -357,13 +357,13 @@ namespace big
 
 			    components::command_button<"ceoraidall">({});
 			    ImGui::SameLine();
-			    components::button("TRIGGER_MC_RAID"_T.data(), [] {
+			    components::button("TRIGGER_MC_RAID"_T, [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::BikerDefend);
 				    });
 			    });
 			    ImGui::SameLine();
-			    components::button("TRIGGER_BUNKER_RAID"_T.data(), [] {
+			    components::button("TRIGGER_BUNKER_RAID"_T, [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 				    });
@@ -498,11 +498,9 @@ namespace big
 
 		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
-		components::script_patch_checkbox("BLOCK_MUGGERS"_T.data(), &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
+		components::script_patch_checkbox("BLOCK_MUGGERS"_T, &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 
-		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T.data(),
-		    &g.session.block_ceo_raids,
-		    "BLOCK_CEO_RAIDS_DESC"_T.data());
+		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T, &g.session.block_ceo_raids, "BLOCK_CEO_RAIDS_DESC"_T);
 
 		ImGui::EndGroup();
 	}

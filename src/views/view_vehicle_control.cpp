@@ -258,7 +258,7 @@ namespace big
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T.data() : "VIEW_VEHICLE_CONTROL_LOWER"_T.data()))
+			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T))
 			{
 				g_fiber_pool->queue_job([=] {
 					if (g.window.vehicle_control.operation_animation)
@@ -293,7 +293,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_ENGINE"_T, g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T : "OFF"_T).c_str());
 
-		components::button(g_vehicle_control_service.m_driver_performing_task ? "CANCEL"_T.data() : "VIEW_VEHICLE_CONTROL_SUMMON"_T.data(), [] {
+		components::button(g_vehicle_control_service.m_driver_performing_task ? "CANCEL"_T : "VIEW_VEHICLE_CONTROL_SUMMON"_T, [] {
 			if (!g_vehicle_control_service.m_driver_performing_task)
 			{
 				if (g.window.vehicle_control.operation_animation)

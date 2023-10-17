@@ -108,7 +108,7 @@ namespace big
 		}
 
 		const auto& selected_ipl = ipls[g.self.ipls.select];
-		if (components::button("LOAD_IPL"_T.data()))
+		if (components::button("LOAD_IPL"_T))
 		{
 			//unload all previous ipls
 			for (auto& ipl : ipls)
@@ -128,13 +128,13 @@ namespace big
 
 		ImGui::SameLine();
 
-		if (components::button("TP_TO_IPL"_T.data()))
+		if (components::button("TP_TO_IPL"_T))
 		{
 			teleport::to_coords(selected_ipl.location);
 		}
 
 		ImGui::Spacing();
-		components::small_text("IPL_INFOS"_T.data());
+		components::small_text("IPL_INFOS"_T);
 
 		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(selected_ipl.ipl_names.size())).data());
 		ImGui::Text(std::vformat("IPL_POSITION"_T,
