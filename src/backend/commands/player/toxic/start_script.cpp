@@ -46,7 +46,7 @@ namespace big
 
 	start_script<20> g_start_tutorial("tutorial", "BACKEND_START_SCRIPT_START_TUTORIAL", "BACKEND_START_SCRIPT_START_TUTORIAL_DESC", 0);
 	start_script<200> g_start_golf("golf", "BACKEND_START_SCRIPT_START_GOLF", "BACKEND_START_SCRIPT_START_GOLF_DESC", 0);
-	start_script<203> g_start_flight_school("flightschool", "Start Flight School", "BACKEND_START_SCRIPT_START_FLIGHT_SCHOOL_DESC", 0);
+	start_script<203> g_start_flight_school("flightschool", "BACKEND_START_SCRIPT_START_FLIGHT_SCHOOL", "BACKEND_START_SCRIPT_START_FLIGHT_SCHOOL_DESC", 0);
 	start_script<9> g_start_darts("darts", "BACKEND_START_SCRIPT_START_DARTS", "BACKEND_START_SCRIPT_START_DARTS_DESC", 0);
 	start_script<218> g_start_badlands("badlands", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II_DESC", 0);
 	start_script<223> g_start_space_monkey("spacemonkey", "BACKEND_START_SCRIPT_START_SPACE_MONKEY", "BACKEND_START_SCRIPT_START_SPACE_MONKEY_DESC", 0);
