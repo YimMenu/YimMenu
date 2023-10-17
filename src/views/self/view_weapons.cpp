@@ -1,5 +1,4 @@
 #include "core/data/bullet_impact_types.hpp"
-#include "core/data/custom_weapons.hpp"
 #include "core/data/special_ammo_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
@@ -12,6 +11,24 @@
 
 namespace big
 {
+	struct custom_weapon
+	{
+		big::CustomWeapon id;
+		const std::string_view name;
+	};
+
+	const custom_weapon custom_weapons[] = {
+	    {big::CustomWeapon::NONE, "VIEW_SELF_WEAPONS_NONE"_T},
+	    {big::CustomWeapon::CAGE_GUN, "VIEW_SELF_WEAPONS_CAGE_GUN"_T},
+	    {big::CustomWeapon::DELETE_GUN, "VIEW_SELF_WEAPONS_DELETE_GUN"_T},
+	    {big::CustomWeapon::GRAVITY_GUN, "VIEW_SELF_WEAPONS_GRAVITY_GUN"_T},
+	    {big::CustomWeapon::STEAL_VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"_T},
+	    {big::CustomWeapon::REPAIR_GUN, "BACKEND_LOOPED_WEAPONS_REPAIR_GUN"_T},
+	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"_T},
+	    {big::CustomWeapon::TP_GUN, "VIEW_SELF_WEAPONS_TP_GUN"_T},
+	    {big::CustomWeapon::PAINT_GUN, "VIEW_SELF_WEAPONS_PAINT_GUN"_T},
+	};
+
 	void view::weapons()
 	{
 		ImGui::SeparatorText("AMMO"_T.data());
@@ -109,11 +126,11 @@ namespace big
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name))
+		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name.data()))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
-				if (ImGui::Selectable(weapon.name, weapon.id == selected))
+				if (ImGui::Selectable(weapon.name.data(), weapon.id == selected))
 				{
 					g.weapons.custom_weapon = weapon.id;
 				}
