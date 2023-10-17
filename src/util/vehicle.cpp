@@ -56,10 +56,9 @@ namespace big::vehicle
 
 		if (!entity::take_control_of(veh))
 			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
-		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
-		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(ped));
+		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(self::ped));
 
 		if (put_in)
 		{
@@ -69,78 +68,31 @@ namespace big::vehicle
 			auto driver_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, -1, false);
 
 			if (driver_ped != 0)
-			{
 				if (PED::GET_PED_TYPE(driver_ped) == ePedType::PED_TYPE_NETWORK_PLAYER)
-				{
 					TASK::CLEAR_PED_TASKS_IMMEDIATELY(driver_ped);
-				}
 				else
-				{
 					entity::delete_entity(driver_ped);
-				}
-			}
 
-			PED::SET_PED_INTO_VEHICLE(ped, veh, seatIdx);
+			PED::SET_PED_INTO_VEHICLE(self::ped, veh, seatIdx);
 		}
 	}
 
-	Vehicle get_closest_to_location(Vector3 location, float range)
-	{
-		float min_dist   = FLT_MAX;
-		int32_t m_handle = 0;
-
-		for (const auto veh_entity : pools::get_all_vehicles())
-		{
-			const auto veh_ptr = veh_entity;
-			if (!veh_ptr || !veh_ptr->m_navigation)
-				continue;
-
-			auto veh_pos_arr = *veh_ptr->m_navigation->get_position();
-			Vector3 veh_pos(veh_pos_arr.x, veh_pos_arr.y, veh_pos_arr.z);
-
-			float dist = math::distance_between_vectors(veh_pos, location);
-
-			if (dist < min_dist)
-			{
-				int32_t tmp_handle = g_pointers->m_gta.m_ptr_to_handle(veh_ptr);
-
-				if (entity::take_control_of(tmp_handle))
-				{
-					min_dist = dist;
-					m_handle = tmp_handle;
-				}
-			}
-		}
-
-		return m_handle;
-	}
-
-	bool set_plate(Vehicle veh, const char* plate)
+	void set_plate(Vehicle veh, const char* plate)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
-		{
-			return false;
-		}
+			return;
 
 		if (plate != nullptr && plate[0] != 0)
-		{
 			VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(veh, plate);
-		}
-
-		return true;
 	}
 
-	bool repair(Vehicle veh)
+	void repair(Vehicle veh)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
-		{
-			return false;
-		}
+			return;
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
-
-		return true;
 	}
 
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked, bool script_veh)

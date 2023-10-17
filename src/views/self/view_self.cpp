@@ -1,7 +1,7 @@
 
 #include "core/scr_globals.hpp"
-#include "core/settings/self.hpp"
 #include "core/settings/context_menu.hpp"
+#include "core/settings/self.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
 #include "util/pools.hpp"
@@ -64,6 +64,8 @@ namespace big
 					ImGui::SliderFloat("##noclipaimspeedmult", &g_self.noclip_aim_speed_multiplier, 0.1f, 1.0f);
 					ImGui::Text("No Clip Movement Speed Multiplier");
 					ImGui::SliderFloat("##noclipspeedmult", &g_self.noclip_speed_multiplier, 1.f, 100.f);
+					ImGui::Checkbox("Allow X-axis Rotation", &g_self.noclip_x_axis_rot);
+					ImGui::Checkbox("Collision", &g_self.noclip_collision);
 					ImGui::EndGroup();
 				});
 				ImGui::Checkbox("Context Menu Enabled", &g_context_menu.enabled);

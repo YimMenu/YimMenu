@@ -66,8 +66,8 @@ namespace big
 			}
 
 			auto rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			ENTITY::SET_ENTITY_ROTATION(ent, 0.f, rot.y, rot.z, 2, 0);
-			ENTITY::SET_ENTITY_COLLISION(ent, false, false);
+			ENTITY::SET_ENTITY_ROTATION(ent, g_self.noclip_x_axis_rot ? rot.x : 0.f, rot.y, rot.z, 2, 0);
+			ENTITY::SET_ENTITY_COLLISION(ent, g_self.noclip_collision, false);
 			if (vel.x == 0.f && vel.y == 0.f && vel.z == 0.f)
 			{
 				// freeze entity to prevent drifting when standing still

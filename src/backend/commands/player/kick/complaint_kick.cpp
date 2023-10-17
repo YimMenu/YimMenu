@@ -21,9 +21,9 @@ namespace big
 		{
 			if (!player)
 				return;
-			if (gta_util::get_network()->m_game_session_ptr->is_host())
+			if (auto net_data = player->get_net_data(); net_data && gta_util::get_network()->m_game_session_ptr->is_host())
 			{
-				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(player->get_net_data()->m_host_token);
+				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(net_data->m_host_token);
 				return;
 			}
 

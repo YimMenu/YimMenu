@@ -52,7 +52,8 @@ namespace big
 			ImGui::Checkbox("Props", &included_entity_types[1]);
 			ImGui::Spacing();
 			ImGui::Checkbox("Force", &force);
-
+			ImGui::Spacing();
+			
 			if (deleting)
 			{
 				float progress = 1 - static_cast<float>(remaining) / quantity;

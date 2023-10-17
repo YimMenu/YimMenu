@@ -31,6 +31,14 @@ namespace big
 					TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(self::veh);
 			});
 		}
+		ImGui::SeparatorText("###teleport");
+		{
+			components::command_button<"pvtp">();
+			ImGui::SameLine();
+			components::button("Bring PV", [] {
+				vehicle::bring(mobile::mechanic::get_personal_vehicle(), self::pos, true);
+			});
+		}
 		ImGui::SeparatorText("###General");
 		{
 			ImGui::BeginGroup();

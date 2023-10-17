@@ -1,11 +1,8 @@
 #include "core/data/region_codes.hpp"
-#include "core/settings/session.hpp"
 #include "core/data/spoofing.hpp"
+#include "core/settings/session.hpp"
 #include "fiber_pool.hpp"
-#include "function_types.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
-#include "util/notify.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
@@ -106,30 +103,6 @@ namespace big
 					});
 
 				ImGui::PopItemWidth();
-			}
-			ImGui::EndGroup();
-			ver_Space();
-			ImGui::BeginGroup();
-			{
-				components::sub_title("Chat");
-
-				static bool log_chat_messages, is_team;
-				static char msg[256];
-
-				ImGui::Checkbox("Log Messages (to file)", &g_session.log_chat_messages);
-				ImGui::PushItemWidth(300);
-				components::input_text_with_hint("##message", "Message", msg, sizeof(msg));
-				ImGui::PopItemWidth();
-				ImGui::Checkbox("Is Team Message", &is_team);
-				ImGui::SameLine();
-				components::button("Send Message", [] {
-					if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
-						if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-						        net_game_player->get_net_data(),
-						        msg,
-						        is_team))
-							notify::draw_chat(msg, net_game_player->get_name(), is_team);
-				});
 			}
 			ImGui::EndGroup();
 			ver_Space();

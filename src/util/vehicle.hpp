@@ -23,9 +23,8 @@ namespace big::vehicle
 	std::optional<Vector3> get_waypoint_location();
 	void set_mp_bitset(Vehicle veh);
 	void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1);
-	Vehicle get_closest_to_location(Vector3 location, float range);
-	bool set_plate(Vehicle veh, const char* plate);
-	bool repair(Vehicle veh);
+	void set_plate(Vehicle veh, const char* plate);
+	void repair(Vehicle veh);
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false);
 	std::map<int, int32_t> get_owned_mods_from_vehicle_idx(script_global vehicle_idx);
 	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked = true);

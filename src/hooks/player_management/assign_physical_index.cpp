@@ -83,34 +83,44 @@ namespace big
 				if (auto plyr = g_player_service->get_by_id(id))
 				{
 					auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);
+					auto net_data      = plyr->get_net_data();
 
-					if (recent_modder != recent_modders_nm::recent_modders_list.end() && recent_modder->second.block_join
-					    && *g_pointers->m_gta.m_is_session_started)
+					if (net_data)
 					{
-						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(plyr, {});
-						else
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
-					}
-
-					if (g_session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
-					{
-						if (plyr->is_friend() && g_session.allow_friends_into_locked_session)
+						if (recent_modder != recent_modders_nm::recent_modders_list.end() && recent_modder->second.block_join
+						    && *g_pointers->m_gta.m_is_session_started)
 						{
-							g_notification_service->push_success("Lock Session",
-							    std::format("A friend with the name of {} has been allowed to join the locked session",
-							        plyr->get_net_data()->m_name));
+							if (g_player_service->get_self()->is_host())
+								dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(plyr, {});
+							else
+								dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
+
+							g_notification_service->push_success("Join Block",
+							    std::format("Kicking Player {} ", net_data->m_name));
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(plyr, {});
-							g_notification_service->push_warning("Lock Session",
-							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+							if (g_session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
+							{
+								if (plyr->is_friend() && g_session.allow_friends_into_locked_session)
+								{
+									g_notification_service->push_success("Lock Session",
+									    std::format("A friend with the name of {} has been allowed to join the locked session",
+									        net_data->m_name));
+								}
+								else
+								{
+									dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(plyr, {});
+									g_notification_service->push_warning("Lock Session",
+									    std::format("A player with the name of {} has been denied entry", net_data->m_name));
+								}
+							}
+							else if (is_spoofed_host_token(net_data->m_host_token))
+								session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
 						}
 					}
-
-					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
-						session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
+					else
+						g_notification_service->push_success("assign_physical_index", std::format("net_data not present for player - {}", plyr->get_name() ? plyr->get_name() : "Unkown"));
 				}
 			});
 		}

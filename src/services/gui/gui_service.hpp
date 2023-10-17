@@ -25,6 +25,7 @@ namespace big
 		NETWORK,
 		SESSION_BROWSER,
 		RECENT_MODDERS,
+		CHAT,
 
 		SETTINGS,
 		CONTEXT_MENU_SETTINGS,
@@ -93,6 +94,7 @@ namespace big
 		            {
 		                {tabs::SESSION_BROWSER, {"Session Browser", view::session_browser}},
 		                {tabs::RECENT_MODDERS, {"Recent Modders", view::recent_modders}},
+		                {tabs::CHAT, {"Chat", view::chat}},
 		            },
 		        },
 		    },
