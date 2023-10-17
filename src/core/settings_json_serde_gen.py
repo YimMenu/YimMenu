@@ -4,6 +4,12 @@ print("Generating new JSON macros.")
 
 settings_hpp_file_path = sys.argv[1]
 
+# used for skipping generation when settings.hpp is unchanged between compilations.
+output_file_path = sys.argv[2]
+
+print(settings_hpp_file_path)
+print(output_file_path)
+
 cpp_file_buffer = ""
 
 def find_differences(list1, list2):
@@ -201,3 +207,6 @@ if start_index is not None:
     # Save the modified content back to the file
     with open(settings_hpp_file_path, 'w') as file:
         file.writelines(lines)
+
+    with open(output_file_path, 'w') as file:
+        file.writelines(cpp_file_buffer)
