@@ -2,6 +2,7 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/context_menu/context_menu_service.hpp"
+#include "thread_pool.hpp"
 #include "util/entity.hpp"
 #include "util/strings.hpp"
 #include "util/world_model.hpp"
@@ -240,15 +241,21 @@ namespace spawnObjs
 
 			if (std::filesystem::exists(objectListPath))
 			{
-				std::ifstream f(objectListPath);
+				big::g_thread_pool->push([objectListPath, &objectList] {
+					std::ifstream f(objectListPath);
+					std::vector<std::string> temp_objectList;
 
-				if (f.is_open())
-				{
-					std::string line;
-					while (std::getline(f, line))
-						objectList.push_back(line);
-					f.close();
-				}
+					if (f.is_open())
+					{
+						std::string line;
+
+						while (std::getline(f, line))
+							temp_objectList.push_back(line);
+
+						objectList = temp_objectList;
+						f.close();
+					}
+				});
 			}
 			else
 				big::g_notification_service->push_warning("objectList", "Please download the appropriate json and put it in the mod directory.");
@@ -338,14 +345,14 @@ namespace big
 		ImGui::BeginGroup();
 
 		ImGui::SeparatorText("Select Entity");
+		{
+			ImGui::RadioButton("Current player", &spawnObjs::selectedEntityTypeForSpawnedObjs, static_cast<int>(spawnObjs::SelectedEntityTypeSelfPed));
+			ImGui::SameLine();
+			ImGui::RadioButton("Context menu ped/player", &spawnObjs::selectedEntityTypeForSpawnedObjs, static_cast<int>(spawnObjs::SelectedEntityTypeContextMenuEntity));
+		}
 
-		ImGui::RadioButton("Current player", &spawnObjs::selectedEntityTypeForSpawnedObjs, static_cast<int>(spawnObjs::SelectedEntityTypeSelfPed));
-		ImGui::SameLine();
-		ImGui::RadioButton("Context menu ped/player", &spawnObjs::selectedEntityTypeForSpawnedObjs, static_cast<int>(spawnObjs::SelectedEntityTypeContextMenuEntity));
-
-		ImGui::PushItemWidth(200);
+		ImGui::SetNextItemWidth(200);
 		components::input_text_with_hint("##searchObj", "search", searchObjectText);
-		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		components::button("load objects list", [&] {
 			spawnObjs::loadObjList(objectList);
@@ -363,215 +370,221 @@ namespace big
 		}
 
 		ImGui::SeparatorText("Save objects");
-
-		ImGui::PushItemWidth(200);
-		components::small_text("selcted/pasted object name or hash");
-		components::input_text_with_hint("##selectedObjec", "selectedObjectNameOrHash", selectedObjectNameOrHash);
-		components::small_text("custom name you want to give to the object");
-		components::input_text_with_hint("##customObjectName", "customObjectName", customObjectName);
-		ImGui::PopItemWidth();
-		components::button("save###saveObjectBtn", [&] {
-			std::string name    = trimString(selectedObjectNameOrHash);
-			std::string newName = trimString(customObjectName);
-
-			if (name.size() > 0 && newName.size() > 0)
-			{
-				if (savedObjectList.size() == 0)
-					spawnObjs::loadSavedObjects(savedObjectList);
-				savedObjectList[name] = newName;
-				spawnObjs::saveObject(savedObjectList);
-			}
-		});
-
-		ImGui::SeparatorText("Saved Object List");
-
-		components::input_text_with_hint("##searchSavedObjectText", "searchSavedObjectText", searchSavedObjectText);
-		ImGui::SameLine();
-		components::button("load saved obj list", [&] {
-			spawnObjs::loadSavedObjects(savedObjectList);
-		});
-
-		if (ImGui::BeginListBox("##savedObjectList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
-			std::map<std::string, std::string> objs = searchSavedObjectText.length() > 0 ? filterStrings(savedObjectList, searchSavedObjectText, false) : savedObjectList;
+			ImGui::PushItemWidth(200);
+			components::small_text("selcted/pasted object name or hash");
+			components::input_text_with_hint("##selectedObjec", "selectedObjectNameOrHash", selectedObjectNameOrHash);
+			components::small_text("custom name you want to give to the object");
+			components::input_text_with_hint("##customObjectName", "customObjectName", customObjectName);
+			ImGui::PopItemWidth();
+			components::button("save###saveObjectBtn", [&] {
+				std::string name    = trimString(selectedObjectNameOrHash);
+				std::string newName = trimString(customObjectName);
 
-			for (auto element : objs)
-				if (ImGui::Selectable(element.second.c_str(), selectedObjectNameOrHash == element.first))
+				if (name.size() > 0 && newName.size() > 0)
 				{
-					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					{
-						savedObjectToDelete = element.first;
-					}
-					else
-						selectedObjectNameOrHash = element.first;
+					if (savedObjectList.size() == 0)
+						spawnObjs::loadSavedObjects(savedObjectList);
+					savedObjectList[name] = newName;
+					spawnObjs::saveObject(savedObjectList);
 				}
-
-
-			ImGui::EndListBox();
+			});
 		}
 
-		ImGui::SeparatorText("Spawn object");
+		ImGui::SeparatorText("Saved Object List");
+		{
+			ImGui::SetNextItemWidth(200);
+			components::input_text_with_hint("##searchSavedObjectText", "searchSavedObjectText", searchSavedObjectText);
+			ImGui::SameLine();
+			components::button("load saved obj list", [&] {
+				spawnObjs::loadSavedObjects(savedObjectList);
+			});
+
+			if (ImGui::BeginListBox("##savedObjectList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
+			{
+				std::map<std::string, std::string> objs = searchSavedObjectText.length() > 0 ? filterStrings(savedObjectList, searchSavedObjectText, false) : savedObjectList;
+
+				for (auto element : objs)
+					if (ImGui::Selectable(element.second.c_str(), selectedObjectNameOrHash == element.first))
+					{
+						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+						{
+							savedObjectToDelete = element.first;
+						}
+						else
+							selectedObjectNameOrHash = element.first;
+					}
+
+
+				ImGui::EndListBox();
+			}
+		}
 
 		static bool spawnedObjectLocationChanged, spawnedObjectRotationChanged;
 		static std::map<std::string, spawnObjs::SpawnedObject> spawnedObjList;
 		static bool hasAttachedEnityParametersChanged;
 
-		components::button("Spawn Object", [&] {
-			std::string v = trimString(selectedObjectNameOrHash);
-			if (v.size() > 0)
-			{
-				std::optional<spawnObjs::SpawnedObject> result = spawnObjs::spawnObj(v);
-				if (result.has_value())
-				{
-					spawnObjs::SpawnedObject o   = result.value();
-					std::string name             = getFriendlyTimeRightNow() + " " + v + std::to_string(o.ob);
-					spawnedObjList[name]         = o;
-					spawnObjs::currentSpawnedObj = &spawnedObjList[name];
-				}
-			}
-		});
-
-		if (spawnObjs::currentSpawnedObj)
+		ImGui::SeparatorText("Spawn object");
 		{
-			if (!spawnObjs::currentSpawnedObj->isAttached)
-			{
-				components::small_text("Spawned Object parameters");
-
-				ImGui::PushItemWidth(200);
-				if (ImGui::InputFloat("spObjLocX", &spawnObjs::currentSpawnedObj->xr))
-					spawnedObjectLocationChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("spObjLocY", &spawnObjs::currentSpawnedObj->yr))
-					spawnedObjectLocationChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("spObjLocZ", &spawnObjs::currentSpawnedObj->zr))
-					spawnedObjectLocationChanged = true;
-
-				if (ImGui::InputFloat("spObjPitch", &spawnObjs::currentSpawnedObj->pitch))
-					spawnedObjectRotationChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("spObjRoll", &spawnObjs::currentSpawnedObj->roll))
-					spawnedObjectRotationChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("spObjYaw", &spawnObjs::currentSpawnedObj->yaw))
-					spawnedObjectRotationChanged = true;
-				ImGui::PopItemWidth();
-			}
-
-
-			ImGui::SeparatorText("Attach selected spawned object");
-
-			if (spawnObjs::currentSpawnedObj->isAttached)
-			{
-				components::small_text("Attached Object parameters");
-
-				if (ImGui::BeginCombo("BONE_CENTER", spawnObjs::currentSpawnedObj->bone.c_str()))
+			components::button("Spawn Object", [&] {
+				std::string v = trimString(selectedObjectNameOrHash);
+				if (v.size() > 0)
 				{
-					for (auto p : boneCenter)
-						if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
-						{
-							spawnObjs::currentSpawnedObj->bone = p;
-							hasAttachedEnityParametersChanged  = true;
-						}
-
-					ImGui::EndCombo();
+					std::optional<spawnObjs::SpawnedObject> result = spawnObjs::spawnObj(v);
+					if (result.has_value())
+					{
+						spawnObjs::SpawnedObject o   = result.value();
+						std::string name             = getFriendlyTimeRightNow() + " " + v + std::to_string(o.ob);
+						spawnedObjList[name]         = o;
+						spawnObjs::currentSpawnedObj = &spawnedObjList[name];
+					}
 				}
-				ImGui::SameLine();
-				if (ImGui::BeginCombo("BONE_SIDEWAYS", spawnObjs::currentSpawnedObj->bone.c_str()))
-				{
-					for (auto p : boneSideways)
-						if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
-						{
-							spawnObjs::currentSpawnedObj->bone = p;
-							hasAttachedEnityParametersChanged  = true;
-						}
-					ImGui::EndCombo();
-				}
-				ImGui::SameLine();
-				if (ImGui::Checkbox("isBoneLeftAttached", &spawnObjs::currentSpawnedObj->isLeftAttached))
-					hasAttachedEnityParametersChanged = true;
-
-				ImGui::PushItemWidth(200);
-				if (ImGui::InputFloat("attEntityX", &spawnObjs::currentSpawnedObj->xa))
-					hasAttachedEnityParametersChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("attEntityY", &spawnObjs::currentSpawnedObj->ya))
-					hasAttachedEnityParametersChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("attEntityZ", &spawnObjs::currentSpawnedObj->za))
-					hasAttachedEnityParametersChanged = true;
-
-				if (ImGui::InputFloat("attEntityRX", &spawnObjs::currentSpawnedObj->rxa))
-					hasAttachedEnityParametersChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("attEntityRY", &spawnObjs::currentSpawnedObj->rya))
-					hasAttachedEnityParametersChanged = true;
-				ImGui::SameLine();
-				if (ImGui::InputFloat("attEntityRZ", &spawnObjs::currentSpawnedObj->rza))
-					hasAttachedEnityParametersChanged = true;
-				ImGui::PopItemWidth();
-			}
-
-			if (!spawnObjs::currentSpawnedObj->isAttached)
-				components::button("attach to self", [&] {
-					try
-					{
-						if (!spawnObjs::currentSpawnedObj->bone.length())
-							spawnObjs::currentSpawnedObj->bone = boneCenter[0];
-
-						spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
-
-						spawnObjs::currentSpawnedObj->isAttached = true;
-					}
-					catch (const std::exception& e)
-					{
-						LOG(WARNING) << "failed" << e.what();
-					}
-				});
-			else
-				components::button("detach from self", [&] {
-					try
-					{
-						ENTITY::DETACH_ENTITY(spawnObjs::currentSpawnedObj->ob, 0, 0);
-						OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(spawnObjs::currentSpawnedObj->ob);
-						spawnObjs::currentSpawnedObj->isAttached = false;
-					}
-					catch (const std::exception& e)
-					{
-						LOG(WARNING) << "failed" << e.what();
-					}
-				});
-
-			ImGui::SeparatorText("Spawned objs");
-
-			// components::small_text("Shift click to delete a given spawned object");
-
-			components::button("Clear all spawned objects", [&] {
-				spawnObjs::currentSpawnedObj = NULL;
-
-				for (auto element : spawnedObjList)
-					entity::delete_entity(element.second.ob);
-
-				spawnedObjList.clear();
 			});
 
-			if (ImGui::BeginListBox("##spawnedObjList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
+			if (spawnObjs::currentSpawnedObj)
 			{
-				for (auto element : spawnedObjList)
-					if (ImGui::Selectable(element.first.c_str(), element.second.ob == spawnObjs::currentSpawnedObj->ob))
-					{
-						// if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && spawnedObjList.contains(element.first.c_str()))
-						// {
-						// 	big::entity::delete_entity(element.second.ob);
-						// 	spawnedObjList.erase(element.first);
-						// 	if (spawnedObjList.size() == 0)
-						// 		spawnObjs::currentSpawnedObj = NULL;
-						// }
-						// else
-						spawnObjs::currentSpawnedObj = &spawnedObjList[element.first];
-					}
+				if (!spawnObjs::currentSpawnedObj->isAttached)
+				{
+					components::small_text("Spawned Object parameters");
 
-				ImGui::EndListBox();
+					ImGui::PushItemWidth(200);
+					if (ImGui::InputFloat("spObjLocX", &spawnObjs::currentSpawnedObj->xr))
+						spawnedObjectLocationChanged = true;
+					ImGui::SameLine();
+					if (ImGui::InputFloat("spObjLocY", &spawnObjs::currentSpawnedObj->yr))
+						spawnedObjectLocationChanged = true;
+					ImGui::SameLine();
+					if (ImGui::InputFloat("spObjLocZ", &spawnObjs::currentSpawnedObj->zr))
+						spawnedObjectLocationChanged = true;
+
+					if (ImGui::InputFloat("spObjPitch", &spawnObjs::currentSpawnedObj->pitch))
+						spawnedObjectRotationChanged = true;
+					ImGui::SameLine();
+					if (ImGui::InputFloat("spObjRoll", &spawnObjs::currentSpawnedObj->roll))
+						spawnedObjectRotationChanged = true;
+					ImGui::SameLine();
+					if (ImGui::InputFloat("spObjYaw", &spawnObjs::currentSpawnedObj->yaw))
+						spawnedObjectRotationChanged = true;
+					ImGui::PopItemWidth();
+				}
+
+				ImGui::SeparatorText("Attach selected spawned object");
+				{
+					if (!spawnObjs::currentSpawnedObj->isAttached)
+						components::button("attach to self", [&] {
+							try
+							{
+								if (!spawnObjs::currentSpawnedObj->bone.length())
+									spawnObjs::currentSpawnedObj->bone = boneCenter[0];
+
+								spawnObjs::attachEntity(*spawnObjs::currentSpawnedObj, spawnObjs::getSelectedEntity());
+
+								spawnObjs::currentSpawnedObj->isAttached = true;
+							}
+							catch (const std::exception& e)
+							{
+								LOG(WARNING) << "failed" << e.what();
+							}
+						});
+					else
+						components::button("detach from self", [&] {
+							try
+							{
+								ENTITY::DETACH_ENTITY(spawnObjs::currentSpawnedObj->ob, 0, 0);
+								OBJECT::PLACE_OBJECT_ON_GROUND_OR_OBJECT_PROPERLY(spawnObjs::currentSpawnedObj->ob);
+								spawnObjs::currentSpawnedObj->isAttached = false;
+							}
+							catch (const std::exception& e)
+							{
+								LOG(WARNING) << "failed" << e.what();
+							}
+						});
+
+					if (spawnObjs::currentSpawnedObj->isAttached)
+					{
+						components::small_text("Attached Object parameters");
+
+						ImGui::PushItemWidth(200);
+						if (ImGui::BeginCombo("BONE_CENTER", spawnObjs::currentSpawnedObj->bone.c_str()))
+						{
+							for (auto p : boneCenter)
+								if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
+								{
+									spawnObjs::currentSpawnedObj->bone = p;
+									hasAttachedEnityParametersChanged  = true;
+								}
+
+							ImGui::EndCombo();
+						}
+						ImGui::SameLine();
+						if (ImGui::BeginCombo("BONE_SIDEWAYS", spawnObjs::currentSpawnedObj->bone.c_str()))
+						{
+							for (auto p : boneSideways)
+								if (ImGui::Selectable(p, p == spawnObjs::currentSpawnedObj->bone))
+								{
+									spawnObjs::currentSpawnedObj->bone = p;
+									hasAttachedEnityParametersChanged  = true;
+								}
+							ImGui::EndCombo();
+						}
+						ImGui::SameLine();
+						if (ImGui::Checkbox("isBoneLeftAttached", &spawnObjs::currentSpawnedObj->isLeftAttached))
+							hasAttachedEnityParametersChanged = true;
+
+						if (ImGui::InputFloat("attEntityX", &spawnObjs::currentSpawnedObj->xa))
+							hasAttachedEnityParametersChanged = true;
+						ImGui::SameLine();
+						if (ImGui::InputFloat("attEntityY", &spawnObjs::currentSpawnedObj->ya))
+							hasAttachedEnityParametersChanged = true;
+						ImGui::SameLine();
+						if (ImGui::InputFloat("attEntityZ", &spawnObjs::currentSpawnedObj->za))
+							hasAttachedEnityParametersChanged = true;
+
+						if (ImGui::InputFloat("attEntityRX", &spawnObjs::currentSpawnedObj->rxa))
+							hasAttachedEnityParametersChanged = true;
+						ImGui::SameLine();
+						if (ImGui::InputFloat("attEntityRY", &spawnObjs::currentSpawnedObj->rya))
+							hasAttachedEnityParametersChanged = true;
+						ImGui::SameLine();
+						if (ImGui::InputFloat("attEntityRZ", &spawnObjs::currentSpawnedObj->rza))
+							hasAttachedEnityParametersChanged = true;
+						ImGui::PopItemWidth();
+					}
+				}
+
+				ImGui::SeparatorText("Spawned objs");
+				{
+					// components::small_text("Shift click to delete a given spawned object");
+
+					components::button("Clear all spawned objects", [&] {
+						spawnObjs::currentSpawnedObj = NULL;
+
+						for (auto element : spawnedObjList)
+							entity::delete_entity(element.second.ob);
+
+						spawnedObjList.clear();
+					});
+
+					if (ImGui::BeginListBox("##spawnedObjList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
+					{
+						for (auto element : spawnedObjList)
+							if (ImGui::Selectable(element.first.c_str(),
+							        element.second.ob == spawnObjs::currentSpawnedObj->ob))
+							{
+								// if (GetAsyncKeyState(VK_SHIFT) & 0x8000 && spawnedObjList.contains(element.first.c_str()))
+								// {
+								// 	big::entity::delete_entity(element.second.ob);
+								// 	spawnedObjList.erase(element.first);
+								// 	if (spawnedObjList.size() == 0)
+								// 		spawnObjs::currentSpawnedObj = NULL;
+								// }
+								// else
+								spawnObjs::currentSpawnedObj = &spawnedObjList[element.first];
+							}
+
+						ImGui::EndListBox();
+					}
+				}
 			}
 		}
 
@@ -582,9 +595,8 @@ namespace big
 		static std::vector<spawnObjs::SpawnedCollection> spawnedCollections;
 		static int indexOfcollectionObjectToDelete = -1;
 
-		ImGui::PushItemWidth(200);
+		ImGui::SetNextItemWidth(200);
 		components::input_text_with_hint("##collectionName", "collectionName", collectionName);
-		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		components::button("Create###createCollecBtn", [&] {
 			std::string name = trimString(collectionName);
@@ -627,7 +639,6 @@ namespace big
 				spawnedCollections.push_back(spawnedCollection);
 			});
 		}
-
 
 		components::small_text("Shift click in collection list to delete a selected collection");
 		components::small_text("Shift click in object list to delete an object from selected collection");
