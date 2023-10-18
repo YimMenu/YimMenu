@@ -120,7 +120,7 @@ namespace big
 						}
 					}
 					else
-						g_notification_service->push_success("assign_physical_index", std::format("net_data not present for player - {}", plyr->get_name() ? plyr->get_name() : "Unkown"));
+						LOG(WARNING) << std::format("net_data not present for player - {}", plyr->get_name() ? plyr->get_name() : "Unkown");
 				}
 			});
 		}

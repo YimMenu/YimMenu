@@ -33,12 +33,18 @@ namespace big::teleport
 
 		if (player->is_valid())
 		{
-			if (PED::IS_PED_IN_ANY_VEHICLE(ent, true))
+			if (PED::IS_PED_IN_ANY_VEHICLE(ent, false) || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
 			{
+				g_notification_service->push_success("Teleport", std::format("Player {} is in vehicle", player->get_name()));
+
 				ent = PED::GET_VEHICLE_PED_IS_IN(ent, false);
 
 				if (entity::take_control_of(ent))
+				{
+					g_notification_service->push_success("Teleport",
+					    std::format("Trying to teleport {} with vehicle", player->get_name()));
 					ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coord.x, coord.y, coord.z, 0, 0, 0);
+				}
 				else
 					g_notification_service->push_warning("Teleport", "Failed to take control of player vehicle.");
 			}
@@ -48,6 +54,9 @@ namespace big::teleport
 				auto veh_id                      = g_pointers->m_gta.m_handle_to_ptr(hnd)->m_net_object->m_object_id;
 				remote_player_teleport remote_tp = {obj_id, {coord.x, coord.y, coord.z}};
 				m_remote_player_teleports.emplace(veh_id, remote_tp);
+
+				if (PED::IS_PED_IN_ANY_VEHICLE(ent, false) || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
+					g_pointers->m_gta.m_clear_ped_tasks_network(player->get_ped(), true);
 
 				for (int i = 0; i < 30; i++)
 				{
