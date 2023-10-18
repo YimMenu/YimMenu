@@ -5,11 +5,11 @@ namespace big
 {
 	inline struct g_window_t
 	{
-		ImU32 background_color = 3696311571;
-		ImU32 text_color       = 4294967295;
-		ImU32 button_color     = 2947901213;
-		ImU32 frame_color      = 2942518340;
-		float gui_scale        = 1.f;
+		ImU32 background_color = 4278190080;
+		ImU32 text_color       = 4292072403;
+		ImU32 button_color     = 2936035029;
+		ImU32 frame_color      = 2939170865;
+		float gui_scale        = 0.75;
 
 		ImFont* font_title     = nullptr;
 		ImFont* font_sub_title = nullptr;
@@ -34,7 +34,7 @@ namespace big
 		{
 			bool show_player_godmode  = true;
 			bool show_vehicle_godmode = true;
-			bool show_ammo            = false;
+			bool show_ammo            = true;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(ingame_overlay_indicators, show_player_godmode, show_vehicle_godmode, show_ammo)
 		} ingame_overlay_indicators{};
