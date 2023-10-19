@@ -135,7 +135,7 @@ namespace big
 						
 					}
 	
-				//load the new ipls
+				//load the new ipl
 				for (auto& ipl_name : selected_ipl.ipl_names)
 				{
 						STREAMING::REQUEST_IPL(ipl_name);
