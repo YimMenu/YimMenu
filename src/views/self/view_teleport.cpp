@@ -109,41 +109,39 @@ namespace big
 
 		const auto& selected_ipl = ipls[g.self.ipls.select];
 		if (components::button("LOAD_IPL"_T.data()))
-		{
-			//remove after loading ipls to avoid conflicts
-			for (auto& ipl_name_remove_when_load : selected_ipl.ipl_names_remove_when_load)
-				g_fiber_pool->queue_job([&] {
-					STREAMING::REMOVE_IPL(ipl_name_remove_when_load);
-					LOG(INFO) << "ipls removed to avoid conflicts " << ipl_name_remove_when_load;
-				});
-
-			//unload all previous ipls
-			for (auto& ipl : ipls)
-				for (auto& ipl_name : ipl.ipl_names)
-				{
-					if (STREAMING::IS_IPL_ACTIVE(ipl_name))
+		{	
+			g_fiber_pool->queue_job([&] {
+				//remove after loading ipls to avoid conflicts
+				for (auto& ipl_name_remove_when_load : selected_ipl.ipl_names_remove_when_load)
 					{
-						g_fiber_pool->queue_job([&] {
-							LOG(INFO) << "unloaded all existing ipl " << ipl_name;
-							STREAMING::REMOVE_IPL(ipl_name);
-							for (auto& ipl_name_remove : ipl.ipl_names_remove)
-							{
-								STREAMING::REQUEST_IPL(ipl_name_remove);
-								LOG(INFO) << "loaded all previously deleted ipls " << ipl_name_remove;
-							}
-						});
+						STREAMING::REMOVE_IPL(ipl_name_remove_when_load);
+						LOG(INFO) << "ipls removed to avoid conflicts " << ipl_name_remove_when_load;
 					}
-					
+	
+				//unload all previous ipls
+				for (auto& ipl : ipls)
+					for (auto& ipl_name : ipl.ipl_names)
+					{
+						if (STREAMING::IS_IPL_ACTIVE(ipl_name))
+						{
+								LOG(INFO) << "unloaded all existing ipl " << ipl_name;
+								STREAMING::REMOVE_IPL(ipl_name);
+								for (auto& ipl_name_remove : ipl.ipl_names_remove)
+								{
+									STREAMING::REQUEST_IPL(ipl_name_remove);
+									LOG(INFO) << "loaded all previously deleted ipls " << ipl_name_remove;
+								}
+						}
+						
+					}
+	
+				//load the new ipls
+				for (auto& ipl_name : selected_ipl.ipl_names)
+				{
+						STREAMING::REQUEST_IPL(ipl_name);
+						LOG(INFO) << "loaded all new ipls " << ipl_name;
 				}
-
-			//load the new ipls
-			for (auto& ipl_name : selected_ipl.ipl_names)
-			{
-				g_fiber_pool->queue_job([&] {
-					STREAMING::REQUEST_IPL(ipl_name);
-					LOG(INFO) << "loaded all new ipls " << ipl_name;
-				});
-			}
+			);
 		}
 
 		ImGui::SameLine();
