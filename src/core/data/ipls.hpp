@@ -5,6 +5,8 @@ struct ipl_libary
 	const char* friendly_name;
 	Vector3 location;
 	std::vector<const char*> ipl_names;
+	std::vector<const char*> ipl_names_remove;
+	std::vector<const char*> ipl_names_remove_when_load;
 };
 
 // thanks to https://github.com/DurtyFree/gta-v-data-dumps
@@ -14,9 +16,21 @@ const ipl_libary ipls[] = {
     {"Dignity Party Yacht", {-2045.8, -1031.2, 11.9}, {{"smboat"}, {"apa_smboat_lodlights"}, {"ba_sm_boat_window"}}},
     {"Aircraft Carrier", {3069.33, -4632.4, 15.04}, {{"hei_carrier_lodlights"}, {"hei_carrier"}, {"hei_carrier_int1"}, {"hei_carrier_int2"}, {"hei_carrier_int3"}, {"hei_carrier_int4"}, {"hei_carrier_int5"}, {"hei_carrier_int6"}}},
     {"Cargoship", {-162.89, -2365.76, 0.0}, {{"ship_occ_grp1"}, {"ship_occ_grp2"}, {"cargoship"}, {"sunk_ship_fire"}, {"sunkcargoship"}}},
-    {"Destroyed Pillbox Hospital", {356.8, -590.1, 43.3}, {{"rc12b_default"}, {"rc12b_destroyed"}, {"rc12b_fixed"}, {"rc12b_hospitalinterior"}}},
-    {"O'Neil Farm", {2441.2, 4968.5, 51.7}, {{"des_farmhouse"}, {"des_farmhs_endimap"}, {"des_farmhs_startimap"}, {"farm"}, {"farm_burnt"}, {"farm_burnt_props"}, {"farm_props"}, {"farmint"}, {"farmint_cap"}, {"des_farmhs_end_occl"}, {"des_farmhs_start_occl"}}},
+    {"Destroyed Pillbox Hospital", {356.8, -590.1, 43.3}, {{"rc12b_default"}, {"rc12b_destroyed"}}},
+    {
+        "O'Neil Farm Destroyed",
+        {2441.2, 4968.5, 51.7}, 
+        {{"farm_burnt"}, {"farm_burnt_props"}}, // existing ipls to be unload
+        {{"farm"}, {"farmint"}, {"farm_props"}, {"des_farmhs_startimap"}}, // load previously deleted ipls
+        {{"farm"}, {"farmint"}, {"farmint_cap"}, {"des_farmhs_startimap"}, {"farm_props"}}, // ipls removed to avoid conflicts
+    }, // Farm destroyed house
     {"LifeInvader", {-1047.9, -233.0, 39.0}, {{"facelobby"}, {"facelobbyfake"}}},
-    {"Jewelry Store", {-630.4, -236.7, 40.0}, {{"bh1_16_refurb"}, {"jewel2fake"}, {"post_hiest_unload"}}},
+    {
+        "Jewelry Store", 
+        {-630.4, -236.7, 40.0},
+        {{"bh1_16_refurb"}, {"jewel2fake"}, {"post_hiest_unload"}},
+        {{"bh1_16_refurb"}, {"jewel2fake"}, {"post_hiest_unload"}},
+        {{"bh1_16_refurb"}, {"jewel2fake"}, {"post_hiest_unload"}},
+    }, // Jewearly
     {"Coroner Morgue", {244.9, -1374.7, 39.5}, {{"coroner_int_off"}, {"coroner_int_on"}, {"coronertrash"}}},
 };
