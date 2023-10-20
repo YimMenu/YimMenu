@@ -26,5 +26,5 @@ namespace big
 		}
 	};
 
-	upgrade_vehicle g_upgrade_vehicle("upgradeveh", "Upgrade Vehicle", "Upgrades players vehicle", 0);
+	upgrade_vehicle g_upgrade_vehicle("upgradeveh", "MAX_VEHICLE", "BACKEND_UPGRADE_VEHICLE_DESC", 0);
 }

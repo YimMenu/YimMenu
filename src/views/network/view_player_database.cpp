@@ -126,7 +126,7 @@ namespace big
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
 				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join)
-				    || ImGui::Checkbox("Track Player", &current_player->notify_online))
+				    || ImGui::Checkbox("VIEW_NET_PLAYER_DB_TRACK_PLAYER"_T.data(), &current_player->notify_online))
 				{
 					if (current_player->rockstar_id != selected->rockstar_id)
 						g_player_database_service->update_rockstar_id(selected->rockstar_id, current_player->rockstar_id);
@@ -186,7 +186,7 @@ namespace big
 					}
 				}
 
-				if (ImGui::InputTextMultiline("Notes", note_buffer, sizeof(note_buffer)))
+				if (ImGui::InputTextMultiline("VIEW_NET_PLAYER_DB_NOTES"_T.data(), note_buffer, sizeof(note_buffer)))
 				{
 					current_player->notes = note_buffer;
 					notes_dirty           = true;
@@ -194,13 +194,13 @@ namespace big
 				if (ImGui::IsItemActive())
 					g.self.hud.typing = TYPING_TICKS;
 
-				ImGui::Checkbox("Join Redirect", &current_player->join_redirect);
+				ImGui::Checkbox("VIEW_NET_PLAYER_DB_JOIN_REDIRECT"_T.data(), &current_player->join_redirect);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Anyone trying to join you will join this player instead if they are active. The preference slider will control redirect priority if multiple players with join redirect are active");
+					ImGui::SetTooltip("VIEW_NET_PLAYER_DB_JOIN_REDIRECT_DESC"_T.data());
 
 				if (current_player->join_redirect)
 				{
-					ImGui::SliderInt("Preference", &current_player->join_redirect_preference, 1, 10);
+					ImGui::SliderInt("VIEW_NET_PLAYER_DB_PREFERENCE"_T.data(), &current_player->join_redirect_preference, 1, 10);
 				}
 
 				components::button("JOIN_SESSION"_T, [] {
@@ -221,23 +221,23 @@ namespace big
 					});
 				};
 
-				ImGui::Text("Session Type: %s", player_database_service::get_session_type_str(selected->session_type));
+				ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_SESSION_TYPE"_T, player_database_service::get_session_type_str(selected->session_type)).c_str());
 
 				if (selected->session_type != GSType::Invalid && selected->session_type != GSType::Unknown)
 				{
-					ImGui::Text("Is Host Of Session: %s", selected->is_host_of_session ? "Yes" : "No");
-					ImGui::Text("Is Spectating: %s", selected->is_spectating ? "Yes" : "No");
-					ImGui::Text("In Job Lobby: %s", selected->transition_session_id != -1 ? "Yes" : "No");
-					ImGui::Text("Is Host Of Job Lobby: %s", selected->is_host_of_transition_session ? "Yes" : "No");
-					ImGui::Text("Current Mission Type: %s", player_database_service::get_game_mode_str(selected->game_mode));
+					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_HOST_OF_SESSION"_T, selected->is_host_of_session ? "YES"_T : "NO"_T).c_str());
+					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_SPECTATING"_T, selected->is_spectating ? "YES"_T : "NO"_T).c_str());
+					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IN_JOB_LOBBY"_T, selected->transition_session_id != -1 ? "YES"_T : "NO"_T).c_str());
+					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_HOST_OF_JOB_LOBBY"_T, selected->is_host_of_transition_session ? "YES"_T : "NO"_T).c_str());
+					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_CURRENT_MISSION_TYPE"_T, player_database_service::get_game_mode_str(selected->game_mode)).c_str());
 					if (selected->game_mode != GameMode::None && player_database_service::can_fetch_name(selected->game_mode))
 					{
-						ImGui::Text("Current Mission Name: %s", selected->game_mode_name.c_str());
-						if ((selected->game_mode_name == "Unknown" || selected->game_mode_name.empty())
+						ImGui::Text("VIEW_NET_PLAYER_DB_CURRENT_MISSION_TYPE"_T.data(), selected->game_mode_name.c_str());
+						if ((selected->game_mode_name == "VIEW_NET_PLAYER_DB_GAME_MODE_UNKNOWN"_T.data() || selected->game_mode_name.empty())
 						    && !selected->game_mode_id.empty())
 						{
 							ImGui::SameLine();
-							components::button("Fetch", [] {
+							components::button("VIEW_DEBUG_LOCALS_FETCH"_T, [] {
 								current_player->game_mode_name =
 								    player_database_service::get_name_by_content_id(current_player->game_mode_id);
 							});
@@ -271,9 +271,9 @@ namespace big
 
 		if (ImGui::BeginPopupModal("##removeall"))
 		{
-			ImGui::Text("Are you sure?");
+			ImGui::Text("VIEW_NET_PLAYER_DB_ARE_YOU_SURE"_T.data());
 
-			if (ImGui::Button("Yes"))
+			if (ImGui::Button("YES"_T.data()))
 			{
 				g_player_database_service->set_selected(nullptr);
 				g_player_database_service->get_players().clear();
@@ -282,7 +282,7 @@ namespace big
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("No"))
+			if (ImGui::Button("NO"_T.data()))
 			{
 				ImGui::CloseCurrentPopup();
 			}
@@ -296,21 +296,21 @@ namespace big
 			g_player_database_service->update_player_states();
 		});
 
-		if (ImGui::TreeNode("Player Tracking"))
+		if (ImGui::TreeNode("VIEW_NET_PLAYER_DB_PLAYER_TRACKING"_T.data()))
 		{
-			if (components::command_checkbox<"player_db_auto_update_states">("Enable"))
+			if (components::command_checkbox<"player_db_auto_update_states">("ENABLED"_T))
 				g_player_database_service->start_update_loop();
 
-			ImGui::Checkbox("Notify When Online", &g.player_db.notify_when_online);
-			ImGui::Checkbox("Notify When Joinable", &g.player_db.notify_when_joinable);
-			ImGui::Checkbox("Notify When Unjoinable", &g.player_db.notify_when_unjoinable);
-			ImGui::Checkbox("Notify When Offline", &g.player_db.notify_when_offline);
-			ImGui::Checkbox("Notify On Session Type Change", &g.player_db.notify_on_session_type_change);
-			ImGui::Checkbox("Notify On Session Change", &g.player_db.notify_on_session_change);
-			ImGui::Checkbox("Notify On Spectator Change", &g.player_db.notify_on_spectator_change);
-			ImGui::Checkbox("Notify On Become Host", &g.player_db.notify_on_become_host);
-			ImGui::Checkbox("Notify On Job Lobby Change", &g.player_db.notify_on_transition_change);
-			ImGui::Checkbox("Notify On Mission Change", &g.player_db.notify_on_mission_change);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_WHEN_ONLINE"_T.data(), &g.player_db.notify_when_online);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_WHEN_JOINABLE"_T.data(), &g.player_db.notify_when_joinable);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_WHEN_UNJOINABLE"_T.data(), &g.player_db.notify_when_unjoinable);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_WHEN_OFFLINE"_T.data(), &g.player_db.notify_when_offline);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_ON_SESSION_TYPE_CHANGE"_T.data(), &g.player_db.notify_on_session_type_change);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_ON_SESSION_CHANGE"_T.data(), &g.player_db.notify_on_session_change);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_ON_SPECTATOR_CHANGE"_T.data(), &g.player_db.notify_on_spectator_change);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_ON_BECOME_HOST"_T.data(), &g.player_db.notify_on_become_host);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_JOB_LOBBY_CHANGE"_T.data(), &g.player_db.notify_on_transition_change);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_MISSION_CHANGE"_T.data(), &g.player_db.notify_on_mission_change);
 			ImGui::TreePop();
 		}
 
@@ -334,14 +334,14 @@ namespace big
 			g_thread_pool->push([] {
 				if (!g_api_service->get_rid_from_username(new_name, *(uint64_t*)&new_rockstar_id))
 				{
-					g_notification_service->push_error("New Player DB Entry", std::format("No user '{}' called could be found.", new_name));
+					g_notification_service->push_error("GUI_TAB_PLAYER_DATABASE"_T.data(), std::vformat("VIEW_NET_PLAYER_DB_NO_USER_CAN_BE_FOUND"_T, std::make_format_args(new_name)));
 					new_rockstar_id = 0;
 				}
 			});
 		}
 		if (ImGui::IsItemHovered())
 		{
-			ImGui::SetTooltip("Do you know only the name of someone and not their Rockstar ID? Just fill in the username and click \"search\".");
+			ImGui::SetTooltip("VIEW_NET_PLAYER_DB_TOOLTIP"_T.data());
 		}
 	}
 }

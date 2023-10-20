@@ -5,9 +5,9 @@ namespace big
 {
 	void view::model_swapper()
 	{
-		ImGui::Text("Models that have already been created will not be affected much");
-		ImGui::Text("Prefix 0x for hexadecimal hash");
-		ImGui::Text("Use context menu to copy entity hash");
+		ImGui::Text("VIEW_MODEL_SWAPPER_LINE1"_T.data());
+		ImGui::Text("VIEW_MODEL_SWAPPER_LINE2"_T.data());
+		ImGui::Text("VIEW_MODEL_SWAPPER_LINE3"_T.data());
 
 		static char dst_text[256];
 		static char src_text[256];
@@ -15,22 +15,22 @@ namespace big
 		static float width           = *g_pointers->m_gta.m_resolution_x / 5.0;
 
 		ImGui::SetNextItemWidth(width);
-		ImGui::InputText("Dst", dst_text, IM_ARRAYSIZE(dst_text));
+		ImGui::InputText("VIEW_MODEL_SWAPPER_DEST"_T.data(), dst_text, IM_ARRAYSIZE(dst_text));
 		if (ImGui::IsItemActive())
 			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(width);
-		ImGui::InputText("Src", src_text, IM_ARRAYSIZE(src_text));
+		ImGui::InputText("VIEW_MODEL_SWAPPER_SRC"_T.data(), src_text, IM_ARRAYSIZE(src_text));
 		if (ImGui::IsItemActive())
 			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
-		if (ImGui::Button("Add/Change"))
+		if (ImGui::Button("ADD"_T.data()))
 		{
 			std::lock_guard lock(g.world.model_swapper.m);
 			if (dst_text[0] == '\0' || src_text[0] == '\0')
 			{
-				g_notification_service->push_error("Model Swapper", "Wrong input");
+				g_notification_service->push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_WRONG_INPUT"_T.data());
 				return;
 			}
 			std::string str = dst_text;
@@ -52,20 +52,20 @@ namespace big
 			g.world.model_swapper.update = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Delete"))
+		if (ImGui::Button("DELETE"_T.data()))
 		{
 			std::lock_guard lock(g.world.model_swapper.m);
 			if (!g.world.model_swapper.models.size() || selected_index < 0
 			    || selected_index >= g.world.model_swapper.models.size())
 			{
-				g_notification_service->push_error("Model Swapper", "Invalid index");
+				g_notification_service->push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_INVALID_INDEX"_T.data());
 				return;
 			}
 			g.world.model_swapper.models.erase(std::begin(g.world.model_swapper.models) + selected_index);
 			g.world.model_swapper.update = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Clear"))
+		if (ImGui::Button("VIEW_DEBUG_GLOBAL_CLEAR"_T.data()))
 		{
 			std::lock_guard lock(g.world.model_swapper.m);
 			g.world.model_swapper.models.clear();
@@ -73,7 +73,8 @@ namespace big
 		}
 
 		ImGui::SetNextItemWidth(width);
-		if (ImGui::BeginListBox("Dst##model_swapper_dst"))
+		ImGui::PushID(2);
+		if (ImGui::BeginListBox("VIEW_MODEL_SWAPPER_DEST"_T.data()))
 		{
 			for (size_t i = 0; i < g.world.model_swapper.models.size(); i++)
 			{
@@ -91,7 +92,7 @@ namespace big
 		}
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(width);
-		if (ImGui::BeginListBox("Src##model_swapper_src"))
+		if (ImGui::BeginListBox("VIEW_MODEL_SWAPPER_SRC"_T.data()))
 		{
 			for (size_t i = 0; i < g.world.model_swapper.models.size(); i++)
 			{
@@ -107,5 +108,6 @@ namespace big
 			}
 			ImGui::EndListBox();
 		}
+		ImGui::PopID();
 	}
 }

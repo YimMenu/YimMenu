@@ -22,7 +22,7 @@ namespace big
 
 				if (entity::take_control_of(vehicle))
 				{
-					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
+					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, VEHICLE::GET_VEHICLE_ESTIMATED_MAX_SPEED(vehicle));
 				}
 				else
 				{
@@ -32,5 +32,5 @@ namespace big
 		}
 	};
 
-	boost_vehicle g_boost_vehicle("boostveh", "Boost Vehicle", "Boosts their car very fast.", 0);
+	boost_vehicle g_boost_vehicle("boostveh", "BACKEND_BOOST_VEHICLE", "BACKEND_BOOST_VEHICLE_DESC", 0);
 }

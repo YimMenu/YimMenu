@@ -61,7 +61,7 @@ namespace big
 				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
 				{
 					g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
-					    std::vformat("PLAYER_DETECTED_AS_ADMIN"_T, std::make_format_args(net_player_data->m_name)));
+					    std::format("{} {}", net_player_data->m_name, "PLAYER_DETECTED_AS_ADMIN"_T));
 
 					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as an admin";
 
@@ -106,7 +106,7 @@ namespace big
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
 								g_notification_service->push("PLAYERS"_T.data(),
-								    std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
+									std::format("{} {}: {}", entry->name, "PLAYER_CHANGED_NAME"_T, plyr->get_name()));
 								entry->name = plyr->get_name();
 								g_player_database_service->save();
 							}
