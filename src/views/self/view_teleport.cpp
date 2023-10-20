@@ -96,7 +96,8 @@ namespace big
 		static int current_select = g.self.ipls.select;
 		static int last_select    = current_select;
 
-		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[current_select].friendly_name))
+		ImGui::SetNextItemWidth(400);
+		if (ImGui::BeginCombo("##Ipllocation", ipls[current_select].friendly_name))
 		{
 			for (int i = 0; i < IM_ARRAYSIZE(ipls); i++)
 			{
@@ -112,6 +113,7 @@ namespace big
 			}
 			ImGui::EndCombo();
 		}
+		ImGui::SameLine();
 		components::button("LOAD_IPL"_T.data(), [] 
 		{
 			// If we've changed selections, first unload previously loaded IPL, then load previously deleted IPLs
@@ -157,9 +159,7 @@ namespace big
 				last_select = current_select;
 			}
 		});
-
 		ImGui::SameLine();
-
 		components::button("TP_TO_IPL"_T.data(), [] 
 		{
 			teleport::to_coords(ipls[current_select].location);
