@@ -62,7 +62,7 @@ namespace big
 		int64_t transition_session_id      = -1;
 		bool is_host_of_transition_session = false;
 		GameMode game_mode                 = GameMode(-1);
-		std::string game_mode_name         = "Unknown";
+		std::string game_mode_name         = "VIEW_NET_PLAYER_DB_GAME_MODE_UNKNOWN"_T.data();
 		std::string game_mode_id           = "";
 		rage::rlSessionInfo redirect_info{};
 

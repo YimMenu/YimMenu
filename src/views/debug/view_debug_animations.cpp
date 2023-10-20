@@ -25,15 +25,17 @@ namespace big
 			}
 		};
 		
-		if(animations::has_anim_list_been_populated())
-			ImGui::Text(std::format("There are {} dictionaries with {} animations in memory", animations::anim_dict_count(), animations::total_anim_count()).data());
+		if (animations::has_anim_list_been_populated())
+		{
+			ImGui::Text("VIEW_DEBUG_ANIMATIONS_ANIMATIONS_IN_MEMORY"_T.data(), animations::anim_dict_count(), animations::total_anim_count());
+		}
 
-		components::button("Fetch All Anims", [] {
+		components::button("VIEW_DEBUG_ANIMATIONS_FETCH_ALL_ANIMS"_T, [] {
 			animations::fetch_all_anims();
 		});
 
 		ImGui::SetNextItemWidth(400);
-		components::input_text_with_hint("##dictionaryfilter", "Dictionary", current_dict);
+		components::input_text_with_hint("##dictionaryfilter", "DICT"_T, current_dict);
 
 		if (animations::has_anim_list_been_populated() && ImGui::BeginListBox("##dictionaries", ImVec2(400, 200)))
 		{
@@ -66,12 +68,12 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		components::button("Play", [] {
+		components::button("VIEW_DEBUG_ANIMATIONS_PLAY"_T, [] {
 			TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 			ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 0, 0, false);
 		});
 		ImGui::SameLine();
-		components::button("Stop", [] {
+		components::button("VIEW_DEBUG_ANIMATIONS_STOP"_T, [] {
 			TASK::CLEAR_PED_TASKS(self::ped);
 		});
 	}

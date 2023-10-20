@@ -15,9 +15,9 @@ namespace big
 			if (veh == 0)
 			{
 				if (g.player.spectating)
-					g_notification_service->push_warning("Remote Control", "Player not in a vehicle");
+					g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T.data());
 				else
-					g_notification_service->push_warning("Remote Control", "Player not in a vehicle, try spectating the player");
+					g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), std::format("{} {}", "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T, "BACKEND_REMOTE_CONTROL_VEHICLE_SPECTATE"_T).c_str());
 				return;
 			}
 
@@ -26,5 +26,5 @@ namespace big
 		}
 	};
 
-	remote_control_vehicle g_remote_control_vehicle("rcplayer", "Remote Control Vehicle", "Take control of the player's vehicle. Spectate the player beforehand for best results", 0, false);
+	remote_control_vehicle g_remote_control_vehicle("rcplayer", "BACKEND_REMOTE_CONTROL_VEHICLE", "BACKEND_REMOTE_CONTROL_VEHICLE_DESC", 0, false);
 }

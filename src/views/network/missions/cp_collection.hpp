@@ -7,21 +7,22 @@ namespace big
 {
 	inline void render_cp_collection_ui()
 	{
-		components::sub_title("Checkpoints");
+		components::sub_title("VIEW_NET_MISSIONS_CHECKPOINTS"_T);
 
-		components::button("Start Event##cp_collection", [] {
+		ImGui::PushID(1);
+		components::button("VIEW_NET_MISSIONS_START_EVENT"_T, [] {
 			if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
 				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
 					*script_local(script->m_stack, scr_locals::am_cp_collection::broadcast_idx).at(667).as<int*>() = 0;
 		});
 		ImGui::SameLine();
-		components::button("Finish Event##cp_collection", [] {
+		components::button("VIEW_NET_MISSIONS_FINISH_EVENT"_T, [] {
 			if (scripts::force_host(RAGE_JOAAT("am_cp_collection")))
 				if (auto script = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
 					*script_local(script->m_stack, scr_locals::am_cp_collection::broadcast_idx).at(661).as<int*>() = 0;
 		});
-
-		components::button("Win Event", [] {
+		ImGui::PopID();
+		components::button("VIEW_NET_MISSIONS_WIN_EVENT"_T, [] {
 			if (auto checkpoints = gta_util::find_script_thread(RAGE_JOAAT("am_cp_collection")))
 				*script_local(checkpoints->m_stack, scr_locals::am_cp_collection::player_broadcast_idx)
 				     .at(((CGameScriptHandlerNetComponent*)checkpoints->m_net_component)->m_local_participant_index, 5)
@@ -39,7 +40,7 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		components::button("Scramble Checkpoints", [] {
+		components::button("VIEW_NET_MISSIONS_SCRAMBLE_CHECKPOINTS"_T, [] {
 			std::vector<Vector3> active_player_positions;
 
 			for (auto& plyr : g_player_service->players())

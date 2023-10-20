@@ -18,7 +18,7 @@ namespace big
 		{
 			render_elements();
 			ImGui::Spacing();
-			if (ImGui::Button(std::string("Close##" + element_name).data()) || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
+			if (ImGui::Button(std::format("{}##{}", "CLOSE"_T, element_name).c_str()) || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
 				ImGui::CloseCurrentPopup();
 
 			ImGui::EndPopup();

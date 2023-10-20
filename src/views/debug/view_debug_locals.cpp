@@ -15,11 +15,11 @@ namespace big
 		static int offsets[10][2]           = {};
 		static int offset_count             = 0;
 		static int previous_offset_count    = 0;
-		components::input_text("Name", name, sizeof(name));
-		components::input_text("Script Name", script_thread_name, sizeof(script_thread_name));
-		ImGui::Text("Base address");
+		components::input_text("NAME"_T, name, sizeof(name));
+		components::input_text("VIEW_DEBUG_LOCALS_SCRIPT_NAME"_T, script_thread_name, sizeof(script_thread_name));
+		ImGui::Text("VIEW_DEBUG_LOCALS_BASE_ADDRESS"_T.data());
 		ImGui::InputInt("##local_base_address", &base_address);
-		ImGui::Text("Offsetcount");
+		ImGui::Text("VIEW_DEBUG_LOCALS_OFFSET_COUNT"_T.data());
 		ImGui::InputInt("##modal_offset_count", &offset_count);
 
 		offset_count = std::clamp(offset_count, 0, 10);
@@ -71,7 +71,7 @@ namespace big
 			}
 			else
 			{
-				g_notification_service->push_error("Locals editor", "Script does not exist");
+				g_notification_service->push_error("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
 			}
 		};
 	}
@@ -86,7 +86,7 @@ namespace big
 			if (components::button("SAVE"_T))
 				g_locals_service.save();
 
-			if (components::button("Add Local"))
+			if (components::button("VIEW_DEBUG_LOCALS_ADD_LOCAL"_T))
 			{
 				ImGui::OpenPopup("##addlocal");
 			}
@@ -136,7 +136,7 @@ namespace big
 								local_.m_edit_mode = 3;
 
 
-							ImGui::LabelText(local_.get_local_chain_text(), "Value");
+							ImGui::LabelText(local_.get_local_chain_text(), "VIEW_DEBUG_GLOBAL_VALUE"_T.data());
 
 							ImGui::SetNextItemWidth(200);
 
@@ -198,7 +198,7 @@ namespace big
 							}
 
 							ImGui::SameLine();
-							if (ImGui::Checkbox("Freeze", &local_.m_freeze))
+							if (ImGui::Checkbox("VIEW_DEBUG_LOCALS_FREEZE"_T.data(), &local_.m_freeze))
 							{
 								local_.m_freeze_value_int     = *local_.m_internal_address;
 								local_.m_freeze_value_float   = *reinterpret_cast<float*>(local_.m_internal_address);
@@ -207,7 +207,7 @@ namespace big
 						}
 						else
 						{
-							if (components::button("Fetch"))
+							if (components::button("VIEW_DEBUG_LOCALS_FETCH"_T))
 							{
 								local_.fetch_local_pointer();
 							}
@@ -216,10 +216,10 @@ namespace big
 					else
 					{
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-						ImGui::Text("%s isn't running", local_.m_script_thread_name);
+						ImGui::Text(std::format("{} {}", local_.m_script_thread_name, "VIEW_DEBUG_LOCALS_SCRIPT_IS_NOT_RUNNING"_T).c_str());
 						ImGui::PopStyleColor();
 					}
-					if (components::button("Delete"))
+					if (components::button("DELETE"_T))
 						std::erase_if(g_locals_service.m_locals, [local_](local l) {
 							return l.get_id() == local_.get_id();
 						});

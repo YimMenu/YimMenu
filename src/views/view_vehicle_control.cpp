@@ -13,26 +13,26 @@ namespace big
 	void render_doors_tab()
 	{
 		const char* const doornames[MAX_VEHICLE_DOORS]{
-		    "Front left",
-		    "Front right",
-		    "Back left",
-		    "Back right",
-		    "Bonnet",
-		    "Trunk",
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_0"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_1"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_2"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_3"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_4"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_5"_T.data(),
 		};
 
 		const char* const locknames[MAX_VEHICLE_LOCK_STATES]{
-		    "None",
-		    "Unlocked",
-		    "Locked",
-		    "Lockout player only",
-		    "Locked player inside",
-		    "Locked initially",
-		    "Force shut doors",
-		    "Locked but damageable",
-		    "Locked but boot unlocked",
-		    "Locked no passengers",
-		    "Cannot enter",
+		    "VIEW_SQUAD_SPAWN_PERSISTENT_VEHICLE_NONE"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_1"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_2"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_3"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_4"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_5"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_6"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_7"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_8"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_9"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOCKNAMES_10"_T.data(),
 		};
 
 		ImGui::BeginGroup();
@@ -114,20 +114,20 @@ namespace big
 	void render_windows_tab()
 	{
 		const char* const windownames[4]{
-		    "Front left",
-		    "Front right",
-		    "Back left",
-		    "Back right",
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_0"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_1"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_2"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_DOOR_NAME_3"_T.data(),
 		};
 
 		ImGui::BeginGroup();
 		ImGui::Spacing();
 		ImGui::SetNextItemWidth(200);
-		components::button("Roll Down All", [] {
+		components::button("VIEW_VEHICLE_CONTROL_ROLL_DOWN_ALL"_T, [] {
 			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, true);
 		});
 		ImGui::SameLine();
-		components::button("Roll Up All", [] {
+		components::button("VIEW_VEHICLE_CONTROL_ROLL_UP_ALL"_T, [] {
 			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, false);
 		});
 		ImGui::EndGroup();
@@ -142,11 +142,11 @@ namespace big
 			ImGui::PushID(i);
 			ImGui::Text(windownames[i]);
 			ImGui::SameLine(300);
-			components::button("Roll Down", [i] {
+			components::button("VIEW_VEHICLE_CONTROL_ROLL_DOWN"_T, [i] {
 				g_vehicle_control_service.operate_window((eWindowId)i, true);
 			});
 			ImGui::SameLine();
-			components::button("Roll Up", [i] {
+			components::button("VIEW_VEHICLE_CONTROL_ROLL_UP"_T, [i] {
 				g_vehicle_control_service.operate_window((eWindowId)i, false);
 			});
 			ImGui::PopID();
@@ -156,10 +156,10 @@ namespace big
 	void render_lights_tab()
 	{
 		const char* const neonnames[4]{
-		    "Left",
-		    "Right",
-		    "Front",
-		    "Rear",
+		    "LEFT"_T.data(),
+		    "RIGHT"_T.data(),
+		    "FRONT"_T.data(),
+		    "BACK"_T.data(),
 		};
 
 		if (components::button("VEHICLE_CONTROLLER_TOGGLE_LIGHTS"_T))
@@ -214,12 +214,12 @@ namespace big
 		* Seats start at index -1, compensate accordingly
 		*/
 		const char* const seatnames[6]{
-		    "Driver",
-		    "Passenger",
-		    "Left rear",
-		    "Right rear",
-		    "Outside Left",
-		    "Outside Right",
+		    "DRIVER"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_PASSENGER"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LEFT_REAR"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_RIGHT_REAR"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_OUTSIDE_LEFT"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_OUTSIDE_RIGHT"_T.data(),
 		};
 
 		static int movespeed = 1;
@@ -250,15 +250,15 @@ namespace big
 	void render_misc_tab()
 	{
 		const char* const convertiblestates[4]{
-		    "Up",
-		    "Lowering",
-		    "Down",
-		    "Raising",
+		    "VIEW_TELEPORT_UP"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_LOWERING"_T.data(),
+		    "VIEW_TELEPORT_DOWN"_T.data(),
+		    "VIEW_VEHICLE_CONTROL_RAISING"_T.data(),
 		};
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "Raise" : "Lower"))
+			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T))
 			{
 				g_fiber_pool->queue_job([=] {
 					if (g.window.vehicle_control.operation_animation)
@@ -272,10 +272,10 @@ namespace big
 			}
 
 			ImGui::SameLine();
-			ImGui::Text("Convertible state: %s", convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]);
+			ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T, convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]).c_str());
 		}
 
-		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ? "Stop" : "Start",
+		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_DEBUG_ANIMATIONS_STOP"_T.data() : "SETTINGS_NOTIFY_GTA_THREADS_START"_T.data(),
 		        &g_vehicle_control_service.m_controlled_vehicle.engine))
 		{
 			g_fiber_pool->queue_job([=] {
@@ -291,9 +291,9 @@ namespace big
 		}
 
 		ImGui::SameLine();
-		ImGui::Text("Engine: %s", g_vehicle_control_service.m_controlled_vehicle.engine ? "Running" : "Off");
+		ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_ENGINE"_T, g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T : "OFF"_T).c_str());
 
-		components::button(g_vehicle_control_service.m_driver_performing_task ? "Cancel" : "Summon", [] {
+		components::button(g_vehicle_control_service.m_driver_performing_task ? "CANCEL"_T : "VIEW_VEHICLE_CONTROL_SUMMON"_T, [] {
 			if (!g_vehicle_control_service.m_driver_performing_task)
 			{
 				if (g.window.vehicle_control.operation_animation)
@@ -308,18 +308,17 @@ namespace big
 		if (g_vehicle_control_service.m_driver_performing_task)
 		{
 			ImGui::SameLine();
-			ImGui::Text("Distance: %d", g_vehicle_control_service.m_distance_to_destination);
+			ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, g_vehicle_control_service.m_distance_to_destination).c_str());
 
-
-			ImGui::Text("Task: %s", g_vehicle_control_service.m_currentask);
+			ImGui::Text(std::format("{}: {}", "OUTFIT_TASK"_T, g_vehicle_control_service.m_currentask).c_str());
 		}
 	}
 
-	bool_command use_animations("vehcontroluseanims", "Use animations", "Will use animations for several vehicle operations such as:\ntoggling lights, opening/closing doors and entering seats",
+	bool_command use_animations("vehcontroluseanims", "VIEW_VEHICLE_CONTROL_USE_ANIMATIONS", "VIEW_VEHICLE_CONTROL_USE_ANIMATIONS_DESC",
 	    g.window.vehicle_control.operation_animation);
-	bool_command render_veh_dist("vehcontrolrendervehdist", "Render distance on vehicle", "Will display the distance on the controlled vehicle",
+	bool_command render_veh_dist("vehcontrolrendervehdist", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE_DESC",
 	    g.window.vehicle_control.render_distance_on_veh);
-	float_command max_summon_dist("vehcontrolmaxsummondist", "Max summon distance", "At what range the vehicle will drive towards the summoned location as oposed to being teleported",
+	float_command max_summon_dist("vehcontrolmaxsummondist", "VIEW_VEHICLE_CONTROL_MAX_SUMMON_DISTANCE", "VIEW_VEHICLE_CONTROL_MAX_SUMMON_DISTANCE_DESC",
 	    g.window.vehicle_control.max_summon_range, 10.f, 250.f);
 
 	void render_settings_tab()
@@ -336,7 +335,7 @@ namespace big
 
 		ImGui::SetNextWindowPos(ImVec2(500.0f, 10.0f), ImGuiCond_FirstUseEver, ImVec2(0.0f, 0.0f));
 		ImGui::SetNextWindowBgAlpha(0.5f);
-		if (ImGui::Begin("Vehicle controller", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+		if (ImGui::Begin("VEHICLE_CONTROLLER"_T.data(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 		{
 			if (g_vehicle_control_service.m_controlled_vehicle_exists)
 			{
@@ -345,42 +344,42 @@ namespace big
 				ImGui::Spacing();
 				if (ImGui::BeginTabBar("##vehiclecontroltabbar"))
 				{
-					if (ImGui::BeginTabItem("Doors"))
+					if (ImGui::BeginTabItem("VIEW_VEHICLE_CONTROL_DOORS"_T.data()))
 					{
 						render_doors_tab();
 
 						ImGui::EndTabItem();
 					}
 
-					if (ImGui::BeginTabItem("Windows"))
+					if (ImGui::BeginTabItem("VIEW_VEHICLE_CONTROL_WINDOWS"_T.data()))
 					{
 						render_windows_tab();
 
 						ImGui::EndTabItem();
 					}
 
-					if (ImGui::BeginTabItem("Lights"))
+					if (ImGui::BeginTabItem("VEHICLE_CONTROLLER_NEON_LIGHTS"_T.data()))
 					{
 						render_lights_tab();
 
 						ImGui::EndTabItem();
 					}
 
-					if (ImGui::BeginTabItem("Seats"))
+					if (ImGui::BeginTabItem("FUN_VEHICLE_SEAT"_T.data()))
 					{
 						render_seats_tab();
 
 						ImGui::EndTabItem();
 					}
 
-					if (ImGui::BeginTabItem("Misc"))
+					if (ImGui::BeginTabItem("SETTINGS_MISC"_T.data()))
 					{
 						render_misc_tab();
 
 						ImGui::EndTabItem();
 					}
 
-					if (ImGui::BeginTabItem("Settings"))
+					if (ImGui::BeginTabItem("GUI_TAB_SETTINGS"_T.data()))
 					{
 						render_settings_tab();
 
@@ -393,7 +392,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("No vehicle available");
+				ImGui::Text("PLAYER_INFO_NO_VEHICLE"_T.data());
 			}
 		}
 		ImGui::End();
