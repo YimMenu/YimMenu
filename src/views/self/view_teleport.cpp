@@ -148,7 +148,9 @@ namespace big
 
 		if (components::button("TP_TO_IPL"_T.data()))
 		{
+			g_fiber_pool->queue_job([&] {
 			teleport::to_coords(selected_ipl.location);
+			});
 		}
 
 		ImGui::Spacing();
