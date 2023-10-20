@@ -93,72 +93,82 @@ namespace big
 
 		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
-		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[g.self.ipls.select].friendly_name))
+		static int current_select = g.self.ipls.select;
+		static int last_select    = current_select;
+
+		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[current_select].friendly_name))
 		{
 			for (int i = 0; i < IM_ARRAYSIZE(ipls); i++)
 			{
-				if (ImGui::Selectable(ipls[i].friendly_name, i == g.self.ipls.select))
-					g.self.ipls.select = i;
-
-				if (i == g.self.ipls.select)
+				bool is_selected = (i == current_select);
+				if (ImGui::Selectable(ipls[i].friendly_name, is_selected))
+				{
+					current_select = i;
+				}
+				if (is_selected)
+				{
 					ImGui::SetItemDefaultFocus();
+				}
 			}
-
 			ImGui::EndCombo();
 		}
-
-		const auto& selected_ipl = ipls[g.self.ipls.select];
-		if (components::button("LOAD_IPL"_T.data()))
-		{	
-			g_fiber_pool->queue_job([&] {
-				//remove after loading ipls to avoid conflicts
-				for (auto& ipl_name_remove_when_load : selected_ipl.ipl_names_remove_when_load)
-					{
-						STREAMING::REMOVE_IPL(ipl_name_remove_when_load);
-						LOG(INFO) << "ipls removed to avoid conflicts " << ipl_name_remove_when_load;
-					}
-	
-				//unload all previous ipls
-				for (auto& ipl : ipls)
-					for (auto& ipl_name : ipl.ipl_names)
-					{
-						if (STREAMING::IS_IPL_ACTIVE(ipl_name))
-						{
-								LOG(INFO) << "unloaded all existing ipl " << ipl_name;
-								STREAMING::REMOVE_IPL(ipl_name);
-								for (auto& ipl_name_remove : ipl.ipl_names_remove)
-								{
-									STREAMING::REQUEST_IPL(ipl_name_remove);
-									LOG(INFO) << "loaded all previously deleted ipls " << ipl_name_remove;
-								}
-						}
-						
-					}
-	
-				//load the new ipl
-				for (auto& ipl_name : selected_ipl.ipl_names)
+		components::button("LOAD_IPL"_T.data(), [] 
+		{
+			// If we've changed selections, first unload previously loaded IPL, then load previously deleted IPLs
+			if (current_select != last_select)
+			{
+				// Unload previously loaded IPL of the last selection
+				for (auto& ipl_name_unload : ipls[last_select].ipl_names)
 				{
-						STREAMING::REQUEST_IPL(ipl_name);
-						LOG(INFO) << "loaded all new ipls " << ipl_name;
+					if (STREAMING::IS_IPL_ACTIVE(ipl_name_unload))
+					{
+						STREAMING::REMOVE_IPL(ipl_name_unload);
+						LOG(INFO) << "Unloaded previous IPL " << ipl_name_unload;
+					}
 				}
-			);
-		}
+
+				// Delay to wait for the unloading to complete
+				script::get_current()->yield(100ms);
+
+				// Load previously deleted IPLs of the last selection
+				for (auto& ipl_name_load : ipls[last_select].ipl_names_remove)
+				{
+					STREAMING::REQUEST_IPL(ipl_name_load);
+					LOG(INFO) << "Loaded previously deleted IPLs " << ipl_name_load;
+				}
+
+				// Small delay to allow for IPLs to load
+				script::get_current()->yield(100ms);
+
+				// Load new IPLs of the current selection
+				for (auto& ipl_name : ipls[current_select].ipl_names)
+				{
+					STREAMING::REQUEST_IPL(ipl_name);
+					LOG(INFO) << "New IPL loaded " << ipl_name;
+				}
+
+				// Remove old IPLs of the current selection to avoid conflicts
+				for (auto& ipl_name_remove : ipls[current_select].ipl_names_remove_when_load)
+				{
+					STREAMING::REMOVE_IPL(ipl_name_remove);
+					LOG(INFO) << "Removed IPL to avoid conflict " << ipl_name_remove;
+				}
+
+				last_select = current_select;
+			}
+		});
 
 		ImGui::SameLine();
 
-		if (components::button("TP_TO_IPL"_T.data()))
+		components::button("TP_TO_IPL"_T.data(), [] 
 		{
-			g_fiber_pool->queue_job([&] {
-			teleport::to_coords(selected_ipl.location);
-			});
-		}
+			teleport::to_coords(ipls[current_select].location);
+		});
 
 		ImGui::Spacing();
 		components::small_text("IPL_INFOS"_T.data());
 
-		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(selected_ipl.ipl_names.size())).data());
-		ImGui::Text(std::vformat("IPL_POSITION"_T,
-		    std::make_format_args(selected_ipl.location.x, selected_ipl.location.y, selected_ipl.location.z))
-		                .data());
+		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(ipls[current_select].ipl_names.size())).data());
+		ImGui::Text(std::vformat("IPL_POSITION"_T, std::make_format_args(ipls[current_select].location.x, ipls[current_select].location.y, ipls[current_select].location.z)).data());
 	}
 }
