@@ -61,7 +61,6 @@ namespace big
 		                {tabs::TELEPORT, {"Teleport", view::teleport, {{tabs::CUSTOM_TELEPORT, {"Custom Teleport", view::custom_teleport}}}}},
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
-						{tabs::CASINO, {"Casino", view::casino}},
 		            },
 		        },
 		    },
@@ -81,6 +80,9 @@ namespace big
 		        {
 		            "World",
 		            view::world,
+		            {
+		                {tabs::CASINO, {"Casino", view::casino}},
+		            },
 		        },
 		    },
 		    {
