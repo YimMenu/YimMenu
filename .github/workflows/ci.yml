@@ -30,7 +30,7 @@ jobs:
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
 
-      - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+      - name: Rename DLL to YimMenu-dev-${{github.sha}}.dll
         run: |
           del YimMenu-dev-*.dll
           ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
