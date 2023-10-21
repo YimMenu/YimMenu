@@ -62,7 +62,7 @@ namespace big
 		if (!player->is_valid())
 			return;
 		if (player->is_friend() && g.session.trust_friends)
-			    return;
+			return;
 
 		if (announce_in_chat)
 		{

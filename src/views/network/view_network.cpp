@@ -130,7 +130,6 @@ namespace big
 			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("LOBBY_LOCK_DESC"_T.data());
-			ImGui::Checkbox("Global friends bypass", &g.session.trust_friends);
 
 
 			ImGui::EndDisabled();
