@@ -13,9 +13,9 @@ namespace big
 		CUSTOM_TELEPORT,
 		OUTFIT_EDITOR,
 		ANIMATIONS,
+		SCENARIOS,
 		CASINO,
 		PTFX_EFFECTS,
-		SCENARIOS,
 
 		VEHICLE,
 		LSC,
@@ -23,6 +23,7 @@ namespace big
 		FUN_VEHICLE,
 
 		WORLD,
+		SPAWNED_VEHICLES,
 		SPAWN_OBJECTS,
 
 		NETWORK,
@@ -66,9 +67,8 @@ namespace big
 		                {tabs::TELEPORT, {"Teleport", view::teleport, {{tabs::CUSTOM_TELEPORT, {"Custom Teleport", view::custom_teleport}}}}},
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
-		                {tabs::CASINO, {"Casino", view::casino}},
-		                {tabs::PTFX_EFFECTS, {"Ptfx Effects", view::ptfx_effects}},
 		                {tabs::SCENARIOS, {"Scenarios", view::scenarios}},
+						{tabs::PTFX_EFFECTS, {"Ptfx Effects", view::ptfx_effects}},
 		            },
 		        },
 		    },
@@ -90,7 +90,9 @@ namespace big
 		            "World",
 		            view::world,
 		            {
-		                {tabs::SPAWN_OBJECTS, {"Spawn Objects", view::spawn_objects}},
+						{tabs::CASINO, {"Casino", view::casino}},
+		                {tabs::SPAWNED_VEHICLES, {"Spawned Vehicles", view::spawned_vehicles}},
+						{tabs::SPAWN_OBJECTS, {"Spawn Objects", view::spawn_objects}},
 		            },
 		        },
 		    },

@@ -3,6 +3,7 @@
 #include "script.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "thread_pool.hpp"
+#include "util/delete_entity.hpp"
 #include "util/entity.hpp"
 #include "util/strings.hpp"
 #include "util/world_model.hpp"
@@ -337,7 +338,7 @@ namespace big
 {
 	void view::spawn_objects()
 	{
-		static std::vector<std::string> objectList;
+		static std::vector<std::string> objectList, searchedObjectList;
 
 		static std::string selectedObjectNameOrHash, searchObjectText, customObjectName, searchSavedObjectText, savedObjectToDelete;
 		static std::map<std::string, std::string> savedObjectList;
@@ -352,7 +353,8 @@ namespace big
 		}
 
 		ImGui::SetNextItemWidth(200);
-		components::input_text_with_hint("##searchObj", "search", searchObjectText);
+		if (components::input_text_with_hint("##searchObj", "search", searchObjectText))
+			searchedObjectList.clear();
 		ImGui::SameLine();
 		components::button("load objects list", [&] {
 			spawnObjs::loadObjList(objectList);
@@ -360,9 +362,14 @@ namespace big
 
 		if (ImGui::BeginListBox("##objectList", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
-			std::vector<std::string> objs = searchObjectText.length() > 0 ? filterStrings(objectList, searchObjectText) : objectList;
+			std::vector<std::string> temp_objs;
 
-			for (auto element : objs)
+			if (searchedObjectList.size())
+				temp_objs = searchedObjectList;
+			else if (searchObjectText.length() > 0)
+				temp_objs = searchedObjectList = filterStrings(objectList, searchObjectText);
+
+			for (auto element : (temp_objs.size() ? temp_objs : objectList))
 				if (ImGui::Selectable(element.c_str(), selectedObjectNameOrHash == element))
 					selectedObjectNameOrHash = element;
 

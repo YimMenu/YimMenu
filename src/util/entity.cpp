@@ -1,5 +1,4 @@
 #include "entity.hpp"
-#include "util/mobile.hpp"
 
 namespace big::entity
 {
@@ -10,25 +9,6 @@ namespace big::entity
 		PED::CLEAR_PED_ENV_DIRT(player_ped);
 		PED::CLEAR_PED_BLOOD_DAMAGE(player_ped);
 		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
-	}
-
-	void delete_entity(Entity& ent)
-	{
-		if (ENTITY::DOES_ENTITY_EXIST(ent) && take_control_of(ent))
-		{
-			if(ENTITY::IS_ENTITY_A_VEHICLE(ent) && *g_pointers->m_gta.m_is_session_started) {
-				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
-				if(personal_vehicle == ent) return;
-			}
-
-			if (ENTITY::IS_ENTITY_ATTACHED(ent))
-				ENTITY::DETACH_ENTITY(ent, 0, 0);
-
-			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
-
-			if (ENTITY::DOES_ENTITY_EXIST(ent))
-				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
-		}
 	}
 
 	bool raycast(Entity* ent)

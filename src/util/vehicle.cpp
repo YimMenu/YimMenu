@@ -1,7 +1,10 @@
 #include "vehicle.hpp"
 
 #include "blip.hpp"
+#include "core/data/spawned_vehs.hpp"
 #include "entity.hpp"
+#include "gta/vehicle_values.hpp"
+#include "ped.hpp"
 #include "services/notifications/notification_service.hpp"
 
 namespace big::vehicle
@@ -57,6 +60,9 @@ namespace big::vehicle
 		if (!entity::take_control_of(veh))
 			return g_notification_service->push_warning("Vehicle", "Failed to take control of remote vehicle.");
 
+		if (auto driver_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, -1, false); driver_ped != 0)
+			clear_all_peds(veh);
+
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
 		ENTITY::SET_ENTITY_HEADING(veh, ENTITY::GET_ENTITY_HEADING(self::ped));
 
@@ -64,14 +70,6 @@ namespace big::vehicle
 		{
 			for (size_t i = 0; i < 100 && math::distance_between_vectors(location, ENTITY::GET_ENTITY_COORDS(veh, true)) > 10; i++)
 				script::get_current()->yield();
-
-			auto driver_ped = VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, -1, false);
-
-			if (driver_ped != 0)
-				if (PED::GET_PED_TYPE(driver_ped) == ePedType::PED_TYPE_NETWORK_PLAYER)
-					TASK::CLEAR_PED_TASKS_IMMEDIATELY(driver_ped);
-				else
-					entity::delete_entity(driver_ped);
 
 			PED::SET_PED_INTO_VEHICLE(self::ped, veh, seatIdx);
 		}
@@ -116,6 +114,8 @@ namespace big::vehicle
 		{
 			set_mp_bitset(veh);
 		}
+
+		g_spawned_vehicles.push_back(veh);
 
 		return veh;
 	}
@@ -478,6 +478,26 @@ namespace big::vehicle
 				else
 					VEHICLE::TOGGLE_VEHICLE_MOD(veh, mod_slot, true);
 			}
+		}
+	}
+
+	void clear_all_peds(Vehicle vehicle)
+	{
+		if (auto passengers = VEHICLE::GET_VEHICLE_NUMBER_OF_PASSENGERS(vehicle, 1, 0))
+		{
+			eject_player(vehicle, -1); // if driver is player eject it
+
+			if (passengers > 1) // if passengers > 1, check if other passengers are players and eject them too
+				for (int i = 0; i < VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(vehicle); ++i) // get max passengers capacity except driver
+					eject_player(vehicle, i);
+
+			// peds
+			for (int i = -1; i < VEHICLE::GET_VEHICLE_MAX_NUMBER_OF_PASSENGERS(vehicle); ++i)
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(vehicle, i, 0));
+
+			// wait for passengers to leave
+			for (int i = 0; i < 100 && VEHICLE::GET_VEHICLE_NUMBER_OF_PASSENGERS(vehicle, 1, 0) != 0; ++i)
+				script::get_current()->yield(50ms);
 		}
 	}
 

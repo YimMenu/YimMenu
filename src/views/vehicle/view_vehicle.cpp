@@ -1,4 +1,5 @@
 #include "core/data/vehicle_ammo_special.hpp"
+#include "util/delete_entity.hpp"
 #include "util/mobile.hpp"
 #include "views/view.hpp"
 

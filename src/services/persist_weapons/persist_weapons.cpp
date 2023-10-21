@@ -1,6 +1,5 @@
 #include "persist_weapons.hpp"
 
-#include "core/data/persist_weapons.hpp"
 #include "gta/weapons.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -12,7 +11,7 @@ namespace big
 
 	void persist_weapons::save_weapons(std::string loadout_name)
 	{
-		Player player  = self::id; 
+		Player player  = self::id;
 		Ped player_ped = self::ped;
 		weaponloadout_json weapon_json{};
 		for (const auto& [name, weapon] : g_gta_data_service->weapons())
@@ -86,14 +85,11 @@ namespace big
 			catch (std::exception& e)
 			{
 				g_notification_service->push_warning("Persist Weapons", "Failed to load JSON file from disk.");
-				LOG(WARNING) << "Persist Weapons failed to load JSON file: " << g_persist_weapons.weapon_loadout_file << " because " << e.what();
 			}
 		}
 		else
-		{
-			g_persist_weapons.weapon_loadout_file.clear();
-			LOG(WARNING) << "persist_weapons cannot open file" << g_persist_weapons.weapon_loadout_file;
-		}
+			LOG(WARNING) << "persist_weapons cannot open file" << loadout_name;
+
 		return {};
 	}
 

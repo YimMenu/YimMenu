@@ -5,9 +5,11 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "services/vehicle/persist_car_service.hpp"
+#include "util/delete_entity.hpp"
 #include "util/entity.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
+#include "util/vehicle.hpp"
 
 #include <imgui.h>
 
@@ -63,16 +65,20 @@ namespace big
 		s_context_menu vehicle_menu{ContextEntityType::VEHICLE,
 		    0,
 		    {},
-		    {{"KILL ENGINE",
+		    {{"EJECT",
 		         [this] {
-			         if (entity::take_control_of(m_handle))
-			         {
-				         VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 0.f);
-				         VEHICLE::SET_VEHICLE_ENGINE_ON(m_handle, false, true, false);
-			         }
-			         else
-				         g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+			         vehicle::clear_all_peds(m_handle);
 		         }},
+		        {"KILL ENGINE",
+		            [this] {
+			            if (entity::take_control_of(m_handle))
+			            {
+				            VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 0.f);
+				            VEHICLE::SET_VEHICLE_ENGINE_ON(m_handle, false, true, false);
+			            }
+			            else
+				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+		            }},
 		        {"HALT",
 		            [this] {
 			            if (entity::take_control_of(m_handle))

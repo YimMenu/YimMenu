@@ -11,7 +11,6 @@ namespace big::entity
 {
 	void clean_ped(Ped ped);
 	bool take_control_of(Entity ent, int timeout = 300);
-	void delete_entity(Entity& ent);
 	bool raycast(Entity* ent);
 	bool raycast(Vector3* endcoor);
 	bool network_has_control_of_entity(rage::netObject* net_object);
