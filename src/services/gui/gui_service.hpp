@@ -14,6 +14,7 @@ namespace big
 		OUTFIT_EDITOR,
 		ANIMATIONS,
 		SCENARIOS,
+		CASINO,
 
 		VEHICLE,
 		LSC,
@@ -86,6 +87,7 @@ namespace big
 		            "World",
 		            view::world,
 		            {
+						{tabs::CASINO, {"Casino", view::casino}},
 		                {tabs::SPAWNED_VEHICLES, {"Spawned Vehicles", view::spawned_vehicles}},
 		            },
 		        },

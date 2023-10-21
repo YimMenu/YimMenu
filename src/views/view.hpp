@@ -39,6 +39,7 @@ namespace big
 		static void session_browser();
 		static void recent_modders();
 		static void chat();
+		static void casino();
 		static void vehicle();
 		static void lsc();
 		static void spawn_vehicle();
