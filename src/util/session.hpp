@@ -163,7 +163,7 @@ namespace big::session
 	{
 		if (g.debug.fuzzer.enabled)
 			return;
-		if (player->is_friend() && g.session.bypass_friends)
+		if (player->is_friend() && g.session.trust_friends)
 			return;
 
 		auto plyr = g_player_database_service->get_or_create_player(player);

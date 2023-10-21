@@ -19,7 +19,7 @@ namespace big
 
 	void reaction::process_common(player_ptr player)
 	{
-		if (player->is_friend() && g.session.bypass_friends)
+		if (player->is_friend() && g.session.trust_friends)
 			return;
 
 		if (log)
@@ -61,7 +61,7 @@ namespace big
 	{
 		if (!player->is_valid())
 			return;
-		if (player->is_friend() && g.session.bypass_friends)
+		if (player->is_friend() && g.session.trust_friends)
 			    return;
 
 		if (announce_in_chat)

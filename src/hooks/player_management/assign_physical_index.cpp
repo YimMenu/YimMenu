@@ -99,7 +99,7 @@ namespace big
 						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
 						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
 						{
-							if (!(plyr->is_friend() && g.session.bypass_friends))
+							if (!(plyr->is_friend() && g.session.trust_friends))
 							{
 								plyr->is_modder         = entry->is_modder;
 								plyr->block_join        = entry->block_join;

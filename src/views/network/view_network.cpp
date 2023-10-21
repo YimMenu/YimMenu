@@ -114,6 +114,10 @@ namespace big
 				ImGui::InputInt("##playercount", &g.session.player_magnet_count);
 			}
 
+			ImGui::Checkbox("Trust friends", &g.session.trust_friends);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Friends won't be flagged as modders. Allow friends to bypass kick and timeout reactions");
+
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
 
@@ -126,7 +130,7 @@ namespace big
 			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("LOBBY_LOCK_DESC"_T.data());
-			ImGui::Checkbox("Global friends bypass", &g.session.bypass_friends);
+			ImGui::Checkbox("Global friends bypass", &g.session.trust_friends);
 
 
 			ImGui::EndDisabled();
