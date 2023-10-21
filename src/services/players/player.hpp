@@ -80,6 +80,7 @@ namespace big
 		bool m_block_permanent_vehicles = false;
 
 		bool is_modder        = false;
+		bool is_trusted       = false;
 		bool block_join       = false;
 		int block_join_reason = 0;
 		bool is_spammer       = false;

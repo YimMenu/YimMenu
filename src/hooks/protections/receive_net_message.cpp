@@ -116,7 +116,7 @@ namespace big
 					if (g.session.log_chat_messages)
 						spam::log_chat(message, player, true);
 					player->is_spammer = true;
-					if (g.session.kick_chat_spammers)
+					if (g.session.kick_chat_spammers && (!player->is_trusted && !(player->is_friend() && g.session.trust_friends)))
 					{
 						if (g_player_service->get_self()->is_host())
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),

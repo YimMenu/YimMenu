@@ -99,6 +99,7 @@ namespace big
 						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
 						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
 						{
+							plyr->is_trusted = entry->is_trusted;
 							if (!(plyr->is_friend() && g.session.trust_friends))
 							{
 								plyr->is_modder         = entry->is_modder;
@@ -130,10 +131,10 @@ namespace big
 
 					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
 					{
-						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
+						if ((plyr->is_friend() && g.session.allow_friends_into_locked_session) || plyr->is_trusted)
 						{
 							g_notification_service->push_success("Lock Session",
-							    std::format("A friend with the name of {} has been allowed to join the locked session",
+							    std::format("A friend or trusted player with the name of {} has been allowed to join the locked session",
 							        plyr->get_net_data()->m_name));
 						}
 						else
