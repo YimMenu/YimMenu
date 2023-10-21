@@ -46,6 +46,6 @@ namespace big
 			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
-		process_common(attacker);
+		process_common(attacker, true);
 	}
 }
