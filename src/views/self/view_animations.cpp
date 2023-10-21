@@ -179,7 +179,7 @@ namespace big
 			g_ped_animation_service.fetch_saved_animations();
 		});
 
-		components::small_text("VIEW_SELF_ANIMATIONS_HINT"_T);
+		components::small_text("VIEW_SELF_ANIMATIONS_DOUBLE_CLICK_TO_PLAY"_T);
 		components::small_text("VIEW_SELF_ANIMATIONS_DOUBLE_SHIFT_CLICK_TO_DELETE"_T);
 
 		ImGui::SameLine();

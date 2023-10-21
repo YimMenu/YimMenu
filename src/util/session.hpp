@@ -1,6 +1,5 @@
 #pragma once
 #include "core/data/infractions.hpp"
-#include "core/data/session_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
