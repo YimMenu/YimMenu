@@ -57,7 +57,7 @@ namespace big
 	}
 
 
-	void reaction::process(player_ptr player)
+	void reaction::process(player_ptr player, bool is_crash)
 	{
 		if (!player->is_valid())
 			return;
@@ -81,13 +81,14 @@ namespace big
 			});
 		}
 
-		if (notify)
+		if (notify && !is_crash)
 		{
 			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
 			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
-		process_common(player, true);
+		if (!is_crash)
+		    process_common(player, true);
 	}
 }

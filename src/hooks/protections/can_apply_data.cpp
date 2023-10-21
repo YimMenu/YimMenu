@@ -1428,7 +1428,7 @@ namespace big
 						if (target->id() != sender_plyr->spectating_player)
 						{
 							if (target->id() == self::id)
-								g.reactions.spectate.process(sender_plyr);
+								g.reactions.spectate.process(sender_plyr, false);
 							else
 								g.reactions.spectate_others.process(sender_plyr, target);
 
