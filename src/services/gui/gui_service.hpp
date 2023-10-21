@@ -15,6 +15,7 @@ namespace big
 		ANIMATIONS,
 		SCENARIOS,
 		CASINO,
+		PTFX_EFFECTS,
 
 		VEHICLE,
 		LSC,
@@ -67,6 +68,7 @@ namespace big
 		                {tabs::OUTFIT_EDITOR, {"Outfit Editor", view::outfit_editor}},
 		                {tabs::ANIMATIONS, {"Animations", view::animations}},
 		                {tabs::SCENARIOS, {"Scenarios", view::scenarios}},
+						{tabs::PTFX_EFFECTS, {"Ptfx Effects", view::ptfx_effects}},
 		            },
 		        },
 		    },
