@@ -6,6 +6,8 @@
 #include "backend/player_command.hpp"
 #include "fiber_pool.hpp"
 
+#include <imgui.h>
+
 namespace big
 {
 	struct navigation_struct;
@@ -17,7 +19,6 @@ namespace big
 
 	public:
 		static bool nav_button(const std::string_view);
-		static void icon(const std::string_view);
 		static void small_text(const std::string_view);
 		static void sub_title(const std::string_view);
 		static void title(const std::string_view);
@@ -137,7 +138,7 @@ namespace big
 		{
 			ImGui::Text(std::format("{}: ", text).data());
 			ImGui::SameLine(180);
-			ImGui::TextColored(value ? green : red, value ? "ENABLED"_T.data() : "CORE_GUI_COMPONENTS_DISABLED"_T.data());
+			ImGui::TextColored(value ? green : red, value ? "Enabled" : "Disabled");
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>

@@ -1,7 +1,5 @@
 #include "module.hpp"
 
-#include "../common.hpp"
-
 namespace memory
 {
 	module::module(const std::string_view name) :range(nullptr, 0), m_name(name), m_loaded(false)

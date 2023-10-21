@@ -1,6 +1,5 @@
 #pragma once
 #include "file_manager/file.hpp"
-#include "services/players/player_service.hpp"
 
 namespace
 {
@@ -70,19 +69,10 @@ namespace big::spam
 		return false;
 	}
 
-	inline void log_chat(char* msg, player_ptr player, bool is_spam)
+	inline void log_chat(char* msg, player_ptr player)
 	{
-		std::ofstream log(g_file_manager.get_project_file(is_spam ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
-
-		auto& data = *player->get_net_data();
-		auto ip    = player->get_ip_address();
-
-		if (ip)
-			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."
-			    << (int)ip.value().m_field2 << "." << (int)ip.value().m_field3 << "." << (int)ip.value().m_field4 << ">: " << msg << std::endl;
-		else
-			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <UNKNOWN>: " << msg << std::endl;
-
+		std::ofstream log(g_file_manager.get_project_file("./chat.log").get_path(), std::ios::app);
+		log << player->get_name() << " : " << msg << std::endl;
 		log.close();
 	}
 }

@@ -59,17 +59,8 @@ namespace big
 		{
 		case rage::eEventNetworkType::CEventNetworkRemovedFromSessionDueToComplaints:
 		{
-			if (g.protections.kick_rejoin && !NETWORK::NETWORK_IS_ACTIVITY_SESSION() && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0 && !STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
-			{
-				g_fiber_pool->queue_job([] {
-					session::join_session(gta_util::get_network()->m_last_joined_session.m_session_info);
-				});
-				g_notification_service->push_warning("KICKED"_T.data(), "You have been desync kicked. Rejoining previous session...");
-			}
-			else
-			{
-				g_notification_service->push_warning("KICKED"_T.data(), "USER_DESYNC_KICKED"_T.data());
-			}
+			g_notification_service->push_warning("Kicked", "You have been desync kicked.");
+	
 			break;
 		}
 		case rage::eEventNetworkType::CEventNetworkEntityDamage:

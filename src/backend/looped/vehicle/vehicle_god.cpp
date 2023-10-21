@@ -1,11 +1,12 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
+#include "core/settings/vehicle.hpp"
 #include "natives.hpp"
 #include "util/mobile.hpp"
 
 namespace big
 {
-	class vehicle_godmode_internal : looped_command
+	class vehicle_godmode : looped_command
 	{
 		using looped_command::looped_command;
 
@@ -13,9 +14,8 @@ namespace big
 
 		struct orig_veh_data
 		{
-			uint8_t m_deform_god        = 0;
-			uint32_t m_damage_bits      = 0;
-			uint32_t m_last_damage_bits = 0;
+			uint8_t m_deform_god   = 0;
+			uint32_t m_damage_bits = 0;
 		};
 
 		std::unordered_map<CVehicle*, orig_veh_data> m_orig_veh_datas;
@@ -70,25 +70,9 @@ namespace big
 
 			save_original_veh_data(vehicle);
 
-			if (g.vehicle.god_mode || g.vehicle.proof_collision)
-			{
-				vehicle->m_deform_god &= ~(deform_god_bit);
-			}
-			else
-			{
-				vehicle->m_deform_god |= deform_god_bit;
-			}
+			vehicle->m_deform_god &= ~(deform_god_bit);
 
-			uint32_t bits                    = g.vehicle.proof_mask;
-			uint32_t changed_bits            = bits ^ m_orig_veh_datas[vehicle].m_last_damage_bits;
-			uint32_t changed_or_enabled_bits = bits | changed_bits;
-
-			if (changed_or_enabled_bits)
-			{
-				uint32_t unchanged_bits                      = vehicle->m_damage_bits & ~changed_or_enabled_bits;
-				vehicle->m_damage_bits                       = unchanged_bits | bits;
-				m_orig_veh_datas[vehicle].m_last_damage_bits = bits;
-			}
+			vehicle->m_damage_bits = static_cast<int>(eEntityProofs::GOD);
 		}
 
 		CVehicle* get_personal_vehicle()
@@ -108,7 +92,7 @@ namespace big
 			{
 				const auto personal_vehicle = get_personal_vehicle();
 				apply_godmode_to_vehicle(personal_vehicle, true);
-				apply_godmode_to_vehicle(g_local_player->m_vehicle, personal_vehicle == g_local_player->m_vehicle);	
+				apply_godmode_to_vehicle(g_local_player->m_vehicle, personal_vehicle == g_local_player->m_vehicle);
 			}
 		}
 
@@ -128,8 +112,6 @@ namespace big
 		}
 	};
 
-	static bool true_ref = true;
-	vehicle_godmode_internal g_vehicle_godmode_internal("$$vehgodmode", "", "", true_ref);
-	bool_command g_vehicle_godmode("vehgodmode", "VEHICLE_GOD", "VEHICLE_GOD_DESC",
-	    g.vehicle.god_mode);
+	vehicle_godmode
+	    g_vehicle_godmode("vehgodmode", "God Mode", "Prevents your vehicle from taking any form of damage", g_vehicle.god_mode);
 }

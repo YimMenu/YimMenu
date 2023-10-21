@@ -1,161 +1,112 @@
-#include "pointers.hpp"
+
+#include "core/data/world.hpp"
+#include "util/delete_entity.hpp"
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"
-#include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
 	void view::world()
 	{
-		ImGui::SeparatorText("GUI_TAB_TIME_N_WEATHER"_T.data());
+		ImGui::SeparatorText("Time And Weather");
 		{
-			view::time_and_weather();
+			components::command_checkbox<"timeoverride">();
+
+			if (g_world.custom_time.override_time)
+			{
+				ImGui::SliderInt("Hour", &g_world.custom_time.hour, 0, 23);
+				ImGui::SliderInt("Minute", &g_world.custom_time.minute, 0, 59);
+				ImGui::SliderInt("Second", &g_world.custom_time.second, 0, 59);
+			}
 		}
 
-		ImGui::SeparatorText("PED"_T.data());
-
-		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {
-			for (auto peds : entity::get_entities(false, true))
-			{
-				if (!PED::IS_PED_A_PLAYER(peds))
-					ped::kill_ped(peds);
-			}
-		});
-		ImGui::SameLine();
-
-		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("VIEW_WORLD_KILL_ENEMIES"_T, [] {
-			for (auto ped : entity::get_entities(false, true))
-			{
-				if (!PED::IS_PED_A_PLAYER(ped))
-				{
-					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
-					if (relation == 4 || relation == 5)
-						ped::kill_ped(ped);
-				}
-			}
-		});
-
-		// Nearby Ped Loops / Toggles
-		components::command_checkbox<"pedsignore">();
-		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrain">();
-		ImGui::SameLine(265.f);
-		components::command_checkbox<"riotmode">();
-		components::command_checkbox<"highalert">();
-		ImGui::SameLine(140.f);
-		components::command_checkbox<"pedrush">();
-		ImGui::SameLine();
-		components::command_checkbox<"autodisarm">();
-		components::options_modal("VIEW_WORLD_AUTO_DISARM"_T.data(), [] {
-			ImGui::Checkbox("VIEW_WORLD_NEUTRALIZE"_T.data(), &g.world.nearby.auto_disarm.neutralize);
-		});
-
-		ImGui::SeparatorText("VEHICLES"_T.data());
-
-		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
-			for (auto vehs : entity::get_entities(true, false))
-			{
-				if (entity::take_control_of(vehs))
-				{
-					vehicle::max_vehicle(vehs);
-					script::get_current()->yield();
-				}
-			}
-		});
-		ImGui::SameLine();
-
-		components::button<ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
-			for (auto vehs : entity::get_entities(true, false))
-			{
-				if (entity::take_control_of(vehs))
-				{
-					vehicle::downgrade(vehs);
-					script::get_current()->yield();
-				}
-			}
-		});
-
-		components::command_checkbox<"vehiclerain">();
-
-		ImGui::SeparatorText("VIEW_BLACKHOLE_ENTITIES"_T.data());
-
-		static bool included_entity_types[3];
-		static bool own_vehicle, deleting, force;
-		static int quantity, remaining;
-
-		ImGui::Text("VIEW_WORLD_INCLUDE"_T.data());
-		ImGui::Checkbox("VEHICLES"_T.data(), &included_entity_types[0]);
-		ImGui::SameLine();
-		ImGui::Checkbox("PED"_T.data(), &included_entity_types[1]);
-		ImGui::SameLine();
-		ImGui::Checkbox("VIEW_WORLD_PROPS"_T.data(), &included_entity_types[2]);
-
-		if (included_entity_types[0])
+		ImGui::SeparatorText("Peds");
 		{
-			ImGui::Checkbox("VIEW_WORLD_SELF_VEHICLE"_T.data(), &own_vehicle);
-			ImGui::SameLine();
-		}
-
-		ImGui::Checkbox("FORCE"_T.data(), &force);
-
-		if (deleting)
-		{
-			float progress = 1 - static_cast<float>(remaining) / quantity;
-			ImGui::ProgressBar(progress, ImVec2(200, 25));
-		}
-		else
-		{
-			components::button("VIEW_WORLD_DELETE_ALL"_T, [&] {
-				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
-
-				quantity  = list.size();
-				remaining = quantity;
-				g_notification_service->push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
-				deleting   = true;
-				int failed = 0;
-
-				for (auto ent : list)
+			components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("Kill Enemies", [] {
+				for (auto ped : entity::get_entities(false, true))
 				{
-					if (PED::IS_PED_A_PLAYER(ent))
-						continue;
-
-					if (ENTITY::DOES_ENTITY_EXIST(ent))
+					if (!PED::IS_PED_A_PLAYER(ped))
 					{
-						if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
-							if (ent == self::veh && own_vehicle)
-								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+						auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
+						if (relation == 4 || relation == 5)
+							ped::kill_ped(ped);
+					}
+				}
+			});
 
-						if (force)
+			components::command_checkbox<"pedsignore">();
+			ImGui::SameLine(140.f);
+			components::command_checkbox<"autodisarm">();
+		}
+
+		ImGui::SeparatorText("Entities");
+		{
+			static bool included_entity_types[2];
+			static bool deleting, force;
+			static int quantity, remaining;
+
+			ImGui::Text("Include:");
+			ImGui::Checkbox("Peds", &included_entity_types[0]);
+			ImGui::SameLine();
+			ImGui::Checkbox("Props", &included_entity_types[1]);
+			ImGui::Spacing();
+			ImGui::Checkbox("Force", &force);
+			ImGui::Spacing();
+			
+			if (deleting)
+			{
+				float progress = 1 - static_cast<float>(remaining) / quantity;
+				ImGui::ProgressBar(progress, ImVec2(200, 25));
+			}
+			else
+			{
+				components::button("Delete all", [&] {
+					auto list = entity::get_entities(false, included_entity_types[0], included_entity_types[1]);
+					remaining = quantity = list.size();
+
+					g_notification_service->push("Entity Deletion", std::format("Deleting {} entities", quantity));
+
+					deleting   = true;
+					int failed = 0;
+
+					for (auto ent : list)
+					{
+						if (PED::IS_PED_A_PLAYER(ent))
+							continue;
+
+						if (ENTITY::DOES_ENTITY_EXIST(ent))
 						{
-							auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent);
-
-							switch (ptr->m_entity_type)
+							if (force)
 							{
-							case 4: g_pointers->m_gta.m_delete_ped(reinterpret_cast<CPed*>(ptr)); break;
-							case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
-							case 5: g_pointers->m_gta.m_delete_object(reinterpret_cast<CObject*>(ptr), false); break;
+								auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent);
+
+								switch (ptr->m_entity_type)
+								{
+								case 4: g_pointers->m_gta.m_delete_ped(reinterpret_cast<CPed*>(ptr)); break;
+								// case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
+								case 5:
+									g_pointers->m_gta.m_delete_object(reinterpret_cast<CObject*>(ptr), false);
+									break;
+								}
 							}
-						}
-						else
-						{
-							if (entity::take_control_of(ent, 25))
+							else if (entity::take_control_of(ent, 25))
 								entity::delete_entity(ent);
 						}
+
+						if (ENTITY::DOES_ENTITY_EXIST(ent))
+							failed++;
+						else
+							remaining--;
 					}
 
-					if (ENTITY::DOES_ENTITY_EXIST(ent))
-						failed++;
-					else
-						remaining--;
-				}
+					if (failed > 0)
+						g_notification_service->push_warning("Entity Deletion", std::format("Failed deleting {} entities", failed));
 
-				if (failed > 0)
-					g_notification_service->push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
-
-				deleting = false;
-			});
+					deleting = false;
+				});
+			}
 		}
 	}
 }

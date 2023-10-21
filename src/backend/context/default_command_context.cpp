@@ -1,5 +1,7 @@
 #include "default_command_context.hpp"
 
+#include "services/notifications/notification_service.hpp"
+
 namespace big
 {
 	player_ptr default_command_context::get_sender() const
@@ -14,11 +16,11 @@ namespace big
 
 	void default_command_context::report_output(const std::string& output) const
 	{
-		g_notification_service->push("BACKEND_COMMAND"_T.data(), output);
+		g_notification_service->push("Command", output);
 	}
 
 	void default_command_context::report_error(const std::string& error) const
 	{
-		g_notification_service->push_error("BACKEND_COMMAND"_T.data(), error);
+		g_notification_service->push_error("Command", error);
 	}
 }

@@ -1,8 +1,10 @@
 #include "mobile_service.hpp"
 
+#include "core/data/clone_pv.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "util/local_player.hpp"
 #include "util/mobile.hpp"
 
 #define MAX_GARAGE_NUM 30
@@ -136,7 +138,7 @@ namespace big
 		{
 			return -1;
 		}
-		Hash stat_hash = STATS::_GET_STAT_HASH_FOR_CHARACTER_STAT(0, stat_to_lookup, self::char_index);
+		Hash stat_hash = STATS::_GET_STAT_HASH_FOR_CHARACTER_STAT(0, stat_to_lookup, local_player::get_active_character_slot());
 		int stat_value{};
 		if (STATS::STAT_GET_INT(stat_hash, &stat_value, -1))
 		{
@@ -277,7 +279,7 @@ namespace big
 
 	bool personal_vehicle::is_in_selected_garage() const
 	{
-		return g.clone_pv.garage.empty() || m_garage == g.clone_pv.garage;
+		return g_clone_pv.garage.empty() || m_garage == g_clone_pv.garage;
 	}
 
 	bool personal_vehicle::is_blacklisted_vehicle() const
@@ -301,7 +303,7 @@ namespace big
 			case RAGE_JOAAT("pounder2"):
 			case RAGE_JOAAT("rcbandito"):
 			case RAGE_JOAAT("minitank"):
-				return !g.clone_pv.spawn_clone;
+				return !g_clone_pv.spawn_clone;
 		}
 		return false;
 	}

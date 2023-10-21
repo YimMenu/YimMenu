@@ -120,4 +120,6 @@ namespace big::animations
 			LOG(WARNING) << "Failed fetching all anims: " << e.what();
 		}
 	}
+
+	void list_all_anims(std::string* dict, std::string* anim);
 }

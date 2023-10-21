@@ -1,9 +1,11 @@
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "script_global.hpp"
-#include "script/globals/GPBD_FM_3.hpp"
+#include "core/settings/self.hpp"
 #include "gta_util.hpp"
+#include "natives.hpp"
+#include "script/globals/GPBD_FM_3.hpp"
+#include "script_global.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 
 namespace big
@@ -18,8 +20,8 @@ namespace big
 			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
 			{
 				on_disable();
-				g.self.passive = false;
-				g_notification_service->push_warning("PASSIVE"_T.data(), "BACKEND_LOOPED_SELF_TOGGLE_PASSIVE_DISABLED_PASSIVE_MODE_MESSAGE"_T.data());
+				g_self.passive = false;
+				g_notification_service->push_warning("Disabled passive mode", "Disabled passive mode because you started mission / joined CEO/MC");
 				return;
 			}
 			*g_tunables_service->get_tunable<int*>(-29732167) = 0; // End Passive Time = 0s
@@ -38,5 +40,5 @@ namespace big
 		}
 	};
 
-	toggle_passive g_toggle_passive("passive", "PASSIVE", "PASSIVE_DESC", g.self.passive);
+	toggle_passive g_toggle_passive("passive", "Passive Mode", "Instantly toggle passive mode", g_self.passive);
 }

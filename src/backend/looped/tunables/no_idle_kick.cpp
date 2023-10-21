@@ -1,7 +1,8 @@
 #include "backend/looped_command.hpp"
-#include "services/tunables/tunables_service.hpp"
 #include "core/scr_globals.hpp"
+#include "core/data/tunables.hpp"
 #include "natives.hpp"
+#include "services/tunables/tunables_service.hpp"
 
 namespace big
 {
@@ -55,5 +56,5 @@ namespace big
 		}
 	};
 
-	no_idle_kick g_no_idle_kick("noidlekick", "NO_IDLE_KICK", "NO_IDLE_KICK_DESC", g.tunables.no_idle_kick);
+	no_idle_kick g_no_idle_kick("noidlekick", "No Idle Kick", "Prevents you from being kicked while idling.", g_tunables.no_idle_kick);
 }

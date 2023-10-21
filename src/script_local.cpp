@@ -1,6 +1,5 @@
 #include "script_local.hpp"
 
-#include "common.hpp"
 #include "gta/script_thread.hpp"
 #include "pointers.hpp"
 

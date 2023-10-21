@@ -1,9 +1,9 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
+#include "core/settings/self.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
 
 namespace big
@@ -21,14 +21,11 @@ namespace big
 
 		inline bool can_update_location()
 		{
-			return !(g.cmd_executor.enabled || g.self.free_cam);
+			return !g_self.free_cam;
 		}
 
 		virtual void on_tick() override
 		{
-			if (g_orbital_drone_service.initialized())
-				return;
-
 			for (const auto& control : controls)
 				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(control), true);
 
@@ -69,8 +66,8 @@ namespace big
 			}
 
 			auto rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			ENTITY::SET_ENTITY_ROTATION(ent, 0.f, rot.y, rot.z, 2, 0);
-			ENTITY::SET_ENTITY_COLLISION(ent, false, false);
+			ENTITY::SET_ENTITY_ROTATION(ent, g_self.noclip_x_axis_rot ? rot.x : 0.f, rot.y, rot.z, 2, 0);
+			ENTITY::SET_ENTITY_COLLISION(ent, g_self.noclip_collision, false);
 			if (vel.x == 0.f && vel.y == 0.f && vel.z == 0.f)
 			{
 				// freeze entity to prevent drifting when standing still
@@ -87,7 +84,7 @@ namespace big
 				const auto is_aiming = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
 				if (is_aiming || CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == CameraMode::FIRST_PERSON)
 				{
-					vel = vel * g.self.noclip_aim_speed_multiplier;
+					vel = vel * g_self.noclip_aim_speed_multiplier;
 
 					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
 
@@ -96,7 +93,7 @@ namespace big
 				}
 				else
 				{
-					vel = vel * g.self.noclip_speed_multiplier;
+					vel = vel * g_self.noclip_speed_multiplier;
 
 					const auto offset = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ent, vel.x, vel.y, 0.f);
 					vel.x             = offset.x - location.x;
@@ -118,5 +115,5 @@ namespace big
 		}
 	};
 
-	noclip g_noclip("noclip", "NO_CLIP", "NO_CLIP_DESC", g.self.noclip);
+	noclip g_noclip("noclip", "No Clip", "Allows you to fly through the map", g_self.noclip);
 }

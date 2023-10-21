@@ -1,14 +1,16 @@
 #pragma once
 #include "core/enums.hpp"
 #include "core/scr_globals.hpp"
+#include "core/data/clone_pv.hpp"
 #include "globals.hpp"
 #include "gta_util.hpp"
 #include "misc.hpp"
 #include "natives.hpp"
 #include "notify.hpp"
 #include "script.hpp"
-#include "core/scr_globals.hpp"
 #include "script_local.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "util/mobile.hpp"
 #include "vehicle.hpp"
 
 namespace big::mobile
@@ -144,7 +146,7 @@ namespace big::mobile
 			if (*scr_globals::freemode_global.at(985).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
-			if (g.clone_pv.spawn_inside && self::veh)
+			if (g_clone_pv.spawn_inside && self::veh)
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
 
 			// despawn current veh
@@ -154,7 +156,7 @@ namespace big::mobile
 			script::get_current()->yield(100ms);
 
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
-			if (g.clone_pv.spawn_inside)
+			if (g_clone_pv.spawn_inside)
 			{
 				*scr_globals::freemode_global.at(942).as<int*>() = 1; // disable vehicle node distance check
 			}
@@ -177,7 +179,7 @@ namespace big::mobile
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(985).as<int*>(), -1);
 
-			if (g.clone_pv.spawn_inside)
+			if (g_clone_pv.spawn_inside)
 			{
 				vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}

@@ -1,12 +1,13 @@
 #include "services/gui/gui_service.hpp"
 #include "views/view.hpp"
+#include "core/settings/window.hpp"
 
 namespace big
 {
 	void view::navigation()
 	{
-		ImGui::SetNextWindowPos({10.f, 100.f * g.window.gui_scale}, ImGuiCond_Always);
-		ImGui::SetNextWindowSize({300.f * g.window.gui_scale, 0.f}, ImGuiCond_Always);
+		ImGui::SetNextWindowPos({10.f, 100.f * g_window.gui_scale}, ImGuiCond_Always);
+		ImGui::SetNextWindowSize({300.f * g_window.gui_scale, 0.f}, ImGuiCond_Always);
 
 		if (ImGui::Begin("navigation", 0, window_flags))
 		{
@@ -15,8 +16,7 @@ namespace big
 			{
 				switch (nav_item.first)
 				{
-				case tabs::PLAYER:
-				case tabs::DEBUG: continue;
+				case tabs::PLAYER: continue;
 				default: components::nav_item(nav_item, 0);
 				}
 			}

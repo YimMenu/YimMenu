@@ -35,5 +35,5 @@ namespace big
 		}
 	};
 
-	kick_from_vehicle g_kick_from_vehicle("vehkick", "VEHICLE_KICK", "VEHICLE_KICK_DESC", 0);
+	kick_from_vehicle g_kick_from_vehicle("vehkick", "Vehicle Kick", "Kicks the player from their current vehicle", 0);
 }

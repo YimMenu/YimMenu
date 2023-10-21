@@ -1,5 +1,4 @@
 #pragma once
-#include "debug/view_debug.hpp"
 #include "esp/view_esp.hpp"
 #include "gui/components/components.hpp"
 
@@ -21,41 +20,34 @@ namespace big
 
 	public:
 		static void active_view();
+		static void debug();
 		static void esp_settings();
 		static void outfit_editor();
-		static void outfit_slots();
-		static void stat_editor();
 		static void gui_settings();
-		static void hotkey_settings();
-		static void handling_current_profile();
-		static void handling_saved_profiles();
 		static void reaction_settings();
 		static void protection_settings();
 		static void heading();
-		static void mobile();
 		static void navigation();
 		static void notifications();
 		static void overlay();
 		static void root();
 		static void self();
 		static void animations();
+		static void spawned_vehicles();
+		static void scenarios();
+		static void spawn_objects();
+		static void ptfx_effects();
 		static void network();
-		static void missions();
-		static void player_database();
 		static void session_browser();
-		static void settings();
+		static void casino();
+		static void recent_modders();
+		static void chat();
 		static void vehicle();
 		static void lsc();
 		static void spawn_vehicle();
 		static void pv();
-		static void persist_car();
-		static void xml_vehicles();
+		static void persist_car(bool);
 		static void fun_vehicle();
-		static void vehicle_control();
-		static void spawn_ped();
-		static void squad_spawner();
-		static void time_and_weather();
-		static void spoofing();
 		static void teleport();
 		static void custom_teleport();
 		static void view_player();
@@ -63,21 +55,7 @@ namespace big
 		static void weapons();
 		static void context_menu();
 		static void gta_data();
-		static void creator();
-		static void train();
-		static void blackhole();
-		static void model_swapper();
 		static void world();
 		static void gta_cache();
-		static void lua_scripts();
-		static void vfx();
-
-		static void player_info();
-		static void player_teleport();
-		static void player_kick();
-		static void player_toxic();
-		static void player_misc();
-		static void cmd_executor();
-		static void player_vehicle();
 	};
 }

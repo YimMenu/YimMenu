@@ -5,7 +5,9 @@
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
+#include "core/settings/reactions.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -23,18 +25,18 @@ namespace big::notify
 	{
 		if (player)
 		{
-			if (g.reactions.crash.notify)
+			if (g_reactions.crash.notify)
 				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
 
-			if (g.reactions.crash.log)
+			if (g_reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
 				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
 		
-			g.reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));
+			g_reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));
 		}
 		else
 		{
-			if (g.reactions.crash.notify)
+			if (g_reactions.crash.notify)
 				g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
 	}
@@ -64,11 +66,6 @@ namespace big::notify
 		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP("STRING");
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
-	}
-
-	inline void player_joined(CNetGamePlayer* net_game_player)
-	{
-		above_map(std::format("<C>{}</C> joined.", net_game_player->get_name()));
 	}
 
 	inline void draw_chat(char* msg, const char* player_name, bool is_team)

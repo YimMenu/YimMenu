@@ -1076,12 +1076,12 @@ constexpr const auto net_object_type_strs = std::to_array({
     "DOOR",
     "HELI",
     "OBJECT",
-    "PED",
+    "Ped",
     "PICKUP",
     "PICKUP_PLACEMENT",
     "PLANE",
     "SUBMARINE",
-    "PLAYER",
+    "Player",
     "TRAILER",
     "TRAIN",
 });
@@ -2057,20 +2057,4 @@ enum CameraMode : int
 	THIRD_PERSON_FAR    = 2,
 	CINEMATIC           = 3,
 	FIRST_PERSON        = 4,
-};
-
-enum ComponentId : int
-{
-	HEAD,
-	BEARD,
-	HAIR,
-	TORSO,
-	LEGS,
-	HANDS,
-	FOOT,
-	ACCESSORIES_NECK,
-	ACCESSORIES_1,
-	ACCESSORIES_2,
-	DECALS,
-	AUXILIARY
 };

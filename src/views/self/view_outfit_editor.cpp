@@ -1,9 +1,11 @@
+#include "core/data/hud.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "services/outfit/outfit_service.hpp"
 #include "util/outfit.hpp"
 #include "util/ped.hpp"
 #include "views/view.hpp"
-#include "services/outfit/outfit_service.hpp"
 
 namespace big
 {
@@ -32,38 +34,38 @@ namespace big
 			}
 		});
 
-		components::button("OUTFIT_RANDOM_COMPONENT"_T, [] {
+		components::button("Random Component", [] {
 			ped::set_ped_random_component_variation(self::ped);
 		});
 		ImGui::SameLine();
 
-		components::button("OUTFIT_DEFAULT_COMPONENT"_T, [] {
+		components::button("Default Component", [] {
 			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(self::ped);
 		});
 		ImGui::SameLine();
 
-		components::button("OUTFIT_RANDOM_PROPS"_T, [] {
+		components::button("Random Props", [] {
 			PED::SET_PED_RANDOM_PROPS(self::ped);
 		});
 		ImGui::SameLine();
 
-		components::button("OUTFIT_CLEAR_PROPS"_T, [] {
+		components::button("Clear Props", [] {
 			PED::CLEAR_ALL_PED_PROPS(self::ped, 1);
 		});
 		ImGui::SameLine();
 
-		components::button("EXPORT_TO_CLIPBOARD"_T, [] {
+		components::button("Export To Clipboard", [] {
 			std::stringstream ss;
 			for (auto& item : components.items)
 				ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 			for (auto& item : props.items)
 				ss << item.id << " " << item.drawable_id << " " << item.texture_id << " ";
 			ImGui::SetClipboardText(ss.str().c_str());
-			g_notification_service->push_success("OUTFIT"_T.data(), "EXPORT_TO_CLIPBOARD"_T.data());
+			g_notification_service->push_success("Outfit", "Export To Clipboard");
 		});
 		ImGui::SameLine();
 
-		components::button("IMPORT_FROM_CLIPBOARD"_T, [] {
+		components::button("Import From Clipboard", [] {
 			std::stringstream ss(ImGui::GetClipboardText());
 			for (auto& item : components.items)
 			{
@@ -122,7 +124,7 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "TEX", item.texture_id_max).c_str(), &item.texture_id))
 			{
 				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -159,7 +161,7 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "TEX", item.texture_id_max).c_str(), &item.texture_id))
 			{
 				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -183,10 +185,10 @@ namespace big
 
 		ImGui::InputText("##outfit_name", outfit_name, sizeof(outfit_name));
 		if (ImGui::IsItemActive())
-			g.self.hud.typing = TYPING_TICKS;
+			g_hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
-		components::button("OUTFIT_SAVE_CURRENT"_T, [] {
+		components::button("Save Current", [] {
 			size_t index    = 0;
 			std::string str = outfit_name;
 			while (saved_outfit_path.get_file(str + ".json").exists())
@@ -196,7 +198,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button("OUTFIT_APPLY_SELECTED"_T, [saved_outfits] {
+		components::button("Apply Selected", [saved_outfits] {
 			if (selected_index >= 0 && selected_index < saved_outfits.size())
 			{
 				std::ifstream i(saved_outfit_path.get_file(saved_outfits[selected_index]).get_path());
@@ -208,7 +210,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button("OUTFIT_DELETE_SELECTED"_T, [saved_outfits] {
+		components::button("Delete Selected", [saved_outfits] {
 			if (selected_index >= 0 && selected_index < saved_outfits.size())
 			{
 				std::filesystem::remove(saved_outfit_path.get_file(saved_outfits[selected_index]).get_path());
@@ -224,20 +226,5 @@ namespace big
 					selected_index = i;
 			ImGui::EndListBox();
 		}
-		ImGui::SameLine();
-		ImGui::BeginGroup();
-		if (ImGui::Button("VIEW_SELF_OUTFIT_SET_PERSIST_OUTFIT"_T.data()))
-		{
-			g.self.persist_outfit = saved_outfits[selected_index];
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("VIEW_SELF_OUTFIT_CLEAR_PERSIST_OUTFIT"_T.data()))
-		{
-			g.self.persist_outfit.clear();
-		}
-		ImGui::SameLine();
-		ImGui::Checkbox("VIEW_SELF_OUTFIT_DISABLE_DURING_MISSIONS"_T.data(), &g.self.persist_outfits_mis);
-		ImGui::Text(std::format("{}: {}", "VIEW_SELF_OUTFIT_CURRENT_PERSISTED_OUTFIT"_T.data(), g.self.persist_outfit).c_str());
-		ImGui::EndGroup();
 	}
 }

@@ -1,144 +1,42 @@
-#include "core/data/ipls.hpp"
-#include "fiber_pool.hpp"
-#include "util/globals.hpp"
-#include "util/mobile.hpp"
 #include "util/teleport.hpp"
-#include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
 	void view::teleport()
 	{
-		ImGui::SeparatorText("BLIPS"_T.data());
+		ImGui::SeparatorText("Blips:");
 		ImGui::Spacing();
 
-		components::command_button<"waypointtp">({}, "VIEW_PLAYER_TELEPORT_WAYPOINT"_T);
+		components::command_button<"waypointtp">({}, "Waypoint");
 		ImGui::SameLine();
-		components::command_button<"objectivetp">({}, "VIEW_TELEPORT_OBJECTIVE"_T);
-		ImGui::SameLine();
-		components::command_button<"highlighttp">({}, "VIEW_TELEPORT_SELECTED"_T);
-		components::command_checkbox<"autotptowp">();
+		components::command_button<"objectivetp">({}, "Objective");
 
-		ImGui::SeparatorText("VIEW_TELEPORT_MOVEMENT"_T.data());
+		ImGui::SeparatorText("Movement");
 
 		ImGui::Spacing();
 
-		components::small_text("VIEW_TELEPORT_CURRENT_COORDINATES"_T);
+		components::small_text("Current coordinates");
 		float coords[3] = {self::pos.x, self::pos.y, self::pos.z};
 		static float new_location[3];
-		static float increment = 1;
 
 		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##currentcoordinates", coords, "%f", ImGuiInputTextFlags_ReadOnly);
-		ImGui::SameLine();
-		components::button("VIEW_TELEPORT_COPY_TO_CUSTOM"_T, [coords] {
+
+		components::button("Copy to custom", [coords] {
 			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
 		});
+		ImGui::SameLine();
+		components::button("Copy to Clipboard", [coords] {
+			ImGui::SetClipboardText(std::format("X: {:.2f}, Y: {:.2f}, Z: {:.2f}", coords[0], coords[1], coords[2]).c_str());
+		});
 
-		components::small_text("GUI_TAB_CUSTOM_TELEPORT"_T);
+		components::small_text("Custom teleport");
 		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
-		ImGui::SameLine();
-		components::button("GUI_TAB_TELEPORT"_T, [] {
-			teleport::to_coords({new_location[0], new_location[1], new_location[2]});
+
+		components::button("Teleport", [] {
+			teleport::to_coords({new_location[0], new_location[1], new_location[2]}, true);
 		});
-
-		ImGui::Spacing();
-		components::small_text("VIEW_TELEPORT_SPECIFIC_MOVEMENT"_T);
-		ImGui::Spacing();
-
-		ImGui::SetNextItemWidth(200);
-		ImGui::InputFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &increment);
-
-		ImGui::BeginGroup();
-		components::button("VIEW_TELEPORT_FORWARD"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, increment, 0));
-		});
-		components::button("VIEW_TELEPORT_BACKWARD"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, -increment, 0));
-		});
-		ImGui::EndGroup();
-
-		ImGui::SameLine();
-
-		ImGui::BeginGroup();
-		components::button("LEFT"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, -increment, 0, 0));
-		});
-		components::button("RIGHT"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, increment, 0, 0));
-		});
-		ImGui::EndGroup();
-
-		ImGui::SameLine();
-
-		ImGui::BeginGroup();
-		components::button("VIEW_TELEPORT_UP"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, 0, increment));
-		});
-		components::button("VIEW_TELEPORT_DOWN"_T, [] {
-			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, 0, -increment));
-		});
-		ImGui::EndGroup();
-
-		ImGui::SeparatorText("VEHICLES"_T.data());
-		ImGui::Spacing();
-
-		components::command_button<"lastvehtp">();
-		ImGui::SameLine();
-		components::command_button<"bringpv">();
-		ImGui::SameLine();
-		components::command_button<"pvtp">();
-
-		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
-
-		if (ImGui::BeginCombo("IPL_LOCATION"_T.data(), ipls[g.self.ipls.select].friendly_name))
-		{
-			for (int i = 0; i < IM_ARRAYSIZE(ipls); i++)
-			{
-				if (ImGui::Selectable(ipls[i].friendly_name, i == g.self.ipls.select))
-					g.self.ipls.select = i;
-
-				if (i == g.self.ipls.select)
-					ImGui::SetItemDefaultFocus();
-			}
-
-			ImGui::EndCombo();
-		}
-
-		const auto& selected_ipl = ipls[g.self.ipls.select];
-		if (components::button("LOAD_IPL"_T))
-		{
-			//unload all previous ipls
-			for (auto& ipl : ipls)
-				for (auto& ipl_name : ipl.ipl_names)
-				{
-					if (STREAMING::IS_IPL_ACTIVE(ipl_name))
-					{
-						LOG(INFO) << "unloading existing ipl " << ipl_name;
-						STREAMING::REMOVE_IPL(ipl_name);
-					}
-				}
-
-			//load the new ipl
-			for (auto& ipl_name : selected_ipl.ipl_names)
-				STREAMING::REQUEST_IPL(ipl_name);
-		}
-
-		ImGui::SameLine();
-
-		if (components::button("TP_TO_IPL"_T))
-		{
-			teleport::to_coords(selected_ipl.location);
-		}
-
-		ImGui::Spacing();
-		components::small_text("IPL_INFOS"_T);
-
-		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(selected_ipl.ipl_names.size())).data());
-		ImGui::Text(std::vformat("IPL_POSITION"_T,
-		    std::make_format_args(selected_ipl.location.x, selected_ipl.location.y, selected_ipl.location.z))
-		                .data());
 	}
 }

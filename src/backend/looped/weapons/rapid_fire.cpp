@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/enums.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
@@ -62,5 +63,5 @@ namespace big
 		}
 	};
 
-	rapid_fire g_rapid_fire("rapidfire", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE_DESC", g.weapons.rapid_fire);
+	rapid_fire g_rapid_fire("rapidfire", "Rapid Fire", "Makes your weapon fire insanely fast", g_weapons.rapid_fire);
 }

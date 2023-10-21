@@ -2,6 +2,7 @@
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -21,7 +22,7 @@ namespace big
 				return;
 			if (!scripts::force_host(RAGE_JOAAT("freemode")))
 			{
-				g_notification_service->push_error("END_KICK"_T.data(), "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
+				g_notification_service->push_error("Kick", "Force script host failed!");
 				return;
 			}
 
@@ -32,5 +33,5 @@ namespace big
 		}
 	};
 
-	end_session_kick g_end_session_kick("endkick", "END_KICK", "END_KICK_DESC", 0, false);
+	end_session_kick g_end_session_kick("endkick", "End Session Kick", "This may take around 10 seconds to kick the player", 0, false);
 }

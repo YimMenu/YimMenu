@@ -410,7 +410,7 @@ namespace big
 							weapon.m_weapon_type = category + 6;
 						}
 
-						if (is_gun || weapon.m_weapon_type == "MELEE" || weapon.m_weapon_type == "UNARMED")
+						if (is_gun || weapon.m_weapon_type == "Melee" || weapon.m_weapon_type == "UNARMED")
 						{
 							const std::string reward_prefix = "REWARD_";
 							weapon.m_reward_hash            = rage::joaat(reward_prefix + name);

@@ -1,7 +1,5 @@
 #include "services/custom_teleport/custom_teleport_service.hpp"
-#include "util/math.hpp"
 #include "util/teleport.hpp"
-#include "util/blip.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -49,18 +47,18 @@ namespace big
 
 		if (ImGui::BeginPopupModal("##deletelocation", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("VIEW_SELF_ANIMATIONS_ARE_YOU_SURE_DELETE"_T.data(), deletion_telelocation.name);
+			ImGui::Text("Are you sure you want to delete %s?", deletion_telelocation.name);
 
 			ImGui::Spacing();
 
-			if (ImGui::Button("YES"_T.data()))
+			if (ImGui::Button("Yes"))
 			{
 				g_custom_teleport_service.delete_saved_location(category, deletion_telelocation.name);
 				deletion_telelocation.name = "";
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("NO"_T.data()))
+			if (ImGui::Button("No"))
 			{
 				deletion_telelocation.name = "";
 				ImGui::CloseCurrentPopup();
@@ -70,18 +68,18 @@ namespace big
 		}
 
 		ImGui::PushItemWidth(300);
-		components::input_text_with_hint("VIEW_SELF_ANIMATIONS_CATEGORY"_T, "VIEW_SELF_ANIMATIONS_CATEGORY_DESC"_T, category);
-		components::input_text_with_hint("VIEW_SELF_CUSTOM_TELEPORT_LOCATION"_T, "VIEW_SELF_CUSTOM_TELEPORT_LOCATION_DESC"_T, new_location_name);
+		components::input_text_with_hint("Category", "Category", category);
+		components::input_text_with_hint("Location name", "New location", new_location_name);
 		ImGui::PopItemWidth();
 
-		components::button("VIEW_SELF_CUSTOM_TELEPORT_SAVE_CURRENT_LOCATION"_T, [] {
+		components::button("Save current location", [] {
 			if (new_location_name.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
+				g_notification_service->push_warning("Custom Teleport", "Please enter a valid name.");
 			}
 			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
+				g_notification_service->push_warning("Custom Teleport", std::format("Location with the name {} already exists", new_location_name));
 			}
 			else
 			{
@@ -101,18 +99,18 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		components::button("VIEW_SELF_CUSTOM_TELEPORT_SAVE_BLIP"_T, [] {
+		components::button("Save current selected blip", [] {
 			if (new_location_name.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
+				g_notification_service->push_warning("Custom Teleport", "Please enter a valid name.");
 			}
 			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
+				g_notification_service->push_warning("Custom Teleport", std::format("Location with the name {} already exists", new_location_name));
 			}
 			else if (!*g_pointers->m_gta.m_is_session_started)
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+				g_notification_service->push_warning("Custom Teleport", "You need to be online to use this feature.");
 				return;
 			}
 			else
@@ -121,7 +119,7 @@ namespace big
 				auto blip = blip::get_selected_blip();
 				if (blip == nullptr)
 				{
-					g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_BLIP"_T.data());
+					g_notification_service->push_warning("Custom Teleport", std::format("Cannot find selected blip."));
 					return;
 				}
 				teleport_location.name  = new_location_name;
@@ -137,14 +135,13 @@ namespace big
 
 		ImGui::Separator();
 
-		components::small_text("VIEW_SELF_CUSTOM_TELEPORT_DOUBLE_CLICK_TO_TELEPORT"_T);
-		components::small_text("VIEW_SELF_ANIMATIONS_DOUBLE_SHIFT_CLICK_TO_DELETE"_T);
+		components::small_text("Double click to teleport\nShift click to delete");
 
 		ImGui::Spacing();
-		components::input_text_with_hint("##filter", "SEARCH"_T, filter);
+		components::input_text_with_hint("##filter", "Search", filter);
 
 		ImGui::BeginGroup();
-		components::small_text("VIEW_SELF_ANIMATIONS_CATEGORIES"_T);
+		components::small_text("Categories");
 		if (ImGui::BeginListBox("##categories", {250, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.5)}))
 		{
 			for (auto& l : g_custom_teleport_service.all_saved_locations | std::ranges::views::keys)
@@ -159,7 +156,7 @@ namespace big
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
-		components::small_text("VIEW_SELF_CUSTOM_TELEPORT_LOCATIONS"_T);
+		components::small_text("Locations");
 		if (ImGui::BeginListBox("##telelocations", {250, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.5)}))
 		{
 			if (g_custom_teleport_service.all_saved_locations.find(category)
@@ -185,7 +182,7 @@ namespace big
 							if (ImGui::IsMouseDoubleClicked(0))
 							{
 								g_fiber_pool->queue_job([l] {
-									teleport::teleport_player_to_coords(g_player_service->get_self(), {l.x, l.y, l.z}, {l.yaw, l.pitch, l.roll});
+									teleport::to_coords({l.x, l.y, l.z}, true);
 								});
 							}
 						}
@@ -195,7 +192,7 @@ namespace big
 						ImGui::BeginTooltip();
 						if (l.name.length() > 27)
 							ImGui::Text(l.name.data());
-						ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, get_distance_to_telelocation(l)).c_str());
+						ImGui::Text("Distance: %f", get_distance_to_telelocation(l));
 						ImGui::EndTooltip();
 					}
 				}

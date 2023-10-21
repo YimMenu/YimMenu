@@ -1,6 +1,8 @@
 #include "base/CBaseModelInfo.hpp"
 #include "base/CObject.hpp"
+#include "core/data/syncing_player.hpp"
 #include "core/data/task_types.hpp"
+#include "core/settings/reactions.hpp"
 #include "entities/fwEntity.hpp"
 #include "gta/net_object_mgr.hpp"
 #include "hooking.hpp"
@@ -70,7 +72,6 @@
 #include "util/sync_trees.hpp"
 #include "vehicle/CTrainConfig.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
-
 
 namespace big
 {
@@ -320,7 +321,7 @@ namespace big
 #define LOG_FIELD_H(type, field) LOG(INFO) << "\t" << #field << ": " << HEX_TO_UPPER((((type*)(node))->field));
 #define LOG_FIELD(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field));
 #define LOG_FIELD_C(type, field) LOG(INFO) << "\t" << #field << ": " << (int)((((type*)(node))->field));
-#define LOG_FIELD_B(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field) ? "YES" : "NO");
+#define LOG_FIELD_B(type, field) LOG(INFO) << "\t" << #field << ": " << ((((type*)(node))->field) ? "Yes" : "No");
 #define LOG_FIELD_V3(type, field)                                                                                    \
 	LOG(INFO) << "\t" << #field << ": X: " << ((((type*)(node))->field)).x << " Y: " << ((((type*)(node))->field)).y \
 	          << " Z: " << ((((type*)(node))->field)).z;
@@ -1103,7 +1104,7 @@ namespace big
 
 	bool is_crash_ped_task(eTaskTypeIndex type)
 	{
-		if (type == eTaskTypeIndex::CTaskUnalerted && g.m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
+		if (type == eTaskTypeIndex::CTaskUnalerted && m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
 			return true;
 
 		return false;
@@ -1116,23 +1117,23 @@ namespace big
 		case eTaskTypeIndex::CTaskVehicleGoToPlane:
 		case eTaskTypeIndex::CTaskVehicleLandPlane:
 		case eTaskTypeIndex::CTaskVehiclePlayerDrivePlane:
-		case eTaskTypeIndex::CTaskVehiclePlaneChase: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eTaskTypeIndex::CTaskVehiclePlaneChase: return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
 		case eTaskTypeIndex::CTaskVehicleGoToHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveHeli:
 		case eTaskTypeIndex::CTaskVehicleLand:
-		case eTaskTypeIndex::CTaskVehicleHeliProtect: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
+		case eTaskTypeIndex::CTaskVehicleHeliProtect: return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
 		case eTaskTypeIndex::CTaskVehicleGoToBoat:
 		case eTaskTypeIndex::CTaskVehicleCruiseBoat:
 		case eTaskTypeIndex::CTaskVehicleFleeBoat:
 		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourBoat:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveBoat:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_BOAT;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_BOAT;
 		case eTaskTypeIndex::CTaskVehicleGoToSubmarine:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveSubmarine:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
 		case eTaskTypeIndex::CTaskVehicleFleeAirborne:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
 		}
 
 		return false;
@@ -1185,9 +1186,6 @@ namespace big
 			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
 				return false;
 
-			if (g.debug.fuzzer.active && g.debug.fuzzer.enabled || sender_plyr && sender_plyr->log_clones)
-				log_node(node_id, sender_plyr, (CProjectBaseSyncDataNode*)node, object);
-
 			switch (node_id)
 			{
 			case sync_node_id("CVehicleCreationDataNode"):
@@ -1200,7 +1198,7 @@ namespace big
 				}
 				if (auto info = model_info::get_vehicle_model(creation_node->m_model))
 				{
-					if (vehicle_type_to_object_type(info->m_vehicle_type) != g.m_syncing_object_type)
+					if (vehicle_type_to_object_type(info->m_vehicle_type) != m_syncing_object_type)
 					{
 						notify::crash_blocked(sender, "vehicle model mismatch");
 						return true;
@@ -1353,7 +1351,8 @@ namespace big
 					if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
 					{
 						std::stringstream crash_reason;
-						crash_reason << "invalid sector position (sector node)" << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
+						crash_reason << "invalid sector position (sector node)"
+						             << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
 						notify::crash_blocked(sender, crash_reason.str().c_str());
 						return true;
 					}
@@ -1364,7 +1363,7 @@ namespace big
 			{
 				const auto game_state_node = (CPlayerGameStateDataNode*)(node);
 				if (game_state_node->m_is_overriding_population_control_sphere
-				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x,game_state_node->m_population_control_sphere_y))
+				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x, game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
@@ -1428,9 +1427,7 @@ namespace big
 						if (target->id() != sender_plyr->spectating_player)
 						{
 							if (target->id() == self::id)
-								g.reactions.spectate.process(sender_plyr);
-							else
-								g.reactions.spectate_others.process(sender_plyr, target);
+								g_reactions.spectate.process(sender_plyr);
 
 							sender_plyr->spectating_player = target->id();
 						}
@@ -1648,7 +1645,7 @@ namespace big
 	{
 		static bool init = ([] { sync_node_finder::init(); }(), true);
 
-		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, m_syncing_player, object))
 		{
 			return false;
 		}

@@ -1,6 +1,5 @@
 #include "locals_service.hpp"
 
-#include "core/data/all_script_names.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"

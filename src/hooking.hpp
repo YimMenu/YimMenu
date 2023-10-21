@@ -1,6 +1,5 @@
 #pragma once
 #include "MinHook.h"
-#include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
@@ -95,7 +94,6 @@ namespace big
 		static eAckCode received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
 		static bool can_apply_data(rage::netSyncTree* tree, rage::netObject* object);
 
-		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static void write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
@@ -121,8 +119,6 @@ namespace big
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 
-		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
-
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
 		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
 
@@ -137,28 +133,11 @@ namespace big
 
 		static void write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
-		static rage::netGameEvent* send_player_card_stats(rage::netGameEvent* a1, CPlayerCardStats* stats);
-		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, uint32_t stat_count);
-
-		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
-		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
-
-		static __int64 task_jump_constructor(uint64_t a1, int a2);
-
-		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
-
-		static int enumerate_audio_devices(CFoundDevice* found_devices, int count, int flags);
-		static HRESULT direct_sound_capture_create(GUID* guid, IDirectSoundCapture** sound, void* unknown);
-
 		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
-		static void log_error_message_box(rage::joaat_t joaated_error_code, bool a2);
-
 		static bool send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
-
-		static void update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData);
 
 		static void* allocate_memory_reliable(rage::netConnection* cxn, int required_memory);
 
