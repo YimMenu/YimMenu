@@ -31,5 +31,5 @@ namespace big
 		}
 	};
 
-	lock_vehicle g_lock_vehicle("lockveh", "Lock Vehicle", "Locks vehicle doors", 0);
+	lock_vehicle g_lock_vehicle("lockveh", "BACKEND_LOCK_VEHICLE", "BACKEND_LOCK_VEHICLE_DESC", 0);
 }

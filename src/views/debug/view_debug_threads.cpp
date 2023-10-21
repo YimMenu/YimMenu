@@ -34,7 +34,7 @@ namespace big
 {
 	void debug::threads()
 	{
-		if (ImGui::BeginTabItem("Threads"))
+		if (ImGui::BeginTabItem("VIEW_DEBUG_THREADS"_T.data()))
 		{
 			if (!g_pointers->m_gta.m_script_threads)
 			{
@@ -43,9 +43,9 @@ namespace big
 				return;
 			}
 
-			components::small_text("Threads");
+			components::small_text("VIEW_DEBUG_THREADS"_T);
 
-			if (ImGui::BeginCombo("Thread", selected_thread ? selected_thread->m_name : "NONE"))
+			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_THREAD"_T.data(), selected_thread ? selected_thread->m_name : "VIEW_DEBUG_THREADS_SELECTED_NONE"_T.data()))
 			{
 				for (auto script : *g_pointers->m_gta.m_script_threads)
 				{
@@ -85,11 +85,11 @@ namespace big
 					auto host = net_handler->get_host();
 					if (host)
 					{
-						ImGui::Text("Script Host: %s", host->get_name());
+						ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_SCRIPT_HOST"_T, host->get_name()).c_str());
 
 						if (!net_handler->is_local_player_host())
 						{
-							components::button("Take Control", [net_handler] {
+							components::button("VIEW_DEBUG_THREADS_TAKE_CONTROL"_T, [net_handler] {
 								net_handler->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
 								script::get_current()->yield(10ms);
 								if (selected_thread->m_stack && selected_thread->m_net_component)
@@ -101,29 +101,37 @@ namespace big
 					}
 				}
 
-
-				ImGui::Combo("State", (int*)&selected_thread->m_context.m_state, "RUNNING\0WAITING\0KILLED\0PAUSED\0STATE_4");
+				static const std::string thread_states = std::string("VIEW_DEBUG_THREADS_STATE_0"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_1"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_2"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_3"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data());
+				ImGui::Combo("VIEW_DEBUG_THREADS_STATE"_T.data(), (int*)&selected_thread->m_context.m_state, thread_states.c_str());
 				//Script Pointer
-				ImGui::Text("Script Pointer: ");
+				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T).c_str());
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
 				//Stack Pointer
-				ImGui::Text("Stack Pointer: ");
+				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_STACK_POINTER"_T).c_str());
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
 				ImGui::SameLine();
-				ImGui::Text("Internal Stack Pointer: %d Stack Size: %d",
-				    selected_thread->m_context.m_stack_pointer, selected_thread->m_context.m_stack_size);
+				ImGui::Text(std::format("{}: {} {}: {}",
+				    "VIEW_DEBUG_THREADS_INTERNAL_STACK_POINTER"_T, selected_thread->m_context.m_stack_pointer,
+				    "VIEW_DEBUG_THREADS_STACK_SIZE"_T, selected_thread->m_context.m_stack_size)
+				                .c_str());
 				//Instruction Pointer
-				ImGui::Text("Instruction Pointer: %X", selected_thread->m_context.m_instruction_pointer);
+				ImGui::Text(std::format("{}: 0x{:X}","VIEW_DEBUG_THREADS_INSTRUCTION_POINTER"_T, selected_thread->m_context.m_instruction_pointer).c_str());
 
 				if (selected_thread->m_context.m_state == rage::eThreadState::killed)
-					ImGui::Text("Exit Reason: %s", selected_thread->m_exit_message);
+				{
+					ImGui::Text(std::format("{}: {}","VIEW_DEBUG_THREADS_EXIT_REASON"_T, selected_thread->m_exit_message).c_str());
+				}
 				else
 				{
-					if (ImGui::Button("Kill"))
+					if (ImGui::Button("VIEW_DEBUG_THREADS_KILL"_T.data()))
 					{
 						if (selected_thread->m_context.m_stack_size != 0)
 							selected_thread->kill();
@@ -133,9 +141,9 @@ namespace big
 				}
 			}
 
-			components::small_text("New");
+			components::small_text("VIEW_DEBUG_THREADS_NEW"_T);
 
-			if (ImGui::BeginCombo("Script", selected_script))
+			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_SCRIPT"_T.data(), selected_script))
 			{
 				for (auto script : all_script_names)
 				{
@@ -150,7 +158,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (ImGui::BeginCombo("Stack Size", selected_stack_size_str))
+			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_STACK_SIZE"_T.data(), selected_stack_size_str))
 			{
 				for (auto& p : stack_sizes)
 				{
@@ -170,9 +178,9 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			ImGui::Text("Free Stacks: %d", free_stacks);
+			ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_FREE_STACKS"_T, free_stacks).c_str());
 
-			components::button("Start", [] {
+			components::button("SETTINGS_NOTIFY_GTA_THREADS_START"_T, [] {
 				auto hash = rage::joaat(selected_script);
 
 				if (!SCRIPT::DOES_SCRIPT_WITH_NAME_HASH_EXIST(hash))
@@ -182,7 +190,7 @@ namespace big
 
 				if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(selected_stack_size) == 0)
 				{
-					g_notification_service->push_warning("Script Launcher", "No free stacks for this stack size");
+					g_notification_service->push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_NO_FREE_STACKS"_T.data());
 				}
 
 				while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(hash))
@@ -200,13 +208,13 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::button("Start With Launcher", [] {
+			components::button("VIEW_DEBUG_THREADS_START_WITH_LAUNCHER"_T, [] {
 				auto hash = rage::joaat(selected_script);
 				auto idx  = scripts::launcher_index_from_hash(hash);
 
 				if (idx == -1)
 				{
-					g_notification_service->push_warning("Script Launcher", "This script cannot be started using am_launcher");
+					g_notification_service->push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_FAILED_WITH_LAUNCHER"_T.data());
 					return;
 				}
 

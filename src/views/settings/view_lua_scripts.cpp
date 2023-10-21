@@ -12,7 +12,7 @@ namespace big
 	void view::lua_scripts()
 	{
 		ImGui::PushItemWidth(250);
-		components::sub_title("Loaded Lua Scipts");
+		components::sub_title("VIEW_LUA_SCRIPTS_LOADED_LUA_SCRIPTS"_T);
 
 		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
@@ -31,11 +31,11 @@ namespace big
 
 		if (!selected_module.expired())
 		{
-			ImGui::Text("Scripts Registered: %d", selected_module.lock()->m_registered_scripts.size());
-			ImGui::Text("Memory Patches Registered: %d", selected_module.lock()->m_registered_patches.size());
-			ImGui::Text("GUI Tabs Registered: %d", selected_module.lock()->m_gui.size());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_SCRIPTS_REGISTERED"_T, selected_module.lock()->m_registered_scripts.size()).c_str());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_MEMORY_PATCHES_REGISTERED"_T, selected_module.lock()->m_registered_patches.size()).c_str());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_GUI_TABS_REGISTERED"_T, selected_module.lock()->m_gui.size()).c_str());
 
-			if (components::button("Reload"))
+			if (components::button("VIEW_LUA_SCRIPTS_RELOAD"_T))
 			{
 				const std::filesystem::path module_path = selected_module.lock()->module_path();
 				const auto id = selected_module.lock()->module_id();
@@ -48,15 +48,15 @@ namespace big
 
 		ImGui::EndGroup();
 
-		if (components::button("Reload All"))
+		if (components::button("VIEW_LUA_SCRIPTS_RELOAD_ALL"_T))
 		{
 			g_lua_manager->unload_all_modules();
 			g_lua_manager->load_all_modules();
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Auto Reload Changed Scripts", &g.lua.enable_auto_reload_changed_scripts);
+		ImGui::Checkbox("VIEW_LUA_SCRIPTS_AUTO_RELOAD_CHANGED_SCRIPTS"_T.data(), &g.lua.enable_auto_reload_changed_scripts);
 
-		if (components::button("Open Lua Scripts Folder"))
+		if (components::button("VIEW_LUA_SCRIPTS_OPEN_LUA_SCRIPTS_FOLDER"_T))
 		{
 			std::string command = "explorer.exe /select," + g_lua_manager->get_scripts_folder().get_path().string();
 

@@ -61,10 +61,7 @@ namespace big
 		}
 	};
 
-	speedo_meter
-	    g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
-	bool_command g_speedo_meter_gears("speedometergears", "Show current gear", "Adds the current gear the vehicle is in to the speedo meter.",
-	    g.vehicle.speedo_meter.show_current_gear);
-	bool_command g_speedo_meter_left_side("speedometerleftside", "Align to left", "Aligns the speedo meter text to the left instead of to the right.",
-	    g.vehicle.speedo_meter.left_side);
+	speedo_meter g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
+	bool_command g_speedo_meter_gears("speedometergears", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR_DESC", g.vehicle.speedo_meter.show_current_gear);
+	bool_command g_speedo_meter_left_side("speedometerleftside", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT_DESC", g.vehicle.speedo_meter.left_side);
 }

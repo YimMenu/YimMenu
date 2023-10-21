@@ -21,6 +21,6 @@ namespace big
 		}
 	};
 
-	high_alert g_high_alert("highalert", "High Alert", "Not the CoD perk", g.world.nearby.high_alert);
+	high_alert g_high_alert("highalert", "BACKEND_LOOPED_WORLD_NEARBY_HIGH_ALERT", "BACKEND_LOOPED_WORLD_NEARBY_HIGH_ALERT_DESC", g.world.nearby.high_alert);
 
 }

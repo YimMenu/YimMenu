@@ -13,18 +13,18 @@ namespace big
 		ImGui::SeparatorText("BLIPS"_T.data());
 		ImGui::Spacing();
 
-		components::command_button<"waypointtp">({}, "Waypoint");
+		components::command_button<"waypointtp">({}, "VIEW_PLAYER_TELEPORT_WAYPOINT"_T);
 		ImGui::SameLine();
-		components::command_button<"objectivetp">({}, "Objective");
+		components::command_button<"objectivetp">({}, "VIEW_TELEPORT_OBJECTIVE"_T);
 		ImGui::SameLine();
-		components::command_button<"highlighttp">({}, "Selected");
+		components::command_button<"highlighttp">({}, "VIEW_TELEPORT_SELECTED"_T);
 		components::command_checkbox<"autotptowp">();
 
-		ImGui::SeparatorText("Movement");
+		ImGui::SeparatorText("VIEW_TELEPORT_MOVEMENT"_T.data());
 
 		ImGui::Spacing();
 
-		components::small_text("Current coordinates");
+		components::small_text("VIEW_TELEPORT_CURRENT_COORDINATES"_T);
 		float coords[3] = {self::pos.x, self::pos.y, self::pos.z};
 		static float new_location[3];
 		static float increment = 1;
@@ -32,30 +32,30 @@ namespace big
 		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##currentcoordinates", coords, "%f", ImGuiInputTextFlags_ReadOnly);
 		ImGui::SameLine();
-		components::button("Copy to custom", [coords] {
+		components::button("VIEW_TELEPORT_COPY_TO_CUSTOM"_T, [coords] {
 			std::copy(std::begin(coords), std::end(coords), std::begin(new_location));
 		});
 
-		components::small_text("Custom teleport");
+		components::small_text("GUI_TAB_CUSTOM_TELEPORT"_T);
 		ImGui::SetNextItemWidth(400);
 		ImGui::InputFloat3("##Customlocation", new_location);
 		ImGui::SameLine();
-		components::button("Teleport", [] {
+		components::button("GUI_TAB_TELEPORT"_T, [] {
 			teleport::to_coords({new_location[0], new_location[1], new_location[2]});
 		});
 
 		ImGui::Spacing();
-		components::small_text("Specific movement");
+		components::small_text("VIEW_TELEPORT_SPECIFIC_MOVEMENT"_T);
 		ImGui::Spacing();
 
 		ImGui::SetNextItemWidth(200);
-		ImGui::InputFloat("Distance", &increment);
+		ImGui::InputFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &increment);
 
 		ImGui::BeginGroup();
-		components::button("Forward", [] {
+		components::button("VIEW_TELEPORT_FORWARD"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, increment, 0));
 		});
-		components::button("Backward", [] {
+		components::button("VIEW_TELEPORT_BACKWARD"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, -increment, 0));
 		});
 		ImGui::EndGroup();
@@ -63,10 +63,10 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("Left", [] {
+		components::button("LEFT"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, -increment, 0, 0));
 		});
-		components::button("Right", [] {
+		components::button("RIGHT"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, increment, 0, 0));
 		});
 		ImGui::EndGroup();
@@ -74,10 +74,10 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("Up", [] {
+		components::button("VIEW_TELEPORT_UP"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, 0, increment));
 		});
-		components::button("Down", [] {
+		components::button("VIEW_TELEPORT_DOWN"_T, [] {
 			teleport::to_coords(ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, 0, -increment));
 		});
 		ImGui::EndGroup();
@@ -108,7 +108,7 @@ namespace big
 		}
 
 		const auto& selected_ipl = ipls[g.self.ipls.select];
-		if (components::button("LOAD_IPL"_T.data()))
+		if (components::button("LOAD_IPL"_T))
 		{
 			//unload all previous ipls
 			for (auto& ipl : ipls)
@@ -128,13 +128,13 @@ namespace big
 
 		ImGui::SameLine();
 
-		if (components::button("TP_TO_IPL"_T.data()))
+		if (components::button("TP_TO_IPL"_T))
 		{
 			teleport::to_coords(selected_ipl.location);
 		}
 
 		ImGui::Spacing();
-		components::small_text("IPL_INFOS"_T.data());
+		components::small_text("IPL_INFOS"_T);
 
 		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(selected_ipl.ipl_names.size())).data());
 		ImGui::Text(std::vformat("IPL_POSITION"_T,

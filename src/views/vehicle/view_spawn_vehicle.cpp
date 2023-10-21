@@ -218,13 +218,13 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		ImGui::RadioButton("New", &g.spawn_vehicle.spawn_type, 0);
+		ImGui::RadioButton("VIEW_DEBUG_THREADS_NEW"_T.data(), &g.spawn_vehicle.spawn_type, 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", &g.spawn_vehicle.spawn_type, 1);
+		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_PERSONAL"_T.data(), &g.spawn_vehicle.spawn_type, 1);
 		ImGui::SameLine();
-		ImGui::RadioButton("Persistent", &g.spawn_vehicle.spawn_type, 2);
+		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_PERSISTENT"_T.data(), &g.spawn_vehicle.spawn_type, 2);
 		ImGui::SameLine();
-		ImGui::RadioButton("Xml", &g.spawn_vehicle.spawn_type, 3);
+		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_XML"_T.data(), &g.spawn_vehicle.spawn_type, 3);
 
 		switch (g.spawn_vehicle.spawn_type)
 		{

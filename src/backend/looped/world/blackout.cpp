@@ -24,6 +24,5 @@ namespace big
 		}
 	};
 
-	blackout g_blackout("blackout", "Blackout", "Enables blackout mode. This is local and cannot be seen by other players",
-	    g.world.blackout);
+	blackout g_blackout("blackout", "BACKEND_LOOPED_WORLD_BLACKOUT", "BACKEND_LOOPED_WORLD_BLACKOUT_DESC", g.world.blackout);
 }

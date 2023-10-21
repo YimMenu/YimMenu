@@ -20,7 +20,7 @@ namespace big
 
 		if (g.world.override_weather)
 		{
-			if (ImGui::BeginCombo("Weather", weathers[g.world.local_weather]))
+			if (ImGui::BeginCombo("VIEW_TIME_AND_WEATHER_WEATHER"_T.data(), weathers[g.world.local_weather]))
 			{
 				for (int i = 0; i < weathers.size(); i++)
 				{

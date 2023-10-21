@@ -14,5 +14,5 @@ namespace big
 		}
 	};
 
-	teleport_to_objective g_teleport_to_objective("objectivetp", "Teleport To Objective", "Teleports you to your mission objective", 0);
+	teleport_to_objective g_teleport_to_objective("objectivetp", "VIEW_HOTKEY_SETTINGS_TELEPORT_TO_OBJECTIVE", "BACKEND_TELEPORT_TO_OBJECTIVE_DESC", 0);
 }
