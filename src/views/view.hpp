@@ -35,6 +35,7 @@ namespace big
 		static void animations();
 		static void spawned_vehicles();
 		static void scenarios();
+		static void spawn_objects();
 		static void network();
 		static void session_browser();
 		static void recent_modders();

@@ -23,6 +23,7 @@ namespace big
 
 		WORLD,
 		SPAWNED_VEHICLES,
+		SPAWN_OBJECTS,
 
 		NETWORK,
 		SESSION_BROWSER,
@@ -89,6 +90,7 @@ namespace big
 		            {
 						{tabs::CASINO, {"Casino", view::casino}},
 		                {tabs::SPAWNED_VEHICLES, {"Spawned Vehicles", view::spawned_vehicles}},
+						{tabs::SPAWN_OBJECTS, {"Spawn Objects", view::spawn_objects}},
 		            },
 		        },
 		    },
