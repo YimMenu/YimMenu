@@ -99,7 +99,7 @@ namespace big
 
 	void view::scenarios()
 	{
-		static std::vector<std::string> scenarios;
+		static std::vector<std::string> scenarios, searchedScenarios;
 		static std::map<std::string, std::vector<scenariosNm::Scenario>> savedScenarios;
 		static std::string searchScenarioText, selected_scenario;
 		static int is_ped_selected = 0;
@@ -112,7 +112,8 @@ namespace big
 
 
 		ImGui::SetNextItemWidth(200);
-		components::input_text_with_hint("##searchScenarioText", "searchScenario", searchScenarioText);
+		if (components::input_text_with_hint("##searchScenarioText", "searchScenario", searchScenarioText))
+			searchedScenarios.clear();
 		ImGui::SameLine();
 		components::button("Load scenarios", [&] {
 			scenariosNm::load_scenarios(scenarios);
@@ -127,8 +128,14 @@ namespace big
 		components::small_text("Scenarios List");
 		if (ImGui::BeginListBox("##Scenarios", {400, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
-			auto objs = searchScenarioText.length() > 0 ? filterStrings(scenarios, searchScenarioText) : scenarios;
-			for (auto& scenario : objs)
+			std::vector<std::string> temp_objs;
+
+			if (searchedScenarios.size())
+				temp_objs = searchedScenarios;
+			else if (searchScenarioText.length() > 0)
+				temp_objs = searchedScenarios = filterStrings(scenarios, searchScenarioText);
+
+			for (auto& scenario : (temp_objs.size() ? temp_objs : scenarios))
 				if (ImGui::Selectable(scenario.c_str(), selected_scenario == scenario, ImGuiSelectableFlags_AllowDoubleClick))
 				{
 					selected_scenario = scenario;
@@ -146,7 +153,7 @@ namespace big
 
 		ImGui::SeparatorText("Save Scenario");
 
-		static std::string groupName, customScenarioName, selectedGroupName, selectedGroupScenarioName;
+		static std::string groupName, customScenarioName, selectedGroupName;
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##groupName", "groupName", groupName);
@@ -222,7 +229,7 @@ namespace big
 			{
 				auto& scen = savedScenarios[selectedGroupName][i];
 
-				if (ImGui::Selectable(scen.custom_name.c_str(), scen.custom_name == selectedGroupScenarioName, ImGuiSelectableFlags_AllowDoubleClick))
+				if (ImGui::Selectable(scen.custom_name.c_str(), scen.name == selected_scenario, ImGuiSelectableFlags_AllowDoubleClick))
 				{
 					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					{
@@ -231,7 +238,9 @@ namespace big
 					}
 					else
 					{
-						selectedGroupScenarioName = customScenarioName = scen.custom_name;
+						customScenarioName = scen.custom_name;
+						selected_scenario  = scen.name;
+
 						if (ImGui::IsMouseDoubleClicked(0))
 							g_fiber_pool->queue_job([=] {
 								Entity e = is_ped_selected == 1 ? scenariosNm::get_context_menu_ped() : self::ped;

@@ -1,5 +1,6 @@
 
 #include "core/data/world.hpp"
+#include "util/delete_entity.hpp"
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"

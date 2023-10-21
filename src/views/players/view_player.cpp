@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "util/globals.hpp"
 #include "views/view.hpp"
 
 #include <script/globals/GPBD_FM.hpp>
@@ -146,16 +147,19 @@ namespace big
 						ver_Space();
 						components::player_command_button<"nfkick">(g_player_service->get_selected());
 						components::player_command_button<"endkick">(g_player_service->get_selected());
-						components::player_command_button<"desync">(g_player_service->get_selected());
 					}
+
+					if (!current_player->is_host())
+						components::player_command_button<"desync">(g_player_service->get_selected());
 				}
 				ImGui::EndGroup();
 				ver_Space();
 				ImGui::BeginGroup();
 				{
 					components::sub_title("Toxic");
-
+					ImGui::BeginDisabled(globals::get_interior_from_player(current_player->id()) != 0);
 					components::player_command_button<"kill">(g_player_service->get_selected(), {});
+					ImGui::EndDisabled();
 				}
 				ImGui::EndGroup();
 			}

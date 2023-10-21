@@ -1,13 +1,7 @@
 #pragma once
-#include "core/scr_globals.hpp"
-#include "entity.hpp"
-#include "gta/enums.hpp"
-#include "gta/joaat.hpp"
-#include "gta/vehicle_values.hpp"
-#include "math.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
+#include "backend/command.hpp"
+#include "backend/player_command.hpp"
+#include "ped.hpp"
 #include "script_global.hpp"
 
 namespace big::vehicle
@@ -17,8 +11,14 @@ namespace big::vehicle
 		inline static memory::byte_patch* m_patch;
 	};
 
-	inline float mps_to_miph(float mps) { return mps * 2.2369f; }
-	inline float miph_to_mps(float miph) { return miph / 2.2369f; }
+	inline float mps_to_miph(float mps)
+	{
+		return mps * 2.2369f;
+	}
+	inline float miph_to_mps(float miph)
+	{
+		return miph / 2.2369f;
+	}
 	Vector3 get_spawn_location(bool spawn_inside, Hash hash, Ped ped = self::ped);
 	std::optional<Vector3> get_waypoint_location();
 	void set_mp_bitset(Vehicle veh);
@@ -32,6 +32,19 @@ namespace big::vehicle
 	void teleport_into_vehicle(Vehicle veh);
 	void max_vehicle(Vehicle veh);
 	void max_vehicle_performance(Vehicle veh);
+
+	inline bool eject_player(Vehicle veh, int seatIndex)
+	{
+		if (auto player = ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, seatIndex, 0)))
+		{
+			dynamic_cast<player_command*>(command::get(rage::consteval_joaat("vehkick")))->call(player, {});
+			return true;
+		}
+
+		return false;
+	}
+
+	void clear_all_peds(Vehicle vehicle);
 
 	/*
 	* Set 'open' to false to close the door.

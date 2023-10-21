@@ -1,11 +1,22 @@
-
-#include "core/data/persist_weapons.hpp"
 #include "core/data/weapons.hpp"
-#include "gta/joaat.hpp"
+#include "gta/weapons.hpp"
 #include "natives.hpp"
+#include "rage/joaat.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "services/gta_data/weapon_item.hpp"
 #include "services/persist_weapons/persist_weapons.hpp"
+#include "util/strings.hpp"
 #include "views/view.hpp"
+
+inline std::map<std::string, big::weapon_item> filter_weapons_map(const std::map<std::string, big::weapon_item>& inputMap, const std::string& searchString)
+{
+	std::map<std::string, big::weapon_item> filteredMap;
+	std::string lowercaseSearchString = toLowercase(searchString);
+	for (auto pair : inputMap)
+		if (std::string lowercaseStr = toLowercase(pair.second.m_display_name); lowercaseStr.find(lowercaseSearchString) != std::string::npos)
+			filteredMap[pair.first] = pair.second;
+	return filteredMap;
+}
 
 namespace big
 {
@@ -39,14 +50,8 @@ namespace big
 			ImGui::SetNextItemWidth(350);
 			ImGui::SliderFloat("Distance", &g_weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
 			ImGui::Spacing();
-			components::button("Get All Weapons", [] {
-				for (const auto& [_, weapon] : g_gta_data_service->weapons())
-				{
-					WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
-				}
-
-				constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
-				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
+			components::button("Give Parachute", [] {
+				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, GADGET_PARACHUTE, 0, true);
 			});
 			ImGui::SameLine();
 			components::button("Remove Current Weapon", [] {
@@ -63,29 +68,35 @@ namespace big
 
 		if (ImGui::CollapsingHeader("Ammunation"))
 		{
-			static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
-			static std::string selected_weapon, selected_weapon_attachment;
-			ImGui::PushItemWidth(300);
-			if (ImGui::BeginCombo("Weapons", selected_weapon.c_str()))
+			static Hash selected_weapon_hash;
+			static std::string selected_weapon, search_weapon_name;
+
+			static std::map<std::string, big::weapon_item> searched_weapons;
+
+			ImGui::SetNextItemWidth(300);
+			if (components::input_text_with_hint("###search_weapon_name", "search name", search_weapon_name))
+				searched_weapons.clear();
+
+			if (ImGui::BeginListBox("###weaponsList", {300, 100}))
 			{
-				for (auto& weapon : g_gta_data_service->weapons())
+				std::map<std::string, big::weapon_item> temp_objs;
+
+				if (searched_weapons.size())
+					temp_objs = searched_weapons;
+				else if (search_weapon_name.length() > 0)
+					temp_objs = searched_weapons = filter_weapons_map(g_gta_data_service->weapons(), search_weapon_name);
+
+				for (auto& weapon : (temp_objs.size() ? temp_objs : g_gta_data_service->weapons()))
 				{
-					bool is_selected = weapon.second.m_hash == selected_weapon_hash;
-					if (weapon.second.m_display_name != "NULL" && ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+					if (weapon.second.m_display_name != "NULL"
+					    && ImGui::Selectable(weapon.second.m_display_name.c_str(), weapon.second.m_hash == selected_weapon_hash))
 					{
-						selected_weapon                 = weapon.second.m_display_name;
-						selected_weapon_hash            = weapon.second.m_hash;
-						selected_weapon_attachment_hash = {};
-						selected_weapon_attachment.clear();
-					}
-					if (is_selected)
-					{
-						ImGui::SetItemDefaultFocus();
+						selected_weapon      = weapon.second.m_display_name;
+						selected_weapon_hash = weapon.second.m_hash;
 					}
 				}
-				ImGui::EndCombo();
+				ImGui::EndListBox();
 			}
-			ImGui::PopItemWidth();
 			ImGui::SameLine();
 			components::button("Give Weapon", [] {
 				WEAPON::GIVE_WEAPON_TO_PED(self::ped, selected_weapon_hash, 9999, false, true);
@@ -94,83 +105,38 @@ namespace big
 			components::button("Remove Weapon", [] {
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, selected_weapon_hash);
 			});
-
-			ImGui::PushItemWidth(250);
-			if (ImGui::BeginCombo("Attachments", selected_weapon_attachment.c_str()))
-			{
-				weapon_item weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
-				if (!weapon.m_attachments.empty())
-				{
-					for (std::string attachment : weapon.m_attachments)
-					{
-						weapon_component attachment_component = g_gta_data_service->weapon_component_by_name(attachment);
-						std::string attachment_name = attachment_component.m_display_name;
-						Hash attachment_hash        = attachment_component.m_hash;
-						if (attachment_hash == NULL)
-						{
-							attachment_name = attachment;
-							attachment_hash = rage::joaat(attachment);
-						}
-						bool is_selected         = attachment_hash == selected_weapon_attachment_hash;
-						std::string display_name = attachment_name.append("##").append(std::to_string(attachment_hash));
-						if (ImGui::Selectable(display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
-						{
-							selected_weapon_attachment      = attachment_name;
-							selected_weapon_attachment_hash = attachment_hash;
-						}
-						if (is_selected)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
-					}
-				}
-
-				ImGui::EndCombo();
-			}
-			ImGui::PopItemWidth();
-			ImGui::SameLine();
-			components::button("Add to Weapon", [] {
-				WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-			});
-			ImGui::SameLine();
-			components::button("Remove from Weapon", [] {
-				WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(self::ped, selected_weapon_hash, selected_weapon_attachment_hash);
-			});
 		}
 
 		ImGui::Spacing();
 
 		if (ImGui::CollapsingHeader("Persist Weapons"))
 		{
-			static std::string selected_loadout = g_persist_weapons.weapon_loadout_file;
-			ImGui::PushItemWidth(250);
-			if (ImGui::BeginListBox("Saved Loadouts", ImVec2(200, 200)))
+			static std::string selected_loadout;
+
+			if (ImGui::BeginListBox("###SavedLoadouts", ImVec2(200, 100)))
 			{
 				for (std::string filename : persist_weapons::list_weapon_loadouts())
-				{
 					if (components::selectable(filename, filename == selected_loadout))
-					{
 						selected_loadout = filename;
-					}
-				}
 				ImGui::EndListBox();
 			}
 			ImGui::SameLine();
 			ImGui::BeginGroup();
-			static std::string input_file_name;
-			components::input_text_with_hint("Weapon Loadout Filename", "Loadout Name", input_file_name);
-			components::button("Save Loadout", [] {
-				persist_weapons::save_weapons(input_file_name);
-				input_file_name.clear();
-			});
-			ImGui::SameLine();
-			components::button("Load Loadout", [] {
-				persist_weapons::give_player_loadout(selected_loadout);
-			});
-			ImGui::SameLine();
-			ImGui::Text(std::format("Current Loadout: {}:", g_persist_weapons.weapon_loadout_file).data());
+			{
+				components::button("Load Selected Loadout", [] {
+					persist_weapons::give_player_loadout(selected_loadout);
+				});
+
+				static std::string input_file_name;
+				ImGui::Spacing();
+				ImGui::SetNextItemWidth(200);
+				components::input_text_with_hint("###loadoutFilename", "Loadout Name", input_file_name);
+				ImGui::SameLine();
+				components::button("Save Loadout", [] {
+					persist_weapons::save_weapons(input_file_name), input_file_name.clear();
+				});
+			}
 			ImGui::EndGroup();
-			ImGui::PopItemWidth();
 		}
 	}
 }

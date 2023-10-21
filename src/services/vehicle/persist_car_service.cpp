@@ -2,6 +2,7 @@
 
 #include "base/CObject.hpp"
 #include "core/data/persist_car.hpp"
+#include "gta/vehicle_values.hpp"
 #include "pointers.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "util/misc.hpp"

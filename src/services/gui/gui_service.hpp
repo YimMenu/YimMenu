@@ -21,6 +21,7 @@ namespace big
 		FUN_VEHICLE,
 
 		WORLD,
+		SPAWNED_VEHICLES,
 
 		NETWORK,
 		SESSION_BROWSER,
@@ -84,6 +85,9 @@ namespace big
 		        {
 		            "World",
 		            view::world,
+		            {
+		                {tabs::SPAWNED_VEHICLES, {"Spawned Vehicles", view::spawned_vehicles}},
+		            },
 		        },
 		    },
 		    {
