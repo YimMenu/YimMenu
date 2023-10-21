@@ -18,6 +18,26 @@
 
 namespace big
 {
+	/*struct SessionType
+	{
+		eSessionType id;
+		const std::string_view name;
+	};
+
+	const SessionType sessions[] = {
+	    {eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T},
+	    {eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T},
+	    {eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T},
+	    {eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T},
+	    {eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T},
+	    {eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T},
+	    {eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T},
+	    {eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T},
+	    {eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T},
+	    {eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T},
+	    {eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T},
+	};*/
+
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
@@ -83,6 +103,20 @@ namespace big
 			}
 
 			ImGui::Spacing();
+
+			static const std::vector<std::tuple<eSessionType, std::string_view>> sessions = { //This has to be here because if it's generated at compile time, the translations break for some reason.
+				make_tuple(eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T),
+				make_tuple(eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T),
+				make_tuple(eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T),
+				make_tuple(eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T),
+				make_tuple(eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T),
+				make_tuple(eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T),
+				make_tuple(eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T),
+				make_tuple(eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T),
+				make_tuple(eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T),
+				make_tuple(eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T),
+				make_tuple(eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T)
+			};
 
 			for (const auto& [id, name] : sessions)
 			{
