@@ -104,7 +104,7 @@ namespace big
 
 	void view::ptfx_effects()
 	{
-		static std::vector<ptfxEffects::AnimDictCompactObj> animDictCompactObjs;
+		static std::vector<ptfxEffects::AnimDictCompactObj> animDictCompactObjs, searchedAnimDictCompactObjs;
 		static std::map<std::string, std::vector<ptfxEffects::Effect>> savedEffects;
 		static std::string searchDicText;
 		static int selecDicIndex = -1;
@@ -112,12 +112,12 @@ namespace big
 		ImGui::BeginGroup();
 		components::command_checkbox<"ptfx">();
 		ImGui::SameLine();
-		ImGui::PushItemWidth(400);
+		ImGui::SetNextItemWidth(400);
 		ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
 
-		ImGui::PushItemWidth(200);
-		components::input_text_with_hint("##searchDicText", "searchDic", searchDicText);
-		ImGui::PopItemWidth();
+		ImGui::SetNextItemWidth(200);
+		if (components::input_text_with_hint("##searchDicText", "searchDic", searchDicText))
+			searchedAnimDictCompactObjs.clear();
 		ImGui::SameLine();
 		components::button("Load ptfx effects", [&] {
 			ptfxEffects::loadEffects(animDictCompactObjs);
@@ -127,9 +127,15 @@ namespace big
 		components::small_text("DictionaryName");
 		if (ImGui::BeginListBox("##dictionaries", {200, static_cast<float>(*g_pointers->m_gta.m_resolution_y * 0.4)}))
 		{
-			auto objs = searchDicText.length() > 0 ? filterStrings<ptfxEffects::AnimDictCompactObj>(animDictCompactObjs, searchDicText, animDictCompactObjReducer) : animDictCompactObjs;
+			std::vector<ptfxEffects::AnimDictCompactObj> temp_objs;
+
+			if (searchedAnimDictCompactObjs.size())
+				temp_objs = searchedAnimDictCompactObjs;
+			else if (searchDicText.length() > 0)
+				temp_objs = searchedAnimDictCompactObjs = filterStrings<ptfxEffects::AnimDictCompactObj>(animDictCompactObjs, searchDicText, animDictCompactObjReducer);
+
 			unsigned i = 0;
-			for (auto& dicObj : objs)
+			for (auto& dicObj : (temp_objs.size() ? temp_objs : animDictCompactObjs))
 			{
 				if (ImGui::Selectable(dicObj.DictionaryName.c_str(), selecDicIndex == i))
 					selecDicIndex = i;
@@ -157,7 +163,7 @@ namespace big
 
 		ImGui::SeparatorText("Save an effect");
 
-		static std::string groupName, customEffectName, selectedGroupName, selectedGroupEffect;
+		static std::string groupName, customEffectName, selectedGroupName;
 
 		ImGui::PushItemWidth(200);
 		components::input_text_with_hint("##groupName", "groupName", groupName);
@@ -234,7 +240,7 @@ namespace big
 			{
 				auto& effect = savedEffects[selectedGroupName][i];
 
-				if (ImGui::Selectable(effect.name.c_str(), effect.name == selectedGroupEffect))
+				if (ImGui::Selectable(effect.name.c_str(), effect.effect.c_str() == g_ptfx_effects.effect))
 				{
 					if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					{
@@ -243,10 +249,10 @@ namespace big
 					}
 					else
 					{
-						selectedGroupEffect = customEffectName = effect.name;
-						g.self.ptfx_effects.asset              = effect.dict.c_str();
-						g.self.ptfx_effects.effect             = effect.effect.c_str();
-						g.self.ptfx_effects.size               = effect.size;
+						customEffectName = effect.name;
+						g_ptfx_effects.asset                   = effect.dict.c_str();
+						g_ptfx_effects.effect                  = effect.effect.c_str();
+						g_ptfx_effects.size                    = effect.size;
 					}
 				}
 			}
