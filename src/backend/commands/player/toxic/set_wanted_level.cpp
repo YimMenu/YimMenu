@@ -19,7 +19,7 @@ namespace big
 
 			if (level < 0 || level > 5)
 			{
-				ctx->report_error(std::format("Wanted level {} is invalid [0 - 5]", level));
+				ctx->report_error(std::format("{}: '{}' {} [0 - 5]", "WANTED_LEVEL"_T, level, "VIEW_MODEL_SWAPPER_INVALID_INDEX"_T));
 				return std::nullopt;
 			}
 

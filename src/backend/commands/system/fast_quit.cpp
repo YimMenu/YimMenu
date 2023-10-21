@@ -12,5 +12,5 @@ namespace big
 		}
 	};
 
-	fast_quit g_fast_quit("fastquit", "Rage Quit", "We all have bad times sometimes. Close your GTA instant.", 0);
+	fast_quit g_fast_quit("fastquit", "VIEW_HOTKEY_SETTINGS_RAGE_QUIT", "BACKEND_FAST_QUIT_DESC", 0);
 }

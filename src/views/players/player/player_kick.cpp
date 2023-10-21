@@ -7,7 +7,7 @@ namespace big
 	void view::player_kick()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Kick");
+		components::sub_title("KICK"_T);
 		if (ImGui::BeginListBox("##kick", get_listbox_dimensions()))
 		{
 			auto const is_session_host = [] {
@@ -15,7 +15,7 @@ namespace big
 			};
 
 			if (!g_player_service->get_self()->is_host())
-				ImGui::Text("Host and breakup kick require session host");
+				ImGui::Text("VIEW_PLAYER_KICK_HOST_AND_BREAKUP_KICK_REQUIRE_SESSION_HOST"_T.data());
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 

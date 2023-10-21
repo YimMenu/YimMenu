@@ -37,6 +37,5 @@ namespace big
 		}
 	};
 
-	weather_override g_weather_override("weatheroverride", "Override Weather", "Overrides current weather. This is local and cannot be seen by other players",
-	    g.world.override_weather);
+	weather_override g_weather_override("weatheroverride", "BACKEND_LOOPED_WORLD_OVERRIDE_WEATHER", "BACKEND_LOOPED_WORLD_OVERRIDE_WEATHER_DESC", g.world.override_weather);
 }

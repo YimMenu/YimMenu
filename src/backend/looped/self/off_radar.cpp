@@ -27,6 +27,6 @@ namespace big
 		}
 	};
 
-	off_radar g_off_radar("otr", "OFF_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
+	off_radar g_off_radar("otr", "OFF_THE_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
 	bool_command ghost_org("ghostorg", "GHOST_ORG", "GHOST_ORG_DESC", g.self.ghost_org);
 }

@@ -12,17 +12,20 @@ namespace big
 			player_ptr current_player     = g_player_service->get_selected();
 			navigation_struct& player_tab = g_gui_service->get_navigation().at(tabs::PLAYER);
 
-			strcpy(player_tab.name, current_player->get_name());
-			strcat(player_tab.name, std::format(" ({})", std::to_string(current_player->id())).data());
-
+			std::string name_appendage{};
 			if (current_player->is_host())
-				strcat(player_tab.name, " [HOST]");
-
+			{
+				name_appendage += std::format(" [{}]", "VIEW_PLAYER_IS_HOST"_T);
+			}
 			if (current_player->is_friend())
-				strcat(player_tab.name, " [FRIEND]");
-
+			{
+				name_appendage += std::format(" [{}]", "VIEW_PLAYER_IS_FRIEND"_T);
+			}
 			if (current_player->is_modder)
-				strcat(player_tab.name, " [MOD]");
+			{
+				name_appendage += std::format(" [{}]", "MOD"_T);
+			}
+			strcpy(player_tab.name, std::format("{} ({}){}", current_player->get_name(), current_player->id(), name_appendage).c_str());
 
 			view::player_info();
 			ImGui::SameLine();

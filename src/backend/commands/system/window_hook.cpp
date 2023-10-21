@@ -25,6 +25,5 @@ namespace big
 		}
 	};
 
-	window_hook g_window_hook("windowhook", "GTA Window Hook", "Only enable this if you know what you are doing, this will prevent AHK scripts from working.",
-	    g.debug.window_hook);
+	window_hook g_window_hook("windowhook", "BACKEND_GTA_WINDOW_HOOK", "BACKEND_GTA_WINDOW_HOOK_DESC", g.debug.window_hook);
 }

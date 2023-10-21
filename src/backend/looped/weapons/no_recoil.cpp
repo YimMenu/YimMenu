@@ -54,5 +54,5 @@ namespace big
 		}
 	};
 
-	no_recoil g_no_recoil("norecoil", "No Recoil", "Removes weapon recoil when shooting", g.weapons.no_recoil);
+	no_recoil g_no_recoil("norecoil", "BACKEND_LOOPED_WEAPONS_NO_RECOIL", "BACKEND_LOOPED_WEAPONS_NO_RECOIL_DESC", g.weapons.no_recoil);
 }

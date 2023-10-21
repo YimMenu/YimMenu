@@ -13,14 +13,14 @@ namespace big
 		}
 		g_handling_service->backup_vehicle();
 
-		if (components::button("HANDLING_SAVE_PROFILE"_T.data()))
+		if (components::button("HANDLING_SAVE_PROFILE"_T))
 		{
 			ImGui::OpenPopup("HANDLING_SAVE_HANDLING"_T.data());
 		}
 
 		modal_handling::modal_save_handling();
 		ImGui::SameLine();
-		if (components::button("HANDLING_RESTORE_HANDLING"_T.data()))
+		if (components::button("HANDLING_RESTORE_HANDLING"_T))
 			g_handling_service->restore_vehicle();
 
 		ImGui::Separator();

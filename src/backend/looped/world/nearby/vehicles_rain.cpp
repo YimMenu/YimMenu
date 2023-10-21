@@ -30,7 +30,5 @@ namespace big
 		}
 	};
 
-	vehicle_rain g_vehicle_rain("vehiclerain", "Rain Vehicles", "Drops surrounding vehicles, vehicles can hit and kill you!",
-	    g.world.nearby.veh_rain);
-
+	vehicle_rain g_vehicle_rain("vehiclerain", "Rain Vehicles", "BACKEND_LOOPED_WORLD_RAIN_VEHICLES_DESC",g.world.nearby.veh_rain);
 }

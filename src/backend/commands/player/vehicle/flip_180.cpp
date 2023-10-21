@@ -40,7 +40,5 @@ namespace big
 		}
 	};
 
-	flip_180
-		g_flip_180("flip180", "Rotate 180", "Rotates the player's car around", 0)
-			;
+	flip_180 g_flip_180("flip180", "BACKEND_FLIP", "BACKEND_FLIP_DESC", 0);
 }

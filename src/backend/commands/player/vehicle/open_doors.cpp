@@ -29,11 +29,11 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("Toxic", "Failed to take control of vehicle");
+					g_notification_service->push_warning("TOXIC"_T.data(), "ERROR_FAILED_TO_TAKE_CONTROL"_T.data());
 				}
 			}
 		}
 	};
 
-	open_doors g_open_doors("opendoors", "Opens Vehicle Doors", "Opens all vehicle doors", 0);
+	open_doors g_open_doors("opendoors", "BACKEND_OPEN_VEHICLE_DOORS", "BACKEND_OPEN_VEHICLE_DOORS_DESC", 0);
 }
