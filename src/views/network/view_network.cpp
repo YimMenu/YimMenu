@@ -104,7 +104,7 @@ namespace big
 
 			ImGui::Spacing();
 
-			static const std::vector<std::tuple<eSessionType, std::string_view>> sessions = { //This has to be here because if it's generated at compiletime, the translations break for some reason.
+			static const std::vector<std::tuple<eSessionType, std::string_view>> sessions = { //This has to be here because if it's generated at compile time, the translations break for some reason.
 				make_tuple(eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T),
 				make_tuple(eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T),
 				make_tuple(eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T),
