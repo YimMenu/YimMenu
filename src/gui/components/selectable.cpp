@@ -15,13 +15,13 @@ namespace big
 
 	void components::selectable(const std::string_view text, bool selected, std::function<void()> cb)
 	{
-		if (components::selectable(text.data(), selected))
+		if (components::selectable(text, selected))
 			g_fiber_pool->queue_job(std::move(cb));
 	}
 
 	void components::selectable(const std::string_view text, bool selected, ImGuiSelectableFlags flag, std::function<void()> cb)
 	{
-		if (components::selectable(text.data(), selected, flag))
+		if (components::selectable(text, selected, flag))
 		{
 			g_fiber_pool->queue_job(std::move(cb));
 		}
