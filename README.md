@@ -16,4 +16,6 @@ the develop branch is currently - `refractor/minimal-yimmenu`. This following br
 
 ## Injecting the menu
 
-Check the release section on right side of this page. Check the latest release page and download the dll. Inject it using injectors like [Xenos](https://github.com/DarthTon/Xenos).
+Check the release section on right side of this page. Check the latest release page and download the build. Inject it using injectors like [Xenos](https://github.com/DarthTon/Xenos).
+
+You can also download the latest release build from this [link](https://github.com/lonelybud/YimMenu/releases/latest/download/YimMenu.dll)
