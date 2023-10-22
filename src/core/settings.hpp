@@ -384,7 +384,7 @@ namespace big
 			bool join_in_sctv_slots                = false;
 			bool lock_session                      = false;
 			bool allow_friends_into_locked_session = false;
-			bool trust_friends = false;
+			bool trust_friends                     = false;
 
 			const char chat_command_prefix = '/';
 			const char chat_output_prefix  = '>';
