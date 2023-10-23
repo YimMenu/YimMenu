@@ -57,7 +57,7 @@ namespace big
 	}
 
 
-	void reaction::process(player_ptr player, bool is_crash)
+	void reaction::process(player_ptr player, bool is_crash_exclude_TSE)
 	{
 		if (!player->is_valid())
 			return;
@@ -81,14 +81,14 @@ namespace big
 			});
 		}
 
-		if (notify && !is_crash)
+		if (notify && !is_crash_exclude_TSE)
 		{
 			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
 			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
-		if (!is_crash)
+		if (!is_crash_exclude_TSE)
 		    process_common(player, true);
 	}
 }
