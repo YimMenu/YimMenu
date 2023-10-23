@@ -15,9 +15,9 @@ namespace big
 
 		const auto time_now = std::chrono::steady_clock::now();
 
-		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
+		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time);
 
-		if (is_vehicle_gun_selected && !g_gui->is_open() && elapsed_time_in_ms >= 100 && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK)
+		if (is_vehicle_gun_selected && !g_gui->is_open() && elapsed_time_in_ms >= 100ms && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK)
 		    && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			Vector3 location = self::pos;
