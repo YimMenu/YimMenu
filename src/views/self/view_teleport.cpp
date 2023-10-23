@@ -129,18 +129,12 @@ namespace big
 					}
 				}
 
-				// Delay to wait for the unloading to complete
-				script::get_current()->yield(100ms);
-
 				// Load previously deleted IPLs of the last selection
 				for (auto& ipl_name_load : ipls[last_select].ipl_names_remove)
 				{
 					STREAMING::REQUEST_IPL(ipl_name_load);
 					LOG(INFO) << "Loaded previously deleted IPLs " << ipl_name_load;
 				}
-
-				// Small delay to allow for IPLs to load
-				script::get_current()->yield(100ms);
 
 				// Load new IPLs of the current selection
 				for (auto& ipl_name : ipls[current_select].ipl_names)
