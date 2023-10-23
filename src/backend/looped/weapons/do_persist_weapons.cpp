@@ -9,9 +9,9 @@ namespace big
 	{
 		const auto time_now = std::chrono::steady_clock::now();
 
-		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
+		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time);
 
-		if (elapsed_time_in_ms >= 500)
+		if (elapsed_time_in_ms >= 500ms)
 		{
 			last_time = time_now;
 
