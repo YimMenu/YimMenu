@@ -114,7 +114,7 @@ namespace big
 			ImGui::EndCombo();
 		}
 		ImGui::SameLine();
-		components::button("LOAD_IPL"_T.data(), [] 
+		components::button("LOAD_IPL"_T, [] 
 		{
 			// If we've changed selections, first unload previously loaded IPL, then load previously deleted IPLs
 			if (current_select != last_select)
@@ -160,13 +160,13 @@ namespace big
 			}
 		});
 		ImGui::SameLine();
-		components::button("TP_TO_IPL"_T.data(), [] 
+		components::button("TP_TO_IPL"_T, [] 
 		{
 			teleport::to_coords(ipls[current_select].location);
 		});
 
 		ImGui::Spacing();
-		components::small_text("IPL_INFOS"_T.data());
+		components::small_text("IPL_INFOS"_T);
 
 		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(ipls[current_select].ipl_names.size())).data());
 		ImGui::Text(std::vformat("IPL_POSITION"_T, std::make_format_args(ipls[current_select].location.x, ipls[current_select].location.y, ipls[current_select].location.z)).data());
