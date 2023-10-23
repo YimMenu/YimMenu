@@ -150,7 +150,11 @@ namespace big
 
 			ImGui::Checkbox("Trust friends", &g.session.trust_friends);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Friends won't be flagged as modders. Allow friends to bypass kick and timeout reactions");
+				ImGui::SetTooltip("Friends won't be flagged as modders or taken actions by reactions");
+			
+			ImGui::Checkbox("Trust this session", &g.session.trust_session);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("Players in this session won't be flagged as modders or taken actions by reactions");
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 

@@ -43,6 +43,7 @@ namespace big
 			if (reaction.add_to_player_db)
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_ATTACKER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 
 			if (reaction.m_blockable || reaction.m_karmaable)
 				ImGui::Separator();
