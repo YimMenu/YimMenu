@@ -10,6 +10,7 @@
 #include "util/session.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
+#include "backend/bool_command.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -130,6 +131,9 @@ namespace big
 		ImGui::EndGroup();
 	}
 
+	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
+	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
+
 	void render_misc()
 	{
 		ImGui::BeginGroup();
@@ -148,13 +152,8 @@ namespace big
 				ImGui::InputInt("##playercount", &g.session.player_magnet_count);
 			}
 
-			ImGui::Checkbox("Trust friends", &g.session.trust_friends);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Friends won't be flagged as modders or taken actions by reactions");
-			
-			ImGui::Checkbox("Trust this session", &g.session.trust_session);
-			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Players in this session won't be flagged as modders or taken actions by reactions");
+			components::command_checkbox<"trustfriends">();
+			components::command_checkbox<"trustsession">();
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
