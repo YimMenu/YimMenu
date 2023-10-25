@@ -80,8 +80,8 @@ namespace big::notify
 					if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 					        g_player_service->get_self()->get_net_data(),
 					        chat,
-					        false))
-						draw_chat(chat, g_player_service->get_self()->get_name(), false);
+					        g.reactions.crash.is_team_only))
+						draw_chat(chat, g_player_service->get_self()->get_name(), g.reactions.crash.is_team_only);
 				});
 			}
 

@@ -18,6 +18,8 @@ namespace big
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
+			ImGui::SameLine();
+			ImGui::Checkbox("IS_TEAM"_T.data(), &reaction.is_team_only);
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
@@ -37,6 +39,8 @@ namespace big
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
+			ImGui::SameLine();
+			ImGui::Checkbox("IS_TEAM"_T.data(), &reaction.is_team_only);
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);

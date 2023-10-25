@@ -73,8 +73,8 @@ namespace big
 				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
 				        chat,
-				        false))
-					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
+				        is_team_only))
+					notify::draw_chat(chat, g_player_service->get_self()->get_name(), is_team_only);
 			});
 		}
 
