@@ -112,8 +112,6 @@ namespace big
 		draw_reaction(g.reactions.request_control_event);
 		draw_reaction(g.reactions.spectate);
 		draw_interloper_reaction(g.reactions.spectate_others);
-		ImGui::Separator();
-		draw_reaction(g.reactions.gamer_instruction_kick);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);
