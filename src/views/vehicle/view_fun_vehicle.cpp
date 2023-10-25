@@ -3,18 +3,20 @@
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
-constexpr int wheelIndexes[4]     = {0, 1, 4, 5};
-const char* driving_style_names[] = {"Law-Abiding", "The Road Is Yours"};
+constexpr int wheelIndexes[4]{0, 1, 4, 5};
+const char* driving_style_names[]{"Law-Abiding", "The Road Is Yours"};
 
 constexpr auto MAX_VEHICLE_DOORS = 6;
 const char* const doornames[MAX_VEHICLE_DOORS]{
-    "Front left",
-    "Front right",
-    "Back left",
-    "Back right",
-    "Bonnet",
-    "Trunk",
+    "D_1",
+    "D_2",
+    "D_3",
+    "D_4",
+    "Bon",
+    "Trk",
 };
+
+const std::map<const char*, const char*> radio_stations{{"RADIO_27_DLC_PRHEI4", "iFruit Radio"}, {"RADIO_01_CLASS_ROCK", "Los Santos Rock Radio"}, {"RADIO_02_POP", "Non-Stop-Pop FM"}, {"RADIO_03_HIPHOP_NEW", "Radio Los Santos"}, {"RADIO_04_PUNK", "Channel X"}, {"RADIO_06_COUNTRY", "Rebel Radio"}, {"RADIO_07_DANCE_01", "Soulwax FM"}, {"RADIO_08_MEXICAN", "East Los FM"}, {"RADIO_09_HIPHOP_OLD", "West Coast Classics"}, {"RADIO_12_REGGAE", "Blue Ark"}, {"RADIO_13_JAZZ", "Worldwide FM"}, {"RADIO_14_DANCE_02", "FlyLo FM"}, {"RADIO_15_MOTOWN", "The Lowdown 91.1"}, {"RADIO_20_THELAB", "The Lab"}, {"RADIO_16_SILVERLAKE", "Radio Mirror Park"}, {"RADIO_17_FUNK", "Space 103.2"}, {"RADIO_18_90S_ROCK", "Vinewood Boulevard Radio"}, {"RADIO_21_DLC_XM17", "Blonded Los Santos 97.8 FM"}, {"RADIO_22_DLC_BATTLE_MIX1_RADIO", "Los Santos Underground Radio"}, {"RADIO_19_USER", "Self Radio"}, {"OFF", "Off"}};
 
 namespace big
 {
@@ -24,6 +26,8 @@ namespace big
 		{
 			static Vehicle curr_veh;
 			static eVehicleLockState door_locked_state;
+			static bool veh_all_door_open     = false;
+			static const char* selected_radio = "OFF";
 
 			if (self::veh && curr_veh != self::veh)
 			{
@@ -56,22 +60,19 @@ namespace big
 							VEHICLE::SET_VEHICLE_DOORS_LOCKED(curr_veh, (int)eVehicleLockState::VEHICLELOCK_LOCKED);
 						door_locked_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(curr_veh);
 					});
-
-					components::button("Open All", [=] {
-						vehicle::operate_vehicle_door(curr_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, true);
+					ImGui::SameLine();
+					components::button("Toggle Doors", [] {
+						vehicle::operate_vehicle_door(curr_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, veh_all_door_open = !veh_all_door_open);
 					});
 					ImGui::SameLine();
-					components::button("Close All", [=] {
-						vehicle::operate_vehicle_door(curr_veh, eDoorId::VEH_EXT_DOOR_INVALID_ID, false);
-					});
 					for (int i = 0; i < MAX_VEHICLE_DOORS; i++)
 					{
 						components::button(doornames[i], [=] {
 							vehicle::operate_vehicle_door(curr_veh, (eDoorId)i, !(VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(curr_veh, i) > 0.0f));
 						});
-						if (i % 2 == 0)
-							ImGui::SameLine();
+						ImGui::SameLine();
 					}
+					ImGui::NewLine();
 				}
 				ImGui::SeparatorText("Windows");
 				{
@@ -93,6 +94,39 @@ namespace big
 					components::button("Interior lights off", [] {
 						VEHICLE::SET_VEHICLE_INTERIORLIGHT(curr_veh, false);
 					});
+				}
+				ImGui::SeparatorText("Radio");
+				{
+					components::button("Reset to active radio", [] {
+						auto curr_station = AUDIO::GET_PLAYER_RADIO_STATION_NAME();
+
+						if (!curr_station)
+							selected_radio = "OFF";
+						else
+						{
+							auto it = std::find_if(radio_stations.begin(), radio_stations.end(), [curr_station](const std::pair<const char* const, const char*>& e) {
+								return std::strcmp(e.first, curr_station) == 0;
+							});
+							if (it != radio_stations.end())
+								selected_radio = it->first;
+						}
+					});
+					ImGui::Spacing();
+					if (ImGui::BeginListBox("###radioStations", {300, 200}))
+					{
+						for (auto& radio : radio_stations)
+							if (ImGui::Selectable(radio.second, radio.first == selected_radio))
+							{
+								selected_radio = radio.first;
+								g_fiber_pool->queue_job([=] {
+									AUDIO::SET_VEH_RADIO_STATION(curr_veh, radio.first);
+								});
+							}
+							else if (radio.first == selected_radio)
+								ImGui::SetItemDefaultFocus();
+
+						ImGui::EndListBox();
+					}
 				}
 			}
 			else
@@ -130,7 +164,7 @@ namespace big
 
 					bool& is_veh_checked_ref = is_veh_checked; // Helper reference
 
-					components::button(idx >= 0 ? ("Seat " + std::to_string(idx + 1)) : "Driver", [idx, &is_veh_checked_ref] {
+					components::button(idx >= 0 ? ("S_" + std::to_string(idx + 1)) : "S_0", [idx, &is_veh_checked_ref] {
 						if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::veh, idx, true))
 							PED::SET_PED_INTO_VEHICLE(self::ped, self::veh, idx);
 
@@ -140,8 +174,8 @@ namespace big
 					if (!it.second)
 						ImGui::EndDisabled();
 
-					if ((idx + 2) % 5 != 0)
-						ImGui::SameLine();
+					// if ((idx + 2) % 5 != 0)
+					ImGui::SameLine();
 				}
 				ImGui::NewLine();
 			}

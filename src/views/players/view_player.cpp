@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "util/delete_entity.hpp"
 #include "util/globals.hpp"
 #include "views/view.hpp"
 
@@ -160,6 +161,11 @@ namespace big
 					ImGui::BeginDisabled(globals::get_interior_from_player(current_player->id()) != 0);
 					components::player_command_button<"kill">(g_player_service->get_selected(), {});
 					ImGui::EndDisabled();
+
+					components::button("Delete Vehicle", [current_player] {
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
+						entity::delete_entity(veh);
+					});
 				}
 				ImGui::EndGroup();
 			}

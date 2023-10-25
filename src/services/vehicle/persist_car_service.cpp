@@ -143,10 +143,6 @@ namespace big
 				    0,
 				    true,
 				    0);
-
-				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
-				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
-				ENTITY::SET_ENTITY_INVINCIBLE(object, attachment.is_invincible);
 			}
 		}
 
@@ -173,9 +169,6 @@ namespace big
 			    true,
 			    0);
 
-			ENTITY::SET_ENTITY_VISIBLE(vehicle_to_attach, attachment.is_visible, 0);
-			ENTITY::SET_ENTITY_COLLISION(vehicle_to_attach, attachment.has_collision, true);
-			ENTITY::SET_ENTITY_INVINCIBLE(vehicle_to_attach, attachment.is_invincible);
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
 		}
 
@@ -202,24 +195,6 @@ namespace big
 		{
 			std::vector<int> primary_custom_color = vehicle_json[custom_primary_color_key];
 			VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, primary_custom_color[0], primary_custom_color[1], primary_custom_color[2]);
-		}
-
-		if (!vehicle_json[is_visible_key].is_null())
-		{
-			bool is_visible = vehicle_json[is_visible_key];
-			ENTITY::SET_ENTITY_VISIBLE(vehicle, is_visible, 0);
-		}
-
-		if (!vehicle_json[has_collision_key].is_null())
-		{
-			bool has_collision = vehicle_json[has_collision_key];
-			ENTITY::SET_ENTITY_COLLISION(vehicle, has_collision, true);
-		}
-
-		if (!vehicle_json[is_invincible_key].is_null())
-		{
-			bool is_invincible = vehicle_json[is_invincible_key];
-			ENTITY::SET_ENTITY_INVINCIBLE(vehicle, is_invincible);
 		}
 
 		if (!vehicle_json[custom_secondary_color_key].is_null())

@@ -32,14 +32,22 @@ namespace big
 				components::command_checkbox<"infammo">();
 				components::command_checkbox<"infclip">();
 				ImGui::EndDisabled();
+				ImGui::BeginDisabled(g_weapons.infinite_ammo || g_weapons.infinite_mag);
+				components::command_checkbox<"rapidfire">();
+				ImGui::EndDisabled();
 			}
 			ImGui::EndGroup();
 			ImGui::SameLine();
 			ImGui::BeginGroup();
 			{
-				ImGui::BeginDisabled(g_weapons.infinite_ammo || g_weapons.infinite_mag);
-				components::command_checkbox<"rapidfire">();
-				ImGui::EndDisabled();
+				components::command_checkbox<"norecoil">();
+				components::command_checkbox<"nospread">();
+				components::command_checkbox<"damage_modifier">();
+				if (g_weapons.damage_modifier)
+				{
+					ImGui::SetNextItemWidth(200);
+					ImGui::SliderInt("###damage_modifier_v", &g_weapons.damage_modifier_v, 2, 8);
+				}
 			}
 			ImGui::EndGroup();
 		}
