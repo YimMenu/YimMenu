@@ -4,7 +4,7 @@ refer to original readme [here](https://github.com/YimMenu/YimMenu#readme)
 
 This is a modified version of original yimmenu code. So it contains changes to original code (removal/modification) and addition of new features.
 
-the develop branch is currently - `refractor/minimal-yimmenu`. This following branches has been merged in this branch and new changes will not be added in them now. Instead they will be added directy to `refractor/minimal-yimmenu`.
+the develop branch is currently - `develop/mini-yimmenu`. This following branches has been merged in this branch and new changes will not be added in them now. Instead they will be added directy to `develop/mini-yimmenu`.
 
 - feature/clear-attached-props
 - feature/lowrider-vehicle-controls
