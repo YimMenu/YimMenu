@@ -14,20 +14,61 @@ namespace big
 		{
 			if (!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui->is_open() && !PED::IS_PED_DEAD_OR_DYING(self::ped, true))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && PED::GET_PED_CONFIG_FLAG(self::ped,78,0))
+				const auto weapon_entity = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(self::ped, 0);
+
+				if (!weapon_entity)
+					return;
+
+				auto camera_direction = math::rotation_to_direction(CAM::GET_GAMEPLAY_CAM_ROT(0));
+				auto camera_position  = CAM::GET_GAMEPLAY_CAM_COORD() + camera_direction;
+
+				Vector3 end = camera_position + camera_direction * 2000.0;
+				Hash weapon_hash;
+				WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, false);
+
+				if (WEAPON::GET_WEAPONTYPE_GROUP(weapon_hash) == 1548507267)
 				{
-					const auto weapon_entity = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(self::ped, 0);
-					if (!weapon_entity)
-						return;
+					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
+					{
+						const auto raycast_handle =
+						    SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(camera_position.x,
+						        camera_position.y,
+						        camera_position.z,
+						        end.x,
+						        end.y,
+						        end.z,
+						        -1,
+						        0,
+						        7);
+						int did_raycast_hit = 0;
+						Vector3 raycast_hit_position{};
+						Vector3 raycast_surface_normal_hit_position{};
+						Entity raycast_hit_entity{};
+						SHAPETEST::GET_SHAPE_TEST_RESULT(raycast_handle, &did_raycast_hit, &raycast_hit_position, &raycast_surface_normal_hit_position, &raycast_hit_entity);
+						if (did_raycast_hit)
+						{
+							end = raycast_hit_position;
+						}
 
-					auto camera_direction = math::rotation_to_direction(CAM::GET_GAMEPLAY_CAM_ROT(0));
-					auto camera_position  = CAM::GET_GAMEPLAY_CAM_COORD() + camera_direction;
+						Vector3 dim_min;
+						Vector3 dim_max;
+						MISC::GET_MODEL_DIMENSIONS(ENTITY::GET_ENTITY_MODEL(weapon_entity), &dim_min, &dim_max);
+						const auto dimensions = (dim_max - dim_min) * 0.5f;
+						const auto weapon_position =
+						    ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(weapon_entity, dimensions.x, 0, dimensions.z * 0.3f);
 
-					Vector3 end = camera_position + camera_direction * 2000.0;
-		
-					PED::SET_PED_SHOOTS_AT_COORD(self::ped, end.x, end.y, end.z, true);
-					WEAPON::REFILL_AMMO_INSTANTLY(self::ped);
+						MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(weapon_position.x, weapon_position.y, weapon_position.z, end.x, end.y, end.z, WEAPON::GET_WEAPON_DAMAGE(weapon_hash, 0), true, weapon_hash, self::ped, true, false, -1.0);
+					}
 				}
+				else
+				{
+					if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && PED::GET_PED_CONFIG_FLAG(self::ped, 78, 0))
+					{
+						PED::SET_PED_SHOOTS_AT_COORD(self::ped, end.x, end.y, end.z, true);
+						WEAPON::REFILL_AMMO_INSTANTLY(self::ped);
+					}
+				}
+
 			}
 		}
 	};
