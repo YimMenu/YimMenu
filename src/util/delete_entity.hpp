@@ -21,7 +21,7 @@ namespace big::entity
 				ENTITY::DETACH_ENTITY(ent, 0, 0);
 
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
-			
+
 			if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
 				ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, true, true);
 			ENTITY::DELETE_ENTITY(&ent);
@@ -29,5 +29,7 @@ namespace big::entity
 			if (ENTITY::DOES_ENTITY_EXIST(ent))
 				ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&ent);
 		}
+		else
+			g_notification_service->push_error("Deletion failed", std::format("For entity {}", ent));
 	}
 }

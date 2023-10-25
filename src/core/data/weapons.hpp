@@ -8,6 +8,11 @@ namespace big
 		bool infinite_mag  = false;
 		bool rapid_fire    = false;
 
+		bool no_recoil        = false;
+		bool no_spread        = false;
+		bool damage_modifier  = false;
+		int damage_modifier_v = 3;
+
 		struct aimbot
 		{
 			bool enable    = false;
