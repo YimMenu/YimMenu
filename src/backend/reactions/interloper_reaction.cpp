@@ -20,6 +20,8 @@ namespace big
 	{
 		if (!attacker->is_valid() || !victim->is_valid())
 			return;
+		if ((attacker->is_friend() && g.session.trust_friends) || attacker->is_trusted || g.session.trust_session)
+			return;
 
 		if (log)
 		{

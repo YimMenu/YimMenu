@@ -19,9 +19,6 @@ namespace big
 
 	void reaction::process_common(player_ptr player)
 	{
-		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
-			return;
-
 		if (add_to_player_db)
 		{
 			auto entry = g_player_database_service->get_or_create_player(player);
@@ -55,6 +52,8 @@ namespace big
 	{
 		if (!player->is_valid())
 			return;
+		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
+			    return;
 
 		if (log)
 		{

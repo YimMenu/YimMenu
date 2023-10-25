@@ -55,6 +55,11 @@ namespace big::notify
 	{
 		if (player)
 		{
+			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
+			    || g_player_service->get_by_id(player->m_player_id)->is_trusted
+			    || g.session.trust_session)
+				return;
+
 			if (g.reactions.crash.notify)
 				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
 
