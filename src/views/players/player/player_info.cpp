@@ -129,7 +129,7 @@ namespace big
 
 				    ImGui::Separator();
 
-					if (ImGui::Checkbox("Trusted", &g_player_service->get_selected()->is_trusted))
+					if (ImGui::Checkbox("TRUST"_T.data(), &g_player_service->get_selected()->is_trusted))
 					{
 					    auto entry = g_player_database_service->get_or_create_player(g_player_service->get_selected());
 					    entry->is_trusted = g_player_service->get_selected()->is_trusted;

@@ -17,16 +17,10 @@ namespace big
 	{
 	}
 
-	void reaction::process_common(player_ptr player, bool addlog)
+	void reaction::process_common(player_ptr player)
 	{
 		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
 			return;
-
-		if (log && addlog)
-		{
-			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
-			LOG(WARNING) << std::format("Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
-		}
 
 		if (add_to_player_db)
 		{
@@ -57,12 +51,16 @@ namespace big
 	}
 
 
-	void reaction::process(player_ptr player, bool is_crash_exclude_TSE)
+	void reaction::process(player_ptr player)
 	{
 		if (!player->is_valid())
 			return;
-		if ((player->is_friend() && g.session.trust_friends) || g.session.trust_session)
-			return;
+
+		if (log)
+		{
+			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
+			LOG(WARNING) << std::format("Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
+		}
 
 		if (announce_in_chat)
 		{
@@ -81,14 +79,13 @@ namespace big
 			});
 		}
 
-		if (notify && !is_crash_exclude_TSE)
+		if (notify)
 		{
 			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
 			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
-		if (!is_crash_exclude_TSE)
-		    process_common(player, true);
+		process_common(player);
 	}
 }

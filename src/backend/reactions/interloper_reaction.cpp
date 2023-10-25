@@ -21,6 +21,12 @@ namespace big
 		if (!attacker->is_valid() || !victim->is_valid())
 			return;
 
+		if (log)
+		{
+			uint64_t rockstar_id = attacker->get_net_data() == nullptr ? 0 : attacker->get_net_data()->m_gamer_handle.m_rockstar_id;
+			LOG(WARNING) << std::format("Received {} from {} ({}), victim is {}", m_event_name, attacker->get_name(), rockstar_id, victim->get_name());
+		}
+
 		if (announce_in_chat)
 		{
 			g_fiber_pool->queue_job([attacker, victim, this] {
@@ -46,6 +52,6 @@ namespace big
 			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
-		process_common(attacker, true);
+		process_common(attacker);
 	}
 }

@@ -27,7 +27,7 @@ namespace big
 			}
 			if (current_player->is_trusted)
 			{
-				name_appendage += std::format(" [{}]", "Trusted");
+				name_appendage += std::format(" [{}]", "TRUST"_T);
 			}
 			strcpy(player_tab.name, std::format("{} ({}){}", current_player->get_name(), current_player->id(), name_appendage).c_str());
 

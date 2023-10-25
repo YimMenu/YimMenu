@@ -41,7 +41,7 @@ namespace big
 			*script_local(beast->m_stack, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(7).as<Player*>() = -1;
 
 			if (auto plyr = g_player_service->get_by_id(sender->m_player_id))
-				g.reactions.turn_into_beast.process(plyr, false);
+				g.reactions.turn_into_beast.process(plyr);
 		}
 
 		if ((array->m_array >= scr_globals::globalplayer_bd.as<uint8_t*>()
@@ -52,7 +52,7 @@ namespace big
 			{
 				if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer == self::id)
 				{
-					g.reactions.remote_wanted_level.process(plyr, false);
+					g.reactions.remote_wanted_level.process(plyr);
 				}
 				else if (auto victim = g_player_service->get_by_id(
 				             scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer))
@@ -69,7 +69,7 @@ namespace big
 			*scr_globals::gsbd.as<eFreemodeState*>() = eFreemodeState::RUNNING;
 
 			if (auto plyr = g_player_service->get_by_id(sender->m_player_id))
-				g.reactions.end_session_kick.process(plyr, false);
+				g.reactions.end_session_kick.process(plyr);
 		}
 
 		return result;
