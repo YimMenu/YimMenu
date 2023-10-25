@@ -51,10 +51,10 @@ namespace big
 				components::sub_title("Info");
 				components::options_modal(
 				    "Extra Info",
-				    [] {
+				    [current_player] {
 					    ImGui::BeginGroup();
 
-					    auto id = g_player_service->get_selected()->id();
+					    auto id = current_player->id();
 
 					    if (id != -1)
 					    {
@@ -79,17 +79,17 @@ namespace big
 
 					    ImGui::Separator();
 
-					    ImGui::Checkbox("Block Explosions", &g_player_service->get_selected()->block_explosions);
-					    ImGui::Checkbox("Block Clone Creates", &g_player_service->get_selected()->block_clone_create);
-					    ImGui::Checkbox("Block Clone Syncs", &g_player_service->get_selected()->block_clone_sync);
-					    ImGui::Checkbox("Block Network Events", &g_player_service->get_selected()->block_net_events);
-					    ImGui::Checkbox("Log Clones", &g_player_service->get_selected()->log_clones);
+					    ImGui::Checkbox("Block Explosions", &current_player->block_explosions);
+					    ImGui::Checkbox("Block Clone Creates", &current_player->block_clone_create);
+					    ImGui::Checkbox("Block Clone Syncs", &current_player->block_clone_sync);
+					    ImGui::Checkbox("Block Network Events", &current_player->block_net_events);
+					    ImGui::Checkbox("Log Clones", &current_player->log_clones);
 				    },
 				    false);
 				ImGui::SameLine();
-				components::button("SC Profile", [] {
+				components::button("SC Profile", [current_player] {
 					uint64_t gamerHandle[13];
-					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
+					NETWORK::NETWORK_HANDLE_FROM_PLAYER(current_player->id(), (Any*)&gamerHandle, 13);
 					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
 				});
 			}
@@ -106,11 +106,11 @@ namespace big
 				{
 					components::sub_title("Teleport");
 
-					components::player_command_button<"playertp">(g_player_service->get_selected());
+					components::player_command_button<"playertp">(current_player);
 					ImGui::SameLine();
-					components::player_command_button<"playervehtp">(g_player_service->get_selected());
+					components::player_command_button<"playervehtp">(current_player);
 					ImGui::SameLine();
-					components::player_command_button<"bring">(g_player_service->get_selected());
+					components::player_command_button<"bring">(current_player);
 				}
 				ImGui::EndGroup();
 				ver_Space();
@@ -118,21 +118,21 @@ namespace big
 				{
 					components::sub_title("Misc");
 
-					components::player_command_button<"copyoutfit">(g_player_service->get_selected());
+					components::player_command_button<"copyoutfit">(current_player);
 					ImGui::SameLine();
-					components::player_command_button<"clearwanted">(g_player_service->get_selected());
+					components::player_command_button<"clearwanted">(current_player);
 
 					ImGui::Spacing();
 
-					components::player_command_button<"joinceo">(g_player_service->get_selected());
+					components::player_command_button<"joinceo">(current_player);
 
 					ImGui::Spacing();
 
-					components::player_command_button<"givehealth">(g_player_service->get_selected());
+					components::player_command_button<"givehealth">(current_player);
 					ImGui::SameLine();
-					components::player_command_button<"givearmor">(g_player_service->get_selected());
+					components::player_command_button<"givearmor">(current_player);
 					ImGui::SameLine();
-					components::player_command_button<"giveammo">(g_player_service->get_selected());
+					components::player_command_button<"giveammo">(current_player);
 				}
 				ImGui::EndGroup();
 				ver_Space();
@@ -141,17 +141,17 @@ namespace big
 					components::sub_title("Kick");
 
 					if (g_player_service->get_self()->is_host())
-						components::player_command_button<"hostkick">(g_player_service->get_selected());
+						components::player_command_button<"hostkick">(current_player);
 					else
 					{
-						components::player_command_button<"shkick">(g_player_service->get_selected());
+						components::player_command_button<"shkick">(current_player);
 						ver_Space();
-						components::player_command_button<"nfkick">(g_player_service->get_selected());
-						components::player_command_button<"endkick">(g_player_service->get_selected());
+						components::player_command_button<"nfkick">(current_player);
+						components::player_command_button<"endkick">(current_player);
 					}
 
 					if (!current_player->is_host())
-						components::player_command_button<"desync">(g_player_service->get_selected());
+						components::player_command_button<"desync">(current_player);
 				}
 				ImGui::EndGroup();
 				ver_Space();
@@ -159,8 +159,10 @@ namespace big
 				{
 					components::sub_title("Toxic");
 					ImGui::BeginDisabled(globals::get_interior_from_player(current_player->id()) != 0);
-					components::player_command_button<"kill">(g_player_service->get_selected(), {});
+					components::player_command_button<"kill">(current_player, {});
 					ImGui::EndDisabled();
+
+					components::player_command_button<"vehkick">(current_player, {});
 
 					components::button("Delete Vehicle", [current_player] {
 						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
