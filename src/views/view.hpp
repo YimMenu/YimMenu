@@ -47,7 +47,6 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car(bool);
-		static void fun_vehicle();
 		static void teleport();
 		static void custom_teleport();
 		static void view_player();

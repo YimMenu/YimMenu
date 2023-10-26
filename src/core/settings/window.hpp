@@ -5,7 +5,7 @@ namespace big
 {
 	inline struct g_window_t
 	{
-		ImU32 background_color = 4278190080;
+		ImU32 background_color = 3556769792;
 		ImU32 text_color       = 4292072403;
 		ImU32 button_color     = 2936035029;
 		ImU32 frame_color      = 2939170865;
@@ -16,7 +16,7 @@ namespace big
 		ImFont* font_small     = nullptr;
 		ImFont* font_icon      = nullptr;
 
-		bool demo          = false;
+		bool demo = false;
 
 		struct ingame_overlay
 		{

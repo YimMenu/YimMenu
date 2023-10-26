@@ -120,9 +120,8 @@ namespace big
 		});
 		ImGui::SameLine();
 		components::button("Stop scenarios", [=] {
-			Entity e = is_ped_selected == 1 ? scenariosNm::get_context_menu_ped() : self::ped;
-			if (e)
-				TASK::CLEAR_PED_TASKS(e);
+			if (Entity e = is_ped_selected == 1 ? scenariosNm::get_context_menu_ped() : self::ped; e)
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(e);
 		});
 
 		components::small_text("Scenarios List");

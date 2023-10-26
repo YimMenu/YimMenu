@@ -147,7 +147,7 @@ namespace big::mobile
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
 			if (g_clone_pv.spawn_inside && self::veh)
-				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
 			// despawn current veh
 			util::despawn_current_personal_vehicle();
