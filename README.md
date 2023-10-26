@@ -13,6 +13,7 @@ the develop branch is currently - `develop/mini-yimmenu`. This following branche
 - feature/casino
 - feature/spawn-and-attach-objects
 - feature/ptfx_tab
+- devops/changes
 
 ## Injecting the menu
 
