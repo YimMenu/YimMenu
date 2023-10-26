@@ -30,15 +30,6 @@ namespace big
 				CAM::DO_SCREEN_FADE_IN(0);
 			});
 			ImGui::Spacing();
-			components::button("TP to Safe Position", [] {
-				Vector3 safepos{};
-				float heading;
-				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, 0))
-					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
-				else
-					g_notification_service->push_error("Find safe pos", "Failed to find a safe position");
-			});
-			ImGui::Spacing();
 			components::command_button<"fastquit">();
 			ImGui::Spacing();
 			ImGui::Checkbox("ImGui Demo", &imGui_demo);

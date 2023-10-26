@@ -22,5 +22,7 @@ namespace big
 			self::veh = PED::GET_VEHICLE_PED_IS_IN(self::ped, false);
 		else
 			self::veh = 0;
+
+		self::last_veh = PLAYER::GET_PLAYERS_LAST_VEHICLE();
 	}
 }

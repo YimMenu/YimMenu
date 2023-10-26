@@ -73,7 +73,7 @@ namespace big::animations
 		});
 		ImGui::SameLine();
 		components::button("Stop", [] {
-			TASK::CLEAR_PED_TASKS(self::ped);
+			TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 		});
 	}
 }

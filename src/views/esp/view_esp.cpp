@@ -1,8 +1,8 @@
 #include "view_esp.hpp"
 
+#include "core/settings/esp.hpp"
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
-#include "core/settings/esp.hpp"
 
 namespace big
 {
@@ -28,8 +28,8 @@ namespace big
 			const auto esp_x = (float)*g_pointers->m_gta.m_resolution_x * screen_x;
 			const auto esp_y = (float)*g_pointers->m_gta.m_resolution_y * screen_y;
 
-			std::string name_str = plyr->get_name();
-			ImVec2 name_pos = {esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f};
+			std::string name_str = g_esp.name ? plyr->get_name() : std::string(plyr->get_name()).substr(0, 4);
+			ImVec2 name_pos      = {esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 20.f};
 
 			if (g_esp.distance)
 				name_str += " | " + std::to_string((int)distance) + "m";

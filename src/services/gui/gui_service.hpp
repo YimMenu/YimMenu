@@ -20,7 +20,6 @@ namespace big
 		VEHICLE,
 		LSC,
 		SPAWN_VEHICLE,
-		FUN_VEHICLE,
 
 		WORLD,
 		SPAWNED_VEHICLES,
@@ -80,7 +79,6 @@ namespace big
 		            {
 		                {tabs::LSC, {"LSC", view::lsc}},
 		                {tabs::SPAWN_VEHICLE, {"Spawn Vehicle", view::spawn_vehicle}},
-		                {tabs::FUN_VEHICLE, {"Fun Features", view::fun_vehicle}},
 		            },
 		        },
 		    },

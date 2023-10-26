@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "services/vehicle/persist_car_service.hpp"
 #include "util/delete_entity.hpp"
 #include "util/globals.hpp"
 #include "views/view.hpp"
@@ -118,12 +119,8 @@ namespace big
 				{
 					components::sub_title("Misc");
 
-					components::player_command_button<"copyoutfit">(current_player);
-					ImGui::SameLine();
 					components::player_command_button<"clearwanted">(current_player);
-
-					ImGui::Spacing();
-
+					ImGui::SameLine();
 					components::player_command_button<"joinceo">(current_player);
 
 					ImGui::Spacing();
@@ -133,6 +130,14 @@ namespace big
 					components::player_command_button<"givearmor">(current_player);
 					ImGui::SameLine();
 					components::player_command_button<"giveammo">(current_player);
+
+					ImGui::Spacing();
+					components::player_command_button<"copyoutfit">(current_player);
+					ImGui::SameLine();
+					components::button("Copy Vehicle", [current_player] {
+						if (Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false); veh)
+							persist_car_service::clone_ped_car(self::ped, veh);
+					});
 				}
 				ImGui::EndGroup();
 				ver_Space();
@@ -163,10 +168,14 @@ namespace big
 					ImGui::EndDisabled();
 
 					components::player_command_button<"vehkick">(current_player, {});
-
 					components::button("Delete Vehicle", [current_player] {
 						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
 						entity::delete_entity(veh);
+					});
+					components::button("Empty Vehicle", [current_player] {
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
+						if (veh && ENTITY::IS_ENTITY_A_VEHICLE(veh))
+							vehicle::clear_all_peds(veh);
 					});
 				}
 				ImGui::EndGroup();

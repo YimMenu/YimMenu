@@ -102,13 +102,24 @@ namespace big
 			ImGui::EndGroup();
 		}
 		ImGui::Spacing();
-		ImGui::SeparatorText("###otherselfOptions");
+		ImGui::SeparatorText("###otherOptions1");
 		{
 			static bool hideRadar = false;
 
 			components::command_button<"skipcutscene">();
 			ImGui::SameLine();
 			components::command_button<"fillsnacks">();
+			ImGui::SameLine();
+			components::button("Hide Radar", [] {
+				HUD::DISPLAY_RADAR(hideRadar = !hideRadar);
+			});
+		}
+		ImGui::Spacing();
+		ImGui::SeparatorText("###otherOptions2");
+		{
+			components::button("Clear tasks", [] {
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+			});
 			ImGui::SameLine();
 			components::button("Clear Attachments", [] {
 				for (auto obj : pools::get_all_props())
@@ -122,10 +133,6 @@ namespace big
 
 					ENTITY::DELETE_ENTITY(&object);
 				}
-			});
-			ImGui::SameLine();
-			components::button("Hide Radar", [] {
-				HUD::DISPLAY_RADAR(hideRadar = !hideRadar);
 			});
 		}
 	}

@@ -79,6 +79,7 @@ namespace self
 	inline Player id;
 	inline Vector3 pos;
 	inline Vehicle veh;
+	inline Vehicle last_veh;
 }
 
 template<size_t N>

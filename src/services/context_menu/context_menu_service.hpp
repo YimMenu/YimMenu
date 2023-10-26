@@ -95,9 +95,9 @@ namespace big
 		            }},
 		        {"COPY VEHICLE",
 		            [this] {
-			            Vehicle v = persist_car_service::clone_ped_car(PLAYER::PLAYER_PED_ID(), m_handle);
+			            Vehicle v = persist_car_service::clone_ped_car(self::ped, m_handle);
 			            script::get_current()->yield();
-			            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), v, -1);
+			            PED::SET_PED_INTO_VEHICLE(self::ped, v, -1);
 		            }},
 		        {"TP INTO", [this] {
 			         teleport::into_vehicle(m_handle);
