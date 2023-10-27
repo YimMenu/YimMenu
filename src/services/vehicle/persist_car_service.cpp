@@ -188,7 +188,6 @@ namespace big
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, vehicle_json[primary_color_key], vehicle_json[secondary_color_key]);
 
 		if (!vehicle_json[custom_primary_color_key].is_null())

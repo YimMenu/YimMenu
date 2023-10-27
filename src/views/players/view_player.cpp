@@ -1,6 +1,7 @@
 #include "core/data/language_codes.hpp"
 #include "core/data/player.hpp"
 #include "core/scr_globals.hpp"
+#include "core/settings/protections.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
@@ -9,6 +10,7 @@
 #include "util/globals.hpp"
 #include "views/view.hpp"
 
+#include <network/netConnection.hpp>
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
@@ -18,10 +20,10 @@ inline void ver_Space()
 	ImGui::Dummy(ImVec2(0.0f, ImGui::GetTextLineHeight()));
 }
 
-big::player_ptr last_selected_player;
-
 namespace big
 {
+	static inline big::player_ptr last_selected_player;
+
 	void view::view_player()
 	{
 		ImGui::Spacing();
@@ -54,10 +56,7 @@ namespace big
 				    "Extra Info",
 				    [current_player] {
 					    ImGui::BeginGroup();
-
-					    auto id = current_player->id();
-
-					    if (id != -1)
+					    if (auto id = current_player->id(); id != -1)
 					    {
 						    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
 						    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
@@ -75,6 +74,45 @@ namespace big
 						    ImGui::Text("K/D Ratio: %f", stats.KdRatio);
 						    ImGui::Text("Kills On Players: %d", stats.KillsOnPlayers);
 						    ImGui::Text("Deaths By Players: %d", stats.DeathsByPlayers);
+
+						    ImGui::Spacing();
+						    auto ip   = current_player->get_ip_address();
+						    auto port = current_player->get_port();
+
+						    if (ip)
+						    {
+							    ImGui::Text("IP Address: %d.%d.%d.%d:%d",
+							        ip.value().m_field1,
+							        ip.value().m_field2,
+							        ip.value().m_field3,
+							        ip.value().m_field4,
+							        port);
+							    ImGui::SameLine();
+							    if (ImGui::SmallButton("copy##copyip"))
+								    ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}",
+								        ip.value().m_field1,
+								        ip.value().m_field2,
+								        ip.value().m_field3,
+								        ip.value().m_field4,
+								        port)
+								                                .c_str());
+						    }
+						    else if (auto net_player_data = current_player->get_net_data())
+						    {
+							    ImGui::Text(net_player_data->m_force_relays ? "IP Address: Hidden" : "IP Address: Unknown");
+							    if (g_protections.force_relay_connections)
+								    ImGui::Text("Note - IP addresses cannot be seen when Force Relay Connections is enabled.");
+							    else
+							    {
+								    auto conn_peer = current_player->get_connection_peer();
+								    auto cxn_type  = conn_peer ? conn_peer->m_peer_address.m_connection_type : 0;
+
+								    if (cxn_type == 2)
+									    ImGui::Text("Cannot retrieve IP address since this player is connected through dedicated servers.");
+								    else if (cxn_type == 3)
+									    ImGui::Text("Cannot retrieve IP address since this player is connected through another player.");
+							    }
+						    }
 					    }
 					    ImGui::EndGroup();
 
@@ -93,6 +131,9 @@ namespace big
 					NETWORK::NETWORK_HANDLE_FROM_PLAYER(current_player->id(), (Any*)&gamerHandle, 13);
 					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
 				});
+				ver_Space();
+				if (components::button("Copy Name##copyname"))
+					ImGui::SetClipboardText(current_player->get_name());
 			}
 			ImGui::EndGroup();
 
