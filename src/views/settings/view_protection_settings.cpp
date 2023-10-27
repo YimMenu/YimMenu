@@ -1,19 +1,8 @@
-#include "views/view.hpp"
 #include "core/settings/protections.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
-	static inline void set_all_protections(bool state)
-	{
-		for (size_t i = (size_t)&g_protections; i <= (size_t) & (g_protections.admin_check); i++)
-			*(bool*)i = state;
-	}
-
-	static inline void reset_protections()
-	{
-		g_protections = {};
-	}
-
 	void view::protection_settings()
 	{
 		ImGui::BeginGroup();
@@ -55,15 +44,17 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
 		ImGui::Checkbox("Admin Check", &g_protections.admin_check);
+		components::command_checkbox<"forcerelays">();
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("Options");
 		ImGui::BeginGroup();
 		if (ImGui::Button("Disable All Protections"))
-			set_all_protections(false);
+			for (size_t i = (size_t)&g_protections; i <= (size_t) & (g_protections.force_relay_connections); i++)
+				*(bool*)i = false;
 		ImGui::SameLine();
 		if (ImGui::Button("Reset Protections"))
-			reset_protections();
+			g_protections = {};
 		ImGui::EndGroup();
 	};
 }
