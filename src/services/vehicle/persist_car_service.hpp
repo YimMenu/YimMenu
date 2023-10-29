@@ -13,6 +13,7 @@ namespace big
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
 		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
+		static void delete_vehicle(std::string_view file_name, std::string folder_name);
 
 	private:
 		static constexpr auto model_attachment_key  = "model_attachment";
