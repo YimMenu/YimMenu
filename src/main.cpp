@@ -4,6 +4,7 @@
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
+#include "http_client/http_client.hpp"
 #include "logger/exception_handler.hpp"
 #include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
@@ -34,6 +35,7 @@
 #include "thread_pool.hpp"
 #include "util/migrate.hpp"
 #include "version.hpp"
+
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -83,6 +85,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
+
+				g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
+				LOG(INFO) << "HTTP Client initialized.";
 
 			    g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
