@@ -22,7 +22,7 @@ namespace big
 
 		// the amount of threads active in the pool
 		std::atomic<size_t> m_allocated_thread_count;
-		// the amount of threads waiting for a job
+		// the amount of threads currently on a job
 		std::atomic<size_t> m_busy_threads;
 
 	public:
