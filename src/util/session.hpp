@@ -15,7 +15,7 @@
 #include "services/gui/gui_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
-#include "services/recent_modders.cpp"
+#include "services/recent_modders/recent_modders.hpp"
 #include "thread_pool.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"
@@ -163,7 +163,7 @@ namespace big::session
 				g_gui_service->set_selected(tabs::PLAYER);
 				g_player_service->set_selected(player);
 
-				recent_modders_nm::recent_modders_list[rockstar_id] = {name, rockstar_id, true};
+				recent_modders_nm::add_player({name, rockstar_id, true});
 
 				if (g_player_service->get_self()->is_host())
 				{
@@ -180,7 +180,7 @@ namespace big::session
 
 				auto recent_modder = recent_modders_nm::recent_modders_list.find(rockstar_id);
 				if (recent_modder == recent_modders_nm::recent_modders_list.end())
-					recent_modders_nm::recent_modders_list[rockstar_id] = {name, rockstar_id, false};
+					recent_modders_nm::add_player({name, rockstar_id, false});
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 #include "hooking.hpp"
 #include "services/friends/friends_service.hpp"
 #include "services/players/player_service.hpp"
-#include "services/recent_modders.cpp"
+#include "services/recent_modders/recent_modders.hpp"
 #include "util/notify.hpp"
 #include "util/session.hpp"
 

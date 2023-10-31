@@ -5,7 +5,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
-#include "services/recent_modders.cpp"
+#include "services/recent_modders/recent_modders.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "util/delete_entity.hpp"
 #include "util/globals.hpp"
@@ -141,17 +141,17 @@ namespace big
 					NETWORK::NETWORK_HANDLE_FROM_PLAYER(current_player->id(), (Any*)&gamerHandle, 13);
 					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
 				});
-				ver_Space();
+				ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
 				if (components::button("Copy Name##copyname"))
 					ImGui::SetClipboardText(current_player->get_name());
-				ver_Space();
+				ImGui::SameLine();
 				if (components::button("Block Join"))
 				{
 					if (auto net_data = current_player->get_net_data())
 					{
-						auto rockstar_id                                    = net_data->m_gamer_handle.m_rockstar_id;
-						auto name                                           = net_data->m_name;
-						recent_modders_nm::recent_modders_list[rockstar_id] = {name, rockstar_id, true};
+						auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
+						auto name        = net_data->m_name;
+						recent_modders_nm::add_player({name, rockstar_id, true});
 					}
 				}
 			}
@@ -160,7 +160,7 @@ namespace big
 			if (current_player->id() == self::id)
 				return;
 
-			ImGui::SameLine(0, *g_pointers->m_gta.m_resolution_x * 0.4);
+			ImGui::SameLine(0, *g_pointers->m_gta.m_resolution_x * 0.2);
 
 			ImGui::BeginGroup();
 			{
