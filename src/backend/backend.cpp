@@ -9,7 +9,7 @@
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "thread_pool.hpp"
-#include "services/recent_modders.cpp"
+#include "services/recent_modders/recent_modders.hpp"
 
 namespace big
 {

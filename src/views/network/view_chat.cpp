@@ -1,7 +1,7 @@
-#include "core/data/custom_chat_buffer.hpp"
 #include "core/settings/session.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "services/custom_chat_buffer.hpp"
 #include "util/notify.hpp"
 #include "views/view.hpp"
 

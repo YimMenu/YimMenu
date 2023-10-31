@@ -1,7 +1,7 @@
 #include "pointers.hpp"
 #include "services/api/api_service.hpp"
 #include "services/notifications/notification_service.hpp"
-#include "services/recent_modders.cpp"
+#include "services/recent_modders/recent_modders.hpp"
 #include "thread_pool.hpp"
 #include "views/view.hpp"
 
@@ -20,7 +20,7 @@ namespace big
 				if (!g_api_service->get_rid_from_username(player_name, rockstar_id))
 					g_notification_service->push_error("New Player Entry", "User could not be found.");
 				else
-					recent_modders_nm::recent_modders_list[rockstar_id] = {player_name, rockstar_id, true};
+					recent_modders_nm::add_player({player_name, rockstar_id, true});
 			});
 		});
 

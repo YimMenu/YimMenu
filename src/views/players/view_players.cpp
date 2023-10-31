@@ -1,3 +1,4 @@
+#include "core/data/infractions.hpp"
 #include "fiber_pool.hpp"
 #include "fonts/fonts.hpp"
 #include "natives.hpp"
@@ -5,12 +6,12 @@
 #include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
 #include "views/view.hpp"
-#include "core/data/infractions.hpp"
 
 #define IMGUI_DEFINE_PLACEMENT_NEW
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include <imgui_internal.h>
 #include "core/settings/window.hpp"
+
+#include <imgui_internal.h>
 
 namespace big
 {
@@ -42,9 +43,7 @@ namespace big
 		const ImRect icons_box(icons_pos, icons_pos + icons_size);
 		ImGui::PopFont();
 
-		if (plyr->is_admin)
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.67f, 0.f, 1.f));
-		else if (plyr->is_modder)
+		if (plyr->is_modder)
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.f, 0.1f, 0.1f, 1.f));
 
 		if (selected_player)
@@ -56,7 +55,7 @@ namespace big
 		const auto style = ImGui::GetStyle();
 		// branchless conditional calculation
 		const auto plyr_btn_width = 300.f - (style.ItemInnerSpacing.x * 2) - (has_scrollbar * style.ScrollbarSize);
-		if (ImGui::Button(plyr->get_name(), { plyr_btn_width, 0.f}))
+		if (ImGui::Button(plyr->get_name(), {plyr_btn_width, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
@@ -75,7 +74,7 @@ namespace big
 		if (selected_player)
 			ImGui::PopStyleColor();
 
-		if (plyr->is_admin || plyr->is_modder)
+		if (plyr->is_modder)
 			ImGui::PopStyleColor();
 
 		// render icons on top of the player button
@@ -102,11 +101,10 @@ namespace big
 		if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			const auto style = ImGui::GetStyle();
-			float window_height = (
-				ImGui::CalcTextSize("A").y + style.FramePadding.y * 2.0f + style.ItemSpacing.y) // button size
-				* player_count // amount of players
-				+ (player_count > 1) * ((style.ItemSpacing.y * 2) + 1.f) // account for ImGui::Separator spacing
-				+ (player_count == 1) * 2.f; // some arbitrary height to make it fit
+			float window_height = (ImGui::CalcTextSize("A").y + style.FramePadding.y * 2.0f + style.ItemSpacing.y) // button size
+			        * player_count                                       // amount of players
+			    + (player_count > 1) * ((style.ItemSpacing.y * 2) + 1.f) // account for ImGui::Separator spacing
+			    + (player_count == 1) * 2.f;                             // some arbitrary height to make it fit
 			// used to account for scrollbar width
 			has_scrollbar = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f;
 

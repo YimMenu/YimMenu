@@ -43,7 +43,6 @@ namespace big
 		ImGui::Checkbox("Receive Pickup", &g_protections.receive_pickup);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("This prevents the collection of pickups such as unwanted money bags\nNote: Normal pickups are also no longer possible to collect with this enabled");
-		ImGui::Checkbox("Admin Check", &g_protections.admin_check);
 		components::command_checkbox<"forcerelays">();
 		ImGui::EndGroup();
 

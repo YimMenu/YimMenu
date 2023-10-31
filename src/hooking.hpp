@@ -94,8 +94,6 @@ namespace big
 		static eAckCode received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
 		static bool can_apply_data(rage::netSyncTree* tree, rage::netObject* object);
 
-		static void write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
-
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
 		static void invalid_decal(uintptr_t a1, int a2);
 		static int task_parachute_object(uint64_t _this, int a2, int a3);
@@ -130,8 +128,6 @@ namespace big
 		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, int16_t cycle);
 
 		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
-
-		static void write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
 		static void write_vehicle_proximity_migration_data_node(rage::netObject* veh, CVehicleProximityMigrationDataNode* node);
 

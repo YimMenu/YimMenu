@@ -50,17 +50,8 @@ namespace big
 		    && scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer != -1)
 		{
 			if (auto plyr = g_player_service->get_by_id(sender->m_player_id))
-			{
 				if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer == self::id)
-				{
 					g_reactions.remote_wanted_level.process(plyr);
-				}
-				else if (auto victim = g_player_service->get_by_id(
-				             scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer))
-				{
-					g_reactions.remote_wanted_level_others.process(plyr, victim);
-				}
-			}
 
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[sender->m_player_id].RemoteWantedLevelPlayer = -1; // reset locally
 		}

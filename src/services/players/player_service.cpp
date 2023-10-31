@@ -54,8 +54,11 @@ namespace big
 	player_ptr player_service::get_by_host_token(uint64_t token) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (auto net_data = player->get_net_data(); net_data && net_data->m_host_token == token)
+		{
+			auto net_data = player->get_net_data();
+			if (net_data && net_data->m_host_token == token)
 				return player;
+		}
 		return nullptr;
 	}
 

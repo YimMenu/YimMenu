@@ -5,6 +5,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gui/gui_service.hpp"
+#include "services/recent_modders/recent_modders.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "util/delete_entity.hpp"
 #include "util/globals.hpp"
@@ -99,7 +100,8 @@ namespace big
 						    }
 						    else if (auto net_player_data = current_player->get_net_data())
 						    {
-							    ImGui::Text(net_player_data->m_force_relays ? "IP Address: Hidden" : "IP Address: Unknown");
+							    ImGui::Text(net_player_data->m_force_relays ? "IP Address: Force Relay" : "IP Address: Unknown");
+
 							    if (g_protections.force_relay_connections)
 								    ImGui::Text("Note - IP addresses cannot be seen when Force Relay Connections is enabled.");
 							    else
@@ -108,9 +110,17 @@ namespace big
 								    auto cxn_type  = conn_peer ? conn_peer->m_peer_address.m_connection_type : 0;
 
 								    if (cxn_type == 2)
-									    ImGui::Text("Cannot retrieve IP address since this player is connected through dedicated servers.");
+								    {
+									    auto ip = conn_peer->m_relay_address.m_relay_address;
+									    ImGui::Text(std::format("Relay IP Address: {}.{}.{}.{}", ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
+									                    .c_str());
+								    }
 								    else if (cxn_type == 3)
-									    ImGui::Text("Cannot retrieve IP address since this player is connected through another player.");
+								    {
+									    auto ip = conn_peer->m_peer_address.m_relay_address;
+									    ImGui::Text(std::format("Peer Relay IP : {}.{}.{}.{}", ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
+									                    .c_str());
+								    }
 							    }
 						    }
 					    }
@@ -131,16 +141,26 @@ namespace big
 					NETWORK::NETWORK_HANDLE_FROM_PLAYER(current_player->id(), (Any*)&gamerHandle, 13);
 					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
 				});
-				ver_Space();
+				ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
 				if (components::button("Copy Name##copyname"))
 					ImGui::SetClipboardText(current_player->get_name());
+				ImGui::SameLine();
+				if (components::button("Block Join"))
+				{
+					if (auto net_data = current_player->get_net_data())
+					{
+						auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
+						auto name        = net_data->m_name;
+						recent_modders_nm::add_player({name, rockstar_id, true});
+					}
+				}
 			}
 			ImGui::EndGroup();
 
 			if (current_player->id() == self::id)
 				return;
 
-			ImGui::SameLine(0, *g_pointers->m_gta.m_resolution_x * 0.4);
+			ImGui::SameLine(0, *g_pointers->m_gta.m_resolution_x * 0.2);
 
 			ImGui::BeginGroup();
 			{
@@ -161,18 +181,14 @@ namespace big
 					components::sub_title("Misc");
 
 					components::player_command_button<"clearwanted">(current_player);
-					ImGui::SameLine();
-					components::player_command_button<"joinceo">(current_player);
-
 					ImGui::Spacing();
-
 					components::player_command_button<"givehealth">(current_player);
 					ImGui::SameLine();
 					components::player_command_button<"givearmor">(current_player);
 					ImGui::SameLine();
 					components::player_command_button<"giveammo">(current_player);
 
-					ImGui::Spacing();
+					ver_Space();
 					components::player_command_button<"copyoutfit">(current_player);
 					ImGui::SameLine();
 					components::button("Copy Vehicle", [current_player] {
@@ -209,14 +225,20 @@ namespace big
 					ImGui::EndDisabled();
 
 					components::player_command_button<"vehkick">(current_player, {});
-					components::button("Delete Vehicle", [current_player] {
+					components::button("Stop Vehicle", [current_player] {
 						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
-						entity::delete_entity(veh);
+						if (veh && ENTITY::IS_ENTITY_A_VEHICLE(veh) && entity::take_control_of(veh))
+							VEHICLE::BRING_VEHICLE_TO_HALT(veh, 1, 5, true);
 					});
 					components::button("Empty Vehicle", [current_player] {
 						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
 						if (veh && ENTITY::IS_ENTITY_A_VEHICLE(veh))
 							vehicle::clear_all_peds(veh);
+					});
+					ver_Space();
+					components::button("Delete Vehicle", [current_player] {
+						Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false);
+						entity::delete_entity(veh);
 					});
 				}
 				ImGui::EndGroup();

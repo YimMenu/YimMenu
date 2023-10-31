@@ -14,7 +14,6 @@ namespace big
 		bool force_session_host                = false;
 		bool force_script_host                 = false;
 		bool lock_session                      = false;
-		bool allow_friends_into_locked_session = true;
 
 		CommandAccessLevel chat_command_default_access_level = CommandAccessLevel::FRIENDLY;
 

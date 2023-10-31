@@ -7,6 +7,8 @@
 
 namespace big
 {
+	static std::string persist_vehicle_sub_folder = "";
+
 	static void save_vehicle(char* vehicle_file_name_input, const char* folder_name)
 	{
 		if (ENTITY::DOES_ENTITY_EXIST(self::veh))
@@ -25,7 +27,7 @@ namespace big
 			if (spawn_at_waypoint)
 				waypoint_location = vehicle::get_waypoint_location();
 
-			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g_persist_car.persist_vehicle_sub_folder, waypoint_location);
+			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, persist_vehicle_sub_folder, waypoint_location);
 
 			if (!vehicle)
 			{
@@ -58,24 +60,49 @@ namespace big
 		static std::string selected_vehicle_file;
 
 		const auto vehicle_folders = persist_car_service::list_sub_folders();
-		const auto vehicle_files   = persist_car_service::list_files(g_persist_car.persist_vehicle_sub_folder);
+		const auto vehicle_files   = persist_car_service::list_files(persist_vehicle_sub_folder);
+		static std::string file_name_to_delete{};
+
+		if (!file_name_to_delete.empty())
+			ImGui::OpenPopup("##deletepersistcar");
+
+		if (ImGui::BeginPopupModal("##deletepersistcar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
+		{
+			ImGui::Text("Are you sure you want to delete %s?", file_name_to_delete.c_str());
+
+			ImGui::Spacing();
+
+			if (ImGui::Button("Yes"))
+			{
+				persist_car_service::delete_vehicle(file_name_to_delete, persist_vehicle_sub_folder);
+				file_name_to_delete.clear();
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No"))
+			{
+				file_name_to_delete.clear();
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
 
 		ImGui::Checkbox("Spawn Inside", &g_persist_car.spawn_inside);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Controls whether the player should be set inside the vehicle after it spawns");
 
 		ImGui::SetNextItemWidth(300.f);
-		auto folder_display =
-		    g_persist_car.persist_vehicle_sub_folder.empty() ? "Root" : g_persist_car.persist_vehicle_sub_folder.c_str();
+		auto folder_display = persist_vehicle_sub_folder.empty() ? "Root" : persist_vehicle_sub_folder.c_str();
 		if (ImGui::BeginCombo("Folder", folder_display))
 		{
-			if (ImGui::Selectable("Root", g_persist_car.persist_vehicle_sub_folder == ""))
-				g_persist_car.persist_vehicle_sub_folder.clear();
+			if (ImGui::Selectable("Root", persist_vehicle_sub_folder == ""))
+				persist_vehicle_sub_folder.clear();
 
 			for (std::string folder_name : vehicle_folders)
 			{
-				if (ImGui::Selectable(folder_name.c_str(), g_persist_car.persist_vehicle_sub_folder == folder_name))
-					g_persist_car.persist_vehicle_sub_folder = folder_name;
+				if (ImGui::Selectable(folder_name.c_str(), persist_vehicle_sub_folder == folder_name))
+					persist_vehicle_sub_folder = folder_name;
 			}
 
 			ImGui::EndCombo();
@@ -100,13 +127,16 @@ namespace big
 				std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
 				if (pair_lower.contains(lower_search))
 				{
-					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
+					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
 					{
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([spawn_at_waypoint] {
 							load_vehicle(selected_vehicle_file, spawn_at_waypoint);
 						});
 					}
+					ImGui::SameLine();
+					if (ImGui::SmallButton("X"))
+						file_name_to_delete = pair;
 				}
 			}
 
@@ -126,7 +156,7 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("Ex: My Cool Car");
 
-		if (g_persist_car.persist_vehicle_sub_folder.empty())
+		if (persist_vehicle_sub_folder.empty())
 		{
 			static char save_folder[50]{};
 			components::small_text("Vehicle Folder Name");
@@ -141,7 +171,7 @@ namespace big
 		}
 		else
 		{
-			save_vehicle_button(vehicle_file_name_input, g_persist_car.persist_vehicle_sub_folder.c_str());
+			save_vehicle_button(vehicle_file_name_input, persist_vehicle_sub_folder.c_str());
 		}
 
 		ImGui::EndGroup();

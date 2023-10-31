@@ -31,8 +31,6 @@ namespace big::notify
 			if (g_reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
 				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-		
-			g_reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));
 		}
 		else
 		{

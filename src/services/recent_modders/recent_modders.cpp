@@ -1,25 +1,11 @@
 #pragma once
-
-using json = nlohmann::json;
+#include "recent_modders.hpp"
 
 namespace recent_modders_nm
 {
-	struct recent_modder
-	{
-		std::string name;
-		uint64_t rockstar_id;
-		bool block_join = true;
-	};
-
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(recent_modder, name, rockstar_id);
-
-	inline std::map<uint64_t, recent_modder> recent_modders_list;
-
-	inline std::filesystem::path getSavedFilePath()
-	{
-		return big::g_file_manager.get_project_file("blocked_modders.json").get_path();
-	}
-	inline void load_blocked_list()
+	std::map<uint64_t, recent_modder> recent_modders_list;
+	
+	void load_blocked_list()
 	{
 		try
 		{
@@ -40,7 +26,7 @@ namespace recent_modders_nm
 		}
 	}
 
-	inline void save_blocked_list()
+	void save_blocked_list()
 	{
 		std::map<uint64_t, recent_modder> filtered_map;
 		for (const auto& entry : recent_modders_list)

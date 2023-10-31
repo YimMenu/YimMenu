@@ -1,5 +1,4 @@
 #include "core/data/region_codes.hpp"
-#include "core/data/spoofing.hpp"
 #include "core/settings/session.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
@@ -63,16 +62,10 @@ namespace big
 			{
 				components::sub_title("Misc");
 				ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
-				{
-					ImGui::Checkbox("Block others from joining session", &g_session.lock_session);
-					if (g_session.lock_session)
-						ImGui::Checkbox("Allow Friends", &g_session.allow_friends_into_locked_session);
-				}
+				ImGui::Checkbox("Lock Session", &g_session.lock_session);
 				ImGui::EndDisabled();
 				components::script_patch_checkbox("Reveal OTR Players", &g_session.decloak_players, "Reveals players that are off the radar");
 				ImGui::Checkbox("Force Thunder globally", &g_session.force_thunder);
-				ImGui::Checkbox("Hide God Mode", &g_spoofing.spoof_hide_god);
-				ImGui::Checkbox("Hide Spectate", &g_spoofing.spoof_hide_spectate);
 			}
 			ImGui::EndGroup();
 		}

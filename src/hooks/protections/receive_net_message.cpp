@@ -1,19 +1,20 @@
 #include "backend/command.hpp"
 #include "backend/player_command.hpp"
-#include "core/data/custom_chat_buffer.hpp"
 #include "core/data/packet_types.hpp"
 #include "core/settings/session.hpp"
+#include "file_manager/file.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
+#include "services/custom_chat_buffer.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
-#include "util/spam.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
+#include <regex>
 
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
@@ -108,22 +109,19 @@ namespace big
 				char message[256];
 				buffer.ReadString(message, 256);
 
-				if (player->is_spammer)
-					return true;
-
-				if (spam::is_text_spam(message))
+				if (g_session.log_chat_messages_to_file)
 				{
-					player->is_spammer = true;
-					return true;
+					std::ofstream log(g_file_manager.get_project_file("./chat.log").get_path(), std::ios::app);
+					log << player->get_name() << " : " << message << std::endl;
+					log.close();
 				}
-				else
-				{
-					if (g_session.log_chat_messages_to_file)
-						spam::log_chat(message, player);
-					if (g_session.log_chat_messages_to_textbox)
-						g_custom_chat_buffer.append_msg(player->get_name(), message);
 
-					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
+				if (g_session.log_chat_messages_to_textbox)
+					g_custom_chat_buffer.append_msg(player->get_name(), message);
+
+				if (msgType == rage::eNetMessage::MsgTextMessage)
+				{
+					if (g_pointers->m_gta.m_chat_data && player->get_net_data())
 					{
 						rage::rlGamerHandle temp{};
 						gamer_handle_deserialize(temp, buffer);
@@ -134,9 +132,10 @@ namespace big
 						    &player->get_net_data()->m_gamer_handle,
 						    message,
 						    is_team);
-						return true;
 					}
+					return true;
 				}
+
 				break;
 			}
 			case rage::eNetMessage::MsgScriptMigrateHost:
