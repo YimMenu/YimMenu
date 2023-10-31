@@ -135,7 +135,7 @@ namespace big
 					}
 
 					ImGui::SameLine();
-					if (ImGui::SmallButton("X"))
+					if (ImGui::SmallButton(std::string("X##" + pair).c_str()))
 					{
 						file_name_to_delete = pair;
 					}
