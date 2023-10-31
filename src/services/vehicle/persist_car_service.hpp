@@ -27,11 +27,6 @@ namespace big
 
 		static constexpr auto vehicle_key = "vehicle";
 
-		static constexpr auto tow_key     = "tow";
-		static constexpr auto trailer_key = "trailer";
-
-		static constexpr auto radio_station_key = "radio_station";
-
 		static constexpr auto plate_text_key       = "plate_text";
 		static constexpr auto plate_text_index_key = "plate_text_index";
 
@@ -60,9 +55,6 @@ namespace big
 		static constexpr auto headlight_color_key   = "headlight_color";
 		static constexpr auto interior_color_key    = "interior_color";
 		static constexpr auto dash_color_key        = "dash_color";
-
-		static constexpr auto clan_logo_key = "clan_logo";
-
 
 		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
 		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords);

@@ -1,6 +1,6 @@
 #include "core/settings/notifications.hpp"
-#include "views/view.hpp"
 #include "core/settings/reactions.hpp"
+#include "views/view.hpp"
 
 namespace big
 {
@@ -9,8 +9,9 @@ namespace big
 		ImGui::Text(name.data());
 
 		ImGui::PushID(name.data());
-		ImGui::Checkbox("Log", &option.log);
 		ImGui::Checkbox("Notify", &option.notify);
+		ImGui::Checkbox("Log", &option.log);
+		
 		ImGui::PopID();
 	}
 
@@ -21,32 +22,6 @@ namespace big
 		{
 			ImGui::Checkbox("Notify", &reaction.notify);
 			ImGui::Checkbox("Log", &reaction.log);
-			ImGui::Checkbox("Kick Player", &reaction.kick);
-			ImGui::Checkbox("Timeout", &reaction.timeout);
-			ImGui::TreePop();
-		}
-		ImGui::PopID();
-	}
-
-	// TODO code duplication
-	void draw_interloper_reaction(interloper_reaction& reaction)
-	{
-		ImGui::PushID(&reaction);
-		if (ImGui::TreeNode(reaction.m_event_name))
-		{
-			ImGui::Checkbox("Notify", &reaction.notify);
-			ImGui::Checkbox("Log", &reaction.log);
-			ImGui::Checkbox("Kick Attacker", &reaction.kick);
-
-			if (reaction.m_blockable || reaction.m_karmaable)
-				ImGui::Separator();
-
-			if (reaction.m_blockable)
-				ImGui::Checkbox("Block", &reaction.block);
-
-			if (reaction.m_karmaable)
-				ImGui::Checkbox("Karma", &reaction.karma);
-
 			ImGui::TreePop();
 		}
 		ImGui::PopID();
@@ -88,7 +63,6 @@ namespace big
 		draw_reaction(g_reactions.vehicle_kick);
 		draw_reaction(g_reactions.turn_into_beast);
 		draw_reaction(g_reactions.remote_wanted_level);
-		draw_interloper_reaction(g_reactions.remote_wanted_level_others);
 		ImGui::Separator();
 		draw_reaction(g_reactions.clear_ped_tasks);
 		draw_reaction(g_reactions.remote_ragdoll);

@@ -16,35 +16,16 @@ namespace big
 	{
 	}
 
-	void reaction::process_common(player_ptr player)
+	void reaction::process(player_ptr player)
 	{
+		if (!player->is_valid())
+			return;
+
 		if (log)
 		{
 			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
 			LOG(WARNING) << std::format("Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
 		}
-
-		if (kick)  
-		{
-			g_fiber_pool->queue_job([player] {
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
-			});
-		}
-
-		if (timeout)
-		{
-			    player->block_net_events   = true;
-			    player->block_clone_sync   = true;
-			    player->block_clone_create = true;
-			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
-		}
-	}
-
-
-	void reaction::process(player_ptr player)
-	{
-		if (!player->is_valid())
-			return;
 
 		if (notify)
 		{
@@ -52,7 +33,5 @@ namespace big
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
 			g_notification_service->push_warning("Protections", notification);
 		}
-
-		process_common(player);
 	}
 }

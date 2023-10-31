@@ -105,6 +105,7 @@ namespace big
 				components::command_checkbox<"veh_boost">();
 			}
 			ImGui::EndGroup();
+			ImGui::SameLine();
 			ImGui::BeginGroup();
 			{
 				components::command_checkbox<"allvehsinheists">();
@@ -184,6 +185,7 @@ namespace big
 			static std::map<int, bool> seats;
 			static bool is_lowrider, force_lowrider;
 			static float maxWheelRaiseFactor = 2;
+			static bool indicator_left, indicator_right;
 
 			if (self::last_veh)
 			{
@@ -257,6 +259,7 @@ namespace big
 						}
 						ImGui::NewLine();
 					}
+					ImGui::BeginGroup();
 					components::small_text("Windows");
 					{
 						components::button("Roll Down All", [] {
@@ -268,16 +271,33 @@ namespace big
 								VEHICLE::ROLL_UP_WINDOW(self::last_veh, i);
 						});
 					}
-					components::small_text("lights");
+					ImGui::EndGroup();
+					ImGui::SameLine();
+					ImGui::BeginGroup();
+					components::small_text("Interior lights");
 					{
-						components::button("Interior lights on", [] {
+						components::button("On###ILON", [] {
 							VEHICLE::SET_VEHICLE_INTERIORLIGHT(self::last_veh, true);
 						});
 						ImGui::SameLine();
-						components::button("Interior lights off", [] {
+						components::button("Off###ILOFF", [] {
 							VEHICLE::SET_VEHICLE_INTERIORLIGHT(self::last_veh, false);
 						});
 					}
+					ImGui::EndGroup();
+					ImGui::SameLine();
+					ImGui::BeginGroup();
+					components::small_text("Signal");
+					{
+						components::button("Left###SignalL", [] {
+							VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::last_veh, 1, indicator_left = !indicator_left);
+						});
+						ImGui::SameLine();
+						components::button("Right###SignalR", [] {
+							VEHICLE::SET_VEHICLE_INDICATOR_LIGHTS(self::last_veh, 0, indicator_right = !indicator_right);
+						});
+					}
+					ImGui::EndGroup();
 					components::small_text("Radio");
 					{
 						components::button("Reset to active radio", [] {
