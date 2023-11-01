@@ -135,10 +135,12 @@ namespace big
 					}
 
 					ImGui::SameLine();
+					ImGui::PushID(pair.c_str());
 					if (ImGui::SmallButton("X"))
 					{
 						file_name_to_delete = pair;
 					}
+					ImGui::PopID();
 
 					if (!g.persist_car.preview_vehicle || (g.persist_car.preview_vehicle && !ImGui::IsAnyItemHovered()))
 					{
