@@ -1,11 +1,11 @@
-#include "../view.hpp"
-#include "../../services/xml_maps/xml_map_service.hpp"
+#include "views/view.hpp"
+#include "services/xml_maps/xml_map_service.hpp"
 
 namespace big
 {
    void view::xml_maps()
    {
-        components::button("Refresh", [] {
+        components::button("REFRESH"_T, [] {
             g_fiber_pool->queue_job([] {
                 g_xml_map_service->fetch_xml_files();
             });
