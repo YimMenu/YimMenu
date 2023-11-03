@@ -1558,7 +1558,10 @@ namespace big
 						}
 					}
 				}
-
+				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
+				{
+					return true;
+				}
 				break;
 			}
 			case sync_node_id("CPlayerCameraDataNode"):
