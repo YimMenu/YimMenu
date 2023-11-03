@@ -49,6 +49,16 @@ namespace big
 		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
 	}
 
+	void persist_car_service::delete_vehicle(std::string_view file_name, std::string folder_name)
+	{
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
+
+		if (file.exists())
+		{
+			std::filesystem::remove(file.get_path());
+		}
+	}
+
 	std::vector<std::string> persist_car_service::list_files(std::string folder_name)
 	{
 		std::vector<std::string> file_paths;

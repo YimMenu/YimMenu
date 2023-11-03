@@ -4,7 +4,8 @@ namespace big
 {
 	thread_pool::thread_pool(const std::size_t preallocated_thread_count) :
 	    m_accept_jobs(true),
-		m_allocated_thread_count(preallocated_thread_count)
+		m_allocated_thread_count(preallocated_thread_count),
+		m_busy_threads(0)
 	{
 		rescale_thread_pool();
 
@@ -23,7 +24,7 @@ namespace big
 
 		if (m_thread_pool.size() < m_allocated_thread_count)
 		{
-			for (uint32_t i = 0; i < m_allocated_thread_count; i++)
+			for (auto i = m_thread_pool.size(); i < m_allocated_thread_count; i++)
 				m_thread_pool.emplace_back(std::thread(&thread_pool::run, this));
 		}
 	}
@@ -50,16 +51,17 @@ namespace big
 				std::unique_lock lock(m_lock);
 				m_job_stack.push({func, location});
 
-				if (m_allocated_thread_count < m_job_stack.size())
+				if (m_allocated_thread_count - m_busy_threads < m_job_stack.size())
 				{
 					LOG(WARNING) << "Thread pool potentially starved, resizing to accommodate for load.";
 
-					if (m_allocated_thread_count++ >= MAX_POOL_SIZE)
+					if (m_allocated_thread_count >= MAX_POOL_SIZE)
 					{
 						LOG(FATAL) << "The thread pool limit has been reached, whatever you did this should not occur in production.";
 					}
-					if (m_accept_jobs && m_allocated_thread_count <= MAX_POOL_SIZE)
+					if (m_accept_jobs && m_allocated_thread_count + 1 <= MAX_POOL_SIZE)
 					{
+						++m_allocated_thread_count;
 						rescale_thread_pool();
 					}
 				}
@@ -73,7 +75,6 @@ namespace big
 		for (;;)
 		{
 			std::unique_lock lock(m_lock);
-
 			m_data_condition.wait(lock, [this]() {
 				return !m_job_stack.empty() || !m_accept_jobs;
 			});
@@ -87,7 +88,7 @@ namespace big
 			m_job_stack.pop();
 			lock.unlock();
 
-			m_allocated_thread_count--;
+			++m_busy_threads;
 
 			try
 			{
@@ -102,7 +103,7 @@ namespace big
 				LOG(WARNING) << "Exception thrown while executing job in thread:" << std::endl << e.what();
 			}
 
-			m_allocated_thread_count++;
+			--m_busy_threads;
 		}
 
 		LOG(VERBOSE) << "Thread " << std::this_thread::get_id() << " exiting...";
