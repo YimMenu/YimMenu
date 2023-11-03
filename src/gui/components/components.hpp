@@ -35,7 +35,7 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
-		static void options_modal(std::string element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
+		static void options_modal(const std::string_view element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
 
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void command_button(const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
@@ -109,6 +109,22 @@ namespace big
 				return ImGui::Text("INVALID COMMAND");
 
 			ImGui::SliderFloat(label_override.value_or(command->get_label()).data(),
+			    &command->get_value(),
+			    command->get_lower_bound(),
+			    command->get_upper_bound());
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
+		}
+
+		template<template_str cmd_str>
+		static void command_float_input(std::optional<const std::string_view> label_override = std::nullopt)
+		{
+			static float_command* command = (float_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
+			ImGui::InputFloat(label_override.value_or(command->get_label()).data(),
 			    &command->get_value(),
 			    command->get_lower_bound(),
 			    command->get_upper_bound());
