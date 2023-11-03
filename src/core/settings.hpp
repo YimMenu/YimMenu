@@ -868,9 +868,9 @@ namespace big
 				bool opened                 = false;
 				bool operation_animation    = true;
 				bool render_distance_on_veh = false;
-				float max_summon_range      = 200.f;
+				bool show_info              = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, max_summon_range, render_distance_on_veh)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, render_distance_on_veh, show_info)
 			} vehicle_control{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators)
