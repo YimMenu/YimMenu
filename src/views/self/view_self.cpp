@@ -55,7 +55,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"noclip">();
-		components::options_modal("Noclip", [] {
+		components::options_modal("NO_CLIP"_T, [] {
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
@@ -83,20 +83,23 @@ namespace big
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"mobileradio">();
 		components::command_checkbox<"superherofly">();
-		components::options_modal("Super hero fly options", [] {
-
-			ImGui::Text("Press Q to launch or hold it to charge.\nPress Q once in flight to cancel or hold to initiate a charged landing.");
+		components::options_modal("SUPER_HERO_FLY_OPTION_MODAL"_T, [] {
+			ImGui::Text("SUPER_HERO_FLY_OPTION_MODAL_DETAILED_DESC"_T.data());
 			ImGui::Separator();
 
-			ImGui::Checkbox("Gradual speed", &g.self.super_hero_fly.gradual);
-			ImGui::Checkbox("Explosions", &g.self.super_hero_fly.explosions);
-			ImGui::Checkbox("Auto land", &g.self.super_hero_fly.auto_land);
-			ImGui::Checkbox("Charge launch", &g.self.super_hero_fly.charge);
-			ImGui::Checkbox("Charge ptfx", &g.self.super_hero_fly.ptfx);
+			components::command_checkbox<"superheroflygradualspeed">();
+			components::disable_unless([] { return !g.self.super_hero_fly.gradual; }, []{
+				ImGui::SetNextItemWidth(150);
+				components::command_float_input<"superheroflyspeed">();
+			});
+			components::command_checkbox<"superheroflyexplosions">();
+			components::command_checkbox<"superheroflyautoland">();
+			components::command_checkbox<"superheroflychargelaunch">();
+			components::disable_unless([] { return g.self.super_hero_fly.charge; }, []{
+				components::command_checkbox<"superheroflychargeptfx">();
+			});
 			ImGui::SetNextItemWidth(150);
-			ImGui::InputFloat("Speed", &g.self.super_hero_fly.fly_speed, 1, 50);
-			ImGui::SetNextItemWidth(150);
-			ImGui::InputFloat("Initial launch", &g.self.super_hero_fly.initial_launch, 1, 50);
+			components::command_float_input<"superheroflyinitiallaunch">();
 		});
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
