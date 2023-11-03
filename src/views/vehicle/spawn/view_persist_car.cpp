@@ -125,7 +125,8 @@ namespace big
 				std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
 				if (pair_lower.contains(lower_search))
 				{
-					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
+					auto file_name = pair.c_str();
+					if (ImGui::Selectable(file_name, selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
 					{
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([] {
@@ -133,14 +134,6 @@ namespace big
 							g_model_preview_service->stop_preview();
 						});
 					}
-
-					ImGui::SameLine();
-					ImGui::PushID(pair.c_str());
-					if (ImGui::SmallButton("X"))
-					{
-						file_name_to_delete = pair;
-					}
-					ImGui::PopID();
 
 					if (!g.persist_car.preview_vehicle || (g.persist_car.preview_vehicle && !ImGui::IsAnyItemHovered()))
 					{
@@ -152,6 +145,14 @@ namespace big
 							g_model_preview_service->show_vehicle_persisted(pair);
 						});
 					}
+
+					ImGui::SameLine();
+					ImGui::PushID(file_name);
+					if (ImGui::SmallButton("X"))
+					{
+						file_name_to_delete = pair;
+					}
+					ImGui::PopID();
 				}
 			}
 
