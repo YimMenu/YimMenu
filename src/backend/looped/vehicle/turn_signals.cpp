@@ -111,7 +111,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			g_notification_service->push("Instructions", "Manual: J = Left, L = Right, K = Toggle Hazzards");
+			g_notification_service->push("TURN_SIGNALS"_T.data(), "BACKEND_LOOPED_VEHICLE_TURN_SIGNALS_HELP"_T.data());
 		}
 
 		virtual void on_tick() override

@@ -2,6 +2,7 @@
 #include "core/enums.hpp"
 #include "gta/enums.hpp"
 #include "util/entity.hpp"
+#include "util/teleport.hpp"
 
 namespace big
 {
@@ -15,7 +16,7 @@ namespace big
 				{
 					Vector3 c;
 					entity::raycast(&c);
-					PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, c.x, c.y, c.z);
+					teleport::to_coords(c);
 				}
 			}
 		}

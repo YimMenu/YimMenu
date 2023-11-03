@@ -10,7 +10,7 @@ namespace big
 	void view::player_toxic()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Toxic");
+		components::sub_title("TOXIC"_T);
 		if (ImGui::BeginListBox("##toxic", get_listbox_dimensions()))
 		{
 			components::player_command_button<"kill">(g_player_service->get_selected(), {});
@@ -19,7 +19,7 @@ namespace big
 
 			components::player_command_button<"ceokick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Gooch Test", [] {
+			components::button("VIEW_PLAYER_TOXIC_GOOCH_TEST"_T, [] {
 				*scr_globals::gooch.at(289).at(1).as<Player*>() = g_player_service->get_selected()->id();
 				scripts::start_launcher_script(171);
 			});
@@ -34,11 +34,11 @@ namespace big
 
 			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
-			components::button("Trigger MC Raid", [] {
+			components::button("TRIGGER_MC_RAID"_T, [] {
 				toxic::start_activity(g_player_service->get_selected(), eActivityType::BikerDefend);
 			});
 			ImGui::SameLine();
-			components::button("Trigger Bunker Raid", [] {
+			components::button("TRIGGER_BUNKER_RAID"_T, [] {
 				toxic::start_activity(g_player_service->get_selected(), eActivityType::GunrunningDefend);
 			});
 

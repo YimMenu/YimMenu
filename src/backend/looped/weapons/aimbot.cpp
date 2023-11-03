@@ -143,11 +143,10 @@ namespace big
 		}
 	};
 
-	aimbot g_aimbot("aimbot", "Aimbot", "Lock on and kill", g.weapons.aimbot.enable);
-	bool_command g_smoothing("smoothing", "Smoothing", "Controls the snappiness of your lock on", g.weapons.aimbot.smoothing);
-	bool_command g_aimbot_on_player("aimatplayer", "Player", "If you suck at PVP, this is for you", g.weapons.aimbot.on_player);
-	bool_command g_aimbot_on_npc("aimatnpc", "NPC", "Generally kills normal NPCs", g.weapons.aimbot.on_npc);
-	bool_command g_aimbot_on_police("aimatpolice", "Police", "Locks onto cops to kill", g.weapons.aimbot.on_police);
-	bool_command
-	    g_aimbot_on_enemy("aimatenemy", "Enemy", "Eliminate your enemies, and win your missions", g.weapons.aimbot.on_enemy);
+	aimbot g_aimbot("aimbot", "VIEW_OVERLAY_AIMBOT", "BACKEND_LOOPED_WEAPONS_AIMBOT_DESC", g.weapons.aimbot.enable);
+	bool_command g_smoothing("smoothing", "BACKEND_LOOPED_WEAPONS_SMOOTHING", "BACKEND_LOOPED_WEAPONS_SMOOTHING_DESC", g.weapons.aimbot.smoothing);
+	bool_command g_aimbot_on_player("aimatplayer", "PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_AT_PLAYER_DESC", g.weapons.aimbot.on_player);
+	bool_command g_aimbot_on_npc("aimatnpc", "NPC", "BACKEND_LOOPED_WEAPONS_AIM_AT_NPC_DESC", g.weapons.aimbot.on_npc);
+	bool_command g_aimbot_on_police("aimatpolice", "POLICE", "BACKEND_LOOPED_WEAPONS_AIM_AT_POLICE_DESC", g.weapons.aimbot.on_police);
+	bool_command g_aimbot_on_enemy("aimatenemy", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY_DESC", g.weapons.aimbot.on_enemy);
 }

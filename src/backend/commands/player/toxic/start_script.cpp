@@ -44,13 +44,13 @@ namespace big
 		}
 	};
 
-	start_script<20> g_start_tutorial("tutorial", "Start Tutorial", "Plays that unskippable cutscene used in the tutorial", 0);
-	start_script<200> g_start_golf("golf", "Start Golf", "Starts golf", 0);
-	start_script<203> g_start_flight_school("flightschool", "Start Flight School", "Teleports player to the airport and starts flight school", 0);
-	start_script<9> g_start_darts("darts", "Start Darts", "Starts darts in a Sandy Shores bar", 0);
-	start_script<218> g_start_badlands("badlands", "Start Badlands Revenge II", "Starts the arcade game Badlands Revenge II in fullscreen", 0);
-	start_script<223> g_start_space_monkey("spacemonkey", "Start Space Monkey 3", "Starts the arcade game Space Monkey 3 in fullscreen", 0);
-	start_script<219> g_start_wizards_ruin("wizard", "Start The Wizard's Ruin", "Starts the arcade game The Wizard's Ruin in fullscreen", 0);
-	start_script<224> g_start_qub3d("qub3d", "Start Qub3D", "Starts the arcade game Qub3D in fullscreen", 0);
-	start_script<225> g_start_camhedz("camhedz", "Start Camhedz", "Starts the arcade game Camhedz in fullscreen", 0);
+	start_script<20> g_start_tutorial("tutorial", "BACKEND_START_SCRIPT_START_TUTORIAL", "BACKEND_START_SCRIPT_START_TUTORIAL_DESC", 0);
+	start_script<200> g_start_golf("golf", "BACKEND_START_SCRIPT_START_GOLF", "BACKEND_START_SCRIPT_START_GOLF_DESC", 0);
+	start_script<203> g_start_flight_school("flightschool", "BACKEND_START_SCRIPT_START_FLIGHT_SCHOOL", "BACKEND_START_SCRIPT_START_FLIGHT_SCHOOL_DESC", 0);
+	start_script<9> g_start_darts("darts", "BACKEND_START_SCRIPT_START_DARTS", "BACKEND_START_SCRIPT_START_DARTS_DESC", 0);
+	start_script<218> g_start_badlands("badlands", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II_DESC", 0);
+	start_script<223> g_start_space_monkey("spacemonkey", "BACKEND_START_SCRIPT_START_SPACE_MONKEY", "BACKEND_START_SCRIPT_START_SPACE_MONKEY_DESC", 0);
+	start_script<219> g_start_wizards_ruin("wizard", "BACKEND_START_SCRIPT_START_WIZARD", "BACKEND_START_SCRIPT_START_WIZARD_DESC", 0);
+	start_script<224> g_start_qub3d("qub3d", "BACKEND_START_SCRIPT_START_QUB3D", "BACKEND_START_SCRIPT_START_QUB3D_DESC", 0);
+	start_script<225> g_start_camhedz("camhedz", "BACKEND_START_SCRIPT_START_CAMHEDZ", "BACKEND_START_SCRIPT_START_CAMHEDZ_DESC", 0);
 }

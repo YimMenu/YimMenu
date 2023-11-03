@@ -23,11 +23,11 @@ namespace big
 			{
 				if (!NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(id, "am_launcher", -1))
 				{
-					g_notification_service->push_error("Turn to Beast", "Cannot start the Hunt the Beast event, player not a participant of am_launcher");
+					g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_CANNOT_START_AM_LAUNCHER"_T.data());
 					return;
 				}
 
-				g_notification_service->push("Turn to Beast", "Starting Hunt The Beast event. Please wait...");
+				g_notification_service->push("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_STARTING"_T.data());
 
 				scripts::start_launcher_script(47);
 
@@ -35,7 +35,7 @@ namespace big
 				{
 					if (i >= 1000)
 					{
-						g_notification_service->push_error("Turn to Beast", "Failed to start the Hunt The Beast event");
+						g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED"_T.data());
 						return;
 					}
 
@@ -48,7 +48,7 @@ namespace big
 
 			if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
 			{
-				g_notification_service->push_error("Turn to Beast", "Failed to take control of am_hunt_the_beast");
+				g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED_CONTROL"_T.data());
 				return;
 			}
 
@@ -89,7 +89,7 @@ namespace big
 			{
 				if (i >= 7000)
 				{
-					g_notification_service->push_error("Turn to Beast", "Failed to start the Hunt The Beast event");
+					g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED"_T.data());
 					return;
 				}
 
@@ -100,7 +100,7 @@ namespace big
 
 			if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
 			{
-				g_notification_service->push_error("Turn to Beast", "Failed to take control of am_hunt_the_beast");
+				g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED_CONTROL"_T.data());
 				return;
 			}
 

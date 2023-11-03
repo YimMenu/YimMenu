@@ -27,6 +27,5 @@ namespace big
 		}
 	};
 
-	ped_rush g_ped_rush("pedrush", "Ped Rush", "Makes the nearby peds move with a purpose", g.world.nearby.ped_rush);
-
+	ped_rush g_ped_rush("pedrush", "BACKEND_LOOPED_WORLD_PED_RUSH", "BACKEND_LOOPED_WORLD_PED_RUSH_DESC", g.world.nearby.ped_rush);
 }
