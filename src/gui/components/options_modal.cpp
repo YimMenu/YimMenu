@@ -5,12 +5,13 @@ namespace big
 	/*
 	Will provide an options button next to the previous element that opens up a popup to run the content of 'render_elements'
 	*/
-	void components::options_modal(std::string element_name, std::function<void()> render_elements, bool sameline, std::string custom_button_name)
+	void components::options_modal(const std::string_view element_name, std::function<void()> render_elements, bool sameline, std::string custom_button_name)
 	{
 		if (sameline)
 			ImGui::SameLine();
 
-		if (ImGui::Button(std::string(custom_button_name + "##" + element_name).data()))
+		ImGui::PushID(element_name.data());
+		if (ImGui::Button(custom_button_name.c_str()))
 			ImGui::OpenPopup(element_name.data());
 
 		ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
@@ -18,10 +19,11 @@ namespace big
 		{
 			render_elements();
 			ImGui::Spacing();
-			if (ImGui::Button(std::format("{}##{}", "CLOSE"_T, element_name).c_str()) || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
+			if (components::button("CLOSE"_T) || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
 				ImGui::CloseCurrentPopup();
 
 			ImGui::EndPopup();
 		}
+		ImGui::PopID();
 	}
 }
