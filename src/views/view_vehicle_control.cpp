@@ -121,11 +121,11 @@ namespace big
 		ImGui::Spacing();
 		ImGui::SetNextItemWidth(200);
 		components::button("VIEW_VEHICLE_CONTROL_ROLL_DOWN_ALL"_T, [] {
-			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, true);
+			vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, eWindowId::WINDOW_INVALID_ID, true);
 		});
 		ImGui::SameLine();
 		components::button("VIEW_VEHICLE_CONTROL_ROLL_UP_ALL"_T, [] {
-			g_vehicle_control_service.operate_window(eWindowId::WINDOW_INVALID_ID, false);
+			vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, eWindowId::WINDOW_INVALID_ID, false);
 		});
 		ImGui::EndGroup();
 
@@ -140,11 +140,11 @@ namespace big
 			ImGui::Text(windownames[i]);
 			ImGui::SameLine(300);
 			components::button("VIEW_VEHICLE_CONTROL_ROLL_DOWN"_T, [i] {
-				g_vehicle_control_service.operate_window((eWindowId)i, true);
+				vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, (eWindowId)i, true);
 			});
 			ImGui::SameLine();
 			components::button("VIEW_VEHICLE_CONTROL_ROLL_UP"_T, [i] {
-				g_vehicle_control_service.operate_window((eWindowId)i, false);
+				vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, (eWindowId)i, false);
 			});
 			ImGui::PopID();
 		}
@@ -258,17 +258,15 @@ namespace big
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			if (components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T))
+			components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T, []
 			{
-				g_fiber_pool->queue_job([=] {
-					if (g.window.vehicle_control.operation_animation)
-						g_vehicle_control_service.animated_vehicle_operation(self::ped);
+				g_vehicle_control_service.vehicle_operation([] {
 					if (g_vehicle_control_service.m_controlled_vehicle.convertibelstate > 0)
 						VEHICLE::RAISE_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 					else
 						VEHICLE::LOWER_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 				});
-			}
+			});
 
 			ImGui::SameLine();
 			ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T, convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]).c_str());
@@ -313,8 +311,6 @@ namespace big
 	    g.window.vehicle_control.operation_animation);
 	bool_command render_veh_dist("vehcontrolrendervehdist", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE_DESC",
 	    g.window.vehicle_control.render_distance_on_veh);
-	float_command max_summon_dist("vehcontrolmaxsummondist", "VIEW_VEHICLE_CONTROL_MAX_SUMMON_DISTANCE", "VIEW_VEHICLE_CONTROL_MAX_SUMMON_DISTANCE_DESC",
-	    g.window.vehicle_control.max_summon_range, 10.f, 250.f);
 
 	void render_settings_tab()
 	{
