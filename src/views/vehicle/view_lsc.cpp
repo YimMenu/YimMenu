@@ -207,7 +207,7 @@ namespace big
 		}
 
 		ImGui::SameLine();
-		if (components::button("MAX_VEHICLE"_T))
+		if (components::button("MAX_VEHICLE_PERFORMANCE"_T))
 		{
 			g_fiber_pool->queue_job([] {
 				vehicle::max_vehicle_performance(self::veh);

@@ -26,6 +26,7 @@ namespace big
 	void hooks::network_player_mgr_shutdown(CNetworkPlayerMgr* _this)
 	{
 		g_player_service->do_cleanup();
+		self::spawned_vehicles.clear();
 
 		if (g.notifications.network_player_mgr_shutdown.log)
 			LOG(INFO) << "CNetworkPlayerMgr#shutdown got called, we're probably leaving our session.";

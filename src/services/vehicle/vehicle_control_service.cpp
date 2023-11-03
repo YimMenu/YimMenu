@@ -7,6 +7,7 @@
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
+#include "util/mobile.hpp"
 
 namespace big
 {
@@ -70,6 +71,9 @@ namespace big
 
 	controlled_vehicle vehicle_control::update_vehicle(Vehicle veh)
 	{
+		if(!ENTITY::DOES_ENTITY_EXIST(veh))
+			return {};
+		
 		controlled_vehicle new_veh{};
 
 		new_veh.handle = veh;
@@ -78,6 +82,7 @@ namespace big
 		new_veh.doorCount     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
 		new_veh.lockstate     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
 		new_veh.isconvertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
+
 		update_controlled_vehicle_doors(new_veh);
 		update_controlled_vehicle_lights(new_veh);
 
@@ -94,9 +99,7 @@ namespace big
 
 		veh.convertibelstate = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(veh.handle);
 		veh.engine           = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
-		veh.radio            = AUDIO::IS_VEHICLE_RADIO_ON(veh.handle);
-		veh.radiochannel     = AUDIO::GET_PLAYER_RADIO_STATION_INDEX();
-
+		
 		if (g.window.vehicle_control.render_distance_on_veh
 		    && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true)) > 10.f)
 			vehicle_control::render_distance_on_vehicle();
@@ -106,47 +109,21 @@ namespace big
 	* Imitated from freemode.c script, findable by searching for MISC::GET_HASH_KEY("BONEMASK_HEAD_NECK_AND_R_ARM");
 	* Script uses TASK::TASK_SCRIPTED_ANIMATION but can be dissected to use as follows
 	*/
-	void vehicle_control::animated_vehicle_operation(Ped ped)
+	void vehicle_control::vehicle_operation(std::function<void()> operation)
 	{
-		ped::ped_play_animation(ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 4, -4, -1, 48, 0, false);
-		AUDIO::PLAY_SOUND_FROM_ENTITY(-1, "Remote_Control_Fob", self::ped, "PI_Menu_Sounds", true, 0);
-		script::get_current()->yield(100ms);
-		for (int i = 0; i < 35 && ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 3); i++)
+		if (g.window.vehicle_control.operation_animation)
 		{
-			script::get_current()->yield(10ms);
+			ped::ped_play_animation(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 4, -4, -1, 48, 0, false);
+			AUDIO::PLAY_SOUND_FROM_ENTITY(-1, "Remote_Control_Fob", self::ped, "PI_Menu_Sounds", true, 0);
+			script::get_current()->yield(100ms);
+			for (int i = 0; i < 35 && ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, VEH_OP_ANIM_DICT, VEH_OP_ANIM, 3); i++)
+			{
+				script::get_current()->yield(10ms);
+			}
 		}
-	}
 
-	void vehicle_control::operate_door(eDoorId door, bool open)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_door(m_controlled_vehicle.handle, door, open);
-	}
-
-	void vehicle_control::operate_window(eWindowId window, bool open)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_window(m_controlled_vehicle.handle, window, open);
-	}
-
-	void vehicle_control::operate_lights(bool headlights, bool highbeams)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_headlights(m_controlled_vehicle.handle, headlights, highbeams);
-	}
-
-	void vehicle_control::operate_neons(int index, bool toggle)
-	{
-		if (g.window.vehicle_control.operation_animation)
-			animated_vehicle_operation(self::ped);
-
-		vehicle::operate_vehicle_neons(m_controlled_vehicle.handle, index, toggle);
+		if (entity::take_control_of(m_controlled_vehicle.handle))
+			operation();
 	}
 
 	void vehicle_control::driver_tick()
@@ -321,15 +298,6 @@ namespace big
 			behind_pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 4.f, 0.f);
 		}
 
-		if (math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true))
-		    > g.window.vehicle_control.max_summon_range)
-		{
-			//LOG(INFO) << "Vehicle is too far, teleporting";
-			m_destination = behind_pos;
-			ENTITY::SET_ENTITY_COORDS(m_controlled_vehicle.handle, behind_pos.x, behind_pos.y, behind_pos.z, 0, 0, 0, false);
-			return;
-		}
-
 		m_driver_performing_task = true;
 
 		if (ensure_driver())
@@ -376,13 +344,8 @@ namespace big
 		}
 	}
 
-	void vehicle_control::tick()
+	void vehicle_control::get_last_driven_vehicle()
 	{
-		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle)
-		    && VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(m_controlled_vehicle.handle));
-
-		driver_tick();
-
 		//Check in memory for vehicle
 		if (g_local_player)
 		{
@@ -399,13 +362,42 @@ namespace big
 			m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
 		}
 
-		if (!g.window.vehicle_control.opened)
-			return;
-
 		//Manual check if there is a last driven vehicle
 		if (!m_controlled_vehicle_exists && ENTITY::DOES_ENTITY_EXIST(VEHICLE::GET_LAST_DRIVEN_VEHICLE()))
 			m_controlled_vehicle = vehicle_control::update_vehicle(VEHICLE::GET_LAST_DRIVEN_VEHICLE());
+	}
 
+	void vehicle_control::get_personal_vehicle()
+	{
+		if(ENTITY::DOES_ENTITY_EXIST(mobile::mechanic::get_personal_vehicle()))
+			m_controlled_vehicle = vehicle_control::update_vehicle(mobile::mechanic::get_personal_vehicle());
+	}
+
+	void vehicle_control::get_closest_vehicle()
+	{
+		if(PED::IS_PED_IN_ANY_VEHICLE(self::ped, true))
+			m_controlled_vehicle = vehicle_control::update_vehicle(PED::GET_VEHICLE_PED_IS_USING(self::ped));
+		else
+		{
+			m_controlled_vehicle = vehicle_control::update_vehicle(vehicle::get_closest_to_location(self::pos, 1000));
+		}
+	}
+
+	void vehicle_control::tick()
+	{
+		m_controlled_vehicle_exists = m_controlled_vehicle.ptr && ENTITY::DOES_ENTITY_EXIST(m_controlled_vehicle.handle);
+
+		driver_tick();
 		keep_controlled_vehicle_data_updated(m_controlled_vehicle);
+
+		if (!g.window.vehicle_control.opened)
+			return;
+
+		switch (m_selection_mode)
+		{
+		case eControlledVehSelectionMode::LAST_DRIVEN: get_last_driven_vehicle(); break;
+		case eControlledVehSelectionMode::PERSONAL: get_personal_vehicle(); break;
+		case eControlledVehSelectionMode::CLOSEST: get_closest_vehicle(); break;
+		}
 	}
 }
