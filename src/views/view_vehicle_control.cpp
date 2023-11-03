@@ -258,8 +258,7 @@ namespace big
 
 		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
 		{
-			components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T, []
-			{
+			components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T, [] {
 				g_vehicle_control_service.vehicle_operation([] {
 					if (g_vehicle_control_service.m_controlled_vehicle.convertibelstate > 0)
 						VEHICLE::RAISE_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
@@ -269,10 +268,15 @@ namespace big
 			});
 
 			ImGui::SameLine();
-			ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T, convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]).c_str());
+			ImGui::Text(std::format("{}: {}",
+			    "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T,
+			    convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate])
+			                .c_str());
 		}
 
-		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_DEBUG_ANIMATIONS_STOP"_T.data() : "SETTINGS_NOTIFY_GTA_THREADS_START"_T.data(),
+		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ?
+		            "VIEW_DEBUG_ANIMATIONS_STOP"_T.data() :
+		            "SETTINGS_NOTIFY_GTA_THREADS_START"_T.data(),
 		        &g_vehicle_control_service.m_controlled_vehicle.engine))
 		{
 			g_fiber_pool->queue_job([=] {
@@ -286,7 +290,9 @@ namespace big
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(std::format("{}: {}", "VIEW_VEHICLE_CONTROL_ENGINE"_T, g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T : "OFF"_T).c_str());
+		ImGui::Text(
+		    std::format("{}: {}", "VIEW_VEHICLE_CONTROL_ENGINE"_T, g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T : "OFF"_T)
+		        .c_str());
 
 		components::button(g_vehicle_control_service.m_driver_performing_task ? "CANCEL"_T : "VIEW_VEHICLE_CONTROL_SUMMON"_T, [] {
 			if (!g_vehicle_control_service.m_driver_performing_task)
@@ -300,7 +306,8 @@ namespace big
 		if (g_vehicle_control_service.m_driver_performing_task)
 		{
 			ImGui::SameLine();
-			ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, g_vehicle_control_service.m_distance_to_destination).c_str());
+			ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, g_vehicle_control_service.m_distance_to_destination)
+			                .c_str());
 
 
 			ImGui::Text(std::format("{}: {}", "OUTFIT_TASK"_T, g_vehicle_control_service.m_currentask).c_str());
@@ -311,19 +318,23 @@ namespace big
 	    g.window.vehicle_control.operation_animation);
 	bool_command render_veh_dist("vehcontrolrendervehdist", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE", "VIEW_VEHICLE_CONTROL_RENDER_DISTANCE_ON_VEHICLE_DESC",
 	    g.window.vehicle_control.render_distance_on_veh);
+	bool_command show_vehicle_info("vehcontrolshowvehinfo", "VIEW_VEHICLE_CONTROL_SHOW_VEHICLE_INFO", "VIEW_VEHICLE_CONTROL_SHOW_VEHICLE_INFO_DESC",
+	    g.window.vehicle_control.show_info);
 
 	void render_settings_tab()
 	{
 		components::command_checkbox<"vehcontroluseanims">();
 		components::command_checkbox<"vehcontrolrendervehdist">();
-		ImGui::Checkbox("Vehicle info", &g.window.vehicle_control.show_info);
+		components::command_checkbox<"vehcontrolshowvehinfo">();
 
-		ImGui::SeparatorText("Selection mode");
-		ImGui::RadioButton("Last Driven", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::LAST_DRIVEN);
+		ImGui::SeparatorText("VIEW_VEHICLE_CONTROL_SELECTION_MODE"_T.data());
+		ImGui::RadioButton("VIEW_VEHICLE_CONTROL_SELECTION_MODE_LAST_DRIVEN"_T.data(), (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::LAST_DRIVEN);
 		ImGui::SameLine();
-		ImGui::RadioButton("Personal", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::PERSONAL);
+		ImGui::RadioButton("VIEW_VEHICLE_CONTROL_SELECTION_MODE_PERSONAL_VEHICLE"_T.data(),
+		    (int*)&g_vehicle_control_service.m_selection_mode,
+		    (int)eControlledVehSelectionMode::PERSONAL);
 		ImGui::SameLine();
-		ImGui::RadioButton("Closest", (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::CLOSEST);
+		ImGui::RadioButton("VIEW_VEHICLE_CONTROL_SELECTION_MODE_CLOSEST"_T.data(), (int*)&g_vehicle_control_service.m_selection_mode, (int)eControlledVehSelectionMode::CLOSEST);
 	}
 
 	void view::vehicle_control()
@@ -340,11 +351,11 @@ namespace big
 				ImGui::Text(g_vehicle_control_service.m_controlled_vehicle.model_name);
 				if (g.window.vehicle_control.show_info)
 				{
-					ImGui::Text(std::format("Health: {}\nPassengers: {}/{}",
-					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_health,
-					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_num_of_passengers,
-					    g_vehicle_control_service.m_controlled_vehicle.ptr->m_max_passengers)
-					                .data());
+					ImGui::Text(std::vformat("VIEW_VEHICLE_CONTROL_HEALTH_N_PASSENGERS"_T,
+					    std::make_format_args(g_vehicle_control_service.m_controlled_vehicle.ptr->m_health,
+					        g_vehicle_control_service.m_controlled_vehicle.ptr->m_num_of_passengers,
+					        g_vehicle_control_service.m_controlled_vehicle.ptr->m_max_passengers))
+					                .c_str());
 				}
 
 				ImGui::Separator();
