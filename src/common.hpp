@@ -36,6 +36,7 @@
 #include <utility>
 
 #include <set>
+#include <unordered_set>
 #include <stack>
 #include <vector>
 
@@ -83,6 +84,7 @@ namespace self
 	inline Vector3 rot;
 	inline Vehicle veh;
 	inline int char_index;
+	inline std::unordered_set<int> spawned_vehicles;
 }
 
 template<size_t N>

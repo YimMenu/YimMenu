@@ -507,7 +507,7 @@ namespace big
 				Vehicle veh              = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
 				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() //If we're in Freemode.
 				    || personal_vehicle == veh              //Or we're in our personal vehicle.
-				    || DECORATOR::DECOR_GET_INT(veh, "RandomId") == g_local_player->m_net_object->m_object_id) // Or it's a vehicle we spawned.
+				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
 					g.reactions.request_control_event.process(plyr);

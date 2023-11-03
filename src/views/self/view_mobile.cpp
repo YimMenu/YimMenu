@@ -40,7 +40,7 @@ namespace big
 		components::command_button<"ballisticarmor">();
 
 
-		ImGui::SeparatorText("Services");
+		ImGui::SeparatorText("VIEW_SELF_MOBILE_SERVICES"_T.data());
 
 		components::command_button<"avenger">();
 		components::command_button<"kosatka">();
@@ -49,7 +49,7 @@ namespace big
 		components::command_button<"acidlab">();
 		components::command_button<"acidbike">();
 
-		ImGui::SeparatorText("Miscellaneous");
+		ImGui::SeparatorText("DEBUG_TAB_MISC"_T.data());
 
 		components::command_button<"taxi">();
 

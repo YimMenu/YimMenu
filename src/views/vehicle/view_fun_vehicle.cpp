@@ -64,7 +64,7 @@ namespace big
 
 					if (idx >= 0)
 					{
-						name = "FUN_VEHICLE_SEAT"_T.data() + std::to_string(idx + 1);
+						name = std::format("{} {}", "FUN_VEHICLE_SEAT"_T, (idx + 1)).c_str();
 					}
 
 					if ((idx + 1) % 4 != 0)
@@ -257,7 +257,7 @@ namespace big
 				eExplosionTag selected_rocket_explosion = g.vehicle.vehicle_ammo_special.rocket_explosion_tag;
 
 				ImGui::BeginGroup();
-				components::sub_title("CUSTOM_VEH_WEAPONS_MG"_T.data());
+				components::sub_title("CUSTOM_VEH_WEAPONS_MG"_T);
 				if (ImGui::BeginCombo("SPECIAL_AMMO"_T.data(), SPECIAL_AMMOS[(int)selected_ammo].name))
 				{
 					for (const auto& special_ammo : SPECIAL_AMMOS)
@@ -304,7 +304,7 @@ namespace big
 
 				ImGui::SameLine();
 				ImGui::BeginGroup();
-				components::sub_title("CUSTOM_VEH_WEAPONS_MISSILE"_T.data());
+				components::sub_title("CUSTOM_VEH_WEAPONS_MISSILE"_T);
 				if (ImGui::BeginCombo(std::format("{}##customvehweaps", "EXPLOSION"_T).data(), BULLET_IMPACTS[selected_rocket_explosion]))
 				{
 					for (const auto& [type, name] : BULLET_IMPACTS)

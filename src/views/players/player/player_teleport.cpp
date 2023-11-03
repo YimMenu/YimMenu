@@ -11,7 +11,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Teleport");
+		components::sub_title("GUI_TAB_TELEPORT"_T);
 
 		if (ImGui::BeginListBox("##teleport", get_listbox_dimensions()))
 		{
@@ -20,14 +20,14 @@ namespace big
 			components::player_command_button<"playervehtp">(g_player_service->get_selected());
 			ImGui::SameLine();
 			components::player_command_button<"bring">(g_player_service->get_selected());
-			components::button("Waypoint", [] {
+			components::button("VIEW_PLAYER_TELEPORT_WAYPOINT"_T, [] {
 				Vector3 location;
 				if (blip::get_blip_location(location, (int)BlipIcons::Waypoint))
 					entity::load_ground_at_3dcoord(location), teleport::teleport_player_to_coords(g_player_service->get_selected(), location);
 			});
 
 			components::options_modal(
-			    "Interior Teleport",
+			    "VIEW_PLAYER_TELEPORT_INTERIOR_TELEPORT"_T.data(),
 			    [] {
 				    components::player_command_button<"intkick">(g_player_service->get_selected(), {});
 				    if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
@@ -92,42 +92,42 @@ namespace big
 					    toxic::start_activity(g_player_service->get_selected(), eActivityType::Skydive);
 				    });
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {81}, "TP To MOC");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {81}, "VIEW_PLAYER_TELEPORT_TP_TO_MOC"_T);
 
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {123}, "TP To Casino");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {123}, "VIEW_PLAYER_TELEPORT_TP_TO_CASINO"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {124}, "TP To Penthouse");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {124}, "VIEW_PLAYER_TELEPORT_TP_TO_PENTHOUSE"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {128}, "TP To Arcade");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {128}, "VIEW_PLAYER_TELEPORT_TP_TO_ARCADE"_T);
 
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {146}, "TP To Music Locker");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {146}, "VIEW_PLAYER_TELEPORT_TP_TO_MUSIC_LOCKER"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {148}, "TP To Record A Studios");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {148}, "VIEW_PLAYER_TELEPORT_TP_TO_RECORD_A_STUDIOS"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {149}, "TP To Custom Auto Shop");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {149}, "VIEW_PLAYER_TELEPORT_TP_TO_CUSTOM_AUTO_SHOP"_T);
 
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {155}, "TP To Agency");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {155}, "VIEW_PLAYER_TELEPORT_TP_TO_AGENCY"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {160}, "TP To Freakshop");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {160}, "VIEW_PLAYER_TELEPORT_TP_TO_FREAKSHOP"_T);
 				    ImGui::SameLine();
-				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {161}, "TP To Multi Floor Garage");
+				    components::player_command_button<"interiortp">(g_player_service->get_selected(), {161}, "VIEW_PLAYER_TELEPORT_TP_TO_MULTI_FLOOR_GARAGE"_T);
 			    },
 			    false,
-			    "Interior");
+			    "INTERIOR"_T.data());
 
 			if (g_player_service->get_selected()->get_ped())
 			{
 				static float new_location[3];
 				auto& current_location = *reinterpret_cast<float(*)[3]>(g_player_service->get_selected()->get_ped()->get_position());
 
-				components::small_text("Custom TP");
+				components::small_text("VIEW_PLAYER_TELEPORT_CUSTOM_TP"_T);
 				ImGui::SetNextItemWidth(400);
 				ImGui::InputFloat3("##customlocation", new_location);
-				components::button("TP", [] {
+				components::button("GUI_TAB_TELEPORT"_T, [] {
 					teleport::teleport_player_to_coords(g_player_service->get_selected(), *reinterpret_cast<rage::fvector3*>(&new_location));
 				});
 				ImGui::SameLine();
-				if (ImGui::Button("Get current"))
+				if (ImGui::Button("VIEW_PLAYER_TELEPORT_GET_CURRENT"_T.data()))
 				{
 					std::copy(std::begin(current_location), std::end(current_location), std::begin(new_location));
 				}

@@ -70,7 +70,7 @@ namespace big
 		{
 			g_player_service->iterate([](const player_entry& entry) {
 				if (entry.second->fix_vehicle)
-					g_pointers->m_gta.m_give_pickup_rewards(-1, REWARD_VEHICLE_FIX);
+					g_pointers->m_gta.m_give_pickup_rewards(1 << entry.second->id(), REWARD_VEHICLE_FIX);
 			});
 		}
 	}

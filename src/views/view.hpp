@@ -49,6 +49,7 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
+		static void proxy_settings();
 		static void xml_vehicles();
 		static void fun_vehicle();
 		static void vehicle_control();

@@ -18,8 +18,7 @@ namespace big
 		static char name_buf[32];
 		static char search[64];
 		static char session_info[0x100]{};
-
-		ImGui::Text(std::format("Total sessions found: {}", g_matchmaking_service->get_num_found_sessions()).data());
+		ImGui::Text(std::format("{}: {}", "VIEW_SESSION_TOTAL_SESSIONS_FOUND"_T.data(), g_matchmaking_service->get_num_found_sessions()).c_str());
 
 		ImGui::SetNextItemWidth(300.f);
 
@@ -42,12 +41,11 @@ namespace big
 
 					if (ImGui::IsItemHovered())
 					{
-						ImGui::SetTooltip(std::format("Num Players: {}\nRegion: {}\nLanguage: {}\nHost: {}",
-						    session.attributes.player_count,
-						    regions[session.attributes.region].name,
-						    languages[session.attributes.language].name,
-						    session.info.m_net_player_data.m_gamer_handle.m_rockstar_id)
-						                      .c_str());
+						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
+							"REGION"_T, regions[session.attributes.region].name,
+						    "LANGUAGE"_T, languages[session.attributes.language].name,
+						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id);
+						ImGui::SetTooltip(tool_tip.c_str());
 					}
 				}
 			}
@@ -66,13 +64,13 @@ namespace big
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
-				ImGui::Text("SESSION_BROWSER_NUM_PLAYERS"_T.data(), session.attributes.player_count);
-				ImGui::Text("SESSION_BROWSER_DISCRIMINATOR"_T.data(), session.attributes.discriminator);
-				ImGui::Text("SESSION_BROWSER_REGION"_T.data(), regions[session.attributes.region].name);
-				ImGui::Text("SESSION_BROWSER_LANGUAGE"_T.data(), languages[session.attributes.language].name);
+				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count).c_str());
+				ImGui::Text(std::format("{}: 0x{:X}", "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator).c_str());
+				ImGui::Text(std::format("{}: {}", "REGION"_T, regions[session.attributes.region].name).c_str());
+				ImGui::Text(std::format("{}: {}", "LANGUAGE"_T, languages[session.attributes.language].name).c_str());
 
 				auto& data = session.info.m_net_player_data;
-				ImGui::Text("SESSION_BROWSER_HOST_RID"_T.data(), data.m_gamer_handle.m_rockstar_id);
+				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_HOST_RID"_T, data.m_gamer_handle.m_rockstar_id).c_str());
 
 				components::button("COPY_SESSION_INFO"_T, [] {
 					ImGui::SetClipboardText(session_info);
@@ -155,7 +153,8 @@ namespace big
 			if (g.session_browser.pool_filter_enabled)
 			{
 				ImGui::SameLine();
-				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, "Normal\0Bad Sport");
+				static const std::string pool_filter_options = std::string("NORMAL"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
+				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
 			}
 
 			ImGui::TreePop();
@@ -163,9 +162,11 @@ namespace big
 
 		if (ImGui::TreeNode("SORTING"_T.data()))
 		{
-			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, "Off\0Player Count");
+			static const std::string sort_by_options = std::string("OFF"_T.data()) + '\0' + std::string("PLAYER_COUNT"_T.data());
+			static const std::string sort_direction_options = std::string("ASCENDING"_T.data()) + '\0' + std::string("DESCENDING"_T.data());
+			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, sort_by_options.c_str());
 			if (g.session_browser.sort_method != 0)
-				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, "Ascending\0Descending");
+				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, sort_direction_options.c_str());
 			ImGui::TreePop();
 		}
 

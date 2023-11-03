@@ -95,6 +95,9 @@ class NativeFunc:
         s += "\n"
         s += "\t{\n"
 
+        if self.cpp_name == "ADD_OWNED_EXPLOSION":
+            s+= "\t\tbig::explosion_anti_cheat_bypass::apply();\n\n"
+
         call_native = "\t\t"
         if len(self.out_params) > 0:
             if returning_multiple_values:
@@ -126,6 +129,9 @@ class NativeFunc:
         call_native += ");"
 
         s += call_native
+
+        if self.cpp_name == "ADD_OWNED_EXPLOSION":
+            s+= "\n\n\t\tbig::explosion_anti_cheat_bypass::restore();"
 
         if returning_multiple_values:
             assign_return_values = "\n"
@@ -262,6 +268,8 @@ def generate_native_binding_cpp_and_hpp_files(functions_per_namespaces):
 
         file_buffer += '#include "lua_native_binding.hpp"\n'
         file_buffer += '#include "natives.hpp"\n'
+        if namespace_name == "FIRE":
+            file_buffer += '#include "util/explosion_anti_cheat_bypass.hpp"\n'
         file_buffer += "\n"
         file_buffer += "namespace lua::native\n"
         file_buffer += "{\n"

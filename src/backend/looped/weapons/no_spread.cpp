@@ -47,5 +47,5 @@ namespace big
 		}
 	};
 
-	no_spread g_no_spread("nospread", "No Spread", "Removes weapon spread when shooting", g.weapons.no_spread);
+	no_spread g_no_spread("nospread", "BACKEND_LOOPED_WEAPONS_NO_SPREAD", "BACKEND_LOOPED_WEAPONS_NO_SPREAD_DESC", g.weapons.no_spread);
 }

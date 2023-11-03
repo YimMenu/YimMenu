@@ -40,9 +40,9 @@ namespace big
 			    *script_local(hunt_the_beast_script_thread, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<uint32_t*>();
 			if (auto beast = g_player_service->get_by_id(beast_player_index))
 			{
-				ImGui::Text("%s is the beast", g_player_service->get_by_id(beast_player_index).get()->get_name());
+				ImGui::Text(std::format("{} {}", g_player_service->get_by_id(beast_player_index).get()->get_name(), "VIEW_NET_MISSIONS_IS_THE_BEAST"_T).c_str());
 				ImGui::SameLine();
-				components::button("Set as selected", [beast] {
+				components::button("VIEW_NET_MISSIONS_SET_AS_SELECTED"_T, [beast] {
 					g_player_service->set_selected(beast);
 				});
 
@@ -60,16 +60,13 @@ namespace big
 					for (int i = 0; i < (num_landmarks ? *num_landmarks : 10); i++)
 					{
 						auto script_local_land_mark = *beast_land_mark_list.at(i, 3).as<Vector3*>();
-						std::string label           = std::format("TP To Landmark {} at {}  {}  {}",
-                            i,
-                            script_local_land_mark.x,
-                            script_local_land_mark.y,
-                            script_local_land_mark.z);
-
-						if (ImGui::Selectable(label.data(), i == get_land_mark_beast_is_closest_to(g_player_service->get_by_id(beast_player_index), beast_land_mark_list, num_landmarks ? *num_landmarks : 10)))
+						auto label = std::vformat("VIEW_NET_MISSIONS_TP_TO_LANDMARK"_T, std::make_format_args(i, script_local_land_mark.x, script_local_land_mark.y, script_local_land_mark.z));
+						if (ImGui::Selectable(label.c_str(), i == get_land_mark_beast_is_closest_to(g_player_service->get_by_id(beast_player_index), beast_land_mark_list, num_landmarks ? *num_landmarks : 10)))
+						{
 							g_fiber_pool->queue_job([script_local_land_mark, beast] {
 								teleport::teleport_player_to_coords(g.player.spectating ? beast : g_player_service->get_self(), script_local_land_mark);
 							});
+						}
 					}
 					ImGui::EndListBox();
 				}

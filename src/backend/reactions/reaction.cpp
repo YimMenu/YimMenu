@@ -80,7 +80,7 @@ namespace big
 		{
 			char notification[500]{}; // I don't like using sprintf but there isn't an alternative afaik
 			snprintf(notification, sizeof(notification), m_notify_message, player->get_name());
-			g_notification_service->push_warning("Protections", notification);
+			g_notification_service->push_warning("PROTECTIONS"_T.data(), notification);
 		}
 
 		process_common(player);
