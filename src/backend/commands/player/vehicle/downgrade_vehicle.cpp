@@ -33,5 +33,5 @@ namespace big
 		}
 	};
 
-	downgrade_vehicle g_downgrade_vehicle("downgradeveh", "Downgrade Vehicle", "Removes all upgrades", 0);
+	downgrade_vehicle g_downgrade_vehicle("downgradeveh", "BACKEND_DOWNGRADE_VEHICLE", "BACKEND_DOWNGRADE_VEHICLE_DESC", 0);
 }

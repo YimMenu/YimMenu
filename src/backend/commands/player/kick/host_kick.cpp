@@ -18,7 +18,7 @@ namespace big
 				return;
 			if (!g_player_service->get_self()->is_host())
 			{
-				g_notification_service->push_error("Host kick", "Host kick failed");
+				g_notification_service->push_error("HOST_KICK"_T.data(), "BACKEND_HOST_KICK_FAILED"_T.data());
 				return;
 			}
 

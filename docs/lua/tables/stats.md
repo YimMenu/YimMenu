@@ -1,6 +1,7 @@
 # Table: stats
 
 Table for manipulating GTA stats.
+For stats that get prefixed by either `MP0` or `MP1`, you can use `MPX` instead and the menu will resolve to the correct number automatically.
 
 ## Functions (21)
 

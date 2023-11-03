@@ -17,7 +17,9 @@ namespace big
 {
 	hooking::hooking() :
 	    m_swapchain_hook(*g_pointers->m_gta.m_swapchain, hooks::swapchain_num_funcs),
-	    m_sync_data_reader_hook(g_pointers->m_gta.m_sync_data_reader_vtable, 27)
+	    m_sync_data_reader_hook(g_pointers->m_gta.m_sync_data_reader_vtable, 27),
+	    m_remove_player_from_sender_list_caller_1_hook(g_pointers->m_gta.m_remove_player_from_sender_list_caller_1, hooks::remove_player_from_sender_list),
+	    m_remove_player_from_sender_list_caller_2_hook(g_pointers->m_gta.m_remove_player_from_sender_list_caller_2, hooks::remove_player_from_sender_list)
 	{
 		m_swapchain_hook.hook(hooks::swapchain_present_index, &hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, &hooks::swapchain_resizebuffers);
@@ -147,6 +149,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
 
+		detour_hook_helper::add<hooks::game_skeleton_update>("GSU", g_pointers->m_gta.m_game_skeleton_update);
+
 		g_hooking = this;
 	}
 
@@ -165,6 +169,8 @@ namespace big
 		m_swapchain_hook.enable();
 		m_sync_data_reader_hook.enable();
 		m_og_wndproc = WNDPROC(SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, LONG_PTR(&hooks::wndproc)));
+		m_remove_player_from_sender_list_caller_1_hook.enable();
+		m_remove_player_from_sender_list_caller_2_hook.enable();
 
 		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
@@ -188,6 +194,8 @@ namespace big
 		SetWindowLongPtrW(g_pointers->m_hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(m_og_wndproc));
 		m_sync_data_reader_hook.disable();
 		m_swapchain_hook.disable();
+		m_remove_player_from_sender_list_caller_1_hook.disable();
+		m_remove_player_from_sender_list_caller_2_hook.disable();
 
 		MH_ApplyQueued();
 

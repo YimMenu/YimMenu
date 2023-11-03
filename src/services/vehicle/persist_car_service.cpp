@@ -49,6 +49,16 @@ namespace big
 		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
 	}
 
+	void persist_car_service::delete_vehicle(std::string_view file_name, std::string folder_name)
+	{
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
+
+		if (file.exists())
+		{
+			std::filesystem::remove(file.get_path());
+		}
+	}
+
 	std::vector<std::string> persist_car_service::list_files(std::string folder_name)
 	{
 		std::vector<std::string> file_paths;
@@ -492,10 +502,7 @@ namespace big
 						VEHICLE::GET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, &tire_smoke_color[0], &tire_smoke_color[1], &tire_smoke_color[2]);
 						vehicle_json[tire_smoke_color_key] = tire_smoke_color;
 					}
-					else
-					{
-						vehicle_json[mod_names[i]] = "TOGGLE";
-					}
+					vehicle_json[mod_names[i]] = "TOGGLE";
 				}
 
 				if (VEHICLE::GET_VEHICLE_MOD(vehicle, i) != -1)

@@ -137,62 +137,56 @@ namespace big
 			static global_debug global_test{};
 			static script_global glo_bal_sunday = script_global(global_test.global_index);
 			ImGui::SetNextItemWidth(200.f);
-			if (ImGui::InputScalar("Global", ImGuiDataType_U64, &global_test.global_index))
+			if (ImGui::InputScalar("VIEW_DEBUG_GLOBAL"_T.data(), ImGuiDataType_U64, &global_test.global_index))
 				glo_bal_sunday = script_global(global_test.global_index);
 
 			for (int i = 0; i < global_test.global_appendages.size(); i++)
 			{
 				auto item = global_test.global_appendages[i];
+				ImGui::PushID(i + item.type);
 				switch (item.type)
 				{
-				case GlobalAppendageType_At:
-					ImGui::SetNextItemWidth(200.f);
-					ImGui::InputScalar(std::format("At##{}{}", i, (int)item.type).c_str(),
-					    ImGuiDataType_S64,
-					    &global_test.global_appendages[i].index);
-					ImGui::SameLine();
-					ImGui::SetNextItemWidth(200.f);
-					ImGui::InputScalar(std::format("Size##{}{}", i, (int)item.type).c_str(),
-					    ImGuiDataType_S64,
-					    &global_test.global_appendages[i].size);
-					break;
-				case GlobalAppendageType_ReadGlobal:
-					ImGui::Text(std::format("Read Global {}", item.global_name).c_str());
-					ImGui::SameLine();
-					ImGui::SetNextItemWidth(200.f);
-					ImGui::InputScalar(std::format("Size##{}{}", i, (int)item.type).c_str(),
-					    ImGuiDataType_S64,
-					    &global_test.global_appendages[i].size);
-					break;
-				case GlobalAppendageType_PlayerId:
-					ImGui::SetNextItemWidth(200.f);
-					ImGui::InputScalar(std::format("Read Player ID Size##{}{}", i, (int)item.type).c_str(),
-					    ImGuiDataType_S64,
-					    &global_test.global_appendages[i].size);
-					break;
+					case GlobalAppendageType_At:
+						ImGui::SetNextItemWidth(200.f);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].index);
+						ImGui::SameLine();
+						ImGui::SetNextItemWidth(200.f);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						break;
+					case GlobalAppendageType_ReadGlobal:
+						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T, item.global_name).c_str());
+						ImGui::SameLine();
+						ImGui::SetNextItemWidth(200.f);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						break;
+					case GlobalAppendageType_PlayerId:
+						ImGui::SetNextItemWidth(200.f);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						break;
 				}
+				ImGui::PopID();
 			}
 
-			if (ImGui::Button("Add Offset"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_OFFSET"_T.data()))
 				global_test.global_appendages.push_back({GlobalAppendageType_At, 0LL, 0ULL});
 			ImGui::SameLine();
-			if (ImGui::Button("Add Read Player Id"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_READ_PLAYER_ID"_T.data()))
 				global_test.global_appendages.push_back({GlobalAppendageType_PlayerId, 0LL, 0ULL});
 
-			if (global_test.global_appendages.size() > 0 && ImGui::Button("Remove Offset"))
+			if (global_test.global_appendages.size() > 0 && ImGui::Button("VIEW_DEBUG_GLOBAL_REMOVE_OFFSET"_T.data()))
 				global_test.global_appendages.pop_back();
 
 			if (auto ptr = get_global_ptr(global_test))
 			{
 				ImGui::SetNextItemWidth(200.f);
-				ImGui::InputScalar("Value", ImGuiDataType_S32, ptr);
+				ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_S32, ptr);
 			}
 			else
-				ImGui::Text("INVALID_GLOBAL_READ");
+				ImGui::Text("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data());
 
 			auto globals = list_globals();
 			static std::string selected_global;
-			ImGui::Text("Saved Globals");
+			ImGui::Text("VIEW_DEBUG_GLOBAL_SAVED_GLOBALS"_T.data());
 			if (ImGui::BeginListBox("##savedglobals", ImVec2(200, 200)))
 			{
 				for (auto pair : globals)
@@ -210,7 +204,7 @@ namespace big
 					if (auto ptr = get_global_ptr(pair.second))
 						ImGui::Selectable(std::format("{}", (std::int32_t)*ptr).c_str(), false, ImGuiSelectableFlags_Disabled);
 					else
-						ImGui::Selectable("INVALID_GLOBAL_READ", false, ImGuiSelectableFlags_Disabled);
+						ImGui::Selectable("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data(), false, ImGuiSelectableFlags_Disabled);
 				}
 				ImGui::EndListBox();
 			}
@@ -226,12 +220,12 @@ namespace big
 				save_global(global_name, global_test);
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Load Global"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_LOAD_GLOBAL"_T.data()))
 			{
 				load_global_menu(selected_global, global_test);
 			}
 
-			if (ImGui::Button("Delete Global"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_DELETE_GLOBAL"_T.data()))
 			{
 				if (!selected_global.empty())
 				{
@@ -240,12 +234,12 @@ namespace big
 				}
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Add Read Global"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_READ_GLOBAL"_T.data()))
 			{
 				global_test.global_appendages.push_back({GlobalAppendageType_ReadGlobal, 0LL, 0ULL, selected_global});
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Clear"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_CLEAR"_T.data()))
 			{
 				global_test.global_index = 0;
 				global_test.global_appendages.clear();

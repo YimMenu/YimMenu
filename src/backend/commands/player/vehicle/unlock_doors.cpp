@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	unlock_vehicle g_unlock_vehicle("unlockveh", "Unlock Vehicle Doors", "Unlocks all vehicle doors", 0);
+	unlock_vehicle g_unlock_vehicle("unlockveh", "BACKEND_UNLOCK_DOORS", "BACKEND_UNLOCK_DOORS_DESC", 0);
 }

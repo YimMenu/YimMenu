@@ -68,15 +68,9 @@ namespace big
 		}
 	}
 
-	bool_command g_rainbow_paint_primary("rainbowpri", "Rainbow Paint: Apply to Primary", "Applies active rainbow effect to the current vehicle's primary color",
-	    g.vehicle.rainbow_paint.primary);
-	bool_command g_rainbow_paint_secondary("rainbowsec", "Rainbow Paint: Apply to Secondary", "Applies active rainbow effect to the current vehicle's secondary color",
-	    g.vehicle.rainbow_paint.secondary);
-	bool_command g_rainbow_paint_neon("rainbowneons", "Rainbow Paint: Apply to Neons", "Applies active rainbow effect to the current vehicle's neon color",
-	    g.vehicle.rainbow_paint.neon);
-	bool_command g_rainbow_paint_smoke("rainbowsmoke", "Rainbow Paint: Apply to Tire Smoke", "Applies active rainbow effect to the current vehicle's tire smoke color",
-	    g.vehicle.rainbow_paint.smoke);
-	int_command g_rainbow_paint_speed("rainbowspeed", "Rainbow Paint: Speed", "Speed of the rainbow paint effect",
-	    g.vehicle.rainbow_paint.speed, 1, 10);
-
+	bool_command g_rainbow_paint_primary("rainbowpri", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_PRIMARY", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_PRIMARY_DESC", g.vehicle.rainbow_paint.primary);
+	bool_command g_rainbow_paint_secondary("rainbowsec", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SECONDARY", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SECONDARY_DESC", g.vehicle.rainbow_paint.secondary);
+	bool_command g_rainbow_paint_neon("rainbowneons", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_NEONS", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_NEONS_DESC", g.vehicle.rainbow_paint.neon);
+	bool_command g_rainbow_paint_smoke("rainbowsmoke", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_TIRE", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_TIRE_DESC", g.vehicle.rainbow_paint.smoke);
+	int_command g_rainbow_paint_speed("rainbowspeed", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SPEED", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SPEED_DESC", g.vehicle.rainbow_paint.speed, 1, 10);
 }

@@ -108,10 +108,9 @@ namespace big
 			j_props[std::to_string(item.id)] = tmp;
 		}
 
-		head_blend_data blend_data{};
-
 		if (model == RAGE_JOAAT("mp_m_freemode_01") || model == RAGE_JOAAT("mp_f_freemode_01"))
 		{
+			head_blend_data blend_data{};
 			PED::GET_PED_HEAD_BLEND_DATA(self::ped, (Any*)&blend_data);
 			j["blend_data"] = blend_data;
 		}

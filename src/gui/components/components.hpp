@@ -137,7 +137,7 @@ namespace big
 		{
 			ImGui::Text(std::format("{}: ", text).data());
 			ImGui::SameLine(180);
-			ImGui::TextColored(value ? green : red, value ? "Enabled" : "Disabled");
+			ImGui::TextColored(value ? green : red, value ? "ENABLED"_T.data() : "CORE_GUI_COMPONENTS_DISABLED"_T.data());
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>

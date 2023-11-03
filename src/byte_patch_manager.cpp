@@ -4,8 +4,8 @@
 #include "hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/police.hpp"
-#include "util/toxic.hpp"
 #include "util/vehicle.hpp"
 
 extern "C" void sound_overload_detour();
@@ -22,9 +22,9 @@ namespace big
 		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
 
 		// Patch blocked explosions
-		toxic::explosion_anti_cheat_bypass::m_can_blame_others =
+		explosion_anti_cheat_bypass::m_can_blame_others =
 		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
-		toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
 		// Skip matchmaking session validity checks
