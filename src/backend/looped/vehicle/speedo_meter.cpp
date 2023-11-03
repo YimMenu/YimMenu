@@ -58,6 +58,8 @@ namespace big
 				    g.vehicle.speedo_meter.y + .08f,
 				    1);
 			}
+
+			GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
 		}
 	};
 
