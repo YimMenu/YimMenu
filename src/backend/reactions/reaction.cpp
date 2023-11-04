@@ -43,7 +43,7 @@ namespace big
 			    player->block_net_events   = true;
 			    player->block_clone_sync   = true;
 			    player->block_clone_create = true;
-			    LOG(WARNING) << std::format("{} has been timed out", player->get_name());
+			    LOGF(WARNING, "{} has been timed out", player->get_name());
 		}
 	}
 
@@ -58,7 +58,7 @@ namespace big
 		if (log)
 		{
 			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
-			LOG(WARNING) << std::format("Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
+			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
 		}
 
 		if (announce_in_chat)
