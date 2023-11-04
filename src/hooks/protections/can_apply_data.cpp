@@ -1557,11 +1557,13 @@ namespace big
 							}
 						}
 					}
+					if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
+					{
+						notify::crash_blocked(sender, "submarine car freemode");
+						return true;
+					}
 				}
-				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
-				{
-					return true;
-				}
+
 				break;
 			}
 			case sync_node_id("CPlayerCameraDataNode"):
