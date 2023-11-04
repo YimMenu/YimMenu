@@ -73,7 +73,7 @@ namespace big::notify
 					char chat[255];
 					snprintf(chat,
 					    sizeof(chat),
-					    std::format("{} %s tried to crash me using %s!", g.session.chat_output_prefix).data(),
+					    std::format("{} {}", g.session.chat_output_prefix, "NOTIFICATION_CRASH_TYPE_BLOCKED"_T).data(),
 					    player->get_name(),
 					    crash);
 
