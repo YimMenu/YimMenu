@@ -13,6 +13,7 @@
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
+#include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
 
 
@@ -27,6 +28,7 @@ namespace big
 
 		g_squad_spawner_service.fetch_squads();
 		g_xml_vehicles_service->fetch_xml_files();
+		g_xml_map_service->fetch_xml_files();
 		g_custom_teleport_service.fetch_saved_locations();
 		g_ped_animation_service.fetch_saved_animations();
 

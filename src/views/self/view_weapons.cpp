@@ -24,7 +24,7 @@ namespace big
 	    {big::CustomWeapon::GRAVITY_GUN, "VIEW_SELF_WEAPONS_GRAVITY_GUN"_T},
 	    {big::CustomWeapon::STEAL_VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"_T},
 	    {big::CustomWeapon::REPAIR_GUN, "BACKEND_LOOPED_WEAPONS_REPAIR_GUN"_T},
-	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"_T},
+	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_VEHICLE_GUN"_T},
 	    {big::CustomWeapon::TP_GUN, "VIEW_SELF_WEAPONS_TP_GUN"_T},
 	    {big::CustomWeapon::PAINT_GUN, "VIEW_SELF_WEAPONS_PAINT_GUN"_T},
 	};
@@ -196,7 +196,7 @@ namespace big
 			ImGui::PopItemWidth();
 		}
 
-		if (ImGui::CollapsingHeader("Ammunation"_T.data()))
+		if (ImGui::CollapsingHeader("VIEW_WEAPON_AMMUNATION"_T.data()))
 		{
 			static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
 			static std::string selected_weapon, selected_weapon_attachment;

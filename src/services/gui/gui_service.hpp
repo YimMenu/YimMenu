@@ -35,6 +35,7 @@ namespace big
 		BLACKHOLE,
 		MODEL_SWAPPER,
 		VFX,
+		XML_MAPS,
 
 		NETWORK,
 		MISSIONS,
@@ -130,6 +131,7 @@ namespace big
 						{TAB_DECL(BLACKHOLE), view::blackhole}},
 						{TAB_DECL(MODEL_SWAPPER), view::model_swapper}},
 						{TAB_DECL(VFX), view::vfx}},
+						{TAB_DECL(XML_MAPS), view::xml_maps}},
 		            },
 		        },
 		    },
