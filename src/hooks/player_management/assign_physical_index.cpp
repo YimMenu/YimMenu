@@ -99,9 +99,13 @@ namespace big
 						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
 						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
 						{
-							plyr->is_modder         = entry->is_modder;
-							plyr->block_join        = entry->block_join;
-							plyr->block_join_reason = entry->block_join_reason;
+							plyr->is_trusted = entry->is_trusted;
+							if (!(plyr->is_friend() && g.session.trust_friends))
+							{
+								plyr->is_modder         = entry->is_modder;
+								plyr->block_join        = entry->block_join;
+								plyr->block_join_reason = entry->block_join_reason;
+							}
 
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
@@ -127,17 +131,17 @@ namespace big
 
 					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
 					{
-						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
+						if ((plyr->is_friend() && g.session.allow_friends_into_locked_session) || plyr->is_trusted)
 						{
-							g_notification_service->push_success("Lock Session",
-							    std::format("A friend with the name of {} has been allowed to join the locked session",
-							        plyr->get_net_data()->m_name));
+							g_notification_service->push_success("LOBBY_LOCK"_T.data(),
+							    std::vformat("LOBBY_LOCK_ALLOWED"_T.data(),
+							        std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 						else
 						{
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr, {});
-							g_notification_service->push_warning("Lock Session",
-							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+							g_notification_service->push_warning("LOBBY_LOCK"_T.data(),
+							    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 					}
 

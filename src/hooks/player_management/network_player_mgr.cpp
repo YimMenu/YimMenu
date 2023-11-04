@@ -17,6 +17,7 @@ namespace big
 
 		bool result = g_hooking->get_original<hooks::network_player_mgr_init>()(_this, a2, a3, a4);
 
+		g.session.trust_session = false;
 		g_player_service->player_join(_this->m_local_net_player);
 		g_lua_manager->trigger_event<menu_event::PlayerMgrInit>();
 
@@ -33,6 +34,7 @@ namespace big
 		if (g.notifications.network_player_mgr_shutdown.notify)
 			g_notification_service->push("NETWORK_PLAYER_MGR"_T.data(), "NETWORK_PLAYER_MGR_DESTROY"_T.data());
 
+		g.session.trust_session = false;
 		g_hooking->get_original<hooks::network_player_mgr_shutdown>()(_this);
 		g_lua_manager->trigger_event<menu_event::PlayerMgrShutdown>();
 	}
