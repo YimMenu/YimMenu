@@ -37,7 +37,7 @@ namespace big
 		if (announce_in_chat)
 		{
 			g_fiber_pool->queue_job([attacker, victim, this] {
-				auto chat = std::format("{} {}", g.session.chat_output_prefix, m_announce_message);
+				auto chat = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
 
 				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
@@ -50,7 +50,7 @@ namespace big
 		if (notify)
 		{
 			g_notification_service->push_warning("PROTECTIONS"_T.data(),
-			    std::vformat(m_notify_message, std::make_format_args(attacker->get_name(), victim->get_name())));
+			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(attacker->get_name(), victim->get_name())));
 		}
 
 		process_common(attacker);

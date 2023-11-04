@@ -30,20 +30,19 @@ namespace big
 			}
 		}
 
-		if (kick)  
+		if (kick)
 		{
 			g_fiber_pool->queue_job([player] {
-				
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(player, {});
 			});
 		}
 
 		if (timeout)
 		{
-			    player->block_net_events   = true;
-			    player->block_clone_sync   = true;
-			    player->block_clone_create = true;
-			    LOGF(WARNING, "{} has been timed out", player->get_name());
+			player->block_net_events   = true;
+			player->block_clone_sync   = true;
+			player->block_clone_create = true;
+			LOGF(WARNING, "{} has been timed out", player->get_name());
 		}
 	}
 
@@ -53,7 +52,7 @@ namespace big
 		if (!player->is_valid())
 			return;
 		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
-			    return;
+			return;
 
 		if (log)
 		{
@@ -64,7 +63,7 @@ namespace big
 		if (announce_in_chat)
 		{
 			g_fiber_pool->queue_job([player, this] {
-				auto chat = std::format("{} {}", g.session.chat_output_prefix, m_announce_message);
+				auto chat = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
 
 				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
@@ -77,7 +76,7 @@ namespace big
 		if (notify)
 		{
 			g_notification_service->push_warning("PROTECTIONS"_T.data(),
-			    std::vformat(m_notify_message, std::make_format_args(player->get_name())));
+			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(player->get_name())));
 		}
 
 		process_common(player);
