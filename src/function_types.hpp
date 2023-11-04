@@ -117,6 +117,8 @@ namespace big::functions
 	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
+	using invite_player_by_gamer_handle = bool(*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+
 	using generate_uuid = bool (*)(uint64_t* uuid);
 
 	using get_vehicle_gadget_array_size = int (*)(eVehicleGadgetType type);

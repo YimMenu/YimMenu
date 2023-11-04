@@ -56,6 +56,7 @@ namespace big
 		static void spawn_ped();
 		static void squad_spawner();
 		static void time_and_weather();
+		static void ocean();
 		static void spoofing();
 		static void teleport();
 		static void custom_teleport();
