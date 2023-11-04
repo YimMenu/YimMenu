@@ -162,6 +162,8 @@ namespace big::session
 	{
 		if (g.debug.fuzzer.enabled)
 			return;
+		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
+			return;
 
 		auto plyr = g_player_database_service->get_or_create_player(player);
 		if (!plyr->infractions.contains((int)infraction))

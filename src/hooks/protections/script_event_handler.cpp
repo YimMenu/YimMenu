@@ -379,7 +379,9 @@ namespace big
 
 			break;
 		}
-		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
+		case eRemoteEvent::DestroyPersonalVehicle:
+			g.reactions.destroy_personal_vehicle.process(plyr);
+			return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
 			{

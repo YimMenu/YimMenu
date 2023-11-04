@@ -20,6 +20,14 @@ namespace big
 	{
 		if (!attacker->is_valid() || !victim->is_valid())
 			return;
+		if ((attacker->is_friend() && g.session.trust_friends) || attacker->is_trusted || g.session.trust_session)
+			return;
+
+		if (log)
+		{
+			uint64_t rockstar_id = attacker->get_net_data() == nullptr ? 0 : attacker->get_net_data()->m_gamer_handle.m_rockstar_id;
+			LOGF(WARNING, "Received {} from {} ({}), victim is {}", m_event_name, attacker->get_name(), rockstar_id, victim->get_name());
+		}
 
 		if (announce_in_chat)
 		{
@@ -34,8 +42,8 @@ namespace big
 				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 				        g_player_service->get_self()->get_net_data(),
 				        chat,
-				        false))
-					notify::draw_chat(chat, g_player_service->get_self()->get_name(), false);
+				        is_team_only))
+					notify::draw_chat(chat, g_player_service->get_self()->get_name(), is_team_only);
 			});
 		}
 

@@ -125,6 +125,7 @@ namespace big
 
 				if (ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &current_player->rockstar_id)
 				    || ImGui::Checkbox("IS_MODDER"_T.data(), &current_player->is_modder)
+				    || ImGui::Checkbox("TRUST"_T.data(), &current_player->is_trusted)
 				    || ImGui::Checkbox("BLOCK_JOIN"_T.data(), &current_player->block_join)
 				    || ImGui::Checkbox("VIEW_NET_PLAYER_DB_TRACK_PLAYER"_T.data(), &current_player->notify_online))
 				{

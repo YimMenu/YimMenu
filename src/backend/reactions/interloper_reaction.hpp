@@ -14,7 +14,7 @@ namespace big
 		bool m_blockable;
 		bool m_karmaable;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(interloper_reaction, announce_in_chat, notify, log, add_to_player_db, block_joins, kick, block, karma, timeout)// json doesn't serialize parent fields automatically
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(interloper_reaction, announce_in_chat, is_team_only, notify, log, add_to_player_db, block_joins, kick, block, karma, timeout) // json doesn't serialize parent fields automatically
 
 		virtual void process(player_ptr attacker, player_ptr victim);
 	};
