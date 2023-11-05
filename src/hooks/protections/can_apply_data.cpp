@@ -1575,7 +1575,7 @@ namespace big
 							}
 						}
 					}
-					else if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) // should (probably) never reach here
+					else // should (probably) never reach here
 					{
 						control_node->m_is_submarine_car = false; // safe
 					}
