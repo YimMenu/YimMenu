@@ -14,6 +14,11 @@ namespace big
 			view::time_and_weather();
 		}
 
+		ImGui::SeparatorText("GUI_TAB_OCEAN"_T.data());
+		{
+			view::ocean();
+		}
+
 		ImGui::SeparatorText("PED"_T.data());
 
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {

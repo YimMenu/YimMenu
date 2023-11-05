@@ -208,6 +208,10 @@ namespace big
 					session::join_by_rockstar_id(current_player->rockstar_id);
 				});
 
+				components::button("INVITE_PLAYER"_T, [] {
+					session::invite_by_rockstar_id(current_player->rockstar_id);
+				});
+
 				static char message[256];
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))

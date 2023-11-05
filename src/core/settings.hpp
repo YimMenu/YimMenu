@@ -542,6 +542,15 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
 			} water{};
 
+			struct ocean
+			{
+				bool modify_ocean   = false;
+				bool disable_ocean	= false;
+				int ocean_opacity	= 100;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ocean, modify_ocean, disable_ocean, ocean_opacity)
+			} ocean{};
+
 			struct spawn_ped
 			{
 				bool preview_ped       = false;

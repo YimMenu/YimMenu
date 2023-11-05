@@ -33,6 +33,15 @@ namespace big
                 g_pointers->m_gta.m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
             }
         },
+        // Ocean Quads
+        {
+            "OQ",
+            "74 41 4C 8B 05 ? ? ?",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_ocean_quads = ptr.add(5).rip().as<uint64_t>();
+            }
+        },
         // Game State
         {
             "GS",
@@ -608,6 +617,24 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
+            }
+        },
+        // Invite Player By Gamer Handle
+        {
+            "IPBGH",
+            "E8 ? ? ? ? 4C 8D 05 ? ? ? ? 48 8D 15 ? ? ? ? E9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_invite_player_by_gamer_handle = ptr.add(1).rip().as<functions::invite_player_by_gamer_handle>();
+            }
+        },
+        // Network Config
+        {
+            "NC",
+            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_network_config = ptr.add(3).rip().as<uint64_t>();
             }
         },
         // Script VM
