@@ -1166,6 +1166,8 @@ namespace big
 		return false;
 	}
 
+	static std::optional<rage::joaat_t> veh_creation_model = std::nullopt;
+
 	bool check_node(rage::netSyncNodeBase* node, CNetGamePlayer* sender, rage::netObject* object)
 	{
 		if (node->IsParentNode())
@@ -1198,6 +1200,7 @@ namespace big
 					notify::crash_blocked(sender, "invalid vehicle model");
 					return true;
 				}
+
 				if (auto info = model_info::get_vehicle_model(creation_node->m_model))
 				{
 					if (vehicle_type_to_object_type(info->m_vehicle_type) != g.m_syncing_object_type)
@@ -1206,6 +1209,9 @@ namespace big
 						return true;
 					}
 				}
+
+				veh_creation_model = creation_node->m_model;
+
 				break;
 			}
 			case sync_node_id("CDoorCreationDataNode"):
@@ -1552,17 +1558,26 @@ namespace big
 						{
 							if (model_info->m_vehicle_type != eVehicleType::VEHICLE_TYPE_SUBMARINECAR)
 							{
-								notify::crash_blocked(sender, "submarine car");
+								notify::crash_blocked(sender, "submarine car (sync)");
 								return true;
 							}
 						}
 					}
-					// blocks too many legit syncs
-					if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
+					else if (veh_creation_model != std::nullopt) 
 					{
-						// let's not get legit players with legit syncs targetted by trigger happy users
-						// notify::crash_blocked(sender, "submarine car freemode");
-						return true;
+						// object hasn't been created yet, but we have the model hash from the creation node
+						if (auto model_info = model_info::get_vehicle_model(veh_creation_model.value()))
+						{
+							if (model_info->m_vehicle_type != eVehicleType::VEHICLE_TYPE_SUBMARINECAR)
+							{
+								notify::crash_blocked(sender, "submarine car (creation)");
+								return true;
+							}
+						}
+					}
+					else // should (probably) never reach here
+					{
+						control_node->m_is_submarine_car = false; // safe
 					}
 				}
 
@@ -1655,6 +1670,7 @@ namespace big
 	{
 		static bool init = ([] { sync_node_finder::init(); }(), true);
 
+		veh_creation_model = std::nullopt;
 		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
 		{
 			return false;
