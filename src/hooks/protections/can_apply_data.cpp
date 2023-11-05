@@ -1558,11 +1558,12 @@ namespace big
 						}
 					}
 					// blocks too many legit syncs
-					// if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
-					// {
-					// 	notify::crash_blocked(sender, "submarine car freemode");
-					// 	return true;
-					// }
+					if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
+					{
+						// let's not get legit players with legit syncs targetted by trigger happy users
+						// notify::crash_blocked(sender, "submarine car freemode");
+						return true;
+					}
 				}
 
 				break;
