@@ -173,52 +173,54 @@ namespace big
 
 		struct reactions
 		{
-			reaction bounty{"Bounty", "Blocked Bounty from %s", "%s tried to set a bounty on me!"};
-			reaction ceo_kick{"CEO Kick", "Blocked CEO Kick from %s", "%s tried to kick me from my CEO!"};
-			reaction ceo_money{"CEO Money", "Blocked CEO Money from %s", "%s tried to drop money on me!"};
-			reaction clear_wanted_level{"Clear Wanted Level", "Blocked Clear Wanted Level from %s", "%s tried to clear my wanted level!"};
-			reaction crash{"Crash", "Blocked Crash from %s", "%s tried to crash me!"};
-			reaction end_session_kick{"End Session Kick", "Blocked End Session Kick from %s", "%s tried to kick me out!"};
-			reaction fake_deposit{"Fake Deposit", "Blocked Fake Deposit from %s", "%s tried to show me a fake money notification!"};
-			reaction force_mission{"Force Mission", "Blocked Force Mission from %s", "%s tried to force me into a mission!"};
-			reaction force_teleport{"Force Teleport", "Blocked Force Teleport from %s", "%s tried to teleport me!"};
-			reaction gta_banner{"GTA Banner", "Blocked GTA Banner from %s", "Blocked GTA Banner from %s"}; // please don't enable this
-			reaction kick_from_interior{"Kick From Interior", "Blocked Kick From Interior from %s", "%s tried to kick me from my interior!"};
-			reaction mc_teleport{"MC Teleport", "Blocked MC Teleport from %s", "%s tried to teleport me!"};
-			reaction network_bail{"Network Bail", "Blocked Network Bail from %s", "%s tried to kick me out!"};
-			reaction personal_vehicle_destroyed{"Personal Vehicle Destroyed", "Blocked Personal Vehicle Destroyed from %s", "%s tried to show me a fake insurance notification!"};
-			reaction remote_off_radar{"Remote Off Radar", "Blocked Remote Off Radar from %s", "%s tried to give me off radar!"};
-			reaction rotate_cam{"Rotate Cam", "Blocked Rotate Cam from %s", "%s tried to mess with my camera!"};
-			reaction send_to_cutscene{"Send To Cutscene", "Blocked Send To Cutscene from %s", "%s tried to force me into a cutscene!"};
-			reaction send_to_location{"Send To Location", "Blocked Send To Location from %s", "%s tried to send me to Cayo Perico!"};
-			reaction send_to_interior{"Send To Interior", "Blocked Send To Interior from %s", "%s tried to send me to an interior!"};
-			reaction sound_spam{"Sound Spam", "Blocked Sound Spam from %s", "%s tried to spam annoying sounds at me!"};
-			reaction spectate_notification{"Spectate Notification", "Blocked Spectate Notification from %s", "Blocked Spectate Notification from %s"};
-			reaction give_collectible{"Give Collectible", "Blocked Give Collectible from %s", "%s tried to give me a collectible!"};
-			reaction transaction_error{"Transaction Error", "Blocked Transaction Error from %s", "%s tried to show me a transaction error!"};
-			reaction tse_freeze{"TSE Freeze", "Blocked TSE Freeze from %s", "%s tried to softlock my game!"};
-			reaction tse_sender_mismatch{"TSE Sender Mismatch", "Blocked TSE Sender Mismatch from %s", "Blocked TSE Sender Mismatch from %s"};
-			reaction vehicle_kick{"Vehicle Kick", "Blocked Vehicle Kick from %s", "%s tried to kick me from my vehicle!"};
-			reaction teleport_to_warehouse{"Teleport To Warehouse", "Blocked Teleport To Warehouse from %s", "%s tried to teleport me to a warehouse!"};
-			reaction start_activity{"Start Activity", "Blocked Start Activity from %s", "Blocked Start Activity from %s"};
-			reaction start_script{"Start Script", "Blocked Start Script from %s", "Blocked Start Script from %s"};
-			reaction null_function_kick{"Null Function Kick", "Blocked Null Function Kick from %s", "%s tried to kick me out!"};
-			reaction destroy_personal_vehicle{"Destroy Personal Vehicle", "Blocked Destroy Personal Vehicle from %s", "%s tried to destroy my personal vehicle!"};
-			reaction trigger_business_raid{"Trigger Business Raid", "Blocked Trigger Business Raid from %s", "%s tried to trigger a business raid!"};
-			reaction turn_into_beast{"Turn Into Beast", "Blocked Turn Into Beast from %s", "%s tried to turn me into the beast!"};
-			reaction remote_wanted_level{"Remote Wanted Level", "Blocked Remote Wanted Level from %s", "%s tried to give me a wanted level!"};
-			interloper_reaction remote_wanted_level_others{"Remote Wanted Level On Other Players", "%s is attempting to give a wanted level to %s!", "%s is attempting to give a wanted level to %s!", false, false};
+			// first constructor param is an internal identifier for the event
+			// it's never shown in the UI
+			reaction bounty{"Bounty", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
+			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
+			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
+			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
+			reaction crash{"Crash", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
+			reaction end_session_kick{"End Session Kick", "REACTION_END_SESSION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
+			reaction fake_deposit{"Fake Deposit", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
+			reaction force_mission{"Force Mission", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
+			reaction force_teleport{"Force Teleport", "REACTION_FORCE_TELEPORT_NOTIFY", "REACTION_FORCE_TELEPORT_ANNOUNCE"};
+			reaction gta_banner{"GTA Banner", "REACTION_GTA_BANNER_NOTIFY", "REACTION_GTA_BANNER_ANNOUNCE"}; // please don't enable this
+			reaction kick_from_interior{"Kick From Interior", "REACTION_KICK_FROM_INTERIOR_NOTIFY", "REACTION_KICK_FROM_INTERIOR_ANNOUNCE"};
+			reaction mc_teleport{"MC Teleport", "REACTION_MC_TELEPORT_NOTIFY", "REACTION_MC_TELEPORT_ANNOUNCE"};
+			reaction network_bail{"Network Bail", "REACTION_NETWORK_BAIL_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
+			reaction personal_vehicle_destroyed{"Personal Vehicle Destroyed", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
+			reaction remote_off_radar{"Remote Off Radar", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
+			reaction rotate_cam{"Rotate Cam", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
+			reaction send_to_cutscene{"Send To Cutscene", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
+			reaction send_to_location{"Send To Location", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
+			reaction send_to_interior{"Send To Interior", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
+			reaction sound_spam{"Sound Spam", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
+			reaction spectate_notification{"Spectate Notification", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
+			reaction give_collectible{"Give Collectible", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
+			reaction transaction_error{"Transaction Error", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
+			reaction tse_freeze{"TSE Freeze", "REACTION_TSE_FREEZE_NOTIFY", "REACTION_TSE_FREEZE_ANNOUNCE"};
+			reaction tse_sender_mismatch{"TSE Sender Mismatch", "REACTION_TSE_SENDER_MISMATCH_NOTIFY", "REACTION_TSE_SENDER_MISMATCH_ANNOUNCE"};
+			reaction vehicle_kick{"Vehicle Kick", "REACTION_VEHICLE_KICK_NOTIFY", "REACTION_VEHICLE_KICK_ANNOUNCE"};
+			reaction teleport_to_warehouse{"Teleport To Warehouse", "REACTION_TELEPORT_TO_WAREHOUSE_NOTIFY", "REACTION_TELEPORT_TO_WAREHOUSE_ANNOUNCE"};
+			reaction start_activity{"Start Activity", "REACTION_START_ACTIVITY_NOTIFY", "REACTION_START_ACTIVITY_ANNOUNCE"};
+			reaction start_script{"Start Script", "REACTION_START_SCRIPT_NOTIFY", "REACTION_START_SCRIPT_ANNOUNCE"};
+			reaction null_function_kick{"Null Function Kick", "REACTION_NULL_FUNCTION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
+			reaction destroy_personal_vehicle{"Destroy Personal Vehicle", "REACTION_DESTROY_PERSONAL_VEHICLE_NOTIFY", "REACTION_DESTROY_PERSONAL_VEHICLE_ANNOUNCE"};
+			reaction trigger_business_raid{"Trigger Business Raid", "REACTION_TRIGGER_BUSINESS_RAID_NOTIFY", "REACTION_TRIGGER_BUSINESS_RAID_ANNOUNCE"};
+			reaction turn_into_beast{"Turn Into Beast", "REACTION_TURN_INTO_BEAST_NOTIFY", "REACTION_TURN_INTO_BEAST_RAID_ANNOUNCE"};
+			reaction remote_wanted_level{"Remote Wanted Level", "REACTION_REMOTE_WANTED_LEVEL_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_ANNOUNCE"};
+			interloper_reaction remote_wanted_level_others{"Remote Wanted Level On Other Players", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_ANNOUNCE", false, false};
 
-			reaction clear_ped_tasks{"Clear Ped Tasks", "Blocked Clear Ped Tasks from %s", "%s tried to freeze me!"};
-			reaction remote_ragdoll{"Remote Ragdoll", "Blocked Remote Ragdoll from %s", "%s tried to ragdoll me!"};
-			reaction kick_vote{"Kick Vote", "%s is voting to kick you!", "%s is voting to kick me!"};
-			reaction report_cash_spawn{"Cash Spawn", "%s is spawning cash!", "%s is spawning cash!"};
-			reaction modder_detection{"Modder Detection", "%s is detected as a modder!", "%s is detected as a modder!"};
-			reaction game_anti_cheat_modder_detection{"Game Anti-Cheat Modder Detection", "%s is detected as a modder by the game anti-cheat!", "%s is detected as a modder by the game anti-cheat!"};
-			reaction request_control_event{"Request Control Event", "Blocked Request Control Event from %s", "%s tried to mess with my vehicle!"};
-			reaction report{"Report", "Blocked Report from %s", "%s tried to report me!"};
-			reaction spectate{"Spectate", "%s is spectating you", "%s is spectating me!"};
-			interloper_reaction spectate_others{"Spectate Others", "%s is spectating %s!", "%s is spectating %s!", false, false};
+			reaction clear_ped_tasks{"Clear Ped Tasks", "REACTION_CLEAR_PED_TASKS_NOTIFY", "REACTION_CLEAR_PED_TASKS_ANNOUNCE"};
+			reaction remote_ragdoll{"Remote Ragdoll", "REACTION_REMOTE_RAGDOLL_NOTIFY", "REACTION_REMOTE_RAGDOLL_ANNOUNCE"};
+			reaction kick_vote{"Kick Vote", "REACTION_VOTE_KICK_NOTIFY", "REACTION_VOTE_KICK_ANNOUNCE"};
+			reaction report_cash_spawn{"Cash Spawn", "REACTION_CASH_SPAWN_GENERIC", "REACTION_CASH_SPAWN_GENERIC"};
+			reaction modder_detection{"Modder Detection", "REACTION_MODDER_DETECTED_GENERIC", "REACTION_MODDER_DETECTED_GENERIC"};
+			reaction game_anti_cheat_modder_detection{"Game Anti-Cheat Modder Detection", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC"};
+			reaction request_control_event{"Request Control Event", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
+			reaction report{"Report", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
+			reaction spectate{"Spectate", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
+			interloper_reaction spectate_others{"Spectate Others", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, spectate_others)
 		} reactions{};
