@@ -12,7 +12,8 @@ namespace big
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			teleport::into_vehicle(veh);
+			if (self::veh != veh)
+				teleport::into_vehicle(veh);
 		}
 	};
 

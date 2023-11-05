@@ -184,6 +184,9 @@ namespace big
 				ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
 
 			components::button("SAVE_VEHICLE"_T, [] {
+				if (vehicle_file_name_input[0] == '\0')
+					return;
+
 				if (!self::veh)
 					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
@@ -193,6 +196,9 @@ namespace big
 		else
 		{
 			components::button("SAVE_VEHICLE"_T, [] {
+				if (vehicle_file_name_input[0] == '\0')
+					return;
+
 				if (!self::veh)
 					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 

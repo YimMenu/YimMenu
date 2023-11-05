@@ -21,7 +21,7 @@ namespace big::notify
 		HUD::END_TEXT_COMMAND_THEFEED_POST_TICKER(false, false);
 	}
 
-	inline void draw_chat(char* msg, const char* player_name, bool is_team)
+	inline void draw_chat(const char* msg, const char* player_name, bool is_team)
 	{
 		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
 
@@ -70,18 +70,14 @@ namespace big::notify
 			if (g.reactions.crash.announce_in_chat)
 			{
 				g_fiber_pool->queue_job([player, crash] {
-					char chat[255];
-					snprintf(chat,
-					    sizeof(chat),
-					    std::format("{} {}", g.session.chat_output_prefix, "NOTIFICATION_CRASH_TYPE_BLOCKED"_T).data(),
-					    player->get_name(),
-					    crash);
+					auto chat = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
+					chat = std::format("{} {}", g.session.chat_output_prefix, chat);
 
 					if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 					        g_player_service->get_self()->get_net_data(),
-					        chat,
+					        chat.data(),
 					        g.reactions.crash.is_team_only))
-						draw_chat(chat, g_player_service->get_self()->get_name(), g.reactions.crash.is_team_only);
+						draw_chat(chat.c_str(), g_player_service->get_self()->get_name(), g.reactions.crash.is_team_only);
 				});
 			}
 
