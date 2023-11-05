@@ -70,7 +70,8 @@ namespace big::notify
 			if (g.reactions.crash.announce_in_chat)
 			{
 				g_fiber_pool->queue_job([player, crash] {
-					auto chat = std::format("{} {}", g.session.chat_output_prefix, "NOTIFICATION_CRASH_TYPE_BLOCKED"_T);
+					auto chat = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
+					chat = std::format("{} {}", g.session.chat_output_prefix, chat);
 
 					if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
 					        g_player_service->get_self()->get_net_data(),
