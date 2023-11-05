@@ -191,7 +191,7 @@ namespace big
 			reaction personal_vehicle_destroyed{"Personal Vehicle Destroyed", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
 			reaction remote_off_radar{"Remote Off Radar", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
 			reaction rotate_cam{"Rotate Cam", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
-			reaction send_to_cutscene{"Send To Cutscene", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "{} tried to force me into a cutscene!"};
+			reaction send_to_cutscene{"Send To Cutscene", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
 			reaction send_to_location{"Send To Location", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
 			reaction send_to_interior{"Send To Interior", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
 			reaction sound_spam{"Sound Spam", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
