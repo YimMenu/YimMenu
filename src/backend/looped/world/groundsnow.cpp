@@ -10,13 +10,9 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		virtual void on_enable() override
-		{
-			g_tunables_service->set_tunable<bool>(RAGE_JOAAT("TURN_SNOW_ON_OFF"), true);
-		}
-
 		virtual void on_tick() override
 		{
+			g_tunables_service->set_tunable<bool>(RAGE_JOAAT("TURN_SNOW_ON_OFF"), true);
 		}
 
 		virtual void on_disable() override
