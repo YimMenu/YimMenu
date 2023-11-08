@@ -186,6 +186,7 @@ static const std::map<std::string, std::vector<int>> lsc_tire_smoke_rgb = {
     {"Red", {TIRESMOKE_COLOR_RED}},
     {"Pink", {TIRESMOKE_COLOR_PINK}},
     {"Brown", {TIRESMOKE_COLOR_BROWN}},
+    {"Patriot", {TIRESMOKE_COLOR_PATRIOT}},
 };
 
 static const std::map<std::string, std::vector<int>> lsc_neon_rgb = {

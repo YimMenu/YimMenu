@@ -11,7 +11,7 @@ namespace big
 		Vector3 rotation;
 		bool has_collision;
 		bool is_visible;
-		bool is_invincible;
+		// bool is_invincible;
 	};
 
 	static void to_json(nlohmann::json& j, const model_attachment& attachment)
@@ -25,7 +25,7 @@ namespace big
 		    {"rotation_z", attachment.rotation.z},
 		    {"has_collision", attachment.has_collision},
 		    {"is_visible", attachment.is_visible},
-		    {"is_invincible", attachment.is_invincible}
+		    // {"is_invincible", attachment.is_invincible}
 
 		};
 	};
@@ -44,6 +44,6 @@ namespace big
 
 		set_from_key_or_default(j, "has_collision", attachment.has_collision);
 		set_from_key_or_default(j, "is_visible", attachment.is_visible, true);
-		set_from_key_or_default(j, "is_invincible", attachment.is_invincible);
+		// set_from_key_or_default(j, "is_invincible", attachment.is_invincible);
 	}
 };
