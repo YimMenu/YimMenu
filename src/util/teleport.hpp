@@ -8,9 +8,21 @@
 
 namespace big::teleport
 {
-	inline void to_coords(const Vector3& location)
+	inline void to_coords(const Vector3& location, const Vector3& euler = {0, 0, 0})
 	{
 		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
+		if (euler.x != 0.f)
+		{
+			if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, true))
+			{
+				ENTITY::SET_ENTITY_HEADING(self::veh, euler.x);
+			}
+		}
+		if (euler.y != 0.f && euler.z != 0.f)
+		{
+			CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+			CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+		}
 	}
 
 	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords, Vector3 euler = {0, 0, 0})
@@ -22,11 +34,11 @@ namespace big::teleport
 		else
 			ent = PLAYER::PLAYER_PED_ID();
 
-		bool is_local_player = (ent == self::ped || ent == self::veh);
+		bool is_local_player = ent == self::ped;
 
 		if (is_local_player)
 		{
-			to_coords(coords);
+			to_coords(coords, euler);
 			return true;
 		}
 
@@ -43,14 +55,9 @@ namespace big::teleport
 			if (entity::take_control_of(ent))
 			{
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coords.x, coords.y, coords.z, TRUE, TRUE, TRUE);
-				if (euler.x + euler.y + euler.z != 0.0f)
+				if (euler.x != 0.0f)
 				{
 					ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-					if (is_local_player)
-					{
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-					}
 				}
 			}
 			else
@@ -79,13 +86,6 @@ namespace big::teleport
 			remote_player_teleport remote_tp = {obj_id, {coords.x, coords.y, coords.z}};
 
 			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
-
-			if (is_local_player)
-			{
-				ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-			}
 
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
