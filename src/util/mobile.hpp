@@ -208,10 +208,10 @@ namespace big::mobile
 			{
 				*scr_globals::gun_van.as<Vector3*>() = spawn_point;
 
-				return g_notification_service->push_success("Request Service", "The Gun Van is now spawned near your location, keep in mind that this is local and cannot be seen by other players.");
+				return g_notification_service->push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
 			}
 
-			g_notification_service->push_warning("Request Service", "Couldn't find a suitable spawn point for the Gun Van, try moving to a different location.");
+			g_notification_service->push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
 		}
 	}
 }
