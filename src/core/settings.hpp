@@ -542,6 +542,14 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
 			} water{};
 
+			struct gravity
+			{
+				bool modify_gravity   = false;
+				float current_gravity = 9.8f;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity, modify_gravity, current_gravity)
+			} gravity{};
+
 			struct ocean
 			{
 				bool modify_ocean   = false;
@@ -550,6 +558,16 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ocean, modify_ocean, disable_ocean, ocean_opacity)
 			} ocean{};
+
+			struct waypoint_n_objective
+			{
+				bool waypoint_beacon            = false;
+				bool objective_beacon           = false;
+				float waypoint_beacon_color[3]  = {1, 0, 1};
+				float objective_beacon_color[3] = {1, 1, 0};
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(waypoint_n_objective, waypoint_beacon, objective_beacon, objective_beacon_color, waypoint_beacon_color)
+			} waypoint_n_objective{};
 
 			struct spawn_ped
 			{
@@ -615,9 +633,10 @@ namespace big
 			bool override_weather = false;
 			int local_weather     = 0;
 
-			bool blackout = false;
+			bool blackout    = false;
+			bool ground_snow = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout, ground_snow)
 		} world{};
 
 		struct spoofing

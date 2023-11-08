@@ -93,6 +93,8 @@ namespace big
 		uint32_t* m_region_code;
 
 		uint64_t m_ocean_quads;
+		float* m_gravity_level;
+		functions::set_gravity_level m_set_gravity_level;
 
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
