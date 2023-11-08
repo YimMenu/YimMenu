@@ -14,9 +14,19 @@ namespace big
 			view::time_and_weather();
 		}
 
+		ImGui::SeparatorText("GUI_TAB_GRAVITY"_T.data());
+		{
+			view::gravity();
+		}
+
 		ImGui::SeparatorText("GUI_TAB_OCEAN"_T.data());
 		{
 			view::ocean();
+		}
+
+		ImGui::SeparatorText("GUI_TAB_WAYPOINT_N_OBJECTIVE"_T.data());
+		{
+			view::waypoint_and_objective();
 		}
 
 		ImGui::SeparatorText("PED"_T.data());
