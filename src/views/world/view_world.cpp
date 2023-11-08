@@ -69,7 +69,7 @@ namespace big
 
 		ImGui::SeparatorText("VEHICLES"_T.data());
 
-		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
+		components::button<ImVec2(0, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))
@@ -81,7 +81,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button<ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
+		components::button<ImVec2(0, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))
