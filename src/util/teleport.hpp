@@ -17,6 +17,10 @@ namespace big::teleport
 			{
 				ENTITY::SET_ENTITY_HEADING(self::veh, euler.x);
 			}
+			else
+			{
+				ENTITY::SET_ENTITY_HEADING(self::ped, euler.x);
+			}
 		}
 		if (euler.y != 0.f && euler.z != 0.f)
 		{
