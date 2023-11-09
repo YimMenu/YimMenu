@@ -40,7 +40,5 @@ namespace big
 		}
 
 		components::command_checkbox<"blackout">();
-
-		components::command_checkbox<"groundsnow">();
 	}
 }

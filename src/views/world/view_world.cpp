@@ -46,7 +46,7 @@ namespace big
 				if (!PED::IS_PED_A_PLAYER(ped))
 				{
 					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
-					if (relation == 4 || relation == 5)
+					if (relation == 4 || relation == 5 || relation == 3)
 						ped::kill_ped(ped);
 				}
 			}
