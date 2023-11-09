@@ -45,8 +45,11 @@ namespace big
 			{
 				if (!PED::IS_PED_A_PLAYER(ped))
 				{
+					auto player_group = PED::GET_PED_RELATIONSHIP_GROUP_HASH(self::ped);
+					auto ped_group = PED::GET_PED_RELATIONSHIP_GROUP_HASH(ped);
+					auto relationship_group = PED::GET_RELATIONSHIP_BETWEEN_GROUPS(player_group, ped_group);
 					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
-					if (relation == 4 || relation == 5)
+					if ((relation == 4 || relation == 5) || (relationship_group == 4 || relationship_group == 5))
 						ped::kill_ped(ped);
 				}
 			}
