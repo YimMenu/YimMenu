@@ -203,6 +203,12 @@ namespace big
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+
+		if (!vehicle_json[tire_can_burst].is_null())
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, vehicle_json[tire_can_burst]);
+		else
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
+
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, vehicle_json[primary_color_key], vehicle_json[secondary_color_key]);
 
 		if (!vehicle_json[custom_primary_color_key].is_null())
@@ -234,9 +240,6 @@ namespace big
 			std::vector<int> secondary_custom_color = vehicle_json[custom_secondary_color_key];
 			VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, secondary_custom_color[0], secondary_custom_color[1], secondary_custom_color[2]);
 		}
-
-		if (!vehicle_json[tire_can_burst].is_null())
-			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, vehicle_json[tire_can_burst]);
 
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, vehicle_json[vehicle_window_tint_key]);
 
