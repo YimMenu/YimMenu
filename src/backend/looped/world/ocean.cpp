@@ -4,27 +4,46 @@
 
 namespace big
 {
+	static std::vector<float> original_heights;
+
+	struct quad_info
+	{
+		uint64_t m_quad_pool;
+		short m_quad_count;
+	};
+
+	struct ocean_quad
+	{
+	private:
+		char pad_0[0x8];
+
+	public:
+		int m_opacity;
+
+	private:
+		char pad_1[0x8];
+
+	public:
+		float m_height;
+	};
+
 	class modify_ocean : looped_command
 	{
 		using looped_command::looped_command;
 
-		struct quad_info
+		virtual void on_enable() override
 		{
-			uint64_t m_quad_pool;
-			short m_quad_count;
-		};
+			if (auto ocean_quads = reinterpret_cast<quad_info*>(g_pointers->m_gta.m_ocean_quads))
+			{
+				for (uint64_t i = 0; i < ocean_quads->m_quad_count; i++)
+				{
+					const auto index = ocean_quads->m_quad_pool + (i * 0x1C);
+					const auto quad  = reinterpret_cast<ocean_quad*>(index);
 
-		struct ocean_quad
-		{
-		private:
-			char pad_0[0x8];
-		public:
-			int m_opacity;
-		private:
-			char pad_1[0x8];
-		public:
-			float m_height;
-		};
+					original_heights.push_back(quad->m_height);
+				}
+			}
+		}
 
 		virtual void on_tick() override
 		{
@@ -39,7 +58,7 @@ namespace big
 					if (g.world.ocean.disable_ocean)
 						quad->m_height = -10000.f;
 					else
-						quad->m_height = 0.f;
+						quad->m_height = original_heights[i];
 
 					// Change the ocean's opacity (alpha)
 					if (g.world.ocean.ocean_opacity == 100)
@@ -61,10 +80,12 @@ namespace big
 					const auto index = ocean_quads->m_quad_pool + (i * 0x1C);
 					const auto quad  = reinterpret_cast<ocean_quad*>(index);
 
-					quad->m_height	= 0.f;
+					quad->m_height  = original_heights[i];
 					quad->m_opacity = 0x1A1A1A1A;
 				}
 			}
+
+			original_heights.clear();
 		}
 	};
 
