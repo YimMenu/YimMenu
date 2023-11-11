@@ -209,6 +209,9 @@ namespace big
 		else
 			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
 
+		if (!vehicle_json[drift_tires].is_null())
+			VEHICLE::SET_DRIFT_TYRES(vehicle, vehicle_json[drift_tires]);
+
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, vehicle_json[primary_color_key], vehicle_json[secondary_color_key]);
 
 		if (!vehicle_json[custom_primary_color_key].is_null())
@@ -476,6 +479,7 @@ namespace big
 		// vehicle_json[is_invincible_key]     = is_invincible;
 		vehicle_json[wheel_color_key]       = wheel_color;
 		vehicle_json[tire_can_burst]        = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
+		vehicle_json[drift_tires]           = VEHICLE::GET_DRIFT_TYRES_SET(vehicle);
 
 		std::map<int, bool> vehicle_extras;
 		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)

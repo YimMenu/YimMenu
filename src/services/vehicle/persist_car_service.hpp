@@ -44,6 +44,7 @@ namespace big
 		static constexpr auto wheel_color_key      = "wheel_color";
 		static constexpr auto tire_smoke_color_key = "tire_smoke_color";
 		static constexpr auto tire_can_burst       = "tire_can_burst";
+		static constexpr auto drift_tires          = "drift_tires";
 
 		static constexpr auto convertable_state_key = "convertable_state";
 
