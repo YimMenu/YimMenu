@@ -133,7 +133,8 @@ namespace big
 				case GlobalValueType::VECTOR:
 				{
 				    std::ostringstream o;
-				    o << "X: " << std::fixed << std::setprecision(2) << *(PFLOAT)ptr << " Y: " << *(PFLOAT)ptr + 0x8 << " Z: " << *(PFLOAT)ptr + 0x10;
+				    auto vectorptr = (rage::scrVector*)ptr;
+				    o << "X: " << std::fixed << std::setprecision(2) << vectorptr->x << " Y: " << vectorptr->y << " Z: " << vectorptr->z;
 				    return o.str();
 				}
 				case GlobalValueType::VARCHAR:
@@ -230,40 +231,51 @@ namespace big
 
 			if (auto ptr = get_global_ptr(global_test))
 			{
-				ImGui::SetNextItemWidth(300.f);
 				switch (global_test.global_value_type)
 				{
 					case GlobalValueType::INT:
 					{
+					    ImGui::SetNextItemWidth(300.f);
 					    ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_S32, ptr);
 					    break;
 					}
 				    case GlobalValueType::BOOLEAN:
 				    {
+					    ImGui::SetNextItemWidth(300.f);
 					    bool is_global_enabled = (*ptr == TRUE);
-						if (ImGui::Checkbox("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), &is_global_enabled))
-						{
-							*ptr = is_global_enabled;
-						}
+					    if (ImGui::Checkbox("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), &is_global_enabled))
+					    {
+					        *ptr = is_global_enabled;
+					    }
 					    break;
 				    }
 				    case GlobalValueType::BITSET:
 				    {
+					    ImGui::SetNextItemWidth(300.f);
 					    ImGui::Bitfield("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PINT)ptr);
 					    break;
 				    }
 				    case GlobalValueType::FLOAT:
 					{
+					    ImGui::SetNextItemWidth(300.f);
 					    ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_Float, ptr);
 					    break;
 					}
 				    case GlobalValueType::VECTOR:
 				    {
-					    ImGui::InputFloat3("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PFLOAT)ptr);
+					    ImGui::PushItemWidth(100.f);
+					    auto vectorptr = (rage::scrVector*)ptr;
+					    ImGui::InputScalar("X", ImGuiDataType_Float, &vectorptr->x);
+					    ImGui::SameLine();
+					    ImGui::InputScalar("Y", ImGuiDataType_Float, &vectorptr->y);
+					    ImGui::SameLine();
+					    ImGui::InputScalar("Z", ImGuiDataType_Float, &vectorptr->z);
+					    ImGui::PopItemWidth();
 					    break;
 				    }
 				    case GlobalValueType::VARCHAR:
 					{
+					    ImGui::SetNextItemWidth(300.f);
 					    std::string characters = (PCHAR)ptr;
 						try
 						{
@@ -278,7 +290,7 @@ namespace big
 				ImGui::Text("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data());
 			}
 
-			ImGui::SetNextItemWidth(300.f);
+			ImGui::SetNextItemWidth(150.f);
 			ImGui::Combo("VIEW_DEBUG_GLOBAL_TYPE"_T.data(), (int*)&global_test.global_value_type, "INT\0BOOLEAN\0BITSET\0FLOAT\0VECTOR\0VARCHAR\0");
 
 			auto globals = list_globals();
