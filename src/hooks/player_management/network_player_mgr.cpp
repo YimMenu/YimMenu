@@ -11,7 +11,6 @@ namespace big
 		bool result = g_hooking->get_original<hooks::network_player_mgr_init>()(_this, a2, a3, a4);
 
 		g_player_service->player_join(_this->m_local_net_player);
-		g_network.network_player_mgr_init = true;
 
 		return result;
 	}
@@ -20,7 +19,6 @@ namespace big
 	{
 		g_player_service->do_cleanup();
 		self::spawned_vehicles.clear();
-		g_network.network_player_mgr_init      = false;
 		g_network.auto_kick_host_when_attacked = false;
 
 		g_hooking->get_original<hooks::network_player_mgr_shutdown>()(_this);

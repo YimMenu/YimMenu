@@ -105,7 +105,7 @@ namespace big
 			ImGui::Checkbox("Force Thunder globally", &g_session.force_thunder);
 
 			ImGui::Checkbox("Spoof god mod", &g_session.spoof_hide_god);
-			
+
 			ImGui::Checkbox("Spoof spectate", &g_session.spoof_hide_spectate);
 		}
 		ImGui::EndGroup();
@@ -139,7 +139,7 @@ namespace big
 				ImGui::EndListBox();
 			}
 
-			if (g_network.network_player_mgr_init)
+			if (*g_pointers->m_gta.m_is_session_started)
 			{
 				ImGui::Spacing();
 				components::button("Leave GTA Online", [] {

@@ -99,8 +99,6 @@ namespace big
 			components::command_checkbox<"vehjump">();
 
 			components::command_checkbox<"blockhoming">();
-
-			components::command_checkbox<"keepengine">();
 		}
 		ImGui::EndGroup();
 		ImGui::SameLine();
@@ -189,7 +187,7 @@ namespace big
 		static bool veh_all_door_open     = false;
 		static const char* selected_radio = "OFF";
 		static std::map<int, bool> seats;
-		static bool is_lowrider, force_lowrider;
+		static bool force_lowrider;
 		static float maxWheelRaiseFactor = 2;
 		static bool indicator_left, indicator_right;
 
@@ -209,9 +207,6 @@ namespace big
 					seats = tmp_seats;
 
 					door_locked_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(self::last_veh);
-
-					if (VEHICLE::IS_TOGGLE_MOD_ON(self::last_veh, 18))
-						is_lowrider = true;
 				});
 			}
 
@@ -391,7 +386,7 @@ namespace big
 
 					ImGui::Spacing();
 
-					if (force_lowrider || is_lowrider)
+					if (force_lowrider)
 					{
 						ImGui::SetNextItemWidth(200);
 						ImGui::SliderFloat("maxWheelRaiseFactor", &maxWheelRaiseFactor, 1, 4);
@@ -465,7 +460,7 @@ namespace big
 			components::small_text("Please sit in a vehicle");
 			if (is_veh_checked)
 			{
-				is_lowrider = is_veh_checked = false;
+				force_lowrider = is_veh_checked = false;
 				seats.clear();
 			}
 		}

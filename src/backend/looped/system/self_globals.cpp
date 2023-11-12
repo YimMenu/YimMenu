@@ -23,6 +23,13 @@ namespace big
 		else
 			self::veh = 0;
 
-		self::last_veh = PLAYER::GET_PLAYERS_LAST_VEHICLE();
+		if (g_local_player && g_local_player->m_vehicle)
+		{
+			Vehicle veh = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
+			if (ENTITY::DOES_ENTITY_EXIST(veh) && !ENTITY::IS_ENTITY_DEAD(veh, 0))
+				self::last_veh = veh;
+		}
+		else
+			self::last_veh = 0;
 	}
 }

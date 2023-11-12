@@ -105,24 +105,44 @@ namespace big
 		if (selected_id)
 		{
 			ImGui::Spacing();
-			ImGui::Text("Selected Player - ");
+			
+			components::sub_title("Selected Player");
+
 			ImGui::Spacing();
-			ImGui::Text(bad_players_nm::bad_players_list[selected_id].name.c_str());
-			ImGui::Text(std::to_string(selected_id).c_str());
 
-			auto block_join = bad_players_nm::bad_players_list[selected_id].block_join;
-			auto is_spammer = bad_players_nm::bad_players_list[selected_id].is_spammer;
+			ImGui::BeginGroup();
+			{
+				ImGui::Text(bad_players_nm::bad_players_list[selected_id].name.c_str());
+				ImGui::SameLine();
+				if (ImGui::SmallButton("Copy##copyname"))
+					ImGui::SetClipboardText(bad_players_nm::bad_players_list[selected_id].name.c_str());
 
-			if (ImGui::Checkbox("Block Join", &block_join))
-				g_thread_pool->push([block_join] {
-					bad_players_nm::toggle_block(selected_id, block_join);
-					searched_blocked_players.clear();
-				});
+				ImGui::Spacing();
 
-			if (ImGui::Checkbox("Is Spammer", &is_spammer))
-				g_thread_pool->push([is_spammer] {
-					bad_players_nm::set_spammer(selected_id, is_spammer);
-				});
+				ImGui::Text(std::to_string(selected_id).c_str());
+				ImGui::SameLine();
+				if (ImGui::SmallButton("Copy##copyrid"))
+					ImGui::SetClipboardText(std::to_string(selected_id).c_str());
+			}
+			ImGui::EndGroup();
+			ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
+			ImGui::BeginGroup();
+			{
+				auto block_join = bad_players_nm::bad_players_list[selected_id].block_join;
+				auto is_spammer = bad_players_nm::bad_players_list[selected_id].is_spammer;
+
+				if (ImGui::Checkbox("Block Join", &block_join))
+					g_thread_pool->push([block_join] {
+						bad_players_nm::toggle_block(selected_id, block_join);
+						searched_blocked_players.clear();
+					});
+
+				if (ImGui::Checkbox("Is Spammer", &is_spammer))
+					g_thread_pool->push([is_spammer] {
+						bad_players_nm::set_spammer(selected_id, is_spammer);
+					});
+			}
+			ImGui::EndGroup();
 		}
 	}
 }
