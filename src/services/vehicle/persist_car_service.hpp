@@ -20,9 +20,8 @@ namespace big
 		static constexpr auto model_attachments_key = "model_attachments";
 
 		static constexpr auto vehicle_attachments_key = "vehicle_attachments";
-		static constexpr auto is_invincible_key       = "is_invincible";
-		static constexpr auto is_visible_key          = "is_visible";
-		static constexpr auto has_collision_key       = "has_collision";
+		static constexpr auto is_visible_key    = "is_visible";
+		static constexpr auto has_collision_key = "has_collision";
 
 		static constexpr auto vehicle_model_hash_key = "vehicle_model_hash";
 
@@ -43,6 +42,8 @@ namespace big
 		static constexpr auto wheel_type_key       = "wheel_type";
 		static constexpr auto wheel_color_key      = "wheel_color";
 		static constexpr auto tire_smoke_color_key = "tire_smoke_color";
+		static constexpr auto tire_can_burst       = "tire_can_burst";
+		static constexpr auto drift_tires          = "drift_tires";
 
 		static constexpr auto convertable_state_key = "convertable_state";
 
