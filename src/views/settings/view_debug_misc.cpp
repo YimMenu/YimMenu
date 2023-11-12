@@ -20,6 +20,10 @@ namespace big
 				INTERIOR::REFRESH_INTERIOR(interior);
 			});
 			ImGui::Spacing();
+			components::button("Leave GTA Online", [] {
+				session::join_type(eSessionType::LEAVE_ONLINE);
+			});
+			ImGui::Spacing();
 			components::button("Network Shutdown and Load Most Recent Save", [] {
 				NETWORK::SHUTDOWN_AND_LOAD_MOST_RECENT_SAVE();
 			});

@@ -136,7 +136,7 @@ namespace big
 				std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
 				if (pair_lower.contains(lower_search))
 				{
-					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair))
+					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
 					{
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([spawn_at_waypoint] {

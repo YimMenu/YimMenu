@@ -22,8 +22,10 @@ namespace big
 		{
 			data->m_bubble_id = 10;
 
-			if (auto plyr = g_player_service->get_by_id(player->m_player_id); plyr && !plyr->is_blocked)
+			if (auto plyr = g_player_service->get_by_id(player->m_player_id); plyr && !plyr->join_prevented)
 			{
+				plyr->join_prevented = true;
+				
 				auto str = get_blocked_player_joined_log_string(plyr);
 
 				if (plyr->is_spammer)
