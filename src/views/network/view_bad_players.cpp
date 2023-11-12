@@ -21,27 +21,34 @@ namespace big
 	void view::bad_players()
 	{
 		static char player_name[64];
-		static uint64_t selected_id;
+		static uint64_t selected_id, rockstar_id;
 		static std::string search_blocked_player_name;
 		static bool save_as_spammer;
 		static std::map<uint64_t, bad_players_nm::bad_player> searched_blocked_players;
 
-
-		ImGui::SetNextItemWidth(300);
+		ImGui::PushItemWidth(300);
 		components::input_text("Player Name", player_name, sizeof(player_name));
+
+		ImGui::InputScalar("Rockstar Id", ImGuiDataType_U64, &rockstar_id);
+		ImGui::PopItemWidth();
+
 		ImGui::Checkbox("Save as spammer", &save_as_spammer);
+
 		ImGui::Spacing();
+
 		if (components::button("Add to block list"))
-			g_thread_pool->push([] {
-				uint64_t rockstar_id;
-
-				if (!g_api_service->get_rid_from_username(player_name, rockstar_id))
-					g_notification_service->push_error("New Player Entry", "User could not be found.");
-				else
+		{
+			std::string name = player_name;
+			if (trimString(name).length() && rockstar_id)
+				g_thread_pool->push([] {
 					bad_players_nm::add_player({player_name, rockstar_id, true, save_as_spammer});
-
-				save_as_spammer = false;
-			});
+					save_as_spammer = false;
+					strcpy(player_name, "");
+					rockstar_id = 0;
+				});
+			else
+				g_notification_service->push_error("New Player Entry", "Player Name or Rockstar Id is missing.");
+		}
 
 		ImGui::Spacing();
 
@@ -105,7 +112,7 @@ namespace big
 		if (selected_id)
 		{
 			ImGui::Spacing();
-			
+
 			components::sub_title("Selected Player");
 
 			ImGui::Spacing();
