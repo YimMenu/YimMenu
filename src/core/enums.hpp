@@ -2,40 +2,6 @@
 
 namespace big
 {
-	enum class eBoostBehaviors
-	{
-		DEFAULT,
-		INSTANT_REFIL,
-		INFINITE_BOOST,
-		HOLD_FOR_INFINITE
-	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(eBoostBehaviors, {{eBoostBehaviors::DEFAULT, "default"}, {eBoostBehaviors::INSTANT_REFIL, "instant"}, {eBoostBehaviors::INFINITE_BOOST, "infinite"}, {eBoostBehaviors::HOLD_FOR_INFINITE, "hold"}})
-
-	enum class CustomWeapon
-	{
-		NONE,
-		CAGE_GUN,
-		DELETE_GUN,
-		GRAVITY_GUN,
-		STEAL_VEHICLE_GUN,
-		REPAIR_GUN,
-		VEHICLE_GUN,
-		TP_GUN,
-		PAINT_GUN
-	};
-	NLOHMANN_JSON_SERIALIZE_ENUM(CustomWeapon,
-	    {
-	        {CustomWeapon::NONE, "none"},
-	        {CustomWeapon::CAGE_GUN, "cage"},
-	        {CustomWeapon::DELETE_GUN, "delete"},
-	        {CustomWeapon::GRAVITY_GUN, "gravity"},
-	        {CustomWeapon::STEAL_VEHICLE_GUN, "steal"},
-	        {CustomWeapon::REPAIR_GUN, "repair"},
-	        {CustomWeapon::VEHICLE_GUN, "vehicle"},
-	        {CustomWeapon::TP_GUN, "tp"},
-	        {CustomWeapon::PAINT_GUN, "paint"},
-	    })
-
 	enum class ContextEntityType : uint8_t
 	{
 		NONE    = 0,
@@ -160,7 +126,7 @@ namespace big
 		ClearWantedLevel = -1704545346,
 		ForceMission     = 259469385,  // ), Var0.f_2, 1))
 		GiveCollectible  = 968269233,  // DLC_SUM20_HIDDEN_COLLECTIBLES xref
-		GtaBanner        = -330501227, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("BUSINESS_BATTLES", -1, true, 0) second one
+		GtaBanner        = -330501227, // NETWORK::NETWORK_IS_SCRIPT_ACTIVE("Business Battles", -1, true, 0) second one
 		NetworkBail      = -901348601, // NETWORK::NETWORK_BAIL(16, 0, 0); xref func
 		PersonalVehicleDestroyed = 1655503526,  // PLYVEH_INS_DES1
 		RemoteOffradar           = 57493695,    // NETWORK::GET_TIME_DIFFERENCE(NETWORK::GET_NETWORK_TIME(), Var0.f_2)
@@ -261,21 +227,17 @@ namespace big
 		STOPPED,
 		OBJECTITVE,
 		WAYPOINT,
-		WANDER,
-		EMERGENCY_STOP
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(AutoDriveDestination,
 	    {
 	        {AutoDriveDestination::STOPPED, "stopped"},
 	        {AutoDriveDestination::OBJECTITVE, "objective"},
 	        {AutoDriveDestination::WAYPOINT, "waypoint"},
-	        {AutoDriveDestination::WANDER, "wander"},
-	        {AutoDriveDestination::EMERGENCY_STOP, "emergency_stop"},
 	    })
 
 	enum class AutoDriveStyle
 	{
-		LAW_ABIDING,
+		LAW_ABIDING, 
 		THE_ROAD_IS_YOURS
 	};
 	NLOHMANN_JSON_SERIALIZE_ENUM(AutoDriveStyle,

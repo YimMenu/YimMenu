@@ -1,5 +1,6 @@
 #include "backend/looped_command.hpp"
 #include "pointers.hpp"
+#include "core/settings/protections.hpp"
 
 namespace big
 {
@@ -18,6 +19,6 @@ namespace big
 		}
 	};
 
-	force_relay_connections g_force_relay_connections("forcerelays", "FORCE_RELAY_CXN", "FORCE_RELAY_CXN_DESC",
-	    g.protections.force_relay_connections);
+	force_relay_connections g_force_relay_connections("forcerelays", "Force Relay Connections", "Hides your IP address by rerouting your connection through dedicated servers and other players",
+	    g_protections.force_relay_connections);
 }

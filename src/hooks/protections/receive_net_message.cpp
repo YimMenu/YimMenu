@@ -1,19 +1,24 @@
 #include "backend/command.hpp"
-#include "backend/context/chat_command_context.hpp"
 #include "backend/player_command.hpp"
+#include "core/data/infractions.hpp"
 #include "core/data/packet_types.hpp"
+#include "core/data/reactions.hpp"
+#include "core/settings/session.hpp"
+#include "file_manager/file.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
+#include "gui.hpp"
 #include "hooking.hpp"
-#include "lua/lua_manager.hpp"
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
+#include "services/custom_chat_buffer.hpp"
+#include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
-#include "util/spam.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
+#include <regex>
 
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
@@ -105,52 +110,42 @@ namespace big
 			case rage::eNetMessage::MsgTextMessage:
 			case rage::eNetMessage::MsgTextMessage2:
 			{
-				char message[256];
-				buffer.ReadString(message, 256);
-
 				if (player->is_spammer)
 					return true;
 
-				if (spam::is_text_spam(message))
-				{
-					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, true);
-					player->is_spammer = true;
-					if (g.session.kick_chat_spammers
-					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
-					{
-						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+				char message[256];
+				buffer.ReadString(message, 256);
 
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-					}
-					return true;
+				if (strlen(message) > 100)
+				{
+					LOG(WARNING) << player->get_name() << " seem to spam chat message.";
+					// flag as spammer
+					player->is_spammer   = true;
+					player->spam_message = message;
 				}
-				else
+
+				if (g_session.log_chat_messages_to_file)
 				{
-					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, false);
+					std::ofstream log(g_file_manager.get_project_file("./chat.log").get_path(), std::ios::app);
+					log << player->get_name() << " : " << message << std::endl;
+					log.close();
+				}
 
-					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
-						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
-					else
-						g_lua_manager->trigger_event<menu_event::ChatMessageReceived>(player->id(), message);
+				if (g_session.log_chat_messages_to_textbox)
+					g_custom_chat_buffer.append_msg(player->get_name(), message);
 
-					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
-					{
-						rage::rlGamerHandle temp{};
-						gamer_handle_deserialize(temp, buffer);
-						bool is_team = buffer.Read<bool>(1);
+				if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
+				{
+					rage::rlGamerHandle temp{};
+					gamer_handle_deserialize(temp, buffer);
+					bool is_team = buffer.Read<bool>(1);
 
-						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
-						    nullptr,
-						    &player->get_net_data()->m_gamer_handle,
-						    message,
-						    is_team);
-						return true;
-					}
+					g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
+					    nullptr,
+					    &player->get_net_data()->m_gamer_handle,
+					    message,
+					    is_team);
+					return true;
 				}
 				break;
 			}
@@ -159,11 +154,7 @@ namespace big
 				if (player->m_host_migration_rate_limit.process())
 				{
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
-					{
-						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
-					}
+						g_reactions.oom_kick.process(player, !player->is_friend(), Infraction::TRIED_KICK_PLAYER, true);
 					return true;
 				}
 				break;
@@ -173,7 +164,7 @@ namespace big
 				CGameScriptId script;
 				script_id_deserialize(script, buffer);
 
-				if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (script.m_hash == RAGE_JOAAT("freemode") && g_session.force_script_host)
 					return true;
 
 				break;
@@ -204,7 +195,7 @@ namespace big
 
 				if (reason == KickReason::VOTED_OUT)
 				{
-					g_notification_service->push_warning("Protections", "You have been kicked by the host");
+					g_notification_service->push_warning("Protections", "You have been kicked by the host", true);
 					return true;
 				}
 
@@ -219,9 +210,7 @@ namespace big
 				{
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
-						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						g_reactions.oom_kick.process(player, !player->is_friend(), Infraction::TRIED_KICK_PLAYER, true);
 						player->block_radio_requests = true;
 					}
 					return true;
@@ -238,28 +227,6 @@ namespace big
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
 			case rage::eNetMessage::MsgRadioStationSyncRequest: return true;
 			}
-		}
-
-		if (g.debug.logs.packet_logs && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents && msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate && msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck && msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck && msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)
-		{
-			const char* packet_type = "<UNKNOWN>";
-			for (const auto& p : packet_types)
-			{
-				if (p.second == (int)msgType)
-				{
-					packet_type = p.first;
-					break;
-				}
-			}
-
-			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
-			             << (player ? player->get_name() :
-			                          std::format("<M:{}>, <C:{:X}>, <P:{}>",
-			                              (int)frame->m_msg_id,
-			                              frame->m_connection_identifier,
-			                              frame->m_peer_id)
-			                              .c_str())
-			             << " | " << HEX_TO_UPPER((int)msgType);
 		}
 
 		return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);

@@ -2,6 +2,7 @@
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -19,15 +20,20 @@ namespace big
 		{
 			if (!player)
 				return;
-			if (!scripts::force_host(RAGE_JOAAT("freemode")))
+
+			if (!scripts::force_migration(RAGE_JOAAT("freemode")))
 			{
-				g_notification_service->push_error("Kick", "Force script host failed!");
+				g_notification_service->push_error("Script Host kick",
+				    std::format("Script Host kick failed on {}", player->get_name()),
+				    true);
 				return;
 			}
+
+			g_notification_service->push_success("Kick", std::format("Script Host Kick to {}", player->get_name()), true);
 
 			*scr_globals::gsbd_kicking.at(player->id(), 1).as<bool*>() = true;
 		}
 	};
 
-	script_host_kick g_script_host_kick("shkick", "SCRIPT_HOST_KICK", "SCRIPT_HOST_KICK_DESC", 0, false);
+	script_host_kick g_script_host_kick("shkick", "Script Host Kick", "Blocked by most menus", 0, false);
 }

@@ -2,6 +2,8 @@
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/pools.hpp"
+#include "core/data/world.hpp"
+#include "services/notifications/notification_service.hpp"
 
 namespace big
 {
@@ -29,14 +31,11 @@ namespace big
 					{
 						if (WEAPON::IS_PED_ARMED(handle, 1 | 2 | 4))
 							WEAPON::REMOVE_ALL_PED_WEAPONS(handle, false);
-
-						if (g.world.nearby.auto_disarm.neutralize)
-							TASK::TASK_STAND_STILL(handle, -1);
 					}
 				}
 			}
 		}
 	};
 
-	auto_disarm g_auto_disarm("autodisarm", "BACKEND_LOOPED_WORLD_NEARBY_AUTO_DISARM", "BACKEND_LOOPED_WORLD_NEARBY_AUTO_DISARM_DESC", g.world.nearby.auto_disarm.enable);
+	auto_disarm g_auto_disarm("autodisarm", "Auto Disarm", "Disarm nearby pedestrians", g_world.nearby.auto_disarm.enable);
 }

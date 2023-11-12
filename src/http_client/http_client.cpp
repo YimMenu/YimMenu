@@ -2,8 +2,7 @@
 
 namespace big
 {
-	http_client::http_client() :
-	    m_proxy_mgr(m_session)
+	http_client::http_client()
 	{
 		m_session.SetConnectTimeout(CONNECT_TIMEOUT);
 		m_session.SetTimeout(REQUEST_TIMEOUT);
@@ -37,10 +36,5 @@ namespace big
 		m_session.SetBody(body);
 
 		return m_session.Post();
-	}
-
-	bool http_client::init(file proxy_settings_file)
-	{
-		return m_proxy_mgr.load(proxy_settings_file);
 	}
 }

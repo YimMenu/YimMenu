@@ -1,8 +1,5 @@
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
+
 #include "services/gta_data/gta_data_service.hpp"
-#include "thread_pool.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -14,9 +11,10 @@ namespace big
 		auto wep_count = g_gta_data_service->weapons().size();
 		auto wep_comp_count = g_gta_data_service->weapon_components().size();
 
-		ImGui::Text(std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "VIEW_GTA_CACHE_PEDS_CACHED"_T, ped_count, "VIEW_GTA_CACHE_VEHICLES_CACHED"_T, veh_count, "VIEW_GTA_CACHE_WEAPONS_CACHED"_T, wep_count, "VIEW_GTA_CACHE_WEAPON_COMPONENTS_CACHED"_T, wep_comp_count).c_str());
+		components::sub_title("GTA cache stats:");
+		ImGui::Text("Peds Cached: %d\nVehicles Cached: %d\nWeapons Cached: %d\nWeapon Components Cached: %d", ped_count, veh_count, wep_count, wep_comp_count);
 
-		if (components::button("VIEW_GTA_CACHE_REBUILD_CACHE"_T))
+		if (components::button("Rebuild Cache"))
 		{
 			g_gta_data_service->set_state(eGtaDataUpdateState::NEEDS_UPDATE);
 			g_gta_data_service->update_now();

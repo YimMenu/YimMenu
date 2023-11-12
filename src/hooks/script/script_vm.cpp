@@ -1,3 +1,5 @@
+#include "core/data/script_vm.hpp"
+
 #include "core/scr_globals.hpp"
 #include "hooking.hpp"
 #include "pointers.hpp"
@@ -31,7 +33,7 @@ namespace big
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = old_cayo_flags;
 			}
 
-			g.in_script_vm = true;
+			g_in_script_vm = true;
 		}
 
 		~script_vm_guard()
@@ -42,15 +44,9 @@ namespace big
 			{
 				old_shop_index = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex;
 				old_cayo_flags = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags;
-
-				if (g.spoofing.hide_from_player_list)
-				{
-					scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex = -1;
-					scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = 1;
-				}
 			}
 
-			g.in_script_vm = false;
+			g_in_script_vm = false;
 		}
 	};
 

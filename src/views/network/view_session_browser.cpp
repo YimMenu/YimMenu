@@ -1,5 +1,6 @@
 #include "core/data/language_codes.hpp"
 #include "core/data/region_codes.hpp"
+#include "core/settings/session_browser.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
@@ -18,7 +19,8 @@ namespace big
 		static char name_buf[32];
 		static char search[64];
 		static char session_info[0x100]{};
-		ImGui::Text(std::format("{}: {}", "VIEW_SESSION_TOTAL_SESSIONS_FOUND"_T.data(), g_matchmaking_service->get_num_found_sessions()).c_str());
+
+		ImGui::Text(std::format("Total sessions found: {}", g_matchmaking_service->get_num_found_sessions()).data());
 
 		ImGui::SetNextItemWidth(300.f);
 
@@ -41,17 +43,18 @@ namespace big
 
 					if (ImGui::IsItemHovered())
 					{
-						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
-							"REGION"_T, regions[session.attributes.region].name,
-						    "LANGUAGE"_T, languages[session.attributes.language].name,
-						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id);
-						ImGui::SetTooltip(tool_tip.c_str());
+						ImGui::SetTooltip(std::format("Num Players: {}\nRegion: {}\nLanguage: {}\nHost: {}",
+						    session.attributes.player_count,
+						    regions[session.attributes.region].name,
+						    languages[session.attributes.language].name,
+						    session.info.m_net_player_data.m_gamer_handle.m_rockstar_id)
+						                      .c_str());
 					}
 				}
 			}
 			else
 			{
-				ImGui::Text("NO_SESSIONS"_T.data());
+				ImGui::Text("No sessions");
 			}
 
 			ImGui::EndListBox();
@@ -64,22 +67,22 @@ namespace big
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
-				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count).c_str());
-				ImGui::Text(std::format("{}: 0x{:X}", "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator).c_str());
-				ImGui::Text(std::format("{}: {}", "REGION"_T, regions[session.attributes.region].name).c_str());
-				ImGui::Text(std::format("{}: {}", "LANGUAGE"_T, languages[session.attributes.language].name).c_str());
+				ImGui::Text("Num Players: %d", session.attributes.player_count);
+				ImGui::Text("Discriminator: 0x%X", session.attributes.discriminator);
+				ImGui::Text("Region: %s", regions[session.attributes.region].name);
+				ImGui::Text("Language: %s", languages[session.attributes.language].name);
 
 				auto& data = session.info.m_net_player_data;
-				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_HOST_RID"_T, data.m_gamer_handle.m_rockstar_id).c_str());
+				ImGui::Text("Host Rockstar ID: %d", data.m_gamer_handle.m_rockstar_id);
 
-				components::button("COPY_SESSION_INFO"_T, [] {
+				components::button("Copy Session Info", [] {
 					ImGui::SetClipboardText(session_info);
 				});
 				ImGui::SameLine();
-				components::button("JOIN"_T, [session] {
+				components::button("Join", [session] {
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{
-						g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
+						g_notification_service->push_error("Join Session", "Player switch in progress, wait a bit.");
 						return;
 					}
 
@@ -95,92 +98,86 @@ namespace big
 			ImGui::EndChild();
 		}
 
-		if (ImGui::TreeNode("FILTERS"_T.data()))
+		if (ImGui::TreeNode("Filters"))
 		{
-			ImGui::Checkbox("REGION"_T.data(), &g.session_browser.region_filter_enabled);
+			ImGui::Checkbox("Region", &g_session_browser.region_filter_enabled);
 
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("REGION_FILTER_DESC"_T.data());
+				ImGui::SetTooltip("It is highly recommended to keep this filter enabled");
 
-			if (g.session_browser.region_filter_enabled)
+			if (g_session_browser.region_filter_enabled)
 			{
 				ImGui::SameLine();
 
-				if (ImGui::BeginCombo("###region_select", regions[g.session_browser.region_filter].name))
+				if (ImGui::BeginCombo("###region_select", regions[g_session_browser.region_filter].name))
 				{
 					for (const auto& region : regions)
 					{
-						if (ImGui::Selectable(region.name, g.session_browser.region_filter == region.id))
+						if (ImGui::Selectable(region.name, g_session_browser.region_filter == region.id))
 						{
-							g.session_browser.region_filter = region.id;
+							g_session_browser.region_filter = region.id;
 						}
 					}
 					ImGui::EndCombo();
 				}
 			}
 
-			ImGui::Checkbox("LANGUAGE"_T.data(), &g.session_browser.language_filter_enabled);
+			ImGui::Checkbox("Language", &g_session_browser.language_filter_enabled);
 
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("LANGUAGE_FILTER_DESC"_T.data());
+				ImGui::SetTooltip("Setting a correct region filter for the language will help tremendously");
 
-			if (g.session_browser.language_filter_enabled)
+			if (g_session_browser.language_filter_enabled)
 			{
 				ImGui::SameLine();
 
-				if (ImGui::BeginCombo("###language_select", languages[g.session_browser.language_filter].name))
+				if (ImGui::BeginCombo("###language_select", languages[g_session_browser.language_filter].name))
 				{
 					for (const auto& language : languages)
 					{
-						if (ImGui::Selectable(language.name, g.session_browser.language_filter == language.id))
+						if (ImGui::Selectable(language.name, g_session_browser.language_filter == language.id))
 						{
-							g.session_browser.language_filter = language.id;
+							g_session_browser.language_filter = language.id;
 						};
 					}
 					ImGui::EndCombo();
 				}
 			}
 
-			ImGui::Checkbox("PLAYERS"_T.data(), &g.session_browser.player_count_filter_enabled);
+			ImGui::Checkbox("Players", &g_session_browser.player_count_filter_enabled);
 
-			if (g.session_browser.player_count_filter_enabled)
+			if (g_session_browser.player_count_filter_enabled)
 			{
-				ImGui::InputInt("MIN"_T.data(), &g.session_browser.player_count_filter_minimum);
-				ImGui::InputInt("MAX"_T.data(), &g.session_browser.player_count_filter_maximum);
+				ImGui::InputInt("Minimum", &g_session_browser.player_count_filter_minimum);
+				ImGui::InputInt("Maximum", &g_session_browser.player_count_filter_maximum);
 			}
 
-			ImGui::Checkbox("POOL_TYPE"_T.data(), &g.session_browser.pool_filter_enabled);
-			if (g.session_browser.pool_filter_enabled)
+			ImGui::Checkbox("Pool Type", &g_session_browser.pool_filter_enabled);
+			if (g_session_browser.pool_filter_enabled)
 			{
 				ImGui::SameLine();
-				static const std::string pool_filter_options = std::string("NORMAL"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
-				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
+				ImGui::Combo("###pooltype", &g_session_browser.pool_filter, "Normal\0Bad Sport");
 			}
 
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("SORTING"_T.data()))
+		if (ImGui::TreeNode("Sorting"))
 		{
-			static const std::string sort_by_options = std::string("OFF"_T.data()) + '\0' + std::string("PLAYER_COUNT"_T.data());
-			static const std::string sort_direction_options = std::string("ASCENDING"_T.data()) + '\0' + std::string("DESCENDING"_T.data());
-			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, sort_by_options.c_str());
-			if (g.session_browser.sort_method != 0)
-				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, sort_direction_options.c_str());
+			ImGui::Combo("Sort By", &g_session_browser.sort_method, "Off\0Player Count");
+			if (g_session_browser.sort_method != 0)
+				ImGui::Combo("Direction", &g_session_browser.sort_direction, "Ascending\0Descending");
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking))
-			;
-
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
+			ImGui::SetTooltip("This will replace the default game matchmaking with a custom one that will use the filters and sorting set here");
 
-		components::button("REFRESH"_T, [] {
+		components::button("Refresh", [] {
 			selected_session_idx = -1;
 
 			if (!g_matchmaking_service->matchmake())
-				g_notification_service->push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
+				g_notification_service->push_error("Matchmaking", "Matchmaking failed");
 		});
 	}
 }

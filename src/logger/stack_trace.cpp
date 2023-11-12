@@ -1,5 +1,6 @@
 #include "stack_trace.hpp"
 
+#include "core/data/script_vm.hpp"
 #include "gta/script_thread.hpp"
 #include "memory/module.hpp"
 
@@ -33,7 +34,7 @@ namespace big
 
 		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
 
-		if (g.in_script_vm)
+		if (g_in_script_vm)
 			dump_script_info();
 		dump_module_info();
 		dump_registers();

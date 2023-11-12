@@ -1,5 +1,4 @@
 #pragma once
-#include "common.hpp"
 #include "memory/handle.hpp"
 
 namespace big

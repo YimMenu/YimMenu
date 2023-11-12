@@ -1,4 +1,5 @@
 #pragma once
+#include "core/data/clone_pv.hpp"
 #include "core/enums.hpp"
 #include "core/scr_globals.hpp"
 #include "globals.hpp"
@@ -7,8 +8,9 @@
 #include "natives.hpp"
 #include "notify.hpp"
 #include "script.hpp"
-#include "core/scr_globals.hpp"
 #include "script_local.hpp"
+#include "services/notifications/notification_service.hpp"
+#include "util/mobile.hpp"
 #include "vehicle.hpp"
 
 namespace big::mobile
@@ -24,34 +26,6 @@ namespace big::mobile
 		inline int get_current_personal_vehicle()
 		{
 			return *scr_globals::stats.at(0, 5568).at(681).at(2).as<int*>();
-		}
-	}
-
-	namespace merry_weather
-	{
-		inline void request_ammo_drop()
-		{
-			*scr_globals::freemode_global.at(891).as<int*>() = 1;
-		}
-
-		inline void request_boat_pickup()
-		{
-			*scr_globals::freemode_global.at(892).as<int*>() = 1;
-		}
-
-		inline void request_helicopter_pickup()
-		{
-			*scr_globals::freemode_global.at(893).as<int*>() = 1;
-		}
-
-		inline void request_backup_helicopter()
-		{
-			*scr_globals::freemode_global.at(4491).as<int*>() = 1;
-		}
-
-		inline void request_airstrike()
-		{
-			*scr_globals::freemode_global.at(4492).as<int*>() = 1;
 		}
 	}
 
@@ -86,52 +60,6 @@ namespace big::mobile
 		}
 	}
 
-	namespace ceo_abilities
-	{
-		inline void request_bullshark_testosterone()
-		{
-			*scr_globals::freemode_properties.at(3690).as<int*>() = 1;
-		}
-
-		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
-		{
-			*scr_globals::freemode_global.at(896).as<int*>() = 1;
-		}
-	}
-
-	namespace services
-	{
-		inline void request_avenger()
-		{
-			*scr_globals::freemode_global.at(938).as<int*>() = 1;
-		}
-
-		inline void request_kosatka()
-		{
-			*scr_globals::freemode_global.at(960).as<int*>() = 1;
-		}
-
-		inline void request_mobile_operations_center()
-		{
-			*scr_globals::freemode_global.at(930).as<int*>() = 1;
-		}
-
-		inline void request_terrorbyte()
-		{
-			*scr_globals::freemode_global.at(943).as<int*>() = 1;
-		}
-
-		inline void request_acidlab()
-		{
-			*scr_globals::freemode_global.at(944).as<int*>() = 1;
-		}
-
-		inline void request_acidlab_bike()
-		{
-			*scr_globals::freemode_global.at(994).as<int*>() = 1;
-		}
-	}
-
 	namespace mechanic
 	{
 		inline Vehicle get_personal_vehicle()
@@ -144,8 +72,8 @@ namespace big::mobile
 			if (*scr_globals::freemode_global.at(985).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
-			if (g.clone_pv.spawn_inside && self::veh)
-				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
+			if (g_clone_pv.spawn_inside && self::veh)
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
 			// despawn current veh
 			util::despawn_current_personal_vehicle();
@@ -154,12 +82,12 @@ namespace big::mobile
 			script::get_current()->yield(100ms);
 
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
-			if (g.clone_pv.spawn_inside)
+			if (g_clone_pv.spawn_inside)
 			{
 				*scr_globals::freemode_global.at(942).as<int*>() = 1; // disable vehicle node distance check
 			}
-			*scr_globals::freemode_global.at(928).as<int*>() = 1;     // tell freemode to spawn our vehicle
-			*scr_globals::freemode_global.at(988).as<int*>() = 0;     // required
+			*scr_globals::freemode_global.at(928).as<int*>() = 1; // tell freemode to spawn our vehicle
+			*scr_globals::freemode_global.at(988).as<int*>() = 0; // required
 			*scr_globals::freemode_global.at(985).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
@@ -177,41 +105,10 @@ namespace big::mobile
 			// blocking call till vehicle is delivered
 			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(985).as<int*>(), -1);
 
-			if (g.clone_pv.spawn_inside)
+			if (g_clone_pv.spawn_inside)
 			{
 				vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
-		}
-	}
-
-	namespace mobile_misc
-	{
-		inline void request_taxi()
-		{
-			*scr_globals::freemode_global.at(853).as<int*>() = 1;
-		}
-
-		inline void request_gun_van()
-		{
-			auto local_pos      = self::pos;
-			auto forward_vector = ENTITY::GET_ENTITY_FORWARD_VECTOR(self::ped);
-			Vector3 spawn_point;
-
-			if (MISC::FIND_SPAWN_POINT_IN_DIRECTION(local_pos.x,
-			        local_pos.y,
-			        local_pos.z,
-			        forward_vector.x,
-			        forward_vector.y,
-			        forward_vector.z,
-			        25.f,
-			        &spawn_point))
-			{
-				*scr_globals::gun_van.as<Vector3*>() = spawn_point;
-
-				return g_notification_service->push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
-			}
-
-			g_notification_service->push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
 		}
 	}
 }

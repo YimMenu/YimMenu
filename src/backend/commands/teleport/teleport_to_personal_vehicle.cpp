@@ -17,5 +17,5 @@ namespace big
 		}
 	};
 
-	teleport_to_personal_vehicle g_teleport_to_personal_vehicle("pvtp", "TP_IN_PV", "BACKEND_TELEPORT_TO_PERSONAL_VEHICLE", 0);
+	teleport_to_personal_vehicle g_teleport_to_personal_vehicle("pvtp", "Teleport To Personal Vehicle", "Teleports you into your PV", 0);
 }

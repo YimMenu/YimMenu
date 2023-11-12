@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Generate yimmenu build
+    outputs:
+      full_sha: ${{ steps.var.outputs.full_sha }}
+      short_sha: ${{ steps.var.outputs.short_sha }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check CMake version
+        run: cmake --version
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Generate CMake project
+        run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -S. -Bbuild -G Ninja
+
+      - name: Build 64bit RelWithDebInfo DLL
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
+
+      - name: Check if DLL got built
+        run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary
+          path: build/YimMenu.dll
+
+      - name: Generate Build Info
+        id: var
+        run: |
+          echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
+
+  create_release:
+    runs-on: ubuntu-latest
+    name: Create Release
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: binary
+      - name: Echo sha256 of build
+        id: build_sha
+        run: |
+          sha256sum YimMenu.dll > sha256.checksum
+          echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
+          cat sha256.checksum
+      - name: Github Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release [${{ needs.build.outputs.short_sha }}]
+          tag_name: release-${{ needs.build.outputs.short_sha }}
+          body: |
+            **This release has been built by Github Actions**
+            [Link to build](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            Full Commit Hash:
+            ```
+            ${{ needs.build.outputs.full_sha }}
+            ```
+            Build SHA256:
+            ```
+            ${{ steps.build_sha.outputs.build_sha }}
+            ```
+            You can download the build artifacts, generate a SHA256 checksum and compare it with the below binary.
+            If you wish to use this menu as-is you are on your own, no warranty is provided.
+          files: |
+            YimMenu.dll

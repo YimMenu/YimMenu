@@ -1,3 +1,5 @@
+#include "core/data/reactions.hpp"
+#include "core/data/syncing_player.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
@@ -6,7 +8,7 @@
 #include "util/math.hpp"
 #include "util/mobile.hpp"
 #include "util/notify.hpp"
-#include "util/toxic.hpp"
+#include "util/session.hpp"
 
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
@@ -182,38 +184,6 @@ namespace big
 
 		if (damageType == 3 && (damageFlags & (1 << 1)) == 0)
 			hitGlobalId = g_local_player ? g_local_player->m_net_object->m_object_id : 0;
-
-		if (g.session.damage_karma && g_local_player && g_local_player->m_net_object
-		    && (g_local_player->m_net_object->m_object_id == hitGlobalId
-		        || math::distance_between_vectors(localPos, *g_local_player->m_navigation->get_position()) < 1.5f))
-		{
-			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, hitComponent, overrideDefaultDamage, weaponType, weaponDamage, tyreIndex, suspensionIndex, damageFlags, actionResultName, actionResultId, f104, hitEntityWeapon, hitWeaponAmmoAttachment, silenced, hasImpactDir, impactDir, localPos] {
-				auto player = g_player_service->get_by_id(id);
-
-				if (!player->is_valid() || !player->get_ped())
-					return;
-
-				g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(),
-				    player->get_ped(),
-				    (rage::fvector3*)&localPos,
-				    hitComponent,
-				    overrideDefaultDamage,
-				    weaponType,
-				    weaponDamage,
-				    tyreIndex,
-				    suspensionIndex,
-				    damageFlags,
-				    actionResultName,
-				    actionResultId,
-				    f104,
-				    hitEntityWeapon,
-				    hitWeaponAmmoAttachment,
-				    silenced,
-				    false,
-				    player->get_ped()->m_navigation->get_position());
-			});
-		}
 	}
 
 	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -331,22 +301,11 @@ namespace big
 			&& player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object
 			&& ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
-			g_notification_service->push_error("WARNING"_T.data(),
-				std::vformat("BLAMED_FOR_EXPLOSION"_T,
+			g_notification_service->push_error("Warning!",
+				std::vformat("{} blamed {} for explosion",
 					std::make_format_args(player->get_name(),
 						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
-			// too many false positives, disabling it
-			//session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			return;
-		}
-
-		if (g.session.explosion_karma && g_local_player
-			&& math::distance_between_vectors({posX, posY, posZ}, *g_local_player->m_navigation->get_position()) < 3.0f)
-		{
-			int id = player->m_player_id;
-			g_fiber_pool->queue_job([id, explosionType, damageScale, cameraShake, isAudible, isInvisible] {
-				toxic::blame_explode_player(g_player_service->get_self(), g_player_service->get_by_id(id), explosionType, damageScale, isAudible, isInvisible, cameraShake);
-			});
 		}
 
 		// clang-format on
@@ -381,9 +340,7 @@ namespace big
 		{
 			uint32_t player_bitfield = buffer->Read<uint32_t>(32);
 			if (player_bitfield & (1 << target_player->m_player_id))
-			{
-				g.reactions.kick_vote.process(plyr);
-			}
+				g_reactions.kick_vote.process(plyr, false, Infraction::VOTE_KICK, true, true);
 			buffer->Seek(0);
 			break;
 		}
@@ -450,7 +407,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				g.reactions.clear_ped_tasks.process(plyr);
+				g_reactions.clear_ped_tasks.process(plyr, false, Infraction::NONE, false);
 				return;
 			}
 
@@ -464,7 +421,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				g.reactions.remote_ragdoll.process(plyr);
+				g_reactions.remote_ragdoll.process(plyr, false, Infraction::NONE, false);
 				return;
 			}
 
@@ -483,7 +440,7 @@ namespace big
 
 			if (money >= 2000)
 			{
-				g.reactions.report_cash_spawn.process(plyr);
+				g_reactions.report_cash_spawn.process(plyr, false, Infraction::CASH_SPAWN, true);
 			}
 
 			break;
@@ -492,9 +449,7 @@ namespace big
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
 			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
-				session::add_infraction(plyr, Infraction::TRIGGERED_ANTICHEAT);
-
-			g.reactions.game_anti_cheat_modder_detection.process(plyr);
+				g_reactions.game_anti_cheat_modder_detection.process(plyr, false, Infraction::TRIGGERED_ANTICHEAT, true);
 			break;
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
@@ -505,12 +460,12 @@ namespace big
 			{
 				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
 				Vehicle veh              = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
-				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() //If we're in Freemode.
-				    || personal_vehicle == veh              //Or we're in our personal vehicle.
+				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()     //If we're in Freemode.
+				    || personal_vehicle == veh                  //Or we're in our personal vehicle.
 				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
-					g.reactions.request_control_event.process(plyr);
+					g_reactions.request_control_event.process(plyr, false, Infraction::NONE, false);
 					return;
 				}
 			}
@@ -582,8 +537,7 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				g_reactions.remove_weapon.process(g_player_service->get_by_id(source_player->m_player_id), false, Infraction::REMOVE_WEAPON, true);
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -597,8 +551,7 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				g_reactions.remove_weapon.process(g_player_service->get_by_id(source_player->m_player_id), false, Infraction::REMOVE_WEAPON, true);
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -638,8 +591,8 @@ namespace big
 
 			if (count)
 			{
-				g.m_syncing_player      = source_player;
-				g.m_syncing_object_type = sync_type;
+				m_syncing_player      = source_player;
+				m_syncing_object_type = sync_type;
 			}
 			break;
 		}
@@ -677,7 +630,7 @@ namespace big
 
 			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
 			{
-				g.reactions.sound_spam.process(plyr);
+				g_reactions.sound_spam.process(plyr, false, Infraction::NONE, false);
 				return;
 			}
 

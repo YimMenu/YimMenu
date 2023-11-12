@@ -1,13 +1,10 @@
 #include "notification_service.hpp"
 
-#include "widgets/imgui_hotkey.hpp"
-
 namespace big
 {
 	notification_service::notification_service()
 	{
-		push("NOTIFICATION_WELCOME_TITLE"_T.data(),
-		    std::vformat("NOTIFICATION_WELCOME_TEXT"_T, std::make_format_args(ImGui::key_names[g.settings.hotkeys.menu_toggle])));
+		push("Welcome", "Loaded YimMenu. Press 'Insert' key to open");
 
 		g_notification_service = this;
 	}
@@ -22,24 +19,32 @@ namespace big
 		this->notifications.emplace(std::hash<std::string>{}(n.message + n.title), n);
 	}
 
-	void notification_service::push(const std::string& title, const std::string& message)
+	void notification_service::push(const std::string& title, const std::string& message, bool log)
 	{
 		this->push({NotificationType::INFO, title, message, std::chrono::system_clock::now(), 5000.f, 1.f});
+		if (log)
+			LOG(INFO) << message;
 	}
 
-	void notification_service::push_warning(const std::string& title, const std::string& message)
+	void notification_service::push_warning(const std::string& title, const std::string& message, bool log)
 	{
 		this->push({NotificationType::WARNING, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
+		if (log)
+			LOG(WARNING) << message;
 	}
 
-	void notification_service::push_error(const std::string& title, const std::string& message)
+	void notification_service::push_error(const std::string& title, const std::string& message, bool log)
 	{
 		this->push({NotificationType::DANGER, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
+		if (log)
+			LOG(FATAL) << message;
 	}
 
-	void notification_service::push_success(const std::string& title, const std::string& message)
+	void notification_service::push_success(const std::string& title, const std::string& message, bool log)
 	{
 		this->push({NotificationType::SUCCESS, title, message, std::chrono::system_clock::now(), 7000.f, 1.f});
+		if (log)
+			LOG(INFO) << message;
 	}
 
 	std::vector<notification> notification_service::get()

@@ -6,23 +6,6 @@
 
 namespace big
 {
-	void vehicle_helper::add_clan_logo_to_vehicle(Vehicle vehicle, Ped ped)
-	{
-		rage::fvector3 x, y, z;
-		float scale;
-		Hash modelHash = ENTITY::GET_ENTITY_MODEL(vehicle);
-		if (GetVehicleInfoForClanLogo(modelHash, x, y, z, scale))
-		{
-			int alpha = 200;
-			if (modelHash == VEHICLE_WINDSOR || modelHash == VEHICLE_COMET4)
-				alpha = 255;
-
-			GRAPHICS::ADD_VEHICLE_CREW_EMBLEM(vehicle, ped, ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "chassis_dummy"), x.x, x.y, x.z, y.x, y.y, y.z, z.x, z.y, z.z, scale, 0, alpha);
-			if (y.z >= 0.0f)
-				GRAPHICS::ADD_VEHICLE_CREW_EMBLEM(vehicle, ped, ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(vehicle, "chassis_dummy"), x.x * -1.0f, x.y, x.z, y.x * -1.0f, y.y, y.z, z.x * -1.0f, z.y * -1.0f, z.z, scale, 1, alpha);
-		}
-	}
-
 	const char* vehicle_helper::get_mod_slot_name(Hash model, Vehicle vehicle, int mod_slot)
 	{
 		switch (mod_slot)
@@ -238,7 +221,6 @@ namespace big
 			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_DEF_0");
 		}
 	}
-
 
 	static const std::map<Hash, std::map<int, std::vector<int32_t>>> mod_blacklists = {{VEHICLE_BANSHEE, {{MOD_SPOILERS, {3, 4}}, {MOD_COLUMNSHIFTERLEVERS, {0, 1, 2, 3}}, {MOD_SPEAKERS, {0}}, {MOD_LIVERY, {15, 16}}}}, {VEHICLE_SENTINEL, {{MOD_SPOILERS, {4, 5}}, {MOD_COLUMNSHIFTERLEVERS, {0, 1, 2, 3}}, {MOD_SPEAKERS, {0}}, {MOD_LIVERY, {0, 1}}}}};
 

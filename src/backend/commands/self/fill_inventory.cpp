@@ -1,5 +1,6 @@
 #include "backend/command.hpp"
 #include "natives.hpp"
+#include "util/local_player.hpp"
 
 namespace big
 {
@@ -9,7 +10,7 @@ namespace big
 
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
-			std::string prefix = "MP" + std::to_string(self::char_index) + "_";
+			std::string prefix = local_player::get_mp_prefix();
 			STATS::STAT_SET_INT(rage::joaat(prefix + "NO_BOUGHT_YUM_SNACKS"), 30, true);
 			STATS::STAT_SET_INT(rage::joaat(prefix + "NO_BOUGHT_HEALTH_SNACKS"), 15, true);
 			STATS::STAT_SET_INT(rage::joaat(prefix + "NO_BOUGHT_EPIC_SNACKS"), 5, true);
@@ -27,5 +28,5 @@ namespace big
 		}
 	};
 
-	fill_inventory g_fill_inventory("fillsnacks", "FILL_INVENTORY", "FILL_INVENTORY_DESC", 0);
+	fill_inventory g_fill_inventory("fillsnacks", "Fill Inventory", "Refills snacks and armor", 0);
 }

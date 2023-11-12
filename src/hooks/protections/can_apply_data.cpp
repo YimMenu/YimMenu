@@ -1,8 +1,11 @@
 #include "base/CBaseModelInfo.hpp"
 #include "base/CObject.hpp"
+#include "core/data/syncing_player.hpp"
 #include "core/data/task_types.hpp"
+#include "core/data/reactions.hpp"
 #include "entities/fwEntity.hpp"
 #include "gta/net_object_mgr.hpp"
+#include "gta_util.hpp"
 #include "hooking.hpp"
 #include "netsync/netSyncDataNode.hpp"
 #include "netsync/netSyncTree.hpp"
@@ -71,7 +74,6 @@
 #include "vehicle/CTrainConfig.hpp"
 #include "vehicle/CVehicleModelInfo.hpp"
 
-
 namespace big
 {
 	inline void check_player_model(player_ptr player, uint32_t model)
@@ -83,9 +85,7 @@ namespace big
 			return;
 
 		if (!protection::is_valid_player_model(model))
-		{
-			session::add_infraction(player, Infraction::INVALID_PLAYER_MODEL);
-		}
+			g_reactions.modder_detection.process(player, false, Infraction::INVALID_PLAYER_MODEL, true);
 	}
 
 	// the game function does weird stuff that we don't want
@@ -1103,7 +1103,7 @@ namespace big
 
 	bool is_crash_ped_task(eTaskTypeIndex type)
 	{
-		if (type == eTaskTypeIndex::CTaskUnalerted && g.m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
+		if (type == eTaskTypeIndex::CTaskUnalerted && m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
 			return true;
 
 		return false;
@@ -1116,23 +1116,23 @@ namespace big
 		case eTaskTypeIndex::CTaskVehicleGoToPlane:
 		case eTaskTypeIndex::CTaskVehicleLandPlane:
 		case eTaskTypeIndex::CTaskVehiclePlayerDrivePlane:
-		case eTaskTypeIndex::CTaskVehiclePlaneChase: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eTaskTypeIndex::CTaskVehiclePlaneChase: return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
 		case eTaskTypeIndex::CTaskVehicleGoToHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveHeli:
 		case eTaskTypeIndex::CTaskVehicleLand:
-		case eTaskTypeIndex::CTaskVehicleHeliProtect: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
+		case eTaskTypeIndex::CTaskVehicleHeliProtect: return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
 		case eTaskTypeIndex::CTaskVehicleGoToBoat:
 		case eTaskTypeIndex::CTaskVehicleCruiseBoat:
 		case eTaskTypeIndex::CTaskVehicleFleeBoat:
 		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourBoat:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveBoat:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_BOAT;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_BOAT;
 		case eTaskTypeIndex::CTaskVehicleGoToSubmarine:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveSubmarine:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
 		case eTaskTypeIndex::CTaskVehicleFleeAirborne:
-			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+			return m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
 		}
 
 		return false;
@@ -1187,9 +1187,6 @@ namespace big
 			if ((((CProjectBaseSyncDataNode*)node)->flags & 1) == 0)
 				return false;
 
-			if (g.debug.fuzzer.active && g.debug.fuzzer.enabled || sender_plyr && sender_plyr->log_clones)
-				log_node(node_id, sender_plyr, (CProjectBaseSyncDataNode*)node, object);
-
 			switch (node_id)
 			{
 			case sync_node_id("CVehicleCreationDataNode"):
@@ -1203,7 +1200,7 @@ namespace big
 
 				if (auto info = model_info::get_vehicle_model(creation_node->m_model))
 				{
-					if (vehicle_type_to_object_type(info->m_vehicle_type) != g.m_syncing_object_type)
+					if (vehicle_type_to_object_type(info->m_vehicle_type) != m_syncing_object_type)
 					{
 						notify::crash_blocked(sender, "vehicle model mismatch");
 						return true;
@@ -1359,7 +1356,8 @@ namespace big
 					if (is_invalid_override_pos(posX + player_sector_pos_x, posY + player_sector_pos_y))
 					{
 						std::stringstream crash_reason;
-						crash_reason << "invalid sector position (sector node)" << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
+						crash_reason << "invalid sector position (sector node)"
+						             << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
 						notify::crash_blocked(sender, crash_reason.str().c_str());
 						return true;
 					}
@@ -1370,7 +1368,7 @@ namespace big
 			{
 				const auto game_state_node = (CPlayerGameStateDataNode*)(node);
 				if (game_state_node->m_is_overriding_population_control_sphere
-				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x,game_state_node->m_population_control_sphere_y))
+				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x, game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
@@ -1380,16 +1378,10 @@ namespace big
 
 				if (sender_plyr)
 				{
-					if (game_state_node->m_super_jump)
-					{
-						session::add_infraction(sender_plyr, Infraction::SUPER_JUMP);
-					}
-
-					if (!game_state_node->m_is_max_armor_and_health_default && game_state_node->m_max_health == 0.0f
-					    && game_state_node->m_player_state == 1)
-					{
-						session::add_infraction(sender_plyr, Infraction::SUPER_JUMP);
-					}
+					if (game_state_node->m_super_jump
+					    || (!game_state_node->m_is_max_armor_and_health_default && game_state_node->m_max_health == 0.0f
+					        && game_state_node->m_player_state == 1))
+						g_reactions.modder_detection.process(sender_plyr, false, Infraction::SUPER_JUMP, true);
 
 					if (game_state_node->m_is_spectating)
 					{
@@ -1434,9 +1426,7 @@ namespace big
 						if (target->id() != sender_plyr->spectating_player)
 						{
 							if (target->id() == self::id)
-								g.reactions.spectate.process(sender_plyr);
-							else
-								g.reactions.spectate_others.process(sender_plyr, target);
+								g_reactions.spectate.process(sender_plyr, false, Infraction::NONE, false);
 
 							sender_plyr->spectating_player = target->id();
 						}
@@ -1509,23 +1499,21 @@ namespace big
 
 				if (sender_plyr)
 				{
+					auto spoofed_data = false;
+
 					if (gamer_node->m_clan_data.m_clan_id == 123456 && gamer_node->m_clan_data.m_clan_id_2 == 123456)
-					{
-						session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
-					}
+						spoofed_data = true;
+
 					else if (gamer_node->m_clan_data.m_clan_id > 0 && gamer_node->m_clan_data.m_clan_id_2 > 0)
 					{
 						if (!is_valid_clan_tag(gamer_node->m_clan_data.m_clan_tag, gamer_node->m_clan_data.m_is_system_clan))
-						{
-							session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
-						}
-
-						if (gamer_node->m_clan_data.m_is_system_clan
+							spoofed_data = true;
+						else if (gamer_node->m_clan_data.m_is_system_clan
 						    && (!gamer_node->m_clan_data.m_is_clan_open || gamer_node->m_clan_data.m_clan_member_count == 0))
-						{
-							session::add_infraction(sender_plyr, Infraction::SPOOFED_DATA);
-						}
+							spoofed_data = true;
 					}
+					if (spoofed_data)
+						g_reactions.modder_detection.process(sender_plyr, false, Infraction::SPOOFED_DATA, true);
 				}
 				break;
 			}
@@ -1671,7 +1659,7 @@ namespace big
 		static bool init = ([] { sync_node_finder::init(); }(), true);
 
 		veh_creation_model = std::nullopt;
-		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, m_syncing_player, object))
 		{
 			return false;
 		}

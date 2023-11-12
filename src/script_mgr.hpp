@@ -1,7 +1,5 @@
 #pragma once
-#include "common.hpp"
 #include "script.hpp"
-#include "lua/lua_manager.hpp"
 
 namespace big
 {
@@ -24,12 +22,6 @@ namespace big
 			{
 				func(script);
 			}
-
-			g_lua_manager->for_each_module([&func](const std::shared_ptr<lua_module>& module) {
-				module->for_each_script([&func](script* script) {
-					func(script);
-				});
-			});
 		}
 
 		void tick();

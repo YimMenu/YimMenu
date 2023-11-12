@@ -1,13 +1,13 @@
 #pragma once
+#include "core/data/reactions.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "services/players/player_service.hpp"
-#include "fiber_pool.hpp"
-#include "hooking.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -51,43 +51,18 @@ namespace big::notify
 			HUD::CLOSE_MP_TEXT_CHAT();
 	}
 
-	inline void crash_blocked(CNetGamePlayer* player, const char* crash)
+
+	inline void crash_blocked(CNetGamePlayer* player, const char* crash_detail)
 	{
-		if (player)
+		player_ptr plyr;
+
+		if (player && (plyr = g_player_service->get_by_id(player->m_player_id)))
 		{
-			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
-			    || g_player_service->get_by_id(player->m_player_id)->is_trusted
-			    || g.session.trust_session)
-				return;
-
-			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
-
-			if (g.reactions.crash.log)
-				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
-				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-			
-			if (g.reactions.crash.announce_in_chat)
-			{
-				g_fiber_pool->queue_job([player, crash] {
-					auto chat = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
-					chat = std::format("{} {}", g.session.chat_output_prefix, chat);
-
-					if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-					        g_player_service->get_self()->get_net_data(),
-					        chat.data(),
-					        g.reactions.crash.is_team_only))
-						draw_chat(chat.c_str(), g_player_service->get_self()->get_name(), g.reactions.crash.is_team_only);
-				});
-			}
-
-			g.reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));
+			reaction crash{"Crash", std::format("X: Blocked {} crash from {}", crash_detail, plyr->get_name()).c_str()};
+			crash.process(plyr, false, Infraction::TRIED_CRASH_PLAYER, true);
 		}
 		else
-		{
-			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
-		}
+			g_notification_service->push_error("Protections", std::format("X: Blocked {} crash from unknown player", crash_detail), true);
 	}
 
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
@@ -116,10 +91,4 @@ namespace big::notify
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.data());
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(0, 0, 1, -1);
 	}
-
-	inline void player_joined(CNetGamePlayer* net_game_player)
-	{
-		above_map(std::format("<C>{}</C> joined.", net_game_player->get_name()));
-	}
-
 }

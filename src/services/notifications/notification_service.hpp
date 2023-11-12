@@ -1,4 +1,8 @@
 #pragma once
+
+#include <chrono>
+#include <imgui.h>
+
 namespace big
 {
 	enum class NotificationType
@@ -28,10 +32,10 @@ namespace big
 		virtual ~notification_service();
 
 		void push(notification);
-		void push(const std::string&, const std::string&);
-		void push_warning(const std::string&, const std::string&);
-		void push_error(const std::string&, const std::string&);
-		void push_success(const std::string&, const std::string&);
+		void push(const std::string&, const std::string&, bool log = false);
+		void push_warning(const std::string&, const std::string&, bool log = false);
+		void push_error(const std::string&, const std::string&, bool log = false);
+		void push_success(const std::string&, const std::string&, bool log = false);
 		std::vector<notification> get();
 
 		std::map<NotificationType, ImVec4> notification_colors = {

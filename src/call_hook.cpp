@@ -1,4 +1,3 @@
-#include "common.hpp"
 #include "call_hook.hpp"
 
 namespace

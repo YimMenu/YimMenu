@@ -2,8 +2,6 @@
 
 #include "http_client/http_client.hpp"
 #include "pointers.hpp"
-#include "services/creator_storage/creator_storage_service.hpp"
-
 
 namespace big
 {
@@ -57,52 +55,6 @@ namespace big
 			{
 				return false;
 			}
-		}
-
-		return false;
-	}
-
-	// Ratelimit: 10 per Minute, if exceeded than 5 min cooldown
-	bool api_service::send_socialclub_message(uint64_t rid, std::string_view message)
-	{
-		const auto response = g_http_client.post("https://scui.rockstargames.com/api/messaging/sendmessage", {{"Authorization", AUTHORIZATION_TICKET}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, {std::format(R"({{"env":"prod","title":"gta5","version":11,"recipientRockstarId":"{}","messageText":"{}"}})", rid, message)});
-
-		return response.status_code == 200;
-	}
-
-	bool api_service::get_job_details(std::string_view content_id, nlohmann::json& result)
-	{
-		const auto response = g_http_client.get("https://scapi.rockstargames.com/ugc/mission/details",
-		    {{"X-AMC", "true"}, {"X-Requested-With", "XMLHttpRequest"}},
-		    {{"title", "gtav"}, {"contentId", content_id.data()}});
-
-		if (response.status_code != 200)
-			return false;
-
-		try
-		{
-			result = nlohmann::json::parse(response.text);
-			return true;
-		}
-		catch (std::exception& e)
-		{
-			return false;
-		}
-	}
-
-	bool api_service::download_job_metadata(std::string_view content_id, int f1, int f0, int lang)
-	{
-		const auto response = g_http_client.get(std::format("https://prod.cloud.rockstargames.com/ugc/gta5mission/{}/{}_{}_{}.json",
-		    content_id,
-		    f1,
-		    f0,
-		    languages.at(lang)));
-
-		if (response.status_code == 200)
-		{
-			const auto of = creator_storage_service::create_file(std::string(content_id) + ".json");
-
-			return g_http_client.download(response.url, of);
 		}
 
 		return false;

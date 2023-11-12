@@ -1,5 +1,9 @@
 #include "backend/player_command.hpp"
+#include "core/data/infractions.hpp"
 #include "natives.hpp"
+#include "services/bad_players/bad_players.hpp"
+#include "services/notifications/notification_service.hpp"
+
 
 namespace big
 {
@@ -7,7 +11,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level() override 
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::TOXIC;
 		}
@@ -16,15 +20,26 @@ namespace big
 		{
 			if (!player)
 				return;
+
 			if (!g_player_service->get_self()->is_host())
 			{
-				g_notification_service->push_error("HOST_KICK"_T.data(), "BACKEND_HOST_KICK_FAILED"_T.data());
+				g_notification_service->push_error("Host kick", std::format("Host kick failed on {}", player->get_name()), true);
 				return;
 			}
 
-            NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+			if (auto net_data = player->get_net_data())
+			{
+				auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
+				auto name        = net_data->m_name;
+
+				if ((player->infractions.contains((int)Infraction::TRIED_KICK_PLAYER) || player->infractions.contains((int)Infraction::TRIED_CRASH_PLAYER)) && !bad_players_nm::is_blocked(rockstar_id))
+					bad_players_nm::add_player({name, rockstar_id, true, player->is_spammer});
+
+				g_notification_service->push_success("Kick", std::format("Host kick to {}", player->get_name()), true);
+				NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+			};
 		}
 	};
 
-	host_kick g_host_kick("hostkick", "HOST_KICK", "HOST_KICK_DESC", 0, false);
+	host_kick g_host_kick("hostkick", "Host Kick", "Host kick that only works when host", 0, false);
 }

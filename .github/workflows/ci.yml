@@ -1,10 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+on: [pull_request]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
   ci:
-    runs-on: [self-hosted, Windows]
+    runs-on: windows-latest
     name: CI
     steps:
       - uses: actions/checkout@v3
@@ -18,15 +22,15 @@ jobs:
           arch: amd64
 
       - name: Generate CMake project
-        run: cmake -D CMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja
+        run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -S. -Bbuild -G Ninja
 
-      - name: Build 64bit release DLL
-        run: cmake --build ./build --config Release --target YimMenu --
+      - name: Build 64bit RelWithDebInfo DLL
+        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
 
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
 
-      - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+      - name: Rename DLL to YimMenu-dev-${{github.sha}}.dll
         run: |
           del YimMenu-dev-*.dll
           ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll

@@ -1,3 +1,5 @@
+#include "core/data/player.hpp"
+#include "core/settings/session.hpp"
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
@@ -11,7 +13,7 @@ namespace big
 	{
 		g_hooking->get_original<hooks::write_player_camera_data_node>()(player, node);
 
-		if (g.spoofing.spoof_hide_spectate && g.player.spectating)
+		if (g_session.spoof_hide_spectate && g_player.spectating)
 		{
 			node->m_free_cam_pos_x += 50.0f;
 			node->m_free_cam_pos_y -= 50.0f;

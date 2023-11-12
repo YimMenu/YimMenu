@@ -1,6 +1,7 @@
 #include "gui.hpp"
 
-#include "common.hpp"
+#include "core/settings/settings.hpp"
+#include "core/settings/window.hpp"
 #include "natives.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
@@ -16,25 +17,16 @@ namespace big
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
-		g_renderer->add_dx_callback(view::overlay, -3);
-		g_renderer->add_dx_callback(view::cmd_executor, -4);
 		g_renderer->add_dx_callback(
 		    [this] {
 			    dx_on_tick();
 		    },
-		    -5);
+		    -4);
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
-		g_renderer->add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-			if (g.cmd_executor.enabled && msg == WM_KEYUP && wparam == VK_ESCAPE)
-			{
-				g.cmd_executor.enabled = false;
-			}
-		});
 
-		g_renderer->add_dx_callback(view::vehicle_control, 3);
 		g_renderer->add_dx_callback(esp::draw, 2); // TODO: move to ESP service
 		g_renderer->add_dx_callback(view::context_menu, 1);
 
@@ -42,7 +34,7 @@ namespace big
 		dx_init();
 
 		g_gui = this;
-		g_renderer->rescale(g.window.gui_scale);
+		g_renderer->rescale(g_window.gui_scale);
 	}
 
 	gui::~gui()
@@ -92,10 +84,10 @@ namespace big
 		style.ChildRounding     = 4.0f;
 
 		auto& colors                          = style.Colors;
-		colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g.window.text_color);
+		colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g_window.text_color);
 		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
-		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
+		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g_window.background_color);
+		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g_window.background_color);
 		colors[ImGuiCol_PopupBg]              = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 		colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
@@ -153,19 +145,19 @@ namespace big
 
 	void gui::push_theme_colors()
 	{
-		auto button_color = ImGui::ColorConvertU32ToFloat4(g.window.button_color);
+		auto button_color = ImGui::ColorConvertU32ToFloat4(g_window.button_color);
 		auto button_active_color =
 		    ImVec4(button_color.x + 0.33f, button_color.y + 0.33f, button_color.z + 0.33f, button_color.w);
 		auto button_hovered_color =
 		    ImVec4(button_color.x + 0.15f, button_color.y + 0.15f, button_color.z + 0.15f, button_color.w);
-		auto frame_color = ImGui::ColorConvertU32ToFloat4(g.window.frame_color);
+		auto frame_color = ImGui::ColorConvertU32ToFloat4(g_window.frame_color);
 		auto frame_hovered_color =
 		    ImVec4(frame_color.x + 0.14f, frame_color.y + 0.14f, frame_color.z + 0.14f, button_color.w);
 		auto frame_active_color =
 		    ImVec4(frame_color.x + 0.30f, frame_color.y + 0.30f, frame_color.z + 0.30f, button_color.w);
 
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.background_color));
-		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.text_color));
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g_window.background_color));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g_window.text_color));
 		ImGui::PushStyleColor(ImGuiCol_Button, button_color);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, button_hovered_color);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, button_active_color);
@@ -224,7 +216,7 @@ namespace big
 
 	void gui::wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	{
-		if (msg == WM_KEYUP && wparam == g.settings.hotkeys.menu_toggle)
+		if (msg == WM_KEYUP && wparam == g_settings.hotkeys.menu_toggle)
 		{
 			//Persist and restore the cursor position between menu instances.
 			static POINT cursor_coords{};
@@ -237,9 +229,7 @@ namespace big
 				SetCursorPos(cursor_coords.x, cursor_coords.y);
 			}
 
-			toggle(g.settings.hotkeys.editing_menu_toggle || !m_is_open);
-			if (g.settings.hotkeys.editing_menu_toggle)
-				g.settings.hotkeys.editing_menu_toggle = false;
+			toggle(!m_is_open);
 		}
 	}
 

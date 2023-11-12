@@ -9,14 +9,13 @@ namespace big
 
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
-			if(g_local_player && g_local_player !=nullptr && !g.self.force_wanted_level)
+			if(g_local_player && g_local_player !=nullptr)
 			{
 				g_local_player->m_player_info->m_wanted_level = 0;
-				g.self.wanted_level = 0;
 				g_local_player->m_player_info->m_is_wanted = false;
 			}
 		}
 	};
 
-	clear_wanted g_clear_wanted("clearwantedlvl", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC_SELF", 0);
+	clear_wanted g_clear_wanted("clearwantedlvl", "Clear Wanted Level", "Clears your wanted level", 0);
 }

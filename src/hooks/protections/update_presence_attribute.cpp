@@ -1,11 +1,11 @@
 #include "hooking.hpp"
-#include "services/player_database/player_database_service.hpp"
+#include "core/settings/protections.hpp"
 
 namespace big
 {
 	inline bool block_session_presence()
 	{
-		return g.protections.rid_join || (g_player_database_service && g_player_database_service->is_redirect_join_active());
+		return g_protections.rid_join;
 	}
 
 	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value)

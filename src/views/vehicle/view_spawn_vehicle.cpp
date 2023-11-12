@@ -1,44 +1,26 @@
+#include "core/data/spawn_vehicle.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
-#include "services/model_preview/model_preview_service.hpp"
+#include "services/notifications/notification_service.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
-	void render_spawn_new_vehicle()
+	void render_spawn_new_vehicle(bool spawn_at_waypoint)
 	{
-		if (ImGui::Checkbox("PREVIEW"_T.data(), &g.spawn_vehicle.preview_vehicle))
-		{
-			if (!g.spawn_vehicle.preview_vehicle)
-			{
-				g_model_preview_service->stop_preview();
-			}
-		}
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
-		ImGui::SameLine();
 		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
 		components::command_checkbox<"spawnmaxed">();
-
-		static char plate_buf[9] = {0};
-		strncpy(plate_buf, g.spawn_vehicle.plate.c_str(), 9);
-
-		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("PLATE"_T, "PLATE_NUMBER"_T, plate_buf, sizeof(plate_buf), ImGuiInputTextFlags_None, [] {
-			g.spawn_vehicle.plate = plate_buf;
-		});
 
 		static int selected_class = -1;
 		const auto& class_arr     = g_gta_data_service->vehicle_classes();
 
 		ImGui::SetNextItemWidth(300.f);
-		if (ImGui::BeginCombo("VEHICLE_CLASS"_T.data(),
-		        selected_class == -1 ? "ALL"_T.data() : class_arr[selected_class].c_str()))
+		if (ImGui::BeginCombo("Vehicle Class", selected_class == -1 ? "All" : class_arr[selected_class].c_str()))
 		{
-			if (ImGui::Selectable("ALL"_T.data(), selected_class == -1))
+			if (ImGui::Selectable("All", selected_class == -1))
 			{
 				selected_class = -1;
 			}
@@ -62,7 +44,7 @@ namespace big
 		static char search[64];
 
 		ImGui::SetNextItemWidth(300.f);
-		components::input_text_with_hint("MODEL_NAME"_T, "SEARCH"_T, search, sizeof(search), ImGuiInputTextFlags_None);
+		components::input_text_with_hint("Model Name", "Search", search, sizeof(search), ImGuiInputTextFlags_None);
 
 		vehicle_map calculated_map{};
 
@@ -82,15 +64,16 @@ namespace big
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-				if ((selected_class == -1 || class_arr[selected_class] == clazz) && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
+				if ((selected_class == -1 || class_arr[selected_class] == clazz)
+				    && (display_name.find(lower_search) != std::string::npos || display_manufacturer.find(lower_search) != std::string::npos))
 				{
 					calculated_map.emplace(item);
 				}
 			}
 		}
-		
+
 		static const auto over_30 = (30 * ImGui::GetTextLineHeightWithSpacing() + 2);
-		auto calculated_size = calculated_map.size();
+		auto calculated_size      = calculated_map.size();
 		if (calculated_map.size() == 0)
 		{
 			calculated_size++;
@@ -102,115 +85,43 @@ namespace big
 		const auto box_height = calculated_size <= 30 ? (calculated_size * ImGui::GetTextLineHeightWithSpacing() + 2) : over_30;
 		if (ImGui::BeginListBox("###vehicles", {300, box_height}))
 		{
-			if (self::veh)
-			{
-				static auto veh_hash = 0;
-
-				g_fiber_pool->queue_job([] {
-					veh_hash = ENTITY::GET_ENTITY_MODEL(self::veh);
-				});
-
-				if (veh_hash)
-				{
-					const auto& item = g_gta_data_service->vehicle_by_hash(veh_hash);
-
-					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, std::make_format_args(item.m_display_name)), false, [] {
-						if (self::veh)
-						{
-							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, veh_hash);
-							float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-							auto owned_mods = vehicle::get_owned_mods_from_vehicle(self::veh);
-
-							auto veh = vehicle::clone_from_owned_mods(owned_mods, spawn_location, spawn_heading);
-
-							if (veh == 0)
-							{
-								g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
-							}
-							else
-							{
-								if (g.spawn_vehicle.spawn_maxed)
-								{
-									vehicle::max_vehicle(veh);
-								}
-
-								vehicle::set_plate(veh, plate_buf);
-
-								if (g.spawn_vehicle.spawn_inside)
-								{
-									vehicle::teleport_into_vehicle(veh);
-								}
-							}
-						}
-
-						g_model_preview_service->stop_preview();
-					});
-
-					if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
-					{
-						g_model_preview_service->stop_preview();
-					}
-					else if (ImGui::IsItemHovered())
-					{
-						g_fiber_pool->queue_job([] {
-							g_model_preview_service->show_vehicle(vehicle::get_owned_mods_from_vehicle(self::veh),
-							    g.spawn_vehicle.spawn_maxed);
-						});
-					}
-				}
-			}
-
 			if (calculated_map.size() > 0)
 			{
 				for (auto& item : calculated_map)
 				{
 					const auto& vehicle = item.second;
 					ImGui::PushID(vehicle.m_hash);
-					components::selectable(vehicle.m_display_name, false, [&vehicle] {
-						const auto spawn_location =
-						    vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, vehicle.m_hash);
+					components::selectable(vehicle.m_display_name, false, [&vehicle, spawn_at_waypoint] {
+						Vector3 spawn_location;
+						std::optional<Vector3> waypoint_location;
+
+						if (spawn_at_waypoint && (waypoint_location = vehicle::get_waypoint_location()).has_value())
+							spawn_location = waypoint_location.value();
+						else
+							spawn_location = vehicle::get_spawn_location(g_spawn_vehicle.spawn_inside, vehicle.m_hash);
+
 						const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
 
 						if (veh == 0)
-						{
-							g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
-						}
+							g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 						else
 						{
-							if (g.spawn_vehicle.spawn_maxed)
-							{
+							if (g_spawn_vehicle.spawn_maxed)
 								vehicle::max_vehicle(veh);
-							}
-
-							vehicle::set_plate(veh, plate_buf);
-
-							if (g.spawn_vehicle.spawn_inside)
-							{
+							if (g_spawn_vehicle.spawn_inside)
 								vehicle::teleport_into_vehicle(veh);
-							}
 						}
 
-						g_model_preview_service->stop_preview();
 						ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 					});
 					ImGui::PopID();
-
-					if (!g.spawn_vehicle.preview_vehicle || (g.spawn_vehicle.preview_vehicle && !ImGui::IsAnyItemHovered()))
-					{
-						g_model_preview_service->stop_preview();
-					}
-					else if (ImGui::IsItemHovered())
-					{
-						g_model_preview_service->show_vehicle(vehicle.m_hash, g.spawn_vehicle.spawn_maxed);
-					}
 				}
 			}
 			else
 			{
-				ImGui::Text("NO_VEHICLE_IN_REGISTRY"_T.data());
+				ImGui::Text("No vehicles in registry.");
 			}
 			ImGui::EndListBox();
 		}
@@ -218,20 +129,22 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		ImGui::RadioButton("VIEW_DEBUG_THREADS_NEW"_T.data(), &g.spawn_vehicle.spawn_type, 0);
-		ImGui::SameLine();
-		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_PERSONAL"_T.data(), &g.spawn_vehicle.spawn_type, 1);
-		ImGui::SameLine();
-		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_PERSISTENT"_T.data(), &g.spawn_vehicle.spawn_type, 2);
-		ImGui::SameLine();
-		ImGui::RadioButton("VIEW_SPAWN_VEHICLE_XML"_T.data(), &g.spawn_vehicle.spawn_type, 3);
+		static bool spawn_at_waypoint;
+		static int spawn_vehicle_type;
 
-		switch (g.spawn_vehicle.spawn_type)
+		ImGui::RadioButton("New", &spawn_vehicle_type, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Personal", &spawn_vehicle_type, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Persistent", &spawn_vehicle_type, 2);
+		ImGui::Spacing();
+		ImGui::Checkbox("Spawn at waypoint", &spawn_at_waypoint);
+
+		switch (spawn_vehicle_type)
 		{
-		case 0: render_spawn_new_vehicle(); break;
+		case 0: render_spawn_new_vehicle(spawn_at_waypoint); break;
 		case 1: view::pv(); break;
-		case 2: view::persist_car(); break;
-		case 3: view::xml_vehicles(); break;
+		case 2: view::persist_car(spawn_at_waypoint); break;
 		}
 	}
 }

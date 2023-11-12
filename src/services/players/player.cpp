@@ -157,4 +157,14 @@ namespace big
 
 		return lower;
 	}
+
+	void player::timeout()
+	{
+		this->block_net_events   = true;
+		this->block_clone_sync   = true;
+		this->block_clone_create = true;
+		this->block_explosions   = true;
+
+		LOGF(WARNING, "{} has been timed out", this->get_name());
+	}
 }

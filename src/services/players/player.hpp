@@ -1,6 +1,9 @@
 #pragma once
+#include "core/enums.hpp"
 #include "player_service.hpp"
 #include "rate_limiter.hpp"
+
+#include <unordered_set>
 
 class CVehicle;
 class CPed;
@@ -55,18 +58,14 @@ namespace big
 		[[nodiscard]] bool is_host() const;
 		[[nodiscard]] bool is_valid() const;
 
+		void timeout();
+
 		std::optional<CommandAccessLevel> command_access_level = std::nullopt;
 
 		bool off_radar    = false;
 		bool never_wanted = false;
 		bool semi_godmode = false;
 		bool fix_vehicle  = false;
-
-		bool kill_loop       = false;
-		bool explosion_loop  = false;
-		bool freeze_loop     = false;
-		bool ragdoll_loop    = false;
-		bool rotate_cam_loop = false;
 
 		rate_limiter m_host_migration_rate_limit{2s, 15};
 		rate_limiter m_play_sound_rate_limit{1s, 10};
@@ -79,12 +78,13 @@ namespace big
 
 		bool m_block_permanent_vehicles = false;
 
-		bool is_modder        = false;
-		bool is_trusted       = false;
-		bool block_join       = false;
-		int block_join_reason = 0;
-		bool is_spammer       = false;
-		bool is_admin         = false;
+		bool is_modder = false;
+		std::unordered_set<int> infractions;
+		bool is_blocked         = false;
+		bool is_spammer         = false;
+		std::string spam_message;
+		bool is_toxic        = false;
+
 		std::optional<uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
 		std::optional<uint32_t> time_difference;

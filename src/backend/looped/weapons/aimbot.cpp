@@ -1,7 +1,13 @@
 #include "backend/looped_command.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+
+#include <imgui.h>
+
+constexpr float smoothing_speed = 4.f;
+constexpr float fov             = 90.f;
 
 namespace big
 {
@@ -14,13 +20,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			float local_fov_change = g.weapons.aimbot.fov;
+			float local_fov_change = fov;
 			for (auto ped : entity::get_entities(false, true))
 			{
 				if (!ENTITY::IS_ENTITY_DEAD(ped, 0)) // Tracetype is always 17. LOS check
 				{
-					int relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped); // relation for enemy check
-					int type     = PED::GET_PED_TYPE(ped); // for police check, cop types are 6, swat is 27
+					int type               = PED::GET_PED_TYPE(ped); // for police check, cop types are 6, swat is 27
 					Vector3 world_position = ENTITY::GET_ENTITY_COORDS(ped, false);
 
 					if (SYSTEM::VDIST2(self::pos.x,
@@ -29,34 +34,16 @@ namespace big
 					        world_position.x,
 					        world_position.y,
 					        world_position.z)
-					    > (g.weapons.aimbot.distance * g.weapons.aimbot.distance))
+					    > (g_weapons.aimbot.distance * g_weapons.aimbot.distance))
 						continue; // If the entity is further than our preset distance then just skip it
 
-					if (PED::IS_PED_A_PLAYER(ped) && g.weapons.aimbot.on_player) // check if its a player
-					{
-						goto aimbot_handler;
-					}
-					else if (((relation == 4) || (relation == 5)) && g.weapons.aimbot.on_enemy) // relation 4 and 5 are for enemies
-					{
-						goto aimbot_handler;
-					}
-					else if (((type == 6 && !PED::IS_PED_MODEL(ped, rage::joaat("s_m_y_uscg_01"))) || type == 27 || // s_m_y_uscg_01 = us coast guard 1 (technically military)
-					             PED::IS_PED_MODEL(ped, rage::joaat("s_m_y_ranger_01")) || PED::IS_PED_MODEL(ped, rage::joaat("s_f_y_ranger_01"))) // ranger models
-					    && g.weapons.aimbot.on_police)
-					{
-						goto aimbot_handler;
-					}
-					else if (g.weapons.aimbot.on_npc && !PED::IS_PED_A_PLAYER(ped))
-
-					// Update aim lock coords
-					aimbot_handler:
+					if (PED::IS_PED_A_PLAYER(ped)) // check if its a player
 					{
 						if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, ped, 17))
 							continue;
 
 						// Jump to here to handle instead of continue statements
-						aim_lock =
-						    ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(ped, PED::GET_PED_BONE_INDEX(ped, g.weapons.aimbot.selected_bone));
+						aim_lock = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(ped, PED::GET_PED_BONE_INDEX(ped, 0x796E));
 						if ((aim_lock.x != 0) && (aim_lock.y != 0) && (aim_lock.z != 0)) // Ensure none of the coords are = to 0
 						{
 							Vector2 screen_dim, movement;
@@ -131,8 +118,8 @@ namespace big
 					mouse_handle.mi.dwFlags = MOUSEEVENTF_MOVE; // Type = Mouse movement, and the event  is emulating the mouse movement
 
 					// Update the mouse by moving it with how much we need / smoothing speed
-					mouse_handle.mi.dx = mouse_movement.x / (g.weapons.aimbot.smoothing ? g.weapons.aimbot.smoothing_speed : 2);
-					mouse_handle.mi.dy = mouse_movement.y / (g.weapons.aimbot.smoothing ? g.weapons.aimbot.smoothing_speed : 2);
+					mouse_handle.mi.dx = mouse_movement.x / smoothing_speed;
+					mouse_handle.mi.dy = mouse_movement.y / smoothing_speed;
 					SendInput(1, &mouse_handle, sizeof(mouse_handle)); //handles the input
 
 					//Reset our variables
@@ -143,10 +130,5 @@ namespace big
 		}
 	};
 
-	aimbot g_aimbot("aimbot", "VIEW_OVERLAY_AIMBOT", "BACKEND_LOOPED_WEAPONS_AIMBOT_DESC", g.weapons.aimbot.enable);
-	bool_command g_smoothing("smoothing", "BACKEND_LOOPED_WEAPONS_SMOOTHING", "BACKEND_LOOPED_WEAPONS_SMOOTHING_DESC", g.weapons.aimbot.smoothing);
-	bool_command g_aimbot_on_player("aimatplayer", "PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_AT_PLAYER_DESC", g.weapons.aimbot.on_player);
-	bool_command g_aimbot_on_npc("aimatnpc", "NPC", "BACKEND_LOOPED_WEAPONS_AIM_AT_NPC_DESC", g.weapons.aimbot.on_npc);
-	bool_command g_aimbot_on_police("aimatpolice", "POLICE", "BACKEND_LOOPED_WEAPONS_AIM_AT_POLICE_DESC", g.weapons.aimbot.on_police);
-	bool_command g_aimbot_on_enemy("aimatenemy", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY_DESC", g.weapons.aimbot.on_enemy);
+	aimbot g_aimbot("aimbot", "Aimbot", "Lock on and kill", g_weapons.aimbot.enable);
 }

@@ -3,6 +3,7 @@
 #include "gta_util.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/notifications/notification_service.hpp"
 
 #include <network/Network.hpp>
 
@@ -21,9 +22,12 @@ namespace big
 		{
 			if (!player)
 				return;
-			if (gta_util::get_network()->m_game_session_ptr->is_host())
+
+			g_notification_service->push_success("Kick", std::format("Desync kick to {}", player->get_name()), true);
+
+			if (auto net_data = player->get_net_data(); net_data && gta_util::get_network()->m_game_session_ptr->is_host())
 			{
-				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(player->get_net_data()->m_host_token);
+				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(net_data->m_host_token);
 				return;
 			}
 
@@ -31,5 +35,5 @@ namespace big
 		}
 	};
 
-	complaint_kick g_complaint_kick("desync", "COMPLAINT_KICK", "COMPLAINT_KICK_DESC", 0); // this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
+	complaint_kick g_complaint_kick("desync", "Desync Kick", "This may take around 10 seconds to kick the player. Does not work against the host", 0); // this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
 }

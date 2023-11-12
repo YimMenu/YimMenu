@@ -6,7 +6,6 @@
  */
 
 #pragma once
-#include "common.hpp"
 #include "gta/natives.hpp"
 #include "invoker.hpp"
 

@@ -1,6 +1,5 @@
 #include "invoker.hpp"
 
-#include "common.hpp"
 #include "crossmap.hpp"
 #include "pointers.hpp"
 

@@ -3,6 +3,7 @@
 #include "pointers.hpp"
 #include "util/entity.hpp"
 #include "gta/enums.hpp"
+#include "core/data/world.hpp"
 
 namespace big
 {
@@ -20,10 +21,10 @@ namespace big
 		{
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!PED::GET_PED_CONFIG_FLAG(ped, 17, true))
+				if (!PED::GET_PED_CONFIG_FLAG(ped, 17, TRUE))
 				{ // Flag 17 = PED_FLAG_BLOCK_NON_TEMPORARY_EVENTS
-					PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
-					TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
+					PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, TRUE);
+					TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, TRUE);
 				}
 			}
 		}
@@ -35,5 +36,7 @@ namespace big
 		}
 	};
 
-	ignore g_ignore("pedsignore", "BACKEND_LOOPED_WORLD_IGNORE", "BACKEND_LOOPED_WORLD_IGNORE_DESC", g.world.nearby.ignore);
+	ignore g_ignore("pedsignore", "Ignore", "Nearby peds will ignore you and become oblivious to your actions",
+	    g_world.nearby.ignore);
+
 }

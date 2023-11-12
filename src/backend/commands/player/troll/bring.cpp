@@ -16,19 +16,5 @@ namespace big
 		}
 	};
 
-	class bring_all : command
-	{
-		using command::command;
-
-		virtual void execute(const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
-		{
-			for (auto& player : g_player_service->players())
-				g_fiber_pool->queue_job([player]() {
-					teleport::bring_player(player.second);
-				});
-		}
-	};
-
-	bring g_bring("bring", "BRING", "BRING_DESC", 0, false);
-	bring_all g_bring_all("bringall", "BRING_ALL", "BRING_ALL_DESC", 0, false);
+	bring g_bring("bring", "Bring", "Teleports the player to you", 0, false);
 }

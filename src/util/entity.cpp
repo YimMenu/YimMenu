@@ -2,68 +2,13 @@
 
 namespace big::entity
 {
-	void cage_ped(Ped ped)
-	{
-		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
-
-		Vector3 location = ENTITY::GET_ENTITY_COORDS(ped, true);
-		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
-	}
-
 	void clean_ped(Ped ped)
 	{
 		Ped player_ped = self::ped;
 
 		PED::CLEAR_PED_BLOOD_DAMAGE(player_ped);
-		PED::CLEAR_PED_WETNESS(player_ped);
 		PED::CLEAR_PED_ENV_DIRT(player_ped);
 		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
-	}
-
-	void delete_entity(Entity& ent, bool force)
-	{
-		if (!ENTITY::DOES_ENTITY_EXIST(ent))
-			return;
-		if (!force && !take_control_of(ent))
-		{
-			LOG(VERBOSE) << "Failed to take control of entity before deleting";
-			return;
-		}
-
-		if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
-		{
-			for (auto obj : pools::get_all_props())
-			{
-				auto object = g_pointers->m_gta.m_ptr_to_handle(obj);
-				if (!object)
-					break;
-
-				if (!ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(ent, object))
-					continue;
-
-				ENTITY::DELETE_ENTITY(&object);
-			}
-
-			for (auto veh : pools::get_all_vehicles())
-			{
-				auto vehicle = g_pointers->m_gta.m_ptr_to_handle(veh);
-				if (!vehicle)
-					break;
-
-				if (ent == vehicle || !ENTITY::IS_ENTITY_ATTACHED_TO_ENTITY(ent, vehicle))
-					continue;
-
-				ENTITY::DELETE_ENTITY(&vehicle);
-			}
-		}
-		
-		ENTITY::DETACH_ENTITY(ent, 1, 1);
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
-		if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
-		{
-			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(ent, true, true);
-		}
-		ENTITY::DELETE_ENTITY(&ent);
 	}
 
 	bool raycast(Entity* ent)
@@ -138,14 +83,14 @@ namespace big::entity
 		if (!hnd || !hnd->m_net_object || !*g_pointers->m_gta.m_is_session_started)
 			return false;
 
-		if (network_has_control_of_entity(hnd->m_net_object))
+		if (hnd && network_has_control_of_entity(hnd->m_net_object))
 			return true;
 
 		for (int i = 0; i < timeout; i++)
 		{
 			g_pointers->m_gta.m_request_control(hnd->m_net_object);
 
-			if (network_has_control_of_entity(hnd->m_net_object))
+			if (hnd && network_has_control_of_entity(hnd->m_net_object))
 				return true;
 
 			if (timeout != 0)

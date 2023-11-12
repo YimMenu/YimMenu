@@ -36,19 +36,11 @@ namespace big
 		}
 		inline const std::string get_label()
 		{
-			std::string key;
-			if (key = g_translation_service.get_translation(m_label_hash); key.empty())
-				key = m_label;
-
-			return key;
+			return m_label;
 		}
 		inline const std::string get_description()
 		{
-			std::string key;
-			if (key = g_translation_service.get_translation(m_description_hash); key.empty())
-				key = m_description;
-
-			return key;
+			return m_description;
 		}
 		inline const std::optional<uint8_t>& get_num_args()
 		{

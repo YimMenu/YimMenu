@@ -1,8 +1,6 @@
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "script.hpp"
+#include "services/bad_players/bad_players.hpp"
 
 namespace big
 {
@@ -17,22 +15,28 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
-			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
-			dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-			script::get_current()->yield(700ms);
+			if (player && player->is_valid())
+			{
+				player->timeout();
 
-			if (g_player_service->get_self()->is_host())
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+				if (auto net_data = player->get_net_data())
+				{
+					auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
+					auto name        = net_data->m_name;
 
-			if (player && !g_player_service->get_self()->is_host() && player->is_valid() && !player->is_host())
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(player, {});
+					if (!player->is_blocked)
+					{
+						player->is_blocked = true;
+						bad_players_nm::add_player({name, rockstar_id, true, player->is_spammer});
+					}
+				};
 
-			if (g_player_service->get_self()->is_host())
-				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-				    NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("oomkick")))->call(player, {});
+			}
 		}
 	};
 
-	multi_kick g_multi_kick("multikick", "MULTI_KICK", "MULTI_KICK_DESC", 0, false);
+	multi_kick g_multi_kick("multikick", "Multi kick", "End, Null & OOM kick", 0, false);
 }

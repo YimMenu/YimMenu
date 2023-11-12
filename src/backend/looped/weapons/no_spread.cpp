@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 
@@ -14,9 +15,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (!g_local_player)
-			{
 				return;
-			}
 
 			auto* const weapon_mgr = g_local_player->m_weapon_manager;
 			if (weapon_mgr)
@@ -47,5 +46,5 @@ namespace big
 		}
 	};
 
-	no_spread g_no_spread("nospread", "BACKEND_LOOPED_WEAPONS_NO_SPREAD", "BACKEND_LOOPED_WEAPONS_NO_SPREAD_DESC", g.weapons.no_spread);
+	no_spread g_no_spread("nospread", "No Spread", "Bullets always hit at where the crosshair is centered.", g_weapons.no_spread);
 }

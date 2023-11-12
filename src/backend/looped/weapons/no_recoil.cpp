@@ -1,4 +1,5 @@
 #include "backend/looped_command.hpp"
+#include "core/data/weapons.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 
@@ -15,9 +16,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (!g_local_player)
-			{
 				return;
-			}
 
 			auto* const weapon_mgr = g_local_player->m_weapon_manager;
 			if (weapon_mgr)
@@ -54,5 +53,5 @@ namespace big
 		}
 	};
 
-	no_recoil g_no_recoil("norecoil", "BACKEND_LOOPED_WEAPONS_NO_RECOIL", "BACKEND_LOOPED_WEAPONS_NO_RECOIL_DESC", g.weapons.no_recoil);
+	no_recoil g_no_recoil("norecoil", "No Recoil", "Eliminates view movement when firing a weapon.", g_weapons.no_recoil);
 }

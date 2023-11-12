@@ -39,5 +39,5 @@ namespace big
 		}
 	};
 
-	kill_player g_kill_player("kill", "KILL_PLAYER", "KILL_PLAYER_DESC", 0);
+	kill_player g_kill_player("kill", "Kill Player", "KILL_PLAYER_DESC", 0);
 }
