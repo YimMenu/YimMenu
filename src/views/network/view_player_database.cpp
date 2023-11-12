@@ -212,6 +212,10 @@ namespace big
 					session::invite_by_rockstar_id(current_player->rockstar_id);
 				});
 
+				components::button("SEND_FRIEND_REQUEST"_T, [] {
+					session::add_friend_by_rockstar_id(current_player->rockstar_id);
+				});
+
 				static char message[256];
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
