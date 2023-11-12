@@ -170,6 +170,13 @@ namespace big::session
 		g_notification_service->push_success("Network", "Target player has been invited to your session!");
 	}
 
+	inline void show_profile_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		g_pointers->m_gta.m_show_profile_by_gamer_handle(&player_handle);
+	}
+
 	inline void add_friend_by_rockstar_id(uint64_t rid)
 	{
 		rage::rlGamerHandle player_handle(rid);

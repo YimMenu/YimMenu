@@ -655,6 +655,15 @@ namespace big
                 g_pointers->m_gta.m_add_friend_by_gamer_handle = ptr.as<functions::add_friend_by_gamer_handle>();
             }
         },
+        // Show Profile By Gamer Handle
+        {
+            "SPBGH",
+            "E8 ? ? ? ? E9 ? ? ? ? 3D ? ? ? ? 75 ? E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_show_profile_by_gamer_handle = ptr.add(1).rip().as<functions::show_profile_by_gamer_handle>();
+            }
+        },
         // Network Config
         {
             "NC",

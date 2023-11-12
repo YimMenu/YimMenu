@@ -41,6 +41,9 @@ namespace big
 
 		STREAMING::SET_FOCUS_ENTITY(target);
 
+		if (g.player.override_cam_distance)
+			CAM::SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE(1.f, (float)g.player.cam_distance);
+
 		bReset = false;
 	}
 }

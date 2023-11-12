@@ -7,6 +7,14 @@ namespace big
 	{
 		ImGui::Checkbox("SPECTATE"_T.data(), &g.player.spectating);
 
+		if (g.player.spectating)
+		{
+			ImGui::Checkbox("OVERRIDE_SPECTATE_CAM_DISTANCE"_T.data(), &g.player.override_cam_distance);
+
+			if (g.player.override_cam_distance)
+				ImGui::SliderInt("OVERRIDE_SPECTATE_CAM_DISTANCE_INT"_T.data(), &g.player.cam_distance, 1, 200);
+		}
+
 		if (g_player_service->get_selected()->is_valid())
 		{
 			player_ptr current_player     = g_player_service->get_selected();
