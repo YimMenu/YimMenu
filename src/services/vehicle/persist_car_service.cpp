@@ -112,6 +112,13 @@ namespace big
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
+
+		if (!vehicle_json[tire_can_burst].is_null())
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, vehicle_json[tire_can_burst]);
+
+		if (!vehicle_json[drift_tires].is_null())
+			VEHICLE::SET_DRIFT_TYRES(vehicle, vehicle_json[drift_tires]);
+
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, vehicle_json[primary_color_key], vehicle_json[secondary_color_key]);
 
 		if (!vehicle_json[custom_primary_color_key].is_null())
@@ -229,11 +236,11 @@ namespace big
 		bool has_collision                  = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
 		bool is_visible                     = ENTITY::IS_ENTITY_VISIBLE(vehicle);
 		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
-		bool is_invincible                  = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
 		vehicle_json[has_collision_key]     = !has_collision;
 		vehicle_json[is_visible_key]        = is_visible;
-		vehicle_json[is_invincible_key]     = is_invincible;
 		vehicle_json[wheel_color_key]       = wheel_color;
+		vehicle_json[tire_can_burst]        = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
+		vehicle_json[drift_tires]           = VEHICLE::GET_DRIFT_TYRES_SET(vehicle);
 
 		std::map<int, bool> vehicle_extras;
 		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)
