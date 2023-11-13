@@ -182,7 +182,6 @@ namespace big
 
 	static inline void render_fun_feats()
 	{
-		static bool is_veh_checked;
 		static eVehicleLockState door_locked_state;
 		static bool veh_all_door_open     = false;
 		static const char* selected_radio = "OFF";
@@ -190,12 +189,13 @@ namespace big
 		static bool force_lowrider;
 		static float maxWheelRaiseFactor = 2;
 		static bool indicator_left, indicator_right;
+		static Vehicle current_veh;
 
 		if (self::last_veh)
 		{
-			if (!is_veh_checked)
+			if (current_veh != self::last_veh)
 			{
-				is_veh_checked = true;
+				current_veh = self::last_veh;
 				g_fiber_pool->queue_job([] {
 					std::map<int, bool> tmp_seats;
 
@@ -223,13 +223,13 @@ namespace big
 						if (!it.second)
 							ImGui::BeginDisabled();
 
-						bool& is_veh_checked_ref = is_veh_checked; // Helper reference
+						Vehicle& current_veh_ref = current_veh; // Helper reference
 
-						components::button(idx >= 0 ? ("S_" + std::to_string(idx + 1)) : "S_0", [idx, &is_veh_checked_ref] {
+						components::button(idx >= 0 ? ("S_" + std::to_string(idx + 1)) : "S_0", [idx, &current_veh_ref] {
 							if (VEHICLE::IS_VEHICLE_SEAT_FREE(self::last_veh, idx, true))
 								PED::SET_PED_INTO_VEHICLE(self::ped, self::last_veh, idx);
 
-							is_veh_checked_ref = false; // recheck available seats
+							current_veh_ref = 0; // recheck available seats
 						});
 
 						if (!it.second)
@@ -458,9 +458,10 @@ namespace big
 		else
 		{
 			components::small_text("Please sit in a vehicle");
-			if (is_veh_checked)
+			if (current_veh)
 			{
-				force_lowrider = is_veh_checked = false;
+				current_veh    = 0;
+				force_lowrider = false;
 				seats.clear();
 			}
 		}

@@ -35,6 +35,9 @@ namespace big::vehicle
 
 	inline bool eject_player(Vehicle veh, int seatIndex)
 	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+			return false;
+
 		if (auto player = ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(veh, seatIndex, 0)))
 		{
 			dynamic_cast<player_command*>(command::get(rage::consteval_joaat("vehkick")))->call(player, {});

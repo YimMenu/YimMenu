@@ -45,7 +45,7 @@ namespace big
 
 		ImGui::SeparatorText("Entities");
 		{
-			static bool included_entity_types[2];
+			static bool included_entity_types[3];
 			static bool deleting, force;
 			static int quantity, remaining;
 
@@ -53,10 +53,12 @@ namespace big
 			ImGui::Checkbox("Peds", &included_entity_types[0]);
 			ImGui::SameLine();
 			ImGui::Checkbox("Props", &included_entity_types[1]);
+			ImGui::SameLine();
+			ImGui::Checkbox("Vehicles", &included_entity_types[2]);
 			ImGui::Spacing();
 			ImGui::Checkbox("Force", &force);
 			ImGui::Spacing();
-			
+
 			if (deleting)
 			{
 				float progress = 1 - static_cast<float>(remaining) / quantity;
@@ -65,7 +67,7 @@ namespace big
 			else
 			{
 				components::button("Delete all", [&] {
-					auto list = entity::get_entities(false, included_entity_types[0], included_entity_types[1]);
+					auto list = entity::get_entities(included_entity_types[2], included_entity_types[0], included_entity_types[1]);
 					remaining = quantity = list.size();
 
 					g_notification_service->push("Entity Deletion", std::format("Deleting {} entities", quantity));
@@ -87,7 +89,7 @@ namespace big
 								switch (ptr->m_entity_type)
 								{
 								case 4: g_pointers->m_gta.m_delete_ped(reinterpret_cast<CPed*>(ptr)); break;
-								// case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
+								case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
 								case 5:
 									g_pointers->m_gta.m_delete_object(reinterpret_cast<CObject*>(ptr), false);
 									break;

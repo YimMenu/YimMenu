@@ -10,9 +10,9 @@ namespace big
 {
 	void render_spawn_new_vehicle(bool spawn_at_waypoint)
 	{
-		components::command_checkbox<"spawnin">();
+		ImGui::Checkbox("Spawn Inside", &g_spawn_vehicle.spawn_inside);
 		ImGui::SameLine();
-		components::command_checkbox<"spawnmaxed">();
+		ImGui::Checkbox("Spawn Maxed", &g_spawn_vehicle.spawn_maxed);
 
 		static int selected_class = -1;
 		const auto& class_arr     = g_gta_data_service->vehicle_classes();
