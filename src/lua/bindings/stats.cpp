@@ -277,6 +277,8 @@ namespace lua::stats
 	{
 		auto ns = state["stats"].get_or_create<sol::table>();
 
+		ns["get_character_index"] = get_character_index;
+
 		ns["get_bool"]        = sol::overload(get_bool_hash, get_bool_name);
 		ns["get_bool_masked"] = sol::overload(get_bool_masked_hash, get_bool_masked_name);
 		ns["get_float"]       = sol::overload(get_float_hash, get_float_name);
