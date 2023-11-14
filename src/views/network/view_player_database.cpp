@@ -208,8 +208,20 @@ namespace big
 					session::join_by_rockstar_id(current_player->rockstar_id);
 				});
 
+				ImGui::SameLine();
+
 				components::button("INVITE_PLAYER"_T, [] {
 					session::invite_by_rockstar_id(current_player->rockstar_id);
+				});
+
+				components::button("VIEW_PLAYER_INFO_SC_PROFILE"_T, [] {
+					session::show_profile_by_rockstar_id(current_player->rockstar_id);
+				});
+
+				ImGui::SameLine();
+
+				components::button("SEND_FRIEND_REQUEST"_T, [] {
+					session::add_friend_by_rockstar_id(current_player->rockstar_id);
 				});
 
 				static char message[256];

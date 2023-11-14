@@ -646,6 +646,24 @@ namespace big
                 g_pointers->m_gta.m_invite_player_by_gamer_handle = ptr.add(1).rip().as<functions::invite_player_by_gamer_handle>();
             }
         },
+        // Add Friend By Gamer Handle
+        {
+            "AFBGH",
+            "48 89 5C 24 ? 57 48 83 EC ? 48 8B F9 B1 ? 48 8B DA E8 ? ? ? ? 84 C0 74 ? 8B 15",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_add_friend_by_gamer_handle = ptr.as<functions::add_friend_by_gamer_handle>();
+            }
+        },
+        // Show Profile By Gamer Handle
+        {
+            "SPBGH",
+            "E8 ? ? ? ? E9 ? ? ? ? 3D ? ? ? ? 75 ? E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_show_profile_by_gamer_handle = ptr.add(1).rip().as<functions::show_profile_by_gamer_handle>();
+            }
+        },
         // Network Config
         {
             "NC",

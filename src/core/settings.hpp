@@ -227,9 +227,11 @@ namespace big
 
 		struct player
 		{
-			bool spectating    = false;
+			bool spectating            = false;
+			bool override_cam_distance = false;
+			int cam_distance           = 10;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating, override_cam_distance, cam_distance)
 		} player{};
 
 		struct player_db
