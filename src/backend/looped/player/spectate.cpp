@@ -1,3 +1,5 @@
+#include "backend/bool_command.hpp"
+#include "backend/int_command.hpp"
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "services/players/player_service.hpp"
@@ -46,4 +48,7 @@ namespace big
 
 		bReset = false;
 	}
+
+	bool_command g_override_cam_distance("overridecamdistance", "BACKEND_LOOPED_PLAYER_OVERRIDE_CAM_DISTANCE", "BACKEND_LOOPED_PLAYER_OVERRIDE_CAM_DISTANCE_DESC", g.player.override_cam_distance);
+	int_command g_override_cam_distance_int("overridecamdistanceint", "BACKEND_LOOPED_PLAYER_OVERRIDE_CAM_DISTANCE_INT", "BACKEND_LOOPED_PLAYER_OVERRIDE_CAM_DISTANCE_INT_DESC", g.player.cam_distance, 1, 200);
 }
