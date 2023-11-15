@@ -206,9 +206,7 @@ namespace big
 
 			auto local_thread = gta_util::find_script_thread(rage::joaat(local_test.script_name));
 
-			bool does_thread_exist = local_thread != nullptr;
-
-			if (!does_thread_exist)
+			if (local_thread == nullptr)
 				ImGui::Text("VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
 
 			ImGui::PushItemWidth(200.f);
@@ -261,7 +259,7 @@ namespace big
 					}
 					case LocalValueType::BOOLEAN:
 					{
-					    bool is_local_enabled = (*ptr == TRUE);
+						bool is_local_enabled = (*ptr == TRUE);
 						if (ImGui::Checkbox("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), &is_local_enabled))
 						{
 							*ptr = is_local_enabled;
