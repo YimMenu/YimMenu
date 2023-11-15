@@ -120,6 +120,8 @@ namespace big::functions
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
 	using invite_player_by_gamer_handle = bool(*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+	using add_friend_by_gamer_handle	= void(*)(rage::rlGamerHandle* handle, const char* unk);
+	using show_profile_by_gamer_handle	= void(*)(rage::rlGamerHandle* handle);
 
 	using generate_uuid = bool (*)(uint64_t* uuid);
 
