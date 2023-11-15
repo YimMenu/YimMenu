@@ -29,7 +29,7 @@ namespace big
 		file_stream.close();
 	}
 
-	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
+	nlohmann::json persist_car_service::load_vehicle_json(std::string_view file_name, std::string folder_name)
 	{
 		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
 
@@ -48,6 +48,12 @@ namespace big
 			return NULL;
 		}
 
+		return vehicle_json;
+	}
+
+	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
+	{
+		nlohmann::json vehicle_json = load_vehicle_json(file_name, folder_name);
 		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
 	}
 
@@ -90,27 +96,17 @@ namespace big
 		return spawn_vehicle_full(get_vehicle_json(vehicle), ped);
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
-	{
-		const auto vehicle  = spawn_vehicle_json(vehicle_json, ped, spawn_coords);
-		const auto rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 2);
-		ENTITY::SET_ENTITY_ROTATION(vehicle, rotation.x, 0, rotation.z, 2, true);
-		return vehicle;
-	}
-
-	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
+	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords, float spawn_heading, bool is_networked)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
 		Vector3 spawn_location =
 		    spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g_persist_car.spawn_inside, vehicle_hash);
-		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
+		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading || ENTITY::GET_ENTITY_HEADING(self::ped), is_networked);
 
-		if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
-			script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
+		const auto rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 2);
+		ENTITY::SET_ENTITY_ROTATION(vehicle, rotation.x, 0, rotation.z, 2, true);
 
-		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
 
 		if (!vehicle_json[tire_can_burst].is_null())
@@ -134,21 +130,16 @@ namespace big
 		}
 
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, vehicle_json[vehicle_window_tint_key]);
-
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, vehicle_json[plate_text_key].get<std::string>().c_str());
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, vehicle_json[plate_text_index_key]);
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, vehicle_json[pearlescent_color_key], vehicle_json[wheel_color_key]);
 
 		std::map<int, bool> vehicle_extras = vehicle_json[vehicle_extras_key];
 		for (const auto& [extra, extra_enabled] : vehicle_extras)
-		{
 			VEHICLE::SET_VEHICLE_EXTRA(vehicle, extra, extra_enabled);
-		}
 
 		if (!vehicle_json[vehicle_livery_key].is_null())
-		{
 			VEHICLE::SET_VEHICLE_LIVERY(vehicle, vehicle_json[vehicle_livery_key]);
-		}
 
 		if (VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(vehicle)) || VEHICLE::IS_THIS_MODEL_A_BIKE(ENTITY::GET_ENTITY_MODEL(vehicle)))
 		{
@@ -170,30 +161,19 @@ namespace big
 						VEHICLE::SET_VEHICLE_MOD(vehicle, i, mod[0], mod[1]);
 					}
 					else
-					{
 						VEHICLE::TOGGLE_VEHICLE_MOD(vehicle, i, true);
-					}
 				}
 			}
+
 			std::vector<bool> neon_lights = vehicle_json[neon_lights_key];
 			for (int i = NEON_LEFT; i <= NEON_BACK; i++)
 				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, i, neon_lights[i]);
+
 			std::vector<int> neon_color = vehicle_json[neon_color_key];
 			VEHICLE::SET_VEHICLE_NEON_COLOUR(vehicle, neon_color[0], neon_color[1], neon_color[2]);
 
-			if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(vehicle, 0))
-			{
-				int convertable_state = vehicle_json[convertable_state_key];
-				if (convertable_state == 0 || convertable_state == 3 || convertable_state == 5)
-					VEHICLE::RAISE_CONVERTIBLE_ROOF(vehicle, true);
-				else
-					VEHICLE::LOWER_CONVERTIBLE_ROOF(vehicle, true);
-			}
-
 			VEHICLE::SET_VEHICLE_EXTRA_COLOUR_5(vehicle, vehicle_json[interior_color_key]);
-
 			VEHICLE::SET_VEHICLE_EXTRA_COLOUR_6(vehicle, vehicle_json[dash_color_key]);
-
 			VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, vehicle_json[headlight_color_key]);
 		}
 
@@ -210,6 +190,7 @@ namespace big
 		VEHICLE::GET_VEHICLE_COLOURS(vehicle, &primary_color, &secondary_color);
 		vehicle_json[primary_color_key]   = primary_color;
 		vehicle_json[secondary_color_key] = secondary_color;
+
 		if (VEHICLE::GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM(vehicle))
 		{
 			int custom_primary_color[3]{};
@@ -233,30 +214,19 @@ namespace big
 		VEHICLE::GET_VEHICLE_EXTRA_COLOURS(vehicle, &pearlescent_color, &wheel_color);
 
 		vehicle_json[pearlescent_color_key] = pearlescent_color;
-		bool has_collision                  = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
-		bool is_visible                     = ENTITY::IS_ENTITY_VISIBLE(vehicle);
 		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
-		vehicle_json[has_collision_key]     = !has_collision;
-		vehicle_json[is_visible_key]        = is_visible;
 		vehicle_json[wheel_color_key]       = wheel_color;
 		vehicle_json[tire_can_burst]        = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
 		vehicle_json[drift_tires]           = VEHICLE::GET_DRIFT_TYRES_SET(vehicle);
 
 		std::map<int, bool> vehicle_extras;
 		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)
-		{
 			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, extra_iterator))
-			{
 				vehicle_extras[extra_iterator] = !VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, extra_iterator);
-			}
-		}
-
 		vehicle_json[vehicle_extras_key] = vehicle_extras;
 
 		if ((VEHICLE::GET_VEHICLE_LIVERY_COUNT(vehicle) > 1) && VEHICLE::GET_VEHICLE_LIVERY(vehicle) >= 0)
-		{
 			vehicle_json[vehicle_livery_key] = VEHICLE::GET_VEHICLE_LIVERY(vehicle);
-		}
 
 		if (VEHICLE::IS_THIS_MODEL_A_CAR(ENTITY::GET_ENTITY_MODEL(vehicle)) || VEHICLE::IS_THIS_MODEL_A_BIKE(ENTITY::GET_ENTITY_MODEL(vehicle)))
 		{
@@ -291,9 +261,6 @@ namespace big
 			VEHICLE::GET_VEHICLE_NEON_COLOUR(vehicle, &neon_color[0], &neon_color[1], &neon_color[2]);
 			vehicle_json[neon_color_key]  = neon_color;
 			vehicle_json[neon_lights_key] = neon_lights;
-
-			if (VEHICLE::IS_VEHICLE_A_CONVERTIBLE(vehicle, 0))
-				vehicle_json[convertable_state_key] = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(vehicle);
 
 			int interior_color, dashboard_color;
 			VEHICLE::GET_VEHICLE_EXTRA_COLOUR_5(vehicle, &interior_color);

@@ -1,12 +1,11 @@
 #include "pointers.hpp"
-#include "services/api/api_service.hpp"
 #include "services/bad_players/bad_players.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "thread_pool.hpp"
 #include "util/strings.hpp"
 #include "views/view.hpp"
 
-inline std::map<uint64_t, bad_players_nm::bad_player> filter_blocked_list(const std::map<uint64_t, bad_players_nm::bad_player>& inputMap, const std::string& searchString)
+inline std::map<uint64_t, bad_players_nm::bad_player> filter_bad_players(const std::map<uint64_t, bad_players_nm::bad_player>& inputMap, const std::string& searchString)
 {
 	std::map<uint64_t, bad_players_nm::bad_player> filteredMap;
 	std::string lowercaseSearchString = toLowercase(searchString);
@@ -82,7 +81,7 @@ namespace big
 				if (searched_blocked_players.size())
 					temp_objs = searched_blocked_players;
 				else if (search_blocked_player_name.length() > 0)
-					temp_objs = searched_blocked_players = filter_blocked_list(bad_players_nm::bad_players_list, search_blocked_player_name);
+					temp_objs = searched_blocked_players = filter_bad_players(bad_players_nm::bad_players_list, search_blocked_player_name);
 
 				for (auto& pair : (search_blocked_player_name.length() > 0 ? temp_objs : bad_players_nm::bad_players_list))
 					if (pair.second.block_join && ImGui::Selectable(pair.second.name.c_str(), selected_id && selected_id == pair.first))

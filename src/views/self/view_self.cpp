@@ -4,6 +4,7 @@
 #include "core/settings/self.hpp"
 #include "gta_util.hpp"
 #include "natives.hpp"
+#include "services/vehicle_preview/vehicle_preview.hpp"
 #include "util/pools.hpp"
 #include "views/view.hpp"
 
@@ -53,6 +54,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 		{
+			ImGui::BeginDisabled(g_enable_vehicle_preview);
 			components::command_checkbox<"freecam">();
 
 			components::command_checkbox<"noclip">();
@@ -100,6 +102,7 @@ namespace big
 						g_context_menu.bounding_box_color = ImGui::ColorConvertFloat4ToU32(bounding_box_color);
 				}
 			});
+			ImGui::EndDisabled();
 		}
 		ImGui::EndGroup();
 	}

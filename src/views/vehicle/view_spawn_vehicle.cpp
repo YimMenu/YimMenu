@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/notifications/notification_service.hpp"
+#include "services/vehicle_preview/vehicle_preview.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
@@ -114,9 +115,15 @@ namespace big
 								vehicle::teleport_into_vehicle(veh);
 						}
 
+						g_vehicle_preview.clear();
 						ENTITY::SET_ENTITY_AS_NO_LONGER_NEEDED(&veh);
 					});
 					ImGui::PopID();
+
+					if (g_vehicle_preview.is_camera_prepared && !ImGui::IsAnyItemHovered())
+						g_vehicle_preview.clear();
+					else if (g_enable_vehicle_preview && ImGui::IsItemHovered())
+						g_vehicle_preview.preview_veh(vehicle.m_hash);
 				}
 			}
 			else
@@ -139,6 +146,10 @@ namespace big
 		ImGui::RadioButton("Persistent", &spawn_vehicle_type, 2);
 		ImGui::Spacing();
 		ImGui::Checkbox("Spawn at waypoint", &spawn_at_waypoint);
+		ImGui::Spacing();
+		if (ImGui::Checkbox("Preview", &g_enable_vehicle_preview))
+			if (!g_enable_vehicle_preview)
+				g_vehicle_preview.clear();
 
 		switch (spawn_vehicle_type)
 		{

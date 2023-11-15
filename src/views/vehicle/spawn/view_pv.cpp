@@ -5,6 +5,7 @@
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/mobile/mobile_service.hpp"
 #include "services/notifications/notification_service.hpp"
+#include "services/vehicle_preview/vehicle_preview.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
@@ -168,8 +169,15 @@ namespace big
 								strcpy(search, "");
 								personal_veh->summon();
 							}
+
+							g_vehicle_preview.clear();
 						});
 						ImGui::PopID();
+
+						if (g_vehicle_preview.is_camera_prepared && !ImGui::IsAnyItemHovered())
+							g_vehicle_preview.clear();
+						else if (g_enable_vehicle_preview && ImGui::IsItemHovered())
+							g_vehicle_preview.preview_personal_veh(vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()));
 					}
 				}
 			}

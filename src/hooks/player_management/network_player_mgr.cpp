@@ -1,6 +1,7 @@
 #include "core/data/network.hpp"
 #include "hooking.hpp"
 #include "services/players/player_service.hpp"
+#include "services/vehicle_preview/vehicle_preview.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>
 
@@ -20,6 +21,12 @@ namespace big
 		g_player_service->do_cleanup();
 		self::spawned_vehicles.clear();
 		g_network.auto_kick_host_when_attacked = false;
+
+		if (g_enable_vehicle_preview)
+		{
+			g_enable_vehicle_preview = false;
+			g_vehicle_preview.reset();
+		}
 
 		g_hooking->get_original<hooks::network_player_mgr_shutdown>()(_this);
 	}

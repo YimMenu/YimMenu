@@ -19,7 +19,6 @@ namespace big
 	static inline void render_rid_joiner()
 	{
 		static uint64_t rid = 0;
-		static char username[20];
 		static char base64[500]{};
 
 		ImGui::BeginGroup();
@@ -39,28 +38,6 @@ namespace big
 				components::button("Invite##RID", [] {
 					session::invite_by_rockstar_id(rid);
 				});
-			}
-			components::input_text_with_hint("##usernameinput", "Input Username", username, sizeof(username));
-			ImGui::SameLine();
-			if (components::button("Join##Username"))
-				session::join_by_username(username);
-			if (*g_pointers->m_gta.m_is_session_started)
-			{
-				ImGui::SameLine();
-				if (components::button("Invite##Username"))
-					g_thread_pool->push([] {
-						uint64_t rockstar_id;
-
-						if (!g_api_service->get_rid_from_username(username, rockstar_id))
-							g_notification_service->push_error("Player Invite", "User could not be found.");
-						else
-						{
-							rid = rockstar_id;
-							g_fiber_pool->queue_job([rockstar_id] {
-								session::invite_by_rockstar_id(rockstar_id);
-							});
-						}
-					});
 			}
 
 			components::input_text_with_hint("##sessioninfoinput", "Session Info", base64, sizeof(base64));

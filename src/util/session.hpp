@@ -10,7 +10,6 @@
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "script.hpp"
 #include "script_function.hpp"
-#include "services/api/api_service.hpp"
 #include "services/notifications/notification_service.hpp"
 #include "thread_pool.hpp"
 #include "util/misc.hpp"
@@ -127,21 +126,6 @@ namespace big::session
 		}
 
 		g_notification_service->push_error("RID Joiner", "Target player is offline?");
-	}
-
-	inline void join_by_username(std::string username)
-	{
-		g_thread_pool->push([username] {
-			uint64_t rid;
-			if (g_api_service->get_rid_from_username(username, rid))
-			{
-				g_fiber_pool->queue_job([rid] {
-					join_by_rockstar_id(rid);
-				});
-				return;
-			}
-			g_notification_service->push_error("RID Joiner", "Target player is offline?");
-		});
 	}
 
 	inline void invite_by_rockstar_id(uint64_t rid)

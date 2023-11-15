@@ -2,6 +2,7 @@
 #include "core/data/persist_car.hpp"
 #include "fiber_pool.hpp"
 #include "services/vehicle/persist_car_service.hpp"
+#include "services/vehicle_preview/vehicle_preview.hpp"
 #include "util/strings.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
@@ -49,7 +50,7 @@ namespace big
 
 			if (!self::veh)
 				return g_notification_service->push_warning("Persist Car", "You must be in a vehicle. Please enter a vehicle before using load.");
-			
+
 			save_vehicle(vehicle_file_name_input, save_folder);
 		});
 		ImGui::SameLine();
@@ -136,15 +137,23 @@ namespace big
 				std::transform(pair_lower.begin(), pair_lower.end(), pair_lower.begin(), tolower);
 				if (pair_lower.contains(lower_search))
 				{
-					if (ImGui::Selectable(pair.c_str(), selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
+					auto file_name = pair.c_str();
+					if (ImGui::Selectable(file_name, selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
 					{
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([spawn_at_waypoint] {
 							load_vehicle(selected_vehicle_file, spawn_at_waypoint);
 						});
+						g_vehicle_preview.clear();
 					}
+
+					if (g_vehicle_preview.is_camera_prepared && !ImGui::IsAnyItemHovered())
+						g_vehicle_preview.clear();
+					else if (g_enable_vehicle_preview && ImGui::IsItemHovered())
+						g_vehicle_preview.preview_persisted_veh(pair, persist_vehicle_sub_folder);
+
 					ImGui::SameLine();
-					ImGui::PushID(pair.c_str());
+					ImGui::PushID(file_name);
 					if (ImGui::SmallButton("X"))
 						file_name_to_delete = pair;
 					ImGui::PopID();

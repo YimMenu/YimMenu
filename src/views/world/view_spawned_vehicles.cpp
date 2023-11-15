@@ -8,7 +8,6 @@ namespace big
 {
 	struct veh_details
 	{
-		int net_id;
 		Vehicle veh;
 		const char* player_name;
 		const char* veh_name;
@@ -27,9 +26,9 @@ namespace big
 			g_fiber_pool->queue_job([] {
 				std::vector<veh_details> temp_vehs;
 
-				for (auto& [net_id, veh] : self::spawned_vehicles)
+				for (auto& [_, veh] : self::spawned_vehicles)
 				{
-					veh_details details = {net_id, veh, "[]", "[DEAD]"};
+					veh_details details = {veh, "[]", "[DEAD]"};
 					if (ENTITY::DOES_ENTITY_EXIST(veh) && !ENTITY::IS_ENTITY_DEAD(veh, 0))
 					{
 						details.veh_name = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh));
@@ -76,7 +75,6 @@ namespace big
 			components::button("Delete", [spawned_veh] {
 				auto ent = static_cast<Entity>(spawned_veh.veh);
 				entity::delete_entity(ent);
-				self::spawned_vehicles.erase(spawned_veh.net_id);
 			});
 			ImGui::Spacing();
 			ImGui::PopID();

@@ -107,12 +107,15 @@ namespace big::vehicle
 
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
-		auto net_id = NETWORK::VEH_TO_NET(veh);
+		if (is_networked)
+		{
+			auto net_id = NETWORK::VEH_TO_NET(veh);
 
-		self::spawned_vehicles[net_id] = veh;
+			self::spawned_vehicles[net_id] = veh;
 
-		if (*g_pointers->m_gta.m_is_session_started)
-			set_mp_bitset(veh, net_id);
+			if (*g_pointers->m_gta.m_is_session_started)
+				set_mp_bitset(veh, net_id);
+		}
 
 		return veh;
 	}

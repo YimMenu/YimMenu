@@ -9,7 +9,6 @@
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
-#include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -88,7 +87,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto gui_service_instance               = std::make_unique<gui_service>();
 			    auto script_patcher_service_instance    = std::make_unique<script_patcher_service>();
 			    auto matchmaking_service_instance       = std::make_unique<matchmaking_service>();
-			    auto api_service_instance               = std::make_unique<api_service>();
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    LOG(INFO) << "Registered service instances...";
 
@@ -134,8 +132,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Tunables Service reset.";
 			    matchmaking_service_instance.reset();
 			    LOG(INFO) << "Matchmaking Service reset.";
-			    api_service_instance.reset();
-			    LOG(INFO) << "API Service reset.";
 			    script_patcher_service_instance.reset();
 			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();
