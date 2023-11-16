@@ -370,13 +370,13 @@ namespace big
 				if ((action >= 15 && action <= 18) || action == 33)
 				{
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-					notify::crash_blocked(source_player, "vehicle temp action");
+					notify::crash_blocked(plyr, "vehicle temp action");
 					return;
 				}
 			}
 			else if (type > ScriptEntityChangeType::SetVehicleExclusiveDriver || type < ScriptEntityChangeType::BlockingOfNonTemporaryEvents)
 			{
-				notify::crash_blocked(source_player, "invalid script entity change type");
+				notify::crash_blocked(plyr, "invalid script entity change type");
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -448,8 +448,7 @@ namespace big
 		// player sending this event is a modder
 		case eNetworkEvents::REPORT_MYSELF_EVENT:
 		{
-			if (auto plyr = g_player_service->get_by_id(source_player->m_player_id))
-				g_reactions.game_anti_cheat_modder_detection.process(plyr, false, Infraction::TRIGGERED_ANTICHEAT, true);
+			g_reactions.game_anti_cheat_modder_detection.process(plyr, false, Infraction::TRIGGERED_ANTICHEAT, true);
 			break;
 		}
 		case eNetworkEvents::REQUEST_CONTROL_EVENT:
@@ -495,7 +494,7 @@ namespace big
 
 				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
 				{
-					notify::crash_blocked(source_player, "rope");
+					notify::crash_blocked(plyr, "rope");
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -508,14 +507,14 @@ namespace big
 
 				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
-					notify::crash_blocked(source_player, "pop group override");
+					notify::crash_blocked(plyr, "pop group override");
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
 			}
 			else if (type > WorldStateDataType::VehiclePlayerLocking || type < WorldStateDataType::CarGen)
 			{
-				notify::crash_blocked(source_player, "invalid world state type");
+				notify::crash_blocked(plyr, "invalid world state type");
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -530,7 +529,7 @@ namespace big
 
 			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
 			{
-				notify::crash_blocked(source_player, "remove unarmed");
+				notify::crash_blocked(plyr, "remove unarmed");
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -579,7 +578,7 @@ namespace big
 
 				if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN)
 				{
-					notify::crash_blocked(source_player, "out of bounds give control type");
+					notify::crash_blocked(plyr, "out of bounds give control type");
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}
@@ -601,9 +600,8 @@ namespace big
 			if (plyr && plyr->m_play_sound_rate_limit.process())
 			{
 				if (plyr->m_play_sound_rate_limit.exceeded_last_process())
-				{
-					notify::crash_blocked(source_player, "sound spam");
-				}
+					g_reactions.sound_spam.process(plyr, false, Infraction::NONE, false);
+
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}

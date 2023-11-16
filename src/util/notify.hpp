@@ -52,11 +52,9 @@ namespace big::notify
 	}
 
 
-	inline void crash_blocked(CNetGamePlayer* player, const char* crash_detail)
+	inline void crash_blocked(player_ptr plyr, const char* crash_detail)
 	{
-		player_ptr plyr;
-
-		if (player && (plyr = g_player_service->get_by_id(player->m_player_id)))
+		if (plyr)
 		{
 			reaction crash{"Crash", std::format("X: Blocked {} crash from {}", crash_detail, plyr->get_name()).c_str()};
 			crash.process(plyr, false, Infraction::TRIED_CRASH_PLAYER, true);

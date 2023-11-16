@@ -22,7 +22,8 @@ namespace big
 		if (object->m_entity && object->m_entity->m_entity_type != 5)
 		{
 			g_pointers->m_gta.m_remove_reference(object->m_entity, &object->m_entity);
-			notify::crash_blocked(m_syncing_player, "invalid parachute object type");
+			if (auto plyr = g_player_service->get_by_id(m_syncing_player->m_player_id))
+				notify::crash_blocked(plyr, "invalid parachute object type");
 			object->m_entity = nullptr;
 			object->m_net_id = 0;
 		}

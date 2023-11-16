@@ -1194,7 +1194,7 @@ namespace big
 				const auto creation_node = (CVehicleCreationDataNode*)(node);
 				if (protection::is_crash_vehicle(creation_node->m_model))
 				{
-					notify::crash_blocked(sender, "invalid vehicle model");
+					notify::crash_blocked(sender_plyr, "invalid vehicle model");
 					return true;
 				}
 
@@ -1202,7 +1202,7 @@ namespace big
 				{
 					if (vehicle_type_to_object_type(info->m_vehicle_type) != m_syncing_object_type)
 					{
-						notify::crash_blocked(sender, "vehicle model mismatch");
+						notify::crash_blocked(sender_plyr, "vehicle model mismatch");
 						return true;
 					}
 				}
@@ -1216,7 +1216,7 @@ namespace big
 				const auto creation_node = (CDoorCreationDataNode*)(node);
 				if (protection::is_crash_object(creation_node->m_model))
 				{
-					notify::crash_blocked(sender, "invalid door model");
+					notify::crash_blocked(sender_plyr, "invalid door model");
 					return true;
 				}
 				break;
@@ -1226,7 +1226,7 @@ namespace big
 				const auto creation_node = (CPickupCreationDataNode*)(node);
 				if (creation_node->m_custom_model && protection::is_crash_object(creation_node->m_custom_model))
 				{
-					notify::crash_blocked(sender, "invalid pickup model");
+					notify::crash_blocked(sender_plyr, "invalid pickup model");
 					return true;
 				}
 
@@ -1235,7 +1235,7 @@ namespace big
 					uint64_t buffer[20]{};
 					if (!WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(creation_node->m_weapon_component[i], (Any*)buffer)) // trying to save a pointer here
 					{
-						notify::crash_blocked(sender, "invalid pickup weapon component hash");
+						notify::crash_blocked(sender_plyr, "invalid pickup weapon component hash");
 						return true;
 					}
 				}
@@ -1252,7 +1252,7 @@ namespace big
 				            attach_node->m_attach_bone,
 				            attach_node->m_other_attach_bone)))
 				{
-					notify::crash_blocked(sender, "infinite physical attachment");
+					notify::crash_blocked(sender_plyr, "infinite physical attachment");
 					return true;
 				}
 
@@ -1265,7 +1265,7 @@ namespace big
 						{
 							if (entity->m_entity_type != 3)
 							{
-								notify::crash_blocked(sender, "invalid attachment");
+								notify::crash_blocked(sender_plyr, "invalid attachment");
 								return true;
 							}
 						}
@@ -1279,12 +1279,12 @@ namespace big
 				const auto creation_node = (CPedCreationDataNode*)(node);
 				if (protection::is_crash_ped(creation_node->m_model))
 				{
-					notify::crash_blocked(sender, "invalid ped model");
+					notify::crash_blocked(sender_plyr, "invalid ped model");
 					return true;
 				}
 				else if (creation_node->m_has_prop && protection::is_crash_object(creation_node->m_prop_model))
 				{
-					notify::crash_blocked(sender, "invalid ped prop model");
+					notify::crash_blocked(sender_plyr, "invalid ped prop model");
 					return true;
 				}
 				break;
@@ -1301,7 +1301,7 @@ namespace big
 				{
 					if (auto game_object = (CPed*)object->GetGameObject())
 						if (!game_object->m_player_info)
-							notify::crash_blocked(sender, "infinite ped attachment"); // parachute false positives
+							notify::crash_blocked(sender_plyr, "infinite ped attachment"); // parachute false positives
 
 					return true;
 				}
@@ -1313,7 +1313,7 @@ namespace big
 				const auto creation_node = (CObjectCreationDataNode*)(node);
 				if (protection::is_crash_object(creation_node->m_model))
 				{
-					notify::crash_blocked(sender, "invalid object model");
+					notify::crash_blocked(sender_plyr, "invalid object model");
 					return true;
 				}
 				break;
@@ -1323,7 +1323,7 @@ namespace big
 				const auto player_appearance_node = (CPlayerAppearanceDataNode*)(node);
 				if (protection::is_crash_ped(player_appearance_node->m_model_hash))
 				{
-					notify::crash_blocked(sender, "invalid player model (appearance node)");
+					notify::crash_blocked(sender_plyr, "invalid player model (appearance node)");
 					return true;
 				}
 
@@ -1337,7 +1337,7 @@ namespace big
 				const auto player_creation_node = (CPlayerCreationDataNode*)(node);
 				if (protection::is_crash_ped(player_creation_node->m_model))
 				{
-					notify::crash_blocked(sender, "invalid player model (creation node)");
+					notify::crash_blocked(sender_plyr, "invalid player model (creation node)");
 					return true;
 				}
 				check_player_model(sender_plyr, player_creation_node->m_model);
@@ -1358,7 +1358,7 @@ namespace big
 						std::stringstream crash_reason;
 						crash_reason << "invalid sector position (sector node)"
 						             << " X: " << posX << " Y: " << posY << " player_sector_pos_x: " << player_sector_pos_x << " player_sector_pos_y: " << player_sector_pos_y;
-						notify::crash_blocked(sender, crash_reason.str().c_str());
+						notify::crash_blocked(sender_plyr, crash_reason.str().c_str());
 						return true;
 					}
 				}
@@ -1371,7 +1371,7 @@ namespace big
 				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x, game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
-						notify::crash_blocked(sender, "invalid sector position (player game state node)");
+						notify::crash_blocked(sender_plyr, "invalid sector position (player game state node)");
 
 					return true;
 				}
@@ -1445,7 +1445,7 @@ namespace big
 				int track_id          = train_node->m_track_id;
 				if (track_id != -1 && (track_id < 0 || track_id >= 12))
 				{
-					notify::crash_blocked(sender, "out of bounds train track index");
+					notify::crash_blocked(sender_plyr, "out of bounds train track index");
 					LOG(INFO) << (int)train_node->m_track_id;
 					return true;
 				}
@@ -1457,7 +1457,7 @@ namespace big
 				{
 					if ((uint32_t)train_config_index >= g_pointers->m_gta.m_train_config_array->size())
 					{
-						notify::crash_blocked(sender, "out of bounds train config index");
+						notify::crash_blocked(sender_plyr, "out of bounds train config index");
 						return true;
 					}
 
@@ -1466,7 +1466,7 @@ namespace big
 						if ((uint32_t)carriage_config_index
 						    >= (*g_pointers->m_gta.m_train_config_array)[train_config_index].m_carraige_configs.size())
 						{
-							notify::crash_blocked(sender, "out of bounds carriage config index");
+							notify::crash_blocked(sender_plyr, "out of bounds carriage config index");
 							return true;
 						}
 					}
@@ -1522,14 +1522,14 @@ namespace big
 				const auto game_state_node = (CPedGameStateDataNode*)(node);
 				if (game_state_node->m_on_mount)
 				{
-					notify::crash_blocked(sender, "mount flag");
+					notify::crash_blocked(sender_plyr, "mount flag");
 					return true;
 				}
 				for (int i = 0; i < game_state_node->m_num_equiped_gadgets; i++)
 				{
 					if (game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_parachute") && game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_nightvision"))
 					{
-						notify::crash_blocked(sender, "invalid gadget");
+						notify::crash_blocked(sender_plyr, "invalid gadget");
 						return true;
 					}
 				}
@@ -1546,7 +1546,7 @@ namespace big
 						{
 							if (model_info->m_vehicle_type != eVehicleType::VEHICLE_TYPE_SUBMARINECAR)
 							{
-								notify::crash_blocked(sender, "submarine car (sync)");
+								notify::crash_blocked(sender_plyr, "submarine car (sync)");
 								return true;
 							}
 						}
@@ -1558,7 +1558,7 @@ namespace big
 						{
 							if (model_info->m_vehicle_type != eVehicleType::VEHICLE_TYPE_SUBMARINECAR)
 							{
-								notify::crash_blocked(sender, "submarine car (creation)");
+								notify::crash_blocked(sender_plyr, "submarine car (creation)");
 								return true;
 							}
 						}
@@ -1577,7 +1577,7 @@ namespace big
 				if (is_invalid_override_pos(camera_node->m_free_cam_pos_x, camera_node->m_free_cam_pos_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
-						notify::crash_blocked(sender, "invalid sector position (camera data node)");
+						notify::crash_blocked(sender_plyr, "invalid sector position (camera data node)");
 					return true;
 				}
 
@@ -1590,7 +1590,7 @@ namespace big
 				{
 					if (gadget_node->m_gadget_data[i].m_gadget_type > 6)
 					{
-						notify::crash_blocked(sender, "out of bounds gadget type");
+						notify::crash_blocked(sender_plyr, "out of bounds gadget type");
 						return true;
 					}
 				}
@@ -1606,7 +1606,7 @@ namespace big
 					{
 						if (is_crash_ped_task((eTaskTypeIndex)task_node->m_tasks[i].m_task_type))
 						{
-							notify::crash_blocked(sender, "invalid ped task");
+							notify::crash_blocked(sender_plyr, "invalid ped task");
 							return true;
 						}
 					}
@@ -1619,7 +1619,7 @@ namespace big
 				const auto task_node = (CVehicleTaskDataNode*)(node);
 				if (is_crash_vehicle_task((eTaskTypeIndex)task_node->m_task_type))
 				{
-					notify::crash_blocked(sender, "invalid vehicle task");
+					notify::crash_blocked(sender_plyr, "invalid vehicle task");
 					return true;
 				}
 
@@ -1632,7 +1632,7 @@ namespace big
 				{
 					if (script_node->m_script_info.m_local_handle == 0)
 					{
-						notify::crash_blocked(sender, "invalid script info");
+						notify::crash_blocked(sender_plyr, "invalid script info");
 						return true;
 					}
 				}
@@ -1645,7 +1645,7 @@ namespace big
 				if (is_valid_interior_game(game_state_node->m_interior_index)
 				    && !is_valid_interior_fixed(game_state_node->m_interior_index)) // will crash
 				{
-					notify::crash_blocked(sender, "invalid interior");
+					notify::crash_blocked(sender_plyr, "invalid interior");
 					return true;
 				}
 			}
