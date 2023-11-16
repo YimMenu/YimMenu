@@ -24,14 +24,11 @@ namespace big
 
 			if (g.self.local_visibility)
 				NETWORK::SET_ENTITY_LOCALLY_VISIBLE(self::ped);
-
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = true;
 		}
 
 		virtual void on_disable() override
 		{
 			ENTITY::SET_ENTITY_VISIBLE(self::ped, true, 0);
-			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].IsInvisible = false;
 			g_script_patcher_service->update();
 		}
 	};
