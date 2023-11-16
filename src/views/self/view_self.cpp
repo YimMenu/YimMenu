@@ -34,6 +34,12 @@ namespace big
 		if (g.self.off_radar && *g_pointers->m_gta.m_is_session_started && gpbd_fm_3->Entries[self::id].BossGoon.Boss == self::id)
 			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
+		if (g.self.free_cam.enabled)
+		{
+			components::command_checkbox<"freecamweapon">();
+			ImGui::SameLine();
+
+		}
 		components::command_checkbox<"nophone">();
 		components::command_checkbox<"infoxy">();
 		components::command_checkbox<"fastrespawn">();

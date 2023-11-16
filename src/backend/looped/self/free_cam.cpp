@@ -25,6 +25,29 @@ namespace big
 			return !(g.cmd_executor.enabled || g.self.noclip);
 		}
 
+		void spawn_bullet(Vector3 start, Vector3 direction)
+		{
+			Hash weaponHash = MISC::GET_HASH_KEY("WEAPON_PISTOL"); // for test
+
+			Hash groupHash = PLAYER::GET_PLAYER_GROUP(self::ped);
+
+			Vector3 end = {start.x + direction.x * 1000.0f, start.y + direction.y * 1000.0f, start.z + direction.z * 1000.0f};
+
+			MISC::SHOOT_SINGLE_BULLET_BETWEEN_COORDS(start.x,
+			    start.y,
+			    start.z,
+			    end.x,
+			    end.y,
+			    end.z,
+			    100,  // damage
+			    true, 
+			    weaponHash,
+			    self::ped,
+			    true,
+			    false,
+			    -1.0f);
+		}
+
 		virtual void on_enable() override
 		{
 			camera = CAM::CREATE_CAM("DEFAULT_SCRIPTED_CAMERA", 0);
@@ -90,6 +113,37 @@ namespace big
 
 			rotation = CAM::GET_GAMEPLAY_CAM_ROT(2);
 			CAM::SET_CAM_ROT(camera, rotation.x, rotation.y, rotation.z, 2);
+
+			if (PAD::GET_DISABLED_CONTROL_NORMAL(0, (int)ControllerInputs::INPUT_ATTACK) && g.self.free_cam.weapon)
+			{
+
+				Vector3 camPosition = CAM::GET_CAM_COORD(camera);
+				Vector3 camRotation = CAM::GET_CAM_ROT(camera, 2);
+
+				// Convert rotation to radians
+				float pitch = math::deg_to_rad(camRotation.x);
+				float yaw   = math::deg_to_rad(camRotation.z);
+
+				// Calculate direction vector
+				Vector3 direction = {
+				    -sin(yaw) * cos(pitch), // Left/right movement
+				    cos(yaw) * cos(pitch),  // Up/down movement
+				    sin(pitch)              // Diagonal movement
+				};
+
+				// Normalize vector
+				float length = sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
+				if (length > 0.0f)
+				{
+					direction.x /= length;
+					direction.y /= length;
+					direction.z /= length;
+				}
+
+
+				spawn_bullet(position, direction);
+
+			}
 		}
 
 		virtual void on_disable() override
@@ -103,5 +157,6 @@ namespace big
 		}
 	};
 
-	free_cam g_free_cam("freecam", "FREECAM", "FREECAM_DESC", g.self.free_cam);
+	free_cam g_free_cam("freecam", "FREECAM", "FREECAM_DESC", g.self.free_cam.enabled);
+	bool_command g_free_cam_weaponn("freecamweapon", "WEAPON_IN_FREECAM", "BACKEND_LOOPED_SELF_WEAPON_IN_FREECAM_DESC", g.self.free_cam.weapon);
 }

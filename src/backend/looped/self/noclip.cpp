@@ -21,7 +21,7 @@ namespace big
 
 		inline bool can_update_location()
 		{
-			return !(g.cmd_executor.enabled || g.self.free_cam);
+			return !(g.cmd_executor.enabled || g.self.free_cam.enabled);
 		}
 
 		virtual void on_tick() override
