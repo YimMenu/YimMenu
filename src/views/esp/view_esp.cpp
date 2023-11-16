@@ -181,10 +181,9 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			for (const auto& [_, plyr] : g_player_service->players())
-			{
-				draw_player(plyr, draw_list);
-			}
+			g_player_service->iterate([draw_list](const player_entry& entry) {
+				draw_player(entry.second, draw_list);
+			});
 		}
 	}
 }
