@@ -1,237 +1,381 @@
 #include "gui/components/components.hpp"
-#include "services/locals/locals_service.hpp"
+#include "script_local.hpp"
+#include "thread_pool.hpp"
 #include "view_debug.hpp"
 #include "widgets/imgui_bitfield.hpp"
+#include "gta_util.hpp"
 
 namespace big
 {
-
-	void render_local_creator_popup_content()
+	enum LocalAppendageType : int
 	{
-		static int base_address             = 0;
-		static bool freeze                  = false;
-		static char name[200]               = "";
-		static char script_thread_name[200] = "";
-		static int offsets[10][2]           = {};
-		static int offset_count             = 0;
-		static int previous_offset_count    = 0;
-		components::input_text("NAME"_T, name, sizeof(name));
-		components::input_text("VIEW_DEBUG_LOCALS_SCRIPT_NAME"_T, script_thread_name, sizeof(script_thread_name));
-		ImGui::Text("VIEW_DEBUG_LOCALS_BASE_ADDRESS"_T.data());
-		ImGui::InputInt("##local_base_address", &base_address);
-		ImGui::Text("VIEW_DEBUG_LOCALS_OFFSET_COUNT"_T.data());
-		ImGui::InputInt("##modal_offset_count", &offset_count);
+		LocalAppendageType_At,
+		LocalAppendageType_ReadLocal,
+		LocalAppendageType_PlayerId,
+	};
 
-		offset_count = std::clamp(offset_count, 0, 10);
+	enum LocalValueType : int
+	{
+		INT,
+		BOOLEAN,
+		BITSET,
+		FLOAT,
+		VECTOR,
+		VARCHAR
+	};
 
-		ImGui::PushItemWidth(320.f);
-		for (int i = 0; i < offset_count; i++)
+	struct local_debug_inner
+	{
+		LocalAppendageType type{};
+		std::ptrdiff_t index{};
+		std::size_t size{};
+		std::string local_name{};
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(local_debug_inner, type, index, size, local_name)
+	};
+
+	struct local_debug
+	{
+		std::string script_name{};
+		std::size_t local_index{};
+		std::vector<local_debug_inner> local_appendages{};
+		LocalValueType local_value_type = LocalValueType::INT;
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(local_debug, script_name, local_index, local_appendages, local_value_type)
+	};
+
+	nlohmann::json get_locals_json()
+	{
+		nlohmann::json locals{};
+
+		auto file = g_file_manager.get_project_file("./locals.json");
+		if (file.exists())
 		{
-			ImGui::PushID(i);
-
-			ImGui::Separator();
-
-			ImGui::Text("DEBUG_GLOBAL_OFFSET"_T.data(), i + 1);
-			ImGui::InputInt("##offset", &offsets[i][0]);
-
-			ImGui::Text("DEBUG_GLOBAL_SIZE"_T.data());
-			ImGui::SameLine();
-			ImGui::InputInt("##size", &offsets[i][1]);
-
-			ImGui::PopID();
+			std::ifstream iffstream_file(file.get_path());
+			iffstream_file >> locals;
 		}
-		ImGui::PopItemWidth();
 
-		static auto reset_values = []() -> void {
-			strcpy(name, "");
-			freeze                = false;
-			offset_count          = 0;
-			previous_offset_count = 0;
-		};
+		return locals;
+	}
 
-		if (components::button("CANCEL"_T))
+	void load_local_menu(const std::string& selected_local, local_debug& local_obj)
+	{
+		if (!selected_local.empty())
 		{
-			reset_values();
-
-			ImGui::CloseCurrentPopup();
+			auto locals = get_locals_json();
+			if (locals[selected_local].is_null())
+				return;
+			local_obj = locals[selected_local].get<local_debug>();
 		}
-		ImGui::SameLine();
-		if (components::button("SAVE"_T))
+	}
+
+	int64_t* get_local_ptr(GtaThread* local_thread, local_debug& local_test)
+	{
+		if (local_thread == nullptr)
+			return nullptr;
+
+		script_local local_to_read = script_local(local_thread, local_test.local_index);
+		for (auto item : local_test.local_appendages)
 		{
-			if (locals_service::does_script_exist(script_thread_name))
+			if (item.type == LocalAppendageType_At)
 			{
-				auto new_local = local(script_thread_name, name, base_address, freeze, offsets, offset_count);
-				if (std::string(name).empty())
-					strcpy(name, new_local.get_local_chain_text());
-				g_locals_service.m_locals.push_back(new_local);
-
-				reset_values();
-
-				ImGui::CloseCurrentPopup();
+				if (item.size != 0)
+					local_to_read = local_to_read.at(item.index, item.size);
+				else
+					local_to_read = local_to_read.at(item.index);
 			}
-			else
+			else if (item.type == LocalAppendageType_ReadLocal)
 			{
-				g_notification_service->push_error("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
+				local_debug local_read;
+				load_local_menu(item.local_name, local_read);
+				if (auto ptr = get_local_ptr(local_thread, local_read))
+					if (item.size != 0)
+						local_to_read = local_to_read.at(*ptr, item.size);
+					else
+						local_to_read = local_to_read.at(*ptr);
+				else
+					LOG(WARNING) << "Failed to read " << item.local_name << "for get_local_ptr";
 			}
-		};
+			else if (item.type == LocalAppendageType_PlayerId)
+			{
+				if (item.size != 0)
+					local_to_read = local_to_read.at(self::id, item.size);
+				else
+					local_to_read = local_to_read.at(self::id);
+			}
+		}
+		auto retn_val = local_to_read.as<int64_t*>();
+		if ((size_t)retn_val < UINT32_MAX)
+			return nullptr;
+		return retn_val;
+	}
+
+	std::string get_local_display(local_debug& local_test)
+	{
+		auto local_thread = gta_util::find_script_thread(rage::joaat(local_test.script_name));
+
+		if (local_thread == nullptr)
+			return "VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data();
+
+		auto ptr = get_local_ptr(local_thread, local_test);
+		if (ptr != nullptr)
+		{
+			switch (local_test.local_value_type)
+			{
+				case LocalValueType::INT:
+				{
+					return std::to_string(*(PINT)ptr);
+				}
+				case LocalValueType::BOOLEAN:
+				{
+					return (*ptr == TRUE) ? "TRUE" : "FALSE";
+				}
+				case LocalValueType::BITSET:
+				{
+					std::ostringstream o;
+					o << "0x" << std::hex << std::uppercase << (DWORD)*ptr;
+					return o.str();
+				}
+				case LocalValueType::FLOAT:
+				{
+					return std::to_string(*(PFLOAT)ptr);
+				}
+				case LocalValueType::VECTOR:
+				{
+					std::ostringstream o;
+					auto vectorptr = (rage::scrVector*)ptr;
+					o << "X: " << std::fixed << std::setprecision(2) << vectorptr->x << " Y: " << vectorptr->y << " Z: " << vectorptr->z;
+					return o.str();
+				}
+				case LocalValueType::VARCHAR:
+				{
+					return (PCHAR)ptr;
+				}
+			}
+		}
+		return "VIEW_DEBUG_LOCALS_INVALID_LOCAL_READ"_T.data();
+	}
+
+	std::map<std::string, local_debug> list_locals()
+	{
+		auto json = get_locals_json();
+		std::map<std::string, local_debug> return_value;
+		for (auto& item : json.items())
+			return_value[item.key()] = item.value();
+		return return_value;
+	}
+
+	void save_local(char* local_name, local_debug& local_obj)
+	{
+		std::string teleport_name_string = local_name;
+		if (!teleport_name_string.empty())
+		{
+			auto json = get_locals_json();
+			json[teleport_name_string] = local_obj;
+
+			auto file_path = g_file_manager.get_project_file("./locals.json").get_path();
+			std::ofstream file(file_path, std::ios::out | std::ios::trunc);
+			file << json.dump(4);
+			file.close();
+			ZeroMemory(local_name, sizeof(local_name));
+		}
+	}
+
+	void delete_local(std::string name)
+	{
+		auto locations = get_locals_json();
+		if (locations[name].is_null())
+			return;
+		locations.erase(name);
+		auto file_path = g_file_manager.get_project_file("./locals.json").get_path();
+		std::ofstream file(file_path, std::ios::out | std::ios::trunc);
+		file << locations.dump(4);
+		file.close();
 	}
 
 	void debug::locals()
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_LOCALS"_T.data()))
 		{
-			if (components::button("LOAD"_T))
-				g_locals_service.load();
-			ImGui::SameLine();
-			if (components::button("SAVE"_T))
-				g_locals_service.save();
+			static local_debug local_test{};
+			static script_local local_laddie = script_local(local_test.local_index);
 
-			if (components::button("VIEW_DEBUG_LOCALS_ADD_LOCAL"_T))
+			ImGui::SetNextItemWidth(300.f);
+
+			components::input_text("VIEW_DEBUG_LOCALS_SCRIPT_NAME"_T, local_test.script_name);
+
+			auto local_thread = gta_util::find_script_thread(rage::joaat(local_test.script_name));
+
+			if (local_thread == nullptr)
+				ImGui::Text("VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
+
+			ImGui::PushItemWidth(200.f);
+
+			if (ImGui::InputScalar("VIEW_DEBUG_LOCALS_LOCAL"_T.data(), ImGuiDataType_U16, &local_test.local_index))
+				local_laddie = script_local(local_thread, local_test.local_index);
+
+			ImGui::PopItemWidth();
+
+			for (int i = 0; i < local_test.local_appendages.size(); i++)
 			{
-				ImGui::OpenPopup("##addlocal");
-			}
-
-			if (ImGui::BeginPopupModal("##addlocal"))
-			{
-				render_local_creator_popup_content();
-
-				ImGui::EndPopup();
-			}
-
-			for (auto& local_ : g_locals_service.m_locals)
-			{
-				ImGui::BeginGroup();
-				ImGui::PushID(local_.get_id());
-				ImGui::SetNextItemOpen(true, ImGuiCond_FirstUseEver);
-				if (ImGui::TreeNode(strcmp(local_.m_name, "") == 0 ? 
-					std::string(local_.m_script_thread_name + std::string(" ")).append(local_.get_local_chain_text()).data(): local_.m_name))
+				auto item = local_test.local_appendages[i];
+				ImGui::PushID(i + item.type);
+				switch (item.type)
 				{
-					ImGui::Text("%s : %s", local_.m_script_thread_name, local_.m_name);
-					if (ImGui::IsItemHovered())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Text(local_.get_local_chain_text());
-						ImGui::EndTooltip();
-					}
-
-					//Find the thread among the script threads
-					if (!local_.m_script_thread)
-						local_.m_script_thread = gta_util::find_script_thread(rage::joaat(local_.m_script_thread_name));
-
-					if (local_.m_script_thread && locals_service::is_script_thread_running(local_.m_script_thread))
-					{
-						//Check whether the address is found
-						if (local_.m_internal_address)
-						{
-							if (ImGui::RadioButton("Int", local_.m_edit_mode == 0))
-								local_.m_edit_mode = 0;
-							ImGui::SameLine();
-							if (ImGui::RadioButton("Float", local_.m_edit_mode == 1))
-								local_.m_edit_mode = 1;
-							ImGui::SameLine();
-							if (ImGui::RadioButton("Bitfield", local_.m_edit_mode == 2))
-								local_.m_edit_mode = 2;
-							ImGui::SameLine();
-							if (ImGui::RadioButton("Vector3", local_.m_edit_mode == 3))
-								local_.m_edit_mode = 3;
-
-
-							ImGui::LabelText(local_.get_local_chain_text(), "VIEW_DEBUG_GLOBAL_VALUE"_T.data());
-
-							ImGui::SetNextItemWidth(200);
-
-							switch (local_.m_edit_mode)
-							{
-							case 0:
-
-								if (ImGui::InputInt("##local_value",
-								        local_.m_freeze ? &local_.m_freeze_value_int : local_.m_internal_address))
-								{
-									local_.m_value = *local_.m_internal_address;
-								}
-
-								if (local_.m_freeze)
-								{
-									*local_.m_internal_address = local_.m_freeze_value_int;
-								}
-								break;
-							case 1:
-
-								if (ImGui::InputFloat("##local_value",
-								        local_.m_freeze ? &local_.m_freeze_value_float : (float*)local_.m_internal_address))
-								{
-									local_.m_value = *local_.m_internal_address;
-								}
-
-								if (local_.m_freeze)
-								{
-									*(float*)local_.m_internal_address = local_.m_freeze_value_float;
-								}
-								break;
-							case 2:
-
-								if (ImGui::Bitfield("##local_value",
-								        local_.m_freeze ? &local_.m_freeze_value_int : local_.m_internal_address))
-								{
-									local_.m_value = *local_.m_internal_address;
-								}
-
-								if (local_.m_freeze)
-								{
-									*local_.m_internal_address = local_.m_freeze_value_int;
-								}
-								break;
-
-							case 3:
-								ImGui::SetNextItemWidth(300);
-								if (ImGui::InputFloat3("##local_value",
-								        local_.m_freeze ? (float*)&local_.m_freeze_value_vector3 : (float*)local_.m_internal_address))
-								{
-									local_.m_value = *local_.m_internal_address;
-								}
-
-								if (local_.m_freeze)
-								{
-									*local_.m_internal_address_vector3 = local_.m_freeze_value_vector3;
-								}
-								break;
-							}
-
-							ImGui::SameLine();
-							if (ImGui::Checkbox("VIEW_DEBUG_LOCALS_FREEZE"_T.data(), &local_.m_freeze))
-							{
-								local_.m_freeze_value_int     = *local_.m_internal_address;
-								local_.m_freeze_value_float   = *reinterpret_cast<float*>(local_.m_internal_address);
-								local_.m_freeze_value_vector3 = *local_.m_internal_address_vector3;
-							}
-						}
-						else
-						{
-							if (components::button("VIEW_DEBUG_LOCALS_FETCH"_T))
-							{
-								local_.fetch_local_pointer();
-							}
-						}
-					}
-					else
-					{
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-						ImGui::Text(std::format("{} {}", local_.m_script_thread_name, "VIEW_DEBUG_LOCALS_SCRIPT_IS_NOT_RUNNING"_T).c_str());
-						ImGui::PopStyleColor();
-					}
-					if (components::button("DELETE"_T))
-						std::erase_if(g_locals_service.m_locals, [local_](local l) {
-							return l.get_id() == local_.get_id();
-						});
-
-					ImGui::PopID();
-					ImGui::Separator();
-
-					ImGui::TreePop();
+					case LocalAppendageType_At:
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].index);
+						ImGui::SameLine();
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].size);
+						break;
+					case LocalAppendageType_ReadLocal:
+						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_LOCALS_READ_LOCAL"_T, item.local_name).c_str());
+						ImGui::SameLine();
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].size);
+						break;
+					case LocalAppendageType_PlayerId:
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].size);
+						break;
 				}
-				ImGui::EndGroup();
+				ImGui::PopID();
 			}
 
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_OFFSET"_T.data()))
+				local_test.local_appendages.push_back({LocalAppendageType_At, 0LL, 0ULL});
+			ImGui::SameLine();
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_READ_PLAYER_ID"_T.data()))
+				local_test.local_appendages.push_back({LocalAppendageType_PlayerId, 0LL, 0ULL});
+
+			if (local_test.local_appendages.size() > 0 && ImGui::Button("VIEW_DEBUG_GLOBAL_REMOVE_OFFSET"_T.data()))
+				local_test.local_appendages.pop_back();
+
+			if (auto ptr = get_local_ptr(local_thread, local_test))
+			{
+				switch (local_test.local_value_type)
+				{
+					case LocalValueType::INT:
+					{
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_S32, ptr);
+						break;
+					}
+					case LocalValueType::BOOLEAN:
+					{
+						bool is_local_enabled = (*ptr == TRUE);
+						if (ImGui::Checkbox("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), &is_local_enabled))
+						{
+							*ptr = is_local_enabled;
+						}
+						break;
+					}
+					case LocalValueType::BITSET:
+					{
+						ImGui::Bitfield("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PINT)ptr);
+						break;
+					}
+					case LocalValueType::FLOAT:
+					{
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_Float, ptr);
+						break;
+					}
+					case LocalValueType::VECTOR:
+					{
+						ImGui::PushItemWidth(100.f);
+						auto vectorptr = (rage::scrVector*)ptr;
+						ImGui::InputScalar("X", ImGuiDataType_Float, &vectorptr->x);
+						ImGui::SameLine();
+						ImGui::InputScalar("Y", ImGuiDataType_Float, &vectorptr->y);
+						ImGui::SameLine();
+						ImGui::InputScalar("Z", ImGuiDataType_Float, &vectorptr->z);
+						ImGui::PopItemWidth();
+						break;
+					}
+					case LocalValueType::VARCHAR:
+					{
+						std::string characters = (PCHAR)ptr;
+						try
+						{
+							components::input_text("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PCHAR)ptr, 255);
+						} catch (...){ } //This can crash if the user tries to edit the invalid ??? scenario from ImGui, so to prevent that, just silently do nothing.
+						break;
+					}
+				}
+			}
+			else
+			{
+				ImGui::Text("VIEW_DEBUG_LOCALS_INVALID_LOCAL_READ"_T.data());
+			}
+
+			ImGui::PopItemWidth();
+
+			ImGui::SetNextItemWidth(150.f);
+			ImGui::Combo("VIEW_DEBUG_GLOBAL_TYPE"_T.data(), (int*)&local_test.local_value_type, "INT\0BOOLEAN\0BITSET\0FLOAT\0VECTOR\0VARCHAR\0");
+
+			auto locals = list_locals();
+			static std::string selected_local;
+			ImGui::Text("VIEW_DEBUG_LOCALS_SAVED_LOCALS"_T.data());
+			if (ImGui::BeginListBox("##savedlocals", ImVec2(200, 250)))
+			{
+				for (auto pair : locals)
+				{
+					if (ImGui::Selectable(pair.first.c_str(), selected_local == pair.first))
+						selected_local = std::string(pair.first);
+				}
+				ImGui::EndListBox();
+			}
+			ImGui::SameLine();
+			if (ImGui::BeginListBox("##localvalues", ImVec2(250, 250)))
+			{
+				for (auto pair : locals)
+				{
+					ImGui::Selectable(get_local_display(pair.second).c_str(), false, ImGuiSelectableFlags_Disabled);
+				}
+				ImGui::EndListBox();
+			}
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+			static char local_name[50]{};
+			ImGui::SetNextItemWidth(200.f);
+			components::input_text("##localname", local_name, IM_ARRAYSIZE(local_name));
+			if (ImGui::IsItemActive())
+				g.self.hud.typing = TYPING_TICKS;
+			if (ImGui::Button("VIEW_DEBUG_LOCALS_SAVE_LOCAL"_T.data()))
+			{
+				save_local(local_name, local_test);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("VIEW_DEBUG_LOCALS_LOAD_LOCAL"_T.data()))
+			{
+				load_local_menu(selected_local, local_test);
+			}
+
+			if (ImGui::Button("VIEW_DEBUG_LOCALS_DELETE_LOCAL"_T.data()))
+			{
+				if (!selected_local.empty())
+				{
+					delete_local(selected_local);
+					selected_local.clear();
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("VIEW_DEBUG_LOCALS_ADD_READ_LOCAL"_T.data()))
+			{
+				local_debug local_read{};
+				load_local_menu(selected_local, local_read);
+				if (local_read.local_value_type == LocalValueType::INT)
+				{
+					local_test.local_appendages.push_back({LocalAppendageType_ReadLocal, 0LL, 0ULL, selected_local});
+				}
+				else
+				{
+					g_notification_service->push_warning("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_INVALID_TYPE"_T.data());
+				}
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_CLEAR"_T.data()))
+			{
+				local_test.local_index = 0;
+				local_test.local_appendages.clear();
+			}
+			ImGui::EndGroup();
 			ImGui::EndTabItem();
 		}
 	}

@@ -190,7 +190,7 @@ namespace big
 			static global_debug global_test{};
 			static script_global glo_bal_sunday = script_global(global_test.global_index);
 			ImGui::SetNextItemWidth(200.f);
-			if (ImGui::InputScalar("VIEW_DEBUG_GLOBAL"_T.data(), ImGuiDataType_U64, &global_test.global_index))
+			if (ImGui::InputScalar("VIEW_DEBUG_GLOBAL"_T.data(), ImGuiDataType_U32, &global_test.global_index))
 				glo_bal_sunday = script_global(global_test.global_index);
 
 			for (int i = 0; i < global_test.global_appendages.size(); i++)
@@ -201,20 +201,20 @@ namespace big
 				{
 					case GlobalAppendageType_At:
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].index);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].index);
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_ReadGlobal:
 						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T, item.global_name).c_str());
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_PlayerId:
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 				}
 				ImGui::PopID();
@@ -279,7 +279,7 @@ namespace big
 					    std::string characters = (PCHAR)ptr;
 						try
 						{
-						    ImGui::InputText("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PCHAR)ptr, 255);
+						    components::input_text("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PCHAR)ptr, 255);
 						} catch (...){ } //This can crash if the user tries to edit the invalid ??? scenario from ImGui, so to prevent that, just silently do nothing.
 					    break;
 					}
@@ -318,10 +318,10 @@ namespace big
 			ImGui::BeginGroup();
 			static char global_name[50]{};
 			ImGui::SetNextItemWidth(200.f);
-			ImGui::InputText("##GlobalName", global_name, IM_ARRAYSIZE(global_name));
+			components::input_text("##GlobalName", global_name, IM_ARRAYSIZE(global_name));
 			if (ImGui::IsItemActive())
 				g.self.hud.typing = TYPING_TICKS;
-			if (ImGui::Button("Save Global"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_SAVE_GLOBAL"_T.data()))
 			{
 				save_global(global_name, global_test);
 			}
