@@ -939,7 +939,6 @@ namespace big
 		struct esp
 		{
 			bool enabled                    = true;
-			bool hide_self                  = true;
 			float global_render_distance[2] = {0.f, 600.f};
 			float tracer_render_distance[2] = {200.f, 600.f};
 			float box_render_distance[2]    = {0.f, 150.f};
@@ -960,7 +959,7 @@ namespace big
 			ImU32 default_color             = 4285713522;
 			ImU32 friend_color              = 4293244509;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, hide_self, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
 		} esp{};
 
 		struct session_browser

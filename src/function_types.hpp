@@ -10,6 +10,7 @@ class CGameScriptHandlerNetComponent;
 class CDoorBreakEvent;
 class GenericPool;
 enum eVehicleGadgetType : uint32_t;
+enum class PedBones : uint16_t;
 
 namespace rage
 {
@@ -196,4 +197,6 @@ namespace big::functions
 	using decal_manager_remove = void(*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
 
 	using remove_player_from_sender_list = bool(*)(void* list, uint64_t* rockstar_id);
+
+	using get_ped_pone = bool(*)(CPed* ped_ptr, rage::fvector4& output, PedBones bone);
 }
