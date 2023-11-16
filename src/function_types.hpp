@@ -10,7 +10,7 @@ class CGameScriptHandlerNetComponent;
 class CDoorBreakEvent;
 class GenericPool;
 enum eVehicleGadgetType : uint32_t;
-enum class PedBones : uint32_t;
+enum class PedBones : uint16_t;
 
 namespace rage
 {
