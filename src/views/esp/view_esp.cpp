@@ -23,8 +23,6 @@ namespace big
 	{
 		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation || !plyr->get_ped()->m_model_info)
 			return;
-		if (g.esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
-			return;
 
 		rage::fvector4 player_pos;
 		if (!g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
