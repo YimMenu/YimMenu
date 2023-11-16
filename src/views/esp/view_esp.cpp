@@ -5,6 +5,7 @@
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
 #include "util/misc.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -25,7 +26,8 @@ namespace big
 		if (g.esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
 			return;
 
-		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
+		rage::fvector3 player_pos{};
+		g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), &player_pos, PedBones::SKEL_Pelvis);
 
 		float screen_x, screen_y;
 
@@ -180,7 +182,7 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			draw_player(g_player_service->get_self(), draw_list);
+			//draw_player(g_player_service->get_self(), draw_list);
 
 			for (const auto& [_, plyr] : g_player_service->players())
 			{

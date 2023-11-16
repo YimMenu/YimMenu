@@ -1757,6 +1757,14 @@ namespace big
             {
                 g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
             }
+        },
+        {
+            "GPB",
+            "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 60 48 8B 01 41 8B E8 48 8B F2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_ped_pone = ptr.as<functions::get_ped_pone>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

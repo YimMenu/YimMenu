@@ -358,6 +358,8 @@ namespace big
 		PVOID m_remove_player_from_sender_list_caller_2;
 
 		PVOID m_game_skeleton_update;
+
+		functions::get_ped_pone m_get_ped_pone;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
