@@ -1105,7 +1105,7 @@ enum class eAckCode : uint32_t
 	ACKCODE_NONE
 };
 
-enum class PedBones : uint32_t
+enum class PedBones : uint16_t
 {
 	SKEL_ROOT                        = 0x0,
 	SKEL_Pelvis                      = 0x2E28,

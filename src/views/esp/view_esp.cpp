@@ -1,6 +1,7 @@
 #include "view_esp.hpp"
 
 #include "core/settings/esp.hpp"
+#include "gta/enums.hpp"
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
 
@@ -8,10 +9,12 @@ namespace big
 {
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
-		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
+		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation || !plyr->get_ped()->m_model_info)
 			return;
 
-		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
+		rage::fvector4 player_pos;
+		if (!g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
+			return;
 
 		float screen_x, screen_y;
 
@@ -44,7 +47,8 @@ namespace big
 			return;
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
-			for (const auto& [_, plyr] : g_player_service->players())
-				draw_player(plyr, draw_list);
+			g_player_service->iterate([draw_list](const player_entry& entry) {
+				draw_player(entry.second, draw_list);
+			});
 	}
 }

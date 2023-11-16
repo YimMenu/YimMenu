@@ -21,7 +21,6 @@
 #include "services/script_patcher/script_patcher_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "thread_pool.hpp"
-#include "util/migrate.hpp"
 #include "version.hpp"
 #include "core/settings.hpp"
 
@@ -43,7 +42,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
-			    do_migration(base_dir);
 			    g_file_manager.init(base_dir);
 
 			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
