@@ -1758,6 +1758,7 @@ namespace big
                 g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
             }
         },
+        // Get Ped Bone
         {
             "GPB",
             "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 60 48 8B 01 41 8B E8 48 8B F2",

@@ -21,13 +21,14 @@ namespace big
 
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
-		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
+		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation || !plyr->get_ped()->m_model_info)
 			return;
 		if (g.esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
 			return;
 
-		rage::fvector3 player_pos{};
-		g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), &player_pos, PedBones::SKEL_Pelvis);
+		rage::fvector4 player_pos;
+		if (!g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
+			return;
 
 		float screen_x, screen_y;
 
@@ -182,8 +183,6 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			//draw_player(g_player_service->get_self(), draw_list);
-
 			for (const auto& [_, plyr] : g_player_service->players())
 			{
 				draw_player(plyr, draw_list);
