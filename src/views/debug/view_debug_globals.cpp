@@ -84,12 +84,26 @@ namespace big
 				global_debug global_read;
 				load_global_menu(item.global_name, global_read);
 				if (auto ptr = get_global_ptr(global_read))
+				{
+					auto value = *ptr;
+					if (value < 0 || value > INT32_MAX)
+					{
+						LOG(WARNING) << item.global_name << " was out of bounds for a Read Global.";
+						continue;
+					}
 					if (item.size != 0)
-						global_to_read = global_to_read.at(*ptr, item.size);
+					{
+						global_to_read = global_to_read.at(value, item.size);
+					}
 					else
-						global_to_read = global_to_read.at(*ptr);
+					{
+						global_to_read = global_to_read.at(value);
+					}
+				}
 				else
+				{
 					LOG(WARNING) << "Failed to read " << item.global_name << "for get_global_ptr";
+				}
 			}
 			else if (item.type == GlobalAppendageType_PlayerId)
 			{
