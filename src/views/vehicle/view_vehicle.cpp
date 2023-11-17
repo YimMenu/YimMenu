@@ -1,6 +1,7 @@
+#include "core/data/auto_drive.hpp"
+#include "core/data/vehicle.hpp"
 #include "core/data/vehicle_ammo_special.hpp"
 #include "core/enums.hpp"
-#include "core/settings/vehicle.hpp"
 #include "util/delete_entity.hpp"
 #include "util/mobile.hpp"
 #include "util/teleport.hpp"
@@ -348,27 +349,27 @@ namespace big
 					components::sub_title("Auto Drive");
 					if (self::veh)
 					{
-						float auto_drive_speed_in_miph = vehicle::mps_to_miph(g_vehicle.auto_drive_speed);
+						float auto_drive_speed_in_miph = vehicle::mps_to_miph(g_auto_drive.auto_drive_speed);
 
 						ImGui::PushItemWidth(200);
 						if (ImGui::SliderFloat("Top Speed (mi/h)", &auto_drive_speed_in_miph, 2.2369f, 335.535f, "%.1f"))
-							g_vehicle.auto_drive_speed = vehicle::miph_to_mps(auto_drive_speed_in_miph);
+							g_auto_drive.auto_drive_speed = vehicle::miph_to_mps(auto_drive_speed_in_miph);
 
-						if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g_vehicle.auto_drive_style]))
+						if (ImGui::BeginCombo("Driving Style", driving_style_names[(int)g_auto_drive.auto_drive_style]))
 						{
 							for (int i = 0; i < 2; i++)
-								if (ImGui::Selectable(driving_style_names[i], g_vehicle.auto_drive_style == (AutoDriveStyle)i))
-									g_vehicle.auto_drive_style = (AutoDriveStyle)i;
+								if (ImGui::Selectable(driving_style_names[i], g_auto_drive.auto_drive_style == (AutoDriveStyle)i))
+									g_auto_drive.auto_drive_style = (AutoDriveStyle)i;
 							ImGui::EndCombo();
 						}
 						ImGui::PopItemWidth();
 
-						ImGui::BeginDisabled(g_vehicle.is_auto_driving);
+						ImGui::BeginDisabled(g_auto_drive.is_auto_driving);
 						if (components::button("To Objective"))
-							g_vehicle.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
+							g_auto_drive.auto_drive_destination = AutoDriveDestination::OBJECTITVE;
 						ImGui::SameLine();
 						if (components::button("To Waypoint"))
-							g_vehicle.auto_drive_destination = AutoDriveDestination::WAYPOINT;
+							g_auto_drive.auto_drive_destination = AutoDriveDestination::WAYPOINT;
 						ImGui::EndDisabled();
 					}
 					else

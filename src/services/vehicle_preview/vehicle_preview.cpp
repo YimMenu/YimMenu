@@ -3,7 +3,6 @@
 #include "core/settings/context_menu.hpp"
 #include "core/settings/self.hpp"
 #include "fiber_pool.hpp"
-#include "gta/vehicle_values.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/vehicle/persist_car_service.hpp"
@@ -16,28 +15,15 @@ constexpr static int preview_height = camera_height - 1.f;
 
 namespace big
 {
-	static std::pair<Vector3, float> get_loc_head_pair(Hash hash)
+	inline static Vector3 get_spawn_location(Hash hash)
 	{
-		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
-		}
-
-		Vector3 min, max, result;
-		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-
-		auto loc = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, (max - min).y, preview_height);
-		const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-		return std::pair(loc, spawn_heading + 90.f);
+		auto spawn_location = vehicle::get_spawn_location(hash);
+		spawn_location.z += preview_height;
+		return spawn_location;
 	}
 
 	void vehicle_preview::preview(std::function<void()> func, bool should_run_fun)
 	{
-		if (!*g_pointers->m_gta.m_is_session_started)
-			return;
-
 		if (!is_camera_prepared && !busy)
 		{
 			busy               = true;
@@ -75,9 +61,7 @@ namespace big
 				    if (last_spawned)
 					    entity::delete_entity(last_spawned);
 
-				    std::pair<Vector3, float> loc_head = get_loc_head_pair(last_veh_hash);
-
-				    last_spawned = vehicle::spawn(last_veh_hash, loc_head.first, loc_head.second, false);
+				    last_spawned = vehicle::spawn(last_veh_hash, get_spawn_location(last_veh_hash), 0, false);
 				    ENTITY::FREEZE_ENTITY_POSITION(last_spawned, true);
 
 				    busy = false;
@@ -86,14 +70,15 @@ namespace big
 		    last_veh_hash != hash);
 	}
 
-	void vehicle_preview::preview_personal_veh(std::map<int, int32_t> mods)
+	void vehicle_preview::preview_personal_veh(const std::unique_ptr<big::personal_vehicle>& personal_veh)
 	{
-		auto hash = mods[MOD_MODEL_HASH];
+		auto hash = personal_veh->get_hash();
 
 		preview(
-		    [this, hash, mods] {
-			    busy          = true;
-			    last_veh_hash = hash;
+		    [this, hash, &personal_veh] {
+			    busy                        = true;
+			    last_veh_hash               = hash;
+			    std::map<int, int32_t> mods = vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx());
 
 			    g_fiber_pool->queue_job([this, mods] {
 				    script::get_current()->yield(500ms);
@@ -101,9 +86,7 @@ namespace big
 				    if (last_spawned)
 					    entity::delete_entity(last_spawned);
 
-				    std::pair<Vector3, float> loc_head = get_loc_head_pair(last_veh_hash);
-
-				    last_spawned = vehicle::clone_from_owned_mods(mods, loc_head.first, loc_head.second, false);
+				    last_spawned = vehicle::clone_from_owned_mods(mods, get_spawn_location(last_veh_hash), false);
 				    ENTITY::FREEZE_ENTITY_POSITION(last_spawned, true);
 
 				    busy = false;
@@ -128,10 +111,7 @@ namespace big
 				    nlohmann::json vehicle_json = persist_car_service::load_vehicle_json(file_name, folder_name);
 				    const Hash hash             = vehicle_json[persist_car_service::vehicle_model_hash_key];
 
-				    std::pair<Vector3, float> loc_head = get_loc_head_pair(hash);
-
-				    last_spawned =
-				        persist_car_service::spawn_vehicle_full(vehicle_json, self::ped, loc_head.first, loc_head.second, false);
+				    last_spawned = persist_car_service::spawn_vehicle_full(vehicle_json, get_spawn_location(hash), false);
 				    ENTITY::FREEZE_ENTITY_POSITION(last_spawned, true);
 
 				    busy = false;

@@ -1,4 +1,5 @@
 
+#include "core/data/vehicle.hpp"
 #include "core/scr_globals.hpp"
 #include "core/settings/context_menu.hpp"
 #include "core/settings/self.hpp"
@@ -54,7 +55,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 		{
-			ImGui::BeginDisabled(g_enable_vehicle_preview);
+			ImGui::BeginDisabled(g_vehicle.preview_vehicle);
 			components::command_checkbox<"freecam">();
 
 			components::command_checkbox<"noclip">();

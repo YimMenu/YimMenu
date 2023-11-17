@@ -1,5 +1,5 @@
 #include "core/data/hud.hpp"
-#include "core/data/persist_car.hpp"
+#include "core/data/vehicle.hpp"
 #include "fiber_pool.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "services/vehicle_preview/vehicle_preview.hpp"
@@ -21,19 +21,19 @@ namespace big
 		}
 	}
 
-	static void load_vehicle(std::string& selected_vehicle_file, bool spawn_at_waypoint)
+	static void load_vehicle(std::string& selected_vehicle_file)
 	{
 		if (!selected_vehicle_file.empty())
 		{
 			std::optional<Vector3> waypoint_location;
-			if (spawn_at_waypoint)
+			if (g_vehicle.spawn_at_waypoint)
 				waypoint_location = vehicle::get_waypoint_location();
 
 			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, persist_vehicle_sub_folder, waypoint_location);
 
 			if (!vehicle)
 				g_notification_service->push_warning("Persist Car", "Vehicle failed to spawn, there is most likely too many spawned vehicles in the area");
-			else if (g_persist_car.spawn_inside)
+			else if (g_vehicle.spawn_inside)
 				teleport::into_vehicle(vehicle);
 
 			selected_vehicle_file.clear();
@@ -65,7 +65,7 @@ namespace big
 		});
 	}
 
-	void view::persist_car(bool spawn_at_waypoint)
+	void view::persist_car()
 	{
 		static std::string selected_vehicle_file;
 
@@ -97,10 +97,6 @@ namespace big
 
 			ImGui::EndPopup();
 		}
-
-		ImGui::Checkbox("Spawn Inside", &g_persist_car.spawn_inside);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Controls whether the player should be set inside the vehicle after it spawns");
 
 		ImGui::SetNextItemWidth(300.f);
 		auto folder_display = persist_vehicle_sub_folder.empty() ? "Root" : persist_vehicle_sub_folder.c_str();
@@ -141,15 +137,15 @@ namespace big
 					if (ImGui::Selectable(file_name, selected_vehicle_file == pair, ImGuiSelectableFlags_AllowItemOverlap))
 					{
 						selected_vehicle_file = pair;
-						g_fiber_pool->queue_job([spawn_at_waypoint] {
-							load_vehicle(selected_vehicle_file, spawn_at_waypoint);
+						g_fiber_pool->queue_job([] {
+							load_vehicle(selected_vehicle_file);
 						});
 						g_vehicle_preview.clear();
 					}
 
 					if (g_vehicle_preview.is_camera_prepared && !ImGui::IsAnyItemHovered())
 						g_vehicle_preview.clear();
-					else if (g_enable_vehicle_preview && ImGui::IsItemHovered())
+					else if (g_vehicle.preview_vehicle && ImGui::IsItemHovered())
 						g_vehicle_preview.preview_persisted_veh(pair, persist_vehicle_sub_folder);
 
 					ImGui::SameLine();

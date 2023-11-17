@@ -1,7 +1,6 @@
 #include "persist_car_service.hpp"
 
 #include "base/CObject.hpp"
-#include "core/data/persist_car.hpp"
 #include "gta/vehicle_values.hpp"
 #include "pointers.hpp"
 #include "services/notifications/notification_service.hpp"
@@ -54,7 +53,7 @@ namespace big
 	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
 	{
 		nlohmann::json vehicle_json = load_vehicle_json(file_name, folder_name);
-		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);
+		return spawn_vehicle_full(vehicle_json, spawn_coords);
 	}
 
 	void persist_car_service::delete_vehicle(std::string_view file_name, std::string folder_name)
@@ -91,21 +90,17 @@ namespace big
 		return folders;
 	}
 
-	Vehicle persist_car_service::clone_ped_car(Ped ped, Vehicle vehicle)
+	Vehicle persist_car_service::clone_ped_car(Vehicle vehicle)
 	{
-		return spawn_vehicle_full(get_vehicle_json(vehicle), ped);
+		return spawn_vehicle_full(get_vehicle_json(vehicle));
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords, float spawn_heading, bool is_networked)
+	Vehicle persist_car_service::spawn_vehicle_full(nlohmann::json vehicle_json, const std::optional<Vector3>& spawn_coords, bool is_networked)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
-		Vector3 spawn_location =
-		    spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g_persist_car.spawn_inside, vehicle_hash);
+		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(vehicle_hash);
 
-		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading || ENTITY::GET_ENTITY_HEADING(self::ped), is_networked);
-
-		const auto rotation = ENTITY::GET_ENTITY_ROTATION(vehicle, 2);
-		ENTITY::SET_ENTITY_ROTATION(vehicle, rotation.x, 0, rotation.z, 2, true);
+		const auto vehicle = vehicle::spawn(vehicle_hash, spawn_location, 0, is_networked);
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
 

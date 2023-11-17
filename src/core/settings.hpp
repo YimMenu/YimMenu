@@ -8,7 +8,6 @@
 #include "settings/session.hpp"
 #include "settings/session_browser.hpp"
 #include "settings/settings.hpp"
-#include "settings/vehicle.hpp"
 #include "settings/window.hpp"
 
 namespace big
@@ -38,13 +37,12 @@ namespace big
 		g_self_t& self                       = g_self;
 		g_session_t& session                 = g_session;
 		g_settings_t& settings               = g_settings;
-		g_vehicle_t& vehicle                 = g_vehicle;
 		g_window_t& window                   = g_window;
 		g_context_menu_t& context_menu       = g_context_menu;
 		g_esp_t& esp                         = g_esp;
 		g_session_browser_t& session_browser = g_session_browser;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, notifications, protections, self, session, settings, vehicle, window, context_menu, esp, session_browser)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, notifications, protections, self, session, settings, window, context_menu, esp, session_browser)
 	};
 
 	inline auto g_menu_settings = menu_settings();

@@ -217,7 +217,7 @@ namespace big
 			ImGui::SameLine();
 			components::button("Copy Vehicle", [current_player] {
 				if (Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false); veh)
-					persist_car_service::clone_ped_car(self::ped, veh);
+					persist_car_service::clone_ped_car(veh);
 			});
 		}
 		ImGui::EndGroup();

@@ -1,6 +1,7 @@
+#include "core/data/auto_drive.hpp"
+
 #include "backend/looped/looped.hpp"
 #include "core/enums.hpp"
-#include "core/settings/vehicle.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/blip.hpp"
@@ -19,36 +20,37 @@ namespace big
 		static Vector3 waypoint;
 
 		// start driving if destination is there
-		if (g_vehicle.auto_drive_destination != AutoDriveDestination::STOPPED)
+		if (g_auto_drive.auto_drive_destination != AutoDriveDestination::STOPPED)
 		{
 			if (!self::veh)
 			{
-				g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
-				has_driving_settings_changed     = false;
-				g_vehicle.is_auto_driving        = false;
+				g_auto_drive.auto_drive_destination = AutoDriveDestination::STOPPED;
+				has_driving_settings_changed        = false;
+				g_auto_drive.is_auto_driving        = false;
 			}
 
 			// check for changing driving settings
-			if (current_driving_flag != driving_style_flags[g_vehicle.auto_drive_style] || current_speed != g_vehicle.auto_drive_speed)
+			if (current_driving_flag != driving_style_flags[g_auto_drive.auto_drive_style]
+			    || current_speed != g_auto_drive.auto_drive_speed)
 			{
-				current_driving_flag         = driving_style_flags[g_vehicle.auto_drive_style];
-				current_speed                = g_vehicle.auto_drive_speed;
+				current_driving_flag         = driving_style_flags[g_auto_drive.auto_drive_style];
+				current_speed                = g_auto_drive.auto_drive_speed;
 				has_driving_settings_changed = true;
 			}
 
-			if (!g_vehicle.is_auto_driving)
+			if (!g_auto_drive.is_auto_driving)
 			{
-				bool does_waypoint_exist = g_vehicle.auto_drive_destination == AutoDriveDestination::OBJECTITVE ? blip::get_objective_location(waypoint) : blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
+				bool does_waypoint_exist = g_auto_drive.auto_drive_destination == AutoDriveDestination::OBJECTITVE ? blip::get_objective_location(waypoint) : blip::get_blip_location(waypoint, (int)BlipIcons::Waypoint);
 
 				if (does_waypoint_exist)
 				{
 					TASK::TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(self::ped, self::veh, waypoint.x, waypoint.y, waypoint.z, current_speed, current_driving_flag, 20);
-					g_vehicle.is_auto_driving = true;
+					g_auto_drive.is_auto_driving = true;
 				}
 				else
 				{
-					g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
-					has_driving_settings_changed     = false;
+					g_auto_drive.auto_drive_destination = AutoDriveDestination::STOPPED;
+					has_driving_settings_changed        = false;
 				}
 			}
 			else
@@ -61,11 +63,11 @@ namespace big
 					TASK::CLEAR_PED_TASKS(self::ped);
 
 					has_driving_settings_changed = false;
-					g_vehicle.is_auto_driving    = false; // start driving again in next tick if !interupted
+					g_auto_drive.is_auto_driving = false; // start driving again in next tick if !interupted
 				}
 
 				if (interupted)
-					g_vehicle.auto_drive_destination = AutoDriveDestination::STOPPED;
+					g_auto_drive.auto_drive_destination = AutoDriveDestination::STOPPED;
 			}
 		}
 	}

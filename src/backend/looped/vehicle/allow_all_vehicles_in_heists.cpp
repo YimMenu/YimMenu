@@ -1,7 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
-#include "core/settings/vehicle.hpp"
+#include "core/data/vehicle.hpp"
 #include "pointers.hpp"
 #include "services/tunables/tunables_service.hpp"
 

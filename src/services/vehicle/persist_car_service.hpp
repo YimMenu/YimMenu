@@ -11,12 +11,12 @@ namespace big
 		static std::vector<std::string> list_files(std::string folder_name = "");
 		static std::vector<std::string> list_sub_folders();
 
-		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
+		static Vehicle clone_ped_car(Vehicle vehicle);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
 		static nlohmann::json load_vehicle_json(std::string_view file_name, std::string folder_name);
 		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
 		static void delete_vehicle(std::string_view file_name, std::string folder_name);
-		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt, float spawn_heading = 0, bool is_networked = true);
+		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, const std::optional<Vector3>& spawn_coords = std::nullopt, bool is_networked = true);
 
 	private:
 		static constexpr auto plate_text_key             = "plate_text";

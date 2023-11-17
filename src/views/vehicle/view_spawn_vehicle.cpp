@@ -1,4 +1,4 @@
-#include "core/data/spawn_vehicle.hpp"
+#include "core/data/vehicle.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -9,11 +9,11 @@
 
 namespace big
 {
-	void render_spawn_new_vehicle(bool spawn_at_waypoint)
+	void render_spawn_new_vehicle()
 	{
-		ImGui::Checkbox("Spawn Inside", &g_spawn_vehicle.spawn_inside);
-		ImGui::SameLine();
-		ImGui::Checkbox("Spawn Maxed", &g_spawn_vehicle.spawn_maxed);
+		static bool spawn_maxed;
+
+		ImGui::Checkbox("Spawn Maxed", &spawn_maxed);
 
 		static int selected_class = -1;
 		const auto& class_arr     = g_gta_data_service->vehicle_classes();
@@ -92,26 +92,24 @@ namespace big
 				{
 					const auto& vehicle = item.second;
 					ImGui::PushID(vehicle.m_hash);
-					components::selectable(vehicle.m_display_name, false, [&vehicle, spawn_at_waypoint] {
+					components::selectable(vehicle.m_display_name, false, [&vehicle] {
 						Vector3 spawn_location;
 						std::optional<Vector3> waypoint_location;
 
-						if (spawn_at_waypoint && (waypoint_location = vehicle::get_waypoint_location()).has_value())
+						if (g_vehicle.spawn_at_waypoint && (waypoint_location = vehicle::get_waypoint_location()).has_value())
 							spawn_location = waypoint_location.value();
 						else
-							spawn_location = vehicle::get_spawn_location(g_spawn_vehicle.spawn_inside, vehicle.m_hash);
+							spawn_location = vehicle::get_spawn_location(vehicle.m_hash);
 
-						const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
-
-						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location, spawn_heading);
+						auto veh = vehicle::spawn(vehicle.m_hash, spawn_location);
 
 						if (veh == 0)
 							g_notification_service->push_error("Vehicle", "Unable to spawn vehicle");
 						else
 						{
-							if (g_spawn_vehicle.spawn_maxed)
+							if (spawn_maxed)
 								vehicle::max_vehicle(veh);
-							if (g_spawn_vehicle.spawn_inside)
+							if (g_vehicle.spawn_inside)
 								vehicle::teleport_into_vehicle(veh);
 						}
 
@@ -122,7 +120,7 @@ namespace big
 
 					if (g_vehicle_preview.is_camera_prepared && !ImGui::IsAnyItemHovered())
 						g_vehicle_preview.clear();
-					else if (g_enable_vehicle_preview && ImGui::IsItemHovered())
+					else if (g_vehicle.preview_vehicle && ImGui::IsItemHovered())
 						g_vehicle_preview.preview_veh(vehicle.m_hash);
 				}
 			}
@@ -136,7 +134,6 @@ namespace big
 
 	void view::spawn_vehicle()
 	{
-		static bool spawn_at_waypoint;
 		static int spawn_vehicle_type;
 
 		ImGui::RadioButton("New", &spawn_vehicle_type, 0);
@@ -144,18 +141,24 @@ namespace big
 		ImGui::RadioButton("Personal", &spawn_vehicle_type, 1);
 		ImGui::SameLine();
 		ImGui::RadioButton("Persistent", &spawn_vehicle_type, 2);
+
 		ImGui::Spacing();
-		ImGui::Checkbox("Spawn at waypoint", &spawn_at_waypoint);
-		ImGui::Spacing();
-		if (ImGui::Checkbox("Preview", &g_enable_vehicle_preview))
-			if (!g_enable_vehicle_preview)
+
+		ImGui::Checkbox("Spawn at waypoint", &g_vehicle.spawn_at_waypoint);
+		ImGui::SameLine();
+		ImGui::Checkbox("Spawn Inside", &g_vehicle.spawn_inside);
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Preview", &g_vehicle.preview_vehicle))
+			if (!g_vehicle.preview_vehicle)
 				g_vehicle_preview.clear();
+
+		ImGui::Spacing();
 
 		switch (spawn_vehicle_type)
 		{
-		case 0: render_spawn_new_vehicle(spawn_at_waypoint); break;
+		case 0: render_spawn_new_vehicle(); break;
 		case 1: view::pv(); break;
-		case 2: view::persist_car(spawn_at_waypoint); break;
+		case 2: view::persist_car(); break;
 		}
 	}
 }

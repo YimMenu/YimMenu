@@ -1,6 +1,6 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "core/settings/vehicle.hpp"
+#include "core/data/vehicle.hpp"
 #include "natives.hpp"
 #include "util/mobile.hpp"
 

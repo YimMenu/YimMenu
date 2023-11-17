@@ -1,4 +1,5 @@
 #pragma once
+#include "services/mobile/mobile_service.hpp"
 
 namespace big
 {
@@ -18,11 +19,10 @@ namespace big
 
 		void preview_veh(Hash hash);
 		void preview_persisted_veh(std::string file_name, std::string folder_name);
-		void preview_personal_veh(std::map<int, int32_t> mods);
+		void preview_personal_veh(const std::unique_ptr<big::personal_vehicle>& personal_veh);
 		void clear();
 		void reset();
 	};
 
 	inline vehicle_preview g_vehicle_preview;
-	inline bool g_enable_vehicle_preview;
 }

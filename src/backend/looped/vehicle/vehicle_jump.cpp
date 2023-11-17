@@ -1,5 +1,5 @@
 #include "backend/looped_command.hpp"
-#include "core/settings/vehicle.hpp"
+#include "core/data/vehicle.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 

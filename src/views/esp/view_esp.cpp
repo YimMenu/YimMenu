@@ -9,12 +9,10 @@ namespace big
 {
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
-		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation || !plyr->get_ped()->m_model_info)
+		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			return;
 
-		rage::fvector4 player_pos;
-		if (!g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
-			return;
+		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
 
 		float screen_x, screen_y;
 

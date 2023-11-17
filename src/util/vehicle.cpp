@@ -8,23 +8,18 @@
 
 namespace big::vehicle
 {
-	Vector3 get_spawn_location(bool spawn_inside, Hash hash, Ped ped)
+	Vector3 get_spawn_location(Hash hash, Ped ped)
 	{
-		float y_offset = 0;
-
-		if (self::veh != 0)
+		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
 		{
-			Vector3 min, max, result;
-			MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
-			result   = max - min;
-			y_offset = result.y;
-		}
-		else if (!spawn_inside)
-		{
-			y_offset = 5.f;
+			STREAMING::REQUEST_MODEL(hash);
+			script::get_current()->yield();
 		}
 
-		return ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, y_offset, 0.f);
+		Vector3 min, max, result;
+		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
+
+		return ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(ped, 0.f, (max - min).y, 0.f);
 	}
 
 	std::optional<Vector3> get_waypoint_location()
@@ -102,6 +97,9 @@ namespace big::vehicle
 		{
 			return 0;
 		}
+
+		if (!heading)
+			heading = ENTITY::GET_ENTITY_HEADING(self::ped) + 90;
 
 		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
 
@@ -240,9 +238,9 @@ namespace big::vehicle
 		return owned_mods;
 	}
 
-	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked)
+	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, bool is_networked)
 	{
-		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked);
+		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, 0, is_networked);
 		if (vehicle == 0)
 		{
 			return 0;
