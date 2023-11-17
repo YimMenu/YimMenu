@@ -14,9 +14,9 @@ namespace big::entity
 			return;
 		}
 
-		if (!(ent && ENTITY::DOES_ENTITY_EXIST(ent)))
+		if (!(ent && ENTITY::DOES_ENTITY_EXIST(ent) && !ENTITY::IS_ENTITY_DEAD(ent, 0)))
 		{
-			g_notification_service->push_error("Deletion failed", std::format("Entity does not exist {}", ent));
+			g_notification_service->push_error("Deletion failed", std::format("Entity looks dead {}", ent));
 			return;
 		}
 		if (!take_control_of(ent))

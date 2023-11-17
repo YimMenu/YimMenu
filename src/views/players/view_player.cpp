@@ -276,8 +276,6 @@ namespace big
 			// ImGui::BeginDisabled(globals::get_interior_from_player(current_player->id()) != 0);
 			components::player_command_button<"kill">(current_player, {});
 
-			components::player_command_button<"explode">(current_player, {});
-
 			components::player_command_button<"vehkick">(current_player, {});
 
 			components::button("Stop Vehicle", [current_player] {
