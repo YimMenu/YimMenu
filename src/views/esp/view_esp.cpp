@@ -71,6 +71,87 @@ namespace big
 			if (distance < g.esp.box_render_distance[1] && distance > g.esp.box_render_distance[0] && g.esp.box)
 				draw_list->AddRect({esp_x - (62.5f * multplr), esp_y - (175.f * multplr)}, {esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr)}, esp_color);
 
+			if (distance < g.esp.skeleton_render_distance[1] && distance > g.esp.skeleton_render_distance[0] && g.esp.skeleton)
+			{
+				std::vector<PedBones> bone_ids = // size: 18
+				{
+				    PedBones::SKEL_Head,
+				    PedBones::SKEL_Neck_1,
+				    PedBones::SKEL_Spine_Root,
+				    PedBones::SKEL_Pelvis,
+				    PedBones::SKEL_L_Thigh,
+				    PedBones::SKEL_R_Thigh,
+				    PedBones::SKEL_L_Calf,
+				    PedBones::SKEL_R_Calf,
+				    PedBones::SKEL_L_Foot,
+				    PedBones::SKEL_R_Foot,
+				    PedBones::SKEL_L_Clavicle,
+				    PedBones::SKEL_R_Clavicle,
+				    PedBones::SKEL_L_UpperArm,
+				    PedBones::SKEL_R_UpperArm,
+				    PedBones::SKEL_L_Forearm,
+				    PedBones::SKEL_R_Forearm, 
+					PedBones::SKEL_L_Hand, 
+					PedBones::SKEL_R_Hand
+				};
+
+				std::vector<rage::fvector4> bones = {};
+				const size_t skel_size            = 18;
+
+				for (int i = 0; i < 18; i++)
+				{
+					rage::fvector4 out = {};
+					if (g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), out, bone_ids[i]))
+					{
+						bones.push_back(out);
+					}
+				}
+
+				if (bones.size() == skel_size)
+				{
+					rage::fvector2 bones_screen[skel_size] = {};
+					bool render_skeleton                   = true;
+
+					for (int i = 0; i < skel_size; i++)
+					{
+						if (!g_pointers->m_gta.m_get_screen_coords_for_world_coords(bones[i].data, &bones_screen[i].x, &bones_screen[i].y))
+						{
+							render_skeleton = false;
+							break;
+						}
+					}
+
+					if (render_skeleton)
+					{
+						ImVec2 render_pos[skel_size] = {};
+
+						for (int i = 0; i < skel_size; i++)
+						{
+							auto buffer   = ImVec2((float)*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, (float)*g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
+
+							render_pos[i] = ImVec2(buffer.x, buffer.y - ((!i ? 25.f : 10.f) * multplr));
+						}
+
+						draw_list->AddLine(render_pos[0], render_pos[1], esp_color);   // head -> neck
+						draw_list->AddLine(render_pos[1], render_pos[2], esp_color);   // neck -> spine
+						draw_list->AddLine(render_pos[3], render_pos[4], esp_color);   // pelvis -> lthigh
+						draw_list->AddLine(render_pos[3], render_pos[5], esp_color);   // pelvis -> rthigh
+						draw_list->AddLine(render_pos[4], render_pos[6], esp_color);   // lthigh -> lcalf
+						draw_list->AddLine(render_pos[5], render_pos[7], esp_color);   // rthigh -> rcalf
+						draw_list->AddLine(render_pos[6], render_pos[8], esp_color);   // lcalf -> lfoot
+						draw_list->AddLine(render_pos[7], render_pos[9], esp_color);   // rcalf -> rfoot
+						draw_list->AddLine(render_pos[1], render_pos[10], esp_color);  // neck -> lclavicle
+						draw_list->AddLine(render_pos[1], render_pos[11], esp_color);  // neck -> rclavicle
+						draw_list->AddLine(render_pos[10], render_pos[12], esp_color); // lclavicle -> lupperarm
+						draw_list->AddLine(render_pos[11], render_pos[13], esp_color); // rclavicle -> rupperarm
+						draw_list->AddLine(render_pos[12], render_pos[14], esp_color); // lupperarm -> lforearm
+						draw_list->AddLine(render_pos[13], render_pos[15], esp_color); // rupperarm -> rforearm
+						draw_list->AddLine(render_pos[14], render_pos[16], esp_color); // lforearm -> lhand
+						draw_list->AddLine(render_pos[15], render_pos[17], esp_color); // rforearm -> rhand
+					}
+				}
+			}
+
 			if (g.esp.name)
 				name_str = plyr->get_name();
 

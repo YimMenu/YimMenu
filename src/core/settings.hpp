@@ -938,28 +938,30 @@ namespace big
 
 		struct esp
 		{
-			bool enabled                    = true;
-			float global_render_distance[2] = {0.f, 600.f};
-			float tracer_render_distance[2] = {200.f, 600.f};
-			float box_render_distance[2]    = {0.f, 150.f};
-			bool tracer                     = true;
-			float tracer_draw_position[2]   = {0.5f, 1.f};
-			bool box                        = true;
-			bool health                     = true;
-			bool armor                      = true;
-			bool god                        = true;
-			bool distance                   = true;
-			bool name                       = true;
-			bool change_esp_color_from_dist = false;
-			bool scale_health_from_dist     = false;
-			bool scale_armor_from_dist      = false;
-			float distance_threshold[2]     = {100.f, 200.f};
-			ImU32 enemy_color               = 4281479904;
-			ImU32 enemy_near_color          = 4283794943;
-			ImU32 default_color             = 4285713522;
-			ImU32 friend_color              = 4293244509;
+			bool enabled                      = true;
+			float global_render_distance[2]   = {0.f, 600.f};
+			float tracer_render_distance[2]   = {200.f, 600.f};
+			float box_render_distance[2]      = {0.f, 150.f};
+			float skeleton_render_distance[2] = {0.f, 150.f};
+			bool tracer                       = true;
+			float tracer_draw_position[2]     = {0.5f, 1.f};
+			bool box                          = true;
+			bool skeleton                     = true;
+			bool health                       = true;
+			bool armor                        = true;
+			bool god                          = true;
+			bool distance                     = true;
+			bool name                         = true;
+			bool change_esp_color_from_dist   = false;
+			bool scale_health_from_dist       = false;
+			bool scale_armor_from_dist        = false;
+			float distance_threshold[2]       = {100.f, 200.f};
+			ImU32 enemy_color                 = 4281479904;
+			ImU32 enemy_near_color            = 4283794943;
+			ImU32 default_color               = 4285713522;
+			ImU32 friend_color                = 4293244509;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, skeleton_render_distance, tracer, tracer_draw_position, box, skeleton, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
 		} esp{};
 
 		struct session_browser

@@ -33,6 +33,16 @@ namespace big
 				    g.esp.global_render_distance[1]);
 			}
 
+			ImGui::Checkbox("SETTINGS_ESP_SKELETON"_T.data(), &g.esp.skeleton);
+			if (g.esp.skeleton)
+			{
+				ImGui::Text("SETTINGS_ESP_SKELETON_RENDER_DISTANCE"_T.data());
+				ImGui::SliderFloat2("###Skeleton Render Distance",
+				    g.esp.skeleton_render_distance,
+				    g.esp.global_render_distance[0],
+				    g.esp.global_render_distance[1]);
+			}
+
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_NAME"_T.data(), &g.esp.name);
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_DISTANCE"_T.data(), &g.esp.distance);
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_GOD_MODE"_T.data(), &g.esp.god);
