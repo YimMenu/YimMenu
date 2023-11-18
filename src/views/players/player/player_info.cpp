@@ -5,6 +5,7 @@
 #include "services/player_database/player_database_service.hpp"
 #include "views/view.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "util/session.hpp"
 
 #include <network/netConnection.hpp>
 #include <script/globals/GPBD_FM.hpp>
@@ -179,11 +180,7 @@ namespace big
 			ImGui::SameLine();
 
 			if (ImGui::SmallButton("VIEW_PLAYER_INFO_SC_PROFILE"_T.data()))
-				g_fiber_pool->queue_job([] {
-					uint64_t gamerHandle[13];
-					NETWORK::NETWORK_HANDLE_FROM_PLAYER(g_player_service->get_selected()->id(), (Any*)&gamerHandle, 13);
-					NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)&gamerHandle);
-				});
+				session::show_profile_by_rockstar_id(g_player_service->get_selected()->get_net_data()->m_gamer_handle.m_rockstar_id);
 
 			if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr)
 			{

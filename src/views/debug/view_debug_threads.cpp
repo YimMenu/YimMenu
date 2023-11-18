@@ -105,7 +105,7 @@ namespace big
 				    + std::string("VIEW_DEBUG_THREADS_STATE_1"_T.data()) + '\0'
 				    + std::string("VIEW_DEBUG_THREADS_STATE_2"_T.data()) + '\0'
 				    + std::string("VIEW_DEBUG_THREADS_STATE_3"_T.data()) + '\0'
-				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data());
+				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data()) + '\0';
 				ImGui::Combo("VIEW_DEBUG_THREADS_STATE"_T.data(), (int*)&selected_thread->m_context.m_state, thread_states.c_str());
 				//Script Pointer
 				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T).c_str());

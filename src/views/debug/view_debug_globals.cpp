@@ -2,6 +2,7 @@
 #include "script_global.hpp"
 #include "thread_pool.hpp"
 #include "view_debug.hpp"
+#include "widgets/imgui_bitfield.hpp"
 
 namespace big
 {
@@ -10,6 +11,16 @@ namespace big
 		GlobalAppendageType_At,
 		GlobalAppendageType_ReadGlobal,
 		GlobalAppendageType_PlayerId,
+	};
+
+	enum GlobalValueType : int
+	{
+		INT,
+		BOOLEAN,
+		BITSET,
+		FLOAT,
+		VECTOR,
+		VARCHAR
 	};
 
 	struct global_debug_inner
@@ -26,8 +37,9 @@ namespace big
 	{
 		std::size_t global_index{};
 		std::vector<global_debug_inner> global_appendages{};
+		GlobalValueType global_value_type = GlobalValueType::INT;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_debug, global_index, global_appendages)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(global_debug, global_index, global_appendages, global_value_type)
 	};
 
 	nlohmann::json get_globals_json()
@@ -93,6 +105,47 @@ namespace big
 		return retn_val;
 	}
 
+	std::string get_global_display(global_debug& global_test)
+	{
+		auto ptr = get_global_ptr(global_test);
+		if (ptr != nullptr)
+		{
+			switch (global_test.global_value_type)
+			{
+				case GlobalValueType::INT:
+				{
+					return std::to_string(*(PINT)ptr);
+				}
+				case GlobalValueType::BOOLEAN:
+				{
+					return (*ptr == TRUE) ? "TRUE" : "FALSE";
+				}
+				case GlobalValueType::BITSET:
+				{
+					std::ostringstream o;
+					o << "0x" << std::hex << std::uppercase << (DWORD)*ptr;
+					return o.str();
+				}
+				case GlobalValueType::FLOAT:
+				{
+					return std::to_string(*(PFLOAT)ptr);
+				}
+				case GlobalValueType::VECTOR:
+				{
+				    std::ostringstream o;
+				    auto vectorptr = (rage::scrVector*)ptr;
+				    o << "X: " << std::fixed << std::setprecision(2) << vectorptr->x << " Y: " << vectorptr->y << " Z: " << vectorptr->z;
+				    return o.str();
+				}
+				case GlobalValueType::VARCHAR:
+				{
+					return (PCHAR)ptr;
+				}
+			}
+		}
+		return "VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data();
+	}
+
 	std::map<std::string, global_debug> list_globals()
 	{
 		auto json = get_globals_json();
@@ -137,7 +190,7 @@ namespace big
 			static global_debug global_test{};
 			static script_global glo_bal_sunday = script_global(global_test.global_index);
 			ImGui::SetNextItemWidth(200.f);
-			if (ImGui::InputScalar("VIEW_DEBUG_GLOBAL"_T.data(), ImGuiDataType_U64, &global_test.global_index))
+			if (ImGui::InputScalar("VIEW_DEBUG_GLOBAL"_T.data(), ImGuiDataType_U32, &global_test.global_index))
 				glo_bal_sunday = script_global(global_test.global_index);
 
 			for (int i = 0; i < global_test.global_appendages.size(); i++)
@@ -148,20 +201,20 @@ namespace big
 				{
 					case GlobalAppendageType_At:
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].index);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_AT"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].index);
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_ReadGlobal:
 						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T, item.global_name).c_str());
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_PlayerId:
 						ImGui::SetNextItemWidth(200.f);
-						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_S64, &global_test.global_appendages[i].size);
+						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_READ_PLAYER_ID_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 				}
 				ImGui::PopID();
@@ -178,16 +231,72 @@ namespace big
 
 			if (auto ptr = get_global_ptr(global_test))
 			{
-				ImGui::SetNextItemWidth(200.f);
-				ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_S32, ptr);
+				switch (global_test.global_value_type)
+				{
+					case GlobalValueType::INT:
+					{
+					    ImGui::SetNextItemWidth(300.f);
+					    ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_S32, ptr);
+					    break;
+					}
+				    case GlobalValueType::BOOLEAN:
+				    {
+					    ImGui::SetNextItemWidth(300.f);
+					    bool is_global_enabled = (*ptr == TRUE);
+					    if (ImGui::Checkbox("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), &is_global_enabled))
+					    {
+					        *ptr = is_global_enabled;
+					    }
+					    break;
+				    }
+				    case GlobalValueType::BITSET:
+				    {
+					    ImGui::SetNextItemWidth(300.f);
+					    ImGui::Bitfield("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PINT)ptr);
+					    break;
+				    }
+				    case GlobalValueType::FLOAT:
+					{
+					    ImGui::SetNextItemWidth(300.f);
+					    ImGui::InputScalar("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), ImGuiDataType_Float, ptr);
+					    break;
+					}
+				    case GlobalValueType::VECTOR:
+				    {
+					    ImGui::PushItemWidth(100.f);
+					    auto vectorptr = (rage::scrVector*)ptr;
+					    ImGui::InputScalar("X", ImGuiDataType_Float, &vectorptr->x);
+					    ImGui::SameLine();
+					    ImGui::InputScalar("Y", ImGuiDataType_Float, &vectorptr->y);
+					    ImGui::SameLine();
+					    ImGui::InputScalar("Z", ImGuiDataType_Float, &vectorptr->z);
+					    ImGui::PopItemWidth();
+					    break;
+				    }
+				    case GlobalValueType::VARCHAR:
+					{
+					    ImGui::SetNextItemWidth(300.f);
+					    std::string characters = (PCHAR)ptr;
+						try
+						{
+						    components::input_text("VIEW_DEBUG_GLOBAL_VALUE"_T.data(), (PCHAR)ptr, 255);
+						} catch (...){ } //This can crash if the user tries to edit the invalid ??? scenario from ImGui, so to prevent that, just silently do nothing.
+					    break;
+					}
+				}
 			}
 			else
+			{
 				ImGui::Text("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data());
+			}
+
+			ImGui::SetNextItemWidth(150.f);
+			ImGui::Combo("VIEW_DEBUG_GLOBAL_TYPE"_T.data(), (int*)&global_test.global_value_type, "INT\0BOOLEAN\0BITSET\0FLOAT\0VECTOR\0VARCHAR\0");
 
 			auto globals = list_globals();
 			static std::string selected_global;
 			ImGui::Text("VIEW_DEBUG_GLOBAL_SAVED_GLOBALS"_T.data());
-			if (ImGui::BeginListBox("##savedglobals", ImVec2(200, 200)))
+			if (ImGui::BeginListBox("##savedglobals", ImVec2(200, 250)))
 			{
 				for (auto pair : globals)
 				{
@@ -197,14 +306,11 @@ namespace big
 				ImGui::EndListBox();
 			}
 			ImGui::SameLine();
-			if (ImGui::BeginListBox("##globalvalues", ImVec2(200, 200)))
+			if (ImGui::BeginListBox("##globalvalues", ImVec2(250, 250)))
 			{
 				for (auto pair : globals)
 				{
-					if (auto ptr = get_global_ptr(pair.second))
-						ImGui::Selectable(std::format("{}", (std::int32_t)*ptr).c_str(), false, ImGuiSelectableFlags_Disabled);
-					else
-						ImGui::Selectable("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data(), false, ImGuiSelectableFlags_Disabled);
+					ImGui::Selectable(get_global_display(pair.second).c_str(), false, ImGuiSelectableFlags_Disabled);
 				}
 				ImGui::EndListBox();
 			}
@@ -212,10 +318,10 @@ namespace big
 			ImGui::BeginGroup();
 			static char global_name[50]{};
 			ImGui::SetNextItemWidth(200.f);
-			ImGui::InputText("##GlobalName", global_name, IM_ARRAYSIZE(global_name));
+			components::input_text("##GlobalName", global_name, IM_ARRAYSIZE(global_name));
 			if (ImGui::IsItemActive())
 				g.self.hud.typing = TYPING_TICKS;
-			if (ImGui::Button("Save Global"))
+			if (ImGui::Button("VIEW_DEBUG_GLOBAL_SAVE_GLOBAL"_T.data()))
 			{
 				save_global(global_name, global_test);
 			}
@@ -236,7 +342,16 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::Button("VIEW_DEBUG_GLOBAL_ADD_READ_GLOBAL"_T.data()))
 			{
-				global_test.global_appendages.push_back({GlobalAppendageType_ReadGlobal, 0LL, 0ULL, selected_global});
+				global_debug global_read{};
+				load_global_menu(selected_global, global_read);
+				if (global_read.global_value_type == GlobalValueType::INT)
+				{
+					global_test.global_appendages.push_back({GlobalAppendageType_ReadGlobal, 0LL, 0ULL, selected_global});
+				}
+				else
+				{
+					g_notification_service->push_warning("DEBUG_TAB_GLOBALS"_T.data(), "VIEW_DEBUG_GLOBAL_INVALID_TYPE"_T.data());
+				}
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("VIEW_DEBUG_GLOBAL_CLEAR"_T.data()))

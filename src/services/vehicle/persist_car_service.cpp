@@ -154,7 +154,6 @@ namespace big
 
 				ENTITY::SET_ENTITY_VISIBLE(object, attachment.is_visible, 0);
 				ENTITY::SET_ENTITY_COLLISION(object, attachment.has_collision, true);
-				ENTITY::SET_ENTITY_INVINCIBLE(object, attachment.is_invincible);
 			}
 		}
 
@@ -183,7 +182,6 @@ namespace big
 
 			ENTITY::SET_ENTITY_VISIBLE(vehicle_to_attach, attachment.is_visible, 0);
 			ENTITY::SET_ENTITY_COLLISION(vehicle_to_attach, attachment.has_collision, true);
-			ENTITY::SET_ENTITY_INVINCIBLE(vehicle_to_attach, attachment.is_invincible);
 			VEHICLE::SET_VEHICLE_IS_CONSIDERED_BY_PLAYER(vehicle_to_attach, false);
 		}
 
@@ -193,17 +191,29 @@ namespace big
 	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
-		Vector3 spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
+		const Vector3& spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
 		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
-		const auto vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
+		Vehicle vehicle = self::veh;
+		if (spawn_coords.has_value() || (!spawn_coords.has_value() && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
+		{
+			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
 
-		if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
-			script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
+			if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
+				script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.
+		}
 
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(vehicle, 0.0f);
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
+
+		if (!vehicle_json[tire_can_burst].is_null())
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, vehicle_json[tire_can_burst]);
+		else
+			VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(vehicle, false);
+
+		if (!vehicle_json[drift_tires].is_null())
+			VEHICLE::SET_DRIFT_TYRES(vehicle, vehicle_json[drift_tires]);
+
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, vehicle_json[primary_color_key], vehicle_json[secondary_color_key]);
 
 		if (!vehicle_json[custom_primary_color_key].is_null())
@@ -222,12 +232,6 @@ namespace big
 		{
 			bool has_collision = vehicle_json[has_collision_key];
 			ENTITY::SET_ENTITY_COLLISION(vehicle, has_collision, true);
-		}
-
-		if (!vehicle_json[is_invincible_key].is_null())
-		{
-			bool is_invincible = vehicle_json[is_invincible_key];
-			ENTITY::SET_ENTITY_INVINCIBLE(vehicle, is_invincible);
 		}
 
 		if (!vehicle_json[custom_secondary_color_key].is_null())
@@ -355,14 +359,13 @@ namespace big
 		bool has_collision          = ENTITY::GET_ENTITY_COLLISION_DISABLED(object);
 		bool is_visible             = ENTITY::IS_ENTITY_VISIBLE(object);
 		CObject* cobject            = (CObject*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
-		bool is_invincible          = misc::has_bit_set(&(int&)cobject->m_damage_bits, 8);
 
 		Vector3 rotation;
 		rotation.x = (object_rotation.x - vehicle_rotation.x);
 		rotation.y = (object_rotation.y - vehicle_rotation.y);
 		rotation.z = (object_rotation.z - vehicle_rotation.z);
 
-		model_attachment attachment = {ENTITY::GET_ENTITY_MODEL(object), location, rotation, !has_collision, is_visible, is_invincible};
+		model_attachment attachment = {ENTITY::GET_ENTITY_MODEL(object), location, rotation, !has_collision, is_visible};
 
 		return attachment;
 	}
@@ -465,11 +468,11 @@ namespace big
 		bool has_collision                  = ENTITY::GET_ENTITY_COLLISION_DISABLED(vehicle);
 		bool is_visible                     = ENTITY::IS_ENTITY_VISIBLE(vehicle);
 		CVehicle* cvehicle                  = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(vehicle);
-		bool is_invincible                  = misc::has_bit_set(&(int&)cvehicle->m_damage_bits, 8);
 		vehicle_json[has_collision_key]     = !has_collision;
 		vehicle_json[is_visible_key]        = is_visible;
-		vehicle_json[is_invincible_key]     = is_invincible;
 		vehicle_json[wheel_color_key]       = wheel_color;
+		vehicle_json[tire_can_burst]        = VEHICLE::GET_VEHICLE_TYRES_CAN_BURST(vehicle);
+		vehicle_json[drift_tires]           = VEHICLE::GET_DRIFT_TYRES_SET(vehicle);
 
 		std::map<int, bool> vehicle_extras;
 		for (int extra_iterator = 0; extra_iterator <= 14; extra_iterator++)

@@ -14,6 +14,21 @@ namespace big
 			view::time_and_weather();
 		}
 
+		ImGui::SeparatorText("GUI_TAB_GRAVITY"_T.data());
+		{
+			view::gravity();
+		}
+
+		ImGui::SeparatorText("GUI_TAB_OCEAN"_T.data());
+		{
+			view::ocean();
+		}
+
+		ImGui::SeparatorText("GUI_TAB_WAYPOINT_N_OBJECTIVE"_T.data());
+		{
+			view::waypoint_and_objective();
+		}
+
 		ImGui::SeparatorText("PED"_T.data());
 
 		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {
@@ -31,7 +46,7 @@ namespace big
 				if (!PED::IS_PED_A_PLAYER(ped))
 				{
 					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
-					if (relation == 4 || relation == 5)
+					if (relation == 4 || relation == 5 || relation == 3)
 						ped::kill_ped(ped);
 				}
 			}
@@ -54,7 +69,7 @@ namespace big
 
 		ImGui::SeparatorText("VEHICLES"_T.data());
 
-		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
+		components::button<ImVec2(0, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))
@@ -66,7 +81,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button<ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
+		components::button<ImVec2(0, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))

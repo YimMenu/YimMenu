@@ -158,6 +158,32 @@ namespace big::session
 		});
 	}
 
+	inline void invite_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		bool success = g_pointers->m_gta.m_invite_player_by_gamer_handle(g_pointers->m_gta.m_network_config, &player_handle, 1, 0, 0, 0);
+
+		if (!success)
+			return g_notification_service->push_error("Network", "Target player could not be invited, they might be offline?");
+
+		g_notification_service->push_success("Network", "Target player has been invited to your session!");
+	}
+
+	inline void show_profile_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		g_pointers->m_gta.m_show_profile_by_gamer_handle(&player_handle);
+	}
+
+	inline void add_friend_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		g_pointers->m_gta.m_add_friend_by_gamer_handle(&player_handle, 0);
+	}
+
 	inline void add_infraction(player_ptr player, Infraction infraction, const std::string& custom_reason = "")
 	{
 		if (g.debug.fuzzer.enabled)

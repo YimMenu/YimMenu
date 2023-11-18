@@ -33,6 +33,33 @@ namespace big
                 g_pointers->m_gta.m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
             }
         },
+        // Ocean Quads
+        {
+            "OQ",
+            "74 41 4C 8B 05 ? ? ?",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_ocean_quads = ptr.add(5).rip().as<uint64_t>();
+            }
+        },
+        // Gravity Level
+        {
+            "GL",
+            "48 8D 0D ? ? ? ? F3 0F 10 04 81 F3 0F 11 05",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_gravity_level = ptr.add(3).rip().as<float*>();
+            }
+        },
+        // Set Gravity Level
+        {
+            "SGL",
+            "48 83 EC ? 83 F9 ? 77 ? 48 63 C1 48 8D 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_gravity_level = ptr.as<functions::set_gravity_level>();
+            }
+        },
         // Game State
         {
             "GS",
@@ -608,6 +635,42 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_join_session_by_info = ptr.add(1).rip().as<functions::join_session_by_info>();
+            }
+        },
+        // Invite Player By Gamer Handle
+        {
+            "IPBGH",
+            "E8 ? ? ? ? 4C 8D 05 ? ? ? ? 48 8D 15 ? ? ? ? E9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_invite_player_by_gamer_handle = ptr.add(1).rip().as<functions::invite_player_by_gamer_handle>();
+            }
+        },
+        // Add Friend By Gamer Handle
+        {
+            "AFBGH",
+            "48 89 5C 24 ? 57 48 83 EC ? 48 8B F9 B1 ? 48 8B DA E8 ? ? ? ? 84 C0 74 ? 8B 15",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_add_friend_by_gamer_handle = ptr.as<functions::add_friend_by_gamer_handle>();
+            }
+        },
+        // Show Profile By Gamer Handle
+        {
+            "SPBGH",
+            "E8 ? ? ? ? E9 ? ? ? ? 3D ? ? ? ? 75 ? E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_show_profile_by_gamer_handle = ptr.add(1).rip().as<functions::show_profile_by_gamer_handle>();
+            }
+        },
+        // Network Config
+        {
+            "NC",
+            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_network_config = ptr.add(3).rip().as<uint64_t>();
             }
         },
         // Script VM
@@ -1693,6 +1756,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
+            }
+        },
+        // Get Ped Bone
+        {
+            "GPB",
+            "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 60 48 8B 01 41 8B E8 48 8B F2",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_ped_pone = ptr.as<functions::get_ped_pone>();
             }
         }
         >(); // don't leave a trailing comma at the end

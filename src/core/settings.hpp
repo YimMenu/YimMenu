@@ -227,9 +227,11 @@ namespace big
 
 		struct player
 		{
-			bool spectating    = false;
+			bool spectating            = false;
+			bool override_cam_distance = false;
+			int cam_distance           = 10;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(player, spectating, override_cam_distance, cam_distance)
 		} player{};
 
 		struct player_db
@@ -542,6 +544,33 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
 			} water{};
 
+			struct gravity
+			{
+				bool modify_gravity   = false;
+				float current_gravity = 9.8f;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gravity, modify_gravity, current_gravity)
+			} gravity{};
+
+			struct ocean
+			{
+				bool modify_ocean   = false;
+				bool disable_ocean	= false;
+				int ocean_opacity	= 100;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ocean, modify_ocean, disable_ocean, ocean_opacity)
+			} ocean{};
+
+			struct waypoint_n_objective
+			{
+				bool waypoint_beacon            = false;
+				bool objective_beacon           = false;
+				float waypoint_beacon_color[3]  = {1, 0, 1};
+				float objective_beacon_color[3] = {1, 1, 0};
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(waypoint_n_objective, waypoint_beacon, objective_beacon, objective_beacon_color, waypoint_beacon_color)
+			} waypoint_n_objective{};
+
 			struct spawn_ped
 			{
 				bool preview_ped       = false;
@@ -606,9 +635,10 @@ namespace big
 			bool override_weather = false;
 			int local_weather     = 0;
 
-			bool blackout = false;
+			bool blackout    = false;
+			bool ground_snow = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout, ground_snow)
 		} world{};
 
 		struct spoofing
@@ -909,7 +939,6 @@ namespace big
 		struct esp
 		{
 			bool enabled                    = true;
-			bool hide_self                  = true;
 			float global_render_distance[2] = {0.f, 600.f};
 			float tracer_render_distance[2] = {200.f, 600.f};
 			float box_render_distance[2]    = {0.f, 150.f};
@@ -930,7 +959,7 @@ namespace big
 			ImU32 default_color             = 4285713522;
 			ImU32 friend_color              = 4293244509;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, hide_self, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
 		} esp{};
 
 		struct session_browser

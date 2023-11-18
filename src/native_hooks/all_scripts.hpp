@@ -146,7 +146,7 @@ namespace big
 
 		void SET_ENTITY_HEALTH(rage::scrNativeCallContext* src)
 		{
-			Entity entity = src->get_arg<int>(0);
+			Entity entity = src->get_arg<Entity>(0);
 			int health    = src->get_arg<int>(1);
 			int p2        = src->get_arg<int>(2);
 
@@ -154,6 +154,19 @@ namespace big
 				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
 
 			ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
+		}
+
+		void APPLY_DAMAGE_TO_PED(rage::scrNativeCallContext* src)
+		{
+			Ped ped                 = src->get_arg<Ped>(0);
+			int damage              = src->get_arg<int>(1);
+			BOOL damage_armor_first = src->get_arg<BOOL>(2);
+			Any p3                  = src->get_arg<Any>(3);
+
+			if (g.self.god_mode && ped == self::ped)
+				return;
+
+			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)

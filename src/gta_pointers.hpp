@@ -92,6 +92,10 @@ namespace big
 
 		uint32_t* m_region_code;
 
+		uint64_t m_ocean_quads;
+		float* m_gravity_level;
+		functions::set_gravity_level m_set_gravity_level;
+
 		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
@@ -157,6 +161,11 @@ namespace big
 		functions::start_get_session_by_gamer_handle m_start_get_session_by_gamer_handle;
 		functions::start_matchmaking_find_sessions m_start_matchmaking_find_sessions;
 		functions::join_session_by_info m_join_session_by_info;
+
+		functions::invite_player_by_gamer_handle m_invite_player_by_gamer_handle;
+		functions::add_friend_by_gamer_handle m_add_friend_by_gamer_handle;
+		functions::show_profile_by_gamer_handle m_show_profile_by_gamer_handle;
+		uint64_t m_network_config;
 
 		functions::reset_network_complaints m_reset_network_complaints;
 
@@ -349,6 +358,8 @@ namespace big
 		PVOID m_remove_player_from_sender_list_caller_2;
 
 		PVOID m_game_skeleton_update;
+
+		functions::get_ped_pone m_get_ped_pone;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

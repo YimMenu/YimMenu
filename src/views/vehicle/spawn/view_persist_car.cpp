@@ -28,7 +28,7 @@ namespace big
 			{
 				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
-			else if (g.persist_car.spawn_inside)
+			else if (g.persist_car.spawn_inside && self::veh != vehicle)
 			{
 				teleport::into_vehicle(vehicle);
 			}
