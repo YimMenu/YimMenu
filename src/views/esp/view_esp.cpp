@@ -98,7 +98,7 @@ namespace big
 				std::vector<rage::fvector4> bones = {};
 				const size_t skel_size            = 18;
 
-				for (int i = 0; i < 18; i++)
+				for (int i = 0; i < skel_size; i++)
 				{
 					rage::fvector4 out = {};
 					if (g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), out, bone_ids[i]))
