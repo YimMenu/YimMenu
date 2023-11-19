@@ -87,7 +87,7 @@ namespace big
 
 			if (distance < g.esp.skeleton_render_distance[1] && distance > g.esp.skeleton_render_distance[0] && g.esp.skeleton)
 			{
-				std::vector<PedBones> bone_ids = // size: 18
+				const std::vector<PedBones> bone_ids = // size: 18
 				{
 					PedBones::SKEL_Head, 
 					PedBones::SKEL_Neck_1,
