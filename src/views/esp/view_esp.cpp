@@ -115,7 +115,7 @@ namespace big
 				for (int i = 0; i < skel_size; i++)
 				{
 					rage::fvector4 out = {};
-					if (g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), out, bone_ids[i]))
+					if (g_pointers->m_gta.m_get_ped_bone(plyr->get_ped(), out, bone_ids[i]))
 					{
 						bones.push_back(out);
 					}
@@ -124,6 +124,7 @@ namespace big
 				if (bones.size() == skel_size)
 				{
 					rage::fvector2 bones_screen[skel_size] = {};
+					ImVec2 render_pos[skel_size]           = {};
 					bool render_skeleton                   = true;
 
 					for (int i = 0; i < skel_size; i++)
@@ -133,21 +134,18 @@ namespace big
 							render_skeleton = false;
 							break;
 						}
+						else
+						{
+							auto buffer   = ImVec2((float)*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, (float)*g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
+							render_pos[i] = ImVec2(buffer.x, buffer.y - ((!i ? 25.f : 10.f) * multplr));
+						}
 					}
 
 					if (render_skeleton)
 					{
-						ImVec2 render_pos[skel_size] = {};
-
-						for (int i = 0; i < skel_size; i++)
-						{
-							auto buffer   = ImVec2((float)*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, (float)*g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
-
-							render_pos[i] = ImVec2(buffer.x, buffer.y - ((!i ? 25.f : 10.f) * multplr));
-						}
-
 						draw_list->AddLine(render_pos[0], render_pos[1], esp_color);   // head -> neck
 						draw_list->AddLine(render_pos[1], render_pos[2], esp_color);   // neck -> spine
+						draw_list->AddLine(render_pos[2], render_pos[3], esp_color);   // spine -> pelvis
 						draw_list->AddLine(render_pos[3], render_pos[4], esp_color);   // pelvis -> lthigh
 						draw_list->AddLine(render_pos[3], render_pos[5], esp_color);   // pelvis -> rthigh
 						draw_list->AddLine(render_pos[4], render_pos[6], esp_color);   // lthigh -> lcalf
