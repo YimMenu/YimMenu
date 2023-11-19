@@ -223,13 +223,13 @@ namespace rage
 			return big::g_pointers->m_gta.m_write_bitbuf_array(this, array, size, 0);
 		}
 
-		void WriteString(char* string, int max_len)
+		void WriteString(const char* string, int max_len)
 		{
 			auto len      = std::min(max_len, (int)strlen(string) + 1);
 			bool extended = len > 127;
 			Write<bool>(extended, 1);
 			Write<int>(len, extended ? 15 : 7);
-			WriteArray(string, 8 * len);
+			WriteArray((void*)string, 8 * len);
 		}
 
 		bool ReadArray(PVOID array, int size)

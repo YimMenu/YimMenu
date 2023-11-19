@@ -139,6 +139,19 @@ namespace lua::network
 
 	// Lua API: Function
 	// Table: network
+	// Name: is_player_friend
+	// Param: player_idx: integer: Index of the player.
+	// Returns: boolean: Returns true if the given player is a friend.
+	static bool is_player_friend(int player_idx)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+			return player->is_friend();
+
+		return false;
+	}
+
+	// Lua API: Function
+	// Table: network
 	// Name: get_flagged_modder_reason
 	// Param: player_idx: integer: Index of the player.
 	// Returns: string: Returns a string which contains the reason(s) why the player is flagged as a modder.
@@ -210,10 +223,11 @@ namespace lua::network
 		ns["set_all_player_coords"]                    = set_all_player_coords;
 		ns["get_selected_player"]                      = get_selected_player;
 		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
-		ns["flag_player_as_modder"]       = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
-		ns["is_player_flagged_as_modder"] = is_player_flagged_as_modder;
-		ns["get_flagged_modder_reason"]   = get_flagged_modder_reason;
-		ns["force_script_host"]           = force_script_host;
-		ns["send_chat_message"]           = send_chat_message;
+		ns["flag_player_as_modder"]                    = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
+		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
+		ns["is_player_friend"]                         = is_player_friend;
+		ns["get_flagged_modder_reason"]                = get_flagged_modder_reason;
+		ns["force_script_host"]                        = force_script_host;
+		ns["send_chat_message"]                        = send_chat_message;
 	}
 }
