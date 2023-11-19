@@ -359,7 +359,7 @@ namespace big
 
 		PVOID m_game_skeleton_update;
 
-		functions::get_ped_pone m_get_ped_pone;
+		functions::get_ped_bone m_get_ped_bone;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

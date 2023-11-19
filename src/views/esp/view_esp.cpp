@@ -25,8 +25,17 @@ namespace big
 			return;
 
 		rage::fvector4 player_pos;
-		if (!g_pointers->m_gta.m_get_ped_pone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
-			return;
+
+		if (plyr->get_ped()->m_model_info->m_hash == RAGE_JOAAT("mp_m_freemode_01") || plyr->get_ped()->m_model_info->m_hash == RAGE_JOAAT("mp_f_freemode_01"))
+		{
+			if (!g_pointers->m_gta.m_get_ped_bone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
+				return;
+		}
+		else
+		{
+			auto navigation_pos = plyr->get_ped()->GetNavigation()->get_position();
+			player_pos          = {navigation_pos->x, navigation_pos->y, navigation_pos->z, 0};
+		}
 
 		float screen_x, screen_y;
 
