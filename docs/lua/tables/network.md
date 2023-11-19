@@ -2,7 +2,7 @@
 
 Table containing helper functions for network related features.
 
-## Functions (11)
+## Functions (12)
 
 ### `trigger_script_event(bitset, _args)`
 
@@ -104,6 +104,19 @@ network.flag_player_as_modder(player_idx, reason, custom_reason)
 **Example Usage:**
 ```lua
 boolean = network.is_player_flagged_as_modder(player_idx)
+```
+
+### `is_player_friend(player_idx)`
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+
+- **Returns:**
+  - `boolean`: Returns true if the given player is a friend.
+
+**Example Usage:**
+```lua
+boolean = network.is_player_friend(player_idx)
 ```
 
 ### `get_flagged_modder_reason(player_idx)`

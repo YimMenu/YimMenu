@@ -13,7 +13,7 @@ end)
 
 For a complete list of available gui functions, please refer to the tab class documentation and the gui table documentation.
 
-## Tab Count: 44
+## Tab Count: 47
 
 ### `GUI_TAB_SELF`
 ### `GUI_TAB_WEAPONS`
@@ -22,6 +22,7 @@ For a complete list of available gui functions, please refer to the tab class do
 ### `GUI_TAB_MOBILE`
 ### `GUI_TAB_OUTFIT_EDITOR`
 ### `GUI_TAB_OUTFIT_SLOTS`
+### `GUI_TAB_ANIMATIONS`
 ### `GUI_TAB_VEHICLE`
 ### `GUI_TAB_HANDLING`
 ### `GUI_TAB_HANDLING_SEARCH`
@@ -39,6 +40,7 @@ For a complete list of available gui functions, please refer to the tab class do
 ### `GUI_TAB_BLACKHOLE`
 ### `GUI_TAB_MODEL_SWAPPER`
 ### `GUI_TAB_VFX`
+### `GUI_TAB_XML_MAPS`
 ### `GUI_TAB_NETWORK`
 ### `GUI_TAB_MISSIONS`
 ### `GUI_TAB_SPOOFING`
@@ -55,5 +57,6 @@ For a complete list of available gui functions, please refer to the tab class do
 ### `GUI_TAB_REACTION_SETTINGS`
 ### `GUI_TAB_PROTECTION_SETTINGS`
 ### `GUI_TAB_TRANSLATION_SETTINGS`
+### `GUI_TAB_PROXY_SETTINGS`
 ### `GUI_TAB_DEBUG`
 ### `GUI_TAB_PLAYER`
