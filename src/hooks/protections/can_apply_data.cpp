@@ -1631,6 +1631,7 @@ namespace big
 				if (is_crash_vehicle_task((eTaskTypeIndex)task_node->m_task_type))
 				{
 					notify::crash_blocked(sender, "invalid vehicle task");
+					LOG(VERBOSE) << (int)g.m_syncing_object_type << " " << get_task_type_string(task_node->m_task_type);
 					return true;
 				}
 
