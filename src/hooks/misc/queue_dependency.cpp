@@ -35,7 +35,7 @@ namespace big
 		return value == 0xE9;
 	}
 
-	bool is_unwanted_dependency(__int64 cb, uint64_t caller_addr_offset)
+	bool is_unwanted_dependency(__int64 cb)
 	{
 		auto f1 = *(__int64*)(cb + 0x60);
 		auto f2 = *(__int64*)(cb + 0x100);
@@ -46,19 +46,19 @@ namespace big
 		return is_jump(f1) || is_jump(f2);
 	}
 
-	void hooks::queue_dependency(void* dependency)
+	static bool nullsub()
 	{
-		uint64_t caller_addr_offset = (uint64_t)_ReturnAddress();
+		return true; // returning false would cause the dependency to requeue
+	}
 
-		static auto module_base = (uint64_t)GetModuleHandle(0);
-
-		caller_addr_offset -= module_base;
-
-		if (is_unwanted_dependency((__int64)dependency, caller_addr_offset))
+	int hooks::queue_dependency(void* a1, int a2, void* dependency)
+	{
+		if (is_unwanted_dependency((__int64)dependency))
 		{
-			return;
+			*(void**)((__int64)dependency + 0x60) = nullsub;
+			*(void**)((__int64)dependency + 0x100) = nullsub;
 		}
 
-		return g_hooking->get_original<hooks::queue_dependency>()(dependency);
+		return g_hooking->get_original<hooks::queue_dependency>()(a1, a2, dependency);
 	}
 }

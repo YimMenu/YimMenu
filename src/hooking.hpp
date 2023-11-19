@@ -127,7 +127,7 @@ namespace big
 		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
-		static void queue_dependency(void* dependency);
+		static int queue_dependency(void* a1, int a2, void* dependency);
 		static bool prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
 		static bool http_start_request(void* request, const char* uri);
 
@@ -273,8 +273,6 @@ namespace big
 
 		vmt_hook m_swapchain_hook;
 		vtable_hook m_sync_data_reader_hook;
-		call_hook m_remove_player_from_sender_list_caller_1_hook;
-		call_hook m_remove_player_from_sender_list_caller_2_hook;
 
 		WNDPROC m_og_wndproc = nullptr;
 

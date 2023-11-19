@@ -1120,7 +1120,6 @@ namespace big
 		case eTaskTypeIndex::CTaskVehicleGoToHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePoliceBehaviourHelicopter:
 		case eTaskTypeIndex::CTaskVehiclePlayerDriveHeli:
-		case eTaskTypeIndex::CTaskVehicleLand:
 		case eTaskTypeIndex::CTaskVehicleHeliProtect: return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI;
 		case eTaskTypeIndex::CTaskVehicleGoToBoat:
 		case eTaskTypeIndex::CTaskVehicleCruiseBoat:
@@ -1632,6 +1631,7 @@ namespace big
 				if (is_crash_vehicle_task((eTaskTypeIndex)task_node->m_task_type))
 				{
 					notify::crash_blocked(sender, "invalid vehicle task");
+					LOG(VERBOSE) << (int)g.m_syncing_object_type << " " << get_task_type_string(task_node->m_task_type);
 					return true;
 				}
 

@@ -353,10 +353,6 @@ namespace big
 
 		bool* m_is_social_club_overlay_active;
 
-		functions::remove_player_from_sender_list m_remove_player_from_sender_list;
-		PVOID m_remove_player_from_sender_list_caller_1;
-		PVOID m_remove_player_from_sender_list_caller_2;
-
 		PVOID m_game_skeleton_update;
 
 		functions::get_ped_bone m_get_ped_bone;
