@@ -33,8 +33,13 @@ namespace big
 		}
 		else
 		{
-			auto navigation_pos = plyr->get_ped()->GetNavigation()->get_position();
-			player_pos          = {navigation_pos->x, navigation_pos->y, navigation_pos->z, 0};
+			if (plyr->get_ped()->GetNavigation() == nullptr)
+				return;
+
+			if (auto navigation_pos = plyr->get_ped()->GetNavigation()->get_position())
+				player_pos = {navigation_pos->x, navigation_pos->y, navigation_pos->z, 0};
+			else
+				return;
 		}
 
 		float screen_x, screen_y;
