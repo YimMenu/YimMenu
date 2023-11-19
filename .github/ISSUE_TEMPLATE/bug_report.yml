@@ -52,6 +52,42 @@ body:
       - Other (please mention in "Additional context")
   validations:
     required: true
+- type: dropdown
+  attributes:
+    label: Language
+    description: Which language do you have GTA 5 set to?
+    multiple: false
+    options:
+      - English
+      - French
+      - Italian
+      - German
+      - Spanish
+      - Japanese
+      - Russian
+      - Polish
+      - Brazilian Portuguese
+      - Traditional Chinese
+      - Simplified Chinese
+      - Latin American Spanish
+      - Korean
+  validations:
+    required: true
+- type: dropdown
+  attributes:
+    label: YimMenu Language
+    description: Which language do you use with YimMenu?
+    multiple: false
+    options:
+      - English (US)
+      - Español (España)
+      - Français (FR)
+      - Portuguese (BR)
+      - Русский (RU)
+      - Chinese (CN)
+      - Chinese (TW)
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Additional context
