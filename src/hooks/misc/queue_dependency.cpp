@@ -46,8 +46,9 @@ namespace big
 		return is_jump(f1) || is_jump(f2);
 	}
 
-	static void nullsub()
+	static bool nullsub()
 	{
+		return true; // returning false would cause the dependency to requeue
 	}
 
 	int hooks::queue_dependency(void* a1, int a2, void* dependency)
