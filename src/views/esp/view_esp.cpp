@@ -136,7 +136,7 @@ namespace big
 						}
 						else
 						{
-							auto buffer   = ImVec2((float)*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, (float)*g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
+							auto buffer   = ImVec2(*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, *g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
 							render_pos[i] = ImVec2(buffer.x, buffer.y - ((!i ? 25.f : 10.f) * multplr));
 						}
 					}
