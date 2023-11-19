@@ -675,8 +675,8 @@ for class_name, class_ in classes.items():
     file_name = f"./classes/{class_name}.md"
     if os.path.exists(file_name):
         os.remove(file_name)
-    f = open(file_name, "a")
-    f.write(str(class_))
+    f = open(file_name, "ba")
+    f.write(bytes(str(class_), "UTF8"))
     f.close()
 
 
