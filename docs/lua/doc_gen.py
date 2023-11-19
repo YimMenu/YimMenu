@@ -605,8 +605,8 @@ for table_name, table in tables.items():
     file_name = f"./tables/{table_name}.md"
     if os.path.exists(file_name):
         os.remove(file_name)
-    f = open(file_name, "a")
-    f.write(str(table))
+    f = open(file_name, "ba")
+    f.write(bytes(str(table), "UTF8"))
     f.close()
 
 tabs_file_name = f"./tabs.md"
