@@ -95,7 +95,7 @@ namespace big
 									break;
 								}
 							}
-							else if (entity::take_control_of(ent, 25))
+							else if (entity::take_control_of(ent))
 								entity::delete_entity(ent);
 						}
 

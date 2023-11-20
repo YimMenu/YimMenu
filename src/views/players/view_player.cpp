@@ -17,6 +17,8 @@
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
 
+static constexpr char ip_viewer_link[] = "https://iplogger.org/ip-tracker/?ip=";
+
 namespace big
 {
 	static big::player_ptr last_selected_player;
@@ -67,7 +69,8 @@ namespace big
 						        port);
 						    ImGui::SameLine();
 						    if (ImGui::SmallButton("copy##copyip"))
-							    ImGui::SetClipboardText(std::format("{}.{}.{}.{}:{}",
+							    ImGui::SetClipboardText(std::format("{}{}.{}.{}.{}:{}",
+							        ip_viewer_link,
 							        ip.value().m_field1,
 							        ip.value().m_field2,
 							        ip.value().m_field3,
@@ -101,7 +104,7 @@ namespace big
 							    }
 							    if (cxn_type == 2 || cxn_type == 3)
 								    if (ImGui::SmallButton("copy##copyip"))
-									    ImGui::SetClipboardText(std::format("{}.{}.{}.{}", ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
+									    ImGui::SetClipboardText(std::format("{}{}.{}.{}.{}", ip_viewer_link, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
 									                                .c_str());
 						    }
 					    }
@@ -140,7 +143,9 @@ namespace big
 			ImGui::SameLine();
 			if (components::button("Copy Name##copyname"))
 				ImGui::SetClipboardText(current_player->get_name());
-			ImGui::SameLine(0, 2.0f * ImGui::GetTextLineHeight());
+
+			ImGui::Spacing();
+
 			components::button(current_player->is_blocked ? "Un-Block" : "Block", [current_player] {
 				current_player->is_blocked = !current_player->is_blocked;
 
@@ -149,6 +154,9 @@ namespace big
 				else if (current_player->is_blocked)
 					bad_players_nm::add_player({current_player->get_name(), rockstar_id, true, current_player->is_spammer});
 			});
+			ImGui::SameLine();
+			if (components::button(current_player->is_modder ? "Un-flag Modder" : "Flag Modder"))
+				current_player->is_modder = !current_player->is_modder;
 		}
 		ImGui::EndGroup();
 	}
@@ -214,10 +222,21 @@ namespace big
 			ver_Space();
 
 			components::player_command_button<"copyoutfit">(current_player);
-			ImGui::SameLine();
+
+			ver_Space();
+
 			components::button("Copy Vehicle", [current_player] {
 				if (Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false); veh)
 					persist_car_service::clone_ped_car(veh);
+			});
+			ImGui::SameLine();
+			components::button("Save Vehicle", [current_player] {
+				if (Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(current_player->id()), false); veh)
+				{
+					auto currentTime = std::chrono::system_clock::now().time_since_epoch();
+					auto millis      = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime).count();
+					persist_car_service::save_vehicle(veh, std::to_string(millis).append(".json"), "");
+				}
 			});
 		}
 		ImGui::EndGroup();
@@ -305,6 +324,22 @@ namespace big
 		ImGui::EndGroup();
 	}
 
+	static inline void render_infractions(player_ptr current_player)
+	{
+		if (!current_player->infractions.empty())
+		{
+			ImGui::BeginGroup();
+			components::sub_title("Infractions");
+
+			if (current_player->crash_count)
+				ImGui::BulletText(std::format("*** Crash Count - {}", current_player->crash_count).c_str());
+
+			for (auto infraction : current_player->infractions)
+				ImGui::BulletText(infraction_desc[(Infraction)infraction]);
+			ImGui::EndGroup();
+		}
+	}
+
 	void view::view_player()
 	{
 		ImGui::Spacing();
@@ -350,14 +385,7 @@ namespace big
 
 				ver_Space();
 
-				if (!current_player->infractions.empty())
-				{
-					ImGui::BeginGroup();
-					components::sub_title("Infractions");
-					for (auto infraction : current_player->infractions)
-						ImGui::BulletText(infraction_desc[(Infraction)infraction]);
-					ImGui::EndGroup();
-				}
+				render_infractions(current_player);
 			}
 			ImGui::EndGroup();
 			ImGui::SameLine(0, 50);

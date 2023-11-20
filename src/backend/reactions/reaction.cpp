@@ -38,11 +38,14 @@ namespace big
 					return;
 			}
 
+			if (infraction == Infraction::TRIED_CRASH_PLAYER)
+				++player->crash_count;
+
 			auto str = std::vformat(m_notify_message, std::make_format_args(name));
 
 			if (log)
 				LOG(WARNING) << str;
-				
+
 			if (notify)
 				g_notification_service->push_warning("Protections", str);
 

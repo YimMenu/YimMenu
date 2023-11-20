@@ -32,7 +32,7 @@ namespace big::ped
 
 	inline void kill_ped(const Ped ped)
 	{
-		if (entity::take_control_of(ped, 0))
+		if (entity::take_control_of(ped))
 			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
 		else
 		{

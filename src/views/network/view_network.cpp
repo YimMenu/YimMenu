@@ -32,13 +32,13 @@ namespace big
 			components::button("Join##RID", [] {
 				session::join_by_rockstar_id(rid);
 			});
-			if (*g_pointers->m_gta.m_is_session_started)
-			{
-				ImGui::SameLine();
-				components::button("Invite##RID", [] {
-					session::invite_by_rockstar_id(rid);
-				});
-			}
+			// if (*g_pointers->m_gta.m_is_session_started)
+			// {
+			// 	ImGui::SameLine();
+			// 	components::button("Invite##RID", [] {
+			// 		session::invite_by_rockstar_id(rid);
+			// 	});
+			// }
 
 			components::input_text_with_hint("##sessioninfoinput", "Session Info", base64, sizeof(base64));
 			ImGui::SameLine();

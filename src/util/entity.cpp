@@ -73,28 +73,22 @@ namespace big::entity
 		return !net_object || !net_object->m_next_owner_id && (net_object->m_control_id == -1);
 	}
 
-	bool take_control_of(Entity ent, int timeout)
+	bool take_control_of(Entity ent, int n_of_tries)
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return true;
 
-		auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent);
-
-		if (!hnd || !hnd->m_net_object || !*g_pointers->m_gta.m_is_session_started)
-			return false;
-
-		if (hnd && network_has_control_of_entity(hnd->m_net_object))
-			return true;
-
-		for (int i = 0; i < timeout; i++)
+		for (int i = 0; i < n_of_tries; ++i)
 		{
-			g_pointers->m_gta.m_request_control(hnd->m_net_object);
+			if (auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent); hnd && hnd->m_net_object)
+			{
+				g_pointers->m_gta.m_request_control(hnd->m_net_object);
 
-			if (hnd && network_has_control_of_entity(hnd->m_net_object))
-				return true;
+				if (hnd && network_has_control_of_entity(hnd->m_net_object))
+					return true;
+			}
 
-			if (timeout != 0)
-				script::get_current()->yield();
+			script::get_current()->yield(10ms);
 		}
 
 		return false;

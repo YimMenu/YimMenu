@@ -78,7 +78,7 @@ namespace big::vehicle
 
 	void repair(Vehicle veh)
 	{
-		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
+		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh))
 			return;
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
