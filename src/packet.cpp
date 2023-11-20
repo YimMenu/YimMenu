@@ -9,7 +9,7 @@
 namespace big
 {
 	packet::packet() :
-	    m_buffer(m_data, 0x4000)
+	    m_buffer(m_data, sizeof(m_data))
 	{
 	}
 
