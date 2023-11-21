@@ -1,5 +1,7 @@
 # YimMenu
 
+![](https://img.shields.io/badge/current_status-detected-red)
+
 refer to original readme [here](https://github.com/YimMenu/YimMenu#readme)
 
 ## Injecting the menu
