@@ -115,10 +115,9 @@ namespace big
 				for (int i = 0; i < skel_size; i++)
 				{
 					rage::fvector4 out = {};
+
 					if (g_pointers->m_gta.m_get_ped_bone(plyr->get_ped(), out, bone_ids[i]))
-					{
 						bones.push_back(out);
-					}
 				}
 
 				if (bones.size() == skel_size)
@@ -135,10 +134,7 @@ namespace big
 							break;
 						}
 						else
-						{
-							auto buffer   = ImVec2(*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, *g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
-							render_pos[i] = ImVec2(buffer.x, buffer.y - ((!i ? 25.f : 10.f) * multplr));
-						}
+							render_pos[i] = ImVec2(*g_pointers->m_gta.m_resolution_x * bones_screen[i].x, *g_pointers->m_gta.m_resolution_y * bones_screen[i].y);
 					}
 
 					if (render_skeleton)
