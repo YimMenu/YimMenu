@@ -3,7 +3,7 @@
 
 #include "thread_pool.hpp"
 
-namespace bad_players_nm
+namespace big::bad_players_nm
 {
 	std::map<uint64_t, bad_player> bad_players_list;
 

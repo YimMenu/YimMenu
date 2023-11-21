@@ -80,12 +80,13 @@ namespace big
 
 		bool is_modder = false;
 		std::unordered_set<int> infractions;
-		bool is_blocked          = false;
-		bool join_prevented      = false;
-		bool is_spammer          = false;
-		std::string spam_message = "";
-		bool is_toxic            = false;
-		int crash_count          = 0;
+		bool is_blocked                                     = false;
+		bool join_prevented                                 = false;
+		bool is_spammer                                     = false;
+		std::string spam_message                            = "";
+		bool is_toxic                                       = false;
+		int crash_count                                     = 0;
+		std::chrono::system_clock::time_point last_msg_time = std::chrono::system_clock::from_time_t(0);
 
 		std::optional<uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;

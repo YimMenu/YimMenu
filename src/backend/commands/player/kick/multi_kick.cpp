@@ -19,17 +19,11 @@ namespace big
 			{
 				player->timeout();
 
-				if (auto net_data = player->get_net_data())
+				if (!player->is_blocked)
 				{
-					auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
-					auto name        = net_data->m_name;
-
-					if (!player->is_blocked)
-					{
-						player->is_blocked = true;
-						bad_players_nm::add_player({name, rockstar_id, true, player->is_spammer});
-					}
-				};
+					player->is_blocked = true;
+					bad_players_nm::add_player(player, true, player->is_spammer);
+				}
 
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
 				dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});

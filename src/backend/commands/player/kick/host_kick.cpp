@@ -27,17 +27,12 @@ namespace big
 				return;
 			}
 
-			if (auto net_data = player->get_net_data())
-			{
-				auto rockstar_id = net_data->m_gamer_handle.m_rockstar_id;
-				auto name        = net_data->m_name;
+			if ((player->infractions.contains((int)Infraction::TRIED_KICK_PLAYER) || player->infractions.contains((int)Infraction::TRIED_CRASH_PLAYER))
+			    && !player->is_blocked)
+				bad_players_nm::add_player(player, true, player->is_spammer);
 
-				if ((player->infractions.contains((int)Infraction::TRIED_KICK_PLAYER) || player->infractions.contains((int)Infraction::TRIED_CRASH_PLAYER)) && !bad_players_nm::is_blocked(rockstar_id))
-					bad_players_nm::add_player({name, rockstar_id, true, player->is_spammer});
-
-				g_notification_service->push_success("Kick", std::format("Host kick to {}", player->get_name()), true);
-				NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
-			};
+			g_notification_service->push_success("Kick", std::format("Host kick to {}", player->get_name()), true);
+			NETWORK::NETWORK_SESSION_KICK_PLAYER(player->id());
 		}
 	};
 

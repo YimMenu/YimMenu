@@ -11,6 +11,7 @@
 #include "hooking.hpp"
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
+#include "services/bad_players/bad_players.hpp"
 #include "services/custom_chat_buffer.hpp"
 #include "services/gui/gui_service.hpp"
 #include "services/players/player_service.hpp"
@@ -18,10 +19,8 @@
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
-#include <regex>
 
-
-inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+static inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
 	constexpr int PC_PLATFORM = 3;
 	if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
@@ -31,7 +30,7 @@ inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffe
 	hnd.unk_0009 = buf.Read<uint8_t>(8);
 }
 
-inline bool is_kick_instruction(rage::datBitBuffer& buffer)
+static inline bool is_kick_instruction(rage::datBitBuffer& buffer)
 {
 	rage::rlGamerHandle sender, receiver;
 	char name[18];
@@ -44,6 +43,17 @@ inline bool is_kick_instruction(rage::datBitBuffer& buffer)
 
 namespace big
 {
+	static inline bool has_invalid_time_bw_msgs(big::player_ptr player)
+	{
+		auto currentTime      = std::chrono::system_clock::now();
+		auto diff             = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player->last_msg_time);
+		player->last_msg_time = currentTime;
+
+		if (diff.count() <= 2.5)
+			return true;
+		return false;
+	}
+
 	bool get_msg_type(rage::eNetMessage& msgType, rage::datBitBuffer& buffer)
 	{
 		uint32_t pos;
@@ -116,12 +126,13 @@ namespace big
 				char message[256];
 				buffer.ReadString(message, 256);
 
-				if (strlen(message) > 100)
+				if (strlen(message) > 55 && has_invalid_time_bw_msgs(player))
 				{
 					LOG(WARNING) << player->get_name() << " seem to spam chat message.";
 					// flag as spammer
 					player->is_spammer   = true;
 					player->spam_message = message;
+					bad_players_nm::add_player(player, false, true);
 				}
 
 				if (g_session.log_chat_messages_to_file)

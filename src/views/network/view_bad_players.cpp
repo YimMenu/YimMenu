@@ -5,18 +5,19 @@
 #include "util/strings.hpp"
 #include "views/view.hpp"
 
-inline std::map<uint64_t, bad_players_nm::bad_player> filter_bad_players(const std::map<uint64_t, bad_players_nm::bad_player>& inputMap, const std::string& searchString)
-{
-	std::map<uint64_t, bad_players_nm::bad_player> filteredMap;
-	std::string lowercaseSearchString = toLowercase(searchString);
-	for (auto pair : inputMap)
-		if (std::string lowercaseStr = toLowercase(pair.second.name); lowercaseStr.find(lowercaseSearchString) != std::string::npos)
-			filteredMap[pair.first] = pair.second;
-	return filteredMap;
-}
 
 namespace big
 {
+	static inline std::map<uint64_t, bad_players_nm::bad_player> filter_bad_players(const std::map<uint64_t, bad_players_nm::bad_player>& inputMap, const std::string& searchString)
+	{
+		std::map<uint64_t, bad_players_nm::bad_player> filteredMap;
+		std::string lowercaseSearchString = toLowercase(searchString);
+		for (auto pair : inputMap)
+			if (std::string lowercaseStr = toLowercase(pair.second.name); lowercaseStr.find(lowercaseSearchString) != std::string::npos)
+				filteredMap[pair.first] = pair.second;
+		return filteredMap;
+	}
+
 	void view::bad_players()
 	{
 		static char player_name[64];
