@@ -21,26 +21,10 @@ namespace big
 
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
-		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation || !plyr->get_ped()->m_model_info)
+		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			return;
 
-		rage::fvector4 player_pos;
-
-		if (plyr->get_ped()->m_model_info->m_hash == RAGE_JOAAT("mp_m_freemode_01") || plyr->get_ped()->m_model_info->m_hash == RAGE_JOAAT("mp_f_freemode_01"))
-		{
-			if (!g_pointers->m_gta.m_get_ped_bone(plyr->get_ped(), player_pos, PedBones::SKEL_Pelvis))
-				return;
-		}
-		else
-		{
-			if (plyr->get_ped()->GetNavigation() == nullptr)
-				return;
-
-			if (auto navigation_pos = plyr->get_ped()->GetNavigation()->get_position())
-				player_pos = {navigation_pos->x, navigation_pos->y, navigation_pos->z, 0};
-			else
-				return;
-		}
+		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
 
 		float screen_x, screen_y;
 
