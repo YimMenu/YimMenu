@@ -87,37 +87,41 @@ namespace big
 	{
 		using looped_command::looped_command;
 
+		constexpr static int checksum_block_size = 0xF4;
+		char original_checksum_block[checksum_block_size];
+		char new_checksum_block[checksum_block_size];
+
 		virtual void on_enable() override
 		{
+			memcpy(original_checksum_block, *g_pointers->m_gta.m_game_checksum_data, checksum_block_size);
+
 			if (g.spoofing.last_game_version != std::stoi(g_pointers->m_gta.m_game_version))
 			{
 				g.spoofing.last_game_version = std::stoi(g_pointers->m_gta.m_game_version);
 				size_t out_size;
-				char* encoded = base64_encode((const unsigned char*)*g_pointers->m_gta.m_game_checksum_data, 0xF4, out_size);
-				g.spoofing.game_checksum_data_b64 = std::string(encoded, out_size);
-				free(encoded);
+				char* encoded = base64_encode((const unsigned char*)*g_pointers->m_gta.m_game_checksum_data, checksum_block_size, out_size);
+				g.spoofing.game_checksum_data_b64 = std::string(encoded, out_size); free(encoded);
 				g.spoofing.game_dlc_checksum = g_hooking->get_original<hooks::get_dlc_hash>()(*g_pointers->m_gta.m_dlc_manager, 0);
-				LOG(INFO) << g.spoofing.game_checksum_data_b64.size();
+				memcpy(new_checksum_block, *g_pointers->m_gta.m_game_checksum_data, checksum_block_size);
 			}
 			else
 			{
-				size_t output_len;
-				void* decoded = base64_decode(g.spoofing.game_checksum_data_b64.data(),
+				size_t output_len; void* decoded = base64_decode(g.spoofing.game_checksum_data_b64.data(),
 				    g.spoofing.game_checksum_data_b64.size(),
 				    output_len);
-				LOG(INFO) << output_len;
-				memcpy(*g_pointers->m_gta.m_game_checksum_data, decoded, 0xF4);
+				memcpy(new_checksum_block, decoded, checksum_block_size);
 				free(decoded);
 			}
 		}
 
 		virtual void on_tick() override
 		{
+			memcpy(*g_pointers->m_gta.m_game_checksum_data, new_checksum_block, checksum_block_size);
 		}
 
 		virtual void on_disable() override
 		{
-			// TODO? 
+			memcpy(*g_pointers->m_gta.m_game_checksum_data, original_checksum_block, checksum_block_size);
 		}
 	};
 
