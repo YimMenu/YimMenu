@@ -7,6 +7,7 @@ namespace big
 {
     bool hooks::http_start_request(void* request, const char* uri)
     {
+		LOG(INFO) << uri;
         if (strstr(uri, "Bonus"))
         {
             // This is for worst case scenario where a report does slip through the cracks...

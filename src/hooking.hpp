@@ -184,6 +184,7 @@ namespace big
 
 		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
 		static void game_skeleton_update(__int64 skeleton, int type);
+		static int get_dlc_hash(void* mgr, int seed);
 	};
 
 	class minhook_keepalive

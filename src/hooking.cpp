@@ -149,6 +149,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::game_skeleton_update>("GSU", g_pointers->m_gta.m_game_skeleton_update);
 
+		detour_hook_helper::add<hooks::get_dlc_hash>("GDH", g_pointers->m_gta.m_get_dlc_hash);
+
 		g_hooking = this;
 	}
 

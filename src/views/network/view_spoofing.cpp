@@ -155,5 +155,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("VIEW_SPOOFING_BADSPORT"_T.data(), &g.spoofing.session_bad_sport);
 		}
+
+		components::command_checkbox<"overridegamehashes">();
 	}
 }

@@ -1739,6 +1739,25 @@ namespace big
             {
                 g_pointers->m_gta.m_get_ped_bone = ptr.as<functions::get_ped_bone>();
             }
+        },
+        // Game Checksum Data
+        {
+            "GCD",
+            "48 8B 15 ? ? ? ? 48 8B C2 48 0B C7",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_checksum_data = ptr.add(3).rip().as<char**>();
+            }
+        },
+        // Get DLC Hash & DLC Manager
+        {
+            "GDH&DM",
+            "48 8B 0D ? ? ? ? 33 D2 E8 ? ? ? ? 45 33 C0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_dlc_hash = ptr.add(10).rip().as<functions::get_dlc_hash>();
+                g_pointers->m_gta.m_dlc_manager = ptr.add(3).rip().as<void**>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

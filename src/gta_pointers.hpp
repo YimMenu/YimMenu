@@ -356,6 +356,11 @@ namespace big
 		PVOID m_game_skeleton_update;
 
 		functions::get_ped_bone m_get_ped_bone;
+		functions::get_ped_pone m_get_ped_pone;
+
+		char** m_game_checksum_data;
+		functions::get_dlc_hash m_get_dlc_hash;
+		void** m_dlc_manager;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
