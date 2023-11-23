@@ -22,10 +22,10 @@ jobs:
           arch: amd64
 
       - name: Generate CMake project
-        run: cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo -S. -Bbuild -G Ninja
+        run: cmake -D CMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja
 
-      - name: Build 64bit RelWithDebInfo DLL
-        run: cmake --build ./build --config RelWithDebInfo --target YimMenu --
+      - name: Build 64bit Release DLL
+        run: cmake --build ./build --config Release --target YimMenu --
 
       - name: Check if DLL got built
         run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
