@@ -39,7 +39,7 @@ namespace big
 		components::command_checkbox<"alwaysfullammo">();
 		components::command_checkbox<"infclip">();
 		components::command_checkbox<"infrange">();
-		ImGui::Checkbox("VIEW_WEAPON_ALLOW_WEAPONS_IN_INTERIORS"_T.data(), &g.weapons.interior_weapon);
+		components::command_checkbox<"allowwepsinside">();
 
 		ImGui::EndGroup();
 		ImGui::SameLine();
