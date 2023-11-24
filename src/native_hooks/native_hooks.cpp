@@ -166,6 +166,8 @@ namespace big
 		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x697F508861875B42, tunables::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH);
 		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x972BC203BBC4C4D5, tunables::NETWORK_ACCESS_TUNABLE_FLOAT_HASH);
 
+		add_native_detour(RAGE_JOAAT("juggalo_hideout_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons in the freakshop.
+
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 			if (entry.m_program)
 				hook_program(entry.m_program);
