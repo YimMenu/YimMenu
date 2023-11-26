@@ -42,6 +42,7 @@ namespace big
 	    "CODE_CRC",
 	    "COLLECTIBLE",
 	    "FIRST_VEH",
+	    "MM",
 	});
 
 	bool hooks::prepare_metric_for_sending(rage::json_serializer* serializer, int unk, int time, rage::rlMetric* metric)
