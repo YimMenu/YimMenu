@@ -3,50 +3,64 @@
 
 namespace big
 {
-#pragma pack(push, 1)
-	class json_serializer
+	const auto bad_metrics = std::unordered_set<std::string>({
+	    "REPORTER",
+	    "REPORT_INVALIDMODEL",
+	    "MEM_NEW",
+	    "DEBUGGER_ATTACH",
+	    "DIG",
+	    "XP_LOSS",
+	    "AWARD_XP",
+	    "CF",
+	    "CC",
+	    "CNR",
+	    "SCRIPT",
+	    "CHEAT",
+	    "AUX_DEUX",
+	    "WEATHER",
+	    "HARDWARE_OS",
+	    "HARDWARE_GPU",
+	    "HARDWARE_MOBO",
+	    "HARDWARE_MEM",
+	    "HARDWARE_CPU",
+	    "PCSETTINGS",
+	    "CASH_CREATED",
+	    "DR_PS",
+	    "UVC",
+	    "W_L",
+	    "ESVCS",
+	    "IDLEKICK",
+	    "GSCB",
+	    "GSINV",
+	    "GSCW",
+	    "GSINT",
+	    "EARN",
+	    "GARAGE_TAMPER",
+	    "LAST_VEH",
+	    "FAIL_SERV",
+	    "CCF_UPDATE",
+	    "CODE_CRC",
+	    "COLLECTIBLE",
+	    "FIRST_VEH",
+	});
+
+	bool hooks::prepare_metric_for_sending(rage::json_serializer* serializer, int unk, int time, rage::rlMetric* metric)
 	{
-		uint32_t unk0;  // 0x00
-		uint32_t unk1;  // 0x00
-		char* buffer;   // 0x08
-		uint32_t curlen;// 0x10
-		uint32_t maxlen;// 0x14
-		uint32_t unk4;  // 0x18
-		uint8_t flags;  // 0x1C
+		const auto ret = g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
 
-	public:
-		json_serializer(char* _buffer, uint32_t _length) :
-		    buffer(_buffer),
-		    maxlen(_length)
+		const auto is_bad_metric = bad_metrics.contains(metric->get_name());
+		if (is_bad_metric)
 		{
-			unk0
-				= 0;
-				unk1   = 0;
-				curlen = 0;
-				unk4   = 1;
-				flags  = 0;
+			LOG(WARNING) << "BAD METRIC: " << metric->get_name() << "; DATA: " << serializer->get_string();
+
+			return false;
 		}
 
-		inline char* get_string() const
+		if (!is_bad_metric && g.debug.logs.metric_logs)
 		{
-			return buffer;
-		}
-	};
-	static_assert(sizeof(json_serializer) == 0x1D);// size is actually 0x20
-#pragma pack(pop)
-
-	bool hooks::prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric)
-	{
-		if (g.debug.logs.metric_logs)
-		{
-			char buffer[256]{};
-			json_serializer serializer(buffer, sizeof(buffer));
-
-			metric->serialize(&serializer);
-
-			LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << serializer.get_string();
+			LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << serializer->get_string();
 		}
 
-		return false;
+		return ret;
 	}
 }
