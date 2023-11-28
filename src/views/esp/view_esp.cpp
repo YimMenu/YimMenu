@@ -6,6 +6,7 @@
 #include "util/math.hpp"
 #include "util/misc.hpp"
 #include "gta/enums.hpp"
+#include "util/pools.hpp"
 
 namespace big
 {
@@ -172,6 +173,40 @@ namespace big
 		}
 	}
 
+	void esp::draw_object(const rage::CDynamicEntity* object, ImDrawList* const draw_list, std::string name)
+	{
+		if (!object || !object->m_navigation)
+			return;
+
+		auto& object_pos = *object->m_navigation->get_position();
+
+		float screen_x, screen_y;
+
+		const float distance = math::calculate_distance_from_game_cam(object_pos);
+		const float multplr  = distance > g.esp.global_render_distance[1] ? -1.f : 6.17757f / distance;
+
+		if (multplr == -1.f || g.esp.global_render_distance[0] > distance)
+			return;
+
+		ImVec2 name_pos;
+
+		if (g_pointers->m_gta.m_get_screen_coords_for_world_coords(object_pos.data, &screen_x, &screen_y))
+		{
+			const auto esp_x = (float)*g_pointers->m_gta.m_resolution_x * screen_x;
+			const auto esp_y = (float)*g_pointers->m_gta.m_resolution_y * screen_y;
+			name_pos = {esp_x, esp_y};
+		}
+		else
+		{
+			return;
+		}
+
+		ImU32 esp_color = g.esp.default_color;
+
+		draw_list->AddText(name_pos, esp_color, name.c_str());
+	}
+	
+
 	void esp::draw()
 	{
 		if (!g.esp.enabled)
@@ -182,6 +217,26 @@ namespace big
 			g_player_service->iterate([draw_list](const player_entry& entry) {
 				draw_player(entry.second, draw_list);
 			});
+
+			if (g.esp.object_esp)
+			{
+				for (auto object : pools::get_all_props_array())
+				{
+					auto ptr = g_pointers->m_gta.m_handle_to_ptr(object);
+					if (ptr && ptr->m_model_info)
+					{
+						Hash model_hash = ptr->m_model_info->m_hash;
+						if (g.esp.show_gs_cache_boxes)
+						{
+							const std::unordered_set<Hash> gs_cache_models = {RAGE_JOAAT("prop_mp_drug_pack_red"), RAGE_JOAAT("prop_mp_drug_pack_white"), RAGE_JOAAT("prop_mp_drug_pack_blue")};
+							if (gs_cache_models.contains(model_hash))
+							{
+								draw_object(ptr, draw_list, "G's Cache");
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
