@@ -220,7 +220,7 @@ namespace big
 
 			if (g.esp.object_esp)
 			{
-				if (g.esp.show_gs_cache_boxes)
+				if (g.esp.show_gs_cache_boxes && *g_pointers->m_gta.m_script_globals && **g_pointers->m_gta.m_script_globals)
 				{
 					auto gs_cache_box_entity = *scr_globals::pickups.at(605).as<Entity*>();
 					if (gs_cache_box_entity != 0)
