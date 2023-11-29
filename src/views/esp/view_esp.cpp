@@ -6,19 +6,19 @@
 #include "util/math.hpp"
 #include "util/misc.hpp"
 #include "gta/enums.hpp"
-#include "util/pools.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
-	static ImColor death_bg         = ImColor(0.117f, 0.113f, 0.172f, .75f);
-	static ImColor armor_blue_bg    = ImColor(0.36f, 0.71f, 0.89f, .75f);
-	static ImColor armor_blue       = ImColor(0.36f, 0.71f, 0.89f, 1.f);
-	static ImColor health_green_bg  = ImColor(0.29f, 0.69f, 0.34f, .75f);
-	static ImColor health_green     = ImColor(0.29f, 0.69f, 0.34f, 1.f);
-	static ImColor health_yellow_bg = ImColor(0.69f, 0.49f, 0.29f, .75f);
-	static ImColor health_yellow    = ImColor(0.69f, 0.49f, 0.29f, 1.f);
-	static ImColor health_red_bg    = ImColor(0.69f, 0.29f, 0.29f, .75f);
-	static ImColor health_red       = ImColor(0.69f, 0.29f, 0.29f, 1.f);
+	static const ImColor death_bg         = ImColor(0.117f, 0.113f, 0.172f, .75f);
+	static const ImColor armor_blue_bg    = ImColor(0.36f, 0.71f, 0.89f, .75f);
+	static const ImColor armor_blue       = ImColor(0.36f, 0.71f, 0.89f, 1.f);
+	static const ImColor health_green_bg  = ImColor(0.29f, 0.69f, 0.34f, .75f);
+	static const ImColor health_green     = ImColor(0.29f, 0.69f, 0.34f, 1.f);
+	static const ImColor health_yellow_bg = ImColor(0.69f, 0.49f, 0.29f, .75f);
+	static const ImColor health_yellow    = ImColor(0.69f, 0.49f, 0.29f, 1.f);
+	static const ImColor health_red_bg    = ImColor(0.69f, 0.29f, 0.29f, .75f);
+	static const ImColor health_red       = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
@@ -220,20 +220,12 @@ namespace big
 
 			if (g.esp.object_esp)
 			{
-				for (auto object : pools::get_all_props_array())
+				if (g.esp.show_gs_cache_boxes)
 				{
-					auto ptr = g_pointers->m_gta.m_handle_to_ptr(object);
-					if (ptr && ptr->m_model_info)
+					auto gs_cache_box_entity = *scr_globals::pickups.at(605).as<Entity*>();
+					if (gs_cache_box_entity != 0)
 					{
-						Hash model_hash = ptr->m_model_info->m_hash;
-						if (g.esp.show_gs_cache_boxes)
-						{
-							const std::unordered_set<Hash> gs_cache_models = {RAGE_JOAAT("prop_mp_drug_pack_red"), RAGE_JOAAT("prop_mp_drug_pack_white"), RAGE_JOAAT("prop_mp_drug_pack_blue")};
-							if (gs_cache_models.contains(model_hash))
-							{
-								draw_object(ptr, draw_list, "G's Cache");
-							}
-						}
+						draw_object(g_pointers->m_gta.m_handle_to_ptr(gs_cache_box_entity), draw_list, "G's Cache");
 					}
 				}
 			}
