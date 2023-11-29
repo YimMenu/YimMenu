@@ -273,22 +273,66 @@ namespace lua::stats
 		return set_masked_int_hash(stat_text_to_hash(stat_name), new_value, bit_start, bit_size);
 	}
 
+	// Lua API: Function
+	// Table: stats
+	// Name: get_packed_stat_bool
+	// Param: index: int: packed stat's index
+	// Returns: boolean: Value of the stat.
+	static bool get_packed_stat_bool(int index)
+	{
+		return STATS::GET_PACKED_STAT_BOOL_CODE(index, get_character_index());
+	}
+
+	// Lua API: Function
+	// Table: stats
+	// Name: set_packed_stat_bool
+	// Param: index: int: packed stat's index.
+	// Param: value: bool: value to set the packed stat to.
+	static void set_packed_stat_bool(int index, bool value)
+	{
+		STATS::SET_PACKED_STAT_BOOL_CODE(index, value, get_character_index());
+	}
+
+	// Lua API: Function
+	// Table: stats
+	// Name: get_packed_stat_int
+	// Param: index: int: packed stat's index.
+	// Returns: int: Value of the stat.
+	static int get_packed_stat_int(int index)
+	{
+		return STATS::GET_PACKED_STAT_INT_CODE(index, get_character_index());
+	}
+
+	// Lua API: Function
+	// Table: stats
+	// Name: set_packed_stat_int
+	// Param: index: int: packed stat's index.
+	// Param: value: int: value to set the packed stat to.
+	static void set_packed_stat_int(int index, int value)
+	{
+		STATS::SET_PACKED_STAT_INT_CODE(index, value, get_character_index());
+	}
+
 	void bind(sol::state& state)
 	{
 		auto ns = state["stats"].get_or_create<sol::table>();
 
-		ns["get_character_index"] = get_character_index;
+		ns["get_character_index"]  = get_character_index;
 
-		ns["get_bool"]        = sol::overload(get_bool_hash, get_bool_name);
-		ns["get_bool_masked"] = sol::overload(get_bool_masked_hash, get_bool_masked_name);
-		ns["get_float"]       = sol::overload(get_float_hash, get_float_name);
-		ns["get_int"]         = sol::overload(get_int_hash, get_int_name);
-		ns["get_masked_int"]  = sol::overload(get_masked_int_hash, get_masked_int_name);
+		ns["get_bool"]             = sol::overload(get_bool_hash, get_bool_name);
+		ns["get_bool_masked"]      = sol::overload(get_bool_masked_hash, get_bool_masked_name);
+		ns["get_float"]            = sol::overload(get_float_hash, get_float_name);
+		ns["get_int"]              = sol::overload(get_int_hash, get_int_name);
+		ns["get_masked_int"]       = sol::overload(get_masked_int_hash, get_masked_int_name);
+		ns["get_packed_stat_bool"] = get_packed_stat_bool;
+		ns["get_packed_stat_int"]  = get_packed_stat_int;
 
-		ns["set_bool"]        = sol::overload(set_bool_hash, set_bool_name);
-		ns["set_bool_masked"] = sol::overload(set_bool_masked_hash, set_bool_masked_name);
-		ns["set_float"]       = sol::overload(set_float_hash, set_float_name);
-		ns["set_int"]         = sol::overload(set_int_hash, set_int_name);
-		ns["set_masked_int"]  = sol::overload(set_masked_int_hash, set_masked_int_name);
+		ns["set_bool"]             = sol::overload(set_bool_hash, set_bool_name);
+		ns["set_bool_masked"]      = sol::overload(set_bool_masked_hash, set_bool_masked_name);
+		ns["set_float"]            = sol::overload(set_float_hash, set_float_name);
+		ns["set_int"]              = sol::overload(set_int_hash, set_int_name);
+		ns["set_masked_int"]       = sol::overload(set_masked_int_hash, set_masked_int_name);
+		ns["set_packed_stat_bool"] = set_packed_stat_bool;
+		ns["set_packed_stat_int"]  = set_packed_stat_int;
 	}
 }
