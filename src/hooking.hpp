@@ -5,7 +5,12 @@
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
 #include "gta/script_thread.hpp"
+#include "gta/json_serializer.hpp"
 #include "vmt_hook.hpp"
+#include "vtable_hook.hpp"
+#include "call_hook.hpp"
+
+#include <network/netConnection.hpp>
 
 class CPlayerGamerDataNode;
 class CPlayerGameStateDataNode;
@@ -31,6 +36,9 @@ class CFoundDevice;
 class IDirectSoundCapture;
 class CVehicleProximityMigrationDataNode;
 class CNonPhysicalPlayerData;
+class TimecycleKeyframeData;
+class CPedTaskSpecificDataNode;
+class CPedTaskSequenceDataNode;
 
 namespace rage
 {
@@ -44,18 +52,13 @@ namespace rage
 	class datBitBuffer;
 	class rlMetric;
 	class rlTaskStatus;
-
-	namespace netConnection
-	{
-		class InFrame;
-	}
 }
 
 namespace big
 {
 	struct hooks
 	{
-		static bool run_script_threads(std::uint32_t ops_to_execute);
+		static bool run_script_threads(uint32_t ops_to_execute);
 
 		static constexpr auto swapchain_num_funcs           = 19;
 		static constexpr auto swapchain_present_index       = 8;
@@ -72,10 +75,9 @@ namespace big
 		static bool init_native_tables(rage::scrProgram* program);
 		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
 
-		static void network_player_mgr_init(CNetworkPlayerMgr* _this, std::uint64_t a2, std::uint32_t a3, std::uint32_t a4[4]);
+		static bool network_player_mgr_init(CNetworkPlayerMgr* _this, uint64_t a2, uint32_t a3, uint32_t a4[4]);
 		static void network_player_mgr_shutdown(CNetworkPlayerMgr* _this);
 
-		static bool fragment_physics_crash(uintptr_t a1, uint32_t a2, uintptr_t a3, uintptr_t a4, uintptr_t a5);
 		static bool fragment_physics_crash_2(float* a1, float* a2);
 
 		static void received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int unk, rage::datBitBuffer* bit_buffer);
@@ -85,23 +87,24 @@ namespace big
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 
 		static bool receive_net_message(void* netConnectionManager, void* a2, rage::netConnection::InFrame* frame);
-		static void get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
+		static rage::CEventNetwork* get_network_event_data(int64_t unk, rage::CEventNetwork* net_event);
 
 		static void* assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index);
 
 		//SYNC
-		static bool received_clone_create(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, int32_t object_id, int32_t object_flag, rage::datBitBuffer* buffer, int32_t timestamp);
+		static void received_clone_create(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, int32_t object_id, int32_t object_flag, rage::datBitBuffer* buffer, int32_t timestamp);
 		static eAckCode received_clone_sync(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, eNetObjType object_type, uint16_t object_id, rage::datBitBuffer* bufer, uint16_t unk, uint32_t timestamp);
 		static bool can_apply_data(rage::netSyncTree* tree, rage::netObject* object);
 
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
-		static bool write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
+		static void write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
 		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
-		static uint64_t invalid_decal(uintptr_t a1, int a2);
-		static uint64_t task_parachute_object_0x270(uint64_t _this, int a2, int a3);
+		static void invalid_decal(uintptr_t a1, int a2);
+		static int task_parachute_object(uint64_t _this, int a2, int a3);
+		static int task_ambient_clips(uint64_t _this, int a2, int a3);
 
-		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, std::uint64_t value);
+		static bool update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value);
 		static bool update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value);
 
 		static bool handle_join_request(Network* network, rage::snSession* session, rage::rlGamerInfo* player_info, CJoinRequestContext* ctx, BOOL is_transition_session);
@@ -119,27 +122,30 @@ namespace big
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
 
-		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, std::uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
+		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
+		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
-		static void queue_dependency(void* dependency);
-		static void prepare_metric_for_sending(rage::datBitBuffer* bit_buffer, int unk, int time, rage::rlMetric* metric);
+		static int queue_dependency(void* a1, int a2, void* dependency);
 
-		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, std::int16_t cycle);
+		static bool prepare_metric_for_sending(rage::json_serializer* bit_buffer, int unk, int time, rage::rlMetric* metric);
+		static bool http_start_request(void* request, const char* uri);
+
+		static bool received_array_update(rage::netArrayHandlerBase* array, CNetGamePlayer* sender, rage::datBitBuffer* buffer, int size, int16_t cycle);
 
 		static bool receive_pickup(rage::netObject* netobject, void* unk, CPed* ped);
 
-		static bool write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
+		static void write_player_camera_data_node(rage::netObject* player, CPlayerCameraDataNode* node);
 
 		static rage::netGameEvent* send_player_card_stats(rage::netGameEvent* a1, CPlayerCardStats* stats);
-		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, std::uint32_t stat_count);
+		static void serialize_stats(CStatsSerializationContext* context, rage::joaat_t* stats, uint32_t stat_count);
 
 		static void write_player_creation_data_node(rage::netObject* player, CPlayerCreationDataNode* node);
 		static void write_player_appearance_data_node(rage::netObject* player, CPlayerAppearanceDataNode* node);
 
-		static void task_jump_constructor(std::uint64_t a1, int a2);
+		static __int64 task_jump_constructor(uint64_t a1, int a2);
 
 		static CBaseModelInfo* get_model_info(rage::joaat_t hash, uint32_t* a2);
 
@@ -150,9 +156,36 @@ namespace big
 
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
-		static void log_error_message_box(rage::joaat_t joaated_error_code, char a2);
+		static void log_error_message_box(rage::joaat_t joaated_error_code, bool a2);
 
-		static void send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
+		static bool send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
+
+		static void update_timecycle_keyframe_data(int64_t timecycleManager, TimecycleKeyframeData* timecycleKeyframeData);
+
+		static void* allocate_memory_reliable(rage::netConnection* cxn, int required_memory);
+
+		static void* render_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
+		static void render_entity(__int64 renderer, rage::fwEntity* entity, int unk, bool a4);
+		static __int64 render_big_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
+
+		static bool read_bits_single(void* data, int* out_value, int size, int offset);
+
+		static bool sync_reader_serialize_dword(void* _this, uint32_t* dword, int size);
+		static bool sync_reader_serialize_word(void* _this, uint16_t* word, int size);
+		static bool sync_reader_serialize_byte(void* _this, uint8_t* byte, int size);
+		static bool sync_reader_serialize_int32(void* _this, int32_t* i, int size);
+		static bool sync_reader_serialize_int16(void* _this, int16_t* i, int size);
+		static bool sync_reader_serialize_signed_byte(void* _this, int8_t* i, int size);
+		static bool sync_reader_serialize_bool(void* _this, bool* flag, int size);
+		static bool sync_reader_serialize_signed_float(void* _this, float* flt, float divisor, int size);
+		static bool sync_reader_serialize_float(void* _this, float* flt, float divisor, int size);
+		static bool sync_reader_serialize_net_id(void* _this, uint16_t* id);
+		static bool sync_reader_serialize_vec3(void* _this, rage::fvector3* vec, float divisor, int size);
+		static bool sync_reader_serialize_vec3_signed(void* _this, rage::fvector3* vec, float divisor, int size);
+		static bool sync_reader_serialize_array(void* _this, void* array, int size);
+
+		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
+		static void game_skeleton_update(__int64 skeleton, int type);
 	};
 
 	class minhook_keepalive
@@ -187,55 +220,53 @@ namespace big
 
 			ret_ptr_fn m_on_hooking_available = nullptr;
 
-			detour_hook* m_detour_hook = nullptr;
-
-			~detour_hook_helper();
+			detour_hook* m_detour_hook;
 
 			void enable_hook_if_hooking_is_already_running();
 
 			template<auto detour_function>
 			struct hook_to_detour_hook_helper
 			{
-				static inline detour_hook* m_detour_hook;
+				static inline detour_hook m_detour_hook;
 			};
-
-			template<auto detour_function>
-			static detour_hook_helper* add_internal(detour_hook* dh)
-			{
-				auto d           = new detour_hook_helper();
-				d->m_detour_hook = dh;
-
-				m_detour_hook_helpers.push_back(d);
-				hook_to_detour_hook_helper<detour_function>::m_detour_hook = dh;
-
-				return d;
-			}
 
 		public:
 			template<auto detour_function>
 			static void add(const std::string& name, void* target)
 			{
-				auto d = add_internal<detour_function>(new detour_hook(name, target, (void*)detour_function));
+				hook_to_detour_hook_helper<detour_function>::m_detour_hook.set_instance(name, target, detour_function);
 
-				d->enable_hook_if_hooking_is_already_running();
+				detour_hook_helper d{};
+				d.m_detour_hook = &hook_to_detour_hook_helper<detour_function>::m_detour_hook;
+
+				d.enable_hook_if_hooking_is_already_running();
+
+				m_detour_hook_helpers.push_back(d);
 			}
 
 			template<auto detour_function>
 			static void* add_lazy(const std::string& name, detour_hook_helper::ret_ptr_fn on_hooking_available)
 			{
-				auto d                    = add_internal<detour_function>(new detour_hook(name, detour_function));
-				d->m_on_hooking_available = on_hooking_available;
+				hook_to_detour_hook_helper<detour_function>::m_detour_hook.set_instance(name, detour_function);
 
-				d->enable_hook_if_hooking_is_already_running();
+				detour_hook_helper d{};
+				d.m_detour_hook          = &hook_to_detour_hook_helper<detour_function>::m_detour_hook;
+				d.m_on_hooking_available = on_hooking_available;
+
+				d.enable_hook_if_hooking_is_already_running();
+
+				m_detour_hook_helpers.push_back(d);
 
 				return nullptr;
 			}
+
+			~detour_hook_helper();
 		};
 
 		template<auto detour_function>
 		static auto get_original()
 		{
-			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook->template get_original<decltype(detour_function)>();
+			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook.template get_original<decltype(detour_function)>();
 		}
 
 	private:
@@ -243,10 +274,11 @@ namespace big
 		minhook_keepalive m_minhook_keepalive;
 
 		vmt_hook m_swapchain_hook;
+		vtable_hook m_sync_data_reader_hook;
 
 		WNDPROC m_og_wndproc = nullptr;
 
-		static inline std::vector<detour_hook_helper*> m_detour_hook_helpers;
+		static inline std::vector<detour_hook_helper> m_detour_hook_helpers;
 	};
 
 	inline hooking* g_hooking{};

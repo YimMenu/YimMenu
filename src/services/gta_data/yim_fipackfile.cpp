@@ -22,18 +22,18 @@ namespace big
 	{
 		bool success = false;
 
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 		__try
 		{
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 		}
 		__except (EXCEPTION_EXECUTE_HANDLER)
 		{
 			return false;
 		}
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 
 		return success;
 	}
@@ -126,11 +126,11 @@ namespace big
 
 		try
 		{
-			LOG(INFO) << "gta_folder: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+			LOG(VERBOSE) << "GTA install directory: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
 		}
 		catch (const std::exception& e)
 		{
-			LOG(WARNING) << "Failed printing gta_folder: " << e.what();
+			LOG(WARNING) << "Failed printing GTA install directory: " << e.what();
 		}
 
 		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
@@ -211,7 +211,7 @@ namespace big
 		if (const auto handle = rpf->Open(path.string().c_str(), true); handle != -1)
 		{
 			const auto data_length  = rpf->GetFileLength(handle);
-			const auto file_content = std::make_unique<std::uint8_t[]>(data_length);
+			const auto file_content = std::make_unique<uint8_t[]>(data_length);
 
 			rpf->ReadFull(handle, file_content.get(), data_length);
 
@@ -223,7 +223,7 @@ namespace big
 
 	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
 	{
-		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size) {
+		read_file(path, [&cb](const std::unique_ptr<uint8_t[]>& file_content, const int data_size) {
 			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
 			{
 				cb(doc);

@@ -17,7 +17,7 @@ namespace big
 		});
 
 		ImGui::SameLine();
-		components::button("Delete Current", [] {
+		components::button("DELETE"_T, [] {
 			auto handle = self::veh;
 			if (ENTITY::DOES_ENTITY_EXIST(handle))
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
@@ -77,6 +77,7 @@ namespace big
 			}
 			components::command_checkbox<"vehnocollision">();
 			components::command_checkbox<"vehallweapons">();
+			components::command_checkbox<"allvehsinheists">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();

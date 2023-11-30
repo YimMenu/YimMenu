@@ -4,12 +4,12 @@
 #include "hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/police.hpp"
-#include "util/toxic.hpp"
 #include "util/vehicle.hpp"
 
 extern "C" void sound_overload_detour();
-std::uint64_t g_sound_overload_ret_addr;
+uint64_t g_sound_overload_ret_addr;
 
 namespace big
 {
@@ -22,9 +22,9 @@ namespace big
 		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
 
 		// Patch blocked explosions
-		toxic::explosion_anti_cheat_bypass::m_can_blame_others =
-		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<std::uint16_t*>(), 0xE990).get();
-		toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
+		explosion_anti_cheat_bypass::m_can_blame_others =
+		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
 		// Skip matchmaking session validity checks
@@ -78,8 +78,11 @@ namespace big
 		memory::byte_patch::make(g_pointers->m_sc.m_read_attribute_patch, std::vector{0x90, 0x90})->apply();
 		memory::byte_patch::make(g_pointers->m_sc.m_read_attribute_patch_2, std::vector{0xB0, 0x01})->apply();
 
-		// window hook: pt1
-		memory::byte_patch::make(g_pointers->m_gta.m_window_hook.as<void*>(), std::to_array({0xC3, 0x90, 0x90, 0x90}))->apply();
+		// Prevent the game from crashing when flooded with outgoing events
+		memory::byte_patch::make(g_pointers->m_gta.m_free_event_error, std::vector{0x90, 0x90, 0x90, 0x90, 0x90})->apply();
+
+		// Always send the special ability event
+		memory::byte_patch::make(g_pointers->m_gta.m_activate_special_ability_patch, std::to_array({0xB0, 0x01, 0xC3}))->apply();
 	}
 
 	byte_patch_manager::byte_patch_manager()

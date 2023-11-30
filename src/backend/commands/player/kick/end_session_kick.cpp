@@ -10,21 +10,25 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (!scripts::force_host(RAGE_JOAAT("freemode")))
 			{
-				g_notification_service->push_error("Kick", "Force script host failed!");
+				g_notification_service->push_error("END_KICK"_T.data(), "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
 				return;
 			}
 
 			g_player_service->m_player_to_use_end_session_kick = player;
 			*scr_globals::gsbd.as<int*>() = (int)(__rdtsc() % 50000) + 6; // making the game trigger the broadcast is a bit difficult and requires a little bit of tampering with the value and some luck
+			script::get_current()->yield(5s);
+			*scr_globals::gsbd.as<int*>() = 4;
 		}
 	};
 

@@ -9,7 +9,7 @@ namespace big
 	void view::player_misc()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Misc");
+		components::sub_title("DEBUG_TAB_MISC"_T);
 		if (ImGui::BeginListBox("##misc", get_listbox_dimensions()))
 		{
 			components::player_command_button<"joinceo">(g_player_service->get_selected());
@@ -27,9 +27,15 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"giveweaps">(g_player_service->get_selected(), {});
 
+			ImGui::BeginGroup();
 			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g_player_service->get_selected()->off_radar);
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
+			ImGui::EndGroup();
+
+			ImGui::SameLine();
+
+			ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g_player_service->get_selected()->fix_vehicle);
 
 			ImGui::EndListBox();
 		}

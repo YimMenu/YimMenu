@@ -12,14 +12,14 @@ namespace big
 	void view::lua_scripts()
 	{
 		ImGui::PushItemWidth(250);
-		components::sub_title("Loaded Lua Scipts");
+		components::sub_title("VIEW_LUA_SCRIPTS_LOADED_LUA_SCRIPTS"_T);
 
 		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
 			g_lua_manager->for_each_module([](auto& module) {
 				if (ImGui::Selectable(module->module_name().c_str(),
-					!selected_module.expired() && selected_module.lock().get() == module.get()))
-				selected_module = module;
+				        !selected_module.expired() && selected_module.lock().get() == module.get()))
+					selected_module = module;
 			});
 
 			ImGui::EndListBox();
@@ -31,32 +31,32 @@ namespace big
 
 		if (!selected_module.expired())
 		{
-			ImGui::Text("Scripts Registered: %d", selected_module.lock()->m_registered_scripts.size());
-			ImGui::Text("Memory Patches Registered: %d", selected_module.lock()->m_registered_patches.size());
-			ImGui::Text("GUI Tabs Registered: %d", selected_module.lock()->m_gui.size());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_SCRIPTS_REGISTERED"_T, selected_module.lock()->m_registered_scripts.size()).c_str());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_MEMORY_PATCHES_REGISTERED"_T, selected_module.lock()->m_registered_patches.size()).c_str());
+			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_GUI_TABS_REGISTERED"_T, selected_module.lock()->m_gui.size()).c_str());
 
-			if (components::button("Reload"))
+			if (components::button("VIEW_LUA_SCRIPTS_RELOAD"_T))
 			{
-				auto name = selected_module.lock()->module_name();
-				auto id   = selected_module.lock()->module_id();
+				const std::filesystem::path module_path = selected_module.lock()->module_path();
+				const auto id = selected_module.lock()->module_id();
 
 				g_lua_manager->unload_module(id);
-				g_lua_manager->queue_load_module(name, [](std::weak_ptr<big::lua_module> loaded_module) {
-					selected_module = loaded_module;
-				});
+				g_lua_manager->load_module(module_path);
+				selected_module = g_lua_manager->get_module(id);
 			}
 		}
 
 		ImGui::EndGroup();
 
-		if (components::button("Reload All"))
+		if (components::button("VIEW_LUA_SCRIPTS_RELOAD_ALL"_T))
 		{
-			g_lua_manager->m_schedule_reload_modules = true;
+			g_lua_manager->unload_all_modules();
+			g_lua_manager->load_all_modules();
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Auto Reload Changed Scripts", &g.lua.enable_auto_reload_changed_scripts);
+		ImGui::Checkbox("VIEW_LUA_SCRIPTS_AUTO_RELOAD_CHANGED_SCRIPTS"_T.data(), &g.lua.enable_auto_reload_changed_scripts);
 
-		if (components::button("Open Lua Scripts Folder"))
+		if (components::button("VIEW_LUA_SCRIPTS_OPEN_LUA_SCRIPTS_FOLDER"_T))
 		{
 			std::string command = "explorer.exe /select," + g_lua_manager->get_scripts_folder().get_path().string();
 

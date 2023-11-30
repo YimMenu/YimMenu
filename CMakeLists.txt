@@ -20,7 +20,8 @@ include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/zydis.cmake)
 include(scripts/lua.cmake)
-if(NOT CROSSCOMPILE) # https://github.com/libcpr/cpr/issues/860
+
+if (NOT MINGW)
     include(scripts/cpr.cmake) 
 endif()
 
@@ -41,9 +42,11 @@ file(GLOB_RECURSE SRC_MAIN
 )
 
 if (MSVC)
-  add_compile_options(/bigobj)
+    add_compile_options(/bigobj)
+    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 else ()
-  add_compile_options(-Wa,-mbig-obj)
+    add_compile_options(-Wa,-mbig-obj)
 endif ()
 
 add_library(YimMenu MODULE "${SRC_MAIN}")
@@ -64,10 +67,10 @@ target_include_directories(YimMenu PRIVATE
 target_link_libraries(YimMenu PRIVATE )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-if(CROSSCOMPILE)
+if(MINGW)
     target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui Zydis lua_static d3dcompiler dwmapi winmm psapi)
 else()
-    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui Zydis cpr lua_static d3dcompiler dwmapi winmm psapi)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static d3dcompiler dwmapi winmm psapi)
 endif()
 
 # Warnings as errors

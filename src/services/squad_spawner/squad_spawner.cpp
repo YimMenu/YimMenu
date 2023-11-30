@@ -59,12 +59,7 @@ namespace big
 				PED::SET_PED_ARMOUR(handle, s.m_ped_armor);
 			}
 
-			if (s.does_squad_have_vehicle() && s.m_weapon_model != "WEAPON_UNARMED")
-			{
-				WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat("WEAPON_MICROSMG"), 999, false, false);
-			}
-
-			WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat(s.m_weapon_model), 999, false, true);
+			WEAPON::GIVE_WEAPON_TO_PED(handle, rage::joaat(s.m_weapon_model), 9999, false, true);
 			PED::SET_PED_ACCURACY(handle, s.m_ped_accuracy);
 			PED::SET_PED_COMBAT_ABILITY(handle, (int)s.m_combat_ability_level);
 			ENTITY::SET_ENTITY_INVINCIBLE(handle, s.m_ped_invincibility);

@@ -9,7 +9,7 @@ namespace big
 	struct tunable_save_struct
 	{
 		rage::joaat_t hash;
-		std::uint32_t offset;
+		uint32_t offset;
 	};
 #pragma pack(pop)
 
@@ -53,11 +53,10 @@ namespace big
 				if (auto tunable = get_tunable<T*>(hash))
 				{
 					*tunable = value;
-					LOG(INFO) << "Imm set";
 				}
 				else
 				{
-					LOG(INFO) << "Not found";
+					LOG(WARNING) << "Tunable 0x" << hash << " not found.";
 				}
 			}
 			else
@@ -69,8 +68,6 @@ namespace big
 					if (auto tunable = get_tunable<T*>(hash))
 					{
 						*tunable = value;
-
-						LOG(INFO) << "Delay set";
 					}
 				});
 			}

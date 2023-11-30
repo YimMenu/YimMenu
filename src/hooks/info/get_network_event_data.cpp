@@ -53,7 +53,7 @@ namespace big
 		return scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[player->id()].OrbitalBitset.IsSet(eOrbitalBitset::kOrbitalCannonActive);
 	}
 
-	void hooks::get_network_event_data(int64_t unk, rage::CEventNetwork* net_event)
+	rage::CEventNetwork* hooks::get_network_event_data(int64_t unk, rage::CEventNetwork* net_event)
 	{
 		switch (net_event->get_type())
 		{

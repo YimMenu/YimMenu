@@ -3,6 +3,7 @@
 #include "util/outfit.hpp"
 #include "util/ped.hpp"
 #include "views/view.hpp"
+#include "services/outfit/outfit_service.hpp"
 
 namespace big
 {
@@ -85,7 +86,18 @@ namespace big
 				if (drawable_id == -1)
 					PED::CLEAR_PED_PROP(self::ped, id, 1);
 				else
+				{
 					PED::SET_PED_PROP_INDEX(self::ped, id, drawable_id, texture_id, TRUE, 1);
+					if (id == 0)
+					{
+						//Prevent ped from taking helmet off.
+						PED::SET_PED_HELMET_PROP_INDEX(self::ped, drawable_id, 0);
+						PED::SET_PED_HELMET_TEXTURE_INDEX(self::ped, texture_id);
+						PED::SET_PED_CONFIG_FLAG(self::ped, 34, true);
+						if (!PED::IS_PED_ON_ANY_BIKE(self::ped))
+							PED::SET_PED_CONFIG_FLAG(self::ped, 36, true);
+					}
+				}
 			}
 		});
 
@@ -170,39 +182,17 @@ namespace big
 		ImGui::SetNextItemWidth(300);
 
 		ImGui::InputText("##outfit_name", outfit_name, sizeof(outfit_name));
+		if (ImGui::IsItemActive())
+			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
 		components::button("OUTFIT_SAVE_CURRENT"_T, [] {
-			nlohmann::json j;
-			nlohmann::json j_components;
-			nlohmann::json j_props;
-
-			for (auto& item : components.items)
-			{
-				nlohmann::json tmp;
-				tmp["drawable_id"]                    = item.drawable_id;
-				tmp["texture_id"]                     = item.texture_id;
-				j_components[std::to_string(item.id)] = tmp;
-			}
-
-			for (auto& item : props.items)
-			{
-				nlohmann::json tmp;
-				tmp["drawable_id"]               = item.drawable_id;
-				tmp["texture_id"]                = item.texture_id;
-				j_props[std::to_string(item.id)] = tmp;
-			}
-
-			j["components"] = j_components;
-			j["props"]      = j_props;
-
 			size_t index    = 0;
 			std::string str = outfit_name;
 			while (saved_outfit_path.get_file(str + ".json").exists())
 				str = fmt::format("{}({})", outfit_name, ++index);
 
-			std::ofstream o(saved_outfit_path.get_file(str + ".json").get_path());
-			o << std::setw(4) << j << std::endl;
+			outfit_service::save_outfit(str + ".json");
 		});
 		ImGui::SameLine();
 
@@ -213,28 +203,7 @@ namespace big
 				nlohmann::json j;
 				i >> j;
 
-				for (auto& item : j["components"].items())
-				{
-					std::stringstream ss(item.key());
-					int id = 0;
-					ss >> id;
-					int drawable_id = item.value()["drawable_id"];
-					int texture_id  = item.value()["texture_id"];
-					PED::SET_PED_COMPONENT_VARIATION(self::ped, id, drawable_id, texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, id));
-				}
-
-				for (auto& item : j["props"].items())
-				{
-					std::stringstream ss(item.key());
-					int id = 0;
-					ss >> id;
-					int drawable_id = item.value()["drawable_id"];
-					int texture_id  = item.value()["texture_id"];
-					if (drawable_id == -1)
-						PED::CLEAR_PED_PROP(self::ped, id, 1);
-					else
-						PED::SET_PED_PROP_INDEX(self::ped, id, drawable_id, texture_id, TRUE, 1);
-				}
+				outfit_service::apply_outfit(j, true);
 			}
 		});
 		ImGui::SameLine();
@@ -255,5 +224,20 @@ namespace big
 					selected_index = i;
 			ImGui::EndListBox();
 		}
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		if (ImGui::Button("VIEW_SELF_OUTFIT_SET_PERSIST_OUTFIT"_T.data()))
+		{
+			g.self.persist_outfit = saved_outfits[selected_index];
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("VIEW_SELF_OUTFIT_CLEAR_PERSIST_OUTFIT"_T.data()))
+		{
+			g.self.persist_outfit.clear();
+		}
+		ImGui::SameLine();
+		ImGui::Checkbox("VIEW_SELF_OUTFIT_DISABLE_DURING_MISSIONS"_T.data(), &g.self.persist_outfits_mis);
+		ImGui::Text(std::format("{}: {}", "VIEW_SELF_OUTFIT_CURRENT_PERSISTED_OUTFIT"_T.data(), g.self.persist_outfit).c_str());
+		ImGui::EndGroup();
 	}
 }

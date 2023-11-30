@@ -36,6 +36,7 @@
 #include <utility>
 
 #include <set>
+#include <unordered_set>
 #include <stack>
 #include <vector>
 
@@ -49,7 +50,7 @@
 #include <optional>
 #include <variant>
 
-#include <fmt/format.h>
+#include <format>
 #include <nlohmann/json.hpp>
 
 #include "logger/logger.hpp"
@@ -80,7 +81,10 @@ namespace self
 	inline Ped ped;
 	inline Player id;
 	inline Vector3 pos;
+	inline Vector3 rot;
 	inline Vehicle veh;
+	inline int char_index;
+	inline std::unordered_set<int> spawned_vehicles;
 }
 
 template<size_t N>

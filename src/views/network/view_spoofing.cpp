@@ -54,7 +54,8 @@ namespace big
 		if (g.spoofing.spoof_bad_sport)
 		{
 			ImGui::SameLine();
-			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, "Clean Player\0Dirty Player\0Bad Sport"))
+			static const std::string badsport_options = std::string("CLEAN_PLAYER"_T.data()) + '\0' + std::string("VIEW_SPOOFING_DIRTY_PLAYER"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
+			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, badsport_options.c_str()))
 			{
 				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
@@ -148,11 +149,11 @@ namespace big
 			ImGui::InputInt("###player_count", &g.spoofing.session_player_count);
 		}
 
-		ImGui::Checkbox("Spoof Session Bad Sport Status", &g.spoofing.spoof_session_bad_sport_status);
+		ImGui::Checkbox("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T.data(), &g.spoofing.spoof_session_bad_sport_status);
 		if (g.spoofing.spoof_session_bad_sport_status)
 		{
 			ImGui::SameLine();
-			ImGui::Checkbox("Badsport", &g.spoofing.session_bad_sport);
+			ImGui::Checkbox("VIEW_SPOOFING_BADSPORT"_T.data(), &g.spoofing.session_bad_sport);
 		}
 	}
 }

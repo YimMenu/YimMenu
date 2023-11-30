@@ -5,6 +5,7 @@
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
 #include "util/misc.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -21,8 +22,6 @@ namespace big
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
 		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
-			return;
-		if (g.esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
 			return;
 
 		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
@@ -107,7 +106,7 @@ namespace big
 				(plyr->get_ped()->m_ped_task_flag & (uint32_t)ePedTask::TASK_DRIVING) &&
 				(player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD))
 			{
-				mode_str =+ "Vehicle God";
+				mode_str =+ "VEHICLE_GOD"_T.data();
 			}
 
 			if (!mode_str.empty())
@@ -180,12 +179,9 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			draw_player(g_player_service->get_self(), draw_list);
-
-			for (const auto& [_, plyr] : g_player_service->players())
-			{
-				draw_player(plyr, draw_list);
-			}
+			g_player_service->iterate([draw_list](const player_entry& entry) {
+				draw_player(entry.second, draw_list);
+			});
 		}
 	}
 }

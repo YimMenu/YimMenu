@@ -15,7 +15,7 @@ namespace rage
 	{
 	public:
 		scriptResource* m_data;     // 0x00
-		std::uint32_t m_unk;        // 0x04
+		uint32_t m_unk;        // 0x04
 		char m_padding[0x0C];       // 0x0C
 		scriptResourceEntry* m_next;// 0x18
 	};
@@ -75,22 +75,22 @@ public:
 class CGameScriptHandlerNetwork : public CGameScriptHandler
 {
 public:
-	std::uint8_t m_0xA0;       // 0xA0
-	std::uint8_t m_0xA1;       // 0xA1
-	std::uint8_t m_0xA2;       // 0xA2
-	std::uint8_t m_0xA3;       // 0xA3
-	std::uint8_t m_num_players;// 0xA4
-	std::uint8_t m_0xA5;       // 0xA5
-	std::uint8_t m_0xA6;       // 0xA6
-	std::uint8_t m_0xA7;       // 0xA7
-	std::uint8_t m_0xA8;       // 0xA8
-	std::uint8_t m_0xA9;       // 0xA9
-	std::uint8_t m_0xAA;       // 0xAA
-	std::uint8_t m_0xAB;       // 0xAB
-	std::uint8_t m_0xAC;       // 0xAC
-	std::uint8_t m_0xAD;       // 0xAD
-	std::uint8_t m_0xAE;       // 0xAE
-	std::uint8_t m_0xAF;       // 0xAF
+	uint8_t m_0xA0;       // 0xA0
+	uint8_t m_0xA1;       // 0xA1
+	uint8_t m_0xA2;       // 0xA2
+	uint8_t m_0xA3;       // 0xA3
+	uint8_t m_num_players;// 0xA4
+	uint8_t m_0xA5;       // 0xA5
+	uint8_t m_0xA6;       // 0xA6
+	uint8_t m_0xA7;       // 0xA7
+	uint8_t m_0xA8;       // 0xA8
+	uint8_t m_0xA9;       // 0xA9
+	uint8_t m_0xAA;       // 0xAA
+	uint8_t m_0xAB;       // 0xAB
+	uint8_t m_0xAC;       // 0xAC
+	uint8_t m_0xAD;       // 0xAD
+	uint8_t m_0xAE;       // 0xAE
+	uint8_t m_0xAF;       // 0xAF
 };
 
 class CScriptParticipant

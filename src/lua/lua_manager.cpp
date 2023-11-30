@@ -7,10 +7,7 @@ namespace big
 	lua_manager::lua_manager(folder scripts_folder) :
 	    m_scripts_folder(scripts_folder)
 	{
-		m_schedule_reload_modules = false;
-
-		m_wake_time_changed_scripts_check =
-			std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
+		m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
 
 		g_lua_manager = this;
 
@@ -40,6 +37,19 @@ namespace big
 		}
 
 		return false;
+	}
+
+	void lua_manager::draw_independent_gui()
+	{
+		std::lock_guard guard(m_module_lock);
+
+		for (const auto& module : m_modules)
+		{
+			for (const auto& element : module->m_independent_gui)
+			{
+				element->draw();
+			}
+		}
 	}
 
 	void lua_manager::draw_gui(rage::joaat_t tab_hash)
@@ -76,17 +86,33 @@ namespace big
 		});
 	}
 
-	void lua_manager::load_module(const std::string& module_name)
+	void lua_manager::load_module(const std::filesystem::path& module_path)
 	{
+		if (!std::filesystem::exists(module_path))
+		{
+			LOG(WARNING) << reinterpret_cast<const char*>(module_path.u8string().c_str()) << " does not exist in the filesystem. Not loading it.";
+			return;
+		}
+
 		std::lock_guard guard(m_module_lock);
+
+		const auto module_name = module_path.filename().string();
 
 		const auto id = rage::joaat(module_name);
 
 		for (const auto& module : m_modules)
+		{
 			if (module->module_id() == id)
+			{
+				LOG(WARNING) << "Module with the name " << module_name << " already loaded.";
 				return;
+			}
+		}
 
-		m_modules.push_back(std::make_shared<lua_module>(module_name));
+		const auto module = std::make_shared<lua_module>(module_path, m_scripts_folder);
+		module->load_and_call_script();
+
+		m_modules.push_back(module);
 	}
 
 	void lua_manager::reload_changed_scripts()
@@ -98,20 +124,19 @@ namespace big
 
 		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
 		{
-			for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
+			for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
 			{
 				if (entry.is_regular_file())
 				{
-					const auto module_name = entry.path().filename().string();
+					const auto& module_path    = entry.path();
 					const auto last_write_time = entry.last_write_time();
 
 					for (const auto& module : m_modules)
 					{
-						if (module->module_name() == module_name &&
-							module->last_write_time() < last_write_time)
+						if (module->module_path() == module_path && module->last_write_time() < last_write_time)
 						{
 							unload_module(module->module_id());
-							queue_load_module(module_name, nullptr);
+							load_module(module_path);
 							break;
 						}
 					}
@@ -119,28 +144,6 @@ namespace big
 			}
 
 			m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
-		}
-	}
-
-	void lua_manager::queue_load_module(const std::string& module_name, std::function<void(std::weak_ptr<lua_module>)> on_module_loaded)
-	{
-		m_modules_load_queue.push({module_name, on_module_loaded});
-	}
-
-	void lua_manager::load_modules_from_queue()
-	{
-		while (m_modules_load_queue.size())
-		{
-			auto& module_load_info = m_modules_load_queue.front();
-
-			const auto id = rage::joaat(module_load_info.m_name);
-
-			load_module(module_load_info.m_name);
-			auto loaded_module = get_module(id);
-			if (module_load_info.m_on_module_loaded)
-				module_load_info.m_on_module_loaded(loaded_module);
-
-			m_modules_load_queue.pop();
 		}
 	}
 
@@ -163,9 +166,9 @@ namespace big
 
 	void lua_manager::load_all_modules()
 	{
-		for (const auto& entry : std::filesystem::directory_iterator(m_scripts_folder.get_path()))
-			if (entry.is_regular_file())
-				load_module(entry.path().filename().string());
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
+			if (entry.is_regular_file() && entry.path().extension() == ".lua")
+				load_module(entry.path());
 	}
 	void lua_manager::unload_all_modules()
 	{

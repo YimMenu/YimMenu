@@ -3,10 +3,11 @@
 
 namespace big
 {
-	using file_contents_callback = std::function<void(const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)>;
+	using file_contents_callback = std::function<void(const std::unique_ptr<uint8_t[]>& file_content, const int data_size)>;
 
 	class yim_fipackfile
 	{
+	private:
 		rage::fiPackfile* rpf;
 		std::string mount_name;
 

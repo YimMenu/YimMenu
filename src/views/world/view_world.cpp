@@ -1,3 +1,4 @@
+#include "pointers.hpp"
 #include "util/entity.hpp"
 #include "util/notify.hpp"
 #include "util/ped.hpp"
@@ -13,9 +14,24 @@ namespace big
 			view::time_and_weather();
 		}
 
-		ImGui::SeparatorText("Peds");
+		ImGui::SeparatorText("GUI_TAB_GRAVITY"_T.data());
+		{
+			view::gravity();
+		}
 
-		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("Kill", [] {
+		ImGui::SeparatorText("GUI_TAB_OCEAN"_T.data());
+		{
+			view::ocean();
+		}
+
+		ImGui::SeparatorText("GUI_TAB_WAYPOINT_N_OBJECTIVE"_T.data());
+		{
+			view::waypoint_and_objective();
+		}
+
+		ImGui::SeparatorText("PED"_T.data());
+
+		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
 				if (!PED::IS_PED_A_PLAYER(peds))
@@ -24,13 +40,13 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("Kill Enemies", [] {
+		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("VIEW_WORLD_KILL_ENEMIES"_T, [] {
 			for (auto ped : entity::get_entities(false, true))
 			{
 				if (!PED::IS_PED_A_PLAYER(ped))
 				{
 					auto relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped);
-					if (relation == 4 || relation == 5)
+					if (relation == 4 || relation == 5 || relation == 3)
 						ped::kill_ped(ped);
 				}
 			}
@@ -47,14 +63,13 @@ namespace big
 		components::command_checkbox<"pedrush">();
 		ImGui::SameLine();
 		components::command_checkbox<"autodisarm">();
-		components::options_modal("Auto Disarm", [] {
-			ImGui::Checkbox("Neutralize", &g.world.nearby.auto_disarm.neutralize);
+		components::options_modal("VIEW_WORLD_AUTO_DISARM"_T.data(), [] {
+			ImGui::Checkbox("VIEW_WORLD_NEUTRALIZE"_T.data(), &g.world.nearby.auto_disarm.neutralize);
 		});
 
-		ImGui::SeparatorText("Vehicles");
-		components::sub_title("Vehicles");
+		ImGui::SeparatorText("VEHICLES"_T.data());
 
-		components::button<ImVec2(110, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("Max Upgrade", [] {
+		components::button<ImVec2(0, 0), ImVec4(0.02745f, 0.4745f, 0.10196f, 1.f)>("MAX_VEHICLE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))
@@ -66,7 +81,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button<ImVec2(110, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("Downgrade", [] {
+		components::button<ImVec2(0, 0), ImVec4(0.4549f, 0.03529f, 0.03529f, 1.f)>("VIEW_WORLD_DOWNGRADE"_T, [] {
 			for (auto vehs : entity::get_entities(true, false))
 			{
 				if (entity::take_control_of(vehs))
@@ -79,21 +94,26 @@ namespace big
 
 		components::command_checkbox<"vehiclerain">();
 
-		ImGui::SeparatorText("Entities");
+		ImGui::SeparatorText("VIEW_BLACKHOLE_ENTITIES"_T.data());
 
 		static bool included_entity_types[3];
-		static bool own_vehicle, deleting;
+		static bool own_vehicle, deleting, force;
 		static int quantity, remaining;
 
-		ImGui::Text("Include:");
-		ImGui::Checkbox("Vehicles", &included_entity_types[0]);
+		ImGui::Text("VIEW_WORLD_INCLUDE"_T.data());
+		ImGui::Checkbox("VEHICLES"_T.data(), &included_entity_types[0]);
 		ImGui::SameLine();
-		ImGui::Checkbox("Peds", &included_entity_types[1]);
+		ImGui::Checkbox("PED"_T.data(), &included_entity_types[1]);
 		ImGui::SameLine();
-		ImGui::Checkbox("Props", &included_entity_types[2]);
+		ImGui::Checkbox("VIEW_WORLD_PROPS"_T.data(), &included_entity_types[2]);
 
 		if (included_entity_types[0])
-			ImGui::Checkbox("Self vehicle", &own_vehicle);
+		{
+			ImGui::Checkbox("VIEW_WORLD_SELF_VEHICLE"_T.data(), &own_vehicle);
+			ImGui::SameLine();
+		}
+
+		ImGui::Checkbox("FORCE"_T.data(), &force);
 
 		if (deleting)
 		{
@@ -102,12 +122,12 @@ namespace big
 		}
 		else
 		{
-			components::button("Delete all", [&] {
+			components::button("VIEW_WORLD_DELETE_ALL"_T, [&] {
 				auto list = entity::get_entities(included_entity_types[0], included_entity_types[1], included_entity_types[2], own_vehicle);
 
 				quantity  = list.size();
 				remaining = quantity;
-				g_notification_service->push("Entity Deletion", fmt::format("Deleting {} entities", quantity));
+				g_notification_service->push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
 
@@ -122,8 +142,22 @@ namespace big
 							if (ent == self::veh && own_vehicle)
 								TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
 
-						if (entity::take_control_of(ent, 25))
-							entity::delete_entity(ent);
+						if (force)
+						{
+							auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent);
+
+							switch (ptr->m_entity_type)
+							{
+							case 4: g_pointers->m_gta.m_delete_ped(reinterpret_cast<CPed*>(ptr)); break;
+							case 3: g_pointers->m_gta.m_delete_vehicle(reinterpret_cast<CVehicle*>(ptr)); break;
+							case 5: g_pointers->m_gta.m_delete_object(reinterpret_cast<CObject*>(ptr), false); break;
+							}
+						}
+						else
+						{
+							if (entity::take_control_of(ent, 25))
+								entity::delete_entity(ent);
+						}
 					}
 
 					if (ENTITY::DOES_ENTITY_EXIST(ent))
@@ -133,7 +167,7 @@ namespace big
 				}
 
 				if (failed > 0)
-					g_notification_service->push_warning("Entity Deletion", fmt::format("Failed deleting {} entities", failed));
+					g_notification_service->push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
 
 				deleting = false;
 			});

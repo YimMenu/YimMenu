@@ -766,7 +766,7 @@ Arg Count:  0
 Arg Count:  0
 
 ### alwaysfullammo 
- Refills your ammo every tick
+ Refills your ammo every tick 
 Arg Count:  0
 
 ### incrdamage 

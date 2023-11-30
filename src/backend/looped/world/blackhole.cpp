@@ -63,10 +63,7 @@ namespace big
 		}
 	};
 
-	blackhole g_blackhole("blackhole", "Blackhole", "Spawns a blackhole that picks up all the peds and vehicles in your area",
-	    g.world.blackhole.enable);
-	bool_command g_blackhole_peds("blackholeincpeds", "Peds", "Includes all nearby peds in the blackhole's path of destruction",
-	    g.world.blackhole.include_peds);
-	bool_command g_blackhole_vehicles("blackholeincvehs", "Vehicles", "Includes all nearby vehicles in the blackhole's path of destruction",
-	    g.world.blackhole.include_vehicles);
+	blackhole g_blackhole("blackhole", "GUI_TAB_BLACKHOLE", "BACKEND_LOOPED_WORLD_BLACKHOLE_DESC", g.world.blackhole.enable);
+	bool_command g_blackhole_peds("blackholeincpeds", "PEDS", "BACKEND_LOOPED_WORLD_BLACKHOLE_PEDS_DESC", g.world.blackhole.include_peds);
+	bool_command g_blackhole_vehicles("blackholeincvehs", "VEHICLES", "BACKEND_LOOPED_WORLD_BLACKHOLE_VEHS_DESC", g.world.blackhole.include_vehicles);
 }

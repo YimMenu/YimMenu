@@ -3,7 +3,7 @@
 
 constexpr auto MAX_PLAYERS = 32;
 
-enum class ControllerInputs : std::uint32_t
+enum class ControllerInputs : uint32_t
 {
 	INPUT_NEXT_CAMERA,
 	INPUT_LOOK_LR,
@@ -372,7 +372,7 @@ enum class ControllerInputs : std::uint32_t
 	SCRIPTED_INPUT_LAST
 };
 
-enum class RadioStationIndexes : std::uint32_t
+enum class RadioStationIndexes : uint32_t
 {
 	RADIO_LSROCKRADIO,
 	RADIO_NONSTOPPOPFM,
@@ -509,7 +509,7 @@ enum class eNetworkEvents : uint16_t
 	NETWORK_CHECK_CATALOG_CRC
 };
 
-enum class KickReason : std::uint8_t
+enum class KickReason : uint8_t
 {
 	VOTED_OUT,
 	PEER_COMPLAINTS,
@@ -1027,24 +1027,15 @@ enum class BlipColors
 	WaypointColor  = 0x54
 };
 
-enum class BlipDisplayBits
+enum BlipDisplayBits
 {
-	BlipIsBright                 = (1 << 1),
-	BlipEngageFlashing           = (1 << 3),
-	BlipFlashForRoute            = (1 << 5),
-	BlipIsOnMinimap              = (1 << 6),
-	BlipIsHighDetail             = (1 << 8),
-	BlipUseBlipColorForDirection = (1 << 9),
-	BlipIsSmall                  = (1 << 10),
-	BlipShowCone                 = (1 << 11),
-	BlipIsMissionCreatorBlip     = (1 << 12),
-	BlipShowCheckmark            = (1 << 15),
-	BlipShowDollarSign           = (1 << 16),
-	BlipShowHeadingIndicator     = (1 << 17),
-	BlipShowFullCircle           = (1 << 18),
-	BlipIsFriend                 = (1 << 19),
-	BlipIsCrew                   = (1 << 20),
-	BlipIsSelected               = (1 << 22),
+	BlipShowCheckmark        = (1 << 16),
+	BlipShowDollarSign       = (1 << 17),
+	BlipShowHeadingIndicator = (1 << 18),
+	BlipShowFullCircle       = (1 << 19),
+	BlipIsFriend             = (1 << 20),
+	BlipIsCrew               = (1 << 21),
+	BlipIsSelected           = (1 << 23),
 };
 
 enum class BlipRenderBits
@@ -1052,7 +1043,7 @@ enum class BlipRenderBits
 	BlipIsOnScreen = (1 << 6)
 };
 
-enum class eFrameFlags : std::uint32_t
+enum class eFrameFlags : uint32_t
 {
 	eFrameFlagExplosiveAmmo  = 1 << 11,
 	eFrameFlagFireAmmo       = 1 << 12,
@@ -1078,13 +1069,30 @@ enum class eNetObjType
 	NET_OBJ_TYPE_TRAIN
 };
 
-enum class eNetObjectFlags : std::uint16_t
+constexpr const auto net_object_type_strs = std::to_array({
+    "AUTOMOBILE",
+    "BIKE",
+    "BOAT",
+    "DOOR",
+    "HELI",
+    "OBJECT",
+    "PED",
+    "PICKUP",
+    "PICKUP_PLACEMENT",
+    "PLANE",
+    "SUBMARINE",
+    "PLAYER",
+    "TRAILER",
+    "TRAIN",
+});
+
+enum class eNetObjectFlags : uint16_t
 {
 	NET_OBJ_FLAGS_FROM_SCRIPT = 1 << 2,
 	NET_OBJ_FLAGS_SCRIPTED    = 1 << 6,
 };
 
-enum class eAckCode : std::uint32_t
+enum class eAckCode : uint32_t
 {
 	ACKCODE_SUCCESS,
 	ACKCODE_FAIL,
@@ -1097,7 +1105,7 @@ enum class eAckCode : std::uint32_t
 	ACKCODE_NONE
 };
 
-enum class PedBones : std::uint32_t
+enum class PedBones : uint16_t
 {
 	SKEL_ROOT                        = 0x0,
 	SKEL_Pelvis                      = 0x2E28,
@@ -1996,6 +2004,14 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
+enum class eKnockOffVehicle
+{
+	KNOCKOFFVEHICLE_DEFAULT,
+	KNOCKOFFVEHICLE_NEVER,
+	KNOCKOFFVEHICLE_EASY,
+	KNOCKOFFVEHICLE_HARD
+};
+
 enum class eCombatAbilityLevel
 {
 	POOR,
@@ -2032,4 +2048,29 @@ enum class GameMode : int32_t
 	Golf          = 0xB,
 	Tennis        = 0xC,
 	ShootingRange = 0xD
+};
+
+enum CameraMode : int
+{
+	THIRD_PERSON_NEAR   = 0,
+	THIRD_PERSON_MEDIUM = 1,
+	THIRD_PERSON_FAR    = 2,
+	CINEMATIC           = 3,
+	FIRST_PERSON        = 4,
+};
+
+enum ComponentId : int
+{
+	HEAD,
+	BEARD,
+	HAIR,
+	TORSO,
+	LEGS,
+	HANDS,
+	FOOT,
+	ACCESSORIES_NECK,
+	ACCESSORIES_1,
+	ACCESSORIES_2,
+	DECALS,
+	AUXILIARY
 };

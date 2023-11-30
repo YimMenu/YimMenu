@@ -2,7 +2,6 @@
 #include "debug/view_debug.hpp"
 #include "esp/view_esp.hpp"
 #include "gui/components/components.hpp"
-#include "util/animator.hpp"
 
 //Percentage of window space
 constexpr auto listbox_width  = 0.5f;
@@ -18,7 +17,6 @@ namespace big
 
 	class view
 	{
-		inline static animator window_animator = animator();
 		inline static ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoNav;
 
 	public:
@@ -40,6 +38,7 @@ namespace big
 		static void overlay();
 		static void root();
 		static void self();
+		static void animations();
 		static void network();
 		static void missions();
 		static void player_database();
@@ -50,12 +49,16 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
+		static void proxy_settings();
 		static void xml_vehicles();
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
 		static void squad_spawner();
 		static void time_and_weather();
+		static void gravity();
+		static void ocean();
+		static void waypoint_and_objective();
 		static void spoofing();
 		static void teleport();
 		static void custom_teleport();
@@ -69,8 +72,10 @@ namespace big
 		static void blackhole();
 		static void model_swapper();
 		static void world();
+		static void xml_maps();
 		static void gta_cache();
 		static void lua_scripts();
+		static void vfx();
 
 		static void player_info();
 		static void player_teleport();

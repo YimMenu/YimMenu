@@ -114,6 +114,8 @@ namespace big
 		add_native_detour(0xEB354E5376BC81A7, all_scripts::HUD_FORCE_WEAPON_WHEEL);
 		add_native_detour(0x158C16F5E4CF41F8, all_scripts::RETURN_TRUE); // bypass casino country restrictions
 		add_native_detour(0xE679E3E06E363892, all_scripts::NETWORK_OVERRIDE_CLOCK_TIME);
+		add_native_detour(0x6B76DC1F3AE6E6A3, all_scripts::SET_ENTITY_HEALTH);
+		add_native_detour(0x697157CED63F18D4, all_scripts::APPLY_DAMAGE_TO_PED);
 		add_native_detour(0x40EB1EFD921822BC, all_scripts::DO_NOTHING); // SECURITY::REGISTER_SCRIPT_VARIABLE
 		add_native_detour(0x340A36A700E99699, all_scripts::DO_NOTHING); // SECURITY::UNREGISTER_SCRIPT_VARIABLE
 		add_native_detour(0x8E580AB902917360, all_scripts::DO_NOTHING); // SECURITY::FORCE_CHECK_SCRIPT_VARIABLES
@@ -163,6 +165,23 @@ namespace big
 		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x40FCE03E50E8DBE8, tunables::NETWORK_ACCESS_TUNABLE_INT_HASH);
 		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x697F508861875B42, tunables::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH);
 		add_native_detour(RAGE_JOAAT("tuneables_processing"), 0x972BC203BBC4C4D5, tunables::NETWORK_ACCESS_TUNABLE_FLOAT_HASH);
+
+		add_native_detour(RAGE_JOAAT("arena_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("armory_aircraft_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("base_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("business_hub_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("car_meet_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("carmod_shop"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("fixer_hq_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("hacker_truck_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("hangar_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("juggalo_hideout_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("personal_carmod_shop"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("tuner_property_carmod"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("clothes_shop_mp"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("gunclub_shop"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("hairdo_shop_mp"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour(RAGE_JOAAT("tattoo_shop"), 0x2208438012482A1A, all_scripts::DO_NOTHING); //Fix jittering weapons.
 
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 			if (entry.m_program)

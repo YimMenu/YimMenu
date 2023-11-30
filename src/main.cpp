@@ -4,15 +4,16 @@
 #include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "hooking.hpp"
+#include "http_client/http_client.hpp"
 #include "logger/exception_handler.hpp"
 #include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 	#include "services/api/api_service.hpp"
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -33,9 +34,10 @@
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
+#include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
-#include "util/migrate.hpp"
 #include "version.hpp"
+
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -59,7 +61,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 #endif // _MSC_VER
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
-			    do_migration(base_dir);
 			    g_file_manager.init(base_dir);
 
 			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
@@ -90,6 +91,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
 
+#ifdef _MSC_VER
+				g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
+				LOG(INFO) << "HTTP Client initialized.";
+#endif // _MSC_VER
+
 			    g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
 
@@ -113,9 +119,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
-#ifndef CROSSCOMPILING
+				auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
+#ifdef _MSC_VER
 				    auto api_service_instance = std::make_unique<api_service>();
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -135,6 +142,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_script_mgr.add_script(std::make_unique<script>(&context_menu_service::context_menu, "Context Menu"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::tunables_script, "Tunables"));
 			    g_script_mgr.add_script(std::make_unique<script>(&backend::squad_spawner, "Squad Spawner"));
+			    g_script_mgr.add_script(std::make_unique<script>(&backend::ambient_animations_loop, "Ambient Animations"));
 
 			    LOG(INFO) << "Scripts registered.";
 
@@ -149,13 +157,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    g_running = true;
 
-			    // start update loop after setting g_running to true to prevent it from exiting instantly
-			    g_player_database_service->start_update_loop();
-
 			    while (g_running)
 				    std::this_thread::sleep_for(500ms);
 
-				g_script_mgr.remove_all_scripts();
+			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
@@ -166,9 +171,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    // cleans up the thread responsible for saving settings
-			    g.destroy();
 
 			    // Make sure that all threads created don't have any blocking loops
 			    // otherwise make sure that they have stopped executing
@@ -185,10 +187,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Matchmaking Service reset.";
 			    player_database_service_instance.reset();
 			    LOG(INFO) << "Player Database Service reset.";
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 				    api_service_instance.reset();
 				    LOG(INFO) << "API Service reset.";
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 			    script_patcher_service_instance.reset();
 			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();
@@ -209,8 +211,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
-				xml_vehicles_service_instance.reset();
-				LOG(INFO) << "Xml Vehicles Service reset.";
+			    xml_vehicles_service_instance.reset();
+			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();

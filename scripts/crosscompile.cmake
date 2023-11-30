@@ -11,8 +11,8 @@ if(CROSSCOMPILE)
     set(CMAKE_SYSTEM_NAME "Windows")
     set(CMAKE_ASM_MASM_COMPILER "uasm")
 
-    set(CMAKE_C_COMPILER_TARGET x86_64-windows-gnu)
-    set(CMAKE_CXX_COMPILER_TARGET x86_64-windows-gnu)
+    set(CMAKE_C_COMPILER_TARGET x86_64-windows-msvc)
+    set(CMAKE_CXX_COMPILER_TARGET x86_64-windows-msvc)
     set(CMAKE_Fortran_COMPILER ${TOOLCHAIN_PREFIX}-gfortran)
     set(CMAKE_RC_COMPILER ${TOOLCHAIN_PREFIX}-windres)
 
@@ -21,15 +21,13 @@ if(CROSSCOMPILE)
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-    add_compile_options(
-        "$<$<COMPILE_LANGUAGE:CXX>:-municode;-fpermissive;${CXX_FLAGS}>"
-        "$<$<COMPILE_LANGUAGE:ASM_MASM>:-win64${ASM_MASM_FLAGS}>"
-    )
-    add_link_options(-static -s)
+    add_compile_options("$<$<COMPILE_LANGUAGE:ASM_MASM>:-win64${ASM_MASM_FLAGS}>")
     add_compile_definitions(CROSSCOMPILING)
 
     if(USE_GCC)
         message(STATUS "Using GCC compiler.")
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fpermissive;${CXX_FLAGS}>")
+        add_link_options(-static)
         set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}-gcc)
         set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}-g++)
     endif()
@@ -39,8 +37,7 @@ if(CROSSCOMPILE)
         set(CMAKE_C_COMPILER clang)
         set(CMAKE_CXX_COMPILER clang++)
 
-        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fuse-ld=lld;-femulated-tls;-fms-extensions;${CXX_FLAGS}>")
-        add_link_options(-fuse-ld=lld -femulated-tls)
+        add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fuse-ld=lld${CXX_FLAGS}>")
     endif()
 
-endif()
+endif() 

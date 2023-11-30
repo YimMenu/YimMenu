@@ -13,7 +13,7 @@ public:
 	char m_padding3[0x14];                     // 0x124
 	std::int32_t m_instance_id;                // 0x138
 	char m_padding4[0x04];                     // 0x13C
-	std::uint8_t m_flag1;                      // 0x140
+	uint8_t m_flag1;                      // 0x140
 	bool m_safe_for_network_game;              // 0x141
 	char m_padding5[0x02];                     // 0x142
 	bool m_is_minigame_script;                 // 0x144

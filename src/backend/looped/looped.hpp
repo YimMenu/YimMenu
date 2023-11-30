@@ -18,6 +18,7 @@ namespace big
 	{
 	public:
 		static void hud_transition_state();
+		static void hud_disable_input();
 
 		static void player_good_options();
 		static void player_toxic_options();
@@ -27,6 +28,7 @@ namespace big
 		static void self_police();
 		static void self_hud();
 		static void self_dance_mode();
+		static void self_persist_outfit();
 
 		static void session_pop_multiplier_areas();
 		static void session_force_thunder();
@@ -39,7 +41,6 @@ namespace big
 		static void system_desync_kick_protection();
 		static void system_spoofing();
 		static void system_mission_creator();
-		static void system_rainbow();
 
 		static void vehicle_auto_drive();
 		static void vehicle_allow_all_weapons();

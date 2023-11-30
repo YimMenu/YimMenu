@@ -56,7 +56,7 @@ namespace big
 		}
 	}
 
-	void player_database_service::handle_game_mode_change(std::uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name)
+	void player_database_service::handle_game_mode_change(uint64_t rid, GameMode old_game_mode, GameMode new_game_mode, std::string mission_id, std::string mission_name)
 	{
 		const char* old_game_mode_str = get_game_mode_str(old_game_mode);
 		const char* new_game_mode_str = get_game_mode_str(new_game_mode);
@@ -138,6 +138,9 @@ namespace big
 	    m_file_path(g_file_manager.get_project_file("./players.json").get_path())
 	{
 		load();
+
+		start_update_loop();
+
 		g_player_database_service = this;
 	}
 
@@ -189,7 +192,7 @@ namespace big
 		}
 	}
 
-	std::unordered_map<std::uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
+	std::unordered_map<uint64_t, std::shared_ptr<persistent_player>>& player_database_service::get_players()
 	{
 		return m_players;
 	}
@@ -221,7 +224,7 @@ namespace big
 #endif // __clang__
 	}
 
-	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(std::uint64_t rockstar_id)
+	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_players.contains(rockstar_id))
 			return m_players[rockstar_id];
@@ -240,7 +243,7 @@ namespace big
 		}
 	}
 
-	void player_database_service::update_rockstar_id(std::uint64_t old, std::uint64_t _new)
+	void player_database_service::update_rockstar_id(uint64_t old, uint64_t _new)
 	{
 		auto player  = m_players.extract(old);
 		player.key() = _new;
@@ -248,7 +251,7 @@ namespace big
 		m_players.insert(std::move(player));
 	}
 
-	void player_database_service::remove_rockstar_id(std::uint64_t rockstar_id)
+	void player_database_service::remove_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_selected && m_selected->rockstar_id == rockstar_id)
 			m_selected = nullptr;
@@ -275,11 +278,28 @@ namespace big
 
 	void player_database_service::start_update_loop()
 	{
+		// So that it doesnt immediately exit the first time.
+		static bool first_time = true;
+
 		if (!g.player_db.update_player_online_states)
+		{
+			first_time = false;
 			return;
+		}
 
 		g_thread_pool->push([this] {
+			if (first_time)
+			{
+				while (!g_running)
+				{
+					std::this_thread::yield();
+				}
+
+				first_time = false;
+			}
+
 			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
+
 			while (g_running && g.player_db.update_player_online_states)
 			{
 				const auto cur = std::chrono::high_resolution_clock::now();
@@ -288,7 +308,7 @@ namespace big
 					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
-						updating    = false;
+						updating = false;
 						last_update = std::chrono::high_resolution_clock::now();
 					});
 				}
@@ -325,8 +345,9 @@ namespace big
 
 		for (auto& bucket : gamer_handle_buckets)
 		{
-			rage::rlTaskStatus status{};
+			rage::rlScTaskStatus status{};
 
+			// TODO: big sized object on the stack, might be a problem in the future
 			rage::rlQueryPresenceAttributesContext contexts[bucket_size][9]{};
 			rage::rlQueryPresenceAttributesContext* contexts_per_player[bucket_size]{};
 

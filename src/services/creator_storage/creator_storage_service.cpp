@@ -1,11 +1,10 @@
 #include "creator_storage_service.hpp"
 
 #include "gta/joaat.hpp"
-#include "gta/sysMemAllocator.hpp"
-#include "script/tlsContext.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "script/tlsContext.hpp"
 #include "script_function.hpp"
 
 namespace big
@@ -22,9 +21,9 @@ namespace big
 		return file_paths;
 	}
 
-	std::ofstream creator_storage_service::create_file(std::string file)
+	std::filesystem::path creator_storage_service::create_file(std::string file)
 	{
-		return std::ofstream(check_jobs_folder().get_file(file).get_path());
+		return check_jobs_folder().get_file(file).get_path();
 	}
 
 	void creator_storage_service::save_file(std::string_view filename)

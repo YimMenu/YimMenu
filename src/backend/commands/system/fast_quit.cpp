@@ -6,11 +6,11 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			exit(0);
 		}
 	};
 
-	fast_quit g_fast_quit("fastquit", "Rage Quit", "We all have bad times sometimes. Close your GTA instant.", 0);
+	fast_quit g_fast_quit("fastquit", "VIEW_HOTKEY_SETTINGS_RAGE_QUIT", "BACKEND_FAST_QUIT_DESC", 0);
 }

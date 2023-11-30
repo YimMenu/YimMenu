@@ -1,4 +1,4 @@
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 #pragma once
 #include "pointers.hpp"
 
@@ -39,4 +39,4 @@ namespace big
 
 	inline api_service* g_api_service;
 }
-#endif // CROSSCOMPILING
+#endif // _MSC_VER

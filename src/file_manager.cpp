@@ -19,6 +19,8 @@ namespace big
     {
         if (file_path.is_absolute())
             throw std::runtime_error("Project files are relative to the BaseDir, don't use absolute paths!");
+        if (file_path.string().contains(".."))
+			throw std::runtime_error("Relative path traversal is not allowed, refrain from using \"..\" in file paths.");
 
         return file_manager::ensure_file_can_be_created(m_base_dir / file_path);
     }
@@ -27,6 +29,8 @@ namespace big
     {
         if (folder_path.is_absolute())
             throw std::runtime_error("Project folders are relative to the BaseDir, don't use absolute paths!");
+        if (folder_path.string().contains(".."))
+			throw std::runtime_error("Relative path traversal is not allowed, refrain from using \"..\" in folder paths.");
 
         return file_manager::ensure_folder_exists(m_base_dir / folder_path);
     }

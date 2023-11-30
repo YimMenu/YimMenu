@@ -9,12 +9,12 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			vehicle::bring(veh, self::pos);
 		}
 	};
 
-	bring_personal_vehicle g_bring_personal_vehicle("bringpv", "Bring Personal Vehicle", "Teleports your PV near you", 0);
+	bring_personal_vehicle g_bring_personal_vehicle("bringpv", "BRING_PV", "BACKEND_BRING_PERSONAL_VEHICLE_DESC", 0);
 }

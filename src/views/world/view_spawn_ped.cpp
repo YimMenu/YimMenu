@@ -224,7 +224,7 @@ namespace big
 			}
 		}
 
-		
+
 		ImGui::SeparatorText("PED_MODEL"_T.data());
 		{
 			ImGui::BeginGroup();
@@ -429,7 +429,7 @@ namespace big
 		}
 		ImGui::Separator();
 
-		
+
 		ImGui::SeparatorText("WEAPON"_T.data());
 		{
 			ImGui::BeginGroup();
@@ -489,9 +489,11 @@ namespace big
 
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo("##ped_weapon",
-				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ? "NO_WEAPONS"_T.data() :
-				            selected_ped_weapon_hash == 0                ? "ALL"_T.data() :
-				                                            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
+				        selected_ped_weapon_type == SPAWN_PED_NO_WEAPONS ?
+				            "NO_WEAPONS"_T.data() :
+				            selected_ped_weapon_hash == 0 ?
+				            "ALL"_T.data() :
+				            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
 				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -529,17 +531,17 @@ namespace big
 		}
 		ImGui::Separator();
 
-		
+
 		ImGui::SeparatorText("SPAWN_FOR"_T.data());
 		{
 			if (ImGui::BeginCombo("##ped_for",
 			        (selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
-			                "Self" :
+			                "GUI_TAB_SELF"_T.data() :
 			                (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE ?
-			                        "Everyone" :
+			                        "VIEW_SPAWN_PED_EVERYONE"_T.data() :
 			                        g_player_service->get_by_id(selected_ped_for_player_id)->get_name()))))
 			{
-				if (ImGui::Selectable("Self", selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
+				if (ImGui::Selectable("GUI_TAB_SELF"_T.data(), selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
 				{
 					selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 				}
@@ -549,7 +551,7 @@ namespace big
 					ImGui::SetItemDefaultFocus();
 				}
 
-				if (ImGui::Selectable("Everyone", selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE))
+				if (ImGui::Selectable("VIEW_SPAWN_PED_EVERYONE"_T.data(), selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE))
 				{
 					selected_ped_for_player_id = SPAWN_PED_FOR_EVERYONE;
 				}
@@ -592,10 +594,12 @@ namespace big
 				g_model_preview_service->stop_preview();
 			}
 		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
 
-		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
-		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
-		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("VIEW_SPAWN_PED_INVINCIBLE"_T.data(), &g.world.spawn_ped.spawn_invincible);
+		ImGui::Checkbox("VIEW_SPAWN_PED_INVISIBLE"_T.data(), &g.world.spawn_ped.spawn_invisible);
+		ImGui::Checkbox("VIEW_SPAWN_PED_ATTACKER"_T.data(), &g.world.spawn_ped.spawn_as_attacker);
 
 		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
@@ -653,12 +657,23 @@ namespace big
 			}
 		});
 
-		components::button("Spoof As Model", [] {
+		components::button("VIEW_SPAWN_PED_SPOOF_AS_MODEL"_T, [] {
 			g.spoofing.spoof_player_model = true;
 			g.spoofing.player_model       = ped_model_buf;
 		});
 
-		components::button("Cleanup Spawned Peds", [] {
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("VIEW_SPAWN_PED_SPOOF_AS_MODEL_TOOLTIP"_T.data());
+
+		if (g.spoofing.spoof_player_model)
+		{
+			ImGui::SameLine();
+			components::button("VIEW_SPAWN_PED_UNSPOOF_MODEL"_T, [] {
+				g.spoofing.spoof_player_model = false;
+			});
+		}
+
+		components::button("VIEW_SPAWN_PED_CLEANUP_SPAWNED_PEDS"_T, [] {
 			for (auto& ped : spawned_peds)
 			{
 				PED::DELETE_PED(&ped.ped_handle);

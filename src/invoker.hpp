@@ -10,8 +10,8 @@ namespace big
 		native_call_context();
 
 	private:
-		std::uint64_t m_return_stack[10];
-		std::uint64_t m_arg_stack[100];
+		uint64_t m_return_stack[10];
+		uint64_t m_arg_stack[100];
 	};
 
 	class native_invoker

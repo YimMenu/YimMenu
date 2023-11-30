@@ -8,7 +8,7 @@ namespace big
 	public:
 		static std::vector<std::string> list_files();
 
-		static std::ofstream create_file(std::string name);
+		static std::filesystem::path create_file(std::string name);
 		static void load_file(std::string_view file_name);
 		static void save_file(std::string_view file_name);
 

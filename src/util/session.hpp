@@ -1,5 +1,5 @@
 #pragma once
-#include "core/data/session_types.hpp"
+#include "core/data/infractions.hpp"
 #include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
 #include "gta_util.hpp"
@@ -9,7 +9,6 @@
 #include "rage/rlSessionByGamerTaskResult.hpp"
 #include "script.hpp"
 #include "script_function.hpp"
-#include "script_global.hpp"
 #include "services/api/api_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
@@ -42,17 +41,17 @@ namespace big::session
 		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("pausemenu_multiplayer")))
 			script::get_current()->yield();
 
-		*script_global(2695915).as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
+		*scr_globals::sctv_spectator.as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
-			*script_global(1574589).at(2).as<int*>() = -1;
+			*scr_globals::session.at(2).as<int*>() = -1;
 		else
 		{
-			*script_global(1574589).at(2).as<int*>() = 0;
-			*script_global(1575020).as<int*>()       = (int)session;
+			*scr_globals::session.at(2).as<int*>() = 0;
+			*scr_globals::session2.as<int*>()      = (int)session;
 		}
 
-		*script_global(1574589).as<int*>() = 1;
+		*scr_globals::session.as<int*>() = 1;
 
 		if (*g_pointers->m_gta.m_is_session_started && session != eSessionType::LEAVE_ONLINE)
 		{
@@ -64,15 +63,15 @@ namespace big::session
 		}
 
 		scr_functions::reset_session_data({true, true});
-		*script_global(32284).as<int*>()   = 0;
-		*script_global(1574934).as<int*>() = 1;
-		*script_global(1574995).as<int*>() = 32;
+		*scr_globals::session3.as<int*>() = 0;
+		*scr_globals::session4.as<int*>() = 1;
+		*scr_globals::session5.as<int*>() = 32;
 
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)
 		{
-			*script_global(2694534).as<int*>() = 1;
+			*scr_globals::session6.as<int*>() = 1;
 			script::get_current()->yield(200ms);
-			*script_global(1574589).as<int*>() = 0;
+			*scr_globals::session.as<int*>() = 0;
 		}
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("pausemenu_multiplayer"));
@@ -146,7 +145,7 @@ namespace big::session
 
 	inline void join_by_username(std::string username)
 	{
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 		g_thread_pool->push([username] {
 			uint64_t rid;
 			if (g_api_service->get_rid_from_username(username, rid))
@@ -160,18 +159,57 @@ namespace big::session
 		});
 #else
 		g_notification_service->push_error("RID Joiner", "cpr is broken in MinGW!");
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 	}
 
-	inline void add_infraction(player_ptr player, Infraction infraction)
+	inline void invite_by_rockstar_id(uint64_t rid)
 	{
+		rage::rlGamerHandle player_handle(rid);
+
+		bool success = g_pointers->m_gta.m_invite_player_by_gamer_handle(g_pointers->m_gta.m_network_config, &player_handle, 1, 0, 0, 0);
+
+		if (!success)
+			return g_notification_service->push_error("Network", "Target player could not be invited, they might be offline?");
+
+		g_notification_service->push_success("Network", "Target player has been invited to your session!");
+	}
+
+	inline void show_profile_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		g_pointers->m_gta.m_show_profile_by_gamer_handle(&player_handle);
+	}
+
+	inline void add_friend_by_rockstar_id(uint64_t rid)
+	{
+		rage::rlGamerHandle player_handle(rid);
+
+		g_pointers->m_gta.m_add_friend_by_gamer_handle(&player_handle, 0);
+	}
+
+	inline void add_infraction(player_ptr player, Infraction infraction, const std::string& custom_reason = "")
+	{
+		if (g.debug.fuzzer.enabled)
+			return;
+		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
+			return;
+
 		auto plyr = g_player_database_service->get_or_create_player(player);
 		if (!plyr->infractions.contains((int)infraction))
 		{
 			plyr->is_modder   = true;
 			player->is_modder = true;
+
 			plyr->infractions.insert((int)infraction);
+			if (infraction == Infraction::CUSTOM_REASON)
+			{
+				plyr->custom_infraction_reason += plyr->custom_infraction_reason.size() ? (std::string(", ") + custom_reason) : custom_reason;
+			}
+
 			g_player_database_service->save();
+
+			g.reactions.modder_detection.process(player);
 		}
 	}
 

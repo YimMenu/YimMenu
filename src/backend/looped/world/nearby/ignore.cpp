@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/entity.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -11,8 +12,8 @@ namespace big
 
 		virtual void on_enable() override //should help for any stragglers that aren't set by the tick (aka current event)
 		{
-			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, true);
-			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, true);
+			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, TRUE);
+			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, TRUE);
 		}
 
 		virtual void on_tick() override
@@ -29,12 +30,10 @@ namespace big
 
 		virtual void on_disable() override
 		{
-			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, false);
-			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, false);
+			PLAYER::SET_EVERYONE_IGNORE_PLAYER(self::id, FALSE);
+			PLAYER::SET_POLICE_IGNORE_PLAYER(self::id, FALSE);
 		}
 	};
 
-	ignore g_ignore("pedsignore", "Ignore", "Nearby peds will ignore you and become oblivious to your actions",
-	    g.world.nearby.ignore);
-
+	ignore g_ignore("pedsignore", "BACKEND_LOOPED_WORLD_IGNORE", "BACKEND_LOOPED_WORLD_IGNORE_DESC", g.world.nearby.ignore);
 }

@@ -9,7 +9,7 @@ namespace big
 		if (ImGui::BeginTabItem("DEBUG_TABS_LOGS"_T.data()))
 		{
 			ImGui::Checkbox("DEBUG_LOG_METRICS"_T.data(), &g.debug.logs.metric_logs);
-			ImGui::Checkbox("Log Packets", &g.debug.logs.packet_logs);// TODO: translate
+			ImGui::Checkbox("VIEW_DEBUG_LOGS_LOG_PACKETS"_T.data(), &g.debug.logs.packet_logs);
 			ImGui::Checkbox("DEBUG_LOG_NATIVE_SCRIPT_HOOKS"_T.data(), &g.debug.logs.script_hook_logs);
 
 			if (ImGui::TreeNode("DEBUG_LOG_TREE_SCRIPT_EVENT"_T.data()))
@@ -32,7 +32,7 @@ namespace big
 					ImGui::EndListBox();
 				}
 
-				ImGui::Checkbox("Block All", &g.debug.logs.script_event.block_all);
+				ImGui::Checkbox("VIEW_DEBUG_LOGS_BLOCK_ALL"_T.data(), &g.debug.logs.script_event.block_all);
 
 				ImGui::TreePop();
 			}

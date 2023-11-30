@@ -50,7 +50,7 @@ namespace big
 		{
 			constexpr size_t data_size = offset_of_cache_end_field - offset_of_cache_begin_field;
 
-			cache_data cache_data_ptr = std::make_unique<std::uint8_t[]>(data_size);
+			cache_data cache_data_ptr = std::make_unique<uint8_t[]>(data_size);
 
 			// multiple things here:
 			// - iterate each cacheable field of the pointers instance

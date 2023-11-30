@@ -38,5 +38,5 @@ namespace big
 		}
 	};
 
-	auto_disarm g_auto_disarm("autodisarm", "Auto Disarm", "Disarm nearby pedestrians", g.world.nearby.auto_disarm.enable);
+	auto_disarm g_auto_disarm("autodisarm", "BACKEND_LOOPED_WORLD_NEARBY_AUTO_DISARM", "BACKEND_LOOPED_WORLD_NEARBY_AUTO_DISARM_DESC", g.world.nearby.auto_disarm.enable);
 }

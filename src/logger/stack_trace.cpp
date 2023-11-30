@@ -38,6 +38,7 @@ namespace big
 		dump_module_info();
 		dump_registers();
 		dump_stacktrace();
+		dump_cpp_exception();
 
 		m_dump << "\n--------End of exception--------\n";
 	}
@@ -139,7 +140,12 @@ namespace big
 					continue;
 				}
 				const auto module_info = get_module_by_address(addr);
-				m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen);
+
+				if (module_info->m_base == (uint64_t)GetModuleHandle(0))
+					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen) << " ("
+					       << module_info->m_path.filename().string() << "+" << HEX_TO_UPPER(addr - module_info->m_base) << ")";
+				else
+					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen);
 
 				continue;
 			}
@@ -153,6 +159,16 @@ namespace big
 		m_dump << "Currently executing script: " << rage::tlsContext::get()->m_script_thread->m_name << '\n';
 		m_dump << "Thread program counter (could be inaccurate): "
 		       << m_totally_not_exception_info->ContextRecord->Rdi - m_totally_not_exception_info->ContextRecord->Rsi << '\n';
+	}
+
+	void stack_trace::dump_cpp_exception()
+	{
+		constexpr DWORD msvc_exception_code = 0xe06d7363;
+		if (m_totally_not_exception_info->ExceptionRecord->ExceptionCode == msvc_exception_code)
+		{
+			m_dump
+			    << reinterpret_cast<const std::exception*>(m_totally_not_exception_info->ExceptionRecord->ExceptionInformation[1])->what() << '\n';
+		}
 	}
 
 	void stack_trace::grab_stacktrace()
@@ -200,6 +216,6 @@ namespace big
 		if (const auto& it = exceptions.find(code); it != exceptions.end())
 			return it->second;
 
-		return "UNKNOWN_EXCEPTION";
+		return "UNKNOWN_EXCEPTION: CODE: " + std::to_string(code);
 	}
 }

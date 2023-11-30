@@ -9,7 +9,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 			if (!PED::IS_PED_IN_ANY_VEHICLE(ped, true))
@@ -22,7 +22,7 @@ namespace big
 
 				if (entity::take_control_of(vehicle))
 				{
-					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, 79);
+					VEHICLE::SET_VEHICLE_FORWARD_SPEED(vehicle, VEHICLE::GET_VEHICLE_ESTIMATED_MAX_SPEED(vehicle));
 				}
 				else
 				{
@@ -32,5 +32,5 @@ namespace big
 		}
 	};
 
-	boost_vehicle g_boost_vehicle("boostveh", "Boost Vehicle", "Boosts their car very fast.", 0);
+	boost_vehicle g_boost_vehicle("boostveh", "BACKEND_BOOST_VEHICLE", "BACKEND_BOOST_VEHICLE_DESC", 0);
 }

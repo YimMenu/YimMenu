@@ -23,16 +23,15 @@ namespace big
 
 		packet msg{};
 		msg.write_message(rage::eNetMessage::MsgTextMessage);
-		msg.m_buffer.WriteString(message, 256);
+		msg.m_buffer.WriteString(message ? message : "", 256);
 		gamer_handle_serialize(g_player_service->get_self()->get_net_data()->m_gamer_handle, msg.m_buffer);
 		msg.write<bool>(is_team, 1);
 
-		for (auto& player : g_player_service->players())
-			if (player.second->get_net_game_player())
-				msg.send(player.second->get_net_game_player()->m_msg_id);
+		if (*g_pointers->m_gta.m_is_session_started)
+			for (auto& player : g_player_service->players())
+				if (player.second && player.second->is_valid())
+					msg.send(player.second->get_net_game_player()->m_msg_id);
 
 		return true;
-
-		//return g_hooking->get_original<hooks::send_chat_message>()(team_mgr, local_gamer_info, message, is_team);
 	}
 }

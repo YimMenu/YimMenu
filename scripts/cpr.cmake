@@ -5,7 +5,7 @@ set(CURL_DISABLE_TESTS OFF)
 FetchContent_Declare(
     cpr
     GIT_REPOSITORY https://github.com/libcpr/cpr.git
-    GIT_TAG        a6b214914d4d320bbff0c6cf4a753c018235b0c0
+    GIT_TAG        67e2a4d2a76ed520e352f10e651a6f98e220dbd7
     GIT_PROGRESS TRUE
 ) 
 message("cpr")

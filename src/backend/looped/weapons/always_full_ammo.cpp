@@ -17,5 +17,5 @@ namespace big
 		}
 	};
 
-	always_full_ammo g_always_full_ammo("alwaysfullammo", "Always Full Ammo", "Refills your ammo every tick", g.weapons.always_full_ammo);
+	always_full_ammo g_always_full_ammo("alwaysfullammo", "BACKEND_LOOPED_WEAPONS_ALWAYS_FULL_AMMO", "BACKEND_LOOPED_WEAPONS_ALWAYS_FULL_AMMO_DESC", g.weapons.always_full_ammo);
 }

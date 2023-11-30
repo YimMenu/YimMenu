@@ -46,5 +46,5 @@ namespace big
 		}
 	};
 
-	infinite_range g_infinite_range("infrange", "Infinite Range", "Kill anything at any distance", g.weapons.infinite_range);
+	infinite_range g_infinite_range("infrange", "BACKEND_LOOPED_WEAPONS_INFINITE_RANGE", "BACKEND_LOOPED_WEAPONS_INFINITE_RANGE_DESC", g.weapons.infinite_range);
 }

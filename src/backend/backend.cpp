@@ -7,11 +7,13 @@
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_teleport/custom_teleport_service.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 #include "services/script_connection/script_connection_service.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
+#include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
 
 
@@ -19,14 +21,16 @@ namespace big
 {
 	void backend::loop()
 	{
-		for (auto& command : g_looped_commands)
+		for (auto& command : g_bool_commands)
 			command->refresh();
 
 		register_script_patches();
 
 		g_squad_spawner_service.fetch_squads();
 		g_xml_vehicles_service->fetch_xml_files();
+		g_xml_map_service->fetch_xml_files();
 		g_custom_teleport_service.fetch_saved_locations();
+		g_ped_animation_service.fetch_saved_animations();
 
 		while (g_running)
 		{
@@ -35,7 +39,6 @@ namespace big
 			looped::system_desync_kick_protection();
 			looped::system_spoofing();
 			looped::system_mission_creator();
-			looped::system_rainbow();
 
 			for (auto command : g_looped_commands)
 				if (command->is_enabled())
@@ -54,6 +57,17 @@ namespace big
 			looped::self_police();
 			looped::self_hud();
 			looped::self_dance_mode();
+			looped::self_persist_outfit();
+
+			script::get_current()->yield();
+		}
+	}
+
+	void backend::ambient_animations_loop()
+	{
+		while (g_running)
+		{
+			g_ped_animation_service.ambient_animations_prompt_tick();
 
 			script::get_current()->yield();
 		}
@@ -105,6 +119,7 @@ namespace big
 		while (g_running)
 		{
 			looped::hud_transition_state();
+			looped::hud_disable_input();
 			looped::session_pop_multiplier_areas();
 			looped::session_force_thunder();
 			looped::session_randomize_ceo_colors();

@@ -9,7 +9,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			int lockStatus = VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(player->id());
 			Ped ped        = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
@@ -31,5 +31,5 @@ namespace big
 		}
 	};
 
-	lock_vehicle g_lock_vehicle("lockveh", "Lock Vehicle", "Locks vehicle doors", 0);
+	lock_vehicle g_lock_vehicle("lockveh", "BACKEND_LOCK_VEHICLE", "BACKEND_LOCK_VEHICLE_DESC", 0);
 }

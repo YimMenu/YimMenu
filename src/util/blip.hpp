@@ -2,6 +2,9 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
+#include "pointers.hpp"
+#include "ui/blip_t.hpp"
+#include "ui/CBlipList.hpp"
 
 namespace big::blip
 {
@@ -44,5 +47,19 @@ namespace big::blip
 		}
 
 		return false;
+	}
+
+	inline rage::Blip_t* get_selected_blip()
+	{
+		for (int i = 0; i < 1500; i++)
+		{
+
+			auto blip = g_pointers->m_gta.m_blip_list->m_Blips[i].m_pBlip;
+			if (blip && (blip->m_display_bits & BlipDisplayBits::BlipIsSelected))
+			{
+				return blip;
+			}
+		}
+		return nullptr;
 	}
 }

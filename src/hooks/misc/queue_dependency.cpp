@@ -31,7 +31,7 @@ namespace big
 		if (!is_address_in_game_region(fptr))
 			return false;
 
-		auto value = *(std::uint8_t*)(fptr);
+		auto value = *(uint8_t*)(fptr);
 		return value == 0xE9;
 	}
 
@@ -39,21 +39,26 @@ namespace big
 	{
 		auto f1 = *(__int64*)(cb + 0x60);
 		auto f2 = *(__int64*)(cb + 0x100);
-		auto f3 = *(__int64*)(cb + 0x1A0);
 
-		if (!is_address_in_game_region(f1) || !is_address_in_game_region(f2) || !is_address_in_game_region(f3))
+		if (!is_address_in_game_region(f1) || (f2 && !is_address_in_game_region(f2)))
 			return false;
 
-		return is_jump(f1) || is_jump(f2) || is_jump(f3);
+		return is_jump(f1) || is_jump(f2);
 	}
 
-	void hooks::queue_dependency(void* dependency)
+	static bool nullsub()
+	{
+		return true; // returning false would cause the dependency to requeue
+	}
+
+	int hooks::queue_dependency(void* a1, int a2, void* dependency)
 	{
 		if (is_unwanted_dependency((__int64)dependency))
 		{
-			return;
+			*(void**)((__int64)dependency + 0x60) = nullsub;
+			*(void**)((__int64)dependency + 0x100) = nullsub;
 		}
 
-		return g_hooking->get_original<hooks::queue_dependency>()(dependency);
+		return g_hooking->get_original<hooks::queue_dependency>()(a1, a2, dependency);
 	}
 }

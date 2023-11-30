@@ -112,7 +112,7 @@ public:
 
 	inline UINT64 get_address(UINT32 i)
 	{
-		return mask(i) & (m_pool_address + i * m_item_size);
+		return mask(i) & (m_pool_address + (uint64_t)i * m_item_size);
 	}
 
 	inline int get_item_count()
@@ -127,4 +127,4 @@ private:
 		return ~((num1 | -num1) >> 63);
 	}
 };
-static_assert(offsetof(GenericPool, GenericPool::m_item_count) == 0x20);
+static_assert(offsetof(GenericPool, m_item_count) == 0x20);

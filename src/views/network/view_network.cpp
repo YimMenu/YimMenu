@@ -10,6 +10,7 @@
 #include "util/session.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
+#include "backend/bool_command.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -18,10 +19,30 @@
 
 namespace big
 {
+	/*struct SessionType
+	{
+		eSessionType id;
+		const std::string_view name;
+	};
+
+	const SessionType sessions[] = {
+	    {eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T},
+	    {eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T},
+	    {eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T},
+	    {eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T},
+	    {eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T},
+	    {eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T},
+	    {eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T},
+	    {eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T},
+	    {eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T},
+	    {eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T},
+	    {eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T},
+	};*/
+
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Rid joiner");
+		components::sub_title("RID_JOINER"_T);
 		if (ImGui::BeginListBox("##ridjoiner", get_listbox_dimensions()))
 		{
 			static uint64_t rid = 0;
@@ -50,12 +71,12 @@ namespace big
 				if (g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr))
 					session::join_session(info);
 				else
-					g_notification_service->push_error("Join", "Session info is invalid");
+					g_notification_service->push_error("RID_JOINER"_T.data(), "VIEW_NET_RIDJOINER_SESSION_INFO_INVALID"_T.data());
 			});
 
 			components::button("COPY_SESSION_INFO"_T, [] {
 				char buf[0x100]{};
-				g_pointers->m_gta.m_encode_session_info(&gta_util::get_network()->m_game_session.m_rline_session.m_session_info, buf, 0xA9, nullptr);
+				g_pointers->m_gta.m_encode_session_info(&gta_util::get_network()->m_last_joined_session.m_session_info, buf, 0xA9, nullptr);
 				ImGui::SetClipboardText(buf);
 			});
 
@@ -71,7 +92,7 @@ namespace big
 		components::sub_title("SESSION_SWITCHER"_T);
 		if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
 		{
-			if (ImGui::BeginCombo("##regionswitcher", "Regions"))
+			if (ImGui::BeginCombo("##regionswitcher", "REGIONS"_T.data()))
 			{
 				for (const auto& region_type : regions)
 				{
@@ -84,10 +105,24 @@ namespace big
 
 			ImGui::Spacing();
 
-			for (const auto& session_type : sessions)
+			static const std::vector<std::tuple<eSessionType, std::string_view>> sessions = { //This has to be here because if it's generated at compile time, the translations break for some reason.
+				make_tuple(eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T),
+				make_tuple(eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T),
+				make_tuple(eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T),
+				make_tuple(eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T),
+				make_tuple(eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T),
+				make_tuple(eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T),
+				make_tuple(eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T),
+				make_tuple(eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T),
+				make_tuple(eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T),
+				make_tuple(eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T),
+				make_tuple(eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T)
+			};
+
+			for (const auto& [id, name] : sessions)
 			{
-				components::selectable(session_type.name, false, [&session_type] {
-					session::join_type(session_type.id);
+				components::selectable(name, false, [&id] {
+					session::join_type(id);
 				});
 			}
 			ImGui::EndListBox();
@@ -96,11 +131,14 @@ namespace big
 		ImGui::EndGroup();
 	}
 
+	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
+	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
+
 	void render_misc()
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Misc");
+		components::sub_title("DEBUG_TAB_MISC"_T);
 		if (ImGui::BeginListBox("##miscsession", get_listbox_dimensions()))
 		{
 			ImGui::Checkbox("JOIN_IN_SCTV"_T.data(), &g.session.join_in_sctv_slots);
@@ -114,20 +152,35 @@ namespace big
 				ImGui::InputInt("##playercount", &g.session.player_magnet_count);
 			}
 
+			components::command_checkbox<"trustfriends">();
+			components::command_checkbox<"trustsession">();
+
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
-			ImGui::Checkbox("Lobby Lock", &g.session.lock_session);
+
+			ImGui::Checkbox("LOBBY_LOCK"_T.data(), &g.session.lock_session);
+			if (g.session.lock_session)
+			{
+				ImGui::Checkbox("LOBBY_LOCK_ALLOW_FRIENDS"_T.data(), &g.session.allow_friends_into_locked_session);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("LOBBY_LOCK_ALLOW_FRIENDS_DESC"_T.data());
+			}
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("Blocks all players from joining. May not work on some modders.");
+				ImGui::SetTooltip("LOBBY_LOCK_DESC"_T.data());
+
 
 			ImGui::EndDisabled();
 
-			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "Reveals players that are off the radar");
-			components::script_patch_checkbox("Reveal Hidden Players", &g.session.unhide_players_from_player_list, "Reveals players that have hidden themselves from the player list");
+			components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T,
+			    &g.session.decloak_players,
+			    "REVEAL_OTR_PLAYERS_DESC"_T.data());
+			components::script_patch_checkbox("REVEAL_HIDDEN_PLAYERS"_T,
+			    &g.session.unhide_players_from_player_list,
+			    "REVEAL_HIDDEN_PLAYERS_DESC"_T.data());
 
-			components::command_button<"sextall">({}, "Send Sexts");
+			components::command_button<"sextall">({}, "SEND_SEXT"_T);
 			ImGui::SameLine();
-			components::command_button<"fakebanall">({}, "Send Fake Ban Messages");
+			components::command_button<"fakebanall">({}, "FAKE_BAN_MESSAGE"_T);
 
 			ImGui::EndListBox();
 		}
@@ -139,14 +192,14 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Chat");
+		components::sub_title("CHAT"_T.data());
 		if (ImGui::BeginListBox("##chat", get_listbox_dimensions()))
 		{
 			static char msg[256];
 			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
 			ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 			ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
-			components::input_text_with_hint("##message", "Chat message", msg, sizeof(msg));
+			components::input_text_with_hint("##message", "VIEW_NET_CHAT_MESSAGE"_T, msg, sizeof(msg));
 
 			ImGui::Checkbox("IS_TEAM"_T.data(), &g.session.is_team);
 			ImGui::SameLine();
@@ -166,7 +219,7 @@ namespace big
 			ImGui::Checkbox("CHAT_COMMANDS"_T.data(), &g.session.chat_commands);
 			if (g.session.chat_commands)
 			{
-				components::small_text("DEFAULT_CMD_PERMISSIONS"_T.data());
+				components::small_text("DEFAULT_CMD_PERMISSIONS"_T);
 				if (ImGui::BeginCombo("##defualtchatcommands", COMMAND_ACCESS_LEVELS[g.session.chat_command_default_access_level]))
 				{
 					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
@@ -196,7 +249,7 @@ namespace big
 	{
 		ImGui::BeginGroup();
 
-		components::sub_title("Globals");
+		components::sub_title("GLOBALS"_T);
 		if (ImGui::BeginListBox("##globals", get_listbox_dimensions()))
 		{
 			static int global_wanted_level = 0;
@@ -204,13 +257,14 @@ namespace big
 			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g.session.off_radar_all);
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.session.never_wanted_all);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g.session.semi_godmode_all);
+			ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g.session.vehicle_fix_all);
 			ImGui::Checkbox("EXPLOSION_KARMA"_T.data(), &g.session.explosion_karma);
 			ImGui::Checkbox("DAMAGE_KARMA"_T.data(), &g.session.damage_karma);
 			ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
 			ImGui::Checkbox("DISABLE_TRAFFIC"_T.data(), &g.session.disable_traffic);
 			ImGui::Checkbox("FORCE_THUNDER"_T.data(), &g.session.force_thunder);
 
-			components::small_text("WANTED_LVL"_T.data());
+			components::small_text("WANTED_LVL"_T);
 			ImGui::SetNextItemWidth(150);
 			if (ImGui::SliderInt("##wantedlevel", &global_wanted_level, 0, 5))
 			{
@@ -227,7 +281,7 @@ namespace big
 			ImGui::EndListBox();
 		}
 
-		components::small_text("WARP_TIME"_T.data());
+		components::small_text("WARP_TIME"_T);
 
 		components::button("PLUS_1_MINUTE"_T, [] {
 			toxic::warp_time_forward_all(60 * 1000);
@@ -298,19 +352,19 @@ namespace big
 				});
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This might break freemode missions and interiors. Use with caution");
+			ImGui::SetTooltip("FORCE_SCRIPT_HOST_DESC"_T.data());
 
 		ImGui::SameLine();
 
-		ImGui::Checkbox("Fast Join", &g.session.fast_join);
+		ImGui::Checkbox("FAST_JOIN"_T.data(), &g.session.fast_join);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This WILL break jobs");
+			ImGui::SetTooltip("FAST_JOIN_DESC"_T.data());
 
 		ImGui::Spacing();
 
-		components::sub_title("Players");
+		components::sub_title("PLAYERS"_T);
 		components::options_modal(
-		    "Griefing",
+		    "GRIEFING"_T.data(),
 		    [] {
 			    components::command_button<"killall">({}, "KILL_ALL"_T);
 			    ImGui::SameLine();
@@ -344,23 +398,23 @@ namespace big
 
 			    components::command_button<"ceoraidall">({});
 			    ImGui::SameLine();
-			    components::button("Trigger MC Raid", [] {
+			    components::button("TRIGGER_MC_RAID"_T, [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::BikerDefend);
 				    });
 			    });
 			    ImGui::SameLine();
-			    components::button("Trigger Bunker Raid", [] {
+			    components::button("TRIGGER_BUNKER_RAID"_T, [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 				    });
 			    });
 		    },
 		    false,
-		    "Griefing");
+		    "GRIEFING"_T.data());
 
 		components::options_modal(
-		    "Teleport",
+		    "TELEPORT"_T.data(),
 		    [] {
 			    if (ImGui::BeginCombo("##apartment", apartment_names[g.session.send_to_apartment_idx]))
 			    {
@@ -471,22 +525,23 @@ namespace big
 			    components::command_button<"camhedzall">();
 		    },
 		    true,
-		    "Teleport");
+		    "TELEPORT"_T.data());
+		components::command_button<"emptysession">();
 
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
-		ImGui::Checkbox("Block Jobs", &g.session.block_jobs);
+		ImGui::Checkbox("BLOCK_JOBS"_T.data(), &g.session.block_jobs);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("Prevents remote players from starting jobs while in your session");
+			ImGui::SetTooltip("BLOCK_JOBS_DESC"_T.data());
 
 		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();
-		components::script_patch_checkbox("Block Muggers", &g.session.block_muggers, "For the entire session");
+		components::script_patch_checkbox("BLOCK_MUGGERS"_T, &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 
-		components::script_patch_checkbox("Block CEO Raids", &g.session.block_ceo_raids, "For the entire session");
+		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T, &g.session.block_ceo_raids, "BLOCK_CEO_RAIDS_DESC"_T);
 
 		ImGui::EndGroup();
 	}

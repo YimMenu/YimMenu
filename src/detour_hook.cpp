@@ -7,17 +7,32 @@
 
 namespace big
 {
-	detour_hook::detour_hook(std::string name, void* detour) :
-	    m_name(std::move(name)),
-	    m_detour(detour)
+	detour_hook::detour_hook()
 	{
 	}
 
-	detour_hook::detour_hook(std::string name, void* target, void* detour) :
-	    m_name(std::move(name)),
-	    m_target(target),
-	    m_detour(detour)
+	detour_hook::detour_hook(const std::string& name, void* detour)
 	{
+		set_instance(name, detour);
+	}
+
+	detour_hook::detour_hook(const std::string& name, void* target, void* detour)
+	{
+		set_instance(name, target, detour);
+	}
+
+	void big::detour_hook::set_instance(const std::string& name, void* detour)
+	{
+		m_name   = name;
+		m_detour = detour;
+	}
+
+	void big::detour_hook::set_instance(const std::string& name, void* target, void* detour)
+	{
+		m_name   = name;
+		m_target = target;
+		m_detour = detour;
+
 		create_hook();
 	}
 
@@ -72,7 +87,7 @@ namespace big
 	void detour_hook::fix_hook_address()
 	{
 		auto ptr = memory::handle(m_target);
-		while (ptr.as<std::uint8_t&>() == 0xE9)
+		while (ptr.as<uint8_t&>() == 0xE9)
 			ptr = ptr.add(1).rip();
 		m_target = ptr.as<void*>();
 	}

@@ -1,10 +1,11 @@
+#pragma once
 #include "script.hpp"
 
 #include "common.hpp"
 
 namespace big
 {
-	script::script(const func_t func, const std::string name, const bool toggleable, const std::optional<std::size_t> stack_size) :
+	script::script(const func_t func, const std::string& name, const bool toggleable, const std::optional<std::size_t> stack_size) :
 	    script(func, stack_size)
 	{
 		m_name       = name;
@@ -17,7 +18,7 @@ namespace big
 	    m_script_fiber(nullptr),
 	    m_main_fiber(nullptr),
 	    m_func(func),
-	    m_should_be_deleted(false)
+	    m_done(false)
 	{
 		m_script_fiber = CreateFiber(
 		    stack_size.has_value() ? stack_size.value() : 0,
@@ -60,6 +61,11 @@ namespace big
 		return m_toggleable;
 	}
 
+	bool script::is_done() const
+	{
+		return m_done;
+	}
+
 	void script::tick()
 	{
 		m_main_fiber = GetCurrentFiber();
@@ -91,6 +97,8 @@ namespace big
 	void script::fiber_func()
 	{
 		m_func();
+
+		m_done = true;
 
 		while (true)
 		{

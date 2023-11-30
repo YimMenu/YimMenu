@@ -1,5 +1,6 @@
 #pragma once
 #include "backend/command.hpp"
+#include "backend/float_command.hpp"
 #include "backend/int_command.hpp"
 #include "backend/looped_command.hpp"
 #include "backend/player_command.hpp"
@@ -22,10 +23,11 @@ namespace big
 		static void title(const std::string_view);
 		static void nav_item(std::pair<tabs, navigation_struct>&, int);
 
-		static void input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
-		static void input_text_with_hint(const std::string_view label, const std::string_view hint, std::string* buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 
-		static void input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text(const std::string_view label, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 
 		static bool selectable(const std::string_view, bool);
 		static bool selectable(const std::string_view, bool, ImGuiSelectableFlags);
@@ -34,10 +36,10 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
-		static void options_modal(std::string element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
+		static void options_modal(const std::string_view element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
 
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
-		static void command_button(const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
+		static void command_button(const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 #ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue.
 			static command* command = command::get(rage::joaat(cmd_str.value));
@@ -48,13 +50,16 @@ namespace big
 				return ImGui::Text("INVALID COMMAND");
 
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
-				command->call(args);
+			{
+				command_arguments _args(args);
+				command->call(_args);
+			}
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
-		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<std::uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
+		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
 #ifdef __clang__ // ! FIXME This is not a fix it just lets the compilation to contitue.
 			static player_command* command = dynamic_cast<player_command*>(command::get(rage::joaat(cmd_str.value)));
@@ -113,6 +118,38 @@ namespace big
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
+		template<template_str cmd_str>
+		static void command_float_slider(std::optional<const std::string_view> label_override = std::nullopt)
+		{
+			static float_command* command = (float_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
+			ImGui::SliderFloat(label_override.value_or(command->get_label()).data(),
+			    &command->get_value(),
+			    command->get_lower_bound(),
+			    command->get_upper_bound());
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
+		}
+
+		template<template_str cmd_str>
+		static void command_float_input(std::optional<const std::string_view> label_override = std::nullopt)
+		{
+			static float_command* command = (float_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			if (command == nullptr)
+				return ImGui::Text("INVALID COMMAND");
+
+			ImGui::InputFloat(label_override.value_or(command->get_label()).data(),
+			    &command->get_value(),
+			    command->get_lower_bound(),
+			    command->get_upper_bound());
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip(command->get_description().c_str());
+		}
+
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static bool button(const std::string_view text)
 		{
@@ -133,7 +170,7 @@ namespace big
 		{
 			ImGui::Text(fmt::format("{}: ", text).data());
 			ImGui::SameLine(180);
-			ImGui::TextColored(value ? green : red, value ? "Enabled" : "Disabled");
+			ImGui::TextColored(value ? green : red, value ? "ENABLED"_T.data() : "CORE_GUI_COMPONENTS_DISABLED"_T.data());
 		}
 
 		template<ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>

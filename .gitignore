@@ -6,6 +6,7 @@
 
 # output directory
 build/
+build_clang/
 build_mingw/
 build_msvc/
 out/

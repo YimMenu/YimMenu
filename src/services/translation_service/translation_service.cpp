@@ -2,12 +2,13 @@
 
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
+#include "http_client/http_client.hpp"
 #include "pointers.hpp"
 #include "thread_pool.hpp"
 
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 #include <cpr/cpr.h>
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 
 namespace big
 {
@@ -116,6 +117,12 @@ namespace big
 		}
 	}
 
+	void translation_service::update_n_reload_language_packs()
+	{
+		update_language_packs();
+		load_translations();
+	}
+
 	void translation_service::load_translations()
 	{
 		m_translations.clear();
@@ -184,11 +191,10 @@ namespace big
 
 	bool translation_service::download_language_pack(const std::string_view pack_id)
 	{
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
-			cpr::Response response = download_file("/" + it->second.file);
-
+			const auto response = download_file("/" + it->second.file);
 			if (response.status_code == 200)
 			{
 				try
@@ -215,9 +221,8 @@ namespace big
 
 	bool translation_service::download_index()
 	{
-#ifndef CROSSCOMPILING
-		cpr::Response response = download_file("/index.json");
-
+#ifdef _MSC_VER
+		const auto response = download_file("/index.json");
 		if (response.status_code == 200)
 		{
 			try
@@ -232,7 +237,7 @@ namespace big
 
 			return true;
 		}
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 		return false;
 	}
 
@@ -274,17 +279,15 @@ namespace big
 		m_remote_index.translations = m_local_index.fallback_languages;
 	}
 
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 	cpr::Response translation_service::download_file(const std::string& filename)
 	{
-		cpr::Response response = cpr::Get(cpr::Url{m_url + filename});
-
+		auto response = g_http_client.get(m_url + filename);
 		if (response.status_code != 200)
-			response = cpr::Get(cpr::Url{m_fallback_url + filename});
-
+			response = g_http_client.get(m_fallback_url + filename);
 		return response;
 	}
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 
 	void translation_service::try_set_default_language()
 	{

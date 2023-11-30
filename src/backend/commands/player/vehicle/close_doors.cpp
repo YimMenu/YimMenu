@@ -8,7 +8,7 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			Ped ped = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id());
 
@@ -26,11 +26,11 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+					g_notification_service->push_warning("TOXIC"_T.data(), "ERROR_FAILED_TO_TAKE_CONTROL"_T.data());
 				}
 			}
 		}
 	};
 
-	close_doors g_close_doors("closedoors", "Close Vehicle Doors", "Closes all vehicle doors", 0);
+	close_doors g_close_doors("closedoors", "BACKEND_CLOSE_VEHICLE_DOORS", "BACKEND_CLOSE_VEHICLE_DOORS_DESC", 0);
 }

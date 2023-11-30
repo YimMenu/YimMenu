@@ -5,27 +5,22 @@
 #include "gta/pickup_rewards.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
 
 #include <network/Network.hpp>
+#include <network/netConnection.hpp>
 #include <network/netTime.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <timeapi.h>
 
 namespace big::toxic
 {
-	struct explosion_anti_cheat_bypass
-	{
-		inline static memory::byte_patch* m_can_blame_others;
-		inline static memory::byte_patch* m_can_use_blocked_explosions;
-	};
-
 	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		explosion_anti_cheat_bypass::m_can_blame_others->apply();
-		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->apply();
+		explosion_anti_cheat_bypass::apply();
 
 		FIRE::ADD_OWNED_EXPLOSION(
 		    (*g_pointers->m_gta.m_is_session_started && to_blame) ? PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()) : 0,
@@ -38,8 +33,7 @@ namespace big::toxic
 		    is_invisible,
 		    camera_shake);
 
-		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->restore();
-		explosion_anti_cheat_bypass::m_can_blame_others->restore();
+		explosion_anti_cheat_bypass::restore();
 	}
 
 	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -82,13 +76,15 @@ namespace big::toxic
 		          .count();
 		msg.increment = millis;
 
-		auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-		    (int)target->get_session_player()->m_player_data.m_peer_id_2);
+		auto peer = target->get_connection_peer();
+
+		if (!peer)
+			return false;
 
 		for (int j = 0; j < 100; j++)
 		{
 			g_pointers->m_gta.m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-			    peer,
+			    &peer->m_peer_address,
 			    (*g_pointers->m_gta.m_network_time)->m_connection_identifier,
 			    &msg,
 			    0x1000000); // repeatedly spamming the event will eventually cause certain bounds checks to disable for some reason
@@ -121,7 +117,7 @@ namespace big::toxic
 			return;
 		}
 
-		std::uint32_t largest_counter = 9999;
+		uint32_t largest_counter = 9999;
 		g_player_service->iterate([&largest_counter](const player_entry& plyr) {
 			if (plyr.second->num_time_syncs_sent > largest_counter)
 				largest_counter = plyr.second->num_time_syncs_sent;
@@ -148,13 +144,15 @@ namespace big::toxic
 			          .count();
 			msg.increment = millis;
 
-			auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-			    (int)plyr.second->get_session_player()->m_player_data.m_peer_id_2);
+			auto peer = plyr.second->get_connection_peer();
+
+			if (!peer)
+				return;
 
 			for (int j = 0; j < 25; j++)
 			{
 				g_pointers->m_gta.m_sync_network_time(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
-				    peer,
+				    &peer->m_peer_address,
 				    (*g_pointers->m_gta.m_network_time)->m_connection_identifier,
 				    &msg,
 				    0x1000000);

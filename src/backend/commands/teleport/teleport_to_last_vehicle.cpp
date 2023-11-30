@@ -8,7 +8,7 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			if (g_local_player && g_local_player->m_vehicle)
 			{
@@ -18,5 +18,5 @@ namespace big
 		}
 	};
 
-	teleport_to_last_vehicle g_teleport_to_last_vehicle("lastvehtp", "Teleport To Last Vehicle", "Teleports you into your last driven vehicle", 0);
+	teleport_to_last_vehicle g_teleport_to_last_vehicle("lastvehtp", "BACKEND_TELEPORT_TO_LAST_VEHICLE", "BACKEND_TELEPORT_TO_LAST_VEHICLE_DESC", 0);
 }

@@ -64,7 +64,7 @@ jobs:
 #            path: build/YimMenu-dev-*.dll
 
   ci_msvc:
-    runs-on: windows-latest
+    runs-on: [self-hosted, Windows]
     name: CI MSVC
     steps:
       - uses: actions/checkout@v3

@@ -9,17 +9,15 @@
 #include "thread_pool.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
+#include "util/protection.hpp"
 #include "util/session.hpp"
 #include "util/vehicle.hpp"
 #include "yim_fipackfile.hpp"
 
+#include <algorithm>
+
 namespace big
 {
-	inline bool is_crash_ped(rage::joaat_t hash)
-	{
-		return hash == RAGE_JOAAT("slod_human") || hash == RAGE_JOAAT("slod_small_quadped") || hash == RAGE_JOAAT("slod_large_quadped");
-	}
-
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
 		if (std::find(vec.begin(), vec.end(), str) != vec.end())
@@ -31,7 +29,7 @@ namespace big
 
 	gta_data_service::gta_data_service() :
 	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 4),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 6),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -72,7 +70,7 @@ namespace big
 	}
 
 	// innefficient getters, don't care to fix right now
-	const ped_item& gta_data_service::ped_by_hash(std::uint32_t hash)
+	const ped_item& gta_data_service::ped_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, ped] : m_peds)
 			if (rage::joaat(name) == hash)
@@ -80,7 +78,7 @@ namespace big
 		return gta_data_service::empty_ped;
 	}
 
-	const vehicle_item& gta_data_service::vehicle_by_hash(std::uint32_t hash)
+	const vehicle_item& gta_data_service::vehicle_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, veh] : m_vehicles)
 			if (rage::joaat(name) == hash)
@@ -88,7 +86,7 @@ namespace big
 		return gta_data_service::empty_vehicle;
 	}
 
-	const weapon_item& gta_data_service::weapon_by_hash(std::uint32_t hash)
+	const weapon_item& gta_data_service::weapon_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
 			if (rage::joaat(name) == hash)
@@ -96,7 +94,7 @@ namespace big
 		return gta_data_service::empty_weapon;
 	}
 
-	const weapon_component& gta_data_service::weapon_component_by_hash(std::uint32_t hash)
+	const weapon_component& gta_data_service::weapon_component_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, component] : m_weapons_cache.weapon_components)
 			if (component.m_hash == hash)
@@ -217,7 +215,7 @@ namespace big
 		std::sort(m_weapon_types.begin(), m_weapon_types.end());
 	}
 
-	inline void parse_ped(std::vector<ped_item>& peds, std::vector<std::uint32_t>& mapped_peds, pugi::xml_document& doc)
+	inline void parse_ped(std::vector<ped_item>& peds, std::vector<uint32_t>& mapped_peds, pugi::xml_document& doc)
 	{
 		const auto& items = doc.select_nodes("/CPedModelInfo__InitDataList/InitDatas/Item");
 		for (const auto& item_node : items)
@@ -226,7 +224,7 @@ namespace big
 			const auto name  = item.child("Name").text().as_string();
 			const auto hash  = rage::joaat(name);
 
-			if (is_crash_ped(hash))
+			if (protection::is_crash_ped(hash))
 				continue;
 
 			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
@@ -249,7 +247,7 @@ namespace big
 
 	void gta_data_service::rebuild_cache()
 	{
-		using hash_array = std::vector<std::uint32_t>;
+		using hash_array = std::vector<uint32_t>;
 		hash_array mapped_peds;
 		hash_array mapped_vehicles;
 		hash_array mapped_weapons;
@@ -260,27 +258,13 @@ namespace big
 		std::vector<weapon_item> weapons;
 		std::vector<weapon_component> weapon_components;
 
-		constexpr auto exists = [](const hash_array& arr, std::uint32_t val) -> bool {
+		constexpr auto exists = [](const hash_array& arr, uint32_t val) -> bool {
 			return std::find(arr.begin(), arr.end(), val) != arr.end();
 		};
 
 		LOG(INFO) << "Rebuilding cache started...";
-
 		yim_fipackfile::add_wrapper_call_back([&](yim_fipackfile& rpf_wrapper, std::filesystem::path path) -> void {
-			if (path.filename() == "setup2.xml")
-			{
-				std::string dlc_name;
-				rpf_wrapper.read_xml_file(path, [&dlc_name](pugi::xml_document& doc) {
-					const auto item = doc.select_node("/SSetupData/nameHash");
-					dlc_name        = item.node().text().as_string();
-				});
-
-				if (dlc_name == "mpG9EC")
-				{
-					LOG(VERBOSE) << "Bad DLC, skipping...";
-				}
-			}
-			else if (path.filename() == "vehicles.meta")
+			if (path.filename() == "vehicles.meta")
 			{
 				rpf_wrapper.read_xml_file(path, [&exists, &vehicles, &mapped_vehicles](pugi::xml_document& doc) {
 					const auto& items = doc.select_nodes("/CVehicleModelInfo__InitDataList/InitDatas/Item");
@@ -288,15 +272,18 @@ namespace big
 					{
 						const auto item = item_node.node();
 
-						const auto name = item.child("modelName").text().as_string();
+						std::string name = item.child("modelName").text().as_string();
+						std::transform(name.begin(), name.end(), name.begin(), ::toupper);
 						const auto hash = rage::joaat(name);
+						if (protection::is_crash_vehicle(hash))
+							continue;
 
 						if (exists(mapped_vehicles, hash))
 							continue;
 						mapped_vehicles.emplace_back(hash);
 
 						auto veh = vehicle_item{};
-						std::strncpy(veh.m_name, name, sizeof(veh.m_name));
+						std::strncpy(veh.m_name, name.c_str(), sizeof(veh.m_name));
 
 						const auto manufacturer_display = item.child("vehicleMakeName").text().as_string();
 						std::strncpy(veh.m_display_manufacturer, manufacturer_display, sizeof(veh.m_display_manufacturer));
@@ -462,7 +449,7 @@ namespace big
 				const auto name = path.stem().string();
 				const auto hash = rage::joaat(name);
 
-				if (is_crash_ped(hash))
+				if (protection::is_crash_ped(hash))
 					return;
 
 				if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
@@ -485,7 +472,7 @@ namespace big
 			yim_fipackfile::for_each_fipackfile();
 		}
 
-		static bool translate_lebel = false;
+		static bool translate_label = false;
 
 		g_fiber_pool->queue_job([&] {
 			for (auto& item : vehicles)
@@ -518,10 +505,10 @@ namespace big
 					peds.erase(it);
 				}
 			}
-			translate_lebel = true;
+			translate_label = true;
 		});
 
-		while (!translate_lebel)
+		while (!translate_label)
 		{
 			if (state() == eGtaDataUpdateState::UPDATING)
 				script::get_current()->yield();
@@ -539,7 +526,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();
-				m_peds_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_peds_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
 				m_peds_cache.set_header_version(file_version);
@@ -548,7 +535,7 @@ namespace big
 
 			{
 				const auto data_size = sizeof(vehicle_item) * vehicles.size();
-				m_vehicles_cache.set_data(std::make_unique<std::uint8_t[]>(data_size), data_size);
+				m_vehicles_cache.set_data(std::make_unique<uint8_t[]>(data_size), data_size);
 				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
 				m_vehicles_cache.set_header_version(file_version);

@@ -74,7 +74,7 @@ namespace big
 
 		components::button("CREATOR_JOB_IMPORT"_T, [] {
 			g_thread_pool->push([] {
-#ifndef CROSSCOMPILING
+#ifdef _MSC_VER
 				std::string content_id = job_link;
 
 				if (content_id.starts_with("https://"))
@@ -109,7 +109,7 @@ namespace big
 				});
 #else
 					g_notification_service->push_error("Job Import", "cpr is broken in MinGW!");
-#endif // CROSSCOMPILING
+#endif // _MSC_VER
 			});
 		});
 
