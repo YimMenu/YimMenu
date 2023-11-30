@@ -35,7 +35,42 @@
 #include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
 #include "version.hpp"
+#include "rage/gameSkeleton.hpp"
 
+namespace big
+{
+	void disable_anticheat_skeleton()
+	{
+		for (rage::game_skeleton_update_mode* mode = g_pointers->m_gta.m_game_skeleton->m_update_modes; mode; mode = mode->m_next)
+		{
+			for (rage::game_skeleton_update_base* update_node = mode->m_head; 
+						update_node; update_node = update_node->m_next)
+			{
+				if(update_node->m_hash != RAGE_JOAAT("Common Main"))
+					continue;
+				rage::game_skeleton_update_group* group = reinterpret_cast<rage::game_skeleton_update_group*>(update_node);
+				for (rage::game_skeleton_update_base* group_child_node = group->m_head; group_child_node; group_child_node = group_child_node->m_next)
+				{
+					// TamperActions is a leftover from the old AC, but still useful to block anyway
+					if(group_child_node->m_hash != 0xA0F39FB6 && group_child_node->m_hash != RAGE_JOAAT("TamperActions")) 
+						continue;
+					//LOG(INFO) << "Patching problematic skeleton update";
+					reinterpret_cast<rage::game_skeleton_update_element*>(group_child_node)->m_function = g_pointers->m_gta.m_nullsub;
+				}
+				break;
+			}
+		}
+
+		for(rage::skeleton_data& i : g_pointers->m_gta.m_game_skeleton->m_sys_data)
+		{
+			if(i.m_hash != 0xA0F39FB6 && i.m_hash != RAGE_JOAAT("TamperActions"))
+				continue;
+			//LOG(INFO) << "Patching problematic skeleton init/shutdown";
+			i.m_init_func = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
+			i.m_shutdown_func = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
+		}
+	}
+}
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -74,6 +109,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto pointers_instance = std::make_unique<pointers>();
 			    LOG(INFO) << "Pointers initialized.";
+
+				disable_anticheat_skeleton();
+				LOG(INFO) << "Disabled anticheat gameskeleton.";
 
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 			    LOG(INFO) << "Byte Patch Manager initialized.";
