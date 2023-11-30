@@ -1,4 +1,3 @@
-#pragma once
 #include "logger.hpp"
 
 #include "memory/module.hpp"
@@ -136,7 +135,7 @@ namespace big
 
 	const char* get_level_string(const eLogLevel level)
 	{
-		constexpr std::array<const char*, 4> levelStrings = {{{"DEBUG"}, {"INFO"}, {"WARN"}, {"FATAL"}}};
+		constexpr std::array<const char*, 4> levelStrings = {{"DEBUG", "INFO", "WARN", "FATAL"}};
 
 		return levelStrings[level];
 	}

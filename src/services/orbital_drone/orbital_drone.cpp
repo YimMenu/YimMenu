@@ -332,21 +332,21 @@ namespace big
 			const auto vehicle = reinterpret_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(ent));
 			if (vehicle)
 			{
-				for (const auto& player : g_player_service->players() | std::ranges::views::values)
+				for (const auto& player : g_player_service->players())
 				{
-					if (player && vehicle->m_driver)
+					if (player.second && vehicle->m_driver)
 					{
-						if (player->get_ped() == vehicle->m_driver)
+						if (player.second->get_ped() == vehicle->m_driver)
 						{
-							g_player_service->set_selected(player);
+							g_player_service->set_selected(player.second);
 							return;
 						}
 
 						for (const auto ped : vehicle->m_passengers)
 						{
-							if (ped && player->get_ped() == ped)
+							if (ped && player.second->get_ped() == ped)
 							{
-								g_player_service->set_selected(player);
+								g_player_service->set_selected(player.second);
 								return;
 							}
 						}
@@ -357,13 +357,13 @@ namespace big
 
 		if (PED::IS_PED_A_PLAYER(ent))
 		{
-			for (auto player : g_player_service->players() | std::ranges::views::values)
+			for (auto player : g_player_service->players())
 			{
-				if (player)
+				if (player.second)
 				{
-					if (const auto ped_ptr = player->get_ped(); ped_ptr && g_pointers->m_gta.m_ptr_to_handle(ped_ptr) == ent)
+					if (const auto ped_ptr = player.second->get_ped(); ped_ptr && g_pointers->m_gta.m_ptr_to_handle(ped_ptr) == ent)
 					{
-						g_player_service->set_selected(player);
+						g_player_service->set_selected(player.second);
 					}
 				}
 			}

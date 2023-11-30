@@ -24,7 +24,7 @@ namespace big
 			{
 			case eGtaDataUpdateState::NEEDS_UPDATE:
 			{
-				ImGui::Text("GAME_CACHE_UPDATE"_T.data());
+				ImGui::TextUnformatted("GAME_CACHE_UPDATE"_T.data());
 
 				if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 				{
@@ -35,13 +35,13 @@ namespace big
 			}
 			case eGtaDataUpdateState::WAITING_FOR_SINGLE_PLAYER:
 			{
-				ImGui::Text("GAME_CACHE_WAITING_FOR_SINGLE_PLAYER"_T.data());
+				ImGui::TextUnformatted("GAME_CACHE_WAITING_FOR_SINGLE_PLAYER"_T.data());
 
 				break;
 			}
 			case eGtaDataUpdateState::UPDATING:
 			{
-				ImGui::Text("GAME_CACHE_UPDATING"_T.data());
+				ImGui::TextUnformatted("GAME_CACHE_UPDATING"_T.data());
 
 				break;
 			}

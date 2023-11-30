@@ -37,7 +37,7 @@ namespace memory
 		m_patches.clear();
 	}
 
-	bool operator==(const std::unique_ptr<byte_patch>& a, const byte_patch* b)
+	bool operator==(const std::shared_ptr<byte_patch>& a, const byte_patch* b)
 	{
 		return a->m_address == b->m_address;
 	}

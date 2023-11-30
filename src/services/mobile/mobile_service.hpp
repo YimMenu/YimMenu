@@ -22,7 +22,7 @@ namespace big
 		[[nodiscard]] const char* get_plate() const;
 		[[nodiscard]] script_global get_vehicle_idx() const;
 		[[nodiscard]] std::string get_garage() const;
-		[[nodiscard]] void set_garage();
+		void set_garage();
 		[[nodiscard]] bool is_in_selected_garage() const;
 		[[nodiscard]] bool is_blacklisted_vehicle() const;
 
@@ -34,8 +34,11 @@ namespace big
 		std::map<std::string, std::unique_ptr<personal_vehicle>> m_personal_vehicles;
 		std::map<int, std::string> m_pv_lookup;
 		std::set<std::string> m_garages;
-
+#ifdef _MSC_VER
 		std::chrono::time_point<std::chrono::steady_clock> m_last_update;
+#else
+		std::chrono::time_point<std::chrono::system_clock> m_last_update;
+#endif // _MSC_VER
 
 	public:
 		mobile_service();

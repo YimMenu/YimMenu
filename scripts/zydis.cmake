@@ -12,4 +12,4 @@ FetchContent_Declare(
     GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(zydis)
-set_property(TARGET Zydis PROPERTY CXX_STANDARD 23)
+set_property(TARGET Zydis PROPERTY CXX_STANDARD 20)

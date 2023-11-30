@@ -74,6 +74,7 @@ namespace big
 
 		components::button("CREATOR_JOB_IMPORT"_T, [] {
 			g_thread_pool->push([] {
+#ifdef _MSC_VER
 				std::string content_id = job_link;
 
 				if (content_id.starts_with("https://"))
@@ -106,6 +107,9 @@ namespace big
 						    "CREATOR_JOB_UGC_QUERY_FAILED"_T.data());
 					}
 				});
+#else
+					g_notification_service->push_error("Job Import", "cpr is broken in MinGW!");
+#endif // _MSC_VER
 			});
 		});
 
@@ -134,7 +138,7 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("CREATOR_INFINITE_MEMORY"_T.data(), &g.ugc.infinite_model_memory);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("CREATOR_INFINITE_MEMORY_DESCRIPTION"_T.data());
+			ImGui::SetTooltip("%s", "CREATOR_INFINITE_MEMORY_DESCRIPTION"_T.data());
 
 		ImGui::EndGroup();
 	}

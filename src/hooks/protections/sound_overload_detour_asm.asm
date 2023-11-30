@@ -1,4 +1,4 @@
-EXTERN g_sound_overload_ret_addr: DQ
+EXTERN g_sound_overload_ret_addr: QWORD
 
 .CODE
     sound_overload_detour PROC

@@ -3,9 +3,9 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  ci:
+  ci_clang:
     runs-on: [self-hosted, Windows]
-    name: CI
+    name: CI Clang
     steps:
       - uses: actions/checkout@v3
 
@@ -16,9 +16,16 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
+        
+      - name: Cache build/
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: ${{ runner.os }}-build
 
       - name: Generate CMake project
-        run: cmake -D CMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja
+        run: cmake -DVERSION=1.3.4 -DCMAKE_BUILD_TYPE=Release -S. -Bbuild -DCROSSCOMPILE=ON -DUSE_CLANG=ON -GNinja
 
       - name: Build 64bit release DLL
         run: cmake --build ./build --config Release --target YimMenu --
@@ -35,5 +42,40 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: binary
+          name: binary-Clang
+          path: build/YimMenu-dev-*.dll
+
+  ci_msvc:
+    runs-on: [self-hosted, Windows]
+    name: CI MSVC
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check CMake version
+        run: cmake --version
+
+      - name: Setup MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Generate CMake project
+        run: cmake -DCMAKE_BUILD_TYPE=Release -S. -Bbuild -GNinja
+
+      - name: Build 64bit release DLL
+        run: cmake --build ./build --config Release --target YimMenu --
+
+      - name: Check if DLL got built
+        run: if (-Not (Test-Path -path "build/YimMenu.dll")) {throw 1}
+
+      - name: Rename DLL to YimMenu-dev-{GITHUB_SHA}.dll
+        run: |
+          del YimMenu-dev-*.dll
+          ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
+        working-directory: build/
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary-MSVC
           path: build/YimMenu-dev-*.dll

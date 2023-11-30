@@ -46,7 +46,7 @@ namespace big
 		ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_PLAYERS"_T.data(), &g.window.ingame_overlay.show_players);
 		ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_TIME"_T.data(), &g.window.ingame_overlay.show_time);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_GUI_SETTINGS_SHOW_TIME_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_GUI_SETTINGS_SHOW_TIME_TOOLTIP"_T.data());
 		ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_INDICATORS"_T.data(), &g.window.ingame_overlay.show_indicators);
 
 		ImGui::EndGroup();

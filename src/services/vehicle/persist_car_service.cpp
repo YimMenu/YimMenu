@@ -43,7 +43,7 @@ namespace big
 		catch (std::exception& e)
 		{
 			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
-			return NULL;
+			return 0;
 		}
 
 		return spawn_vehicle_full(vehicle_json, self::ped, spawn_coords);

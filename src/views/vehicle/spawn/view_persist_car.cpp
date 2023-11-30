@@ -82,11 +82,11 @@ namespace big
 			}
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
+			ImGui::SetTooltip("%s", "PREVIEW_DESC"_T.data());
 		ImGui::SameLine();
 		ImGui::Checkbox("SPAWN_IN"_T.data(), &g.persist_car.spawn_inside);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("SPAWN_IN_DESC"_T.data());
+			ImGui::SetTooltip("%s", "SPAWN_IN_DESC"_T.data());
 
 		ImGui::SetNextItemWidth(300.f);
 		auto folder_display = g.persist_car.persist_vehicle_sub_folder.empty() ?
@@ -113,7 +113,7 @@ namespace big
 		std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
 		ImGui::SetNextItemWidth(250);
-		ImGui::Text("SAVED_VEHICLES"_T.data());
+		ImGui::TextUnformatted("SAVED_VEHICLES"_T.data());
 
 		static const auto over_30 = (30 * ImGui::GetTextLineHeightWithSpacing() + 2);
 		const auto box_height = vehicle_files.size() <= 30 ? (vehicle_files.size() * ImGui::GetTextLineHeightWithSpacing() + 2) : over_30;
@@ -170,7 +170,7 @@ namespace big
 		if (ImGui::IsItemActive())
 			g.self.hud.typing = TYPING_TICKS;
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VEHICLE_FILE_NAME_EXAMPLE"_T.data());
+			ImGui::SetTooltip("%s", "VEHICLE_FILE_NAME_EXAMPLE"_T.data());
 
 		if (g.persist_car.persist_vehicle_sub_folder.empty())
 		{
@@ -181,7 +181,7 @@ namespace big
 			if (ImGui::IsItemActive())
 				g.self.hud.typing = TYPING_TICKS;
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
+				ImGui::SetTooltip("%s", "VEHICLE_FOLDER_NAME_EXAMPLE"_T.data());
 
 			components::button("SAVE_VEHICLE"_T, [] {
 				if (vehicle_file_name_input[0] == '\0')

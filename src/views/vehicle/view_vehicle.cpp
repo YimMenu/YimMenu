@@ -107,7 +107,7 @@ namespace big
 
 			components::command_checkbox<"speedometer">();
 			components::options_modal("Speedometer", [] {
-				ImGui::Text("POS_X_Y"_T.data());
+				ImGui::TextUnformatted("POS_X_Y"_T.data());
 
 				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
 

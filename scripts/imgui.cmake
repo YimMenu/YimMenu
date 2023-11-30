@@ -25,4 +25,4 @@ if(NOT imgui_POPULATED)
         "${imgui_SOURCE_DIR}/misc/cpp"
     )
 endif()
-set_property(TARGET imgui PROPERTY CXX_STANDARD 23)
+set_property(TARGET imgui PROPERTY CXX_STANDARD 20)

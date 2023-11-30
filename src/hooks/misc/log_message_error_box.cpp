@@ -19,6 +19,7 @@ namespace big
 
 	static void log_stack_trace()
 	{
+#ifdef _MSC_VER
 		__try
 		{
 			// On purpose to print a stack trace.
@@ -27,6 +28,7 @@ namespace big
 		__except (log_stack_trace_filter(GetExceptionInformation()))
 		{
 		}
+#endif
 	}
 
 	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, bool a2)

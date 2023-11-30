@@ -14,7 +14,7 @@ namespace big
 			static int event_player_bits;
 			static bool event_everyone = false;
 
-			ImGui::Text("DEBUG_SCRIPT_EVENT_ARG_COUNT"_T.data());
+			ImGui::TextUnformatted("DEBUG_SCRIPT_EVENT_ARG_COUNT"_T.data());
 			ImGui::InputInt("###script_event_arg_count", &event_arg_count);
 			if (event_arg_count > 32)
 				event_arg_count = 32;
@@ -50,7 +50,7 @@ namespace big
 			ImGui::Checkbox("DEBUG_SCRIPT_EVENT_EVERYONE"_T.data(), &event_everyone);
 			if (!event_everyone)
 			{
-				ImGui::Text("DEBUG_SCRIPT_EVENT_PLAYER_ID"_T.data());
+				ImGui::TextUnformatted("DEBUG_SCRIPT_EVENT_PLAYER_ID"_T.data());
 				ImGui::InputInt("###player_bits", &event_player_bits);
 			}
 

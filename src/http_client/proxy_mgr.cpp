@@ -1,3 +1,4 @@
+#ifdef _MSC_VER
 #include "proxy_mgr.hpp"
 
 namespace big
@@ -120,7 +121,7 @@ namespace big
 
 		m_session.SetProxies(proxies);
 		if (m_proxy_settings.creds.uses_creds)
-			m_session.SetProxyAuth(proxy_auths);
+			m_session.SetProxyAuth(cpr::ProxyAuthentication(proxy_auths));
 	}
 
 	std::string proxy_mgr::build_url(const std::string& host, const std::string& port) const
@@ -147,3 +148,4 @@ namespace big
 		return true;
 	}
 }
+#endif // _MSC_VER

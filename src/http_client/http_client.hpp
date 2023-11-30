@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _MSC_VER
 #include <cpr/cpr.h>
 #include "proxy_mgr.hpp"
 
@@ -36,3 +37,4 @@ namespace big
 
     inline auto g_http_client = http_client();
 }
+#endif // _MSC_VER

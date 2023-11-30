@@ -6,6 +6,8 @@
 
 #include <network/Network.hpp>
 
+#include <compare>
+
 namespace big
 {
 	matchmaking_service::matchmaking_service()
@@ -79,7 +81,7 @@ namespace big
 				if (g.session_browser.sort_method != 0)
 				{
 					std::qsort(m_found_sessions, m_num_sessions_found, sizeof(session), [](const void* a1, const void* a2) -> int {
-						std::strong_ordering result;
+						std::strong_ordering result = 0 <=> 1; // What?
 
 						if (g.session_browser.sort_method == 1)
 						{

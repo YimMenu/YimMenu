@@ -233,7 +233,7 @@ namespace big
 			template<auto detour_function>
 			static void add(const std::string& name, void* target)
 			{
-				hook_to_detour_hook_helper<detour_function>::m_detour_hook.set_instance(name, target, detour_function);
+				hook_to_detour_hook_helper<detour_function>::m_detour_hook.set_instance(name, target, (void*)detour_function);
 
 				detour_hook_helper d{};
 				d.m_detour_hook = &hook_to_detour_hook_helper<detour_function>::m_detour_hook;
@@ -265,7 +265,7 @@ namespace big
 		template<auto detour_function>
 		static auto get_original()
 		{
-			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook.get_original<decltype(detour_function)>();
+			return detour_hook_helper::hook_to_detour_hook_helper<detour_function>::m_detour_hook.template get_original<decltype(detour_function)>();
 		}
 
 	private:

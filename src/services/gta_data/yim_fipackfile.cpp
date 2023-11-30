@@ -22,14 +22,18 @@ namespace big
 	{
 		bool success = false;
 
+#ifdef _MSC_VER
 		__try
 		{
+#endif // _MSC_VER
 			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+#ifdef _MSC_VER
 		}
 		__except (EXCEPTION_EXECUTE_HANDLER)
 		{
 			return false;
 		}
+#endif // _MSC_VER
 
 		return success;
 	}

@@ -12,7 +12,9 @@
 #include "rage/gameSkeleton.hpp"
 #include "renderer.hpp"
 #include "script_mgr.hpp"
-#include "services/api/api_service.hpp"
+#ifdef _MSC_VER
+	#include "services/api/api_service.hpp"
+#endif // _MSC_VER
 #include "services/context_menu/context_menu_service.hpp"
 #include "services/custom_text/custom_text_service.hpp"
 #include "services/gta_data/gta_data_service.hpp"
@@ -88,7 +90,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    while (!FindWindow("grcWindow", nullptr))
 				    std::this_thread::sleep_for(100ms);
-
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
 			    g_file_manager.init(base_dir);
@@ -124,8 +125,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
 
-			    g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
-			    LOG(INFO) << "HTTP Client initialized.";
+#ifdef _MSC_VER
+				g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
+				LOG(INFO) << "HTTP Client initialized.";
+#endif // _MSC_VER
 
 			    g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
@@ -147,11 +150,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto player_database_service_instance   = std::make_unique<player_database_service>();
 			    auto hotkey_service_instance            = std::make_unique<hotkey_service>();
 			    auto matchmaking_service_instance       = std::make_unique<matchmaking_service>();
-			    auto api_service_instance               = std::make_unique<api_service>();
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
-			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
+				auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
+#ifdef _MSC_VER
+				    auto api_service_instance = std::make_unique<api_service>();
+#endif // _MSC_VER
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -216,8 +221,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Matchmaking Service reset.";
 			    player_database_service_instance.reset();
 			    LOG(INFO) << "Player Database Service reset.";
-			    api_service_instance.reset();
-			    LOG(INFO) << "API Service reset.";
+#ifdef _MSC_VER
+				    api_service_instance.reset();
+				    LOG(INFO) << "API Service reset.";
+#endif // _MSC_VER
 			    script_patcher_service_instance.reset();
 			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();

@@ -119,7 +119,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]))
+			if (std::isnan(*(float*)&args[3]) || std::isnan(*(float*)&args[4]))
 			{
 				g.reactions.crash.process(plyr);
 				return true;

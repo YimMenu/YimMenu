@@ -70,7 +70,7 @@ namespace big
 
 			for (auto& plyr : g_player_service->players())
 			{
-				if (stricmp(plyr.second->get_name(), args[0].c_str()) == 0)
+				if (_stricmp(plyr.second->get_name(), args[0].c_str()) == 0)
 				{
 					plyr_id = plyr.second->id();
 					break;

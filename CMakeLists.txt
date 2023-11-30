@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
+# Crosscompiling
+include(scripts/crosscompile.cmake)
+
 project(YimMenu CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
@@ -13,11 +16,15 @@ include(scripts/minhook.cmake)
 include(scripts/async-logger.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
-include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
 include(scripts/lua.cmake)
-include(scripts/imgui.cmake)
+
+if (NOT MINGW)
+    include(scripts/cpr.cmake) 
+endif()
+
 message("\nFetching custom modules")
+include(scripts/imgui.cmake)
 include(scripts/gtav-classes.cmake)
 
 
@@ -33,17 +40,17 @@ file(GLOB_RECURSE SRC_MAIN
 )
 
 if (MSVC)
-  add_compile_options(/bigobj)
-  add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-  add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options(/bigobj)
+    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 else ()
-  add_compile_options(-Wa,-mbig-obj)
+    add_compile_options(-Wa,-mbig-obj)
 endif ()
 
 add_library(YimMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
+set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23)
 
 source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 
@@ -54,13 +61,23 @@ target_include_directories(YimMenu PRIVATE
     "${imgui_SOURCE_DIR}"
 )
 
+
+target_link_libraries(YimMenu PRIVATE )
+
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static)
+if(MINGW)
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui Zydis lua_static d3dcompiler dwmapi winmm psapi)
+else()
+    target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static d3dcompiler dwmapi winmm psapi)
+endif()
 
 # Warnings as errors
-set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+if(NOT CROSSCOMPILE)
+    set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+endif()
 
-add_compile_definitions(YimMenu 
+
+add_compile_definitions(
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"

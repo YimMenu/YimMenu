@@ -47,7 +47,7 @@ namespace big
 
 			if (seats.size() == 0)
 			{
-				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
+				ImGui::TextUnformatted("PLEASE_ENTER_VEHICLE"_T.data());
 			}
 			else
 			{
@@ -140,15 +140,15 @@ namespace big
 		{
 			if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
 			{
-				ImGui::Text("PLEASE_ENTER_VEHICLE"_T.data());
+				ImGui::TextUnformatted("PLEASE_ENTER_VEHICLE"_T.data());
 			}
 			else if (g.vehicle.keep_vehicle_clean)
 			{
-				ImGui::Text("KEEP_VEHICLE_CLEAN"_T.data());
+				ImGui::TextUnformatted("KEEP_VEHICLE_CLEAN"_T.data());
 			}
 			else if (g.vehicle.keep_vehicle_repaired)
 			{
-				ImGui::Text("KEEP_VEHICLE_REPAIRED"_T.data());
+				ImGui::TextUnformatted("KEEP_VEHICLE_REPAIRED"_T.data());
 			}
 			else
 			{
@@ -296,10 +296,10 @@ namespace big
 				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_RANGE"_T.data(), &g.vehicle.vehicle_ammo_special.weapon_range, 50, 100, "%.1f");
 				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_TBS"_T.data(), &g.vehicle.vehicle_ammo_special.time_between_shots, 0.001, 0.1, "%.3f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
 				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_AWT"_T.data(), &g.vehicle.vehicle_ammo_special.alternate_wait_time, 0.001, 0.1, "%.3f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
 				ImGui::EndGroup();
 
 				ImGui::SameLine();
@@ -333,17 +333,17 @@ namespace big
 				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_TBS"_T).data(),
 				    &g.vehicle.vehicle_ammo_special.rocket_time_between_shots, 0.001, 0.1, "%.3f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_TBS_DESC"_T.data());
 				ImGui::InputFloat(std::format("{}##rocket", "CUSTOM_VEH_WEAPONS_AWT"_T).data(),
 				    &g.vehicle.vehicle_ammo_special.rocket_alternate_wait_time, 0.001, 0.1, "%.3f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_AWT_DESC"_T.data());
 				ImGui::InputFloat("CUSTOM_VEH_WEAPONS_LIFETIME"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_lifetime, 0.1, 1, "%.1f");
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_LIFETIME_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_LIFETIME_DESC"_T.data());
 				ImGui::Checkbox("CUSTOM_VEH_WEAPONS_SMART_MISSILE"_T.data(), &g.vehicle.vehicle_ammo_special.rocket_improve_tracking);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("CUSTOM_VEH_WEAPONS_SMART_MISSILE_DESC"_T.data());
+					ImGui::SetTooltip("%s", "CUSTOM_VEH_WEAPONS_SMART_MISSILE_DESC"_T.data());
 				ImGui::EndGroup();
 			});
 		}

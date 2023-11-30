@@ -17,7 +17,7 @@ namespace big
 
 		if (ImGui::BeginPopupModal("##deletepedanimation", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("VIEW_SELF_ANIMATIONS_ARE_YOU_SURE_DELETE"_T.data(), deletion_ped_animation.name);
+			ImGui::Text("VIEW_SELF_ANIMATIONS_ARE_YOU_SURE_DELETE"_T.data(), deletion_ped_animation.name.c_str());
 
 			ImGui::Spacing();
 
@@ -63,12 +63,12 @@ namespace big
 			ImGui::SliderFloat("VIEW_SELF_ANIMATIONS_BLEND_OUT"_T.data(), &g_ped_animation_service.current_animation.blendout, -5, 10);
 			ImGui::InputInt("VIEW_SELF_ANIMATIONS_DURATION"_T.data(), &g_ped_animation_service.current_animation.time_to_play);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_DURATION_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_DURATION_TOOLTIP"_T.data());
 			ImGui::PopItemWidth();
 
 			ImGui::Checkbox("VIEW_SELF_ANIMATIONS_AMBIENT"_T.data(), &g_ped_animation_service.current_animation.ambient);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_AMBIENT_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_AMBIENT_TOOLTIP"_T.data());
 
 			if (g_ped_animation_service.current_animation.ambient)
 			{
@@ -99,10 +99,10 @@ namespace big
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_ONLY_UPPERBODY"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::UPPERBODY));
 			ImGui::CheckboxFlags("SECONDARY"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::SECONDARY));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_SECONDARY_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_SECONDARY_TOOLTIP"_T.data());
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_REALIZE_ANIMATION_ORIENTATION"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::REORIENT_WHEN_FINISHED));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_REALIZE_ANIMATION_ORIENTATION_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_REALIZE_ANIMATION_ORIENTATION_TOOLTIP"_T.data());
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_HIDE_WEAPON"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::HIDE_WEAPON));
 
 			ImGui::EndGroup();
@@ -112,14 +112,14 @@ namespace big
 			//Sync flags
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_SYNC_IN"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::TAG_SYNC_IN));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_SYNC_IN_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_SYNC_IN_TOOLTIP"_T.data());
 
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_SYNC_OUT"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::TAG_SYNC_OUT));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_SYNC_OUT_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_SYNC_OUT_TOOLTIP"_T.data());
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_SYNC_CONTINUOUS"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::TAG_SYNC_CONTINUOUS));
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_SYNC_CONTINUOUS_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_SYNC_CONTINUOUS_TOOLTIP"_T.data());
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_FORCE_START"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::FORCE_START));
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_DISABLE_COLLISION"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::TURN_OFF_COLLISION));
 			ImGui::CheckboxFlags("VIEW_SELF_ANIMATIONS_OVERRIDE_PHYSICS"_T.data(), reinterpret_cast<unsigned int*>(&g_ped_animation_service.current_animation.flags), static_cast<unsigned int>(animations::anim_flags::OVERRIDE_PHYSICS));
@@ -186,7 +186,7 @@ namespace big
 
 		ImGui::Checkbox("VIEW_SELF_ANIMATIONS_PROMPT_AMBIENT"_T.data(), &g.self.prompt_ambient_animations);
 		if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_PROMPT_AMBIENT_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_PROMPT_AMBIENT_TOOLTIP"_T.data());
 
 		static std::string filter;
 
@@ -246,12 +246,12 @@ namespace big
 					{
 						ImGui::BeginTooltip();
 						if (p.name.length() > 25)
-							ImGui::Text(p.name.data());
+							ImGui::TextUnformatted(p.name.data());
 
-						ImGui::Text(std::format("{}: {}\n{}: {}", "DICT"_T.data(), p.dict, "ANIMATION"_T.data(), p.anim).c_str());
+						ImGui::Text("%s: %s\n%s: %s", "DICT"_T.data(), p.dict.c_str(), "ANIMATION"_T.data(), p.anim.c_str());
 
 						if (p.ambient)
-							ImGui::BulletText("VIEW_SELF_ANIMATIONS_AMBIENT_ANIMATION"_T.data());
+							ImGui::BulletText("%s","VIEW_SELF_ANIMATIONS_AMBIENT_ANIMATION"_T.data());
 						ImGui::EndTooltip();
 					}
 				}

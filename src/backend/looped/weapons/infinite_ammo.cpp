@@ -9,12 +9,12 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, NULL);
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, TRUE, 0);
 		}
 
 		virtual void on_disable() override
 		{
-			WEAPON::SET_PED_INFINITE_AMMO(self::ped, FALSE, NULL);
+			WEAPON::SET_PED_INFINITE_AMMO(self::ped, FALSE, 0);
 		}
 	};
 

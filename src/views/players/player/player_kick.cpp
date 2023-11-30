@@ -15,7 +15,7 @@ namespace big
 			};
 
 			if (!g_player_service->get_self()->is_host())
-				ImGui::Text("VIEW_PLAYER_KICK_HOST_AND_BREAKUP_KICK_REQUIRE_SESSION_HOST"_T.data());
+				ImGui::TextUnformatted("VIEW_PLAYER_KICK_HOST_AND_BREAKUP_KICK_REQUIRE_SESSION_HOST"_T.data());
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 

@@ -15,7 +15,6 @@
 #include <network/netTime.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <timeapi.h>
-#pragma comment(lib, "winmm.lib")
 
 namespace big::toxic
 {

@@ -1,3 +1,5 @@
+#ifdef _MSC_VER
+
 #include "http_client.hpp"
 
 namespace big
@@ -44,3 +46,4 @@ namespace big
 		return m_proxy_mgr.load(proxy_settings_file);
 	}
 }
+#endif // _MSC_VER

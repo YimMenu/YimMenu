@@ -8,7 +8,7 @@ namespace big
 	{
 		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr || g_local_player->m_ped_task_flag & (int)ePedTask::TASK_FOOT)
 		{
-			ImGui::Text("HANDLING_ENTER_VEHICLE"_T.data());
+			ImGui::TextUnformatted("HANDLING_ENTER_VEHICLE"_T.data());
 			return;
 		}
 		g_handling_service->backup_vehicle();

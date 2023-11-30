@@ -87,7 +87,7 @@ namespace big
 			scripts::start_launcher_script(20);
 		});
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_NET_MISSIONS_ONLY_WORK_ON_JOINING"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_NET_MISSIONS_ONLY_WORK_ON_JOINING"_T.data());
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
@@ -135,7 +135,7 @@ namespace big
 
 		if (!mission_found)
 		{
-			ImGui::Text("VIEW_NET_MISSIONS_NO_ACTIVE_MISSION"_T.data());
+			ImGui::TextUnformatted("VIEW_NET_MISSIONS_NO_ACTIVE_MISSION"_T.data());
 		}
 	}
 }

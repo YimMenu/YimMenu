@@ -11,7 +11,7 @@ namespace big
 		{
 			int max_ammo;
 			Hash weapon_hash;
-			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, NULL);
+			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, 0);
 			if (WEAPON::IS_WEAPON_VALID(weapon_hash) && WEAPON::GET_MAX_AMMO(self::ped, weapon_hash, &max_ammo))
 				WEAPON::SET_PED_AMMO(self::ped, weapon_hash, max_ammo, 0);
 		}

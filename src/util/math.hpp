@@ -27,7 +27,7 @@ namespace big::math
 
 		float num = abs(cos(x));
 
-		return Vector3{-sin(z) * num, cos(z) * num, sin(x)};
+		return Vector3{static_cast<float>(-sin(z)) * num, static_cast<float>(cos(z)) * num, static_cast<float>(sin(x))};
 	}
 
 	inline float calculate_distance_from_game_cam(rage::fvector3 player_position)

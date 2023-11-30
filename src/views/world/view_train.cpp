@@ -19,7 +19,7 @@ namespace big
 		});
 
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("DELETE_TRAIN_DESC"_T.data());
+			ImGui::SetTooltip("%s", "DELETE_TRAIN_DESC"_T.data());
 
 		ImGui::SameLine();
 

@@ -229,7 +229,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 			{
-				ImGui::Text("PED_TYPE"_T.data());
+				ImGui::TextUnformatted("PED_TYPE"_T.data());
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo("##ped_type",
@@ -272,7 +272,7 @@ namespace big
 			{
 				ImGui::BeginGroup();
 				{
-					ImGui::Text("PLAYER"_T.data());
+					ImGui::TextUnformatted("PLAYER"_T.data());
 
 					ImGui::SetNextItemWidth(240.f);
 					if (ImGui::BeginCombo("##ped_player",
@@ -349,7 +349,7 @@ namespace big
 			{
 				ImGui::BeginGroup();
 				{
-					ImGui::Text("MODEL_NAME"_T.data());
+					ImGui::TextUnformatted("MODEL_NAME"_T.data());
 
 					ImGui::SetNextItemWidth(240.f);
 					components::input_text_with_hint("##ped_model_name", "MODEL_NAME"_T, ped_model_buf, sizeof(ped_model_buf), ImGuiInputTextFlags_EnterReturnsTrue, [] {
@@ -434,7 +434,7 @@ namespace big
 		{
 			ImGui::BeginGroup();
 			{
-				ImGui::Text("WEAPON_TYPE"_T.data());
+				ImGui::TextUnformatted("WEAPON_TYPE"_T.data());
 
 				ImGui::SetNextItemWidth(160.f);
 				if (ImGui::BeginCombo("##ped_weapon_type",
@@ -485,7 +485,7 @@ namespace big
 
 			ImGui::BeginGroup();
 			{
-				ImGui::Text("WEAPON"_T.data());
+				ImGui::TextUnformatted("WEAPON"_T.data());
 
 				ImGui::SetNextItemWidth(240.f);
 				if (ImGui::BeginCombo("##ped_weapon",
@@ -595,7 +595,7 @@ namespace big
 			}
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
+			ImGui::SetTooltip("%s", "PREVIEW_DESC"_T.data());
 
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVINCIBLE"_T.data(), &g.world.spawn_ped.spawn_invincible);
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVISIBLE"_T.data(), &g.world.spawn_ped.spawn_invisible);
@@ -663,7 +663,7 @@ namespace big
 		});
 
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_SPAWN_PED_SPOOF_AS_MODEL_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_SPAWN_PED_SPOOF_AS_MODEL_TOOLTIP"_T.data());
 
 		if (g.spoofing.spoof_player_model)
 		{

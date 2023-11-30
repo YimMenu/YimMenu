@@ -1,4 +1,3 @@
-#pragma once
 #include "persistent_player.hpp"
 
 #include "core/data/infractions.hpp"

@@ -86,7 +86,10 @@ namespace big
 			}
 			else
 			{
+// TODO: error: binding reference of type ‘std::map<big::tabs, big::navigation_struct>&’ to ‘const std::map<big::tabs, big::navigation_struct>’ discards qualifiers
+#ifndef CROSSCOMPILING
 				remove_from_nav_internal(nav_item.second.sub_nav, existing_tab_id);
+#endif // _MSC_VER
 			}
 
 			return false;

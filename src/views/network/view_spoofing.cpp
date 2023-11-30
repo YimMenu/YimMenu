@@ -95,7 +95,7 @@ namespace big
 		static char crew_tag[crew_tag_size];
 		strcpy_s(crew_tag, sizeof(crew_tag), g.spoofing.crew_tag.c_str());
 
-		ImGui::Text("SPOOFING_CREW_TAG"_T.data());
+		ImGui::TextUnformatted("SPOOFING_CREW_TAG"_T.data());
 		components::input_text("##crew_tag_input", crew_tag, sizeof(crew_tag));
 
 		if (crew_tag != g.spoofing.crew_tag)

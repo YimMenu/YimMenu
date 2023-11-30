@@ -40,7 +40,7 @@ namespace big
 			    *script_local(hunt_the_beast_script_thread, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<uint32_t*>();
 			if (auto beast = g_player_service->get_by_id(beast_player_index))
 			{
-				ImGui::Text(std::format("{} {}", g_player_service->get_by_id(beast_player_index).get()->get_name(), "VIEW_NET_MISSIONS_IS_THE_BEAST"_T).c_str());
+				ImGui::Text("%s %s", g_player_service->get_by_id(beast_player_index).get()->get_name(), "VIEW_NET_MISSIONS_IS_THE_BEAST"_T.data());
 				ImGui::SameLine();
 				components::button("VIEW_NET_MISSIONS_SET_AS_SELECTED"_T, [beast] {
 					g_player_service->set_selected(beast);

@@ -6,6 +6,10 @@
 #include "pointers.hpp"
 #include "thread_pool.hpp"
 
+#ifdef _MSC_VER
+#include <cpr/cpr.h>
+#endif // _MSC_VER
+
 namespace big
 {
 	translation_service::translation_service() :
@@ -187,6 +191,7 @@ namespace big
 
 	bool translation_service::download_language_pack(const std::string_view pack_id)
 	{
+#ifdef _MSC_VER
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
 			const auto response = download_file("/" + it->second.file);
@@ -210,11 +215,13 @@ namespace big
 				return true;
 			}
 		}
+#endif
 		return false;
 	}
 
 	bool translation_service::download_index()
 	{
+#ifdef _MSC_VER
 		const auto response = download_file("/index.json");
 		if (response.status_code == 200)
 		{
@@ -230,6 +237,7 @@ namespace big
 
 			return true;
 		}
+#endif // _MSC_VER
 		return false;
 	}
 
@@ -271,6 +279,7 @@ namespace big
 		m_remote_index.translations = m_local_index.fallback_languages;
 	}
 
+#ifdef _MSC_VER
 	cpr::Response translation_service::download_file(const std::string& filename)
 	{
 		auto response = g_http_client.get(m_url + filename);
@@ -278,6 +287,7 @@ namespace big
 			response = g_http_client.get(m_fallback_url + filename);
 		return response;
 	}
+#endif // _MSC_VER
 
 	void translation_service::try_set_default_language()
 	{

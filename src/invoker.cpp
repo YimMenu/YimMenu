@@ -44,18 +44,9 @@ namespace big
 			rage::scrNativeHandler handler = it->second;
 
 			[this, hash, handler] {
-				__try
-				{
-					// return address checks are no longer a thing
-					handler(&m_call_context);
-					g_pointers->m_gta.m_fix_vectors(&m_call_context);
-				}
-				__except (EXCEPTION_EXECUTE_HANDLER)
-				{
-					[hash]() {
-						LOG(WARNING) << "Exception caught while trying to call " << HEX_TO_UPPER(hash) << " native.";
-					}();
-				}
+				// return address checks are no longer a thing
+				handler(&m_call_context);
+				g_pointers->m_gta.m_fix_vectors(&m_call_context);
 			}();
 		}
 		else

@@ -1,4 +1,3 @@
-#pragma once
 #include "log.hpp"
 
 namespace lua::log

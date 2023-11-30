@@ -127,4 +127,4 @@ private:
 		return ~((num1 | -num1) >> 63);
 	}
 };
-static_assert(offsetof(GenericPool, GenericPool::m_item_count) == 0x20);
+static_assert(offsetof(GenericPool, m_item_count) == 0x20);

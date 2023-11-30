@@ -1,3 +1,4 @@
+#ifdef _MSC_VER
 #include "api_service.hpp"
 
 #include "http_client/http_client.hpp"
@@ -108,3 +109,5 @@ namespace big
 		return false;
 	}
 }
+
+#endif // _MSC_VER

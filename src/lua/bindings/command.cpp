@@ -1,4 +1,3 @@
-#pragma once
 #include "command.hpp"
 #include "backend/command.hpp"
 #include "backend/player_command.hpp"

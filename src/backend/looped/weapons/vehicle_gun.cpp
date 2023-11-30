@@ -30,13 +30,13 @@ namespace big
 			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
 
 			float dist = 10.f;
-			location.x += dist * cos(pitch) * cos(yaw);
-			location.y += dist * sin(yaw) * cos(pitch);
-			location.z += dist * sin(pitch);
+			location.x += static_cast<float>(dist * cos(pitch) * cos(yaw));
+			location.y += static_cast<float>(dist * sin(yaw) * cos(pitch));
+			location.z += static_cast<float>(dist * sin(pitch));
 			Vehicle veh = vehicle::spawn(rage::joaat(g.weapons.vehicle_gun_model.data()), location, ENTITY::GET_ENTITY_HEADING(self::ped));
 
 			dist = 150.f;
-			Vector3 velocity{dist * cos(pitch) * cos(yaw), dist * sin(yaw) * cos(pitch), dist * sin(pitch)};
+			Vector3 velocity{static_cast<float>(dist * cos(pitch) * cos(yaw)), static_cast<float>(dist * sin(yaw) * cos(pitch)), static_cast<float>(dist * sin(pitch))};
 
 			ENTITY::SET_ENTITY_ROTATION(veh, rot.x, rot.y, rot.z, rotation_order, 1);
 			ENTITY::SET_ENTITY_VELOCITY(veh, velocity.x, velocity.y, velocity.z);

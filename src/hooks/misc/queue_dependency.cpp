@@ -1,7 +1,7 @@
 #include "hooking.hpp"
 #include "pointers.hpp"
 #include "security/ObfVar.hpp"
-#include <Psapi.h>
+#include <psapi.h>
 
 namespace big
 {
@@ -9,8 +9,8 @@ namespace big
 	{
 		if(!address)
 			return false;
-		static int64_t moduleBase = NULL;
-		static int64_t moduleSize = NULL;
+		static int64_t moduleBase = 0;
+		static int64_t moduleSize = 0;
 		if (!moduleBase || !moduleSize)
 		{
 			MODULEINFO info;
@@ -63,9 +63,9 @@ namespace big
 			LOG(INFO) << "Blocking AC Verifier " << std::hex << *reinterpret_cast<int64_t*>(dependency + 0x60) - reinterpret_cast<int64_t>(GetModuleHandleA(0));
 			ac_verifier* verifier = reinterpret_cast<ac_verifier*>(dependency - 0x30);
 			verifier->m_delay = INT_MAX; // makes it so these won't queue in the future
-			*reinterpret_cast<void**>(dependency + 0x60) = nullsub;
-			*reinterpret_cast<void**>(dependency + 0x100) = nullsub;
-			*reinterpret_cast<void**>(dependency + 0x1A0) = nullsub;
+			*reinterpret_cast<void**>(dependency + 0x60) = (void*)nullsub;
+			*reinterpret_cast<void**>(dependency + 0x100) = (void*)nullsub;
+			*reinterpret_cast<void**>(dependency + 0x1A0) = (void*)nullsub;
 		}
 
 		return g_hooking->get_original<hooks::queue_dependency>()(a1, a2, dependency);

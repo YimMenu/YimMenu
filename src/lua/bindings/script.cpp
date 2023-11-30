@@ -1,4 +1,3 @@
-#pragma once
 #include "script.hpp"
 
 #include "lua/lua_manager.hpp"

@@ -65,7 +65,7 @@ namespace big
 			}
 
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip(player_database_service::get_session_type_str(player->session_type));
+				ImGui::SetTooltip("%s", player_database_service::get_session_type_str(player->session_type));
 
 			ImGui::PopID();
 		}
@@ -84,28 +84,28 @@ namespace big
 				std::string lower_search = search;
 				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), tolower);
 
-				for (auto& player : item_arr | std::ranges::views::values)
+				for (auto& player : item_arr)
 				{
-					if (player_database_service::is_joinable_session(player->session_type))
-						draw_player_db_entry(player, lower_search);
+					if (player_database_service::is_joinable_session(player.second->session_type))
+						draw_player_db_entry(player.second, lower_search);
 				}
 
-				for (auto& player : item_arr | std::ranges::views::values)
+				for (auto& player : item_arr)
 				{
-					if (!player_database_service::is_joinable_session(player->session_type) && player->session_type != GSType::Invalid
-					    && player->session_type != GSType::Unknown)
-						draw_player_db_entry(player, lower_search);
+					if (!player_database_service::is_joinable_session(player.second->session_type) && player.second->session_type != GSType::Invalid
+					    && player.second->session_type != GSType::Unknown)
+						draw_player_db_entry(player.second, lower_search);
 				}
 
-				for (auto& player : item_arr | std::ranges::views::values)
+				for (auto& player : item_arr)
 				{
-					if (player->session_type == GSType::Invalid || player->session_type == GSType::Unknown)
-						draw_player_db_entry(player, lower_search);
+					if (player.second->session_type == GSType::Invalid || player.second->session_type == GSType::Unknown)
+						draw_player_db_entry(player.second, lower_search);
 				}
 			}
 			else
 			{
-				ImGui::Text("NO_STORED_PLAYERS"_T.data());
+				ImGui::TextUnformatted("NO_STORED_PLAYERS"_T.data());
 			}
 
 			ImGui::EndListBox();
@@ -154,7 +154,7 @@ namespace big
 				}
 
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("ONLY_AS_HOST"_T.data());
+					ImGui::SetTooltip("%s", "ONLY_AS_HOST"_T.data());
 
 
 				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
@@ -179,11 +179,11 @@ namespace big
 
 				if (!current_player->infractions.empty())
 				{
-					ImGui::Text("INFRACTIONS"_T.data());
+					ImGui::TextUnformatted("INFRACTIONS"_T.data());
 
 					for (auto& infraction : current_player->infractions)
 					{
-						ImGui::BulletText(current_player->get_infraction_description(infraction));
+						ImGui::BulletText("%s", current_player->get_infraction_description(infraction));
 					}
 				}
 
@@ -197,7 +197,7 @@ namespace big
 
 				ImGui::Checkbox("VIEW_NET_PLAYER_DB_JOIN_REDIRECT"_T.data(), &current_player->join_redirect);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("VIEW_NET_PLAYER_DB_JOIN_REDIRECT_DESC"_T.data());
+					ImGui::SetTooltip("%s", "VIEW_NET_PLAYER_DB_JOIN_REDIRECT_DESC"_T.data());
 
 				if (current_player->join_redirect)
 				{
@@ -228,25 +228,30 @@ namespace big
 				components::input_text("INPUT_MSG"_T, message, sizeof(message));
 				if (components::button("SEND_MSG"_T))
 				{
-					g_thread_pool->push([selected] {
+					g_thread_pool->push([selected]
+					{
+#ifdef _MSC_VER
 						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
 						{
 							g_notification_service->push_success("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
 							return;
 						}
 						g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
+#else
+					g_notification_service->push_error("SCAPI"_T.data(), "cpr is broken in MinGW!");
+#endif // _MSC_VER
 					});
 				};
 
-				ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_SESSION_TYPE"_T, player_database_service::get_session_type_str(selected->session_type)).c_str());
+				ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_SESSION_TYPE"_T.data(), player_database_service::get_session_type_str(selected->session_type));
 
 				if (selected->session_type != GSType::Invalid && selected->session_type != GSType::Unknown)
 				{
-					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_HOST_OF_SESSION"_T, selected->is_host_of_session ? "YES"_T : "NO"_T).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_SPECTATING"_T, selected->is_spectating ? "YES"_T : "NO"_T).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IN_JOB_LOBBY"_T, selected->transition_session_id != -1 ? "YES"_T : "NO"_T).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_IS_HOST_OF_JOB_LOBBY"_T, selected->is_host_of_transition_session ? "YES"_T : "NO"_T).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_NET_PLAYER_DB_CURRENT_MISSION_TYPE"_T, player_database_service::get_game_mode_str(selected->game_mode)).c_str());
+					ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_IS_HOST_OF_SESSION"_T.data(), selected->is_host_of_session ? "YES"_T.data() : "NO"_T.data());
+					ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_IS_SPECTATING"_T.data(), selected->is_spectating ? "YES"_T.data() : "NO"_T.data());
+					ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_IN_JOB_LOBBY"_T.data(), selected->transition_session_id != -1 ? "YES"_T.data() : "NO"_T.data());
+					ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_IS_HOST_OF_JOB_LOBBY"_T.data(), selected->is_host_of_transition_session ? "YES"_T.data() : "NO"_T.data());
+					ImGui::Text("%s: %s", "VIEW_NET_PLAYER_DB_CURRENT_MISSION_TYPE"_T.data(), player_database_service::get_game_mode_str(selected->game_mode));
 					if (selected->game_mode != GameMode::None && player_database_service::can_fetch_name(selected->game_mode))
 					{
 						ImGui::Text("VIEW_NET_PLAYER_DB_CURRENT_MISSION_TYPE"_T.data(), selected->game_mode_name.c_str());
@@ -288,7 +293,7 @@ namespace big
 
 		if (ImGui::BeginPopupModal("##removeall"))
 		{
-			ImGui::Text("VIEW_NET_PLAYER_DB_ARE_YOU_SURE"_T.data());
+			ImGui::TextUnformatted("VIEW_NET_PLAYER_DB_ARE_YOU_SURE"_T.data());
 
 			if (ImGui::Button("YES"_T.data()))
 			{
@@ -340,11 +345,14 @@ namespace big
 		components::input_text("NAME"_T, new_name, sizeof(new_name));
 		ImGui::InputScalar("RID"_T.data(), ImGuiDataType_S64, &new_rockstar_id);
 
+#ifndef __clang__ // ! FIXME What?
 		if (ImGui::Button("ADD"_T.data()))
 		{
 			current_player = g_player_database_service->add_player(new_rockstar_id, new_name);
 			g_player_database_service->save();
 		}
+#endif
+#ifdef _MSC_VER
 		ImGui::SameLine();
 		if (ImGui::Button("SEARCH"_T.data()))
 		{
@@ -358,7 +366,8 @@ namespace big
 		}
 		if (ImGui::IsItemHovered())
 		{
-			ImGui::SetTooltip("VIEW_NET_PLAYER_DB_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_NET_PLAYER_DB_TOOLTIP"_T.data());
 		}
+#endif
 	}
 }

@@ -54,7 +54,9 @@ namespace big
 		REACTION_SETTINGS,
 		PROTECTION_SETTINGS,
 		TRANSLATION_SETTINGS,
+#ifdef _MSC_VER
 		PROXY_SETTINGS,
+#endif
 		DEBUG,
 
 		PLAYER,
@@ -158,7 +160,9 @@ namespace big
 						{TAB_DECL(HOTKEY_SETTINGS), view::hotkey_settings}},
 						{TAB_DECL(REACTION_SETTINGS), view::reaction_settings}},
 						{TAB_DECL(PROTECTION_SETTINGS), view::protection_settings}},
+#ifdef _MSC_VER
 						{TAB_DECL(PROXY_SETTINGS), view::proxy_settings}},
+#endif
 						{TAB_DECL(DEBUG), nullptr}},
 		            },
 		        },

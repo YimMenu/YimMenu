@@ -1,4 +1,3 @@
-#pragma once
 #include "event.hpp"
 
 #include "fiber_pool.hpp"

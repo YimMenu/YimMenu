@@ -102,7 +102,7 @@ namespace big
 					vel.x             = offset.x - location.x;
 					vel.y             = offset.y - location.y;
 
-					ENTITY::SET_ENTITY_MAX_SPEED(ent, 999999999999);
+					ENTITY::SET_ENTITY_MAX_SPEED(ent, 999999999999.f);
 					ENTITY::SET_ENTITY_VELOCITY(ent, vel.x * m_speed_multiplier, vel.y * m_speed_multiplier, vel.z * m_speed_multiplier);
 				}
 			}

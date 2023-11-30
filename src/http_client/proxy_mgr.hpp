@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _MSC_VER
 #include <cpr/cpr.h>
 #include "proxy_protocols.hpp"
 #include "proxy_settings.hpp"
@@ -40,3 +41,5 @@ namespace big
 
 	};
 }
+
+#endif // _MSC_VER

@@ -4,7 +4,9 @@
 #include "local_index.hpp"
 #include "remote_index.hpp"
 
+#ifdef _MSC_VER
 #include <cpr/response.h>
+#endif // _MSC_VER
 
 namespace big
 {
@@ -56,7 +58,9 @@ namespace big
          * @brief Attempts to load the remote from the local index fallback
          */
 		void use_fallback_remote();
+#ifdef _MSC_VER
 		cpr::Response download_file(const std::string& filename);
+#endif // _MSC_VER
 
 		void try_set_default_language();
 

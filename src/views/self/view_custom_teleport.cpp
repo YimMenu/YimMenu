@@ -49,7 +49,7 @@ namespace big
 
 		if (ImGui::BeginPopupModal("##deletelocation", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove))
 		{
-			ImGui::Text("VIEW_SELF_ANIMATIONS_ARE_YOU_SURE_DELETE"_T.data(), deletion_telelocation.name);
+			ImGui::Text("VIEW_SELF_ANIMATIONS_ARE_YOU_SURE_DELETE"_T.data(), deletion_telelocation.name.c_str());
 
 			ImGui::Spacing();
 
@@ -194,8 +194,8 @@ namespace big
 					{
 						ImGui::BeginTooltip();
 						if (l.name.length() > 27)
-							ImGui::Text(l.name.data());
-						ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, get_distance_to_telelocation(l)).c_str());
+							ImGui::TextUnformatted(l.name.data());
+						ImGui::Text("%s: %f", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), get_distance_to_telelocation(l));
 						ImGui::EndTooltip();
 					}
 				}

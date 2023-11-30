@@ -537,6 +537,7 @@ namespace rage
 		virtual void unk_0038()                                         = 0; //0x0038 (7)
 	};                                                                       //Size: 0x0008
 
+#pragma pack(push, 8)
 	class sEntityDamagedData
 	{
 	public:
@@ -555,6 +556,7 @@ namespace rage
 		alignas(8) int m_hit_material;                  //0x0060
 	};                                                  //Size: 0x0068
 	static_assert(sizeof(sEntityDamagedData) == 0x68);
+#pragma pack(pop)
 
 	class netGameEvent
 	{
