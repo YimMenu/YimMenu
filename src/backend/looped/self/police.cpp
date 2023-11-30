@@ -1,6 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "pointers.hpp"
 #include "util/police.hpp"
+#include "memory/byte_patch.hpp"
 
 namespace big
 {

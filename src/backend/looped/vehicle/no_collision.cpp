@@ -1,6 +1,7 @@
 #include "backend/bool_command.hpp"
 #include "pointers.hpp"
 #include "util/vehicle.hpp"
+#include "memory/byte_patch.hpp"
 
 namespace big
 {
