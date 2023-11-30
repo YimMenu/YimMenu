@@ -297,4 +297,50 @@ boolean = stats.set_masked_int(stat_hash, new_value, bit_start, bit_size)
 boolean = stats.set_masked_int(stat_name, new_value, bit_start, bit_size)
 ```
 
+### `get_packed_stat_bool(index)`
 
+- **Parameters:**
+  - `index` (int): packed stat's index.
+
+- **Returns:**
+  - `boolean`: Value of the stat.
+
+**Example Usage:**
+```lua
+local pstat_value = stats.get_packed_stat_bool(index)
+```
+
+### `set_packed_stat_bool(index, value)`
+
+- **Parameters:**
+  - `index` (int): packed stat's index.
+  - `value` (bool): value to set the packed stat to.
+
+**Example Usage:**
+```lua
+stats.set_packed_stat_bool(index, value)
+```
+
+### `get_packed_stat_int(index)`
+
+- **Parameters:**
+  - `index` (int): packed stat's index
+
+- **Returns:**
+  - `int`: Value of the stat.
+
+**Example Usage:**
+```lua
+local pstat_value = stats.get_packed_stat_int(index)
+```
+
+### `set_packed_stat_int(index, value)`
+
+- **Parameters:**
+  - `index` (int): packed stat's index.
+  - `value` (int): value to set the packed stat to.
+
+**Example Usage:**
+```lua
+stats.set_packed_stat_int(index, value)
+```
