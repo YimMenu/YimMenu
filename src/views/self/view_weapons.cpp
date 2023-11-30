@@ -241,7 +241,7 @@ namespace big
 						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
 						std::string attachment_name = attachment_component.m_display_name;
 						Hash attachment_hash        = attachment_component.m_hash;
-						if (attachment_hash == NULL)
+						if (attachment_hash == 0)
 						{
 							attachment_name = attachment;
 							attachment_hash = rage::joaat(attachment);
@@ -375,8 +375,8 @@ namespace big
 					}
 					ImGui::SameLine();
 					components::button("VIEW_WEAPON_WEAPON_HOTKEYS_SET_TO_CURRENT_WEAPON"_T, [&weapon_hash] {
-						WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, NULL);
-						if (weapon_hash == NULL)
+						WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weapon_hash, 0);
+						if (weapon_hash == 0)
 						{
 							WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(self::ped, &weapon_hash);
 						}

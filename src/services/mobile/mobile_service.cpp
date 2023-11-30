@@ -94,7 +94,7 @@ namespace big
 
 	int get_property_stat_state(int property)
 	{
-		Hash stat = NULL;
+		Hash stat = 0;
 		switch (property)
 		{
 			case 0: stat = self::char_index ? RAGE_JOAAT("MP1_PROPERTY_HOUSE") : RAGE_JOAAT("MP0_PROPERTY_HOUSE"); break;
@@ -132,7 +132,7 @@ namespace big
 			case MAX_GARAGE_NUM+2:
 			case MAX_GARAGE_NUM+3: return 1;
 		}
-		if (stat == NULL)
+		if (stat == 0)
 		{
 			return -1;
 		}
