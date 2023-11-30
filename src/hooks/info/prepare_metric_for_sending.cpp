@@ -44,9 +44,9 @@ namespace big
 	    "COLLECTIBLE",
 	    "FIRST_VEH",
 	    "MM",
-		"RDEV",
-		"RQA",
-		"RANK_UP",
+	    "RDEV",
+	    "RQA",
+	    "RANK_UP",
 	});
 
 	std::string hex_encode(std::string_view input) {
