@@ -49,8 +49,8 @@ namespace big
 			{
 				for (auto cmd : possible_commands)
 				{
-					ImGui::Text(fmt::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
-					    fmt::make_format_args(cmd->get_name(),
+					ImGui::Text(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
+					    std::make_format_args(cmd->get_name(),
 					        cmd->get_label(),
 					        cmd->get_description(),
 					        cmd->get_num_args() ? cmd->get_num_args().value() : 0))

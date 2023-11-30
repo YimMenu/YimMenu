@@ -1,3 +1,4 @@
+#ifdef _MSC_VER
 #include "http_client/http_client.hpp"
 #include "thread_pool.hpp"
 #include "views/view.hpp"
@@ -70,3 +71,4 @@ namespace big
 		}
 	}
 }
+#endif

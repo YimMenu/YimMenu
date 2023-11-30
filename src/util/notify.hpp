@@ -61,7 +61,7 @@ namespace big::notify
 				return;
 
 			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", fmt::format("Blocked {} crash from {}", crash, player->get_name()));
+				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
 
 			if (g.reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
@@ -86,7 +86,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", fmt::format("Blocked {} crash from unknown player", crash));
+				g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
 	}
 
@@ -119,7 +119,7 @@ namespace big::notify
 
 	inline void player_joined(CNetGamePlayer* net_game_player)
 	{
-		above_map(fmt::format("<C>{}</C> joined.", net_game_player->get_name()));
+		above_map(std::format("<C>{}</C> joined.", net_game_player->get_name()));
 	}
 
 }

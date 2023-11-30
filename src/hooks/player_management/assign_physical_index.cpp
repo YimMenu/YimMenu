@@ -42,8 +42,8 @@ namespace big
 				if (g.notifications.player_leave.notify)
 				{
 					g_notification_service->push("PLAYER_LEFT"_T.data(),
-					    fmt::vformat("PLAYER_LEFT_INFO"_T,
-					        fmt::make_format_args(net_player_data->m_name,
+					    std::vformat("PLAYER_LEFT_INFO"_T,
+					        std::make_format_args(net_player_data->m_name,
 					            player->m_player_id,
 					            net_player_data->m_gamer_handle.m_rockstar_id)));
 				}
@@ -61,7 +61,7 @@ namespace big
 				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
 				{
 					g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
-					    fmt::format("{} {}", net_player_data->m_name, "PLAYER_DETECTED_AS_ADMIN"_T));
+					    std::format("{} {}", net_player_data->m_name, "PLAYER_DETECTED_AS_ADMIN"_T));
 
 					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as an admin";
 
@@ -83,8 +83,8 @@ namespace big
 			if (g.notifications.player_join.notify)
 			{
 				g_notification_service->push("PLAYER_JOINED"_T.data(),
-				    fmt::vformat("PLAYER_JOINED_INFO"_T,
-				        fmt::make_format_args(net_player_data->m_name,
+				    std::vformat("PLAYER_JOINED_INFO"_T,
+				        std::make_format_args(net_player_data->m_name,
 				            player->m_player_id,
 				            net_player_data->m_gamer_handle.m_rockstar_id)));
 			}
@@ -110,7 +110,7 @@ namespace big
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
 								g_notification_service->push("PLAYERS"_T.data(),
-									fmt::format("{} {}: {}", entry->name, "PLAYER_CHANGED_NAME"_T, plyr->get_name()));
+									std::format("{} {}: {}", entry->name, "PLAYER_CHANGED_NAME"_T, plyr->get_name()));
 								entry->name = plyr->get_name();
 								g_player_database_service->save();
 							}
@@ -134,14 +134,14 @@ namespace big
 						if ((plyr->is_friend() && g.session.allow_friends_into_locked_session) || plyr->is_trusted)
 						{
 							g_notification_service->push_success("LOBBY_LOCK"_T.data(),
-							    fmt::vformat("LOBBY_LOCK_ALLOWED"_T.data(),
-							        fmt::make_format_args(plyr->get_net_data()->m_name)));
+							    std::vformat("LOBBY_LOCK_ALLOWED"_T.data(),
+							        std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 						else
 						{
 							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr, {});
 							g_notification_service->push_warning("LOBBY_LOCK"_T.data(),
-							    fmt::vformat("LOBBY_LOCK_DENIED"_T.data(), fmt::make_format_args(plyr->get_net_data()->m_name)));
+							    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 					}
 

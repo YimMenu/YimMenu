@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
 
-add_compile_definitions(USE_FMT) # Hello async logger.
-
 # Crosscompiling
 include(scripts/crosscompile.cmake)
 

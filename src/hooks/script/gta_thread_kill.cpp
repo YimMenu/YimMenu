@@ -12,7 +12,7 @@ namespace big
 
 		if (g.notifications.gta_thread_kill.notify)
 			g_notification_service->push("Script Thread Termination",
-			    fmt::format("Script Thread '{}' terminated.", thread->m_name));
+			    std::format("Script Thread '{}' terminated.", thread->m_name));
 
 		if (thread == g.m_hunt_the_beast_thread)
 			g.m_hunt_the_beast_thread = nullptr;

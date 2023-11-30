@@ -105,7 +105,7 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(fmt::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
+			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -122,7 +122,7 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(fmt::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -139,7 +139,7 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(fmt::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
+			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
 				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -159,7 +159,7 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (ImGui::InputInt(fmt::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
 				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
 
@@ -190,7 +190,7 @@ namespace big
 			size_t index    = 0;
 			std::string str = outfit_name;
 			while (saved_outfit_path.get_file(str + ".json").exists())
-				str = fmt::format("{}({})", outfit_name, ++index);
+				str = std::format("{}({})", outfit_name, ++index);
 
 			outfit_service::save_outfit(str + ".json");
 		});

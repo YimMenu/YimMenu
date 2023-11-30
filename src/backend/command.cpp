@@ -55,7 +55,7 @@ namespace big
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
-			ctx->report_error(fmt::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
 			    m_name,
 			    m_num_args.value(),
 			    args.size()));
@@ -64,7 +64,7 @@ namespace big
 
 		if (ctx->get_access_level() < get_access_level())
 		{
-			ctx->report_error(fmt::format("You do not have sufficient permissions to call command {}", m_name));
+			ctx->report_error(std::format("You do not have sufficient permissions to call command {}", m_name));
 			return;
 		}
 
@@ -81,7 +81,7 @@ namespace big
 	{
 		if (m_num_args.has_value() && args.size() != m_num_args.value())
 		{
-			ctx->report_error(fmt::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
 			    m_name,
 			    m_num_args.value(),
 			    args.size()));
@@ -90,7 +90,7 @@ namespace big
 
 		if (ctx->get_access_level() < get_access_level())
 		{
-			ctx->report_error(fmt::format("You do not have sufficient permissions to call command {}", m_name));
+			ctx->report_error(std::format("You do not have sufficient permissions to call command {}", m_name));
 			return;
 		}
 
@@ -174,7 +174,7 @@ namespace big
 				}
 				else
 				{
-					ctx->report_error(fmt::format("Command {} does not exist", args[0]));
+					ctx->report_error(std::format("Command {} does not exist", args[0]));
 					success = false;
 					continue;
 				}
@@ -184,7 +184,7 @@ namespace big
 			uint32_t hash = rage::joaat(args[0]);
 			if (!g_commands.contains(hash))
 			{
-				ctx->report_error(fmt::format("Command {} does not exist", args[0]));
+				ctx->report_error(std::format("Command {} does not exist", args[0]));
 				success = false;
 				continue;
 			}

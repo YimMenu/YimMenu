@@ -17,7 +17,7 @@ namespace big
 			response.m_status_code = player->block_join_reason;
 			g_pointers->m_gta.m_write_join_response_data(&response, ctx->m_join_response_data, 512, &ctx->m_join_response_size);
 			g_notification_service->push("BLOCK_JOIN"_T.data(),
-			    fmt::vformat("BLOCK_JOIN_INFO"_T, fmt::make_format_args(player->name)));
+			    std::vformat("BLOCK_JOIN_INFO"_T, std::make_format_args(player->name)));
 			return false;
 		}
 		else

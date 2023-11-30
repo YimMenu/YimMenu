@@ -114,7 +114,7 @@ namespace big
 				{
 					const auto& item = g_gta_data_service->vehicle_by_hash(veh_hash);
 
-					components::selectable(fmt::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, fmt::make_format_args(item.m_display_name)), false, [] {
+					components::selectable(std::vformat("SPAWN_VEHICLE_CURRENT_VEHICLE"_T, std::make_format_args(item.m_display_name)), false, [] {
 						if (self::veh)
 						{
 							Vector3 spawn_location = vehicle::get_spawn_location(g.spawn_vehicle.spawn_inside, veh_hash);

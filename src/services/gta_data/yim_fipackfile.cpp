@@ -40,7 +40,7 @@ namespace big
 
 	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
-		std::string mount_path = fmt::format("temp{}:/", depth);
+		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
 		if (!safe_open_pack_file(packfile, path))

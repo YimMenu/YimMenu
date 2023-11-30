@@ -574,7 +574,7 @@ namespace big::helper
 		int64_t result[7]{};
 		if (stat != "")
 			STATS::STAT_GET_DATE(get_text_stat_hash(stat), (Any*)&result, 7, -1);
-		return fmt::format("{} {} {} {} {} {} {}", result[0], result[1], result[2], result[3], result[4], result[5], result[6]);
+		return std::format("{} {} {} {} {} {} {}", result[0], result[1], result[2], result[3], result[4], result[5], result[6]);
 	}
 
 	std::string stat_get_string(std::string stat)

@@ -162,7 +162,7 @@ namespace big
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
 						g_notification_service->push_error("PROTECTIONS"_T.data(),
-						    fmt::vformat("OOM_KICK"_T, fmt::make_format_args(player->get_name())));
+						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 					}
 					return true;
 				}
@@ -254,7 +254,7 @@ namespace big
 
 			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
 			             << (player ? player->get_name() :
-			                          fmt::format("<M:{}>, <C:{:X}>, <P:{}>",
+			                          std::format("<M:{}>, <C:{:X}>, <P:{}>",
 			                              (int)frame->m_msg_id,
 			                              frame->m_connection_identifier,
 			                              frame->m_peer_id)

@@ -236,7 +236,7 @@ namespace big
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
 		set_garage();
 
-		m_name = fmt::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
+		m_name = std::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
 	}
 
 	std::string personal_vehicle::get_display_name() const

@@ -22,7 +22,7 @@ namespace big
 
 		if (value < m_lower_bound || value > m_upper_bound)
 		{
-			ctx->report_error(fmt::format("Value {} is not between {} and {} in command {}", value, m_lower_bound, m_upper_bound, m_name));
+			ctx->report_error(std::format("Value {} is not between {} and {} in command {}", value, m_lower_bound, m_upper_bound, m_name));
 			return std::nullopt;
 		}
 

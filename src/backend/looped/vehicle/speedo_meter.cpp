@@ -37,7 +37,7 @@ namespace big
 			HUD::SET_TEXT_SCALE(.9f, .9f);
 			HUD::SET_TEXT_OUTLINE();
 			HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(fmt::format("{1:>{0}.0f}", char_width, vehicle_speed).c_str());
+			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(std::format("{1:>{0}.0f}", char_width, vehicle_speed).c_str());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x + (g.vehicle.speedo_meter.left_side ? 0 : .003f),
 			    g.vehicle.speedo_meter.y + .04f,
 			    1);
@@ -53,7 +53,7 @@ namespace big
 				HUD::SET_TEXT_SCALE(.9f, .9f);
 				HUD::SET_TEXT_OUTLINE();
 				HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-				HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(fmt::format("{1:>{0}}", char_width, gear_str).c_str());
+				HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(std::format("{1:>{0}}", char_width, gear_str).c_str());
 				HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x + (g.vehicle.speedo_meter.left_side ? 0 : .003f),
 				    g.vehicle.speedo_meter.y + .08f,
 				    1);

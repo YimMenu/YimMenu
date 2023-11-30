@@ -51,7 +51,7 @@ namespace big
 				}
 			}
 
-			ctx->report_error(fmt::format("Tried to execute command {}, but a player with index {} was not found", m_name, args.get<int>(0)));
+			ctx->report_error(std::format("Tried to execute command {}, but a player with index {} was not found", m_name, args.get<int>(0)));
 		});
 	}
 
@@ -85,7 +85,7 @@ namespace big
 
 			if (plyr_id == -1)
 			{
-				ctx->report_error(fmt::format("Cannot find player with name {} in command {}", args[0], m_name));
+				ctx->report_error(std::format("Cannot find player with name {} in command {}", args[0], m_name));
 				return std::nullopt;
 			}
 
@@ -113,7 +113,7 @@ namespace big
 		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))
 		{
-			ctx->report_error(fmt::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
+			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
 			    m_name,
 			    m_num_args.value(),
 			    args.size()));

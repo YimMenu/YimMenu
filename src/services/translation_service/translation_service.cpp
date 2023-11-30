@@ -149,7 +149,7 @@ namespace big
 
 	bool translation_service::does_language_exist(const std::string_view language)
 	{
-		auto file = m_translation_directory->get_file(fmt::format("./{}.json", language));
+		auto file = m_translation_directory->get_file(std::format("./{}.json", language));
 		if (file.exists())
 			return true;
 
@@ -161,7 +161,7 @@ namespace big
 
 	nlohmann::json translation_service::load_translation(const std::string_view pack_id)
 	{
-		auto file = m_translation_directory->get_file(fmt::format("./{}.json", pack_id));
+		auto file = m_translation_directory->get_file(std::format("./{}.json", pack_id));
 		if (!file.exists())
 		{
 			LOG(INFO) << "Translations for '" << pack_id << "' does not exist, downloading from " << m_url;

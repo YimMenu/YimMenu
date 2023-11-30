@@ -162,7 +162,7 @@ namespace big
 			{
 				for (auto& p : stack_sizes)
 				{
-					if (ImGui::Selectable(fmt::format("{} ({})", p.first, p.second).data(), selected_stack_size == p.second))
+					if (ImGui::Selectable(std::format("{} ({})", p.first, p.second).data(), selected_stack_size == p.second))
 					{
 						selected_stack_size_str = p.first;
 						selected_stack_size     = p.second;

@@ -94,7 +94,7 @@ namespace big
 			auto time_t     = to_time_t(file_time);
 			auto local_time = std::localtime(&time_t);
 
-			m_file.move(fmt::format("./backup/{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2}_{}",
+			m_file.move(std::format("./backup/{:0>2}-{:0>2}-{}-{:0>2}-{:0>2}-{:0>2}_{}",
 			    local_time->tm_mon + 1,
 			    local_time->tm_mday,
 			    local_time->tm_year + 1900,
@@ -135,7 +135,7 @@ namespace big
 
 	const char* get_level_string(const eLogLevel level)
 	{
-		constexpr std::array<const char*, 4> levelStrings = {{{"DEBUG"}, {"INFO"}, {"WARN"}, {"FATAL"}}};
+		constexpr std::array<const char*, 4> levelStrings = {{"DEBUG", "INFO", "WARN", "FATAL"}};
 
 		return levelStrings[level];
 	}
@@ -144,7 +144,7 @@ namespace big
 	{
 		const auto color = get_color(msg->Level());
 
-		const auto timestamp = ""; // !FIXME: Timestemp fmt::format("{0:%H:%M:%S}", msg->Timestamp());
+		const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
 		const auto& location = msg->Location();
 		const auto level     = msg->Level();
 
@@ -158,7 +158,7 @@ namespace big
 	{
 		const auto color = get_color(msg->Level());
 
-		const auto timestamp = ""; // fmt::format("{0:%H:%M:%S}", msg->Timestamp());
+		const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
 		const auto& location = msg->Location();
 		const auto level     = msg->Level();
 
@@ -173,7 +173,7 @@ namespace big
 		if (!m_file_out.is_open())
 			return;
 
-		const auto timestamp = ""; // fmt::format("{0:%H:%M:%S}", msg->Timestamp());
+		const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
 		const auto& location = msg->Location();
 		const auto level     = msg->Level();
 
