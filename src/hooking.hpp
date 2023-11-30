@@ -1,14 +1,14 @@
 #pragma once
 #include "MinHook.h"
+#include "call_hook.hpp"
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/script_thread.hpp"
 #include "gta/json_serializer.hpp"
+#include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 #include "vtable_hook.hpp"
-#include "call_hook.hpp"
 
 #include <network/netConnection.hpp>
 

@@ -4,9 +4,9 @@
 #include "hooking.hpp"
 #include "memory/all.hpp"
 #include "rage/atSingleton.hpp"
+#include "rage/gameSkeleton.hpp"
 #include "sc_pointers_layout_info.hpp"
 #include "security/RageSecurity.hpp"
-#include "rage/gameSkeleton.hpp"
 
 namespace big
 {
