@@ -46,7 +46,7 @@ namespace big
 		if (victim->id() != g_player_service->get_selected()->id() && victim->is_valid())
 		{
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.5f, 0.3f, 1.0f));
-			ImGui::Text("VIEW_SQUAD_SPAWNER_WARNING"_T.data());
+			ImGui::TextUnformatted("VIEW_SQUAD_SPAWNER_WARNING"_T.data());
 			ImGui::PopStyleColor();
 		}
 
@@ -99,12 +99,12 @@ namespace big
 					}
 				}
 				if (ImGui::IsItemHovered() && temp.does_squad_have_description())
-					ImGui::SetTooltip(temp.m_description.data());
+					ImGui::SetTooltip("%s", temp.m_description.data());
 			}
 			ImGui::EndCombo();
 		}
 		if(ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_SELF_ANIMATIONS_DOUBLE_SHIFT_CLICK_TO_DELETE"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_SELF_ANIMATIONS_DOUBLE_SHIFT_CLICK_TO_DELETE"_T.data());
 
 		ImGui::SeparatorText("VIEW_SQUAD_SPAWNER_SQUAD_DETAILS"_T.data());
 
@@ -142,7 +142,7 @@ namespace big
 
 		components::input_text_with_hint("##vehmodel", "NAME_VEHICLE_MODEL"_T, new_template.m_vehicle_model);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_SQUAD_SPAWNER_VEHICLE_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWNER_VEHICLE_TOOLTIP"_T.data());
 
 		auto veh_found = std::find_if(g_gta_data_service->vehicles().begin(), g_gta_data_service->vehicles().end(), [=](const auto& pair) {
 			return pair.second.m_name == new_template.m_vehicle_model;
@@ -170,7 +170,7 @@ namespace big
 
 		components::input_text_with_hint("##weapmodel", "VIEW_SQUAD_SPAWNER_WEAPON_MODEL"_T.data(), new_template.m_weapon_model);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_SQUAD_SPAWNER_WEAPON_MODEL_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWNER_WEAPON_MODEL_TOOLTIP"_T.data());
 
 		auto weap_found = std::find_if(g_gta_data_service->weapons().begin(), g_gta_data_service->weapons().end(), [=](const auto& pair) {
 			return pair.second.m_name == new_template.m_weapon_model;
@@ -197,7 +197,7 @@ namespace big
 		}
 
 		ImGui::Spacing();
-		ImGui::Text("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data());
+		ImGui::TextUnformatted("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data());
 		if (ImGui::BeginCombo("##spawndistance", spawn_distance_modes[(int)new_template.m_spawn_distance_mode]))
 		{
 			for (int i = 0; i < 5; i++)
@@ -207,7 +207,7 @@ namespace big
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::Text("VIEW_DEBUG_GLOBAL_SIZE"_T.data());
+		ImGui::TextUnformatted("VIEW_DEBUG_GLOBAL_SIZE"_T.data());
 		ImGui::SliderInt("##squadsize", &new_template.m_squad_size, 1, 8);
 		ImGui::PopItemWidth();
 
@@ -215,7 +215,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup(); //General actions
 
-		ImGui::Text("VIEW_SQUAD_SPAWNER_ACTIONS"_T.data());
+		ImGui::TextUnformatted("VIEW_SQUAD_SPAWNER_ACTIONS"_T.data());
 		ImGui::Spacing();
 		components::button(std::format("{} {} {}", "SETTINGS_NOTIFY_GTA_THREADS_TERMINATE"_T, g_squad_spawner_service.m_active_squads.size(), "VIEW_SQUAD_SPAWNER_SQUADS"_T), [] {
 			g_squad_spawner_service.terminate_squads();
@@ -255,16 +255,16 @@ namespace big
 
 			ImGui::Checkbox("VIEW_SQUAD_SPAWN_AHEAD"_T.data(), &new_template.m_spawn_ahead);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SQUAD_SPAWN_AHEAD_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWN_AHEAD_TOOLTIP"_T.data());
 			ImGui::Checkbox("VIEW_SQUAD_SPAWN_FAVOR_ROADS"_T.data(), &new_template.m_favour_roads);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SQUAD_SPAWN_FAVOR_ROADS_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWN_FAVOR_ROADS_TOOLTIP"_T.data());
 			ImGui::Checkbox("VIEW_SQUAD_SPAWN_DISPERSE"_T.data(), &new_template.m_disperse);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SQUAD_SPAWN_DISPERSE_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWN_DISPERSE_TOOLTIP"_T.data());
 			ImGui::Checkbox("VIEW_SQUAD_SPAWN_VEHICLE_CATCH_UP"_T.data(), &new_template.m_spawn_behind_same_velocity);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SQUAD_SPAWN_VEHICLE_CATCH_UP_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWN_VEHICLE_CATCH_UP_TOOLTIP"_T.data());
 			ImGui::Checkbox("VIEW_SQUAD_SPAWN_STAY_IN_VEHICLE"_T.data(), &new_template.m_stay_in_veh);
 			ImGui::Checkbox("MAX_VEHICLE"_T.data(), &new_template.m_max_vehicle);
 
@@ -285,21 +285,21 @@ namespace big
 			ImGui::BeginGroup(); //Slideables
 
 			ImGui::PushItemWidth(200);
-			ImGui::Text("VIEW_PLAYER_INFO_HEALTH"_T.data());
+			ImGui::TextUnformatted("VIEW_PLAYER_INFO_HEALTH"_T.data());
 			ImGui::SliderFloat("##pedhealth", &new_template.m_ped_health, 0, 2000);
-			ImGui::Text("VIEW_SQUAD_SPAWN_ARMOR"_T.data());
+			ImGui::TextUnformatted("VIEW_SQUAD_SPAWN_ARMOR"_T.data());
 			ImGui::SliderFloat("##pedarmor", &new_template.m_ped_armor, 0, 2000);
-			ImGui::Text("VIEW_SQUAD_SPAWN_ACCURACY"_T.data());
+			ImGui::TextUnformatted("VIEW_SQUAD_SPAWN_ACCURACY"_T.data());
 			ImGui::SliderFloat("##pedaccuracy", &new_template.m_ped_accuracy, 0, 100);
-			ImGui::Text("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data());
+			ImGui::TextUnformatted("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data());
 			ImGui::SliderFloat("##customspawndistance", &new_template.m_spawn_distance, 0, 500);
 			ImGui::EndGroup();
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("VIEW_SQUAD_SPAWN_DEFAULT_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_SQUAD_SPAWN_DEFAULT_TOOLTIP"_T.data());
 
 			ImGui::SameLine();
 			ImGui::BeginGroup(); //Chooseables
-			ImGui::Text("VIEW_SQUAD_SPAWN_COMBAT_ABILITY"_T.data());
+			ImGui::TextUnformatted("VIEW_SQUAD_SPAWN_COMBAT_ABILITY"_T.data());
 			if (ImGui::BeginCombo("##combatability", combat_ability_levels[(int)new_template.m_combat_ability_level]))
 			{
 				for (int i = 0; i < 3; i++)
@@ -310,7 +310,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			ImGui::Text("VIEW_SQUAD_SPAWN_PERSISTENT_VEHICLE"_T.data());
+			ImGui::TextUnformatted("VIEW_SQUAD_SPAWN_PERSISTENT_VEHICLE"_T.data());
 			if (ImGui::BeginCombo("##persistent_vehicle", new_template.m_persistent_vehicle.data()))
 			{
 				if (ImGui::Selectable("VIEW_SQUAD_SPAWN_PERSISTENT_VEHICLE_NONE"_T.data(), new_template.m_persistent_vehicle == "VIEW_SQUAD_SPAWN_PERSISTENT_VEHICLE_NONE"_T.data()))

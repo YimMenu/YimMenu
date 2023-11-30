@@ -88,13 +88,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    [](PVOID) -> DWORD {
 			    auto handler = exception_handler();
 
-#ifdef _MSC_VER // L
 			    while (!FindWindow("grcWindow", nullptr))
 				    std::this_thread::sleep_for(100ms);
-#else
-			    while (!FindWindow(L"grcWindow", nullptr))
-				    std::this_thread::sleep_for(100ms);
-#endif // _MSC_VER
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
 			    g_file_manager.init(base_dir);

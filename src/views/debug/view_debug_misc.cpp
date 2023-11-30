@@ -20,7 +20,7 @@ namespace big
 		{
 			components::command_checkbox<"windowhook">("VIEW_DEBUG_MISC_DISABLE_GTA_WINDOW_HOOK"_T);
 
-			ImGui::Text(std::format("{}: {}/{}", "VIEW_DEBUG_MISC_FIBER_POOL_USAGE"_T, g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers()).c_str());
+			ImGui::Text("%s: %i/%i", "VIEW_DEBUG_MISC_FIBER_POOL_USAGE"_T.data(), g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers());
 			ImGui::SameLine();
 			if (components::button("RESET"_T))
 			{

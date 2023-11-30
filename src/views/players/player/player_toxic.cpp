@@ -97,7 +97,7 @@ namespace big
 				toxic::set_time(g_player_service->get_selected(), INT_MAX - 3000);
 			});
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("PLAYER_TOXIC_NO_WAY_BACK"_T.data());
+				ImGui::SetTooltip("%s", "PLAYER_TOXIC_NO_WAY_BACK"_T.data());
 
 			ImGui::Checkbox("KILL_LOOP"_T.data(), &g_player_service->get_selected()->kill_loop);
 			ImGui::SameLine();
@@ -109,7 +109,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Checkbox("ROT_CAM_LOOP"_T.data(), &g_player_service->get_selected()->rotate_cam_loop);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("PLAYER_TOXIC_BRING_PLAYER_OUT_GOD"_T.data());
+				ImGui::SetTooltip("%s", "PLAYER_TOXIC_BRING_PLAYER_OUT_GOD"_T.data());
 
 			static int bounty_value = 0;
 			ImGui::SetNextItemWidth(300);

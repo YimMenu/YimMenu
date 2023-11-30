@@ -137,7 +137,7 @@ namespace big
 		{
 			ImGui::SetNextItemWidth(200);
 			ImGui::PushID(i);
-			ImGui::Text(windownames[i]);
+			ImGui::TextUnformatted(windownames[i]);
 			ImGui::SameLine(300);
 			components::button("VIEW_VEHICLE_CONTROL_ROLL_DOWN"_T, [i] {
 				vehicle::operate_vehicle_window(g_vehicle_control_service.m_controlled_vehicle.handle, (eWindowId)i, true);
@@ -190,7 +190,7 @@ namespace big
 			});
 		});
 
-		ImGui::Text("VEHICLE_CONTROLLER_NEON_LIGHTS"_T.data());
+		ImGui::TextUnformatted("VEHICLE_CONTROLLER_NEON_LIGHTS"_T.data());
 		ImGui::Separator();
 
 		for (int i = 0; i < 4; i++)
@@ -268,10 +268,9 @@ namespace big
 			});
 
 			ImGui::SameLine();
-			ImGui::Text(std::format("{}: {}",
-			    "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T,
-			    convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate])
-			                .c_str());
+			ImGui::Text("%s: %s",
+			    "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T.data(),
+			    convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate]);
 		}
 
 		if (ImGui::Checkbox(g_vehicle_control_service.m_controlled_vehicle.engine ?
@@ -290,9 +289,10 @@ namespace big
 		}
 
 		ImGui::SameLine();
-		ImGui::Text(
-		    std::format("{}: {}", "VIEW_VEHICLE_CONTROL_ENGINE"_T, g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T : "OFF"_T)
-		        .c_str());
+		ImGui::Text("%s: %s",
+		    "VIEW_VEHICLE_CONTROL_ENGINE"_T.data(),
+		    g_vehicle_control_service.m_controlled_vehicle.engine ? "VIEW_VEHICLE_CONTROL_ENGINE_RUNNING"_T.data() :
+		                                                            "OFF"_T.data());
 
 		components::button(g_vehicle_control_service.m_driver_performing_task ? "CANCEL"_T : "VIEW_VEHICLE_CONTROL_SUMMON"_T, [] {
 			if (!g_vehicle_control_service.m_driver_performing_task)
@@ -306,11 +306,10 @@ namespace big
 		if (g_vehicle_control_service.m_driver_performing_task)
 		{
 			ImGui::SameLine();
-			ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, g_vehicle_control_service.m_distance_to_destination)
-			                .c_str());
+			ImGui::Text("%s: %i", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), g_vehicle_control_service.m_distance_to_destination);
 
 
-			ImGui::Text(std::format("{}: {}", "OUTFIT_TASK"_T, g_vehicle_control_service.m_currentask).c_str());
+			ImGui::Text("%s: %s", "OUTFIT_TASK"_T.data(), g_vehicle_control_service.m_currentask);
 		}
 	}
 
@@ -348,14 +347,14 @@ namespace big
 		{
 			if (g_vehicle_control_service.m_controlled_vehicle_exists)
 			{
-				ImGui::Text(g_vehicle_control_service.m_controlled_vehicle.model_name);
+				ImGui::TextUnformatted(g_vehicle_control_service.m_controlled_vehicle.model_name);
 				if (g.window.vehicle_control.show_info)
 				{
-					ImGui::Text(std::vformat("VIEW_VEHICLE_CONTROL_HEALTH_N_PASSENGERS"_T,
+					ImGui::TextUnformatted(std::vformat("VIEW_VEHICLE_CONTROL_HEALTH_N_PASSENGERS"_T,
 					    std::make_format_args(g_vehicle_control_service.m_controlled_vehicle.ptr->m_health,
 					        g_vehicle_control_service.m_controlled_vehicle.ptr->m_num_of_passengers,
 					        g_vehicle_control_service.m_controlled_vehicle.ptr->m_max_passengers))
-					                .c_str());
+					                           .c_str());
 				}
 
 				ImGui::Separator();
@@ -409,7 +408,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("PLAYER_INFO_NO_VEHICLE"_T.data());
+				ImGui::TextUnformatted("PLAYER_INFO_NO_VEHICLE"_T.data());
 			}
 		}
 		ImGui::End();

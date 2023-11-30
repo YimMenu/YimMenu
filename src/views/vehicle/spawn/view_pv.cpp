@@ -20,11 +20,11 @@ namespace big
 			}
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
+			ImGui::SetTooltip("%s", "PREVIEW_DESC"_T.data());
 		ImGui::SameLine();
 		ImGui::Checkbox("SPAWN_IN"_T.data(), &g.clone_pv.spawn_inside);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("SPAWN_IN_DESC"_T.data());
+			ImGui::SetTooltip("%s", "SPAWN_IN_DESC"_T.data());
 		ImGui::SameLine();
 
 		static char plate_buf[9] = {0};
@@ -34,12 +34,12 @@ namespace big
 			g_mobile_service->refresh_garages();
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("SPAWN_CLONE_DESC"_T.data());
+			ImGui::SetTooltip("%s", "SPAWN_CLONE_DESC"_T.data());
 		if (g.clone_pv.spawn_clone)
 		{
 			ImGui::Checkbox("SPAWN_MAXED"_T.data(), &g.clone_pv.spawn_maxed);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("SPAWN_MAXED_DESC"_T.data());
+				ImGui::SetTooltip("%s", "SPAWN_MAXED_DESC"_T.data());
 
 			ImGui::SameLine();
 			ImGui::Checkbox("CLONE_PV_PLATE"_T.data(), &g.clone_pv.clone_plate);
@@ -157,7 +157,7 @@ namespace big
 		{
 			if (g_mobile_service->personal_vehicles().empty())
 			{
-				ImGui::Text("NO_PERSONAL_VEHICLES"_T.data());
+				ImGui::TextUnformatted("NO_PERSONAL_VEHICLES"_T.data());
 			}
 			else
 			{

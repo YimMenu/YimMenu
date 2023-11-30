@@ -31,9 +31,9 @@ namespace big
 
 		if (!selected_module.expired())
 		{
-			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_SCRIPTS_REGISTERED"_T, selected_module.lock()->m_registered_scripts.size()).c_str());
-			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_MEMORY_PATCHES_REGISTERED"_T, selected_module.lock()->m_registered_patches.size()).c_str());
-			ImGui::Text(std::format("{}: {}", "VIEW_LUA_SCRIPTS_GUI_TABS_REGISTERED"_T, selected_module.lock()->m_gui.size()).c_str());
+			ImGui::Text("%s: %zu", "VIEW_LUA_SCRIPTS_SCRIPTS_REGISTERED"_T.data(), selected_module.lock()->m_registered_scripts.size());
+			ImGui::Text("%s: %zu", "VIEW_LUA_SCRIPTS_MEMORY_PATCHES_REGISTERED"_T.data(), selected_module.lock()->m_registered_patches.size());
+			ImGui::Text("%s: %zu", "VIEW_LUA_SCRIPTS_GUI_TABS_REGISTERED"_T.data(), selected_module.lock()->m_gui.size());
 
 			if (components::button("VIEW_LUA_SCRIPTS_RELOAD"_T))
 			{

@@ -17,7 +17,7 @@ namespace big
 			}
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
+			ImGui::SetTooltip("%s", "PREVIEW_DESC"_T.data());
 		ImGui::SameLine();
 		components::command_checkbox<"spawnin">();
 		ImGui::SameLine();
@@ -210,7 +210,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("NO_VEHICLE_IN_REGISTRY"_T.data());
+				ImGui::TextUnformatted("NO_VEHICLE_IN_REGISTRY"_T.data());
 			}
 			ImGui::EndListBox();
 		}

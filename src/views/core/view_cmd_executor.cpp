@@ -43,13 +43,13 @@ namespace big
 			auto possible_commands = command::get_suggestions(command_buffer);
 			if (possible_commands.size() == 0)
 			{
-				ImGui::Text("CMD_EXECUTOR_NO_CMD"_T.data());
+				ImGui::TextUnformatted("CMD_EXECUTOR_NO_CMD"_T.data());
 			}
 			else
 			{
 				for (auto cmd : possible_commands)
 				{
-					ImGui::Text(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
+					ImGui::TextUnformatted(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
 					    std::make_format_args(cmd->get_name(),
 					        cmd->get_label(),
 					        cmd->get_description(),

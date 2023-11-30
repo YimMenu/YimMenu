@@ -221,7 +221,7 @@ namespace big
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
 						break;
 					case GlobalAppendageType_ReadGlobal:
-						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T, item.global_name).c_str());
+						ImGui::Text("%s %s", "VIEW_DEBUG_GLOBAL_READ_GLOBAL"_T.data(), item.global_name.c_str());
 						ImGui::SameLine();
 						ImGui::SetNextItemWidth(200.f);
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &global_test.global_appendages[i].size);
@@ -301,7 +301,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data());
+				ImGui::TextUnformatted("VIEW_DEBUG_GLOBAL_INVALID_GLOBAL_READ"_T.data());
 			}
 
 			ImGui::SetNextItemWidth(150.f);
@@ -309,7 +309,7 @@ namespace big
 
 			auto globals = list_globals();
 			static std::string selected_global;
-			ImGui::Text("VIEW_DEBUG_GLOBAL_SAVED_GLOBALS"_T.data());
+			ImGui::TextUnformatted("VIEW_DEBUG_GLOBAL_SAVED_GLOBALS"_T.data());
 			if (ImGui::BeginListBox("##savedglobals", ImVec2(200, 250)))
 			{
 				for (auto pair : globals)

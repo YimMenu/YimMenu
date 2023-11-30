@@ -50,10 +50,10 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("BLOCK_RID_JOINING"_T.data(), &g.protections.rid_join);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("BLOCK_RID_JOINING_DESCRIPTION"_T.data());
+			ImGui::SetTooltip("%s", "BLOCK_RID_JOINING_DESCRIPTION"_T.data());
 		ImGui::Checkbox("RECEIVE_PICKUP"_T.data(), &g.protections.receive_pickup);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_PROTECTION_SETTINGS_RECEIVE_PICKUP_TOOLTIP"_T.data());
+			ImGui::SetTooltip("%s", "VIEW_PROTECTION_SETTINGS_RECEIVE_PICKUP_TOOLTIP"_T.data());
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
 		ImGui::Checkbox("VIEW_PROTECTION_SETTINGS_KICK_REJOIN"_T.data(), &g.protections.kick_rejoin);
 		components::command_checkbox<"forcerelays">();

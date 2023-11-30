@@ -7,7 +7,7 @@ namespace big
 {
 	void view::proxy_settings()
 	{
-		ImGui::TextWrapped("PROXY_SETTINGS_DESCRIPTION"_T.data());
+		ImGui::TextWrapped("%s", "PROXY_SETTINGS_DESCRIPTION"_T.data());
 
 		static auto settings = g_http_client.proxy_mgr().settings();
 		if (ImGui::BeginCombo("PROXY_SETTINGS_PROTOCOL"_T.data(), g_http_client.proxy_mgr().protocol_str(settings.protocol).data()))

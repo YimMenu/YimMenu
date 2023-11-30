@@ -17,7 +17,7 @@ namespace big
 		if (!tooltip.empty())
 		{
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip(tooltip.data());
+				ImGui::SetTooltip("%s", tooltip.data());
 		}
 
 		return ret;

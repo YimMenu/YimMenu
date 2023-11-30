@@ -59,9 +59,9 @@ namespace big
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
-			ImGui::Text("NOCLIP_AIM_SPEED_MULTIPLIER"_T.data());
+			ImGui::TextUnformatted("NOCLIP_AIM_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##noclipaimspeedmult", &g.self.noclip_aim_speed_multiplier, 0.1f, 1.0f);
-			ImGui::Text("NOCLIP_SPEED_MULTIPLIER"_T.data());
+			ImGui::TextUnformatted("NOCLIP_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##noclipspeedmult", &g.self.noclip_speed_multiplier, 1.f, 100.f);
 			ImGui::EndGroup();
 		});
@@ -84,7 +84,7 @@ namespace big
 		components::command_checkbox<"mobileradio">();
 		components::command_checkbox<"superherofly">();
 		components::options_modal("SUPER_HERO_FLY_OPTION_MODAL"_T, [] {
-			ImGui::Text("SUPER_HERO_FLY_OPTION_MODAL_DETAILED_DESC"_T.data());
+			ImGui::TextUnformatted("SUPER_HERO_FLY_OPTION_MODAL_DETAILED_DESC"_T.data());
 			ImGui::Separator();
 
 			components::command_checkbox<"superheroflygradualspeed">();
@@ -108,7 +108,7 @@ namespace big
 		components::options_modal("VIEW_SELF_ORBITAL_DRONE"_T.data(), [] {
 			ImGui::Separator();
 			ImGui::BeginGroup();
-			ImGui::Text("ORBITAL_DRONE_USAGE_DESCR"_T.data());
+			ImGui::TextUnformatted("ORBITAL_DRONE_USAGE_DESCR"_T.data());
 			ImGui::EndGroup();
 			ImGui::Separator();
 
@@ -117,19 +117,19 @@ namespace big
 			if (ImGui::IsItemHovered())
 			{
 				ImGui::BeginTooltip();
-				ImGui::Text("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER_TOOLTIP"_T.data());
+				ImGui::TextUnformatted("ORBITAL_DRONE_AUTO_LOCK_ON_PLAYER_TOOLTIP"_T.data());
 				ImGui::EndTooltip();
 			}
-			ImGui::Text("ORBITAL_DRONE_HIGH_SPEED_MULTIPLIER"_T.data());
+			ImGui::TextUnformatted("ORBITAL_DRONE_HIGH_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##fastspeed", &g.world.orbital_drone.nav_ovverride_fast, 1.f, 10.f);
-			ImGui::Text("ORBITAL_DRONE_LOW_SPEED_MULTIPLIER"_T.data());
+			ImGui::TextUnformatted("ORBITAL_DRONE_LOW_SPEED_MULTIPLIER"_T.data());
 			ImGui::SliderFloat("##slowspeed", &g.world.orbital_drone.nav_ovverride_slow, 0.f, 1.f);
 			ImGui::EndGroup();
 		});
 
 		ImGui::Checkbox("SETTINGS_CONTEXT_MENU"_T.data(), &g.context_menu.enabled);
 		components::options_modal("SETTINGS_CONTEXT_MENU"_T.data(), [] {
-			ImGui::Text("SETTINGS_CONTEXT_MENU_ENTITY_TYPES"_T.data());
+			ImGui::TextUnformatted("SETTINGS_CONTEXT_MENU_ENTITY_TYPES"_T.data());
 			ImGui::CheckboxFlags("SETTINGS_CONTEXT_MENU_ENTITY_TYPE_OBJECT"_T.data(),
 			    reinterpret_cast<int*>(&g.context_menu.allowed_entity_types),
 			    static_cast<int>(ContextEntityType::OBJECT));
@@ -147,7 +147,7 @@ namespace big
 			    static_cast<int>(ContextEntityType::VEHICLE));
 
 			static ImVec4 selected_option_color = ImGui::ColorConvertU32ToFloat4(g.context_menu.selected_option_color);
-			ImGui::Text("SETTINGS_CONTEXT_MENU_COLOR"_T.data());
+			ImGui::TextUnformatted("SETTINGS_CONTEXT_MENU_COLOR"_T.data());
 			if (ImGui::ColorEdit4("###BSelected Option Color##cm_picker", (float*)&selected_option_color, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 			{
 				g.context_menu.selected_option_color = ImGui::ColorConvertFloat4ToU32(selected_option_color);
@@ -158,7 +158,7 @@ namespace big
 			if (g.context_menu.bounding_box_enabled)
 			{
 				static ImVec4 bounding_box_color = ImGui::ColorConvertU32ToFloat4(g.context_menu.bounding_box_color);
-				ImGui::Text("SETTINGS_CONTEXT_MENU_BOUNDING_BOX_COLOR"_T.data());
+				ImGui::TextUnformatted("SETTINGS_CONTEXT_MENU_BOUNDING_BOX_COLOR"_T.data());
 				if (ImGui::ColorEdit4("###Bounding Box Color##cm_picker", (float*)&bounding_box_color, ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_NoSidePreview))
 				{
 					g.context_menu.bounding_box_color = ImGui::ColorConvertFloat4ToU32(bounding_box_color);
@@ -210,8 +210,8 @@ namespace big
 			{
 				ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
-				ImGui::Text("WANTED_LVL"_T.data());
+					ImGui::SetTooltip("%s", "FORCE_WANTED_LVL_INFO"_T.data());
+				ImGui::TextUnformatted("WANTED_LVL"_T.data());
 				if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level && g_local_player != nullptr)
 				{
 					g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
@@ -323,7 +323,7 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("FORCE_SHOW_HUD_ELEMENT"_T.data(), &g.self.hud.force_show_hud_element);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("FORCE_SHOW_HUD_ELEMENT_DESC"_T.data());
+			ImGui::SetTooltip("%s", "FORCE_SHOW_HUD_ELEMENT_DESC"_T.data());
 
 		ImGui::EndGroup();
 

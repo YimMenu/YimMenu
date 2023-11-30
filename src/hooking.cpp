@@ -22,25 +22,25 @@ namespace big
 		m_swapchain_hook.hook(hooks::swapchain_present_index, (void*)&hooks::swapchain_present);
 		m_swapchain_hook.hook(hooks::swapchain_resizebuffers_index, (void*)&hooks::swapchain_resizebuffers);
 
-		m_sync_data_reader_hook.hook(1, &hooks::sync_reader_serialize_dword);
-		m_sync_data_reader_hook.hook(2, &hooks::sync_reader_serialize_word);
-		m_sync_data_reader_hook.hook(3, &hooks::sync_reader_serialize_byte);
-		m_sync_data_reader_hook.hook(4, &hooks::sync_reader_serialize_int32);
-		m_sync_data_reader_hook.hook(5, &hooks::sync_reader_serialize_int16);
-		m_sync_data_reader_hook.hook(6, &hooks::sync_reader_serialize_signed_byte);
-		m_sync_data_reader_hook.hook(7, &hooks::sync_reader_serialize_bool);
-		m_sync_data_reader_hook.hook(9, &hooks::sync_reader_serialize_int32);
-		m_sync_data_reader_hook.hook(10, &hooks::sync_reader_serialize_int16);
-		m_sync_data_reader_hook.hook(11, &hooks::sync_reader_serialize_signed_byte);
-		m_sync_data_reader_hook.hook(13, &hooks::sync_reader_serialize_dword);
-		m_sync_data_reader_hook.hook(14, &hooks::sync_reader_serialize_word);
-		m_sync_data_reader_hook.hook(15, &hooks::sync_reader_serialize_byte);
-		m_sync_data_reader_hook.hook(16, &hooks::sync_reader_serialize_signed_float);
-		m_sync_data_reader_hook.hook(17, &hooks::sync_reader_serialize_float);
-		m_sync_data_reader_hook.hook(18, &hooks::sync_reader_serialize_net_id);
-		m_sync_data_reader_hook.hook(19, &hooks::sync_reader_serialize_vec3);
-		m_sync_data_reader_hook.hook(21, &hooks::sync_reader_serialize_vec3_signed);
-		m_sync_data_reader_hook.hook(23, &hooks::sync_reader_serialize_array);
+		m_sync_data_reader_hook.hook(1, (void*)&hooks::sync_reader_serialize_dword);
+		m_sync_data_reader_hook.hook(2, (void*)&hooks::sync_reader_serialize_word);
+		m_sync_data_reader_hook.hook(3, (void*)&hooks::sync_reader_serialize_byte);
+		m_sync_data_reader_hook.hook(4, (void*)&hooks::sync_reader_serialize_int32);
+		m_sync_data_reader_hook.hook(5, (void*)&hooks::sync_reader_serialize_int16);
+		m_sync_data_reader_hook.hook(6, (void*)&hooks::sync_reader_serialize_signed_byte);
+		m_sync_data_reader_hook.hook(7, (void*)&hooks::sync_reader_serialize_bool);
+		m_sync_data_reader_hook.hook(9, (void*)&hooks::sync_reader_serialize_int32);
+		m_sync_data_reader_hook.hook(10, (void*)&hooks::sync_reader_serialize_int16);
+		m_sync_data_reader_hook.hook(11, (void*)&hooks::sync_reader_serialize_signed_byte);
+		m_sync_data_reader_hook.hook(13, (void*)&hooks::sync_reader_serialize_dword);
+		m_sync_data_reader_hook.hook(14, (void*)&hooks::sync_reader_serialize_word);
+		m_sync_data_reader_hook.hook(15, (void*)&hooks::sync_reader_serialize_byte);
+		m_sync_data_reader_hook.hook(16, (void*)&hooks::sync_reader_serialize_signed_float);
+		m_sync_data_reader_hook.hook(17, (void*)&hooks::sync_reader_serialize_float);
+		m_sync_data_reader_hook.hook(18, (void*)&hooks::sync_reader_serialize_net_id);
+		m_sync_data_reader_hook.hook(19, (void*)&hooks::sync_reader_serialize_vec3);
+		m_sync_data_reader_hook.hook(21, (void*)&hooks::sync_reader_serialize_vec3_signed);
+		m_sync_data_reader_hook.hook(23, (void*)&hooks::sync_reader_serialize_array);
 
 		// The only instances in that vector at this point should only be the "lazy" hooks
 		// aka the ones that still don't have their m_target assigned

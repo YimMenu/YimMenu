@@ -70,10 +70,10 @@ namespace big
 							if (result.return_count() == 0)
 								continue;
 
-							if (!result[0].is<Return>())
+							if (!result[0].template is<Return>())
 								continue;
 
-							return result[0].get<Return>();
+							return result[0].template get<Return>();
 						}
 #endif // __GNUC__
 					}

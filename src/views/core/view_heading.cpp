@@ -11,9 +11,9 @@ namespace big
 		if (ImGui::Begin("menu_heading", nullptr, window_flags | ImGuiWindowFlags_NoScrollbar))
 		{
 			ImGui::BeginGroup();
-			ImGui::Text("HEADING_WELCOME"_T.data());
+			ImGui::TextUnformatted("HEADING_WELCOME"_T.data());
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.172f, 0.380f, 0.909f, 1.f));
-			ImGui::Text(g_local_player == nullptr || g_local_player->m_player_info == nullptr ?
+			ImGui::TextUnformatted(g_local_player == nullptr || g_local_player->m_player_info == nullptr ?
 			        "UNKNOWN_USERNAME"_T.data() :
 			        g_local_player->m_player_info->m_net_player_data.m_name);
 			ImGui::PopStyleColor();

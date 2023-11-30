@@ -5,9 +5,9 @@ namespace big
 {
 	void view::model_swapper()
 	{
-		ImGui::Text("VIEW_MODEL_SWAPPER_LINE1"_T.data());
-		ImGui::Text("VIEW_MODEL_SWAPPER_LINE2"_T.data());
-		ImGui::Text("VIEW_MODEL_SWAPPER_LINE3"_T.data());
+		ImGui::TextUnformatted("VIEW_MODEL_SWAPPER_LINE1"_T.data());
+		ImGui::TextUnformatted("VIEW_MODEL_SWAPPER_LINE2"_T.data());
+		ImGui::TextUnformatted("VIEW_MODEL_SWAPPER_LINE3"_T.data());
 
 		static char dst_text[256];
 		static char src_text[256];

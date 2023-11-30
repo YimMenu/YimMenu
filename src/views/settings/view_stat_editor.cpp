@@ -109,7 +109,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("VIEW_STAT_EDITOR_STAT"_T.data()))
 		{
-			ImGui::Text("VIEW_STAT_EDITOR_STAT_HELP"_T.data());
+			ImGui::TextUnformatted("VIEW_STAT_EDITOR_STAT_HELP"_T.data());
 
 			enum Mode
 			{
@@ -218,7 +218,7 @@ namespace big
 					g.stat_editor.stat.date_value = stat_date_value;
 				});
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("VIEW_STAT_EDITOR_DATE_TOOLTIP"_T.data());
+					ImGui::SetTooltip("%s", "VIEW_STAT_EDITOR_DATE_TOOLTIP"_T.data());
 				components::button("APPLY"_T, [] {
 					helper::stat_set_date(stat_date_text, stat_date_value);
 				});
@@ -323,7 +323,7 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("VIEW_STAT_EDITOR_PACKED_STAT"_T.data()))
 		{
-			ImGui::Text("VIEW_STAT_EDITOR_PACKED_STAT_INDEX_HELP"_T.data());
+			ImGui::TextUnformatted("VIEW_STAT_EDITOR_PACKED_STAT_INDEX_HELP"_T.data());
 
 			enum Mode
 			{

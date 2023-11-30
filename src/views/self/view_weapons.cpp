@@ -324,7 +324,7 @@ namespace big
 			components::button("VIEW_WEAPON_PERSIST_WEAPONS_SET_LOADOUT"_T, [] {
 				persist_weapons::set_weapon_loadout(selected_loadout);
 			});
-			ImGui::Text(std::format("{}: {}:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T, g.persist_weapons.weapon_loadout_file).data());
+			ImGui::Text("%s: %s:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T.data(), g.persist_weapons.weapon_loadout_file.c_str());
 			ImGui::EndGroup();
 			ImGui::PopItemWidth();
 		}
@@ -335,7 +335,7 @@ namespace big
 			ImGui::PopID();
 			if (ImGui::IsItemHovered())
 			{
-				ImGui::SetTooltip("VIEW_WEAPON_WEAPON_HOTKEYS_TOOLTIP"_T.data());
+				ImGui::SetTooltip("%s", "VIEW_WEAPON_WEAPON_HOTKEYS_TOOLTIP"_T.data());
 			}
 
 			static int selected_key = 0;

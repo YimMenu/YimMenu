@@ -80,21 +80,21 @@ namespace big
 					    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
 						    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
 
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_CEO_NAME"_T, boss_goon.GangName.Data).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MC_NAME"_T, boss_goon.ClubhouseName.Data).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_WALLET"_T, wallet).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_BANK"_T, money - wallet).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_TOTAL_MONEY"_T, money).c_str());
-					    ImGui::Text(std::format("{}: {} ({} {})", "PLAYER_INFO_RANK"_T, stats.Rank, "PLAYER_INFO_RANK_RP"_T, stats.RP).c_str());
-						ImGui::Text(std::format("{}: {} ({} {})", "VIEW_PLAYER_INFO_HEALTH"_T, ped_health, "VIEW_PLAYER_INFO_MAXHEALTH"_T, ped_maxhealth).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KD"_T, stats.KdRatio).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KILLS"_T, stats.KillsOnPlayers).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_DEATHS"_T, stats.DeathsByPlayers).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_PROSTITUTES"_T, stats.ProstitutesFrequented).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_LAP_DANCES"_T, stats.LapDancesBought).c_str());
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MISSIONS_CREATED"_T, stats.MissionsCreated).c_str());
+					    ImGui::Text("%s: %s", "PLAYER_INFO_CEO_NAME"_T.data(), boss_goon.GangName.Data);
+					    ImGui::Text("%s: %s", "PLAYER_INFO_MC_NAME"_T.data(), boss_goon.ClubhouseName.Data);
+					    ImGui::Text("%s: %llu", "PLAYER_INFO_WALLET"_T.data(), wallet);
+					    ImGui::Text("%s: %llu", "PLAYER_INFO_BANK"_T.data(), money - wallet);
+					    ImGui::Text("%s: %llu", "PLAYER_INFO_TOTAL_MONEY"_T.data(), money);
+					    ImGui::Text("%s: %i (%s %i)", "PLAYER_INFO_RANK"_T.data(), stats.Rank, "PLAYER_INFO_RANK_RP"_T.data(), stats.RP);
+						ImGui::Text("%s: %i (%s %i)", "VIEW_PLAYER_INFO_HEALTH"_T.data(), ped_health, "VIEW_PLAYER_INFO_MAXHEALTH"_T.data(), ped_maxhealth);
+					    ImGui::Text("%s: %f", "PLAYER_INFO_KD"_T.data(), stats.KdRatio);
+					    ImGui::Text("%s: %i", "PLAYER_INFO_KILLS"_T.data(), stats.KillsOnPlayers);
+					    ImGui::Text("%s: %i", "PLAYER_INFO_DEATHS"_T.data(), stats.DeathsByPlayers);
+					    ImGui::Text("%s: %i", "PLAYER_INFO_PROSTITUTES"_T.data(), stats.ProstitutesFrequented);
+					    ImGui::Text("%s: %i", "PLAYER_INFO_LAP_DANCES"_T.data(), stats.LapDancesBought);
+					    ImGui::Text("%s: %i", "PLAYER_INFO_MISSIONS_CREATED"_T.data(), stats.MissionsCreated);
 					    auto meltdown_completed = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T : "NO"_T;
-					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_METLDOWN_COMPLETE"_T, meltdown_completed).c_str());
+					    ImGui::Text("%s: %s", "PLAYER_INFO_METLDOWN_COMPLETE"_T.data(), meltdown_completed.data());
 				    }
 
 				    ImGui::EndGroup();
@@ -103,27 +103,27 @@ namespace big
 
 				    ImGui::BeginGroup();
 
-					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NAT_TYPE"_T, get_nat_type_str(g_player_service->get_selected()->get_net_data()->m_nat_type)).c_str());
+					ImGui::Text("%s: %s", "VIEW_PLAYER_INFO_NAT_TYPE"_T.data(), get_nat_type_str(g_player_service->get_selected()->get_net_data()->m_nat_type));
 
 				    if (auto peer = g_player_service->get_selected()->get_connection_peer())
 				    {
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_CONNECTION_TYPE"_T, get_connection_type_str(peer->m_peer_address.m_connection_type)).c_str());
+						ImGui::Text("%s: %s", "VIEW_PLAYER_INFO_CONNECTION_TYPE"_T.data(), get_connection_type_str(peer->m_peer_address.m_connection_type));
 
 					    if (peer->m_peer_address.m_connection_type == 2)
 					    {
 						    auto ip = peer->m_relay_address.m_relay_address;
-							ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4).c_str());
+							ImGui::Text("%s: %i.%i.%i.%i", "VIEW_PLAYER_INFO_RELAY_IP"_T.data(), ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4);
 					    }
 					    else if (peer->m_peer_address.m_connection_type == 3)
 					    {
 						    auto ip = peer->m_peer_address.m_relay_address;
-							ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_PEER_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4).c_str());
+							ImGui::Text("%s: %i.%i.%i.%i", "VIEW_PLAYER_INFO_PEER_RELAY_IP"_T.data(), ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4);
 					    }
 
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_MESSAGES_SENT"_T, peer->m_num_messages_batched).c_str());
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_SENT"_T, peer->m_num_reliable_messages_batched).c_str());
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_RESENT"_T, peer->m_num_resent_reliable_messages_batched).c_str());
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_ENCRYPTION_ATTEMPTS"_T, peer->m_num_encryption_attempts).c_str());
+						ImGui::Text("%s: %i", "VIEW_PLAYER_INFO_NUM_MESSAGES_SENT"_T.data(), peer->m_num_messages_batched);
+						ImGui::Text("%s: %i", "VIEW_PLAYER_INFO_NUM_RELIABLES_SENT"_T.data(), peer->m_num_reliable_messages_batched);
+						ImGui::Text("%s: %i", "VIEW_PLAYER_INFO_NUM_RELIABLES_RESENT"_T.data(), peer->m_num_resent_reliable_messages_batched);
+						ImGui::Text("%s: %i", "VIEW_PLAYER_INFO_NUM_ENCRYPTION_ATTEMPTS"_T.data(), peer->m_num_encryption_attempts);
 				    }
 
 				    ImGui::EndGroup();
@@ -184,7 +184,7 @@ namespace big
 
 			if (CPlayerInfo* player_info = g_player_service->get_selected()->get_player_info(); player_info != nullptr)
 			{
-				ImGui::Text(std::format("{}: {}", "WANTED_LEVEL"_T, player_info->m_wanted_level).c_str());
+				ImGui::Text("%s: %i", "WANTED_LEVEL"_T.data(), player_info->m_wanted_level);
 			}
 
 			if (ped_damage_bits & (uint32_t)eEntityProofs::GOD)
@@ -296,20 +296,20 @@ namespace big
 				else
 				{
 					if (net_player_data->m_force_relays)
-						ImGui::Text("VIEW_PLAYER_INFO_IP_HIDDEN"_T.data());
+						ImGui::TextUnformatted("VIEW_PLAYER_INFO_IP_HIDDEN"_T.data());
 					else
-						ImGui::Text("VIEW_PLAYER_INFO_IP_UNKNOWN"_T.data());
+						ImGui::TextUnformatted("VIEW_PLAYER_INFO_IP_UNKNOWN"_T.data());
 
 					auto cxn_type = g_player_service->get_selected()->get_connection_peer() ?
 					    g_player_service->get_selected()->get_connection_peer()->m_peer_address.m_connection_type :
 					    0;
 
 					if (g.protections.force_relay_connections && ImGui::IsItemHovered())
-						ImGui::SetTooltip("VIEW_PLAYER_INFO_IP_FORCE_RELAY_TOOLTIP"_T.data());
+						ImGui::SetTooltip("%s", "VIEW_PLAYER_INFO_IP_FORCE_RELAY_TOOLTIP"_T.data());
 					else if (cxn_type == 2 && ImGui::IsItemHovered())
-						ImGui::SetTooltip("VIEW_PLAYER_INFO_IP_RELAY_TOOLTIP"_T.data());
+						ImGui::SetTooltip("%s", "VIEW_PLAYER_INFO_IP_RELAY_TOOLTIP"_T.data());
 					else if (cxn_type == 3 && ImGui::IsItemHovered())
-						ImGui::SetTooltip("VIEW_PLAYER_INFO_IP_PEER_RELAY_TOOLTIP"_T.data());
+						ImGui::SetTooltip("%s", "VIEW_PLAYER_INFO_IP_PEER_RELAY_TOOLTIP"_T.data());
 				}
 			}
 

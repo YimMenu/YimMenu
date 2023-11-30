@@ -138,7 +138,7 @@ namespace big
 		ImGui::BeginGroup();
 		ImGui::Checkbox("CREATOR_INFINITE_MEMORY"_T.data(), &g.ugc.infinite_model_memory);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("CREATOR_INFINITE_MEMORY_DESCRIPTION"_T.data());
+			ImGui::SetTooltip("%s", "CREATOR_INFINITE_MEMORY_DESCRIPTION"_T.data());
 
 		ImGui::EndGroup();
 	}

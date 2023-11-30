@@ -237,7 +237,7 @@ namespace big
 		}
 		ImGui::SameLine();
 		ImGui::Checkbox("VIEW_SELF_OUTFIT_DISABLE_DURING_MISSIONS"_T.data(), &g.self.persist_outfits_mis);
-		ImGui::Text(std::format("{}: {}", "VIEW_SELF_OUTFIT_CURRENT_PERSISTED_OUTFIT"_T.data(), g.self.persist_outfit).c_str());
+		ImGui::Text("%s: %s", "VIEW_SELF_OUTFIT_CURRENT_PERSISTED_OUTFIT"_T.data(), g.self.persist_outfit.c_str());
 		ImGui::EndGroup();
 	}
 }

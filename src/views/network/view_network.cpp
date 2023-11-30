@@ -143,12 +143,12 @@ namespace big
 		{
 			ImGui::Checkbox("JOIN_IN_SCTV"_T.data(), &g.session.join_in_sctv_slots);
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("JOIN_IN_SCTV_DESC"_T.data());
+				ImGui::SetTooltip("%s", "JOIN_IN_SCTV_DESC"_T.data());
 
 			ImGui::Checkbox("PLAYER_MAGNET"_T.data(), &g.session.player_magnet_enabled);
 			if (g.session.player_magnet_enabled)
 			{
-				ImGui::Text("PLAYER_COUNT"_T.data());
+				ImGui::TextUnformatted("PLAYER_COUNT"_T.data());
 				ImGui::InputInt("##playercount", &g.session.player_magnet_count);
 			}
 
@@ -163,10 +163,10 @@ namespace big
 			{
 				ImGui::Checkbox("LOBBY_LOCK_ALLOW_FRIENDS"_T.data(), &g.session.allow_friends_into_locked_session);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("LOBBY_LOCK_ALLOW_FRIENDS_DESC"_T.data());
+					ImGui::SetTooltip("%s", "LOBBY_LOCK_ALLOW_FRIENDS_DESC"_T.data());
 			}
 			if (ImGui::IsItemHovered())
-				ImGui::SetTooltip("LOBBY_LOCK_DESC"_T.data());
+				ImGui::SetTooltip("%s", "LOBBY_LOCK_DESC"_T.data());
 
 
 			ImGui::EndDisabled();
@@ -307,7 +307,7 @@ namespace big
 			toxic::set_time_all(INT_MAX - 3000);
 		});
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("STOP_TIME_DESC"_T.data());
+			ImGui::SetTooltip("%s", "STOP_TIME_DESC"_T.data());
 
 		ImGui::EndGroup();
 	}
@@ -330,7 +330,7 @@ namespace big
 		components::sub_title("FORCE_HOST"_T);
 		ImGui::Checkbox("FORCE_SESSION_HOST"_T.data(), &g.session.force_session_host);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("FORCE_SESSION_HOST_DESC"_T.data());
+			ImGui::SetTooltip("%s", "FORCE_SESSION_HOST_DESC"_T.data());
 
 		if (g.session.force_session_host)
 		{
@@ -352,13 +352,13 @@ namespace big
 				});
 		}
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("FORCE_SCRIPT_HOST_DESC"_T.data());
+			ImGui::SetTooltip("%s", "FORCE_SCRIPT_HOST_DESC"_T.data());
 
 		ImGui::SameLine();
 
 		ImGui::Checkbox("FAST_JOIN"_T.data(), &g.session.fast_join);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("FAST_JOIN_DESC"_T.data());
+			ImGui::SetTooltip("%s", "FAST_JOIN_DESC"_T.data());
 
 		ImGui::Spacing();
 
@@ -374,7 +374,7 @@ namespace big
 
 			    components::command_button<"beastall">({});
 			    if (ImGui::IsItemHovered())
-				    ImGui::SetTooltip("INCLUDING_YOU"_T.data());
+				    ImGui::SetTooltip("%s", "INCLUDING_YOU"_T.data());
 
 
 			    components::command_button<"bringall">({});
@@ -531,11 +531,11 @@ namespace big
 		components::sub_title("SCRIPT_HOST_FEATURES"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("DISABLE_CEO_MONEY_DESC"_T.data());
+			ImGui::SetTooltip("%s", "DISABLE_CEO_MONEY_DESC"_T.data());
 		ImGui::SameLine();
 		ImGui::Checkbox("BLOCK_JOBS"_T.data(), &g.session.block_jobs);
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("BLOCK_JOBS_DESC"_T.data());
+			ImGui::SetTooltip("%s", "BLOCK_JOBS_DESC"_T.data());
 
 		ImGui::Checkbox("RANDOMIZE_CEO_COLORS"_T.data(), &g.session.randomize_ceo_colors);
 		ImGui::SameLine();

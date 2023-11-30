@@ -100,7 +100,7 @@ namespace big
 		static bool own_vehicle, deleting, force;
 		static int quantity, remaining;
 
-		ImGui::Text("VIEW_WORLD_INCLUDE"_T.data());
+		ImGui::TextUnformatted("VIEW_WORLD_INCLUDE"_T.data());
 		ImGui::Checkbox("VEHICLES"_T.data(), &included_entity_types[0]);
 		ImGui::SameLine();
 		ImGui::Checkbox("PED"_T.data(), &included_entity_types[1]);

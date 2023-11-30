@@ -194,8 +194,8 @@ namespace big
 					{
 						ImGui::BeginTooltip();
 						if (l.name.length() > 27)
-							ImGui::Text(l.name.data());
-						ImGui::Text(std::format("{}: {}", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T, get_distance_to_telelocation(l)).c_str());
+							ImGui::TextUnformatted(l.name.data());
+						ImGui::Text("%s: %f", "VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), get_distance_to_telelocation(l));
 						ImGui::EndTooltip();
 					}
 				}

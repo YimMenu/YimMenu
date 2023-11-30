@@ -63,7 +63,7 @@ namespace ImGui
 			}
 			if (i % 4 == 0)
 			{
-				ImGui::Text("%i", i);
+				ImGui::Text("%zu", i);
 				ImGui::EndGroup();
 			}
 			if (i % 16 != 0)

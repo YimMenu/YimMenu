@@ -85,7 +85,7 @@ namespace big
 					auto host = net_handler->get_host();
 					if (host)
 					{
-						ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_SCRIPT_HOST"_T, host->get_name()).c_str());
+						ImGui::Text("%s: %s", "VIEW_DEBUG_THREADS_SCRIPT_HOST"_T.data(), host->get_name());
 
 						if (!net_handler->is_local_player_host())
 						{
@@ -108,26 +108,25 @@ namespace big
 				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data()) + '\0';
 				ImGui::Combo("VIEW_DEBUG_THREADS_STATE"_T.data(), (int*)&selected_thread->m_context.m_state, thread_states.c_str());
 				//Script Pointer
-				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T).c_str());
+				ImGui::Text("%s: ", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T.data());
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
 				//Stack Pointer
-				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_STACK_POINTER"_T).c_str());
+				ImGui::Text("%s: ", "VIEW_DEBUG_THREADS_STACK_POINTER"_T.data());
 				ImGui::SameLine();
 				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
 				ImGui::SameLine();
-				ImGui::Text(std::format("{}: {} {}: {}",
-				    "VIEW_DEBUG_THREADS_INTERNAL_STACK_POINTER"_T, selected_thread->m_context.m_stack_pointer,
-				    "VIEW_DEBUG_THREADS_STACK_SIZE"_T, selected_thread->m_context.m_stack_size)
-				                .c_str());
+				ImGui::Text("%s: %i %s: %i",
+				    "VIEW_DEBUG_THREADS_INTERNAL_STACK_POINTER"_T.data(), selected_thread->m_context.m_stack_pointer,
+				    "VIEW_DEBUG_THREADS_STACK_SIZE"_T.data(), selected_thread->m_context.m_stack_size);
 				//Instruction Pointer
-				ImGui::Text(std::format("{}: 0x{:X}","VIEW_DEBUG_THREADS_INSTRUCTION_POINTER"_T, selected_thread->m_context.m_instruction_pointer).c_str());
+				ImGui::Text("%s: 0x%X","VIEW_DEBUG_THREADS_INSTRUCTION_POINTER"_T.data(), selected_thread->m_context.m_instruction_pointer);
 
 				if (selected_thread->m_context.m_state == rage::eThreadState::killed)
 				{
-					ImGui::Text(std::format("{}: {}","VIEW_DEBUG_THREADS_EXIT_REASON"_T, selected_thread->m_exit_message).c_str());
+					ImGui::Text("%s: %s","VIEW_DEBUG_THREADS_EXIT_REASON"_T.data(), selected_thread->m_exit_message);
 				}
 				else
 				{
@@ -178,7 +177,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_FREE_STACKS"_T, free_stacks).c_str());
+			ImGui::Text("%s: %i", "VIEW_DEBUG_THREADS_FREE_STACKS"_T.data(), free_stacks);
 
 			components::button("SETTINGS_NOTIFY_GTA_THREADS_START"_T, [] {
 				auto hash = rage::joaat(selected_script);

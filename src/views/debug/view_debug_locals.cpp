@@ -225,7 +225,7 @@ namespace big
 			auto local_thread = gta_util::find_script_thread(rage::joaat(local_test.script_name));
 
 			if (local_thread == nullptr)
-				ImGui::Text("VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
+				ImGui::TextUnformatted("VIEW_DEBUG_LOCALS_SCRIPT_DOES_NOT_EXIST"_T.data());
 
 			ImGui::PushItemWidth(200.f);
 
@@ -244,7 +244,7 @@ namespace big
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].size);
 						break;
 					case LocalAppendageType_ReadLocal:
-						ImGui::Text(std::format("{} {}", "VIEW_DEBUG_LOCALS_READ_LOCAL"_T, item.local_name).c_str());
+						ImGui::Text("%s %s", "VIEW_DEBUG_LOCALS_READ_LOCAL"_T.data(), item.local_name.c_str());
 						ImGui::SameLine();
 						ImGui::InputScalar("VIEW_DEBUG_GLOBAL_SIZE"_T.data(), ImGuiDataType_U16, &local_test.local_appendages[i].size);
 						break;
@@ -319,7 +319,7 @@ namespace big
 			}
 			else
 			{
-				ImGui::Text("VIEW_DEBUG_LOCALS_INVALID_LOCAL_READ"_T.data());
+				ImGui::TextUnformatted("VIEW_DEBUG_LOCALS_INVALID_LOCAL_READ"_T.data());
 			}
 
 			ImGui::PopItemWidth();
@@ -329,7 +329,7 @@ namespace big
 
 			auto locals = list_locals();
 			static std::string selected_local;
-			ImGui::Text("VIEW_DEBUG_LOCALS_SAVED_LOCALS"_T.data());
+			ImGui::TextUnformatted("VIEW_DEBUG_LOCALS_SAVED_LOCALS"_T.data());
 			if (ImGui::BeginListBox("##savedlocals", ImVec2(200, 250)))
 			{
 				for (auto pair : locals)
