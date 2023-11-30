@@ -4,6 +4,7 @@
 #include "hooking.hpp"
 #include "memory/all.hpp"
 #include "rage/atSingleton.hpp"
+#include "rage/gameSkeleton.hpp"
 #include "sc_pointers_layout_info.hpp"
 #include "security/RageSecurity.hpp"
 
@@ -1722,13 +1723,22 @@ namespace big
                 g_pointers->m_gta.m_is_social_club_overlay_active = ptr.add(2).rip().as<bool*>();
             }
         },
-        // Game Skeleton Update
+        // Game Skeleton
         {
-            "GSU",
-            "40 53 48 83 EC 20 48 8B 81 40 01",
+            "GS",
+            "48 8D 0D ? ? ? ? BA ? ? ? ? 74 05 BA ? ? ? ? E8 ? ? ? ? E8 ? ? ? ? C6 05 ? ? ? ? ? 48 8D 0D ? ? ? ? BA ? ? ? ? 84 DB 75 05 BA ? ? ? ? E8 ? ? ? ? 48 8B CD C6 05 ? ? ? ? ? E8 ? ? ? ? 84",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_game_skeleton_update = ptr.as<PVOID>();
+                g_pointers->m_gta.m_game_skeleton = ptr.add(3).rip().as<rage::game_skeleton*>();
+            }
+        },
+        // Nullsub
+        {
+            "NS",
+            "C3",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
             }
         },
         // Get Ped Bone

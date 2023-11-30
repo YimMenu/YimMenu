@@ -18,8 +18,8 @@ namespace big
 	}
 
 	script_local::script_local(std::size_t index) :
-		m_index(index),
-		m_stack(nullptr)
+	    m_index(index),
+	    m_stack(nullptr)
 	{
 	}
 
