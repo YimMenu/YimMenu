@@ -36,7 +36,7 @@ namespace big
 	    "GSINT",
 	    "EARN",
 	    "GARAGE_TAMPER",
-		"DUPE_DETECT",
+	    "DUPE_DETECT",
 	    "LAST_VEH",
 	    "FAIL_SERV",
 	    "CCF_UPDATE",
