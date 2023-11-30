@@ -64,7 +64,7 @@ namespace big::functions
 	using ptr_to_handle = Entity (*)(void*);
 	using handle_to_ptr = rage::CDynamicEntity* (*)(Entity);
 
-	using set_gravity_level					= void(*)(int level);
+	using set_gravity_level = void (*)(int level);
 
 	using check_chat_profanity              = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool (*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
@@ -120,9 +120,9 @@ namespace big::functions
 	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
-	using invite_player_by_gamer_handle = bool(*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
-	using add_friend_by_gamer_handle	= void(*)(rage::rlGamerHandle* handle, const char* unk);
-	using show_profile_by_gamer_handle	= void(*)(rage::rlGamerHandle* handle);
+	using invite_player_by_gamer_handle = bool (*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+	using add_friend_by_gamer_handle   = void (*)(rage::rlGamerHandle* handle, const char* unk);
+	using show_profile_by_gamer_handle = void (*)(rage::rlGamerHandle* handle);
 
 	using generate_uuid = bool (*)(uint64_t* uuid);
 
@@ -194,9 +194,9 @@ namespace big::functions
 	using delete_vehicle = bool (*)(CVehicle* veh);
 	using delete_object  = bool (*)(CObject* object, bool unk);
 
-	using decal_manager_remove = void(*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
+	using decal_manager_remove = void (*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
 
-	using remove_player_from_sender_list = bool(*)(void* list, uint64_t* rockstar_id);
+	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
 
-	using get_ped_bone = bool(*)(CPed* ped_ptr, rage::fvector4& output, PedBones bone);
+	using get_ped_bone = bool (*)(CPed* ped_ptr, rage::fvector4& output, PedBones bone);
 }

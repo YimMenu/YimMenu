@@ -1,14 +1,14 @@
 #pragma once
 #include "MinHook.h"
+#include "call_hook.hpp"
 #include "common.hpp"
 #include "detour_hook.hpp"
 #include "gta/enums.hpp"
 #include "gta/fwddec.hpp"
-#include "gta/script_thread.hpp"
 #include "gta/json_serializer.hpp"
+#include "gta/script_thread.hpp"
 #include "vmt_hook.hpp"
 #include "vtable_hook.hpp"
-#include "call_hook.hpp"
 
 #include <network/netConnection.hpp>
 
@@ -128,7 +128,7 @@ namespace big
 		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
 
 		static int nt_query_virtual_memory(void* _this, HANDLE handle, PVOID base_addr, int info_class, MEMORY_BASIC_INFORMATION* info, int size, size_t* return_len);
-		static int queue_dependency(void* a1, int a2, void* dependency);
+		static int queue_dependency(void* a1, int a2, int64_t dependency);
 
 		static bool prepare_metric_for_sending(rage::json_serializer* bit_buffer, int unk, int time, rage::rlMetric* metric);
 		static bool http_start_request(void* request, const char* uri);
@@ -185,7 +185,6 @@ namespace big
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
 
 		static bool remove_player_from_sender_list(void* list, uint64_t rockstar_id);
-		static void game_skeleton_update(__int64 skeleton, int type);
 	};
 
 	class minhook_keepalive

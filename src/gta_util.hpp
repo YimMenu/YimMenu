@@ -1,7 +1,7 @@
 #pragma once
 #include "gta/script_thread.hpp"
-#include "script/tlsContext.hpp"
 #include "pointers.hpp"
+#include "script/tlsContext.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>
 #include <ped/CPedFactory.hpp>
