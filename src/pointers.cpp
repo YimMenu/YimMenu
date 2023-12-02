@@ -1246,10 +1246,11 @@ namespace big
         // Prop Pool
         {
             "PRP",
-            "48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 03 EB 19 41 80 78 ? ? 75 15 48 8B 0D ? ? ? ? 49 8B D0 E8 ? ? ? ? 39 43 04",
+            "48 8B 05 ? ? ? ? 0F B7 50 10 48 8B 05",
             [](memory::handle ptr)
 		    {
 			    g_pointers->m_gta.m_prop_pool = ptr.add(3).rip().as<GenericPool**>();
+			    g_pointers->m_gta.m_pickup_pool = ptr.add(0xE).rip().as<GenericPool**>();
 		    }
         },
         // Vehicle Pool
