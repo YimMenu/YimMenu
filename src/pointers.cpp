@@ -1736,7 +1736,7 @@ namespace big
         // Nullsub
         {
             "NS",
-            "C3",
+            "90 C3",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
