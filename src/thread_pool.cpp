@@ -4,8 +4,8 @@ namespace big
 {
 	thread_pool::thread_pool(const std::size_t preallocated_thread_count) :
 	    m_accept_jobs(true),
-		m_allocated_thread_count(preallocated_thread_count),
-		m_busy_threads(0)
+	    m_allocated_thread_count(preallocated_thread_count),
+	    m_busy_threads(0)
 	{
 		rescale_thread_pool();
 

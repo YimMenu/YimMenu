@@ -18,12 +18,11 @@ namespace rage
             buffer(_buffer),
             maxlen(_length)
         {
-            unk0
-                = 0;
-                unk1   = 0;
-                curlen = 0;
-                unk4   = 1;
-                flags  = 0;
+            unk0 = 0;
+            unk1   = 0;
+            curlen = 0;
+            unk4   = 1;
+            flags  = 0;
         }
 
         inline char* get_string() const
