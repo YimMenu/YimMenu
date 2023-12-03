@@ -14,7 +14,8 @@ namespace big
 		static_cast<int16_t>(eVehicleAbilities::RAMP_BUGGY)
 	};
 
-	bool dont_disable[4] = {};
+	bool dont_disable[4]         = {};
+	static CVehicle* current_veh = nullptr;
 
 	class vehicle_ability : looped_command
 	{
@@ -44,8 +45,13 @@ namespace big
 		{
 			CVehicle* vehicle_ptr = static_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(self::veh));
 
-			if (vehicle_ptr == nullptr)
+			if (vehicle_ptr == nullptr || (current_veh && vehicle_ptr != current_veh))
+			{
+				current_veh                      = nullptr;
+				g.vehicle.modify_vehicle_ability = false;
 				return;
+			}
+			current_veh = vehicle_ptr;
 
 			CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(vehicle_ptr->m_model_info);
 
@@ -72,6 +78,8 @@ namespace big
 
 		virtual void on_disable() override
 		{
+			current_veh = nullptr;
+
 			CVehicle* vehicle_ptr = static_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(self::veh));
 
 			if (vehicle_ptr == nullptr)
