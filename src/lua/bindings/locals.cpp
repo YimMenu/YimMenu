@@ -19,6 +19,16 @@ namespace lua::locals
 	{
 		return *get<int*>(script, index);
 	}
+	// Lua API: Function
+	// Table: locals
+	// Name: get_uint
+	// Param: script: string: The name of the script
+	// Param: index: index: Index of the script local.
+	// Returns: unsigned integer: The value of the given local.
+	static std::uint32_t get_uint(const std::string& script, int index)
+	{
+		return *get<std::uint32_t*>(script, index);
+	}
 
 	// Lua API: Function
 	// Table: locals
@@ -51,6 +61,17 @@ namespace lua::locals
 	static void set_int(const std::string& script, int index, int val)
 	{
 		*get<int*>(script, index) = val;
+	}
+
+	// Lua API: Function
+	// Table: locals
+	// Name: set_int
+	// Param: script: string: The name of the script
+	// Param: index: index: Index of the script local.
+	// Param: val: unsigned integer: The new value of the given local.
+	static void set_uint(const std::string& script, int index, std::uint32_t val)
+	{
+		*get<std::uint32_t*>(script, index) = val;
 	}
 
 	// Lua API: Function
@@ -90,9 +111,11 @@ namespace lua::locals
 	{
 		auto ns           = state["locals"].get_or_create<sol::table>();
 		ns["get_int"]     = get_int;
+		ns["get_uint"]    = get_uint;
 		ns["get_float"]   = get_float;
 		ns["get_vec3"]    = get_vec3;
 		ns["set_int"]     = set_int;
+		ns["set_uint"]    = set_uint;
 		ns["set_float"]   = set_float;
 		ns["set_vec3"]    = set_vec3;
 		ns["get_pointer"] = get_pointer;

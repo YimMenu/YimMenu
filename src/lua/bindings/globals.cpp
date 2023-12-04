@@ -27,9 +27,9 @@ namespace lua::globals
 	// Param: global: integer: index of the global
 	// Returns: integer: value of the global
 	// Retrieves an uint global value.
-	static int get_uint(int global)
+	static std::uint32_t get_uint(int global)
 	{
-		return *big::script_global(global).as<unsigned int*>();
+		return *big::script_global(global).as<std::uint32_t*>();
 	}
 
 	// Lua API: Function
@@ -82,9 +82,9 @@ namespace lua::globals
 	// Param: global: integer: index of the global
 	// Param: val: integer: new value for the global
 	// Sets an uint global value.
-	static void set_uint(int global, unsigned int val)
+	static void set_uint(int global, std::uint32_t val)
 	{
-		*big::script_global(global).as<unsigned int*>() = val;
+		*big::script_global(global).as<std::uint32_t*>() = val;
 	}
 
 	// Lua API: Function
