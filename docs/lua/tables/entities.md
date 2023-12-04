@@ -11,7 +11,10 @@ Table for manipulating GTA entities.
 
 **Example Usage:**
 ```lua
-table<int, int> = entities.get_all_vehicles_as_handles()
+local all_vehicles = entities.get_all_vehicles_as_handles()
+for i = 1, #all_vehicles do
+    log.info(tostring(all_vehicles[i]))
+end
 ```
 
 ### `get_all_peds_as_handles()`
@@ -21,7 +24,10 @@ table<int, int> = entities.get_all_vehicles_as_handles()
 
 **Example Usage:**
 ```lua
-table<int, int> = entities.get_all_peds_as_handles()
+local all_peds = entities.get_all_peds_as_handles()
+for i = 1, #all_peds do
+    log.info(tostring(all_peds[i]))
+end
 ```
 
 ### `get_all_objects_as_handles()`
@@ -31,7 +37,10 @@ table<int, int> = entities.get_all_peds_as_handles()
 
 **Example Usage:**
 ```lua
-table<int, int> = entities.get_all_objects_as_handles()
+local all_objs = entities.get_all_objects_as_handles()
+for i = 1, #all_objs do
+    log.info(tostring(all_objs[i]))
+end
 ```
 
 ### `take_control_of(entity, try_count)`
