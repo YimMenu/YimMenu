@@ -2,7 +2,7 @@
 
 Table containing functions for getting information about vehicles in GTA V.
 
-## Functions (3)
+## Functions (4)
 
 ### `get_vehicle_display_name(vehicle_hash)`
 
@@ -10,11 +10,11 @@ Table containing functions for getting information about vehicles in GTA V.
   - `vehicle_hash` (Hash): JOAAT hash of the vehicle.
 
 - **Returns:**
-  - `string`: Returns the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+  - `vehicle_display_string`: String: the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
 
-**Example Usage:**
+- **Example Usage:**
 ```lua
-log.info(vehicles.get_vehicle_display_name(joaat('BTYPE2')))
+log.info(vehicles.get_vehicle_display_name('BTYPE2'))
 ```
 
 ### `get_vehicle_display_name(vehicle_name)`
@@ -23,9 +23,9 @@ log.info(vehicles.get_vehicle_display_name(joaat('BTYPE2')))
   - `vehicle_name` (String): Name of the vehicle.
 
 - **Returns:**
-  - `string`: Returns the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+  - `vehicle_display_string`: String: the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
 
-**Example Usage:**
+- **Example Usage:**
 ```lua
 log.info(vehicles.get_vehicle_display_name('BTYPE2'))
 ```
@@ -33,31 +33,31 @@ log.info(vehicles.get_vehicle_display_name('BTYPE2'))
 ### `get_all_vehicles_by_class(vehicle_class)`
 
 - **Parameters:**
-  - `vehicle_class` (String): Vehicle class the vehicles belong to.
+  - `vehicle_class` (String): The vehicle class.
 
 - **Returns:**
-  - `table<int, string>`: Returns a list of all vehicles that match the class passed in. The list can contain anything from 0 to n elements.
+  - `vehicles`: table<int, String>: a list of all vehicles that match the class passed in. The list can contain anything from 0 to n elements.
 
-**Example Usage:**
+- **Example Usage:**
 ```lua
 local sports_classics = vehicles.get_all_vehicles_by_class('Sports Classics')
 for i = 1, #sports_classics do
-	log.info(sports_classics[i])
+     log.info(sports_classics[i])
 end
 ```
 
-### `get_all_vehicles_by_mfr(group_name)`
+### `get_all_vehicles_by_mfr(manufacturer)`
 
 - **Parameters:**
-  - `group_name` (String): The manufacturer the vehicle(s) belong to.
+  - `manufacturer` (String): The vehicle manufacturer.
 
 - **Returns:**
-  - `table<int, string>`: Returns a list of all vehicles that match the manufacturer passed in. The list can contain anything from 0 to n elements.
+  - `vehicles`: table<int, String>: a list of all vehicles that match the manufacturer passed in. The list can contain anything from 0 to n elements.
 
-**Example Usage:**
+- **Example Usage:**
 ```lua
 local albanies = vehicles.get_all_vehicles_by_mfr('Albany')
 for i = 1, #albanies do
-	log.info(albanies[i])
+     log.info(albanies[i])
 end
 ```

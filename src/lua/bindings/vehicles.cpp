@@ -11,8 +11,12 @@ namespace lua::vehicles
 	// Lua API: Function
 	// Table: vehicles
 	// Name: get_vehicle_display_name
-	// Param: Hash
-	// Returns the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+	// Param: vehicle_hash: Hash: JOAAT hash of the vehicle.
+	// Returns: vehicle_display_string: String: the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+	//- **Example Usage:**
+	//```lua
+	//log.info(vehicles.get_vehicle_display_name('BTYPE2'))
+	//```
 	static std::string get_vehicle_display_name(Hash vehicle_hash)
 	{
 		return big::g_gta_data_service->vehicle_by_hash(vehicle_hash).m_display_name;
@@ -21,8 +25,12 @@ namespace lua::vehicles
 	// Lua API: Function
 	// Table: vehicles
 	// Name: get_vehicle_display_name
-	// Param: string
-	// Returns the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+	// Param: vehicle_name: String: Name of the vehicle.
+	// Returns: vehicle_display_string: String: the in-game display string. If the vehicle is not found, or the call is made too early, a blank string will be returned. It is guranteed to return a safe value.
+	//- **Example Usage:**
+	//```lua
+	//log.info(vehicles.get_vehicle_display_name('BTYPE2'))
+	//```
 	static std::string get_vehicle_display_name_string(std::string vehicle_name)
 	{
 		return big::g_gta_data_service->vehicle_by_hash(rage::joaat(vehicle_name)).m_display_name;
@@ -31,8 +39,15 @@ namespace lua::vehicles
 	// Lua API: Function
 	// Table: vehicles
 	// Name: get_all_vehicles_by_class
-	// Param: string
-	// Returns a list of all vehicles that match the class passed in. The list can contain anything from 0 to n elements.
+	// Param: vehicle_class: String: The vehicle class.
+	// Returns: vehicles: table<int, String>: a list of all vehicles that match the class passed in. The list can contain anything from 0 to n elements.
+	//- **Example Usage:**
+	//```lua
+	//local sports_classics = vehicles.get_all_vehicles_by_class('Sports Classics')
+	//for i = 1, #sports_classics do
+	//    log.info(sports_classics[i])
+	//end
+	//```
 	static std::vector<std::string> get_all_vehicles_by_class(std::string vehicle_class)
 	{
 		std::vector<std::string> return_value;
@@ -46,11 +61,19 @@ namespace lua::vehicles
 		return return_value;
 	}
 
+
 	// Lua API: Function
 	// Table: vehicles
 	// Name: get_all_vehicles_by_mfr
-	// Param: string
-	// Returns a list of all vehicles that match the manufacturer passed in. The list can contain anything from 0 to n elements.
+	// Param: manufacturer: String: The vehicle manufacturer.
+	// Returns: vehicles: table<int, String>: a list of all vehicles that match the manufacturer passed in. The list can contain anything from 0 to n elements.
+	//- **Example Usage:**
+	//```lua
+	//local albanies = vehicles.get_all_vehicles_by_mfr('Albany')
+	//for i = 1, #albanies do
+	//    log.info(albanies[i])
+	//end
+	//```
 	static std::vector<std::string> get_all_vehicles_by_mfr(std::string manufacturer)
 	{
 		std::vector<std::string> return_value;

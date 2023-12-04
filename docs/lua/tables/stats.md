@@ -3,7 +3,7 @@
 Table for manipulating GTA stats.
 For stats that get prefixed by either `MP0` or `MP1`, you can use `MPX` instead and the menu will resolve to the correct number automatically.
 
-## Functions (21)
+## Functions (25)
 
 ### `get_character_index()`
 
@@ -300,14 +300,14 @@ boolean = stats.set_masked_int(stat_name, new_value, bit_start, bit_size)
 ### `get_packed_stat_bool(index)`
 
 - **Parameters:**
-  - `index` (int): packed stat's index.
+  - `index` (int): packed stat's index
 
 - **Returns:**
   - `boolean`: Value of the stat.
 
 **Example Usage:**
 ```lua
-local pstat_value = stats.get_packed_stat_bool(index)
+boolean = stats.get_packed_stat_bool(index)
 ```
 
 ### `set_packed_stat_bool(index, value)`
@@ -324,14 +324,14 @@ stats.set_packed_stat_bool(index, value)
 ### `get_packed_stat_int(index)`
 
 - **Parameters:**
-  - `index` (int): packed stat's index
+  - `index` (int): packed stat's index.
 
 - **Returns:**
   - `int`: Value of the stat.
 
 **Example Usage:**
 ```lua
-local pstat_value = stats.get_packed_stat_int(index)
+int = stats.get_packed_stat_int(index)
 ```
 
 ### `set_packed_stat_int(index, value)`
@@ -344,3 +344,5 @@ local pstat_value = stats.get_packed_stat_int(index)
 ```lua
 stats.set_packed_stat_int(index, value)
 ```
+
+
