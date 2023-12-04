@@ -1,109 +1,175 @@
 #include "backend/looped_command.hpp"
-#include "util/vehicle.hpp"
-#include "util/misc.hpp"
 #include "gta/enums.hpp"
+#include "util/misc.hpp"
+#include "util/vehicle.hpp"
 
 #include <vehicle/CVehicleModelInfo.hpp>
 
 namespace big
 {
-	const std::vector<int16_t> bits = {
-		static_cast<int16_t>(eVehicleAbilities::JUMP), 
-		static_cast<int16_t>(eVehicleAbilities::ROCKET), 
-		static_cast<int16_t>(eVehicleAbilities::PARACHUTE), 
-		static_cast<int16_t>(eVehicleAbilities::RAMP_BUGGY)
-	};
-
-	bool dont_disable[4]         = {};
-	static CVehicle* current_veh = nullptr;
-
 	class vehicle_ability : looped_command
 	{
 		using looped_command::looped_command;
 
-		virtual void on_enable() override
+		class vehicle_ability_helper
 		{
-			CVehicle* vehicle_ptr = static_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(self::veh));
+		private:
+			static constexpr std::array<eVehicleAbilities, 4> m_abilities = {
+				eVehicleAbilities::JUMP,
+				eVehicleAbilities::ROCKET,
+				eVehicleAbilities::PARACHUTE,
+				eVehicleAbilities::RAMP_BUGGY,
+			};
 
-			if (vehicle_ptr == nullptr) 
-				memset(dont_disable, 0, 4);
-			else
+		private:
+			std::unordered_set<eVehicleAbilities> m_stock_abilities;
+			CVehicle* m_vehicle = nullptr;
+			uint16_t m_original_abilities;
+
+		public:
+			vehicle_ability_helper() = default;
+			vehicle_ability_helper(CVehicle* vehicle)
 			{
-				CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(vehicle_ptr->m_model_info);
+				if (vehicle == nullptr || vehicle->m_model_info == nullptr)
+					return;
+				m_vehicle = vehicle;
 
-				for (int i = 0; i < 4; i++)
-					dont_disable[i] = misc::has_bits_set((int*)vehicle_model_info->m_ability_flag, bits[i]);
+				const auto model_info = reinterpret_cast<CVehicleModelInfo*>(vehicle->m_model_info);
+				m_original_abilities = model_info->m_ability_flag;
+
+				for (const auto ability : m_abilities)
+				{
+					if (m_original_abilities >> (uint16_t)ability & 1)
+					{
+						m_stock_abilities.insert(ability);
+					}
+				}
 			}
 
-			g.vehicle.ability_jump      = dont_disable[0];
-			g.vehicle.ability_rocket    = dont_disable[1];
-			g.vehicle.ability_parachute = dont_disable[2];
-			g.vehicle.ability_ramp      = dont_disable[3];
+			/**
+			 * @brief Gets the initial ability value of the vehicle.
+			 * 
+			 * @param ability 
+			 * @return true 
+			 * @return false 
+			 */
+			bool get_ability_default(eVehicleAbilities ability)
+			{
+				return m_stock_abilities.contains(ability);
+			}
+
+			/**
+			 * @brief Checks if the currently bound CVehicle ptr has the flag enabled.
+			 * 
+			 * @param ability 
+			 * @return true 
+			 * @return false 
+			 */
+			bool has_ability(eVehicleAbilities ability)
+			{
+				return m_vehicle && m_vehicle->m_model_info && reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info)->m_ability_flag >> (uint16_t)ability & 1;
+			}
+
+			/**
+			 * @brief Resets the vehicle to its defaults safely!
+			 */
+			void reset_defaults()
+			{
+				if (m_vehicle && m_vehicle->m_model_info)
+				{
+					const auto model_info = reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info);
+
+					model_info->m_ability_flag = m_original_abilities;
+				}
+			}
+
+			/**
+			 * @brief Safely set the ability state of a vehicle.
+			 * 
+			 * @param ability 
+			 * @param toggle 
+			 */
+			void toggle_ability(eVehicleAbilities ability, bool toggle)
+			{
+				if (m_vehicle && m_vehicle->m_model_info)
+				{
+					const auto model_info = reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info);
+					if (toggle)
+						misc::set_bits(&model_info->m_ability_flag, (uint16_t)ability);
+					else
+						misc::clear_bits(&model_info->m_ability_flag, (uint16_t)ability);
+				}
+			}
+
+			bool operator ==(const CVehicle* vehicle) const
+			{
+				return m_vehicle == vehicle;
+			}
+
+		} m_vehicle_ability_helper {};
+
+		virtual void on_enable() override
+		{
+			reset(g_local_player->m_vehicle);
 		}
 
 		virtual void on_tick() override
 		{
-			CVehicle* vehicle_ptr = static_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(self::veh));
-
-			if (vehicle_ptr == nullptr || (current_veh && vehicle_ptr != current_veh))
+			const auto curr_veh = g_local_player->m_vehicle;
+			if (curr_veh && !(g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING))
 			{
-				current_veh                      = nullptr;
-				g.vehicle.modify_vehicle_ability = false;
+				m_vehicle_ability_helper.reset_defaults();
 				return;
 			}
-			current_veh = vehicle_ptr;
 
-			CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(vehicle_ptr->m_model_info);
+			if (m_vehicle_ability_helper != curr_veh)
+			{
+				reset(curr_veh);
+			}
 
-			if (g.vehicle.ability_jump)
-				misc::set_bits((int*)vehicle_model_info->m_ability_flag, bits[0]);
-			else
-				misc::clear_bits((int*)vehicle_model_info->m_ability_flag, bits[0]);
-
-			if (g.vehicle.ability_rocket)
-				misc::set_bits((int*)vehicle_model_info->m_ability_flag, bits[1]);
-			else
-				misc::clear_bits((int*)vehicle_model_info->m_ability_flag, bits[1]);
-
-			if (g.vehicle.ability_parachute)
-				misc::set_bits((int*)vehicle_model_info->m_ability_flag, bits[2]);
-			else
-				misc::clear_bits((int*)vehicle_model_info->m_ability_flag, bits[2]);
-			
-			if (g.vehicle.ability_ramp)
-				misc::set_bits((int*)vehicle_model_info->m_ability_flag, bits[3]);
-			else
-				misc::clear_bits((int*)vehicle_model_info->m_ability_flag, bits[3]);
+			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::JUMP, g.vehicle.abilities.jump);
+			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::ROCKET, g.vehicle.abilities.rocket);
+			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::PARACHUTE, g.vehicle.abilities.parachute);
+			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::RAMP_BUGGY, g.vehicle.abilities.ramp);
 		}
 
 		virtual void on_disable() override
 		{
-			current_veh = nullptr;
+			reset(nullptr);
+		}
 
-			CVehicle* vehicle_ptr = static_cast<CVehicle*>(g_pointers->m_gta.m_handle_to_ptr(self::veh));
-
-			if (vehicle_ptr == nullptr)
-				return;
-
-			CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(vehicle_ptr->m_model_info);
-
-			for (int i = 0; i < 4; i++)
+		void reset(CVehicle* vehicle)
+		{
+			if (vehicle == nullptr)
 			{
-				if (!dont_disable[i]) {
-					misc::clear_bits((int*)vehicle_model_info->m_ability_flag, bits[i]);
-					continue;
-				}
+				m_vehicle_ability_helper = {};
+				g.vehicle.abilities = {};
 
-				if (!misc::has_bits_set((int*)vehicle_model_info->m_ability_flag, bits[i]))
-					misc::set_bits((int*)vehicle_model_info->m_ability_flag, bits[i]); // e.g the user disables the rocket on a rocket vehicle, re-apply the bit
+				return;
 			}
+
+			m_vehicle_ability_helper.reset_defaults();
+			m_vehicle_ability_helper = { vehicle };
+
+			// TODO: remove before merging
+			// old counter intuitive behaviour, stepping into the vehicle forcefully changes the states of what we have in our config?
+			// bad idea, should be done differently currently we don't save these values
+			g.vehicle.abilities.jump      = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::JUMP);
+			g.vehicle.abilities.rocket    = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::ROCKET);
+			g.vehicle.abilities.parachute = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::PARACHUTE);
+			g.vehicle.abilities.ramp      = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::RAMP_BUGGY);
 		}
 	};
 
-	vehicle_ability g_vehicle_ability("modifyvehicleability", "MODIFY_VEHICLE_ABILITY", "MODIFY_VEHICLE_ABILITY_DESC", g.vehicle.modify_vehicle_ability);
+	vehicle_ability
+	    g_vehicle_ability("modifyvehicleability", "MODIFY_VEHICLE_ABILITY", "MODIFY_VEHICLE_ABILITY_DESC", g.vehicle.abilities.enabled);
 
-	bool_command g_jump_ability("jumpability", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP_DESC", g.vehicle.ability_jump);
-	bool_command g_rocket_ability("rocketability", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET_DESC", g.vehicle.ability_rocket);
-	bool_command g_parachute_ability("parachuteability", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE_DESC", g.vehicle.ability_parachute);
-	bool_command g_ramp_ability("rampability", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP_DESC", g.vehicle.ability_ramp);
+	bool_command g_jump_ability("jumpability", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP_DESC",
+	    g.vehicle.abilities.jump);
+	bool_command g_rocket_ability("rocketability", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET_DESC",
+	    g.vehicle.abilities.rocket);
+	bool_command g_parachute_ability("parachuteability", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE_DESC",
+	    g.vehicle.abilities.parachute);
+	bool_command g_ramp_ability("rampability", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP_DESC",
+	    g.vehicle.abilities.ramp);
 }

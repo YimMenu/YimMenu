@@ -224,7 +224,7 @@ namespace big
 		{
 			components::command_checkbox<"modifyvehicleability">();
 
-			if (g.vehicle.modify_vehicle_ability)
+			if (g.vehicle.abilities.enabled)
 			{
 				components::command_checkbox<"rocketability">();
 				components::command_checkbox<"jumpability">();
