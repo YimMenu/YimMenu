@@ -2004,7 +2004,7 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
-enum class eVehicleAbilities : int16_t
+enum class eVehicleAbilities : uint16_t
 {
 	JUMP       = 1 << 5,
 	ROCKET     = 1 << 6,
