@@ -1,6 +1,7 @@
 #pragma once
 #include "locals.hpp"
 #include "memory.hpp"
+#include "vector.hpp"
 
 namespace lua::locals
 {
@@ -25,9 +26,20 @@ namespace lua::locals
 	// Param: script: string: The name of the script
 	// Param: index: index: Index of the script local.
 	// Returns: float: The value of the given local.
-	static int get_float(const std::string& script, int index)
+	static float get_float(const std::string& script, int index)
 	{
 		return *get<float*>(script, index);
+	}
+
+	// Lua API: Function
+	// Table: locals
+	// Name: get_vec3
+	// Param: script: string: The name of the script
+	// Param: index: index: Index of the script local.
+	// Returns: Vector3: The value of the given local.
+	static Vector3 get_vec3(const std::string& script, int index)
+	{
+		return *get<Vector3*>(script, index);
 	}
 	
 	// Lua API: Function
@@ -54,6 +66,17 @@ namespace lua::locals
 
 	// Lua API: Function
 	// Table: locals
+	// Name: set_vec3
+	// Param: script: string: The name of the script
+	// Param: index: index: Index of the script local.
+	// Param: val: Vector3: The new value of the given local.
+	static void set_vec3(const std::string& script, int index, Vector3 val)
+	{
+		*get<Vector3*>(script, index) = val;
+	}
+
+	// Lua API: Function
+	// Table: locals
 	// Name: get_pointer
 	// Param: script: string: The name of the script
 	// Param: index: index: Index of the script local.
@@ -68,8 +91,10 @@ namespace lua::locals
 		auto ns           = state["locals"].get_or_create<sol::table>();
 		ns["get_int"]     = get_int;
 		ns["get_float"]   = get_float;
+		ns["get_vec3"]    = get_vec3;
 		ns["set_int"]     = set_int;
 		ns["set_float"]   = set_float;
+		ns["set_vec3"]    = set_vec3;
 		ns["get_pointer"] = get_pointer;
 	}
 }

@@ -2,7 +2,7 @@
 
 Table for manipulating GTA scripts locals.
 
-## Functions (5)
+## Functions (7)
 
 ### `get_int(script, index)`
 
@@ -32,6 +32,20 @@ integer = locals.get_int(script, index)
 float = locals.get_float(script, index)
 ```
 
+### `get_vec3(script, index)`
+
+- **Parameters:**
+  - `script` (string): The name of the script
+  - `index` (index): Index of the script local.
+
+- **Returns:**
+  - `Vector3`: The value of the given local.
+
+**Example Usage:**
+```lua
+Vector3 = locals.get_vec3(script, index)
+```
+
 ### `set_int(script, index, val)`
 
 - **Parameters:**
@@ -54,6 +68,18 @@ locals.set_int(script, index, val)
 **Example Usage:**
 ```lua
 locals.set_float(script, index, val)
+```
+
+### `set_vec3(script, index, val)`
+
+- **Parameters:**
+  - `script` (string): The name of the script
+  - `index` (index): Index of the script local.
+  - `val` (Vector3): The new value of the given local.
+
+**Example Usage:**
+```lua
+locals.set_vec3(script, index, val)
 ```
 
 ### `get_pointer(script, index)`
