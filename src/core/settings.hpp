@@ -828,8 +828,6 @@ namespace big
 			struct aimbot
 			{
 				bool enable            = false;
-				bool smoothing         = true;
-				float smoothing_speed  = 2.f;
 				bool on_player         = true;
 				bool on_enemy          = false;
 				bool on_police         = false;
