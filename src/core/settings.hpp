@@ -9,8 +9,8 @@
 #include <bitset>
 #include <rage/rlSessionInfo.hpp>
 #include <weapon/CAmmoInfo.hpp>
-#include <weapon/CWeaponInfo.hpp>
 #include <weapon/CAmmoRocketInfo.hpp>
+#include <weapon/CWeaponInfo.hpp>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui.h>
@@ -451,7 +451,7 @@ namespace big
 
 			struct hotkeys
 			{
-				bool editing_menu_toggle    = false;
+				bool editing_menu_toggle = false;
 				std::atomic<bool> is_mp_chat_active;
 				int menu_toggle             = VK_INSERT;
 				int teleport_waypoint       = 0;
@@ -554,9 +554,9 @@ namespace big
 
 			struct ocean
 			{
-				bool modify_ocean   = false;
-				bool disable_ocean	= false;
-				int ocean_opacity	= 100;
+				bool modify_ocean  = false;
+				bool disable_ocean = false;
+				int ocean_opacity  = 100;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(ocean, modify_ocean, disable_ocean, ocean_opacity)
 			} ocean{};
@@ -764,6 +764,17 @@ namespace big
 			bool siren_mute                             = false;
 			bool all_vehs_in_heists                     = false;
 
+			struct abilities
+			{
+				bool enabled   = false;
+				bool jump      = false;
+				bool rocket    = false;
+				bool parachute = false;
+				bool ramp      = false;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(abilities, enabled)
+			} abilities{};
+
 			struct vehicle_ammo_special
 			{
 				bool enabled                       = false;
@@ -787,7 +798,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, type, explosion_tag, speed, time_between_shots, alternate_wait_time, weapon_range, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_explosion_tag, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)
 			} vehicle_ammo_special{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, vehicle_ammo_special)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, abilities, vehicle_ammo_special)
 		} vehicle{};
 
 		struct weapons

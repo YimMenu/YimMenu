@@ -2004,6 +2004,14 @@ enum class eVehicleSeats
 	OUTSIDE_RIGHT,
 };
 
+enum class eVehicleAbilities : uint16_t
+{
+	JUMP       = 1 << 5,
+	ROCKET     = 1 << 6,
+	PARACHUTE  = 1 << 8,
+	RAMP_BUGGY = 1 << 9
+};
+
 enum class eKnockOffVehicle
 {
 	KNOCKOFFVEHICLE_DEFAULT,
