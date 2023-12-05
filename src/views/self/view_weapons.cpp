@@ -121,6 +121,8 @@ namespace big
 		components::command_checkbox<"incrdamage">();
 		ImGui::InputFloat("VIEW_WEAPON_DAMAGE"_T.data(), &g.weapons.increased_damage, .1, 10, "%.1f");
 
+		components::command_checkbox<"flyingaxe">();
+
 		ImGui::SeparatorText("CUSTOM_WEAPONS"_T.data());
 
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);

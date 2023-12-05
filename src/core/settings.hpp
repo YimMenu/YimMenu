@@ -828,8 +828,6 @@ namespace big
 			struct aimbot
 			{
 				bool enable            = false;
-				bool smoothing         = true;
-				float smoothing_speed  = 2.f;
 				bool on_player         = true;
 				bool on_enemy          = false;
 				bool on_police         = false;
@@ -839,6 +837,12 @@ namespace big
 				uint32_t selected_bone = 0x796E; // Default to head
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, fov, distance, selected_bone)
 			} aimbot{};
+
+			struct flying_axe
+			{
+				bool enable            = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
+			} flying_axe{};
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
 			bool infinite_ammo            = false;
