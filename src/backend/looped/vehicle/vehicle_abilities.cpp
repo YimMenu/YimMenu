@@ -151,9 +151,9 @@ namespace big
 			m_vehicle_ability_helper.reset_defaults();
 			m_vehicle_ability_helper = { vehicle };
 
-			// TODO: remove before merging
-			// old counter intuitive behaviour, stepping into the vehicle forcefully changes the states of what we have in our config?
-			// bad idea, should be done differently currently we don't save these values
+			// currently I'd keep overwriting the display values for what is default for the current vehicle
+			// should we always persist the user's choice onto the vehicle? or only the ones that are enabled?
+			// doesn't sound like too great of an idea for vehicles that have abilities by default and then suddenly they're disabled
 			g.vehicle.abilities.jump      = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::JUMP);
 			g.vehicle.abilities.rocket    = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::ROCKET);
 			g.vehicle.abilities.parachute = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::PARACHUTE);
