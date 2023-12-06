@@ -59,6 +59,9 @@ namespace
 	    "LevelLifters",
 	    ". com",
 	    "$1,000,000,000",
+	    "Instant Delivery",
+	    "0 Ban Risk",
+	    "Discord For Cheap Money",
 	};
 }
 
