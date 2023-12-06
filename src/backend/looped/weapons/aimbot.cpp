@@ -132,6 +132,7 @@ namespace big
 			else
 			{
 				g_aimbot.entity = 0;
+				g_aimbot.using_aimbot_first_time = true;
 			}
 		}
 		virtual void on_disable() override
