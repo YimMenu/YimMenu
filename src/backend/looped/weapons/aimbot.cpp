@@ -10,7 +10,8 @@ namespace big
 		using looped_command::looped_command;
 
 		Vector3 aim_lock;
-
+		Vector3 smooth_factor;
+		bool using_aimbot_first_time = true;
 		virtual void on_tick() override
 		{
 			float local_fov_change = g.weapons.aimbot.fov;
@@ -62,9 +63,38 @@ namespace big
 
 			if (PAD::GET_DISABLED_CONTROL_NORMAL(0, (int)ControllerInputs::INPUT_AIM))
 			{
-				Vector3 camera_target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
-				float camera_heading  = atan2f(camera_target.x, camera_target.y) * 180.0 / 3.14159265358979323846;
-				float magnitude       = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
+				Vector3 camera_target;
+
+				if (g.weapons.aimbot.smoothing)
+				{
+					//Avoid buggy cam
+					if (using_aimbot_first_time) {
+						Vector3 cam_coords    = CAM::GET_GAMEPLAY_CAM_COORD();
+						Vector3 cam_rot       = CAM::GET_GAMEPLAY_CAM_ROT(0);
+						Vector3 cam_direction = math::rotation_to_direction(cam_rot);
+						float distance        = 150;
+						Vector3 multiply      = cam_direction * distance;
+						Vector3 front_cam     = cam_coords + multiply;
+						camera_target         = front_cam - CAM::GET_GAMEPLAY_CAM_COORD();
+						smooth_factor           = camera_target;
+						using_aimbot_first_time = false;
+					}
+					Vector3 target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
+					smooth_factor.x += (target.x - smooth_factor.x) * g.weapons.aimbot.smoothing_speed / 10.f;
+					smooth_factor.y += (target.y - smooth_factor.y) * g.weapons.aimbot.smoothing_speed / 10.f;
+					smooth_factor.z += (target.z - smooth_factor.z) * g.weapons.aimbot.smoothing_speed / 10.f;
+
+					camera_target = smooth_factor;
+				}
+				else
+				{
+					camera_target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
+				}
+				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
+					return;
+
+				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0 / 3.14159265358979323846;
+				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
                     + camera_target.z * camera_target.z);
 
 				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0 / 3.14159265358979323846;
@@ -90,12 +120,21 @@ namespace big
 				}
 			}
 		}
+		virtual void on_disable() override
+		{
+			using_aimbot_first_time = true;
+		}
+
 	};
 
 	aimbot g_aimbot("aimbot", "VIEW_OVERLAY_AIMBOT", "BACKEND_LOOPED_WEAPONS_AIMBOT_DESC", g.weapons.aimbot.enable);
+
+	bool_command g_smoothing("smoothing", "BACKEND_LOOPED_WEAPONS_SMOOTHING", "BACKEND_LOOPED_WEAPONS_SMOOTHING_DESC",
+	    g.weapons.aimbot.smoothing);
 	bool_command
 	    g_aimbot_on_player("aimatplayer", "PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_AT_PLAYER_DESC", g.weapons.aimbot.on_player);
-	bool_command g_aimbot_on_npc("aimatnpc", "NPC", "BACKEND_LOOPED_WEAPONS_AIM_AT_NPC_DESC", g.weapons.aimbot.on_npc);
+	bool_command 
+		g_aimbot_on_npc("aimatnpc", "NPC", "BACKEND_LOOPED_WEAPONS_AIM_AT_NPC_DESC", g.weapons.aimbot.on_npc);
 	bool_command
 	    g_aimbot_on_police("aimatpolice", "POLICE", "BACKEND_LOOPED_WEAPONS_AIM_AT_POLICE_DESC", g.weapons.aimbot.on_police);
 	bool_command g_aimbot_on_enemy("aimatenemy", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY", "BACKEND_LOOPED_WEAPONS_AIM_AT_ENEMY_DESC",
