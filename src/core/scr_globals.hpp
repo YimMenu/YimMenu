@@ -41,8 +41,6 @@ namespace big::scr_globals
 
 	static inline const script_global dance_state(1950837);
 
-	static inline const script_global mobile(20483);
-
 	static inline const script_global transaction_overlimit(20483);
 
 	static inline const script_global stats(2359296);
