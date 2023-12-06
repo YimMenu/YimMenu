@@ -104,7 +104,7 @@ namespace big::spam
 		auto timer      = std::chrono::system_clock::to_time_t(now);
 		auto local_time = *std::localtime(&timer);
 
-		log << "[" << std::put_time(&local_time, "%I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
+		log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
 
 		if (ip)
 			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."
