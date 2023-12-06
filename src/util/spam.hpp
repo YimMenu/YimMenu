@@ -67,8 +67,24 @@ namespace
 
 namespace big::spam
 {
-	inline bool is_text_spam(const char* text)
+	inline bool is_text_spam(const char* text, player_ptr player)
 	{
+		if (g.session.use_spam_timer)
+		{
+			if (player->last_message_time.has_value())
+			{
+				auto currentTime = std::chrono::steady_clock::now();
+				auto diff = std::chrono::duration_cast<std::chrono::seconds>(currentTime - player->last_message_time.value());
+				player->last_message_time.emplace(currentTime);
+
+				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer)
+					return true;
+			}
+			else
+			{
+				player->last_message_time.emplace(std::chrono::steady_clock::now());
+			}
+		}
 		for (auto e : spam_texts)
 			if (strstr(text, e) != 0)
 				return true;
@@ -82,6 +98,14 @@ namespace big::spam
 
 		auto& data = *player->get_net_data();
 		auto ip    = player->get_ip_address();
+
+		auto now = std::chrono::system_clock::now();
+		auto ms  = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+		auto s   = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch());
+		auto m   = std::chrono::duration_cast<std::chrono::minutes>(s);
+		auto h   = std::chrono::duration_cast<std::chrono::hours>(m);
+
+		log << h.count() << ":" << m.count() % 60 << ":" << s.count() % 60 << ":" << ms.count();
 
 		if (ip)
 			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."

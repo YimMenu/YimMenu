@@ -111,7 +111,7 @@ namespace big
 				if (player->is_spammer)
 					return true;
 
-				if (spam::is_text_spam(message))
+				if (spam::is_text_spam(message, player))
 				{
 					if (g.session.log_chat_messages)
 						spam::log_chat(message, player, true);
