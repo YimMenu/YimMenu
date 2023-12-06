@@ -115,6 +115,8 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						spam::log_chat(message, player, true);
+					g_notification_service->push("PROTECTIONS"_T.data(),
+					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
 					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
@@ -204,7 +206,7 @@ namespace big
 
 				if (reason == KickReason::VOTED_OUT)
 				{
-					g_notification_service->push_warning("Protections", "You have been kicked by the host");
+					g_notification_service->push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
 					return true;
 				}
 

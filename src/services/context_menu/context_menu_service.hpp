@@ -71,7 +71,7 @@ namespace big
 				         VEHICLE::SET_VEHICLE_ENGINE_ON(m_handle, false, true, false);
 			         }
 			         else
-				         g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+				         g_notification_service->push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},
 		        {"FIX VEHICLE",
 		           [this] {
@@ -83,7 +83,7 @@ namespace big
 				            VEHICLE::SET_VEHICLE_DIRT_LEVEL(m_handle, 0.f);
 			            }
 			            else
-				            g_notification_service->push_warning("Warning", "Failed to take control of vehicle.");
+				            g_notification_service->push_warning("WARNING"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},		     
 		        {"BURST TIRES",
 		            [this] {
@@ -97,7 +97,7 @@ namespace big
 				            }
 			            }
 			            else
-				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+				            g_notification_service->push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},
 		        {"HALT",
 		            [this] {
@@ -106,7 +106,7 @@ namespace big
 				            VEHICLE::BRING_VEHICLE_TO_HALT(m_handle, 1, 5, true);
 			            }
 			            else
-				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+				            g_notification_service->push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},
 		        {"COPY VEHICLE",
 		            [this] {
@@ -119,14 +119,14 @@ namespace big
 			            if (entity::take_control_of(m_handle))
 				            VEHICLE::SET_VEHICLE_FORWARD_SPEED(m_handle, 79);
 			            else
-				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+				            g_notification_service->push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},
 		        {"LAUNCH",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
 				            ENTITY::APPLY_FORCE_TO_ENTITY(m_handle, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 			            else
-				            g_notification_service->push_warning("Toxic", "Failed to take control of vehicle.");
+				            g_notification_service->push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		        }},
 		        {"EJECT",
 		            [this] {
