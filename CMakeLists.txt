@@ -40,7 +40,7 @@ else ()
   add_compile_options(-Wa,-mbig-obj)
 endif ()
 
-add_library(YimMenu MODULE "${SRC_MAIN}" "src/backend/looped/self/interaction_menu_freedom.cpp" "src/backend/looped/weapons/modify_explosion_radius.cpp")
+add_library(YimMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
