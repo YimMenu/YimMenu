@@ -99,13 +99,12 @@ namespace big::spam
 		auto& data = *player->get_net_data();
 		auto ip    = player->get_ip_address();
 
-		auto now = std::chrono::system_clock::now();
-		auto ms  = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-		auto s   = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch());
-		auto m   = std::chrono::duration_cast<std::chrono::minutes>(s);
-		auto h   = std::chrono::duration_cast<std::chrono::hours>(m);
+		auto now        = std::chrono::system_clock::now();
+		auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+		auto timer      = std::chrono::system_clock::to_time_t(now);
+		auto local_time = *std::localtime(&timer);
 
-		log << h.count() << ":" << m.count() % 60 << ":" << s.count() % 60 << ":" << ms.count();
+		log << "[" << std::put_time(&local_time, "%I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
 
 		if (ip)
 			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."
