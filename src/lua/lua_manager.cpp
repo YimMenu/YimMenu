@@ -124,6 +124,12 @@ namespace big
 
 		if (m_wake_time_changed_scripts_check <= std::chrono::high_resolution_clock::now())
 		{
+			if (!exists(m_scripts_folder.get_path()))
+			{
+				// g_file_manager.ensure_folder_exists(m_scripts_folder.get_path());
+				return;
+			}
+
 			for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
 			{
 				if (entry.is_regular_file())
