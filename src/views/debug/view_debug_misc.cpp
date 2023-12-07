@@ -18,6 +18,13 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TAB_MISC"_T.data()))
 		{
+			if (ImGui::Checkbox("Toggle YimMenu Developer Console", &g.debug.external_console))
+			{
+				g_log.toggle_external_console(g.debug.external_console);
+
+				LOGF(VERBOSE, "Console toggled {}", g.debug.external_console ? "ON" : "OFF");
+			}
+
 			components::command_checkbox<"windowhook">("VIEW_DEBUG_MISC_DISABLE_GTA_WINDOW_HOOK"_T);
 
 			ImGui::Text(std::format("{}: {}/{}", "VIEW_DEBUG_MISC_FIBER_POOL_USAGE"_T, g_fiber_pool->get_used_fibers(), g_fiber_pool->get_total_fibers()).c_str());
