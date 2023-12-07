@@ -83,17 +83,17 @@ namespace rage
 			}
 			return false;
 		}
-		bool WriteBool(bool integer)
+		bool WriteBool(bool boolean)
 		{
-			return big::g_pointers->m_gta.m_write_bitbuf_bool(this, integer, 1);
+			return big::g_pointers->m_gta.m_write_bitbuf_bool(this, boolean, 1);
 		}
-		bool ReadBool(bool* integer)
+		bool ReadBool(bool* boolean)
 		{
-			return big::g_pointers->m_gta.m_read_bitbuf_bool(this, integer, 1);
+			return big::g_pointers->m_gta.m_read_bitbuf_bool(this, boolean, 1);
 		}
-		bool ReadPeerId(uint64_t* integer)
+		bool ReadPeerId(uint64_t* peer_id)
 		{
-			return this->ReadQWord(integer, 0x40);
+			return this->ReadQWord(peer_id, 0x40);
 		}
 		uint64_t ReadBits(size_t numBits)
 		{
