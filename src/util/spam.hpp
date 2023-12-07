@@ -1,6 +1,7 @@
 #pragma once
 #include "file_manager/file.hpp"
 #include "services/players/player_service.hpp"
+#include "core/enums.hpp"
 
 namespace
 {
@@ -67,7 +68,7 @@ namespace
 
 namespace big::spam
 {
-	inline bool is_text_spam(const char* text, player_ptr player)
+	inline SpamReason is_text_spam(const char* text, player_ptr player)
 	{
 		if (g.session.use_spam_timer)
 		{
@@ -78,7 +79,7 @@ namespace big::spam
 				player->last_message_time.emplace(currentTime);
 
 				if (strlen(text) > g.session.spam_length && diff.count() <= g.session.spam_timer)
-					return true;
+					return SpamReason::TIMER_DETECTION;
 			}
 			else
 			{
@@ -87,14 +88,14 @@ namespace big::spam
 		}
 		for (auto e : spam_texts)
 			if (strstr(text, e) != 0)
-				return true;
+				return SpamReason::STATIC_DETECTION;
 
-		return false;
+		return SpamReason::NOT_A_SPAMMER;
 	}
 
-	inline void log_chat(char* msg, player_ptr player, bool is_spam)
+	inline void log_chat(char* msg, player_ptr player, SpamReason spam_reason)
 	{
-		std::ofstream log(g_file_manager.get_project_file(is_spam ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
+		std::ofstream log(g_file_manager.get_project_file(spam_reason != SpamReason::NOT_A_SPAMMER ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
 
 		auto& data = *player->get_net_data();
 		auto ip    = player->get_ip_address();
@@ -104,7 +105,15 @@ namespace big::spam
 		auto timer      = std::chrono::system_clock::to_time_t(now);
 		auto local_time = *std::localtime(&timer);
 
-		log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
+		std::string spam_reason_str = "";
+
+		switch (spam_reason)
+		{
+			case SpamReason::STATIC_DETECTION: spam_reason_str = "(Static Detection) "; break;
+			case SpamReason::TIMER_DETECTION: spam_reason_str = "(Timer Detection) "; break;
+		}
+
+		log << spam_reason_str << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
 
 		if (ip)
 			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."

@@ -111,10 +111,10 @@ namespace big
 				if (player->is_spammer)
 					return true;
 
-				if (spam::is_text_spam(message, player))
+				if (auto spam_reason = spam::is_text_spam(message, player))
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, true);
+						spam::log_chat(message, player, spam_reason);
 					g_notification_service->push("PROTECTIONS"_T.data(),
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
@@ -133,7 +133,7 @@ namespace big
 				else
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, false);
+						spam::log_chat(message, player, SpamReason::NOT_A_SPAMMER);
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
