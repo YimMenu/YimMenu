@@ -14,9 +14,10 @@ namespace big
 		std::chrono::high_resolution_clock::time_point m_wake_time_changed_scripts_check;
 
 		folder m_scripts_folder;
+		folder m_scripts_config_folder;
 
 	public:
-		lua_manager(folder scripts_folder);
+		lua_manager(folder scripts_folder, folder scripts_config_folder);
 		~lua_manager();
 
 		void load_all_modules();
@@ -30,6 +31,11 @@ namespace big
 		inline const folder& get_scripts_folder() const
 		{
 			return m_scripts_folder;
+		}
+
+		inline const folder& get_scripts_config_folder() const
+		{
+			return m_scripts_config_folder;
 		}
 
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);

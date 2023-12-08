@@ -16,8 +16,8 @@
 #include "bindings/stats.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/weapons.hpp"
 #include "bindings/vehicles.hpp"
+#include "bindings/weapons.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -76,6 +76,7 @@ namespace big
 		    sol::lib::math,
 			sol::lib::table,
 			sol::lib::bit32,
+		    sol::lib::io,
 			sol::lib::utf8
 		);
 		// clang-format on
@@ -157,6 +158,30 @@ namespace big
 		m_state["os"] = sandbox_os;
 	}
 
+	void lua_module::sandbox_lua_io_library()
+	{
+		auto io = m_state["io"];
+		sol::table sandbox_io(m_state, sol::create);
+
+		m_io_open          = io["open"];
+		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
+			for (const auto& entry :
+			    std::filesystem::recursive_directory_iterator(g_lua_manager->get_scripts_config_folder().get_path(), std::filesystem::directory_options::skip_permission_denied))
+			{
+				if (entry.path().filename() == filename)
+				{
+					return m_io_open(filename, mode).get<sol::reference>();
+				}
+			}
+
+			LOG(WARNING) << "Couldn't io.open a file called " << filename << ". Note that io.open is restricted to the scripts_config folder.";
+
+			return sol::reference(sol::lua_nil);
+		};
+
+		m_state["io"] = sandbox_io;
+	}
+
 	template<size_t N>
 	static constexpr auto not_supported_lua_function(const char (&function_name)[N])
 	{
@@ -194,6 +219,7 @@ namespace big
 		// https://blog.rubenwardy.com/2020/07/26/sol3-script-sandbox/
 		// https://www.lua.org/manual/5.4/manual.html#pdf-require
 		sandbox_lua_os_library();
+		sandbox_lua_io_library();
 		sandbox_lua_loads(scripts_folder);
 
 		lua::log::bind(m_state);
