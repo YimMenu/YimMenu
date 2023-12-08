@@ -165,18 +165,26 @@ namespace big
 
 		m_io_open          = io["open"];
 		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
-			const auto scripts_config_sub_path = std::filesystem::absolute(g_lua_manager->get_scripts_config_folder().get_path() / filename);
+			constexpr auto make_absolute = [](const std::filesystem::path& root, const std::filesystem::path& user_path) -> std::optional<std::filesystem::path> {
+				auto final_path = std::filesystem::weakly_canonical(root / user_path);
 
-			const auto filename_is_not_inside_scripts_config =
-			    !scripts_config_sub_path.lexically_relative(g_lua_manager->get_scripts_config_folder().get_path()).empty();
-			if (filename_is_not_inside_scripts_config)
+				auto [root_end, nothing] = std::mismatch(root.begin(), root.end(), final_path.begin());
+
+				if (root_end != root.end())
+					return std::nullopt;
+
+				return final_path;
+			};
+
+			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
+			if (!scripts_config_sub_path)
 			{
 				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";
 
 				return sol::reference(sol::lua_nil);
 			}
 
-			const auto res = m_io_open(scripts_config_sub_path.u8string().c_str(), mode).get<sol::reference>();
+			const auto res = m_io_open(scripts_config_sub_path.value().u8string().c_str(), mode).get<sol::reference>();
 
 			if (res.get_type() == sol::type::lua_nil)
 			{
