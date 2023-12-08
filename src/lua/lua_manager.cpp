@@ -3,10 +3,10 @@
 #include "file_manager.hpp"
 
 namespace big
-{
-	lua_manager::lua_manager(folder scripts_folder) :
+	lua_manager::lua_manager(folder scripts_folder, folder scripts_config_folder) :
 	    m_scripts_folder(scripts_folder),
-		m_disabled_scripts_folder(scripts_folder.get_folder("./disabled"))
+	    m_scripts_config_folder(scripts_config_folder),
+	    m_disabled_scripts_folder(scripts_folder.get_folder("./disabled"))
 	{
 		m_wake_time_changed_scripts_check = std::chrono::high_resolution_clock::now() + m_delay_between_changed_scripts_check;
 

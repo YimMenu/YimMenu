@@ -348,6 +348,7 @@ namespace big
 			bool prompt_ambient_animations    = false;
 			std::string persist_outfit        = "";
 			bool persist_outfits_mis          = false;
+			bool interaction_menu_freedom     = false;
 
 			struct hud
 			{
@@ -383,7 +384,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(super_hero_fly, gradual, explosions, auto_land, charge, ptfx, fly_speed, initial_launch)
 			} super_hero_fly{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, passive, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, noclip_aim_speed_multiplier, noclip_speed_multiplier, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, prompt_ambient_animations, persist_outfit, persist_outfits_mis, super_hero_fly)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, passive, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, noclip_aim_speed_multiplier, noclip_speed_multiplier, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_drown, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, prompt_ambient_animations, persist_outfit, persist_outfits_mis, interaction_menu_freedom, super_hero_fly)
 		} self{};
 
 		struct session
@@ -860,6 +861,8 @@ namespace big
 			bool infinite_mag             = false;
 			float increased_damage        = 1;
 			bool increase_damage          = false;
+			float set_explosion_radius    = 1.f;
+			bool modify_explosion_radius  = false;
 			bool no_recoil                = false;
 			bool no_spread                = false;
 			std::string vehicle_gun_model = "bus";
@@ -872,7 +875,7 @@ namespace big
 			bool enable_weapon_hotkeys    = false;
 			std::map<int, std::vector<uint32_t>> weapon_hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, set_explosion_radius, modify_explosion_radius, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
 		} weapons{};
 
 		struct window
