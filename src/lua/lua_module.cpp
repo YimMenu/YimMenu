@@ -180,7 +180,7 @@ namespace big
 
 			if (res.get_type() == sol::type::lua_nil)
 			{
-				LOG(WARNING) << "Couldn't io.open a file called " << filename << ". Note that io.open is restricted to the scripts_config folder.";
+				LOG(WARNING) << "Couldn't io.open a file called " << filename << " mode (" << mode << "). Note that io.open is restricted to the scripts_config folder.";
 			}
 
 			return res;
