@@ -165,18 +165,25 @@ namespace big
 
 		m_io_open          = io["open"];
 		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
-			for (const auto& entry :
-			    std::filesystem::recursive_directory_iterator(g_lua_manager->get_scripts_config_folder().get_path(), std::filesystem::directory_options::skip_permission_denied))
+			const auto scripts_config_sub_path = std::filesystem::absolute(g_lua_manager->get_scripts_config_folder().get_path() / filename);
+
+			const auto filename_is_not_inside_scripts_config =
+			    !scripts_config_sub_path.lexically_relative(g_lua_manager->get_scripts_config_folder().get_path()).empty();
+			if (filename_is_not_inside_scripts_config)
 			{
-				if (entry.path().filename() == filename)
-				{
-					return m_io_open(filename, mode).get<sol::reference>();
-				}
+				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";
+
+				return sol::reference(sol::lua_nil);
 			}
 
-			LOG(WARNING) << "Couldn't io.open a file called " << filename << ". Note that io.open is restricted to the scripts_config folder.";
+			const auto res = m_io_open(scripts_config_sub_path, mode).get<sol::reference>();
 
-			return sol::reference(sol::lua_nil);
+			if (res.get_type() == sol::type::lua_nil)
+			{
+				LOG(WARNING) << "Couldn't io.open a file called " << filename << ". Note that io.open is restricted to the scripts_config folder.";
+			}
+
+			return res;
 		};
 
 		m_state["io"] = sandbox_io;
