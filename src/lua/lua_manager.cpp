@@ -3,6 +3,7 @@
 #include "file_manager.hpp"
 
 namespace big
+{
 	lua_manager::lua_manager(folder scripts_folder, folder scripts_config_folder) :
 	    m_scripts_folder(scripts_folder),
 	    m_scripts_config_folder(scripts_config_folder),
