@@ -176,7 +176,7 @@ namespace big
 				return sol::reference(sol::lua_nil);
 			}
 
-			const auto res = m_io_open(scripts_config_sub_path, mode).get<sol::reference>();
+			const auto res = m_io_open(scripts_config_sub_path.u8string().c_str(), mode).get<sol::reference>();
 
 			if (res.get_type() == sol::type::lua_nil)
 			{
