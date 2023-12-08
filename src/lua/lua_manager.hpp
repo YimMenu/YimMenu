@@ -4,15 +4,18 @@
 
 namespace big
 {
-	class lua_manager
+	class lua_manager final
 	{
 	private:
 		std::mutex m_module_lock;
 		std::vector<std::shared_ptr<lua_module>> m_modules;
+		std::mutex m_disabled_module_lock;
+		std::vector<std::shared_ptr<lua_module>> m_disabled_modules;
 
 		static constexpr std::chrono::seconds m_delay_between_changed_scripts_check = 3s;
 		std::chrono::high_resolution_clock::time_point m_wake_time_changed_scripts_check;
 
+		folder m_disabled_scripts_folder;
 		folder m_scripts_folder;
 
 	public:
@@ -33,13 +36,17 @@ namespace big
 		}
 
 		std::weak_ptr<lua_module> get_module(rage::joaat_t module_id);
+		std::weak_ptr<lua_module> get_disabled_module(rage::joaat_t module_id);
 
 		bool has_gui_to_draw(rage::joaat_t tab_hash);
 		void draw_independent_gui();
 		void draw_gui(rage::joaat_t tab_hash);
 
+		std::weak_ptr<lua_module> enable_module(rage::joaat_t module_id);
+		std::weak_ptr<lua_module> disable_module(rage::joaat_t module_id);
+
 		void unload_module(rage::joaat_t module_id);
-		void load_module(const std::filesystem::path& module_path);
+		std::weak_ptr<lua_module> load_module(const std::filesystem::path& module_path);
 
 		void reload_changed_scripts();
 
@@ -87,6 +94,16 @@ namespace big
 			std::lock_guard guard(m_module_lock);
 
 			for (auto& module : m_modules)
+			{
+				func(module);
+			}
+		}
+
+		inline void for_each_disabled_module(auto func)
+		{
+			std::lock_guard guard(m_disabled_module_lock);
+
+			for (auto& module : m_disabled_modules)
 			{
 				func(module);
 			}
