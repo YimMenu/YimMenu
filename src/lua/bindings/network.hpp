@@ -1,5 +1,4 @@
 #pragma once
-#include "lua/sol.hpp"
 
 // https://stackoverflow.com/a/40777268
 /**

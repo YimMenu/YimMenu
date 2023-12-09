@@ -62,6 +62,9 @@
 #include "services/notifications/notification_service.hpp"
 #include "services/translation_service/translation_service.hpp"
 
+#define SOL_ALL_SAFETIES_ON 1
+#include "lua/sol.hpp"
+
 // clang-format on
 
 namespace big

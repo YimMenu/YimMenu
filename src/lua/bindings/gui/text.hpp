@@ -1,6 +1,5 @@
 #pragma once
 #include "base_text_element.hpp"
-#include "lua/sol.hpp"
 
 namespace lua::gui
 {
