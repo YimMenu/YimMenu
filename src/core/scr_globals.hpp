@@ -66,6 +66,8 @@ namespace big::scr_globals
 	static inline const script_global property_names(1312228);
 
 	static inline const script_global pickups(2765084);
+
+	static inline const script_global reset_clothing(103377); // freemode 75, &iLocal_.*, 2\);
 }
 
 namespace big::scr_locals
