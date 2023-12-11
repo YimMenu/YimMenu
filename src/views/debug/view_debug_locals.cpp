@@ -229,7 +229,7 @@ namespace big
 
 			ImGui::PushItemWidth(200.f);
 
-			if (ImGui::InputScalar("VIEW_DEBUG_LOCALS_LOCAL"_T.data(), ImGuiDataType_U16, &local_test.local_index))
+			ImGui::InputScalar("VIEW_DEBUG_LOCALS_LOCAL"_T.data(), ImGuiDataType_U16, &local_test.local_index);
 
 			if (local_thread)
 				local_laddie = script_local(local_thread, local_test.local_index);
