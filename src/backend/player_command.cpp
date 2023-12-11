@@ -36,7 +36,7 @@ namespace big
 		g_fiber_pool->queue_job([this, args, ctx] {
 			command_arguments new_args(m_num_args.value(), args);
 
-			if (g_player_service->get_self()->id() == args.get<int>(0))
+			if (g_player_service->get_self()->id() == args.get<uint8_t>(0))
 			{
 				execute(g_player_service->get_self(), new_args, ctx);
 				return;
