@@ -151,7 +151,7 @@ namespace big
 
 			if (cmd_name_a == sub && cmd_name_b != sub)
 				return true;
-			if (cmd_name_b == sub && cmd_name_b != sub)
+			if (cmd_name_b == sub && cmd_name_a != sub)
 				return false;
 
 			auto pos_a = cmd_name_a.find(sub);
