@@ -19,7 +19,7 @@ namespace big
 				if (is_rocket && (vehicle->m_boost == 0.f || !vehicle->m_boost_state))
 				{
 					vehicle->m_boost_allow_recharge = true;
-					vehicle->m_boost                = 3.f;
+					vehicle->m_boost                = 10.f;
 				}
 				else if (is_kers && vehicle->m_kers_boost == 0.f)
 				{
@@ -29,7 +29,7 @@ namespace big
 			else if (g.vehicle.boost_behavior == eBoostBehaviors::INFINITE_BOOST)// Infinite
 			{
 				vehicle->m_boost_allow_recharge = true;
-				vehicle->m_boost                = 3.f;
+				vehicle->m_boost                = 10.f;
 				vehicle->m_kers_boost           = vehicle->m_kers_boost_max - 0.01f;
 			}
 			else if (g.vehicle.boost_behavior == eBoostBehaviors::HOLD_FOR_INFINITE) //Hold for Boost
@@ -39,7 +39,7 @@ namespace big
 					if (is_rocket && vehicle->m_boost_state)
 					{
 						vehicle->m_boost_allow_recharge = true;
-						vehicle->m_boost                = 3.f;
+						vehicle->m_boost                = 10.f;
 					}
 					else if (is_kers)
 					{

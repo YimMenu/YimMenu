@@ -145,6 +145,33 @@ namespace big
 				break;
 		}
 
+		auto compare_by_substring_match = [](command*& a, command*& b, const std::string& sub) -> bool {
+			std::string cmd_name_a = a->get_name();
+			std::string cmd_name_b = b->get_name();
+
+			if (cmd_name_a == sub && cmd_name_b != sub)
+				return true;
+			if (cmd_name_b == sub && cmd_name_a != sub)
+				return false;
+
+			auto pos_a = cmd_name_a.find(sub);
+			auto pos_b = cmd_name_b.find(sub);
+
+			if (pos_a != std::string::npos && pos_b != std::string::npos)
+			{
+				if (pos_a != pos_b)
+					return pos_a < pos_b;
+
+				return cmd_name_a.length() < cmd_name_b.length();
+			}
+
+			return pos_a < pos_b;
+		};
+
+		std::sort(result_cmds.begin(), result_cmds.end(), [&search, &compare_by_substring_match](command*& a, command*& b) {
+			return compare_by_substring_match(a, b, search);
+		});
+
 		return result_cmds;
 	}
 
