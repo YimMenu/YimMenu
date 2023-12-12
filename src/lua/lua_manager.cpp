@@ -4,6 +4,25 @@
 
 namespace big
 {
+	std::optional<std::filesystem::path> move_file_relative_to_folder(const std::filesystem::path& original, const std::filesystem::path& target, const std::filesystem::path& file)
+	{
+		// keeps folder hierarchy intact
+		const auto new_module_path = target / relative(file, original);
+		g_file_manager.ensure_file_can_be_created(new_module_path);
+
+		try
+		{
+			rename(file, new_module_path);
+		}
+		catch(const std::filesystem::filesystem_error& e)
+		{
+			LOG(FATAL) << "Failed to move Lua file: " << e.what();
+
+			return std::nullopt;
+		}
+		return { new_module_path };
+	}
+
 	lua_manager::lua_manager(folder scripts_folder, folder scripts_config_folder) :
 	    m_scripts_folder(scripts_folder),
 	    m_scripts_config_folder(scripts_config_folder),
@@ -21,6 +40,75 @@ namespace big
 		unload_all_modules();
 
 		g_lua_manager = nullptr;
+	}
+
+	void lua_manager::disabled_all_modules()
+	{
+		std::vector<std::filesystem::path> script_paths;
+
+		{
+			std::lock_guard guard(m_module_lock);
+			for (auto& module : m_disabled_modules)
+			{
+				script_paths.push_back(module->module_path());
+
+				module.reset();
+			}
+			m_modules.clear();
+		}
+
+		std::lock_guard guard(m_disabled_module_lock);
+		for (const auto& script_path : script_paths)
+		{
+			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), script_path);
+			if (new_module_path)
+			{
+				load_module(*new_module_path);
+			}
+		}
+	}
+
+	void lua_manager::enable_all_modules()
+	{
+		std::vector<std::filesystem::path> script_paths;
+
+		{
+			std::lock_guard guard(m_disabled_module_lock);
+			for (auto& module : m_disabled_modules)
+			{
+				script_paths.push_back(module->module_path());
+
+				module.reset();
+			}
+			m_modules.clear();
+		}
+
+		std::lock_guard guard(m_module_lock);
+		for (const auto& script_path : script_paths)
+		{
+			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), script_path);
+			if (new_module_path)
+			{
+				load_module(*new_module_path);
+			}
+		}
+	}
+
+	void lua_manager::load_all_modules()
+	{
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
+			if (entry.is_regular_file() && entry.path().extension() == ".lua")
+				load_module(entry.path());
+	}
+
+	void lua_manager::unload_all_modules()
+	{
+		std::lock_guard guard(m_module_lock);
+
+		for (auto& module : m_modules)
+			module.reset();
+
+		m_modules.clear();
 	}
 
 	bool lua_manager::has_gui_to_draw(rage::joaat_t tab_hash)
@@ -91,21 +179,11 @@ namespace big
 				return module_id == module->module_id();
 			});
 
-			// keeps folder hierarchy intact
-			const auto new_module_path = m_scripts_folder.get_file(relative(module_path, m_disabled_scripts_folder.get_path()));
-			g_file_manager.ensure_file_can_be_created(new_module_path.get_path());
-
-			try
+			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), module_path);
+			if (new_module_path)
 			{
-				rename(module_path, new_module_path.get_path());
+				return load_module(*new_module_path);
 			}
-			catch(const std::filesystem::filesystem_error& e)
-			{
-				LOG(FATAL) << "Failed to move Lua script to script folder folder, exception: " << e.what();
-
-				return {};
-			}
-			return load_module(new_module_path.get_path());
 		}
 
 		return {};
@@ -118,21 +196,11 @@ namespace big
 			const auto module_path = module->module_path();
 			unload_module(module_id);
 
-			// keeps folder hierarchy intact
-			const auto new_module_path = m_disabled_scripts_folder.get_file(relative(module_path, m_scripts_folder.get_path()));
-			g_file_manager.ensure_file_can_be_created(new_module_path.get_path());
-
-			try
+			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), module_path);
+			if (new_module_path)
 			{
-				rename(module_path, new_module_path.get_path());
+				return load_module(*new_module_path);
 			}
-			catch(const std::filesystem::filesystem_error& e)
-			{
-				LOG(FATAL) << "Failed to move Lua script to disabled folder, exception: " << e.what();
-
-				return {};
-			}
-			return load_module(new_module_path.get_path());
 		}
 		return {};
 	}
@@ -247,21 +315,5 @@ namespace big
 	{
 		LOG(FATAL) << state["!module_name"].get<std::string_view>() << ": " << error.what();
 		Logger::FlushQueue();
-	}
-
-	void lua_manager::load_all_modules()
-	{
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(m_scripts_folder.get_path(), std::filesystem::directory_options::skip_permission_denied))
-			if (entry.is_regular_file() && entry.path().extension() == ".lua")
-				load_module(entry.path());
-	}
-	void lua_manager::unload_all_modules()
-	{
-		std::lock_guard guard(m_module_lock);
-
-		for (auto& module : m_modules)
-			module.reset();
-
-		m_modules.clear();
 	}
 }
