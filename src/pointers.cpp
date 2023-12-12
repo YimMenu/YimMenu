@@ -1277,7 +1277,7 @@ namespace big
             "E9 ? ? ? ? 48 8D 81 ? ? ? ? 4C 39 08",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_netfilter_handle_message = ptr.as<PVOID>();
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.add(1).rip().as<PVOID>();
             }
         },
         // Handle Chat Message
@@ -1286,7 +1286,7 @@ namespace big
             "4D 85 C9 0F 84 ? ? ? ? 48 8B C4 48 89 58 08 48 89 70 10 48 89 78 18 55 41 54 41 55 41 56 41 57 48 8D A8",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_chat_message = ptr.add(1).rip().as<functions::handle_chat_message>();
+                g_pointers->m_gta.m_handle_chat_message = ptr.as<functions::handle_chat_message>();
             }
         },
         // Language & Update Language
