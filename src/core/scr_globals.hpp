@@ -4,22 +4,22 @@
 
 namespace big::scr_globals
 {
-	static inline const script_global gsbd(2648711);
-	static inline const script_global gsbd_fm(1835504);
-	static inline const script_global gsbd_kicking(1885447);
-	static inline const script_global gsbd_fm_events(1924276);
-	static inline const script_global gsbd_block_c(2652364);
-	static inline const script_global gsbd_property_instances(1944302);
+	static inline const script_global gsbd(2648918);
+	static inline const script_global gsbd_fm(1845263);
+	static inline const script_global gsbd_kicking(1877042);
+	static inline const script_global gsbd_fm_events(1916087);
+	static inline const script_global gsbd_block_c(2652572);
+	static inline const script_global gsbd_property_instances(1936138);
 
-	static inline const script_global globalplayer_bd(2657704);
-	static inline const script_global gpbd_fm_3(1895156);
-	static inline const script_global gpbd_fm_1(1853988);
-	static inline const script_global interiors(1950844);
+	static inline const script_global globalplayer_bd(2657921);
+	static inline const script_global gpbd_fm_3(1886967);
+	static inline const script_global gpbd_fm_1(1845263);
+	static inline const script_global interiors(1942781);
 
-	static inline const script_global launcher_global(2756336);
+	static inline const script_global launcher_global(2698947);
 
-	static inline const script_global sp(113810); // check flow_controller
-	static inline const script_global mission_definition(91601); // standard_global_init (66, "agency_heist1", "AH1", 230, 1, 1, -1, -1, 8192)
+	static inline const script_global sp(114370); // check flow_controller
+	static inline const script_global mission_definition(92160); // standard_global_init (66, "agency_heist1", "AH1", 230, 1, 1, -1, -1, 8192)
 
 	// creator globals usually remain the same after updates
 	static inline const script_global creator_job_metadata(4718592);
@@ -28,46 +28,46 @@ namespace big::scr_globals
 	static inline const script_global mission_creator_radar_follows_camera(2621443);
 	static inline const script_global mission_creator_exited(1574530);
 
-	static inline const script_global in_multiplayer(78689); // g_bInMultiplayer
-	static inline const script_global transition_state(1574996);
-	static inline const script_global sctv_spectator(2695969); // pausemenu_multiplayer function 0xE49C42EC
+	static inline const script_global in_multiplayer(79248); // g_bInMultiplayer
+	static inline const script_global transition_state(1575008);
+	static inline const script_global sctv_spectator(2697509); // pausemenu_multiplayer function 0xE49C42EC
 
-	static inline const script_global vehicle_global(1586488);
+	static inline const script_global vehicle_global(1586504);
 
-	static inline const script_global freemode_properties(2672524);
-	static inline const script_global freemode_global(2794162);
+	static inline const script_global freemode_properties(2672741);
+	static inline const script_global freemode_global(2738587);
 
-	static inline const script_global spawn_global(2694613);
+	static inline const script_global spawn_global(2695991);
 
-	static inline const script_global dance_state(1950837);
+	static inline const script_global dance_state(1942774);
 
-	static inline const script_global transaction_overlimit(20483);
+	static inline const script_global transaction_overlimit(20796);
 
 	static inline const script_global stats(2359296);
 
 	static inline const script_global session(1574589);
-	static inline const script_global session2(1575020);
-	static inline const script_global session3(32284);
-	static inline const script_global session4(1574934);
-	static inline const script_global session5(1574995);
-	static inline const script_global session6(2694534);
+	static inline const script_global session2(1575032);
+	static inline const script_global session3(32829);
+	static inline const script_global session4(1574941);
+	static inline const script_global session5(1575007);
+	static inline const script_global session6(2695909);
 
-	static inline const script_global gooch(1890378);
+	static inline const script_global gooch(1882037);
 
-	static inline const script_global gun_van(1956855);
+	static inline const script_global gun_van(1948900);
 
-	static inline const script_global interaction_menu_access(2766623); // am_pi_menu -> PI_BIK_13_2_H -> global = true;
+	static inline const script_global interaction_menu_access(2710115); // am_pi_menu -> PI_BIK_13_2_H -> global = true;
 
-	static inline const script_global disable_wasted_sound(2764735); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
+	static inline const script_global disable_wasted_sound(2707352); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
 
 	static inline const script_global passive(1574582);
 
-	static inline const script_global property_garage(1945123);
-	static inline const script_global property_names(1312228);
+	static inline const script_global property_garage(1936959);
+	static inline const script_global property_names(1312263);
 
-	static inline const script_global pickups(2765084);
+	static inline const script_global pickups(2707706);
 
-	static inline const script_global reset_clothing(103377); // freemode 75, &iLocal_.*, 2\);
+	static inline const script_global reset_clothing(103936); // freemode 75, &iLocal_.*, 2\);
 }
 
 namespace big::scr_locals
