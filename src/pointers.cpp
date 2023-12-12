@@ -205,7 +205,7 @@ namespace big
             "84 C9 0F 84 ? ? ? ? 48 89 5C 24 ? 48 89 74 24",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_trigger_script_event = ptr.sub(0x1C).as<decltype(gta_pointers::m_trigger_script_event)>();
+                g_pointers->m_gta.m_trigger_script_event = ptr.as<decltype(gta_pointers::m_trigger_script_event)>();
             }
         },
         // Received Event Hook
