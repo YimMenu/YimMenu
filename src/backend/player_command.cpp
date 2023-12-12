@@ -92,6 +92,7 @@ namespace big
 			result.push(plyr_id);
 		}
 
+		new_args.reserve(args.size() - 1);
 		std::copy(++args.begin(), args.end(), new_args.begin());
 		// for (int i = 1; i < args.size(); i++)
 		// 	new_args.push_back(args[i]);
