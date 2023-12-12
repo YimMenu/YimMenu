@@ -202,7 +202,7 @@ namespace big
         // Trigger Script Event
         {
             "TSE",
-            "45 8B F0 41 8B F9 48 8B EA",
+            "45 8B F8 41 8B F9",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_trigger_script_event = ptr.sub(0x1C).as<decltype(gta_pointers::m_trigger_script_event)>();
@@ -256,10 +256,10 @@ namespace big
         // Read Bitbuffer Boolean
         {
             "RBB",
-            "E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? BB",
+            "48 8B C4 48 89 58 ? 55 56 57 48 83 EC ? 48 83 60",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(gta_pointers::m_read_bitbuf_bool)>();
+                g_pointers->m_gta.m_read_bitbuf_bool = ptr.as<decltype(gta_pointers::m_read_bitbuf_bool)>();
             }
         },
         // Write Bitbuffer WORD/DWORD
