@@ -14,17 +14,17 @@ namespace big
 		class vehicle_ability_helper
 		{
 		private:
-			static constexpr std::array<eVehicleAbilities, 4> m_abilities = {
-				eVehicleAbilities::JUMP,
-				eVehicleAbilities::ROCKET,
-				eVehicleAbilities::PARACHUTE,
-				eVehicleAbilities::RAMP_BUGGY,
+			static constexpr std::array<CVehicleModelInfoFlags, 4> m_abilities = {
+				CVehicleModelInfoFlags::JUMPING_CAR,
+				CVehicleModelInfoFlags::HAS_ROCKET_BOOST,
+				CVehicleModelInfoFlags::HAS_PARACHUTE,
+				CVehicleModelInfoFlags::RAMP,
 			};
 
 		private:
-			std::unordered_set<eVehicleAbilities> m_stock_abilities;
+			std::unordered_set<CVehicleModelInfoFlags> m_stock_abilities;
 			CVehicle* m_vehicle = nullptr;
-			uint16_t m_original_abilities;
+			bool m_original_abilities[4] = {};
 
 		public:
 			vehicle_ability_helper() = default;
@@ -34,12 +34,12 @@ namespace big
 					return;
 				m_vehicle = vehicle;
 
-				const auto model_info = reinterpret_cast<CVehicleModelInfo*>(vehicle->m_model_info);
-				m_original_abilities = model_info->m_ability_flag;
+				for (int i = 0; i < 4; i++)
+					m_original_abilities[i] = has_ability(m_abilities.at(i));
 
 				for (const auto ability : m_abilities)
 				{
-					if (m_original_abilities >> (uint16_t)ability & 1)
+					if (has_ability(ability))
 					{
 						m_stock_abilities.insert(ability);
 					}
@@ -53,7 +53,7 @@ namespace big
 			 * @return true 
 			 * @return false 
 			 */
-			bool get_ability_default(eVehicleAbilities ability)
+			bool get_ability_default(CVehicleModelInfoFlags ability)
 			{
 				return m_stock_abilities.contains(ability);
 			}
@@ -65,9 +65,9 @@ namespace big
 			 * @return true 
 			 * @return false 
 			 */
-			bool has_ability(eVehicleAbilities ability)
+			bool has_ability(CVehicleModelInfoFlags ability)
 			{
-				return m_vehicle && m_vehicle->m_model_info && reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info)->m_ability_flag >> (uint16_t)ability & 1;
+				return m_vehicle && m_vehicle->m_model_info && reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info)->get_vehicle_model_flag(ability);
 			}
 
 			/**
@@ -77,9 +77,8 @@ namespace big
 			{
 				if (m_vehicle && m_vehicle->m_model_info)
 				{
-					const auto model_info = reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info);
-
-					model_info->m_ability_flag = m_original_abilities;
+					for (int i = 0; i < 4; i++)
+						toggle_ability(m_abilities.at(i), m_original_abilities[i]);
 				}
 			}
 
@@ -89,15 +88,13 @@ namespace big
 			 * @param ability 
 			 * @param toggle 
 			 */
-			void toggle_ability(eVehicleAbilities ability, bool toggle)
+			void toggle_ability(CVehicleModelInfoFlags ability, bool toggle)
 			{
 				if (m_vehicle && m_vehicle->m_model_info)
 				{
 					const auto model_info = reinterpret_cast<CVehicleModelInfo*>(m_vehicle->m_model_info);
-					if (toggle)
-						misc::set_bits(&model_info->m_ability_flag, (uint16_t)ability);
-					else
-						misc::clear_bits(&model_info->m_ability_flag, (uint16_t)ability);
+
+					model_info->set_vehicle_model_flag(ability, toggle);
 				}
 			}
 
@@ -127,10 +124,10 @@ namespace big
 				reset(curr_veh);
 			}
 
-			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::JUMP, g.vehicle.abilities.jump);
-			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::ROCKET, g.vehicle.abilities.rocket);
-			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::PARACHUTE, g.vehicle.abilities.parachute);
-			m_vehicle_ability_helper.toggle_ability(eVehicleAbilities::RAMP_BUGGY, g.vehicle.abilities.ramp);
+			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::JUMPING_CAR, g.vehicle.abilities.jump);
+			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_ROCKET_BOOST, g.vehicle.abilities.rocket);
+			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_PARACHUTE, g.vehicle.abilities.parachute);
+			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::RAMP, g.vehicle.abilities.ramp);
 		}
 
 		virtual void on_disable() override
@@ -154,22 +151,17 @@ namespace big
 			// currently I'd keep overwriting the display values for what is default for the current vehicle
 			// should we always persist the user's choice onto the vehicle? or only the ones that are enabled?
 			// doesn't sound like too great of an idea for vehicles that have abilities by default and then suddenly they're disabled
-			g.vehicle.abilities.jump      = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::JUMP);
-			g.vehicle.abilities.rocket    = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::ROCKET);
-			g.vehicle.abilities.parachute = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::PARACHUTE);
-			g.vehicle.abilities.ramp      = m_vehicle_ability_helper.get_ability_default(eVehicleAbilities::RAMP_BUGGY);
+			g.vehicle.abilities.jump = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::JUMPING_CAR);
+			g.vehicle.abilities.rocket = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::HAS_ROCKET_BOOST);
+			g.vehicle.abilities.parachute = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::HAS_PARACHUTE);
+			g.vehicle.abilities.ramp = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::RAMP);
 		}
 	};
 
-	vehicle_ability
-	    g_vehicle_ability("modifyvehicleability", "MODIFY_VEHICLE_ABILITY", "MODIFY_VEHICLE_ABILITY_DESC", g.vehicle.abilities.enabled);
+	vehicle_ability g_vehicle_ability("modifyvehicleability", "MODIFY_VEHICLE_ABILITY", "MODIFY_VEHICLE_ABILITY_DESC", g.vehicle.abilities.enabled);
 
-	bool_command g_jump_ability("jumpability", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP_DESC",
-	    g.vehicle.abilities.jump);
-	bool_command g_rocket_ability("rocketability", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET_DESC",
-	    g.vehicle.abilities.rocket);
-	bool_command g_parachute_ability("parachuteability", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE_DESC",
-	    g.vehicle.abilities.parachute);
-	bool_command g_ramp_ability("rampability", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP_DESC",
-	    g.vehicle.abilities.ramp);
+	bool_command g_jump_ability("jumpability", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP", "BACKEND_LOOPED_VEHICLE_ABILITY_JUMP_DESC", g.vehicle.abilities.jump);
+	bool_command g_rocket_ability("rocketability", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET_DESC", g.vehicle.abilities.rocket);
+	bool_command g_parachute_ability("parachuteability", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE_DESC", g.vehicle.abilities.parachute);
+	bool_command g_ramp_ability("rampability", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP_DESC", g.vehicle.abilities.ramp);
 }
