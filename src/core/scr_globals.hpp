@@ -8,13 +8,13 @@ namespace big::scr_globals
 	static inline const script_global gsbd_fm(1845263);
 	static inline const script_global gsbd_kicking(1877042);
 	static inline const script_global gsbd_fm_events(1916087);
-	static inline const script_global gsbd_block_c(2652364);
-	static inline const script_global gsbd_property_instances(1944302);
+	static inline const script_global gsbd_block_c(2652572);
+	static inline const script_global gsbd_property_instances(1936138);
 
 	static inline const script_global globalplayer_bd(2657921);
 	static inline const script_global gpbd_fm_3(1886967);
-	static inline const script_global gpbd_fm_1(1853988);
-	static inline const script_global interiors(1950844);
+	static inline const script_global gpbd_fm_1(1845263);
+	static inline const script_global interiors(1942781);
 
 	static inline const script_global launcher_global(2698947);
 
@@ -30,7 +30,7 @@ namespace big::scr_globals
 
 	static inline const script_global in_multiplayer(79248); // g_bInMultiplayer
 	static inline const script_global transition_state(1575008);
-	static inline const script_global sctv_spectator(2695969); // pausemenu_multiplayer function 0xE49C42EC
+	static inline const script_global sctv_spectator(2697509); // pausemenu_multiplayer function 0xE49C42EC
 
 	static inline const script_global vehicle_global(1586504);
 
@@ -48,9 +48,9 @@ namespace big::scr_globals
 	static inline const script_global session(1574589);
 	static inline const script_global session2(1575032);
 	static inline const script_global session3(32829);
-	static inline const script_global session4(1574934);
+	static inline const script_global session4(1574941);
 	static inline const script_global session5(1575007);
-	static inline const script_global session6(2694534);
+	static inline const script_global session6(2695909);
 
 	static inline const script_global gooch(1882037);
 
