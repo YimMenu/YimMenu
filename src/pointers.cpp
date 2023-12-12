@@ -256,7 +256,7 @@ namespace big
         // Read Bitbuffer Boolean
         {
             "RBB",
-            "E8 ? ? ? ? 84 C0 74 41 48 8D 56 2C",
+            "E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? 48 8D 56 ? 44 8D 43 ? 48 8B CF E8 ? ? ? ? 84 C0 74 ? BB",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_read_bitbuf_bool = ptr.add(1).rip().as<decltype(gta_pointers::m_read_bitbuf_bool)>();
@@ -1136,7 +1136,7 @@ namespace big
         // Force Player Card Refresh
         {
             "FPCR",
-            "44 38 2D ? ? ? ? 74 1D 44 00 A6 BB 07 00 00",
+            "44 38 2D ? ? ? ? 74 ? 44 00 A6",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_force_player_card_refresh = ptr.add(3).rip().as<bool*>();
