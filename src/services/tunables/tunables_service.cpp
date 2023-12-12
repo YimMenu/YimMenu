@@ -64,7 +64,7 @@ namespace big
 					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("tuneables_processing"));
 					m_script_started = true;
 
-					g_script_patcher_service->add_patch({RAGE_JOAAT("tuneables_processing"), "2E ? ? 55 ? ? 38 06", 0, std::vector<uint8_t>(17, 0x0), &m_script_started}); // bool tunables registration hack
+					g_script_patcher_service->add_patch({RAGE_JOAAT("tuneables_processing"), "tuneables_processing1", "2E ? ? 55 ? ? 38 06", 0, std::vector<uint8_t>(17, 0x0), &m_script_started}); // bool tunables registration hack
 					if (auto program = gta_util::find_script_program(RAGE_JOAAT("tuneables_processing")))
 						g_script_patcher_service->on_script_load(program);
 				}
