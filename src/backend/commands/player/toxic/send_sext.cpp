@@ -22,8 +22,8 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			const size_t arg_count  = 8;
-			int64_t args[arg_count] = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id};
+			const size_t arg_count  = 9;
+			int64_t args[arg_count] = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id, 1 << player->id()};
 
 			strcpy((char*)&args[2],
 			    (std::string("SXT_") + strippers[rand() % strippers.size()] + "_" + sext_types[rand() % sext_types.size()])

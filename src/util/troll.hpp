@@ -9,9 +9,10 @@ namespace big::troll
 {
 	inline void set_bounty_on_player(player_ptr target, int value, bool anonymous)
 	{
-		const size_t arg_count  = 22;
+		const size_t arg_count  = 23;
 		int64_t args[arg_count] = {(int64_t)eRemoteEvent::Bounty,
 		    self::id,
+		    -1,
 		    target->id(),
 		    1,
 		    value,
