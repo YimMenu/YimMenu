@@ -103,12 +103,20 @@ namespace big
 
 	void lua_manager::unload_all_modules()
 	{
-		std::lock_guard guard(m_module_lock);
+		{
+			std::lock_guard guard(m_module_lock);
 
-		for (auto& module : m_modules)
-			module.reset();
+			for (auto& module : m_modules)
+				module.reset();
+			m_modules.clear();
+		}
+		{
+			std::lock_guard guard(m_disabled_module_lock);
 
-		m_modules.clear();
+			for (auto& module : m_disabled_modules)
+				module.reset();
+			m_disabled_modules.clear();
+		}
 	}
 
 	bool lua_manager::has_gui_to_draw(rage::joaat_t tab_hash)
