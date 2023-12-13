@@ -202,7 +202,7 @@ namespace big
         // Trigger Script Event
         {
             "TSE",
-            "84 C9 0F 84 ? ? ? ? 48 89 5C 24 ? 48 89 74 24",
+            "48 8B C4 48 89 58 08 44 89 48 20 55 56 57 48 83 EC 30",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_trigger_script_event = ptr.as<decltype(gta_pointers::m_trigger_script_event)>();

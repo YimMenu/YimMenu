@@ -28,7 +28,7 @@ namespace big
 				const size_t arg_count  = 2;
 				int64_t args[arg_count] = {(int64_t)eRemoteEvent::CeoKick, (int64_t)self::id};
 
-				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::CeoKick);
 				return;
 			}
 			else
@@ -37,7 +37,7 @@ namespace big
 				const size_t arg_count  = 3;
 				int64_t args[arg_count] = {(int64_t)eRemoteEvent::MarkPlayerAsBeast, (int64_t)self::id, leader};
 
-				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::MarkPlayerAsBeast);
 			}
 		}
 	};

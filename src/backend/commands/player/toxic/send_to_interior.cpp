@@ -34,7 +34,7 @@ namespace big
 			    (int64_t) true,
 			    -1};
 
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::InteriorControl);
 		}
 	};
 

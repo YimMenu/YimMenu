@@ -33,7 +33,7 @@ namespace big::troll
 		    *scr_globals::gsbd_fm_events.at(9).as<int*>(),
 		    *scr_globals::gsbd_fm_events.at(10).as<int*>()};
 
-		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, -1);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, -1, (int)eRemoteEvent::Bounty);
 	}
 
 }

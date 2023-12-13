@@ -19,7 +19,7 @@ namespace big
 			const size_t arg_count = 6;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::TeleportToWarehouse, self::id, (int64_t)player->id(), 1, (int64_t)_args.get<int>(0)};
 
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::TeleportToWarehouse);
 		}
 	};
 
