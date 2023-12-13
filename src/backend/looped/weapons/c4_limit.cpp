@@ -11,5 +11,5 @@ namespace big
 			if (g.weapons.increased_flare_limit)
 				g_local_player->fired_flares = 0;
 		}
-    }
+	}
 }

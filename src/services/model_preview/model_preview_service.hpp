@@ -15,12 +15,15 @@ namespace big
 		bool m_veh_spawn_max = false;
 
 		Hash m_ped_model_hash = 0;
-		Ped m_ped_clone = 0;
+		Ped m_ped_clone       = 0;
 
-		bool m_new_model = false;
-		float m_heading = 0.f;
+		bool m_new_model    = false;
+		float m_heading     = 0.f;
 		bool m_loop_running = false;
-		bool m_running = false;
+		bool m_running      = false;
+
+		std::string m_current_persisted_vehicle_name;
+
 	public:
 		model_preview_service();
 		~model_preview_service();
@@ -30,6 +33,8 @@ namespace big
 
 		void show_vehicle(Hash hash, bool spawn_max);
 		void show_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max);
+		void show_vehicle_persisted(std::string vehicle_name);
+		void show_vehicle(Vehicle veh);
 
 		void preview_loop();
 		void stop_preview();

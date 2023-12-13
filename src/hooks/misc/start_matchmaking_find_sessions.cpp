@@ -1,20 +1,20 @@
-#include "hooking.hpp"
-#include "services/matchmaking/matchmaking_service.hpp"
-#include <network/Network.hpp>
 #include "fiber_pool.hpp"
 #include "function_types.hpp"
+#include "hooking.hpp"
+#include "services/matchmaking/matchmaking_service.hpp"
+
+#include <network/Network.hpp>
 
 namespace big
 {
 	bool hooks::start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, rage::rlTaskStatus* status)
 	{
-		int discriminator = filter->m_param_values[0]; // this is guaranteed to work
+		int discriminator = filter->m_param_values[0];// this is guaranteed to work
 
 		if (g.session_browser.replace_game_matchmaking && filter->m_filter_type == 1)
 		{
 			status->status = 1;
-			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator]
-			{
+			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator] {
 				bool result = false;
 
 				if (g.session.join_in_sctv_slots)

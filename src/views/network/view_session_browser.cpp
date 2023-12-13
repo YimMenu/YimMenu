@@ -1,12 +1,13 @@
-#include "views/view.hpp"
+#include "core/data/language_codes.hpp"
+#include "core/data/region_codes.hpp"
 #include "fiber_pool.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include <network/Network.hpp>
-#include "util/session.hpp"
-#include "core/data/region_codes.hpp"
-#include "core/data/language_codes.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
+#include "util/session.hpp"
+#include "views/view.hpp"
+
+#include <network/Network.hpp>
 
 namespace big
 {
@@ -16,13 +17,12 @@ namespace big
 	{
 		static char name_buf[32];
 		static char search[64];
-		static char session_info[255];
-
-		ImGui::Text(std::format("Total sessions found: {}", g_matchmaking_service->get_num_found_sessions()).data());
+		static char session_info[0x100]{};
+		ImGui::Text(std::format("{}: {}", "VIEW_SESSION_TOTAL_SESSIONS_FOUND"_T.data(), g_matchmaking_service->get_num_found_sessions()).c_str());
 
 		ImGui::SetNextItemWidth(300.f);
 
-		if (ImGui::ListBoxHeader("###sessions", { 300, static_cast<float>(*g_pointers->m_resolution_y - 400 - 38 * 4) }))
+		if (ImGui::BeginListBox("###sessions", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 400 - 38 * 4)}))
 		{
 			if (g_matchmaking_service->get_num_found_sessions())
 			{
@@ -36,16 +36,16 @@ namespace big
 					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
 					{
 						selected_session_idx = i;
-						g_pointers->m_encode_session_info(&session.info, session_info, 0x7D, nullptr);
+						g_pointers->m_gta.m_encode_session_info(&session.info, session_info, 0xA9, nullptr);
 					}
 
 					if (ImGui::IsItemHovered())
 					{
-						ImGui::SetTooltip(std::format("Num Players: {}\nRegion: {}\nLanguage: {}\nHost: {}",
-							session.attributes.player_count,
-							regions[session.attributes.region].name,
-							languages[session.attributes.language].name,
-							session.info.m_net_player_data.m_gamer_handle.m_rockstar_id).c_str());
+						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
+							"REGION"_T, regions[session.attributes.region].name,
+						    "LANGUAGE"_T, languages[session.attributes.language].name,
+						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id);
+						ImGui::SetTooltip(tool_tip.c_str());
 					}
 				}
 			}
@@ -54,40 +54,37 @@ namespace big
 				ImGui::Text("NO_SESSIONS"_T.data());
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		if (selected_session_idx != -1)
 		{
 			ImGui::SameLine();
-			if (ImGui::BeginChild("###selected_session", { 300, static_cast<float>(*g_pointers->m_resolution_y - 388 - 38 * 4) }, false, ImGuiWindowFlags_NoBackground))
+			if (ImGui::BeginChild("###selected_session", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 388 - 38 * 4)}, false, ImGuiWindowFlags_NoBackground))
 			{
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
-				ImGui::Text("SESSION_BROWSER_NUM_PLAYERS"_T.data(), session.attributes.player_count);
-				ImGui::Text("SESSION_BROWSER_DISCRIMINATOR"_T.data(), session.attributes.discriminator);
-				ImGui::Text("SESSION_BROWSER_REGION"_T.data(), regions[session.attributes.region].name);
-				ImGui::Text("SESSION_BROWSER_LANGUAGE"_T.data(), languages[session.attributes.language].name);
+				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count).c_str());
+				ImGui::Text(std::format("{}: 0x{:X}", "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator).c_str());
+				ImGui::Text(std::format("{}: {}", "REGION"_T, regions[session.attributes.region].name).c_str());
+				ImGui::Text(std::format("{}: {}", "LANGUAGE"_T, languages[session.attributes.language].name).c_str());
 
 				auto& data = session.info.m_net_player_data;
-				ImGui::Text("SESSION_BROWSER_HOST_RID"_T.data(), data.m_gamer_handle.m_rockstar_id);
+				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_HOST_RID"_T, data.m_gamer_handle.m_rockstar_id).c_str());
 
-				components::button("COPY_SESSION_INFO"_T, []
-				{
+				components::button("COPY_SESSION_INFO"_T, [] {
 					ImGui::SetClipboardText(session_info);
 				});
 				ImGui::SameLine();
-				components::button("JOIN"_T, [session]
-				{
-					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 ||
-						STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
+				components::button("JOIN"_T, [session] {
+					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{
 						g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
 						return;
 					}
 
 					bool is_session_free_aim = session.attributes.discriminator & (1 << 17);
-					bool is_local_free_aim = PAD::GET_LOCAL_PLAYER_GAMEPAD_AIM_STATE() > 1;
+					bool is_local_free_aim   = PAD::GET_LOCAL_PLAYER_GAMEPAD_AIM_STATE() > 1;
 
 					if (is_session_free_aim != is_local_free_aim)
 						PLAYER::SET_PLAYER_TARGETING_MODE(is_session_free_aim ? 3 : 1);
@@ -120,7 +117,6 @@ namespace big
 					}
 					ImGui::EndCombo();
 				}
-
 			}
 
 			ImGui::Checkbox("LANGUAGE"_T.data(), &g.session_browser.language_filter_enabled);
@@ -157,7 +153,8 @@ namespace big
 			if (g.session_browser.pool_filter_enabled)
 			{
 				ImGui::SameLine();
-				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, "Normal\0Bad Sport");
+				static const std::string pool_filter_options = std::string("NORMAL"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
+				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
 			}
 
 			ImGui::TreePop();
@@ -165,19 +162,21 @@ namespace big
 
 		if (ImGui::TreeNode("SORTING"_T.data()))
 		{
-			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, "Off\0Player Count");
+			static const std::string sort_by_options = std::string("OFF"_T.data()) + '\0' + std::string("PLAYER_COUNT"_T.data());
+			static const std::string sort_direction_options = std::string("ASCENDING"_T.data()) + '\0' + std::string("DESCENDING"_T.data());
+			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, sort_by_options.c_str());
 			if (g.session_browser.sort_method != 0)
-				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, "Ascending\0Descending");
+				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, sort_direction_options.c_str());
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking));
+		if (ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking))
+			;
 
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
 
-		components::button("REFRESH"_T, []
-		{
+		components::button("REFRESH"_T, [] {
 			selected_session_idx = -1;
 
 			if (!g_matchmaking_service->matchmake())

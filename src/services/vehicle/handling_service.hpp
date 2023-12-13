@@ -10,9 +10,9 @@ namespace big
 		handling_service();
 		~handling_service();
 
-		handling_service(const handling_service&) = delete;
-		handling_service(handling_service&&) noexcept = delete;
-		handling_service& operator=(const handling_service&) = delete;
+		handling_service(const handling_service&)                = delete;
+		handling_service(handling_service&&) noexcept            = delete;
+		handling_service& operator=(const handling_service&)     = delete;
 		handling_service& operator=(handling_service&&) noexcept = delete;
 
 		std::size_t load_files();
@@ -32,8 +32,7 @@ namespace big
 		handling_profiles m_handling_profiles;
 
 		// contains the handling profiles of a vehicles before they're been modified
-		std::unordered_map<std::uint32_t, handling_profile> m_vehicle_backups;
-
+		std::unordered_map<uint32_t, handling_profile> m_vehicle_backups;
 	};
 
 	inline handling_service* g_handling_service{};

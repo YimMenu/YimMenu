@@ -1,14 +1,16 @@
 #include "player.hpp"
+
+#include "gta_util.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "services/friends/friends_service.hpp"
-#include "gta_util.hpp"
+
 #include <network/Network.hpp>
 #include <network/RemoteGamerInfoMsg.hpp>
 
 namespace big
 {
-	player::player(CNetGamePlayer* net_game_player)
-		: m_net_game_player(net_game_player)
+	player::player(CNetGamePlayer* net_game_player) :
+	    m_net_game_player(net_game_player)
 	{
 		m_is_friend = friends_service::is_friend(net_game_player);
 	}
@@ -53,7 +55,7 @@ namespace big
 
 	rage::snPlayer* player::get_session_player()
 	{
-		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
+		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
 			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token == get_net_data()->m_host_token)
 			{
@@ -69,9 +71,10 @@ namespace big
 
 	rage::snPeer* player::get_session_peer()
 	{
-		for (std::uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
+		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id == get_net_data()->m_gamer_handle.m_rockstar_id)
+			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id
+			    == get_net_data()->m_gamer_handle.m_rockstar_id)
 			{
 				return gta_util::get_network()->m_game_session_ptr->m_peers[i];
 			}
@@ -80,16 +83,30 @@ namespace big
 		return nullptr;
 	}
 
-	netAddress player::get_ip_address()
+	rage::netConnectionPeer* player::get_connection_peer()
+	{
+		if (auto session_player = get_session_player())
+			if (auto peer = g_pointers->m_gta.m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr,
+			        (int)get_session_player()->m_player_data.m_peer_id_2))
+				return peer;
+
+		return nullptr;
+	}
+
+	std::optional<netAddress> player::get_ip_address()
 	{
 		if (this == g_player_service->get_self().get() && get_net_data())
 			return get_net_data()->m_external_ip;
 
-		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)get_session_player()->m_player_data.m_peer_id_2))
-				return netAddress{ ((netConnectionPeer*)peer)->m_external_ip };
+		if (auto peer = get_connection_peer())
+		{
+			if (peer->m_peer_address.m_connection_type != 1)
+				return std::nullopt;
 
-		return { 0 };
+			return peer->m_peer_address.m_external_ip;
+		}
+
+		return std::nullopt;
 	}
 
 	uint16_t player::get_port()
@@ -97,9 +114,13 @@ namespace big
 		if (this == g_player_service->get_self().get() && get_net_data())
 			return get_net_data()->m_external_port;
 
-		if (auto session_player = get_session_player())
-			if (auto peer = g_pointers->m_get_connection_peer(gta_util::get_network()->m_game_session_ptr->m_net_connection_mgr, (int)get_session_player()->m_player_data.m_peer_id_2))
-				return ((netConnectionPeer*)peer)->m_external_port;
+		if (auto peer = get_connection_peer())
+		{
+			if (peer->m_peer_address.m_connection_type != 1)
+				return 0;
+
+			return peer->m_peer_address.m_external_port;
+		}
 
 		return 0;
 	}

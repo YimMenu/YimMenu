@@ -7,28 +7,23 @@
 #include "natives.hpp"
 #include "notify.hpp"
 #include "script.hpp"
-#include "script_global.hpp"
+#include "core/scr_globals.hpp"
 #include "script_local.hpp"
 #include "vehicle.hpp"
 
 namespace big::mobile
 {
-	inline auto player_global = script_global(2657589);
-
 	namespace util
 	{
 		int get_current_personal_vehicle(); // forward declare
 		inline void despawn_current_personal_vehicle()
 		{
-			misc::clear_bits(
-				scr_globals::vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(),
-				eVehicleFlags::TRIGGER_SPAWN_TOGGLE
-			);
+			misc::clear_bits(scr_globals::vehicle_global.at(get_current_personal_vehicle(), 142).at(103).as<int*>(), eVehicleFlags::TRIGGER_SPAWN_TOGGLE);
 		}
 
 		inline int get_current_personal_vehicle()
 		{
-			return *script_global(2359296).at(0, 5568).at(681).at(2).as<int*>();
+			return *scr_globals::stats.at(0, 5568).at(681).at(2).as<int*>();
 		}
 	}
 
@@ -36,54 +31,43 @@ namespace big::mobile
 	{
 		inline void request_ammo_drop()
 		{
-			*script_global(scr_globals::mechanic_global).at(886).as<int*>() = 1;
+			*scr_globals::freemode_global.at(891).as<int*>() = 1;
 		}
 
 		inline void request_boat_pickup()
 		{
-			*script_global(scr_globals::mechanic_global).at(887).as<int*>() = 1;
+			*scr_globals::freemode_global.at(892).as<int*>() = 1;
 		}
 
 		inline void request_helicopter_pickup()
 		{
-			*script_global(scr_globals::mechanic_global).at(888).as<int*>() = 1;
+			*scr_globals::freemode_global.at(893).as<int*>() = 1;
 		}
 
 		inline void request_backup_helicopter()
 		{
-			*script_global(scr_globals::mechanic_global).at(4484).as<int*>() = 1;
+			*scr_globals::freemode_global.at(4491).as<int*>() = 1;
 		}
 
 		inline void request_airstrike()
 		{
-			*script_global(scr_globals::mechanic_global).at(4485).as<int*>() = 1;
+			*scr_globals::freemode_global.at(4492).as<int*>() = 1;
 		}
-
-
 	}
 
 	namespace mors_mutual
 	{
 		inline bool fix_index(int veh_idx, bool spawn_veh = false)
 		{
-			bool can_be_fixed = misc::has_bits_set(
-				scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-				eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE
-			);
+			bool can_be_fixed = misc::has_bits_set(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::DESTROYED | eVehicleFlags::HAS_INSURANCE);
 
 			if (can_be_fixed)
 			{
-				misc::clear_bits(
-					scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-					eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK2
-				);
+				misc::clear_bits(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::DESTROYED | eVehicleFlags::IMPOUNDED | eVehicleFlags::UNK2);
 
 				if (spawn_veh)
 				{
-					misc::set_bits(
-						scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(),
-						eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL
-					);
+					misc::set_bits(scr_globals::vehicle_global.at(veh_idx, 142).at(103).as<int*>(), eVehicleFlags::TRIGGER_SPAWN_TOGGLE | eVehicleFlags::SPAWN_AT_MORS_MUTUAL);
 				}
 			}
 			return can_be_fixed;
@@ -106,12 +90,45 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*script_global(2672505).at(3689).as<int*>() = 1;
+			*scr_globals::freemode_properties.at(3690).as<int*>() = 1;
 		}
-		
+
 		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
 		{
-			*script_global(scr_globals::mechanic_global).at(896).as<int*>() = 1;
+			*scr_globals::freemode_global.at(896).as<int*>() = 1;
+		}
+	}
+
+	namespace services
+	{
+		inline void request_avenger()
+		{
+			*scr_globals::freemode_global.at(938).as<int*>() = 1;
+		}
+
+		inline void request_kosatka()
+		{
+			*scr_globals::freemode_global.at(960).as<int*>() = 1;
+		}
+
+		inline void request_mobile_operations_center()
+		{
+			*scr_globals::freemode_global.at(930).as<int*>() = 1;
+		}
+
+		inline void request_terrorbyte()
+		{
+			*scr_globals::freemode_global.at(943).as<int*>() = 1;
+		}
+
+		inline void request_acidlab()
+		{
+			*scr_globals::freemode_global.at(944).as<int*>() = 1;
+		}
+
+		inline void request_acidlab_bike()
+		{
+			*scr_globals::freemode_global.at(994).as<int*>() = 1;
 		}
 	}
 
@@ -119,12 +136,12 @@ namespace big::mobile
 	{
 		inline Vehicle get_personal_vehicle()
 		{
-			return *scr_globals::mechanic_global.at(299).as<Vehicle*>();
+			return *scr_globals::freemode_global.at(299).as<Vehicle*>();
 		}
 
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
-			if (*scr_globals::mechanic_global.at(979).as<int*>() != -1)
+			if (*scr_globals::freemode_global.at(985).as<int*>() != -1)
 				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
 			if (g.clone_pv.spawn_inside && self::veh)
@@ -139,25 +156,62 @@ namespace big::mobile
 			// only do this when spawn inside is enabled otherwise the vehicle will spawn relatively far away from players
 			if (g.clone_pv.spawn_inside)
 			{
-				*scr_globals::mechanic_global.at(936).as<int*>() = 1; // disable vehicle node distance check
+				*scr_globals::freemode_global.at(942).as<int*>() = 1; // disable vehicle node distance check
 			}
-			*scr_globals::mechanic_global.at(923).as<int*>() = 1; // tell freemode to spawn our vehicle
-			*scr_globals::mechanic_global.at(982).as<int*>() = 0; // required
-			*scr_globals::mechanic_global.at(979).as<int*>() = veh_idx;
+			*scr_globals::freemode_global.at(928).as<int*>() = 1;     // tell freemode to spawn our vehicle
+			*scr_globals::freemode_global.at(988).as<int*>() = 0;     // required
+			*scr_globals::freemode_global.at(985).as<int*>() = veh_idx;
 
 			script::get_current()->yield(100ms);
 
 			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
 			if (freemode_thread)
-				*script_local(freemode_thread, 18630).at(176).as<int*>() = 0; // spawn vehicle instantly
+			{
+				// regex to find this shit easily
+				// \(func_\d{3}\(&\(uParam0->f_\d{3}\), \d+000, 0\) \|\| func
+				// or if you prefer a string "VD_FAIL4"
+				// or if you really prefer an image https://i.imgur.com/K8vMILe.png
+				*scr_locals::fm_mobile::mobile.set(freemode_thread).at(176).as<int*>() = 0; // spawn vehicle instantly
+			}
 
 			// blocking call till vehicle is delivered
-			notify::busy_spinner("Delivering vehicle...", scr_globals::mechanic_global.at(979).as<int*>(), -1);
+			notify::busy_spinner("Delivering vehicle...", scr_globals::freemode_global.at(985).as<int*>(), -1);
 
 			if (g.clone_pv.spawn_inside)
 			{
-				big::vehicle::bring(get_personal_vehicle(), self::pos, true);
+				vehicle::bring(get_personal_vehicle(), self::pos, true);
 			}
+		}
+	}
+
+	namespace mobile_misc
+	{
+		inline void request_taxi()
+		{
+			*scr_globals::freemode_global.at(853).as<int*>() = 1;
+		}
+
+		inline void request_gun_van()
+		{
+			auto local_pos      = self::pos;
+			auto forward_vector = ENTITY::GET_ENTITY_FORWARD_VECTOR(self::ped);
+			Vector3 spawn_point;
+
+			if (MISC::FIND_SPAWN_POINT_IN_DIRECTION(local_pos.x,
+			        local_pos.y,
+			        local_pos.z,
+			        forward_vector.x,
+			        forward_vector.y,
+			        forward_vector.z,
+			        25.f,
+			        &spawn_point))
+			{
+				*scr_globals::gun_van.as<Vector3*>() = spawn_point;
+
+				return g_notification_service->push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
+			}
+
+			g_notification_service->push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
 		}
 	}
 }

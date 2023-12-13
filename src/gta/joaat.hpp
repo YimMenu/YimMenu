@@ -1,13 +1,32 @@
 #pragma once
+#include "rage/joaat.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
 #include <type_traits>
 
-#include "rage/joaat.hpp"
-
 namespace rage
 {
+	template<size_t N>
+	inline constexpr joaat_t consteval_joaat(char const (&data)[N])
+	{
+		joaat_t hash = 0;
+
+		for (std::size_t i = 0; i < N - 1; ++i)
+		{
+			hash += joaat_to_lower(data[i]);
+			hash += (hash << 10);
+			hash ^= (hash >> 6);
+		}
+
+		hash += (hash << 3);
+		hash ^= (hash >> 11);
+		hash += (hash << 15);
+
+		return hash;
+	}
+
 	inline consteval joaat_t consteval_joaat(const std::span<const char>& data)
 	{
 		joaat_t hash = 0;

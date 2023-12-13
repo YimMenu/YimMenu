@@ -14,22 +14,22 @@ namespace ImGui
 		std::string format;
 		if (size == 1)
 		{
-			type = ImGuiDataType_U8;
+			type   = ImGuiDataType_U8;
 			format = "%02X";
 		}
 		if (size == 2)
 		{
-			type = ImGuiDataType_U16;
+			type   = ImGuiDataType_U16;
 			format = "%04X";
 		}
 		if (size == 4)
 		{
-			type = ImGuiDataType_U32;
+			type   = ImGuiDataType_U32;
 			format = "%08X";
 		}
 		if (size == 8)
 		{
-			type = ImGuiDataType_U64;
+			type   = ImGuiDataType_U64;
 			format = "%p";
 		}
 
@@ -44,7 +44,7 @@ namespace ImGui
 			{
 				ImGui::PushStyleColor(ImGuiCol_Button, IM_COL32_BLACK_TRANS);
 				ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(41, 134, 204, 255));
-				if (ImGui::Button(std::string("1##").append(std::to_string(i)).append(name).c_str(), ImVec2(25, 0)))
+				if (ImGui::Button(std::format("1##{}{}", name, i).c_str(), ImVec2(25, 0)))
 				{
 					ret_val = true;
 					*param ^= (1ULL << i);
@@ -54,7 +54,7 @@ namespace ImGui
 			else
 			{
 				ImGui::PushStyleColor(ImGuiCol_Button, IM_COL32_BLACK_TRANS);
-				if (ImGui::Button(std::string("0##").append(std::to_string(i)).append(name).c_str(), ImVec2(25, 0)))
+				if (ImGui::Button(std::format("0##{}{}", name, i).c_str(), ImVec2(25, 0)))
 				{
 					ret_val = true;
 					*param ^= (1ULL << i);

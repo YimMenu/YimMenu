@@ -1,4 +1,5 @@
 #include "hooking.hpp"
+
 #include <network/Network.hpp>
 
 namespace big
@@ -9,7 +10,8 @@ namespace big
 	{
 		if (g.session.player_magnet_enabled)
 		{
-			return std::abs((int)e1->m_session_detail->m_player_count - g.session.player_magnet_count) < std::abs((int)e2->m_session_detail->m_player_count - g.session.player_magnet_count);
+			return std::abs((int)e1->m_session_detail->m_player_count - g.session.player_magnet_count)
+			    < std::abs((int)e2->m_session_detail->m_player_count - g.session.player_magnet_count);
 		}
 		else
 		{

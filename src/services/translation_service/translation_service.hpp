@@ -1,88 +1,101 @@
 #pragma once
-#include "gta/joaat.hpp"
 #include "file_manager/folder.hpp"
+#include "gta/joaat.hpp"
 #include "local_index.hpp"
 #include "remote_index.hpp"
 
+#include <cpr/response.h>
+
 namespace big
 {
-    using translation_map = std::unordered_map<rage::joaat_t, std::string>;
+	using translation_map = std::unordered_map<rage::joaat_t, std::string>;
 
-    class translation_service
-    {
-    public:
-        translation_service();
-        virtual ~translation_service() = default;
-        translation_service(const translation_service&) = delete;
-        translation_service(translation_service&&) noexcept  = delete;
-        translation_service& operator=(const translation_service&) = delete;
-        translation_service& operator=(translation_service&&) noexcept  = delete;
-        
-        void init();
+	class translation_service
+	{
+	public:
+		translation_service();
+		virtual ~translation_service()                                 = default;
+		translation_service(const translation_service&)                = delete;
+		translation_service(translation_service&&) noexcept            = delete;
+		translation_service& operator=(const translation_service&)     = delete;
+		translation_service& operator=(translation_service&&) noexcept = delete;
 
-        std::string_view get_translation(const std::string_view translation_key) const;
-        std::string_view get_translation(const rage::joaat_t translation_key) const;
+		void init();
 
-        std::map<std::string, translation_entry>& available_translations();
-        const std::string& current_language_pack();
-        void select_language_pack(const std::string& pack_id);
+		std::string_view get_translation(const std::string_view translation_key) const;
+		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = {0, 0}) const;
 
-    private:
-        void load_translations();
-        nlohmann::json load_translation(const std::string_view pack_id);
+		std::map<std::string, translation_entry>& available_translations();
+		const std::string& current_language_pack();
+		void select_language_pack(const std::string& pack_id);
 
-        bool download_language_pack(const std::string_view pack_id);
-        void update_language_packs();
+		/**
+		 * @brief Updates the language packs and reloads the language cache
+		 * 
+		 */
+		void update_n_reload_language_packs();
 
-        /**
+	private:
+		void load_translations();
+		bool does_language_exist(const std::string_view language);
+		nlohmann::json load_translation(const std::string_view pack_id);
+
+		bool download_language_pack(const std::string_view pack_id);
+		void update_language_packs();
+
+		/**
          * @brief Downloads the remote index to compare with our local index
          * 
          * @return true 
          * @return false 
          */
-        bool download_index();
-        bool load_local_index();
-        void save_local_index();
-        /**
+		bool download_index();
+		bool load_local_index();
+		void save_local_index();
+		/**
          * @brief Attempts to load the remote from the local index fallback
          */
-        void use_fallback_remote();
-    
-    private:
-        const std::string m_url;
-        std::unique_ptr<folder> m_translation_directory;
-        local_index m_local_index;
-        remote_index m_remote_index;
+		void use_fallback_remote();
+		cpr::Response download_file(const std::string& filename);
 
-        translation_map m_translations;
+		void try_set_default_language();
 
-    };
+	private:
+		const std::string m_url;
+		const std::string m_fallback_url;
 
-    inline auto g_translation_service = translation_service();
-    
-    template<std::size_t N>
-    struct TranslationLiteral
-    {
-        rage::joaat_t m_hash;
-        char m_key[N]{};
-    
-        consteval TranslationLiteral(char const(&pp)[N])
-        {
-            std::ranges::copy(pp, m_key);
-            m_hash = rage::joaat(pp);
-        };
+		std::unique_ptr<folder> m_translation_directory;
+		local_index m_local_index;
+		remote_index m_remote_index;
 
-        const std::string_view translation() const
-        {
-            if (const auto translation = g_translation_service.get_translation(m_hash); translation.length())
-                return translation;
-            return m_key;
-        }
-    };
-    
-    template<TranslationLiteral T>
-    constexpr auto operator"" _T()
-    {
-        return T.translation();
-    }
+		translation_map m_translations;
+	};
+
+	inline auto g_translation_service = translation_service();
+
+	template<std::size_t N>
+	struct TranslationLiteral
+	{
+		rage::joaat_t m_hash;
+		char m_key[N]{};
+
+		consteval TranslationLiteral(char const (&pp)[N])
+		{
+			std::ranges::copy(pp, m_key);
+			m_hash = rage::joaat(pp);
+		};
+
+		const std::string_view translation() const
+		{
+			if (const auto translation = g_translation_service.get_translation(m_hash); translation.length())
+				return translation;
+			return m_key;
+		}
+	};
+
+	template<TranslationLiteral T>
+	constexpr auto operator"" _T()
+	{
+		return T.translation();
+	}
 }

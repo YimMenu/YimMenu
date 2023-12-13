@@ -1,19 +1,28 @@
-#include "common.hpp"
 #include "file.hpp"
+
+#include "common.hpp"
 #include "file_manager.hpp"
 
 namespace big
 {
-	file::file(file_manager* file_manager, std::filesystem::path file_path)
-		: file(file_manager->get_base_dir() / file_path)
+	file::file(const std::filesystem::path& file_path) :
+	    m_file_path(file_path)
 	{
-		m_is_project_file = true;
 	}
 
-	file::file(std::filesystem::path file_path)
-		: m_file_path(file_manager::ensure_file_can_be_created(file_path)), m_is_project_file(false)
+	void file::operator=(const file& other)
 	{
+		m_file_path = other.m_file_path;
+	}
 
+	file::operator std::filesystem::path()
+	{
+		return m_file_path;
+	}
+
+	file::operator std::filesystem::path&()
+	{
+		return m_file_path;
 	}
 
 	bool file::exists() const
@@ -36,6 +45,6 @@ namespace big
 		if (std::filesystem::exists(m_file_path))
 			std::filesystem::rename(m_file_path, new_path);
 
-		return { new_path };
+		return {new_path};
 	}
 }

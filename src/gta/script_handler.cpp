@@ -1,10 +1,12 @@
 #include "script_handler.hpp"
+
 #include "pointers.hpp"
+
 #include <network/CNetworkPlayerMgr.hpp>
 
 int CGameScriptHandlerNetComponent::get_participant_index(CNetGamePlayer* player)
 {
-	if (player == (*big::g_pointers->m_network_player_mgr)->m_local_net_player)
+	if (player == (*big::g_pointers->m_gta.m_network_player_mgr)->m_local_net_player)
 		return m_local_participant_index;
 
 	if (m_num_participants <= 1)

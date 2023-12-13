@@ -8,7 +8,7 @@ namespace big
 	class packet
 	{
 	public:
-		char m_data[0x4000]{};
+		char m_data[0x400]{};
 		rage::datBitBuffer m_buffer;
 
 		packet();
@@ -16,12 +16,12 @@ namespace big
 		void send(player_ptr player, int connection_id);
 		void send(int peer_id, int connection_id);
 
-		inline operator rage::datBitBuffer& ()
+		inline operator rage::datBitBuffer&()
 		{
 			return m_buffer;
 		}
 
-		template <typename T>
+		template<typename T>
 		inline void write(T data, int length)
 		{
 			m_buffer.Write<T>(data, length);
@@ -42,7 +42,7 @@ namespace big
 			}
 		}
 
-		inline void write_peer_id(std::uint64_t peer_id)
+		inline void write_peer_id(uint64_t peer_id)
 		{
 			char b[8];
 			rage::datBitBuffer buf(b, 8);

@@ -1,19 +1,19 @@
 #pragma once
-#include "vector.hpp"
+#include "rage/vector.hpp"
+#include <cstdint>
 
 namespace rage
 {
 	class matrix4x4
 	{
 	public:
-		union
-		{
+		union {
 			struct
 			{
-				vector4 _1;
-				vector4 _2;
-				vector4 _3;
-				vector4 _4;
+				fvector4 _1;
+				fvector4 _2;
+				fvector4 _3;
+				fvector4 _4;
 			};
 
 			float raw[4 * 4] = {};

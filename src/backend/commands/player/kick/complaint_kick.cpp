@@ -1,8 +1,8 @@
 #include "backend/player_command.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "core/scr_globals.hpp"
 #include "gta_util.hpp"
+#include "natives.hpp"
+#include "pointers.hpp"
 
 #include <network/Network.hpp>
 
@@ -12,13 +12,15 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (gta_util::get_network()->m_game_session_ptr->is_host())
 			{
 				gta_util::get_network()->m_game_complaint_mgr.raise_complaint(player->get_net_data()->m_host_token);
@@ -29,5 +31,5 @@ namespace big
 		}
 	};
 
-	complaint_kick g_complaint_kick("desync", "Desync Kick", "This may take around 10 seconds to kick the player. Does not work against the host", 0); // this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
+	complaint_kick g_complaint_kick("desync", "COMPLAINT_KICK", "COMPLAINT_KICK_DESC", 0); // this is pretty much desync except we don't actually remove the player from CNetworkPlayerMgr
 }

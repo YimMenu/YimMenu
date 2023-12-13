@@ -3,7 +3,7 @@
 
 namespace big
 {
-	using dx_callback = std::function<void()>;
+	using dx_callback      = std::function<void()>;
 	using wndproc_callback = std::function<void(HWND, UINT, WPARAM, LPARAM)>;
 
 	class renderer final
@@ -20,7 +20,7 @@ namespace big
 		 * @return true 
 		 * @return false 
 		 */
-		bool add_dx_callback(dx_callback callback, std::uint32_t priority);
+		bool add_dx_callback(dx_callback callback, uint32_t priority);
 		/**
 		 * @brief Add a callback function on wndproc
 		 * 
@@ -38,15 +38,15 @@ namespace big
 		void wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	private:
-        static void new_frame();
-        static void end_frame();
+		static void new_frame();
+		static void end_frame();
 
 	private:
 		IDXGISwapChain* m_dxgi_swapchain;
 		ID3D11Device* m_d3d_device;
 		ID3D11DeviceContext* m_d3d_device_context;
 
-		std::map<std::uint32_t, dx_callback> m_dx_callbacks;
+		std::map<uint32_t, dx_callback> m_dx_callbacks;
 		std::vector<wndproc_callback> m_wndproc_callbacks;
 	};
 

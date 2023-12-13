@@ -1,151 +1,155 @@
 #include "yim_fipackfile.hpp"
-#include "pointers.hpp"
+
 #include "gta/fidevice.hpp"
+#include "pointers.hpp"
 #include "script.hpp"
+#include "util/string_conversions.hpp"
 
 namespace big
 {
 	yim_fipackfile::yim_fipackfile(rage::fiPackfile* rpf, const std::string& mount_name)
 	{
-		this->rpf = rpf;
+		this->rpf        = rpf;
 		this->mount_name = mount_name;
 	}
 
-	static std::vector<std::string> get_non_dlc_mounted_devices_names()
+	void yim_fipackfile::add_wrapper_call_back(std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)> cb)
 	{
-		std::vector<std::string> non_dlc_mounted_devices_names;
+		m_wrapper_call_back.push_back(cb);
+	}
 
-		uint16_t mounted_devices_len = *g_pointers->m_fidevices_len;
-		if (mounted_devices_len)
+	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::u8string& path)
+	{
+		bool success = false;
+
+		__try
 		{
-			auto devices_arr = *(uint64_t*)g_pointers->m_fidevices;
-			uint8_t** current_device_mount_name_ptr = *(unsigned __int8***)g_pointers->m_fidevices;
-			auto device_i = 0;
-
-			while (true)
-			{
-				non_dlc_mounted_devices_names.push_back(*(const char**)current_device_mount_name_ptr);
-
-				++device_i;
-				current_device_mount_name_ptr += 4;
-				if (device_i >= mounted_devices_len)
-					break;
-			}
+			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return false;
 		}
 
-		return non_dlc_mounted_devices_names;
+		return success;
 	}
 
-	static int ends_with(const char* str, const char* suffix)
+	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
 	{
-		if (!str || !suffix)
-			return 0;
-		size_t lenstr = strlen(str);
-		size_t lensuffix = strlen(suffix);
-		if (lensuffix > lenstr)
-			return 0;
-		return strncmp(str + lenstr - lensuffix, suffix, lensuffix) == 0;
-	}
+		std::string mount_path = std::format("temp{}:/", depth);
 
-	void yim_fipackfile::for_each_fipackfile(std::function<size_t(yim_fipackfile& rpf_wrapper)> cb)
-	{
-		// the idea is to reuse existing mount points as much as possible because
-		// even when mounting / unmounting properly you'll get file errors
-		// and crashes if the rpf file was already mounted
-
-		// iterate the fidevice array which contains devices that are currently mounted
-		// the dlc devices are in another array
-		const auto non_dlc_mounted_devices_names = get_non_dlc_mounted_devices_names();
-
-		// for not hanging the game too much
-		constexpr auto yield_increment = 80;
-
-		auto i = 1;
-		while (g_pointers->m_fipackfile_instances[i])
+		rage::fiPackfile packfile;
+		if (!safe_open_pack_file(packfile, path))
 		{
-			auto* rpf = g_pointers->m_fipackfile_instances[i];
+			LOG(INFO) << "Failed opening " << reinterpret_cast<const char*>(path.c_str());
+			return;
+		}
+		
+		packfile.Mount(mount_path.c_str());
 
-			// its hard coded in the binary?
-			if (++i >= 3672)
+		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
+
+		const auto files = rpf_wrapper.get_file_paths();
+		for (const auto& file : files)
+		{
+			if (file.extension() == ".rpf")
 			{
-				break;
-			}
-
-			yim_fipackfile rpf_wrapper = yim_fipackfile(rpf, default_mount_name);
-
-			auto already_mounted = false;
-			for (const auto& non_dlc_mounted_device_name : non_dlc_mounted_devices_names)
-			{
-				auto* non_dlc_mounted_device = rage::fiDevice::GetDevice(non_dlc_mounted_device_name.c_str(), true);
-
-				if (rpf == non_dlc_mounted_device)
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
 				{
-					rpf_wrapper.mount_name = non_dlc_mounted_device_name;
-					already_mounted = true;
-				}
-			}
+					uint32_t encryption_type{};
+					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
+					((rage::fiDevice*)&packfile)->Read(handle, &encryption_type, 4);
+					((rage::fiDevice*)&packfile)->Close(handle);
 
-			if (!already_mounted)
-			{
-				size_t acc = 0;
+					if (encryption_type == 0xFFFFFF9)
+						continue; // skip AES encrypted RPFs
 
-				rpf_wrapper.mount_name = "memory:/";
-				acc += cb(rpf_wrapper);
+					// OPEN / CFXP
+					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
+					{
+						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
 
-				rpf_wrapper.mount_name = "memory:";
-				acc += cb(rpf_wrapper);
+						continue;
+					}
 
-				rpf_wrapper.mount_name = "dlc";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlc:";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "dlcpacks:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "common:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "commoncrc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "update:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "update2:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "platform:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "platformcrc:/";
-				acc += cb(rpf_wrapper);
-
-				rpf_wrapper.mount_name = "gamecache:/";
-				acc += cb(rpf_wrapper);
-
-				// if we got nothing with those mount points for this rpf, mount it
-				if (!acc)
-				{
-					rpf_wrapper.mount_name = default_mount_name;
-					rpf->Mount(default_mount_name);
-
-					cb(rpf_wrapper);
-
-					g_pointers->m_fipackfile_unmount(default_mount_name);
+					traverse_rpf_file(file.u8string(), depth + 1);
 				}
 			}
 			else
 			{
-				cb(rpf_wrapper);
+				std::for_each(yim_fipackfile::m_wrapper_call_back.begin(), yim_fipackfile::m_wrapper_call_back.end(), [&rpf_wrapper, file](std::function<void(yim_fipackfile & rpf_wrapper, std::filesystem::path path)> cb) {
+					cb(rpf_wrapper, file);
+				});
+			}
+		}
+
+		packfile.Unmount(mount_path.c_str());
+		packfile.ClosePackfile();
+	}
+
+	static std::filesystem::path get_game_folder_path()
+	{
+		std::wstring game_module_path(MAX_PATH, '\0');
+
+		if (GetModuleFileNameW(nullptr, game_module_path.data(), game_module_path.size()))
+		{
+			const auto game_folder = std::filesystem::path(game_module_path).parent_path();
+
+			if (std::filesystem::is_directory(game_folder))
+			{
+				return game_folder;
+			}
+			else
+			{
+				LOG(WARNING) << "game_folder variable is not directory " << reinterpret_cast<const char*>(game_folder.u8string().c_str());
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "Failed getting gta module path. Error code: " << GetLastError();
+		}
+
+		return {};
+	}
+
+	void yim_fipackfile::for_each_fipackfile()
+	{
+		const auto gta_folder = get_game_folder_path();
+		if (gta_folder.empty())
+		{
+			LOG(WARNING) << "get_game_folder_path() failed, aborting.";
+		}
+
+		try
+		{
+			LOG(VERBOSE) << "GTA install directory: " << reinterpret_cast<const char*>(gta_folder.u8string().c_str());
+		}
+		catch (const std::exception& e)
+		{
+			LOG(WARNING) << "Failed printing GTA install directory: " << e.what();
+		}
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
+		{
+			if (!entry.is_regular_file())
+			{
+				continue;
 			}
 
-			if (i % yield_increment == 0)
-				script::get_current()->yield();
+			const auto rel_path = std::filesystem::relative(entry.path());
+			if (rel_path.empty())
+				continue;
+
+			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().native());
+
+			if (utf8_path.empty())
+				continue;
+
+			if (utf8_path.contains("mods"))
+				continue;
+
+			if (rel_path.extension() == ".rpf")
+				traverse_rpf_file(rel_path.u8string());
 		}
 	}
 
@@ -157,13 +161,18 @@ namespace big
 
 		std::vector<std::string> directories;
 
-		rage::fiFindData findData = { 0 };
-		auto handlef = rpf->FindFirst(parent.c_str(), &findData);
+		rage::fiFindData findData = {0};
+		auto handlef              = rpf->FindFirst(parent.c_str(), &findData);
 		if (handlef != -1)
 		{
 			do
 			{
-				std::string fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
+				std::string fn;
+
+				if (parent == mount_name)
+					fn = std::string(parent.c_str()) + std::string(findData.fileName);
+				else
+					fn = std::string(parent.c_str()) + std::string("/") + std::string(findData.fileName);
 
 				if (findData.fileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 				{
@@ -188,12 +197,17 @@ namespace big
 		return file_paths;
 	}
 
+	const char* yim_fipackfile::get_name()
+	{
+		return rpf->GetName();
+	}
+
 	void yim_fipackfile::read_file(const std::filesystem::path& path, file_contents_callback&& cb)
 	{
 		if (const auto handle = rpf->Open(path.string().c_str(), true); handle != -1)
 		{
-			const auto data_length = rpf->GetFileLength(handle);
-			const auto file_content = std::make_unique<std::uint8_t[]>(data_length);
+			const auto data_length  = rpf->GetFileLength(handle);
+			const auto file_content = std::make_unique<uint8_t[]>(data_length);
 
 			rpf->ReadFull(handle, file_content.get(), data_length);
 
@@ -205,8 +219,7 @@ namespace big
 
 	void yim_fipackfile::read_xml_file(const std::filesystem::path& path, std::function<void(pugi::xml_document& doc)> cb)
 	{
-		read_file(path, [&cb](const std::unique_ptr<std::uint8_t[]>& file_content, const int data_size)
-		{
+		read_file(path, [&cb](const std::unique_ptr<uint8_t[]>& file_content, const int data_size) {
 			if (pugi::xml_document doc; doc.load_buffer(file_content.get(), data_size).status == pugi::xml_parse_status::status_ok)
 			{
 				cb(doc);

@@ -6,6 +6,7 @@ namespace big
 	class chat_command_context : public command_context
 	{
 		player_ptr m_player;
+
 	public:
 		virtual player_ptr get_sender() const override;
 		virtual CommandAccessLevel get_access_level() const override;

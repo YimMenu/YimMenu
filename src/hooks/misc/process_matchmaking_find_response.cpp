@@ -6,12 +6,12 @@ namespace rage
 	class JSONNode
 	{
 	public:
-		char* m_key; //0x0000
-		char pad_0008[32]; //0x0008
-		class rage::JSONNode* m_sibling; //0x0028
-		class rage::JSONNode* m_child; //0x0030
-		char* m_value; //0x0038
-		char pad_0040[8]; //0x0040
+		char* m_key;                    //0x0000
+		char pad_0008[32];              //0x0008
+		class rage::JSONNode* m_sibling;//0x0028
+		class rage::JSONNode* m_child;  //0x0030
+		char* m_value;                  //0x0038
+		char pad_0040[8];               //0x0040
 
 		inline JSONNode* get_child_node(const char* name)
 		{
@@ -23,7 +23,7 @@ namespace rage
 
 			return nullptr;
 		}
-	}; //Size: 0x0048
+	};//Size: 0x0048
 	static_assert(sizeof(rage::JSONNode) == 0x48);
 }
 
@@ -45,7 +45,7 @@ namespace
 			prev_pos = ++pos;
 		}
 
-		output.push_back(s.substr(prev_pos, pos - prev_pos)); // Last word
+		output.push_back(s.substr(prev_pos, pos - prev_pos));// Last word
 
 		return output;
 	}
@@ -56,7 +56,7 @@ namespace big
 	bool hooks::process_matchmaking_find_response(void* _this, void* unused, rage::JSONNode* node, int* unk)
 	{
 		bool ret = g_hooking->get_original<hooks::process_matchmaking_find_response>()(_this, unused, node, unk);
-		
+
 		if (g_matchmaking_service->is_active())
 		{
 			int i = 0;
@@ -64,9 +64,9 @@ namespace big
 			{
 				const auto& values = split(result->get_child_node("Attributes")->m_value, ',');
 				g_matchmaking_service->get_found_sessions()[i].attributes.discriminator = std::stoi(values[2]);
-				g_matchmaking_service->get_found_sessions()[i].attributes.player_count = std::stoi(values[4]);
-				g_matchmaking_service->get_found_sessions()[i].attributes.language = std::stoi(values[5]);
-				g_matchmaking_service->get_found_sessions()[i].attributes.region = std::stoi(values[6]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.player_count  = std::stoi(values[4]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.language      = std::stoi(values[5]);
+				g_matchmaking_service->get_found_sessions()[i].attributes.region        = std::stoi(values[6]);
 				i++;
 			}
 		}

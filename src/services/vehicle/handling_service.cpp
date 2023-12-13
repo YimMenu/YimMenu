@@ -1,10 +1,11 @@
-#include "gta_util.hpp"
 #include "handling_service.hpp"
+
+#include "gta_util.hpp"
 
 namespace big
 {
 	handling_service::handling_service() :
-		m_profiles_folder(g_file_manager->get_project_folder("./handling_profiles"))
+	    m_profiles_folder(g_file_manager.get_project_folder("./handling_profiles"))
 	{
 		g_handling_service = this;
 
@@ -26,17 +27,24 @@ namespace big
 			if (!item.is_regular_file())
 				continue;
 
-			auto file_path = item.path(); 
+			auto file_path = item.path();
 			if (file_path.extension() == ".json")
 			{
-				auto profile_file = std::ifstream(file_path, std::ios::binary);
-				nlohmann::json j;
-				profile_file >> j;
-				profile_file.close();
+				try
+				{
+					auto profile_file = std::ifstream(file_path, std::ios::binary);
+					nlohmann::json j;
+					profile_file >> j;
+					profile_file.close();
 
-				m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
+					m_handling_profiles.emplace(file_path.stem().string(), j.get<handling_profile>());
 
-				++files_loaded;
+					++files_loaded;
+				}
+				catch (std::exception& e)
+				{
+					LOG(WARNING) << "Failed to load " << file_path.filename() << ". " << e.what();
+				}
 			}
 			// deprecate this
 			else if (file_path.extension() == ".bin")
@@ -44,16 +52,16 @@ namespace big
 				LOG(WARNING) << "Attempting to convert old handling files, this feature will be removed in the future.";
 
 				auto profile_file = std::ifstream(file_path, std::ios::binary);
-				auto profile = handling_profile();
+				auto profile      = handling_profile();
 				profile_file.read(reinterpret_cast<char*>(&profile), 328); // hardcoded old size to prevent overreading
 				profile_file.close();
 
 				const auto new_save = file_path.stem().string();
 
 				// this will make sure we only copy the fields we want to copy
-				nlohmann::json j = profile;
+				nlohmann::json j          = profile;
 				const auto save_file_path = m_profiles_folder.get_file("./" + new_save + ".json");
-				auto save_file = std::ofstream(save_file_path.get_path(), std::ios::binary);
+				auto save_file            = std::ofstream(save_file_path.get_path(), std::ios::binary);
 				save_file << j.dump(4);
 
 				// remove old file
@@ -98,7 +106,7 @@ namespace big
 
 		auto profile = handling_profile(vehicle);
 
-		auto save_file = std::ofstream(save.get_path(), std::ios::binary);
+		auto save_file   = std::ofstream(save.get_path(), std::ios::binary);
 		nlohmann::json j = profile;
 		save_file << j.dump(4);
 		save_file.close();

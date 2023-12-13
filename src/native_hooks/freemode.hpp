@@ -1,19 +1,39 @@
 #pragma once
 #include "script_function.hpp"
+#include "services/vehicle/vehicle_control_service.hpp"
 
 namespace big
 {
 	namespace freemode
 	{
-		inline void NETWORK_BAIL(rage::scrNativeCallContext* src)
+		void GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(rage::scrNativeCallContext* src)
 		{
-			LOG(INFO) << "NETWORK_BAIL prevented";
+			const auto hash = src->get_arg<rage::joaat_t>(0);
+
+			if (hash == RAGE_JOAAT("director_mode") || hash == RAGE_JOAAT("main"))
+			{
+				src->set_return_value(0);
+				return;
+			}
+
+			src->set_return_value(SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(hash));
+		}
+
+		void STAT_GET_INT(rage::scrNativeCallContext* src)
+		{
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") || src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
+			{
+				src->set_return_value<int>(0);
+				return;
+			}
+
+			src->set_return_value(STATS::STAT_GET_INT(src->get_arg<Hash>(0), src->get_arg<int*>(1), src->get_arg<int>(2)));
 		}
 
 		inline void IS_PLAYER_PLAYING(rage::scrNativeCallContext* src)
 		{
 			// block undead OTR
-			if (g.session.decloak_players && src->get_arg<Player>(0) != self::id)
+			if (g.session.decloak_players && src->get_arg<Player>(0) != self::id && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 				src->set_return_value<BOOL>(TRUE);
 			else
 				src->set_return_value<BOOL>(PLAYER::IS_PLAYER_PLAYING(src->get_arg<Player>(0)));
@@ -45,34 +65,31 @@ namespace big
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
 		{
-			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() || NETWORK::NETWORK_IS_IN_TRANSITION() || NETWORK::NETWORK_IS_TRANSITION_TO_GAME() || NETWORK::NETWORK_IS_HOST_OF_THIS_SCRIPT())
 			{
 				src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
 			}
 			else
 			{
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (g.session.force_script_host && (g.session.fast_join || NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA()))
 				{
-					g_fiber_pool->queue_job([]
-					{
-						scripts::force_host(RAGE_JOAAT("freemode"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
-							script->m_net_component->block_host_migration(true);
+					auto hash = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
+					g_fiber_pool->queue_job([hash] {
+						scripts::force_host(hash);
+						if (auto script = gta_util::find_script_thread(hash); script && script->m_net_component)
+							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 					});
 				}
 
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("fmmc_launcher") && g.session.force_script_host)
+				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.fast_join)
 				{
-					g_fiber_pool->queue_job([]
-					{
-						scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
-						if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
-							script->m_net_component->block_host_migration(true);
-					});
+					scr_functions::set_freemode_session_active({});
+					src->set_return_value<BOOL>(TRUE);
 				}
-
-				scr_functions::set_freemode_session_active({});
-				src->set_return_value<BOOL>(TRUE);
+				else
+				{
+					src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
+				}
 			}
 		}
 	}

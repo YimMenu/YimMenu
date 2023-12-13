@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -8,7 +8,7 @@ namespace big
 		using looped_command::looped_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value = 0.0f;
+		float og_recoil_value          = 0.0f;
 
 		virtual void on_tick() override
 		{
@@ -21,5 +21,5 @@ namespace big
 		}
 	};
 
-	infinite_mag g_infinite_mag("infclip", "Infinite Clip", "Shoot forever without needing to reload", g.weapons.infinite_mag);
+	infinite_mag g_infinite_mag("infclip", "VIEW_OVERLAY_INFINITE_MAGAZINE", "BACKEND_LOOPED_WEAPONS_INFINITE_MAG_DESC", g.weapons.infinite_mag);
 }

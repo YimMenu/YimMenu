@@ -1,14 +1,11 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
 	class infinite_ammo : looped_command
 	{
 		using looped_command::looped_command;
-
-		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value = 0.0f;
 
 		virtual void on_tick() override
 		{
@@ -21,5 +18,5 @@ namespace big
 		}
 	};
 
-	infinite_ammo g_infinite_ammo("infammo", "Infinite Ammo", "Never run out of ammo again", g.weapons.infinite_ammo);
+	infinite_ammo g_infinite_ammo("infammo", "VIEW_OVERLAY_INFINITE_AMMO", "", g.weapons.infinite_ammo);
 }

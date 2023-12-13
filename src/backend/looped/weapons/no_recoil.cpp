@@ -1,6 +1,6 @@
+#include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
 
 namespace big
 {
@@ -9,7 +9,8 @@ namespace big
 		using looped_command::looped_command;
 
 		CWeaponInfo* p_modified_weapon = nullptr;
-		float og_recoil_value = 0.0f;
+		uint32_t og_recoil_hash        = 0;
+		uint32_t og_recoil_hash_fp     = 0;
 
 		virtual void on_tick() override
 		{
@@ -21,14 +22,23 @@ namespace big
 			auto* const weapon_mgr = g_local_player->m_weapon_manager;
 			if (weapon_mgr)
 			{
-				if (p_modified_weapon != weapon_mgr->m_weapon_info && weapon_mgr->m_weapon_info)
+				if (p_modified_weapon != weapon_mgr->m_weapon_info)
 				{
 					if (p_modified_weapon)
-						p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
+					{
+						p_modified_weapon->m_recoil_shake_hash              = og_recoil_hash;
+						p_modified_weapon->m_recoil_shake_hash_first_person = og_recoil_hash_fp;
+					}
 
-					og_recoil_value = weapon_mgr->m_weapon_info->m_explosion_shake_amplitude;
 					p_modified_weapon = weapon_mgr->m_weapon_info;
-					weapon_mgr->m_weapon_info->m_explosion_shake_amplitude = 0.0f;
+
+					if (weapon_mgr->m_weapon_info)
+					{
+						og_recoil_hash    = weapon_mgr->m_weapon_info->m_recoil_shake_hash;
+						og_recoil_hash_fp = weapon_mgr->m_weapon_info->m_recoil_shake_hash_first_person;
+						weapon_mgr->m_weapon_info->m_recoil_shake_hash              = 0;
+						weapon_mgr->m_weapon_info->m_recoil_shake_hash_first_person = 0;
+					}
 				}
 			}
 		}
@@ -37,11 +47,12 @@ namespace big
 		{
 			if (g_local_player && p_modified_weapon)
 			{
-				p_modified_weapon->m_explosion_shake_amplitude = og_recoil_value;
-				p_modified_weapon = nullptr;
+				p_modified_weapon->m_recoil_shake_hash              = og_recoil_hash;
+				p_modified_weapon->m_recoil_shake_hash_first_person = og_recoil_hash_fp;
+				p_modified_weapon                                   = nullptr;
 			}
 		}
 	};
 
-	no_recoil g_no_recoil("norecoil", "No Recoil", "Removes weapon recoil when shooting", g.weapons.no_recoil);
+	no_recoil g_no_recoil("norecoil", "BACKEND_LOOPED_WEAPONS_NO_RECOIL", "BACKEND_LOOPED_WEAPONS_NO_RECOIL_DESC", g.weapons.no_recoil);
 }

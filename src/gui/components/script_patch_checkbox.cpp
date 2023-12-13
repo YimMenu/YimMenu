@@ -9,8 +9,7 @@ namespace big
 		bool ret = ImGui::Checkbox(text.data(), option);
 		if (ret)
 		{
-			g_fiber_pool->queue_job([]
-			{
+			g_fiber_pool->queue_job([] {
 				g_script_patcher_service->update();
 			});
 		}

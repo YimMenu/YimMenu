@@ -1,6 +1,6 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
 #include "core/scr_globals.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -10,14 +10,14 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*script_global(20366).as<bool*>() = true;
+			*scr_globals::transaction_overlimit.as<PBOOL>() = TRUE;
 		}
 
 		virtual void on_disable() override
 		{
-			*script_global(20366).as<bool*>() = false;
+			*scr_globals::transaction_overlimit.as<PBOOL>() = FALSE;
 		}
 	};
 
-	disable_phone g_disable_phone("nophone", "Disable Phone", "Blocks phone and stops all phone calls", g.tunables.disable_phone);
+	disable_phone g_disable_phone("nophone", "DISABLE_PHONE", "DISABLE_PHONE_DESC", g.tunables.disable_phone);
 }

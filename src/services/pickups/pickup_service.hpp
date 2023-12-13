@@ -8,9 +8,9 @@ namespace big
 		pickup_service();
 		~pickup_service();
 
-		pickup_service(const pickup_service&) = delete;
-		pickup_service(pickup_service&&) noexcept = delete;
-		pickup_service& operator=(const pickup_service&) = delete;
+		pickup_service(const pickup_service&)                = delete;
+		pickup_service(pickup_service&&) noexcept            = delete;
+		pickup_service& operator=(const pickup_service&)     = delete;
 		pickup_service& operator=(pickup_service&&) noexcept = delete;
 
 		void give_player_ammo(const Player player) const;

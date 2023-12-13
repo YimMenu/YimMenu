@@ -10,6 +10,6 @@ namespace big
 		virtual CommandAccessLevel get_access_level() const override;
 		virtual void report_output(const std::string& output) const override;
 		virtual void report_error(const std::string& error) const override;
-		default_command_context() {};
+		default_command_context(){};
 	};
 }

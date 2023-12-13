@@ -1,7 +1,7 @@
 #include "backend/player_command.hpp"
+#include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "core/scr_globals.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -10,13 +10,15 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::TOXIC;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
+			if (!player)
+				return;
 			if (!scripts::force_host(RAGE_JOAAT("freemode")))
 			{
 				g_notification_service->push_error("Kick", "Force script host failed!");
@@ -27,5 +29,5 @@ namespace big
 		}
 	};
 
-	script_host_kick g_script_host_kick("shkick", "Script Host Kick", "Blocked by most menus", 0, false);
+	script_host_kick g_script_host_kick("shkick", "SCRIPT_HOST_KICK", "SCRIPT_HOST_KICK_DESC", 0, false);
 }

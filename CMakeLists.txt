@@ -15,9 +15,9 @@ include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
 include(scripts/zydis.cmake)
-
-message("\nFetching custom modules")
+include(scripts/lua.cmake)
 include(scripts/imgui.cmake)
+message("\nFetching custom modules")
 include(scripts/gtav-classes.cmake)
 
 
@@ -31,6 +31,15 @@ file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.cxx"
     "${SRC_DIR}/**.asm"
 )
+
+if (MSVC)
+  add_compile_options(/bigobj)
+  add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+  add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+else ()
+  add_compile_options(-Wa,-mbig-obj)
+endif ()
+
 add_library(YimMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -46,7 +55,7 @@ target_include_directories(YimMenu PRIVATE
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)

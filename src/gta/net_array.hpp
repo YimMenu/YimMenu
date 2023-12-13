@@ -1,5 +1,20 @@
 #pragma once
-#include "fwddec.hpp"
+#include "memory/fwddec.hpp"
+
+namespace big
+{
+	struct broadcast_net_array
+	{
+		inline static memory::byte_patch* m_patch;
+	};
+}
+
+class CNetGamePlayer;
+
+namespace rage
+{
+	class netArrayHandlerBase;
+}
 
 class CGameArrayMgr
 {
@@ -26,7 +41,7 @@ namespace rage
 
 		// ...
 
-		int m_players_need_ack; // 0x08
+		int m_players_need_ack;  // 0x08
 		int m_players_need_sync; // 0x0C
 	};
 
@@ -50,6 +65,7 @@ namespace rage
 		// ...
 	};
 
+#pragma pack(push, 1)
 	class netArrayHandlerBase
 	{
 	public:
@@ -176,7 +192,7 @@ namespace rage
 
 		virtual void _0x1E0() = 0;
 
-		virtual void _0x1E8(bool) = 0; // very important! changes send function to use some kind of cached buffer that prevents us from modifing array data per player
+		virtual void _0x1E8(bool) = 0;
 
 		void* m_something; // 0x10
 
@@ -185,34 +201,16 @@ namespace rage
 		uint8_t m_pad[100 - 0x18]; // +8
 		uint32_t m_hash;
 		uint8_t m_pad2[244 - 104]; // +8
-		uint16_t m_index; // 244
-		uint16_t m_count; // 246
-		uint8_t m_max_elements; // 248
-		uint8_t m_element_size; // 249
-		uint8_t m_element_size_2; // 250
-		uint8_t m_pad3[13]; // 251
-		void* m_array; // 264
-
-#if 0
-		static inline netArrayHandlerBase* get_by_data(void* data)
-		{
-			if (auto array_mgr = *big::g_pointers->m_game_array_mgr)
-			{
-				if (auto handler = array_mgr->m_start)
-				{
-					do
-					{
-						if (handler->m_array == data)
-							return handler;
-					}
-					while (handler = handler->m_next);
-				}
-			}
-
-			return nullptr;
-		}
-#endif
+		uint16_t m_index;          // 244
+		uint16_t m_count;          // 246
+		uint8_t m_max_elements;    // 248
+		uint8_t m_element_size;    // 249
+		uint8_t m_element_size_2;  // 250
+		uint8_t m_pad3[13];        // 251
+		void* m_array;             // 264
+		uint8_t m_pad4[341 - (264 + 8)];
+		char m_flags; // 341
 	};
-
-	static_assert(sizeof(netArrayHandlerBase) == 272);
+#pragma pack(pop)
+	static_assert(sizeof(netArrayHandlerBase) == 342);
 }

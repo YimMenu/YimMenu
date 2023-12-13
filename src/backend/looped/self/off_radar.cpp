@@ -1,6 +1,9 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "backend/bool_command.hpp"
 #include "core/scr_globals.hpp"
+#include "natives.hpp"
+
+#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {
@@ -10,15 +13,20 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(210).as<int*>() = true;
-			*script_global(2672505).at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			if (g.self.ghost_org)
+				MISC::SET_BIT(scr_globals::freemode_global.at(4667).as<int*>(), 2);
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = true;
+			*scr_globals::freemode_properties.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override
 		{
-			*scr_globals::globalplayer_bd.at(PLAYER::GET_PLAYER_INDEX(), scr_globals::size::globalplayer_bd).at(210).as<int*>() = false;
+			if (!g.self.ghost_org)
+				MISC::CLEAR_BIT(scr_globals::freemode_global.at(4667).as<int*>(), 2);
+			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = false;
 		}
 	};
 
-	off_radar g_off_radar("otr", "Off Radar", "Hides your blip from other players", g.self.off_radar);
+	off_radar g_off_radar("otr", "OFF_THE_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
+	bool_command ghost_org("ghostorg", "GHOST_ORG", "GHOST_ORG_DESC", g.self.ghost_org);
 }

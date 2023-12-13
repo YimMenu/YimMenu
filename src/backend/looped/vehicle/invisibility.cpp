@@ -1,7 +1,8 @@
 #include "backend/looped/looped.hpp"
+#include "backend/looped_command.hpp"
 #include "fiber_pool.hpp"
 #include "natives.hpp"
-#include "backend/looped_command.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
@@ -38,6 +39,7 @@ namespace big
 		}
 	};
 
-	vehinvisibility g_vehinvisibility("invisveh", "Vehicle Invisiblity", "Makes your car invisible", g.vehicle.vehinvisibility);
-	bool_command g_localveh_visibility("localinvisveh", "Visible Locally", "Makes your car visible to yourself, other players will still not be able to see it", g.vehicle.localveh_visibility);
+	vehinvisibility g_vehinvisibility("invisveh", "VEHICLE_INVISIBILITY", "VEHICLE_INVISIBILITY_DESC", g.vehicle.vehinvisibility);
+	bool_command g_localveh_visibility("localinvisveh", "VEHICLE_LOCAL_VISIBLE", "VEHICLE_LOCAL_VISIBLE_DESC",
+	    g.vehicle.localveh_visibility);
 }
