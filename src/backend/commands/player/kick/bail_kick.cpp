@@ -21,9 +21,10 @@ namespace big
 			if (!player)
 				return;
 
-			const size_t arg_count  = 3;
+			const size_t arg_count  = 4;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::NetworkBail,
 			    (int64_t)self::id,
+			    1 << player->id(),
 			    scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter};
 
 			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::NetworkBail);

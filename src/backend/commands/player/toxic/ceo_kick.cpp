@@ -25,8 +25,12 @@ namespace big
 
 			else if (leader == player->id())
 			{
-				const size_t arg_count  = 2;
-				int64_t args[arg_count] = {(int64_t)eRemoteEvent::CeoKick, (int64_t)self::id};
+				const size_t arg_count  = 3;
+				int64_t args[arg_count] = {
+				    (int64_t)eRemoteEvent::CeoKick,
+				    (int64_t)self::id,
+				    1 << player->id(),
+				};
 
 				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::CeoKick);
 				return;
@@ -34,8 +38,8 @@ namespace big
 			else
 			{
 				// use a more private method to remove associate
-				const size_t arg_count  = 3;
-				int64_t args[arg_count] = {(int64_t)eRemoteEvent::MarkPlayerAsBeast, (int64_t)self::id, leader};
+				const size_t arg_count  = 4;
+				int64_t args[arg_count] = {(int64_t)eRemoteEvent::MarkPlayerAsBeast, (int64_t)self::id, 1 << player->id(), leader};
 
 				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::MarkPlayerAsBeast);
 			}

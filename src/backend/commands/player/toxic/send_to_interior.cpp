@@ -17,9 +17,10 @@ namespace big
 		{
 			float max   = 1e+38f;
 			auto coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), FALSE);
-			const size_t arg_count  = 15;
+			const size_t arg_count  = 16;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::InteriorControl,
 			    (int64_t)self::id,
+			    1 << player->id(),
 			    (int64_t)_args.get<int>(0),
 			    (int64_t)self::id,
 			    (int64_t) false,

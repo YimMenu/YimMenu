@@ -18,9 +18,10 @@ namespace big
 			int id = player->id();
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PropertyData.Index != -1)
 			{
-				const size_t arg_count  = 9;
+				const size_t arg_count  = 10;
 				int64_t args[arg_count] = {(int64_t)eRemoteEvent::Teleport,
 				    self::id,
+				    1 << self::id,
 				    (int64_t)player->id(),
 				    (int64_t)(int)-1,
 				    1,

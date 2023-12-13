@@ -211,10 +211,11 @@ namespace big::session
 
 	inline void give_collectible(Player target, eCollectibleType col, int index = 0, bool uncomplete = false)
 	{
-		const size_t arg_count  = 7;
+		const size_t arg_count  = 8;
 		int64_t args[arg_count] = {
 		    (int64_t)eRemoteEvent::GiveCollectible,
 		    (int64_t)self::id,
+		    1 << target,
 		    (int64_t)col,   // iParam0
 		    (int64_t)index, // iParam1
 		    !uncomplete,    // bParam2

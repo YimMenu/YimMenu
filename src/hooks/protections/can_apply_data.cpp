@@ -1599,7 +1599,7 @@ namespace big
 				const auto gadget_node = (CVehicleGadgetDataNode*)(node);
 				for (int i = 0; i < gadget_node->m_gadget_count; i++)
 				{
-					if (gadget_node->m_gadget_data[i].m_gadget_type > 6)
+					if (gadget_node->m_gadget_data[i].m_gadget_type > 7)
 					{
 						notify::crash_blocked(sender, "out of bounds gadget type");
 						return true;

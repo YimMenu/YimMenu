@@ -18,9 +18,10 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)override
 		{ 
-			const size_t arg_count  = 8;
+			const size_t arg_count  = 9;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::TransactionError,
 			    (int64_t)self::id,
+			    1 << player->id(),
 			    1,
 			    0,
 			    0,

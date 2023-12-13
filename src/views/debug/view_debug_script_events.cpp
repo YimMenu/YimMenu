@@ -56,6 +56,7 @@ namespace big
 
 			components::button("DEBUG_SCRIPT_EVENT_SEND_EVENT"_T, [] {
 				args[1] = self::id;// prevent detection from AC
+				args[2] = event_everyone ? -1 : 1 << event_player_bits,
 				g_pointers->m_gta.m_trigger_script_event(1, args, event_arg_count, event_everyone ? -1 : 1 << event_player_bits, args[0]);
 			});
 
