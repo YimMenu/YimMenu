@@ -222,6 +222,6 @@ namespace big::session
 		    0 // bParam3
 		};
 
-		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target, (int)eRemoteEvent::GiveCollectible);
 	}
 }

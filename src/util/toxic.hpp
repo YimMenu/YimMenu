@@ -48,7 +48,7 @@ namespace big::toxic
 		const size_t arg_count = 4;
 		int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartActivity, (int64_t)self::id, (int64_t)type, (int64_t) true};
 
-		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id(), (int)eRemoteEvent::StartActivity);
 	}
 
 	inline bool set_time(player_ptr target, uint32_t millis)
