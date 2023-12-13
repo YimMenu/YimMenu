@@ -230,6 +230,7 @@ namespace big
 				components::command_checkbox<"jumpability">();
 				components::command_checkbox<"parachuteability">();
 				components::command_checkbox<"rampability">();
+				components::command_checkbox<"gliderability">();
 			}
 		}
 		ImGui::SeparatorText("VEHICLE_FLY"_T.data());
