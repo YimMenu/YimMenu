@@ -129,7 +129,7 @@ namespace big
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_ROCKET_BOOST, g.vehicle.abilities.rocket);
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_PARACHUTE, g.vehicle.abilities.parachute);
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::RAMP, g.vehicle.abilities.ramp);
-			if (VEHICLE::GET_VEHICLE_CLASS(self::veh) == 8 /*Motorcycles*/)
+			if (VEHICLE::GET_VEHICLE_CLASS(self::veh) == 8 || VEHICLE::GET_VEHICLE_CLASS(self::veh) == 13 /*Motorcycles & Bikes*/)
 				m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_GLIDER, g.vehicle.abilities.glider);
 		}
 
