@@ -99,5 +99,15 @@ namespace big
 		}
 
 		ImGui::EndGroup();
+
+		if (components::button<ImVec2{0, 0}, ImVec4{0.58f, 0.15f, 0.15f, 1.f}>("Disable All Lua Scripts"))
+		{
+			g_lua_manager->disable_all_modules();
+		}
+		ImGui::SameLine();
+		if (components::button("Enable All Lua Scripts"))
+		{
+			g_lua_manager->enable_all_modules();
+		}
 	}
 }

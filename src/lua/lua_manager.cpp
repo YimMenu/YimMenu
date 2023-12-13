@@ -42,13 +42,13 @@ namespace big
 		g_lua_manager = nullptr;
 	}
 
-	void lua_manager::disabled_all_modules()
+	void lua_manager::disable_all_modules()
 	{
 		std::vector<std::filesystem::path> script_paths;
 
 		{
 			std::lock_guard guard(m_module_lock);
-			for (auto& module : m_disabled_modules)
+			for (auto& module : m_modules)
 			{
 				script_paths.push_back(module->module_path());
 
@@ -57,7 +57,6 @@ namespace big
 			m_modules.clear();
 		}
 
-		std::lock_guard guard(m_disabled_module_lock);
 		for (const auto& script_path : script_paths)
 		{
 			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), script_path);
@@ -80,10 +79,9 @@ namespace big
 
 				module.reset();
 			}
-			m_modules.clear();
+			m_disabled_modules.clear();
 		}
 
-		std::lock_guard guard(m_module_lock);
 		for (const auto& script_path : script_paths)
 		{
 			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), script_path);
@@ -182,7 +180,7 @@ namespace big
 			const auto module_path = module->module_path();
 
 			// unload module
-			std::lock_guard disabled_guard(m_disabled_module_lock);
+			std::lock_guard guard(m_disabled_module_lock);
 			std::erase_if(m_disabled_modules, [module_id](auto& module) {
 				return module_id == module->module_id();
 			});
@@ -202,7 +200,12 @@ namespace big
 		if (auto module = get_module(module_id).lock())
 		{
 			const auto module_path = module->module_path();
-			unload_module(module_id);
+
+			// unload module
+			std::lock_guard guard(m_disabled_module_lock);
+			std::erase_if(m_modules, [module_id](auto& module) {
+				return module_id == module->module_id();
+			});
 
 			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), module_path);
 			if (new_module_path)

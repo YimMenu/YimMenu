@@ -23,7 +23,7 @@ namespace big
 		lua_manager(folder scripts_folder, folder scripts_config_folder);
 		~lua_manager();
 
-		void disabled_all_modules();
+		void disable_all_modules();
 		void enable_all_modules();
 
 		void load_all_modules();

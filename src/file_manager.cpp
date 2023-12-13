@@ -44,15 +44,15 @@ namespace big
     
 	std::filesystem::path file_manager::ensure_folder_exists(const std::filesystem::path folder_path)
     {
-        bool create_path = !std::filesystem::exists(folder_path);
+        bool create_path = !exists(folder_path);
 
-        if (!create_path && !std::filesystem::is_directory(folder_path))
+        if (!create_path && !is_directory(folder_path))
         {
-            std::filesystem::remove(folder_path);
+            remove(folder_path);
             create_path = true;
         }
         if (create_path)
-            std::filesystem::create_directory(folder_path);
+            create_directories(folder_path);
 
         return folder_path;
     }
