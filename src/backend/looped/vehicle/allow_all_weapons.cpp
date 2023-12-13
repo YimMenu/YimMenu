@@ -44,6 +44,12 @@ namespace big
 		if (num_seats > 3 && seat_info->m_rear_right->m_drive_by_info != defaults->m_driveby_standard_rear_right)
 			seat_info->m_rear_right->m_drive_by_info = defaults->m_driveby_standard_rear_right;
 
+		vehicle_model_info->set_vehicle_model_flag(CVehicleModelInfoFlags::DRIVER_NO_DRIVE_BY, false);
+		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+		{
+			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE, 1);
+		}
+
 		if (g_pointers->m_gta.m_driveby_metadata_mgr->m_drive_by_weapon_groups->m_drive_by_default
 		        ->m_driveby_default_one_handed_weapon_group_names.size() == 1)
 		{
