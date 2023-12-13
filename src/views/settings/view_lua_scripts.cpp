@@ -31,7 +31,7 @@ namespace big
 		}
 
 		ImGui::BeginGroup();
-		components::sub_title("Enabled Lua Scripts:");
+		components::sub_title("ENABLED_LUA_SCRIPTS"_T);
 		{
 			if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 			{
@@ -47,7 +47,7 @@ namespace big
 		ImGui::EndGroup();
 		ImGui::SameLine();
 		ImGui::BeginGroup();
-		components::sub_title("Disabled Lua Scripts:");
+		components::sub_title("DISABLED_LUA_SCRIPTS"_T);
 		{
 			if (ImGui::BeginListBox("##disabled_empty", ImVec2(200, 200)))
 			{
@@ -100,12 +100,12 @@ namespace big
 
 		ImGui::EndGroup();
 
-		if (components::button<ImVec2{0, 0}, ImVec4{0.58f, 0.15f, 0.15f, 1.f}>("Disable All Lua Scripts"))
+		if (components::button<ImVec2{0, 0}, ImVec4{0.58f, 0.15f, 0.15f, 1.f}>("DISABLE_ALL_LUA_SCRIPTS"_T))
 		{
 			g_lua_manager->disable_all_modules();
 		}
 		ImGui::SameLine();
-		if (components::button("Enable All Lua Scripts"))
+		if (components::button("ENABLE_ALL_LUA_SCRIPTS"_T))
 		{
 			g_lua_manager->enable_all_modules();
 		}
