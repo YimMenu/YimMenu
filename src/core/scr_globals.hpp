@@ -74,36 +74,36 @@ namespace big::scr_locals
 {
 	namespace am_hunt_the_beast
 	{
-		constexpr static auto broadcast_idx        = 600;
-		constexpr static auto player_broadcast_idx = 2584;
+		constexpr static auto broadcast_idx        = 602;
+		constexpr static auto player_broadcast_idx = 2586;
 	}
 
 	namespace am_criminal_damage
 	{
-		constexpr static auto broadcast_idx = 111;
-		constexpr static auto score_idx     = 106;
+		constexpr static auto broadcast_idx = 113;
+		constexpr static auto score_idx     = 108;
 	}
 
 	namespace am_cp_collection
 	{
-		constexpr static auto broadcast_idx        = 816;
-		constexpr static auto player_broadcast_idx = 3457;
+		constexpr static auto broadcast_idx        = 818;
+		constexpr static auto player_broadcast_idx = 3459;
 	}
 
 	namespace am_king_of_the_castle
 	{
-		constexpr static auto broadcast_idx = 94;
+		constexpr static auto broadcast_idx = 96;
 	}
 
 	namespace fmmc_launcher
 	{
-		constexpr static auto broadcast_idx = 11629;
+		constexpr static auto broadcast_idx = 12327;
 	}
 
-	namespace fm_mobile
+	namespace freemode
 	{
 		// first uLocal_ in this function call
 		// func_\d+\((&.Local_\d+(, )?){9}\);
-		inline static script_local mobile(18717);
+		inline static script_local mobile(18955);
 	}
 }
