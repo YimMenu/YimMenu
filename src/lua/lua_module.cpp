@@ -80,38 +80,42 @@ namespace big
 		return sol::stack::push(L, msg);
 	}
 
-	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder) :
+	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder, bool disabled) :
 	    m_state(),
 	    m_module_path(module_path),
 	    m_module_name(module_path.filename().string()),
-	    m_module_id(rage::joaat(m_module_name))
+	    m_module_id(rage::joaat(m_module_name)),
+	    m_disabled(disabled)
 	{
-		// clang-format off
-		m_state.open_libraries(
-			sol::lib::base,
-			sol::lib::package,
-			sol::lib::coroutine,
-		    sol::lib::string,
-		    sol::lib::os,
-		    sol::lib::math,
-			sol::lib::table,
-			sol::lib::bit32,
-		    sol::lib::io,
-			sol::lib::utf8
-		);
-		// clang-format on
+		if (!m_disabled)
+		{
+			// clang-format off
+			m_state.open_libraries(
+				sol::lib::base,
+				sol::lib::package,
+				sol::lib::coroutine,
+				sol::lib::string,
+				sol::lib::os,
+				sol::lib::math,
+				sol::lib::table,
+				sol::lib::bit32,
+				sol::lib::io,
+				sol::lib::utf8
+			);
+			// clang-format on
 
-		init_lua_api(scripts_folder);
+			init_lua_api(scripts_folder);
 
-		m_state["!module_name"] = m_module_name;
-		m_state["!this"]        = this;
+			m_state["!module_name"] = m_module_name;
+			m_state["!this"]        = this;
 
-		m_state.set_exception_handler(exception_handler);
-		m_state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
-		lua_CFunction traceback_function = sol::c_call<decltype(&traceback_error_handler), &traceback_error_handler>;
-		sol::protected_function::set_default_handler(sol::object(m_state.lua_state(), sol::in_place, traceback_function));
+			m_state.set_exception_handler(exception_handler);
+			m_state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
+			lua_CFunction traceback_function = sol::c_call<decltype(&traceback_error_handler), &traceback_error_handler>;
+			sol::protected_function::set_default_handler(sol::object(m_state.lua_state(), sol::in_place, traceback_function));
 
-		m_last_write_time = std::filesystem::last_write_time(m_module_path);
+			m_last_write_time = std::filesystem::last_write_time(m_module_path);
+		}
 	}
 
 	lua_module::~lua_module()
@@ -148,6 +152,11 @@ namespace big
 	const std::chrono::time_point<std::chrono::file_clock> lua_module::last_write_time() const
 	{
 		return m_last_write_time;
+	}
+
+	const bool lua_module::is_disabled() const
+	{
+		return m_disabled;
 	}
 
 	void lua_module::set_folder_for_lua_require(folder& scripts_folder)
