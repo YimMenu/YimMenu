@@ -1787,11 +1787,11 @@ namespace big
         // Read Attribute Patch
         {
             "RAP",
-            "75 72 EB 23 80 F9 03",
+            "75 70 EB 23",
             [](memory::handle ptr)
             {
                 g_pointers->m_sc.m_read_attribute_patch = ptr.as<PVOID>();
-                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x74).as<PVOID>();
+                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x72).as<PVOID>();
             }
         }
         >();
