@@ -106,4 +106,15 @@ namespace big::scr_locals
 		// func_\d+\((&.Local_\d+(, )?){9}\);
 		inline static script_local mobile(18955);
 	}
+
+	namespace carmod_shop
+	{
+		inline static script_local maintainer(733); //P"4F ? ? 47 ? ? 73 58 ? ? 4F ? ? 25 ?" +1 W="maintainer" +3 W ="state"
+		inline static auto state = 446;
+		inline static script_local input_button(1865); //P"51 ? ? 70 51 ? ? 50 ? ? 51 ? ?" +1 W="input_button"
+		inline static script_local enabled_state(2095); //P"51 ? ? 71 51 ? ? 71 51 ? ? 71 61 ? ? ?" +1 W="enabled_state"
+		inline static script_local ready(2046); //P"51 ? ? 50 ? ? 2A" +1 W="ready"
+		inline static auto vehicle_state = 638; //P"4F ? ? 46 ? ? 4F ? ?" +4 W ="vehicle_ent_id"
+		inline static auto vehicle_ent_id = 409; //P"4F ? ? 47 ? ? 39 ? 55 ? ? 38 ? 73" +4 W ="vehicle_ent_id"
+	}
 }
