@@ -21,6 +21,7 @@ namespace big
 
 		std::chrono::time_point<std::chrono::file_clock> m_last_write_time;
 
+		bool m_disabled;
 		std::mutex m_registered_scripts_mutex;
 
 	public:
@@ -36,7 +37,7 @@ namespace big
 		std::unordered_map<menu_event, std::vector<sol::protected_function>> m_event_callbacks;
 		std::vector<void*> m_allocated_memory;
 
-		lua_module(const std::filesystem::path& module_path, folder& scripts_folder);
+		lua_module(const std::filesystem::path& module_path, folder& scripts_folder, bool disabled = false);
 		~lua_module();
 
 		const std::filesystem::path& module_path() const;
@@ -44,6 +45,7 @@ namespace big
 		rage::joaat_t module_id() const;
 		const std::string& module_name() const;
 		const std::chrono::time_point<std::chrono::file_clock> last_write_time() const;
+		const bool is_disabled() const;
 
 		// used for sandboxing and limiting to only our custom search path for the lua require function
 		void set_folder_for_lua_require(folder& scripts_folder);

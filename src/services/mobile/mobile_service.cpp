@@ -44,7 +44,7 @@ namespace big
 			case 28: return 350;
 			case 29: return 363;
 			case MAX_GARAGE_NUM+0: return 156; //Mobile Operations Center
-		    case MAX_GARAGE_NUM+1: return 224; //Nightclub B1
+			case MAX_GARAGE_NUM+1: return 224; //Nightclub B1
 			case MAX_GARAGE_NUM+2: return 223; //Terrorbyte
 			case MAX_GARAGE_NUM+3: return 278; //Kosatka
 		}
@@ -150,7 +150,7 @@ namespace big
 		{
 			case 12: //Hangar
 			{
-				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(293).as<PINT>();
+				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(295).as<PINT>();
 				switch (hangar_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_1"); //LSIA Hangar 1
@@ -163,7 +163,7 @@ namespace big
 			}
 			case 13: //Facility
 			{
-				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 867).at(267).at(300).as<PINT>();
+				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(302).as<PINT>();
 				switch (facility_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility

@@ -18,9 +18,10 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)override
 		{ 
-			const size_t arg_count  = 8;
+			const size_t arg_count  = 9;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::TransactionError,
 			    (int64_t)self::id,
+			    1 << player->id(),
 			    1,
 			    0,
 			    0,
@@ -28,7 +29,7 @@ namespace big
 			    *scr_globals::gsbd_fm_events.at(9).as<int*>(),
 			    *scr_globals::gsbd_fm_events.at(10).as<int*>()};
 
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::TransactionError);
 		}
 	};
 

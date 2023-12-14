@@ -14,17 +14,18 @@ namespace big
 		class vehicle_ability_helper
 		{
 		private:
-			static constexpr std::array<CVehicleModelInfoFlags, 4> m_abilities = {
+			static constexpr std::array<CVehicleModelInfoFlags, 5> m_abilities = {
 				CVehicleModelInfoFlags::JUMPING_CAR,
 				CVehicleModelInfoFlags::HAS_ROCKET_BOOST,
 				CVehicleModelInfoFlags::HAS_PARACHUTE,
 				CVehicleModelInfoFlags::RAMP,
+				CVehicleModelInfoFlags::HAS_GLIDER
 			};
 
 		private:
 			std::unordered_set<CVehicleModelInfoFlags> m_stock_abilities;
 			CVehicle* m_vehicle = nullptr;
-			bool m_original_abilities[4] = {};
+			bool m_original_abilities[5] = {};
 
 		public:
 			vehicle_ability_helper() = default;
@@ -34,7 +35,7 @@ namespace big
 					return;
 				m_vehicle = vehicle;
 
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 5; i++)
 					m_original_abilities[i] = has_ability(m_abilities.at(i));
 
 				for (const auto ability : m_abilities)
@@ -77,7 +78,7 @@ namespace big
 			{
 				if (m_vehicle && m_vehicle->m_model_info)
 				{
-					for (int i = 0; i < 4; i++)
+					for (int i = 0; i < 5; i++)
 						toggle_ability(m_abilities.at(i), m_original_abilities[i]);
 				}
 			}
@@ -128,6 +129,8 @@ namespace big
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_ROCKET_BOOST, g.vehicle.abilities.rocket);
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_PARACHUTE, g.vehicle.abilities.parachute);
 			m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::RAMP, g.vehicle.abilities.ramp);
+			if (VEHICLE::GET_VEHICLE_CLASS(self::veh) == 8 || VEHICLE::GET_VEHICLE_CLASS(self::veh) == 13 /*Motorcycles & Bikes*/)
+				m_vehicle_ability_helper.toggle_ability(CVehicleModelInfoFlags::HAS_GLIDER, g.vehicle.abilities.glider);
 		}
 
 		virtual void on_disable() override
@@ -155,6 +158,7 @@ namespace big
 			g.vehicle.abilities.rocket = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::HAS_ROCKET_BOOST);
 			g.vehicle.abilities.parachute = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::HAS_PARACHUTE);
 			g.vehicle.abilities.ramp = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::RAMP);
+			g.vehicle.abilities.glider = m_vehicle_ability_helper.get_ability_default(CVehicleModelInfoFlags::HAS_GLIDER);
 		}
 	};
 
@@ -164,4 +168,5 @@ namespace big
 	bool_command g_rocket_ability("rocketability", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET", "BACKEND_LOOPED_VEHICLE_ABILITY_ROCKET_DESC", g.vehicle.abilities.rocket);
 	bool_command g_parachute_ability("parachuteability", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE", "BACKEND_LOOPED_VEHICLE_ABILITY_PARACHUTE_DESC", g.vehicle.abilities.parachute);
 	bool_command g_ramp_ability("rampability", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP", "BACKEND_LOOPED_VEHICLE_ABILITY_RAMP_DESC", g.vehicle.abilities.ramp);
+	bool_command g_glider_ability("gliderability", "BACKEND_LOOPED_VEHICLE_ABILITY_GLIDER", "BACKEND_LOOPED_VEHICLE_ABILITY_GLIDER_DESC", g.vehicle.abilities.glider);
 }
