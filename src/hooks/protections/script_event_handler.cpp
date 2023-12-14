@@ -81,7 +81,7 @@ namespace big
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
-			if (g.protections.script_events.bounty && args[2] == self::id)
+			if (g.protections.script_events.bounty && args[3] == self::id)
 			{
 				g.reactions.bounty.process(plyr);
 				return true;
@@ -111,7 +111,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash: g.reactions.crash.process(plyr); return true;
 		case eRemoteEvent::Crash2:
-			if (args[2] > 32) // actual crash condition is if args[2] is above 255
+			if (args[3] > 32) // actual crash condition is if args[2] is above 255
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -119,7 +119,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]))
+			if (isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -128,7 +128,7 @@ namespace big
 		}
 		case eRemoteEvent::Notification:
 		{
-			switch (static_cast<eRemoteEvent>(args[2]))
+			switch (static_cast<eRemoteEvent>(args[3]))
 			{
 			case eRemoteEvent::NotificationMoneyBanked: // never used
 			case eRemoteEvent::NotificationMoneyRemoved:
@@ -170,18 +170,18 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::MCTeleport:
-			if (g.protections.script_events.mc_teleport && args[3] <= 32 && !is_player_our_boss(plyr->id()))
+			if (g.protections.script_events.mc_teleport && args[4] <= 32 && !is_player_our_boss(plyr->id()))
 			{
 				for (int i = 0; i < 32; i++)
 				{
-					if (args[4 + i] == NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(self::id))
+					if (args[5 + i] == NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(self::id))
 					{
 						g.reactions.mc_teleport.process(plyr);
 						return true;
 					}
 				}
 			}
-			else if (args[3] > 32)
+			else if (args[4] > 32)
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -202,14 +202,14 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::SendToCayoPerico:
-			if (g.protections.script_events.send_to_location && args[3] == 0)
+			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{
 				g.reactions.send_to_location.process(plyr);
 				return true;
@@ -229,9 +229,9 @@ namespace big
 
 			bool known_location = false;
 
-			if (args[2] == 0 && args[3] == 0)
+			if (args[3] == 0 && args[4] == 0)
 			{
-				if (args[4] == 4 && args[5] == 0)
+				if (args[5] == 4 && args[6] == 0)
 				{
 					known_location = true;
 
@@ -241,7 +241,7 @@ namespace big
 						return true;
 					}
 				}
-				else if ((args[4] == 3 || args[4] == 4) && args[5] == 1)
+				else if ((args[5] == 3 || args[5] == 4) && args[6] == 1)
 				{
 					known_location = true;
 
@@ -305,7 +305,7 @@ namespace big
 			break;
 		case eRemoteEvent::StartActivity:
 		{
-			eActivityType activity = static_cast<eActivityType>(args[2]);
+			eActivityType activity = static_cast<eActivityType>(args[3]);
 			if (g.protections.script_events.start_activity)
 			{
 				if (activity == eActivityType::Survival || activity == eActivityType::Mission || activity == eActivityType::Deathmatch || activity == eActivityType::BaseJump || activity == eActivityType::Race)
@@ -328,7 +328,7 @@ namespace big
 					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[2] == 238)
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[3] == 238)
 				{
 					g.reactions.trigger_business_raid.process(plyr);
 					return true;
@@ -350,8 +350,8 @@ namespace big
 		}
 		case eRemoteEvent::InteriorControl:
 		{
-			int interior = (int)args[2];
-			if (interior < 0 || interior > 161) // the upper bound will change after an update
+			int interior = (int)args[3];
+			if (interior < 0 || interior > 166) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);

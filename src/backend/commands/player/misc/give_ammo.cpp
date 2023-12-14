@@ -17,7 +17,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			g_pickup_service->give_player_health(player->id());
+			g_pickup_service->give_player_ammo(player->id());
 		}
 	};
 

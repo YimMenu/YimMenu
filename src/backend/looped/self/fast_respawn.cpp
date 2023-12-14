@@ -1,8 +1,7 @@
 #include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "fiber_pool.hpp"
-#include "gta/enums.hpp"
-#include "natives.hpp"
+#include "util/misc.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
@@ -12,14 +11,18 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (PED::IS_PED_DEAD_OR_DYING(self::ped, true))
-			{
-				PED::RESURRECT_PED(self::ped);
-				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(self::ped, self::pos.x, self::pos.y, self::pos.z, 0, 0, 0);
-				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
-				MISC::FORCE_GAME_STATE_PLAYING();
-				MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("respawn_controller");
-			}
+			// disable wasted sound cause it's annoying
+			*scr_globals::disable_wasted_sound.as<bool*>() = true;
+
+			// triggers respawn instantly upon death, has no effect if not respawning so no need to check if the player's dead
+			misc::set_bit(&(*scr_globals::freemode_properties.at(1685).at(756).as<int*>()), 1); // Update: freemode -> KILL_STRIP_H -> Above that = "!IS_BIT_SET(global, 2)"
+		}
+
+		virtual void on_disable() override
+		{
+			*scr_globals::disable_wasted_sound.as<bool*>() = false;
+
+			misc::clear_bit(&(*scr_globals::freemode_properties.at(1685).at(756).as<int*>()), 1); 
 		}
 	};
 

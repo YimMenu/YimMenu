@@ -1,5 +1,4 @@
 #pragma once
-#include "lua/sol.hpp"
 
 namespace lua::native
 {
