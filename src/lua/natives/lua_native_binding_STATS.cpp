@@ -402,9 +402,9 @@ namespace lua::native
 		STATS::PLAYSTATS_STARTED_SESSION_IN_OFFLINEMODE();
 	}
 
-	static void LUA_NATIVE_STATS_PLAYSTATS_ACTIVITY_DONE(int p0, int activityId)
+	static void LUA_NATIVE_STATS_PLAYSTATS_ACTIVITY_DONE(int p0, int activityId, int unkHash)
 	{
-		STATS::PLAYSTATS_ACTIVITY_DONE(p0, activityId);
+		STATS::PLAYSTATS_ACTIVITY_DONE(p0, activityId, unkHash);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_LEAVE_JOB_CHAIN(Any p0, Any p1, Any p2, Any p3, Any p4)
