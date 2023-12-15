@@ -27,7 +27,7 @@ namespace big
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(m_speed_types[(int)g.vehicle.speed_unit].data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y, 1);
 
-			const auto vehicle_speed = vehicle::mps_to_speed(g_local_player->m_vehicle->get_speed(), g.vehicle.speed_unit);
+			const auto vehicle_speed = vehicle::mps_to_speed(ENTITY::GET_ENTITY_SPEED(self::veh), g.vehicle.speed_unit);
 			auto char_width{0};
 			if (!g.vehicle.speedo_meter.left_side)
 			{
