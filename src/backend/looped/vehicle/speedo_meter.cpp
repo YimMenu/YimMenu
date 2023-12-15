@@ -13,6 +13,11 @@ namespace big
 
 		using looped_command::looped_command;
 
+		float get_speed(Vector3 velocity)
+		{
+			return sqrtf(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
+		}
+
 		virtual void on_tick() override
 		{
 			if (!self::veh || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
@@ -27,7 +32,7 @@ namespace big
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(m_speed_types[(int)g.vehicle.speed_unit].data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y, 1);
 
-			const auto vehicle_speed = vehicle::mps_to_speed(g_local_player->m_vehicle->get_speed(), g.vehicle.speed_unit);
+			const auto vehicle_speed = vehicle::mps_to_speed(get_speed(ENTITY::GET_ENTITY_VELOCITY(self::veh)), g.vehicle.speed_unit);
 			auto char_width{0};
 			if (!g.vehicle.speedo_meter.left_side)
 			{
