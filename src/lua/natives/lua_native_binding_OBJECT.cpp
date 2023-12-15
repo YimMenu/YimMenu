@@ -45,9 +45,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_OBJECT_SET_OBJECT_TARGETTABLE(Object object, bool targettable)
+	static void LUA_NATIVE_OBJECT_SET_OBJECT_TARGETTABLE(Object object, bool targettable, Any p2)
 	{
-		OBJECT::SET_OBJECT_TARGETTABLE(object, targettable);
+		OBJECT::SET_OBJECT_TARGETTABLE(object, targettable, p2);
 	}
 
 	static void LUA_NATIVE_OBJECT_SET_OBJECT_FORCE_VEHICLES_TO_AVOID(Object object, bool toggle)
