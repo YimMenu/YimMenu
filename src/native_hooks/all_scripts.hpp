@@ -153,7 +153,7 @@ namespace big
 			if (g.self.god_mode && entity == self::ped)
 				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
 
-			ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
+			ENTITY::SET_ENTITY_HEALTH(entity, health, p2, 0);
 		}
 
 		void APPLY_DAMAGE_TO_PED(rage::scrNativeCallContext* src)

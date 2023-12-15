@@ -492,14 +492,14 @@ namespace big::ped
 		script::get_current()->yield();
 		PED::CLONE_PED_TO_TARGET(target, self::ped);
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
-		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0);
+		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0, 0);
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
 	}
 
 	inline void kill_ped(const Ped ped)
 	{
 		if (entity::take_control_of(ped, 0))
-			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped, 0);
 		else
 		{
 			auto ptr = g_pointers->m_gta.m_handle_to_ptr(ped);

@@ -779,9 +779,9 @@ namespace lua::native
 		ENTITY::SET_ENTITY_HEADING(entity, heading);
 	}
 
-	static void LUA_NATIVE_ENTITY_SET_ENTITY_HEALTH(Entity entity, int health, int p2)
+	static void LUA_NATIVE_ENTITY_SET_ENTITY_HEALTH(Entity entity, int health, int p2, int p3)
 	{
-		ENTITY::SET_ENTITY_HEALTH(entity, health, p2);
+		ENTITY::SET_ENTITY_HEALTH(entity, health, p2, p3);
 	}
 
 	static void LUA_NATIVE_ENTITY_SET_ENTITY_INVINCIBLE(Entity entity, bool toggle)
