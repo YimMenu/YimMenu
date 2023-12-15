@@ -84,9 +84,9 @@ namespace big
 		});
 		ImGui::EndGroup();
 
-		if (ImGui::TreeNode("Online"_T.data()))
+		if (ImGui::TreeNode("VIEW_TELEPORT_ONLINE"_T.data()))
 		{
-			if (ImGui::CollapsingHeader("Safehouses"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_SAFEHOUSE"_T.data()))
 			{
 				for (auto id : blip_business)
 				{
@@ -99,7 +99,7 @@ namespace big
 					}
 				}
 			}
-			if (ImGui::CollapsingHeader("Shops"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_SHOPS"_T.data()))
 			{
 				for (auto id : blips_store)
 				{
@@ -112,7 +112,7 @@ namespace big
 					}
 				}
 			}
-			if (ImGui::CollapsingHeader("MC Buisnesses"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_MC_BUISNESSES"_T.data()))
 			{
 				for (auto id : blip_mc)
 				{
@@ -128,10 +128,10 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("Singleplayer"_T.data()))
+		if (ImGui::TreeNode("VIEW_TELEPORT_SP"_T.data()))
 		{
 			
-			if (ImGui::CollapsingHeader("Safehouses"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_SAFEHOUSE"_T.data()))
 			{
 				for (auto id : sp_safehouses)
 				{
@@ -146,7 +146,7 @@ namespace big
 			}
 
 			
-			if (ImGui::CollapsingHeader("Airfields"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_AIRFIELDS"_T.data()))
 			{
 				for (auto id : airfields)
 				{
@@ -160,7 +160,7 @@ namespace big
 				}
 			}
 		
-			if (ImGui::CollapsingHeader("Locations"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_LOCATIONS"_T.data()))
 			{
 				for (auto id : out_locs)
 				{
@@ -175,24 +175,11 @@ namespace big
 			}
 
 
-			if (ImGui::CollapsingHeader("Shops"_T.data()))
+			if (ImGui::CollapsingHeader("VIEW_TELEPORT_SHOPS"_T.data()))
 			{
+
 				
-				if (ImGui::CollapsingHeader("Clothing"_T.data()))
-				{
-					for (auto id : clothings)
-					{
-						ImGui::Spacing();
-						if (ImGui::Selectable(id.m_name.data()))
-						{
-							g_fiber_pool->queue_job([=] {
-								teleport::to_coords(id.m_coords);
-							});
-						}
-					}
-				}
-				
-				if (ImGui::CollapsingHeader("Ammunation"_T.data()))
+				if (ImGui::CollapsingHeader("VIEW_TELEPORT_AMMUNATION"_T.data()))
 				{
 					for (auto id : ammunation)
 					{
@@ -205,25 +192,12 @@ namespace big
 						}
 					}
 				}
-				if (ImGui::CollapsingHeader("Car Stuff"_T.data()))
-				{
-					for (auto id : car_stuff)
-					{
-						ImGui::Spacing();
-						if (ImGui::Selectable(id.m_name.data()))
-						{
-							g_fiber_pool->queue_job([=] {
-								teleport::to_coords(id.m_coords);
-							});
-						}
-					}
-				}
 			}
-			if (ImGui::CollapsingHeader("Misc"_T.data()))
+			if (ImGui::CollapsingHeader("DEBUG_TAB_MISC"_T.data()))
 			{
 				ImGui::Spacing();
 				
-				if (ImGui::CollapsingHeader("Activities"_T.data()))
+				if (ImGui::CollapsingHeader("VIEW_TELEPORT_ACTIVITIES"_T.data()))
 				{
 					for (auto id : activities_tele)
 					{
