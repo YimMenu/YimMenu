@@ -52,7 +52,7 @@ namespace big
 			if (s.should_override_health())
 			{
 				PED::SET_PED_MAX_HEALTH(handle, s.m_ped_health);
-				ENTITY::SET_ENTITY_HEALTH(handle, s.m_ped_health, 0);
+				ENTITY::SET_ENTITY_HEALTH(handle, s.m_ped_health, 0, 0);
 			}
 			if (s.should_override_armor())
 			{

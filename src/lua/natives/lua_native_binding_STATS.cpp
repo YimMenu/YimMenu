@@ -402,9 +402,9 @@ namespace lua::native
 		STATS::PLAYSTATS_STARTED_SESSION_IN_OFFLINEMODE();
 	}
 
-	static void LUA_NATIVE_STATS_PLAYSTATS_ACTIVITY_DONE(int p0, int activityId)
+	static void LUA_NATIVE_STATS_PLAYSTATS_ACTIVITY_DONE(int p0, int activityId, int unkHash)
 	{
-		STATS::PLAYSTATS_ACTIVITY_DONE(p0, activityId);
+		STATS::PLAYSTATS_ACTIVITY_DONE(p0, activityId, unkHash);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_LEAVE_JOB_CHAIN(Any p0, Any p1, Any p2, Any p3, Any p4)
@@ -611,9 +611,9 @@ namespace lua::native
 		STATS::PLAYSTATS_PEGASUS_AS_PERSONAL_AIRCRAFT(modelHash);
 	}
 
-	static void LUA_NATIVE_STATS_PLAYSTATS_SHOPMENU_NAV_(Any p0, Any p1, Any p2)
+	static void LUA_NATIVE_STATS_PLAYSTATS_SHOPMENU_NAV_(Any p0, Any p1, Any p2, Any p3)
 	{
-		STATS::_PLAYSTATS_SHOPMENU_NAV(p0, p1, p2);
+		STATS::_PLAYSTATS_SHOPMENU_NAV(p0, p1, p2, p3);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_FM_EVENT_CHALLENGES(Any p0)
@@ -751,18 +751,6 @@ namespace lua::native
 		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_HANDLE(&p0, &p1);
 		std::get<1>(return_values) = p0;
 		std::get<2>(return_values) = p1;
-
-		return return_values;
-	}
-
-	static std::tuple<bool, Any, Any, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_ROW(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6)
-	{
-		std::tuple<bool, Any, Any, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_ROW(&p0, &p1, p2, &p3, p4, &p5, p6);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-		std::get<3>(return_values) = p3;
-		std::get<4>(return_values) = p5;
 
 		return return_values;
 	}
@@ -1353,9 +1341,9 @@ namespace lua::native
 		STATS::PLAYSTATS_HIT_CONTRABAND_DESTROY_LIMIT(p0);
 	}
 
-	static void LUA_NATIVE_STATS_START_BEING_BOSS(Any p0, Any p1)
+	static void LUA_NATIVE_STATS_START_BEING_BOSS(Any p0, Any p1, Any p2)
 	{
-		STATS::START_BEING_BOSS(p0, p1);
+		STATS::START_BEING_BOSS(p0, p1, p2);
 	}
 
 	static void LUA_NATIVE_STATS_START_BEING_GOON(Any p0, Any p1, Any p2)
@@ -1734,9 +1722,9 @@ namespace lua::native
 		STATS::PLAYSTATS_KILL_YOURSELF();
 	}
 
-	static void LUA_NATIVE_STATS_PLAYSTATS_FM_MISSION_END(Any p0, Any p1, Any p2)
+	static void LUA_NATIVE_STATS_PLAYSTATS_FM_MISSION_END(Any p0, Any p1, Any p2, Any p3)
 	{
-		STATS::PLAYSTATS_FM_MISSION_END(p0, p1, p2);
+		STATS::PLAYSTATS_FM_MISSION_END(p0, p1, p2, p3);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_HEIST4_PREP(Any p0)
@@ -1998,7 +1986,6 @@ namespace lua::native
 		STATS.set_function("LEADERBOARDS_READ_SUCCESSFUL", LUA_NATIVE_STATS_LEADERBOARDS_READ_SUCCESSFUL);
 		STATS.set_function("LEADERBOARDS2_READ_FRIENDS_BY_ROW", LUA_NATIVE_STATS_LEADERBOARDS2_READ_FRIENDS_BY_ROW);
 		STATS.set_function("LEADERBOARDS2_READ_BY_HANDLE", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_HANDLE);
-		STATS.set_function("LEADERBOARDS2_READ_BY_ROW", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_ROW);
 		STATS.set_function("LEADERBOARDS2_READ_BY_RANK", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RANK);
 		STATS.set_function("LEADERBOARDS2_READ_BY_RADIUS", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RADIUS);
 		STATS.set_function("LEADERBOARDS2_READ_BY_SCORE_INT", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_INT);

@@ -403,7 +403,7 @@ namespace big
 			ENTITY::FREEZE_ENTITY_POSITION(ent, frozenpos);
 			ENTITY::SET_ENTITY_VISIBLE(ent, visible, 0);
 			ENTITY::SET_ENTITY_MAX_HEALTH(ent, max_health);
-			ENTITY::SET_ENTITY_HEALTH(ent, health, 0);
+			ENTITY::SET_ENTITY_HEALTH(ent, health, 0, 0);
 			ENTITY::SET_ENTITY_HAS_GRAVITY(ent, gravity);
 			ENTITY::SET_ENTITY_INVINCIBLE(ent, invincible);
 			ENTITY::SET_ENTITY_PROOFS(ent, bullet_proof, collision_proof, explosion_proof, fire_proof, melee_proof, false, 0, 0);

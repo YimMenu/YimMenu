@@ -17,7 +17,7 @@ namespace big
 			{
 				if (entity::take_control_of(m.handle))
 				{
-					ENTITY::SET_ENTITY_HEALTH(m.handle, 0, false);
+					ENTITY::SET_ENTITY_HEALTH(m.handle, 0, false, 0);
 					entity::delete_entity(m.handle);
 				}
 			}
@@ -38,7 +38,7 @@ namespace big
 		{
 			if (entity::take_control_of(m.handle))
 			{
-				ENTITY::SET_ENTITY_HEALTH(m.handle, 0, false);
+				ENTITY::SET_ENTITY_HEALTH(m.handle, 0, false, 0);
 				entity::delete_entity(m.handle);
 			}
 		}
