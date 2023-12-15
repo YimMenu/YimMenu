@@ -755,18 +755,6 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any, Any, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_ROW(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6)
-	{
-		std::tuple<bool, Any, Any, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_ROW(&p0, &p1, p2, &p3, p4, &p5, p6);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-		std::get<3>(return_values) = p3;
-		std::get<4>(return_values) = p5;
-
-		return return_values;
-	}
-
 	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RANK(Any p0, Any p1, Any p2)
 	{
 		std::tuple<bool, Any> return_values;
@@ -1998,7 +1986,6 @@ namespace lua::native
 		STATS.set_function("LEADERBOARDS_READ_SUCCESSFUL", LUA_NATIVE_STATS_LEADERBOARDS_READ_SUCCESSFUL);
 		STATS.set_function("LEADERBOARDS2_READ_FRIENDS_BY_ROW", LUA_NATIVE_STATS_LEADERBOARDS2_READ_FRIENDS_BY_ROW);
 		STATS.set_function("LEADERBOARDS2_READ_BY_HANDLE", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_HANDLE);
-		STATS.set_function("LEADERBOARDS2_READ_BY_ROW", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_ROW);
 		STATS.set_function("LEADERBOARDS2_READ_BY_RANK", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RANK);
 		STATS.set_function("LEADERBOARDS2_READ_BY_RADIUS", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RADIUS);
 		STATS.set_function("LEADERBOARDS2_READ_BY_SCORE_INT", LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_INT);
