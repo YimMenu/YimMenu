@@ -1341,9 +1341,9 @@ namespace lua::native
 		STATS::PLAYSTATS_HIT_CONTRABAND_DESTROY_LIMIT(p0);
 	}
 
-	static void LUA_NATIVE_STATS_START_BEING_BOSS(Any p0, Any p1)
+	static void LUA_NATIVE_STATS_START_BEING_BOSS(Any p0, Any p1, Any p2)
 	{
-		STATS::START_BEING_BOSS(p0, p1);
+		STATS::START_BEING_BOSS(p0, p1, p2);
 	}
 
 	static void LUA_NATIVE_STATS_START_BEING_GOON(Any p0, Any p1, Any p2)
