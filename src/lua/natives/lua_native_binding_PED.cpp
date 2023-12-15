@@ -2208,9 +2208,9 @@ namespace lua::native
 		PED::GIVE_PED_NM_MESSAGE(ped);
 	}
 
-	static int LUA_NATIVE_PED_ADD_SCENARIO_BLOCKING_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool p6, bool p7, bool p8, bool p9)
+	static int LUA_NATIVE_PED_ADD_SCENARIO_BLOCKING_AREA(float x1, float y1, float z1, float x2, float y2, float z2, bool p6, bool p7, bool p8, bool p9, Any p10)
 	{
-		auto retval = PED::ADD_SCENARIO_BLOCKING_AREA(x1, y1, z1, x2, y2, z2, p6, p7, p8, p9);
+		auto retval = PED::ADD_SCENARIO_BLOCKING_AREA(x1, y1, z1, x2, y2, z2, p6, p7, p8, p9, p10);
 		return retval;
 	}
 
