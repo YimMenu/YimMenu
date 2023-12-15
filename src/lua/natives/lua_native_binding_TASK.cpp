@@ -710,9 +710,9 @@ namespace lua::native
 		TASK::TASK_CLIMB_LADDER(ped, fast);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, const char* clipSet, Any p10)
+	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, const char* clipSet, Any p10, Any p11)
 	{
-		TASK::TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(ped, x1, y1, z1, x2, y2, z2, minZ, ropeHandle, clipSet, p10);
+		TASK::TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(ped, x1, y1, z1, x2, y2, z2, minZ, ropeHandle, clipSet, p10, p11);
 	}
 
 	static int LUA_NATIVE_TASK_GET_TASK_RAPPEL_DOWN_WALL_STATE(Ped ped)
