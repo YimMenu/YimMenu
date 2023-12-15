@@ -162,11 +162,12 @@ namespace big
 			int damage              = src->get_arg<int>(1);
 			BOOL damage_armor_first = src->get_arg<BOOL>(2);
 			Any p3                  = src->get_arg<Any>(3);
+			int p4                  = src->get_arg<int>(4);
 
 			if (g.self.god_mode && ped == self::ped)
 				return;
 
-			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3);
+			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3, p4);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)

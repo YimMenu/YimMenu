@@ -1120,9 +1120,9 @@ namespace lua::native
 		PED::SET_PED_GRAVITY(ped, toggle);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_DAMAGE_TO_PED(Ped ped, int damageAmount, bool p2, Any p3)
+	static void LUA_NATIVE_PED_APPLY_DAMAGE_TO_PED(Ped ped, int damageAmount, bool p2, Any p3, int p4)
 	{
-		PED::APPLY_DAMAGE_TO_PED(ped, damageAmount, p2, p3);
+		PED::APPLY_DAMAGE_TO_PED(ped, damageAmount, p2, p3, p4);
 	}
 
 	static int LUA_NATIVE_PED_GET_TIME_PED_DAMAGED_BY_WEAPON(Ped ped, Hash weaponHash)
