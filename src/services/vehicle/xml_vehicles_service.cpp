@@ -134,7 +134,7 @@ namespace big
 			ENTITY::SET_ENTITY_ALPHA(ped_handle, ped_node.child("OpacityLevel").text().as_int(), false);
 
 			PED::SET_PED_MAX_HEALTH(ped_handle, ped_node.child("MaxHealth").text().as_float());
-			ENTITY::SET_ENTITY_HEALTH(ped_handle, ped_node.child("Health").text().as_float(), false);
+			ENTITY::SET_ENTITY_HEALTH(ped_handle, ped_node.child("Health").text().as_float(), false, 0);
 			PED::SET_PED_ARMOUR(ped_handle, ped_properties_node.child("Armour").text().as_float());
 			ENTITY::SET_ENTITY_PROOFS(ped_handle,
 			    ped_node.child("IsBulletProof").text().as_bool(),

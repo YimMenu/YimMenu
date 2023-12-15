@@ -492,14 +492,14 @@ namespace big::ped
 		script::get_current()->yield();
 		PED::CLONE_PED_TO_TARGET(target, self::ped);
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
-		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0);
+		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0, 0);
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
 	}
 
 	inline void kill_ped(const Ped ped)
 	{
 		if (entity::take_control_of(ped, 0))
-			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped, 0);
 		else
 		{
 			auto ptr = g_pointers->m_gta.m_handle_to_ptr(ped);
@@ -606,7 +606,7 @@ namespace big::ped
 			if (ENTITY::DOES_ENTITY_EXIST(veh))
 			{
 				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
-					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
+					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL, 0);
 				else
 					PED::SET_PED_INTO_VEHICLE(ped, veh, (int)seat);
 			}
