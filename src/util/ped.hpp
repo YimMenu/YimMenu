@@ -606,7 +606,7 @@ namespace big::ped
 			if (ENTITY::DOES_ENTITY_EXIST(veh))
 			{
 				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
-					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
+					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL, 0);
 				else
 					PED::SET_PED_INTO_VEHICLE(ped, veh, (int)seat);
 			}

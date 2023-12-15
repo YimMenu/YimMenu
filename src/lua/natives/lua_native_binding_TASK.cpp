@@ -38,9 +38,9 @@ namespace lua::native
 		TASK::TASK_OPEN_VEHICLE_DOOR(ped, vehicle, timeOut, seat, speed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE(Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, const char* overrideEntryClipsetName)
+	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE(Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, const char* overrideEntryClipsetName, bool network_is_activity_session)
 	{
-		TASK::TASK_ENTER_VEHICLE(ped, vehicle, timeout, seat, speed, flag, overrideEntryClipsetName);
+		TASK::TASK_ENTER_VEHICLE(ped, vehicle, timeout, seat, speed, flag, overrideEntryClipsetName, network_is_activity_session);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_LEAVE_VEHICLE(Ped ped, Vehicle vehicle, int flags)
