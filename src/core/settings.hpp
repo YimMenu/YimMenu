@@ -750,7 +750,7 @@ namespace big
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
 			bool block_homing                           = true;
-			bool bypass_speed							= true;
+			bool bypass_speed			    = true;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
