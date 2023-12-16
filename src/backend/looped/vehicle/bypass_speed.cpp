@@ -10,7 +10,6 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			
 			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, FLT_MAX);
 		}
 
