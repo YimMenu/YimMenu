@@ -88,6 +88,7 @@ namespace big
 			components::command_checkbox<"driveonwater">();
 			components::command_checkbox<"vehiclecontrol">();
 			components::command_checkbox<"keepvehicleclean">();
+			components::command_checkbox<"nospeedlimit">();
 
 
 			ImGui::EndGroup();
