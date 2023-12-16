@@ -13,8 +13,6 @@ namespace big
 			
 			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, FLT_MAX);
 		}
-		
-		
 
 		virtual void on_disable() override
 		{

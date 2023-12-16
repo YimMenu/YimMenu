@@ -1,7 +1,8 @@
 #pragma once
+#include "gta/enums.hpp"
+
 namespace big
 {
-	#include "gta/enums.hpp"
 
 	struct blip_tp_list
 	{
