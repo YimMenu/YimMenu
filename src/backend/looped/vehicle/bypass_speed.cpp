@@ -8,14 +8,28 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		virtual void on_tick() override
+	Vehicle stored_veh = 0;
+		float stored_speed = 0;
+		virtual void on_init()
 		{
-			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, FLT_MAX);
+			Vehicle stored_veh = self::veh;
+			float stored_speed = VEHICLE::GET_VEHICLE_ESTIMATED_MAX_SPEED(self::veh);
 		}
 
-		virtual void on_disable() override
+		virtual void on_tick()
 		{
-			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, 150);
+			if (stored_veh != self::veh)
+			{
+				ENTITY::SET_ENTITY_MAX_SPEED(stored_veh, stored_speed);
+				stored_veh = self::veh;
+			}
+			else
+				ENTITY::SET_ENTITY_MAX_SPEED(self::veh, FLT_MAX);
+		}
+
+		virtual void on_disable()
+		{
+			ENTITY::SET_ENTITY_MAX_SPEED(self::veh, stored_speed);
 		}
 	};
 
