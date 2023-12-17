@@ -656,7 +656,7 @@ enum VehicleColorsMetals
 	//COLOR_METALS_PEARLESCENT_GOLD = 160
 };
 
-enum PlateTextIndexs
+enum PlateTextIndexs//what about the new one? like eCola
 {
 	PLATE_BLUEONWHITE1,
 	PLATE_YELLOWONBLACK,
