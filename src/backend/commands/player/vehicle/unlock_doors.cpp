@@ -2,6 +2,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/teleport.hpp"
+
 namespace big
 {
 	class unlock_vehicle : player_command
@@ -20,7 +21,7 @@ namespace big
 				Vehicle veh = PED::GET_VEHICLE_PED_IS_IN(ped, false);
 
 				if (entity::take_control_of(veh))
-					VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, 0);
+					VEHICLE::SET_VEHICLE_DOORS_LOCKED(veh, (int)eVehicleLockState::VEHICLELOCK_UNLOCKED);
 			}
 		}
 	};
