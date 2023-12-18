@@ -14,7 +14,7 @@ namespace big
 			g_xml_vehicles_service->fetch_xml_files();
 		});
 		static char search[32];
-		ImGui::InputText("Search", search, sizeof(search));
+		components::input_text("SEARCH"_T, search, sizeof(search));
 		if (ImGui::BeginListBox("##xmllist", {300, static_cast<float>(*g_pointers->m_gta.m_resolution_y - 188 - 38 * 4)}))
 		{
 			for (auto& [name, doc] : g_xml_vehicles_service->m_all_xml_vehicles)
