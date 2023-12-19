@@ -12,7 +12,7 @@ namespace big
 {
 	void looped::vehicle_allow_all_weapons()
 	{
-		if (self::veh == 0 || g_local_player == nullptr)
+		if (g_local_player == nullptr || g_local_player->m_vehicle == nullptr)
 			return;
 
 		auto seat_info = g_pointers->m_gta.m_get_ped_seat(g_local_player->m_seat_info, g_local_player);
@@ -50,11 +50,13 @@ namespace big
 			}
 		}
 
-		CVehicleModelInfo* vehicle_model_info = static_cast<CVehicleModelInfo*>(g_local_player->m_vehicle->m_model_info);
-		vehicle_model_info->set_vehicle_model_flag(CVehicleModelInfoFlags::DRIVER_NO_DRIVE_BY, false);
-		if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+		if (auto vehicle_model_info = static_cast<CVehicleModelInfo*>(g_local_player->m_vehicle->m_model_info))
 		{
-			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE, 1);
+			vehicle_model_info->set_vehicle_model_flag(CVehicleModelInfoFlags::DRIVER_NO_DRIVE_BY, false);
+			if (PAD::IS_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			{
+				PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_VEH_FLY_MOUSE_CONTROL_OVERRIDE, 1);
+			}	
 		}
 	}
 }
