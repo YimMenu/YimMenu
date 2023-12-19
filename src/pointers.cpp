@@ -1742,13 +1742,13 @@ namespace big
                 g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
             }
         },
-        // Get Ped Bone
+        // Get Ped Seat
         {
-            "GPB",
-            "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 60 48 8B 01 41 8B E8 48 8B F2",
+            "GPS",
+            "E8 ? ? ? ? 48 85 DB 74 66",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_ped_bone = ptr.as<functions::get_ped_bone>();
+                g_pointers->m_gta.m_get_ped_seat = ptr.add(1).rip().as<functions::get_ped_seat>();
             }
         }
         >(); // don't leave a trailing comma at the end

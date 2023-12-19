@@ -9,6 +9,7 @@ class CVehicleGadgetDataNode;
 class CGameScriptHandlerNetComponent;
 class CDoorBreakEvent;
 class GenericPool;
+class CGetPedSeatReturnClass;
 enum eVehicleGadgetType : uint32_t;
 enum class PedBones : uint16_t;
 
@@ -198,5 +199,5 @@ namespace big::functions
 
 	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
 
-	using get_ped_bone = bool (*)(CPed* ped_ptr, rage::fvector4& output, PedBones bone);
+	using get_ped_seat = CGetPedSeatReturnClass*(*)(PVOID seat_info, CPed* ped);
 }
