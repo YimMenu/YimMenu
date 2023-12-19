@@ -31,7 +31,7 @@ namespace big
 					if (drive_by_anim_info->m_weapon_groups->m_groups.size() == 7 && drive_by_anim_info->m_weapon_groups->m_groups.contains(GROUP_PISTOL))
 					{
 						drive_by_anim_info->m_weapon_groups->m_groups.clear();
-						drive_by_anim_info->m_weapon_groups->m_groups.append({GROUP_PISTOL, GROUP_SMG});
+						drive_by_anim_info->m_weapon_groups->m_groups.append({GROUP_PISTOL});
 					}
 				}
 			}
