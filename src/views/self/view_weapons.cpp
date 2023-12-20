@@ -206,7 +206,12 @@ namespace big
 			ImGui::PushItemWidth(300);
 			if (ImGui::BeginCombo("GUI_TAB_WEAPONS"_T.data(), selected_weapon.c_str()))
 			{
-				for (auto& weapon : g_gta_data_service->weapons())
+				std::map<std::string, weapon_item> sorted_map;
+				for (const auto& [_, weapon] : g_gta_data_service->weapons())
+				{
+					sorted_map.emplace(weapon.m_display_name, weapon);
+				}
+				for (const auto& weapon : sorted_map)
 				{
 					bool is_selected = weapon.second.m_hash == selected_weapon_hash;
 					if (weapon.second.m_display_name != "NULL" && ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
@@ -358,16 +363,21 @@ namespace big
 					ImGui::PushItemWidth(300);
 					if (ImGui::BeginCombo("GUI_TAB_WEAPONS"_T.data(), weapon.m_display_name.c_str()))
 					{
-						for (auto& weapon : g_gta_data_service->weapons())
+						std::map<std::string, weapon_item> sorted_map;
+						for (const auto& [_, weapon_iter] : g_gta_data_service->weapons())
 						{
-							if (weapon.second.m_display_name == "NULL")
+							sorted_map.emplace(weapon_iter.m_display_name, weapon_iter);
+						}
+						for (const auto& [_, weapon_iter] : g_gta_data_service->weapons())
+						{
+							if (weapon_iter.m_display_name == "NULL")
 							{
 								continue;
 							}
-							bool is_selected = weapon.second.m_hash == weapon_hash;
-							if (ImGui::Selectable(weapon.second.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
+							bool is_selected = weapon_iter.m_hash == weapon_hash;
+							if (ImGui::Selectable(weapon_iter.m_display_name.c_str(), is_selected, ImGuiSelectableFlags_None))
 							{
-								weapon_hash = weapon.second.m_hash;
+								weapon_hash = weapon_iter.m_hash;
 							}
 							if (is_selected)
 							{
