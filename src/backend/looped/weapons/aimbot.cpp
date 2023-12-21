@@ -2,7 +2,6 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
-#include <corecrt_math_defines.h>
 namespace big
 {
 	class aimbot : looped_command
@@ -103,11 +102,11 @@ namespace big
 				if (g_aimbot.aim_lock.x == 0.f && g_aimbot.aim_lock.y == 0.f && g_aimbot.aim_lock.z == 0.f)
 					return;
 
-				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0f / (float)M_PI;
+				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0f / 3.14159265358979323846f;
 				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
                     + camera_target.z * camera_target.z);
 
-				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0f / (float)M_PI;
+				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0f / 3.14159265358979323846f;
 				float self_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 				float self_pitch   = ENTITY::GET_ENTITY_PITCH(self::ped);
 				if (camera_heading >= 0.0f && camera_heading <= 180.0f)
@@ -126,7 +125,7 @@ namespace big
 				else
 				{
 					CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(camera_heading - self_heading);
-					CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(camera_pitch - self_pitch, 1065353216);
+					CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(camera_pitch - self_pitch, 1.0f);
 				}
 			}
 			else
