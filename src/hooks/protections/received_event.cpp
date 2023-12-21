@@ -584,7 +584,7 @@ namespace big
 			{
 				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-					std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT"_T, weapon.m_display_name));
+					std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -601,7 +601,7 @@ namespace big
 			{
 				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::format("{} {} {}.", source_player->get_name(), "GIVE_WEAPON_ATTEMPT"_T, weapon.m_display_name));
+				    std::format("{} {} {}.", source_player->get_name(), "GIVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
