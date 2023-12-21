@@ -18,9 +18,10 @@ namespace big
 			int id = player->id();
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PropertyData.Index != -1)
 			{
-				const size_t arg_count  = 9;
+				const size_t arg_count  = 10;
 				int64_t args[arg_count] = {(int64_t)eRemoteEvent::Teleport,
 				    self::id,
+				    1 << self::id,
 				    (int64_t)player->id(),
 				    (int64_t)(int)-1,
 				    1,
@@ -29,7 +30,7 @@ namespace big
 				    0,
 				    1};
 
-				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << self::id);
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << self::id, (int)eRemoteEvent::Teleport);
 			}
 			else if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[id].SimpleInteriorData.Index != eSimpleInteriorIndex::SIMPLE_INTERIOR_INVALID)
 			{

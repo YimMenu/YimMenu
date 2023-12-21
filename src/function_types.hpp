@@ -9,6 +9,7 @@ class CVehicleGadgetDataNode;
 class CGameScriptHandlerNetComponent;
 class CDoorBreakEvent;
 class GenericPool;
+class CGetPedSeatReturnClass;
 enum eVehicleGadgetType : uint32_t;
 enum class PedBones : uint16_t;
 
@@ -56,7 +57,7 @@ namespace big::functions
 
 	using get_net_game_player = CNetGamePlayer* (*)(Player player);
 
-	using trigger_script_event = void (*)(int event_group, int64_t* args, int arg_count, int player_bits);
+	using trigger_script_event = void (*)(int event_group, int64_t* args, int arg_count, int player_bits, int event_id);
 
 
 	using increment_stat_event = bool (*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
@@ -198,5 +199,5 @@ namespace big::functions
 
 	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
 
-	using get_ped_bone = bool (*)(CPed* ped_ptr, rage::fvector4& output, PedBones bone);
+	using get_ped_seat = CGetPedSeatReturnClass*(*)(PVOID seat_info, CPed* ped);
 }

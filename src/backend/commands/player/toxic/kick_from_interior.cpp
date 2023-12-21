@@ -44,10 +44,11 @@ namespace big
 			}
 			else
 			{
-				const size_t arg_count = 8;
+				const size_t arg_count = 9;
 				int64_t args[arg_count]{
 				    (int64_t)eRemoteEvent::KickFromInterior,
 				    (int64_t)self::id,
+					1 << player->id(),
 				    (int64_t)scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()
 				        ->Entries[player->id()]
 				        .SimpleInteriorData.Index,
@@ -56,7 +57,7 @@ namespace big
 				        .SimpleInteriorData.InstanceId,
 				};
 
-				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::KickFromInterior);
 			}
 		}
 	};

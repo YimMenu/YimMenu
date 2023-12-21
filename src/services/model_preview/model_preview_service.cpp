@@ -154,7 +154,7 @@ namespace big
 					{
 						m_current_ent = ped::spawn(ePedType::PED_TYPE_ARMY, m_ped_model_hash, m_ped_clone, location, 0.f, false);
 
-						ENTITY::SET_ENTITY_HEALTH(m_current_ent, 0, 0);
+						ENTITY::SET_ENTITY_HEALTH(m_current_ent, 0, 0, 0);
 						script::get_current()->yield(20ms);
 						PED::RESURRECT_PED(m_current_ent);
 						TASK::CLEAR_PED_TASKS(m_current_ent);

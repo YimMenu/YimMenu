@@ -34,7 +34,7 @@ namespace lua::network
 		for (auto arg : args)
 			actual_args.push_back((uint32_t)arg);
 
-		big::g_pointers->m_gta.m_trigger_script_event(1, actual_args.data(), actual_args.size(), bitset);
+		big::g_pointers->m_gta.m_trigger_script_event(1, actual_args.data(), actual_args.size(), bitset, args[0]);
 	}
 
 	// Lua API: Function

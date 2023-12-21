@@ -55,8 +55,8 @@ namespace big
 			if (m_debug_logging)
 				LOG(VERBOSE) << "Starting " << m_script_name << " using TSEs";
 
-			const size_t arg_count  = 25;
-			int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id};
+			const size_t arg_count  = 26;
+			int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id, 1 << m_target->get()->id()};
 
 			args[2] = scripts::launcher_index_from_hash(m_script_hash);
 			strcpy((char*)&args[2 + 3], "0");
@@ -64,14 +64,14 @@ namespace big
 			args[2 + 17] = 1337;
 			args[24] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[m_target->get()->id()].ScriptEventReplayProtectionCounter;
 
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << m_target->get()->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << m_target->get()->id(), (int)eRemoteEvent::StartScriptBegin);
 
 			for (int i = 0; i < 2; i++)
 			{
-				const size_t arg_count_2    = 25;
-				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id};
+				const size_t arg_count_2    = 26;
+				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id, 1 << m_target->get()->id()};
 				args_2[2 + 17]              = 1337;
-				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << m_target->get()->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << m_target->get()->id(), (int)eRemoteEvent::StartScriptProceed);
 
 				script::get_current()->yield(20ms);
 			}

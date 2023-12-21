@@ -238,7 +238,7 @@ def generate_native_binding_cpp_and_hpp_files(functions_per_namespaces):
     generated_function_name = "void init_native_binding(sol::state& L)"
 
     print_hpp("#pragma once")
-    print_hpp('#include "lua/sol.hpp"')
+    # print_hpp('#include "lua/sol.hpp"')
     print_hpp("")
     print_hpp("namespace lua::native")
     print_hpp("{")

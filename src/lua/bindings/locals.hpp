@@ -1,7 +1,6 @@
 #pragma once
 #include "gta_util.hpp"
 #include "script_local.hpp"
-#include "lua/sol.hpp"
 
 namespace lua::locals
 {

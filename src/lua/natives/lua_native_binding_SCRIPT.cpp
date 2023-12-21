@@ -207,9 +207,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT(int eventGroup, Any eventData, int eventDataSize, int playerBits)
+	static Any LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_(int eventGroup, Any eventData, int eventDataSize, int playerBits, int eventType)
 	{
-		SCRIPT::SEND_TU_SCRIPT_EVENT(eventGroup, &eventData, eventDataSize, playerBits);
+		SCRIPT::_SEND_TU_SCRIPT_EVENT_NEW(eventGroup, &eventData, eventDataSize, playerBits, eventType);
 		return eventData;
 	}
 
@@ -252,6 +252,6 @@ namespace lua::native
 		SCRIPT.set_function("BG_DOES_LAUNCH_PARAM_EXIST", LUA_NATIVE_SCRIPT_BG_DOES_LAUNCH_PARAM_EXIST);
 		SCRIPT.set_function("BG_GET_LAUNCH_PARAM_VALUE", LUA_NATIVE_SCRIPT_BG_GET_LAUNCH_PARAM_VALUE);
 		SCRIPT.set_function("BG_GET_SCRIPT_ID_FROM_NAME_HASH", LUA_NATIVE_SCRIPT_BG_GET_SCRIPT_ID_FROM_NAME_HASH);
-		SCRIPT.set_function("SEND_TU_SCRIPT_EVENT", LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT);
+		SCRIPT.set_function("SEND_TU_SCRIPT_EVENT_NEW_", LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_);
 	}
 }

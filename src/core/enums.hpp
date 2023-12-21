@@ -378,4 +378,11 @@ namespace big
 		RELEASE = WM_KEYUP,
 		DOWN    = WM_KEYDOWN
 	};
+
+	enum SpamReason : int
+	{
+		NOT_A_SPAMMER,
+		STATIC_DETECTION,
+		TIMER_DETECTION
+	};
 }

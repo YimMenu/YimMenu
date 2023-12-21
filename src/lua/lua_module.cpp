@@ -16,8 +16,8 @@
 #include "bindings/stats.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
-#include "bindings/weapons.hpp"
 #include "bindings/vehicles.hpp"
+#include "bindings/weapons.hpp"
 #include "file_manager.hpp"
 #include "script_mgr.hpp"
 
@@ -60,35 +60,62 @@ namespace big
 		// When this function exits, Lua will exhibit default behavior and abort()
 	}
 
-	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder) :
+	static int traceback_error_handler(lua_State* L)
+	{
+		std::string msg = "An unknown error has triggered the error handler";
+		sol::optional<sol::string_view> maybetopmsg = sol::stack::unqualified_check_get<sol::string_view>(L, 1, &sol::no_panic);
+		if (maybetopmsg)
+		{
+			const sol::string_view& topmsg = maybetopmsg.value();
+			msg.assign(topmsg.data(), topmsg.size());
+		}
+		luaL_traceback(L, L, msg.c_str(), 1);
+		sol::optional<sol::string_view> maybetraceback = sol::stack::unqualified_check_get<sol::string_view>(L, -1, &sol::no_panic);
+		if (maybetraceback)
+		{
+			const sol::string_view& traceback = maybetraceback.value();
+			msg.assign(traceback.data(), traceback.size());
+		}
+		LOG(FATAL) << msg;
+		return sol::stack::push(L, msg);
+	}
+
+	lua_module::lua_module(const std::filesystem::path& module_path, folder& scripts_folder, bool disabled) :
 	    m_state(),
 	    m_module_path(module_path),
 	    m_module_name(module_path.filename().string()),
-	    m_module_id(rage::joaat(m_module_name))
+	    m_module_id(rage::joaat(m_module_name)),
+	    m_disabled(disabled)
 	{
-		// clang-format off
-		m_state.open_libraries(
-			sol::lib::base,
-			sol::lib::package,
-			sol::lib::coroutine,
-		    sol::lib::string,
-		    sol::lib::os,
-		    sol::lib::math,
-			sol::lib::table,
-			sol::lib::bit32,
-			sol::lib::utf8
-		);
-		// clang-format on
+		if (!m_disabled)
+		{
+			// clang-format off
+			m_state.open_libraries(
+				sol::lib::base,
+				sol::lib::package,
+				sol::lib::coroutine,
+				sol::lib::string,
+				sol::lib::os,
+				sol::lib::math,
+				sol::lib::table,
+				sol::lib::bit32,
+				sol::lib::io,
+				sol::lib::utf8
+			);
+			// clang-format on
 
-		init_lua_api(scripts_folder);
+			init_lua_api(scripts_folder);
 
-		m_state["!module_name"] = m_module_name;
-		m_state["!this"]        = this;
+			m_state["!module_name"] = m_module_name;
+			m_state["!this"]        = this;
 
-		m_state.set_exception_handler(exception_handler);
-		m_state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
+			m_state.set_exception_handler(exception_handler);
+			m_state.set_panic(sol::c_call<decltype(&panic_handler), &panic_handler>);
+			lua_CFunction traceback_function = sol::c_call<decltype(&traceback_error_handler), &traceback_error_handler>;
+			sol::protected_function::set_default_handler(sol::object(m_state.lua_state(), sol::in_place, traceback_function));
 
-		m_last_write_time = std::filesystem::last_write_time(m_module_path);
+			m_last_write_time = std::filesystem::last_write_time(m_module_path);
+		}
 	}
 
 	lua_module::~lua_module()
@@ -127,6 +154,11 @@ namespace big
 		return m_last_write_time;
 	}
 
+	const bool lua_module::is_disabled() const
+	{
+		return m_disabled;
+	}
+
 	void lua_module::set_folder_for_lua_require(folder& scripts_folder)
 	{
 		std::string scripts_search_path = scripts_folder.get_path().string() + "/?.lua;";
@@ -155,6 +187,45 @@ namespace big
 		sandbox_os["time"]     = os["time"];
 
 		m_state["os"] = sandbox_os;
+	}
+
+	void lua_module::sandbox_lua_io_library()
+	{
+		auto io = m_state["io"];
+		sol::table sandbox_io(m_state, sol::create);
+
+		m_io_open          = io["open"];
+		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
+			constexpr auto make_absolute = [](const std::filesystem::path& root, const std::filesystem::path& user_path) -> std::optional<std::filesystem::path> {
+				auto final_path = std::filesystem::weakly_canonical(root / user_path);
+
+				auto [root_end, nothing] = std::mismatch(root.begin(), root.end(), final_path.begin());
+
+				if (root_end != root.end())
+					return std::nullopt;
+
+				return final_path;
+			};
+
+			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
+			if (!scripts_config_sub_path)
+			{
+				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";
+
+				return sol::reference(sol::lua_nil);
+			}
+
+			const auto res = m_io_open(scripts_config_sub_path.value().u8string().c_str(), mode).get<sol::reference>();
+
+			if (res.get_type() == sol::type::lua_nil)
+			{
+				LOG(WARNING) << "Couldn't io.open a file called " << filename << " mode (" << mode << "). Note that io.open is restricted to the scripts_config folder.";
+			}
+
+			return res;
+		};
+
+		m_state["io"] = sandbox_io;
 	}
 
 	template<size_t N>
@@ -194,6 +265,7 @@ namespace big
 		// https://blog.rubenwardy.com/2020/07/26/sol3-script-sandbox/
 		// https://www.lua.org/manual/5.4/manual.html#pdf-require
 		sandbox_lua_os_library();
+		sandbox_lua_io_library();
 		sandbox_lua_loads(scripts_folder);
 
 		lua::log::bind(m_state);

@@ -50,8 +50,6 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"sshuntright">(g_player_service->get_selected(), {});
 
-			components::player_command_button<"rcplayer">(g_player_service->get_selected());
-
 			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
