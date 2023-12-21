@@ -104,6 +104,7 @@ namespace big
 			auto sc_module            = memory::module("socialclub.dll");
 			m_is_target_out_of_bounds = main_module.contains(ptr) || sc_module.contains(ptr);
 		}
-		m_is_target_out_of_bounds = false;
+		else
+			m_is_target_out_of_bounds = false;
 	}
 }
