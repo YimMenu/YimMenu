@@ -29,14 +29,21 @@ namespace big
 			return static_cast<T>(m_original);
 		}
 
-		void fix_hook_address();
+		inline bool is_target_out_of_bounds()
+		{
+			return m_is_target_out_of_bounds;
+		}
 
 	private:
 		void create_hook();
+		void fix_hook_address();
+		void set_target_out_of_bounds();
 
 		std::string m_name;
 		void* m_original;
 		void* m_target;
 		void* m_detour;
+
+		bool m_is_target_out_of_bounds;
 	};
 }

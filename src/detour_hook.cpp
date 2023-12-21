@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "memory/handle.hpp"
+#include "memory/module.hpp"
 
 #include <MinHook.h>
 
@@ -47,6 +48,7 @@ namespace big
 		if (!m_target)
 			return;
 
+		set_target_out_of_bounds();
 		fix_hook_address();
 		if (auto status = MH_CreateHook(m_target, m_detour, &m_original); status != MH_OK)
 			throw std::runtime_error(std::format("Failed to create hook '{}' at 0x{:X} (error: {})", m_name, uintptr_t(m_target), MH_StatusToString(status)));
@@ -90,5 +92,18 @@ namespace big
 		while (ptr.as<uint8_t&>() == 0xE9)
 			ptr = ptr.add(1).rip();
 		m_target = ptr.as<void*>();
+	}
+
+	void detour_hook::set_target_out_of_bounds()
+	{
+		auto ptr = memory::handle(m_target);
+		if (ptr.as<uint8_t&>() == 0xE9)
+		{
+			ptr                       = ptr.add(1).rip();
+			auto main_module          = memory::module("GTA5.exe");
+			auto sc_module            = memory::module("socialclub.dll");
+			m_is_target_out_of_bounds = main_module.contains(ptr) || sc_module.contains(ptr);
+		}
+		m_is_target_out_of_bounds = false;
 	}
 }

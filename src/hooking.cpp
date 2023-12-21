@@ -168,6 +168,15 @@ namespace big
 
 		for (auto& detour_hook_helper : m_detour_hook_helpers)
 		{
+			if (detour_hook_helper.m_detour_hook->is_target_out_of_bounds())
+			{
+				LOG(INFO) << "Co-loading detected";
+				break;
+			}
+		}
+
+		for (auto& detour_hook_helper : m_detour_hook_helpers)
+		{
 			detour_hook_helper.m_detour_hook->enable();
 		}
 
