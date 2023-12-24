@@ -1,31 +1,36 @@
 #pragma once
 #include <chrono>
 
-class timer
+namespace big
 {
-public:
-	explicit timer(std::chrono::nanoseconds delay) :
-	    m_timer(std::chrono::high_resolution_clock::now()),
-		m_delay(std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(delay))
+	class timer
 	{
-	}
-
-	bool updated()
-	{
-		auto now = std::chrono::high_resolution_clock::now();
-		if ((now.time_since_epoch() - m_timer.time_since_epoch()).count() >= m_delay.count())
+	public:
+		explicit timer(std::chrono::milliseconds delay) :
+		    m_timer(std::chrono::steady_clock::now()),
+		    m_delay(delay)
 		{
-			m_timer = now;
-			return true;
 		}
 
-		return false;
-	}
+		bool updated()
+		{
+			auto now = std::chrono::steady_clock::now();
+			if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_timer) >= m_delay)
+			{
+				m_timer = now;
+				return true;
+			}
 
-	void set_delay(std::chrono::nanoseconds delay) {
-		m_delay = delay;
-	}
-private:
-	std::chrono::high_resolution_clock::time_point m_timer;
-	std::chrono::high_resolution_clock::duration m_delay;
-};
+			return false;
+		}
+
+		void set_delay(std::chrono::milliseconds delay)
+		{
+			m_delay = delay;
+		}
+
+	private:
+		std::chrono::steady_clock::time_point m_timer;
+		std::chrono::milliseconds m_delay;
+	};
+}

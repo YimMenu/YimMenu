@@ -4,10 +4,19 @@
 #include "script.hpp"
 #include "util/entity.hpp"
 #include "gta/enums.hpp"
+#include <numbers>
 namespace big
 {
-	static timer spawning_axe_delay(std::chrono::milliseconds(200));
-	static timer axe_get_position_delay(std::chrono::milliseconds(300));
+	static timer spawning_axe_delay(200ms);
+	static timer axe_get_position_delay(300ms);
+
+	inline int axe_particle;
+	inline Entity entity_axe;
+	inline Vector3 axe_flying_coords;
+	inline Vector3 new_axe_flying_coords;
+	inline bool axe_on_idle           = false;
+	inline bool axe_attacking         = false;
+	inline bool play_animation_on_ped = true;
 
 	class flying_axe : looped_command
 	{
@@ -18,7 +27,7 @@ namespace big
 			float angle = get_around_position_iterator * angleIncrement;
 			get_around_position_iterator = (get_around_position_iterator + 1) % 8;
 
-			float angleInRadians = angle * (3.14159265358979323846 / 180.0f);
+			float angleInRadians = angle * (std::numbers::pi / 180.0f);
 			float x              = far_distance * cos(angleInRadians);
 			float y              = far_distance * sin(angleInRadians);
 
@@ -36,7 +45,7 @@ namespace big
 					GRAPHICS::SET_PARTICLE_FX_NON_LOOPED_COLOUR(r / 255.f, g / 255.f, b / 255.f);
 			}
 		}
-		int axe_particle;
+
 		void play_bone_looped_ptfx(int ent, int entbone, const char* call1, const char* call2, const char* name, float scale, bool color, float r, float g, float b) {
 
 			if (!GRAPHICS::DOES_PARTICLE_FX_LOOPED_EXIST(axe_particle)) {
@@ -56,7 +65,6 @@ namespace big
 				GRAPHICS::STOP_PARTICLE_FX_LOOPED(axe_particle, 0);
 			}
 		}
-		Entity entity_axe;
 		void function_axe_reaction(int ent) {
 			if (ent != self::veh) {
 				float axe_speed  = ENTITY::GET_ENTITY_SPEED(entity_axe);
@@ -71,7 +79,7 @@ namespace big
 						ENTITY::APPLY_FORCE_TO_ENTITY(ent, 1, force.x, force.y, force.z, 0, 0, 0, false, false, true, true, false, true);
 
 						if (ENTITY::IS_ENTITY_A_PED(ent))
-							PED::APPLY_DAMAGE_TO_PED(ent, 9999, 0, 0);
+							PED::APPLY_DAMAGE_TO_PED(ent, 9999, 0, 0, 2725924767);
 					}
 					else
 					{
@@ -80,12 +88,10 @@ namespace big
 				}
 			}
 		}
-		Vector3 axe_flying_coords;
-		Vector3 new_axe_flying_coords;
-		bool axe_on_idle      = false;
-		bool axe_attacking    = false;
-		bool play_animation_on_ped      = true;
-
+		float lerp(float a, float b, float t)
+		{
+			return a + t * (b - a);
+		}
 		using looped_command::looped_command;
 
 		virtual void on_tick() override
@@ -95,7 +101,7 @@ namespace big
 				// games spam axes fix
 				if (spawning_axe_delay.updated())
 				{
-					Vector3 coordinates_to_spawn = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0, 0, 6.5);
+					Vector3 coordinates_to_spawn = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 0.f, 6.5f);
 					Hash axe_model = rage::joaat("prop_ld_fireaxe");
 					while (!STREAMING::HAS_MODEL_LOADED(axe_model))
 					{
@@ -125,24 +131,24 @@ namespace big
 			}
 			else
 			{
-				//lerping idk why. i made this long ago
-				axe_flying_coords.x += (new_axe_flying_coords.x - axe_flying_coords.x) * 0.2;
-				axe_flying_coords.y += (new_axe_flying_coords.y - axe_flying_coords.y) * 0.2;
-				axe_flying_coords.z += (new_axe_flying_coords.z - axe_flying_coords.z) * 0.2;
+				float factor = 0.2f;
+				axe_flying_coords.x = lerp(axe_flying_coords.x, new_axe_flying_coords.x, factor);
+				axe_flying_coords.y = lerp(axe_flying_coords.y, new_axe_flying_coords.y, factor);
+				axe_flying_coords.z = lerp(axe_flying_coords.z, new_axe_flying_coords.z, factor);
 
 				auto axe_coords   = ENTITY::GET_ENTITY_COORDS(entity_axe, 0);
 
 				if (axe_get_position_delay.updated()) {
 					Vector3 rot = ENTITY::GET_ENTITY_ROTATION(entity_axe, 2);
 					if (axe_on_idle) {
-						new_axe_flying_coords = get_around_position(self::ped, 20, 0);
+						new_axe_flying_coords = get_around_position(self::ped, 20.f, 0.f);
 					}
 
 					if (!axe_on_idle || axe_attacking) {
-						ENTITY::SET_ENTITY_ROTATION(entity_axe, rot.x + 50, rot.y + 50, rot.z + 50, 2, 0);
+						ENTITY::SET_ENTITY_ROTATION(entity_axe, rot.x + 50.f, rot.y + 50.f, rot.z + 50.f, 2, 0);
 					}
-					play_bone_looped_ptfx(entity_axe, 0, "scr_powerplay", "scr_powerplay", "sp_powerplay_beast_appear_trails", 0.5, false, 0, 0, 0);
-					play_non_loop_ptfx(entity_axe, "scr_paletoscore", "scr_paletoscore", "scr_paleto_box_sparks", 0.1, false, 0.f, 0.f, 0.f);
+					play_bone_looped_ptfx(entity_axe, 0, "scr_powerplay", "scr_powerplay", "sp_powerplay_beast_appear_trails", 0.5f, false, 0.f, 0.f, 0.f);
+					play_non_loop_ptfx(entity_axe, "scr_paletoscore", "scr_paletoscore", "scr_paleto_box_sparks", 0.1f, false, 0.f, 0.f, 0.f);
 				}
 				for (auto entity : entity::get_entities(true, true)) {
 					function_axe_reaction(entity);
@@ -168,7 +174,7 @@ namespace big
 								if (!ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, animation_dict, animation, 3)) {
 									STREAMING::REQUEST_ANIM_DICT(animation_dict);
 									if (STREAMING::HAS_ANIM_DICT_LOADED((animation_dict))) {
-										TASK::TASK_PLAY_ANIM(self::ped, animation_dict, animation, 8.00, 8.00, -1, 48, 0, FALSE, FALSE, FALSE);
+										TASK::TASK_PLAY_ANIM(self::ped, animation_dict, animation, 8.00f, 8.00f, -1, 48, 0.f, FALSE, FALSE, FALSE);
 										MISC::FORCE_LIGHTNING_FLASH();
 										play_animation_on_ped = false;
 									}
@@ -176,7 +182,7 @@ namespace big
 							}
 
 							int bone = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(self::ped, (char*)"IK_R_Hand");
-							ENTITY::ATTACH_ENTITY_TO_ENTITY(entity_axe, self::ped, bone, 0, -0.05, -0.05, -61, 28.4, -48.8, false, false, true, true, 0, true, 0);
+							ENTITY::ATTACH_ENTITY_TO_ENTITY(entity_axe, self::ped, bone, 0, -0.05f, -0.05f, -61.f, 28.4f, -48.8f, false, false, true, true, 0, true, 0);
 						}
 					}
 					else
@@ -189,7 +195,7 @@ namespace big
 								if (!ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, animation_dict, animation, 3)) {
 									STREAMING::REQUEST_ANIM_DICT(animation_dict);
 									if (STREAMING::HAS_ANIM_DICT_LOADED((animation_dict))) {
-										TASK::TASK_PLAY_ANIM(self::ped, animation_dict, animation, 8.00, 8.00, -1, 48, 0, FALSE, FALSE, FALSE);
+										TASK::TASK_PLAY_ANIM(self::ped, animation_dict, animation, 8.00f, 8.00f, -1, 48, 0.f, FALSE, FALSE, FALSE);
 										play_animation_on_ped = true;
 									}
 								}
@@ -203,7 +209,7 @@ namespace big
 						Vector3 cam_coords = CAM::GET_GAMEPLAY_CAM_COORD();
 						Vector3 cam_rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
 						Vector3 cam_direction = math::rotation_to_direction(cam_rot);
-						float distance = 150;
+						float distance        = 150.f;
 						Vector3 multiply = cam_direction * distance;
 						new_axe_flying_coords = cam_coords + multiply;
 						// only for controller
@@ -220,6 +226,8 @@ namespace big
 				if (NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity_axe))
 				{
 					float speed = axe_on_idle ? 1.0f : 2.6f;
+					//YES OMG
+
 					ENTITY::APPLY_FORCE_TO_ENTITY(entity_axe,
 					    3,
 					    (subtract_coords.x * (speed * speed)) - ((2.01f + 2.f) * speed * 0.3f * ent_velocity.x) + 0.0f,

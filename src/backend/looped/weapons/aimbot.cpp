@@ -2,20 +2,17 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include <numbers>
 namespace big
 {
+	inline Vector3 aim_lock;
+	inline Vector3 smooth_factor;
+	inline bool using_aimbot_first_time = true;
+	inline Entity target_entity;
+
 	class aimbot : looped_command
 	{
 		using looped_command::looped_command;
-
-		struct aimbot_dat
-		{
-			Vector3 aim_lock;
-			Vector3 smooth_factor;
-			bool using_aimbot_first_time = true;
-			Entity entity;
-		} g_aimbot;
-
 		virtual void on_tick() override
 		{
 			float local_fov_change = g.weapons.aimbot.fov;
@@ -59,13 +56,13 @@ namespace big
 							continue;
 
 						// Jump to here to handle instead of continue statements
-						g_aimbot.entity = ped;
-						g_aimbot.aim_lock =
+						target_entity = ped;
+						aim_lock =
 						    ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(ped, PED::GET_PED_BONE_INDEX(ped, g.weapons.aimbot.selected_bone));
 					}
 				}
 			}
-			if (!g_aimbot.entity || ENTITY::IS_ENTITY_DEAD(g_aimbot.entity, 0))
+			if (!target_entity || ENTITY::IS_ENTITY_DEAD(target_entity, 0))
 			{
 				return;
 			}
@@ -76,7 +73,7 @@ namespace big
 				if (g.weapons.aimbot.smoothing)
 				{
 					//Avoid buggy cam
-					if (g_aimbot.using_aimbot_first_time)
+					if (using_aimbot_first_time)
 					{
 						Vector3 cam_coords               = CAM::GET_GAMEPLAY_CAM_COORD();
 						Vector3 cam_rot                  = CAM::GET_GAMEPLAY_CAM_ROT(0);
@@ -85,28 +82,29 @@ namespace big
 						Vector3 multiply                 = cam_direction * distance;
 						Vector3 front_cam                = cam_coords + multiply;
 						camera_target                    = front_cam - CAM::GET_GAMEPLAY_CAM_COORD();
-						g_aimbot.smooth_factor           = camera_target;
-						g_aimbot.using_aimbot_first_time = false;
+						smooth_factor           = camera_target;
+						using_aimbot_first_time = false;
 					}
-					Vector3 target = g_aimbot.aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
-					g_aimbot.smooth_factor.x += (target.x - g_aimbot.smooth_factor.x) * g.weapons.aimbot.smoothing_speed / 10.f;
-					g_aimbot.smooth_factor.y += (target.y - g_aimbot.smooth_factor.y) * g.weapons.aimbot.smoothing_speed / 10.f;
-					g_aimbot.smooth_factor.z += (target.z - g_aimbot.smooth_factor.z) * g.weapons.aimbot.smoothing_speed / 10.f;
+					Vector3 target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
+					smooth_factor.x += (target.x - smooth_factor.x) * g.weapons.aimbot.smoothing_speed / 10.f;
+					smooth_factor.y += (target.y - smooth_factor.y) * g.weapons.aimbot.smoothing_speed / 10.f;
+					smooth_factor.z += (target.z - smooth_factor.z) * g.weapons.aimbot.smoothing_speed / 10.f;
 
-					camera_target = g_aimbot.smooth_factor;
+					camera_target = smooth_factor;
 				}
 				else
 				{
-					camera_target = g_aimbot.aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
+					camera_target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
 				}
-				if (g_aimbot.aim_lock.x == 0.f && g_aimbot.aim_lock.y == 0.f && g_aimbot.aim_lock.z == 0.f)
+				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
 					return;
+				//PEMDAS looks good
 
-				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0f / 3.14159265358979323846f;
+				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0f / std::numbers::pi;
 				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
                     + camera_target.z * camera_target.z);
 
-				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0f / 3.14159265358979323846f;
+				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0f / std::numbers::pi;
 				float self_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 				float self_pitch   = ENTITY::GET_ENTITY_PITCH(self::ped);
 				if (camera_heading >= 0.0f && camera_heading <= 180.0f)
@@ -130,13 +128,13 @@ namespace big
 			}
 			else
 			{
-				g_aimbot.entity = 0;
-				g_aimbot.using_aimbot_first_time = true;
+				target_entity           = 0;
+				using_aimbot_first_time = true;
 			}
 		}
 		virtual void on_disable() override
 		{
-			g_aimbot.using_aimbot_first_time = true;
+			using_aimbot_first_time = true;
 		}
 
 	};
