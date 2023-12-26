@@ -4,20 +4,13 @@ on: [push, pull_request]
 
 jobs:
   ci:
-    runs-on: windows-latest
+    runs-on: [self-hosted, Windows]
     name: CI
     steps:
       - uses: actions/checkout@v3
 
       - name: Check CMake version
         run: cmake --version
-
-      - name: Cache build/
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: build
-          key: ${{ runner.os }}-build
 
       - name: Setup MSVC environment
         uses: ilammy/msvc-dev-cmd@v1

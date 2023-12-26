@@ -10,11 +10,19 @@ namespace big
 	{
 		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
-			g_notification_service->push("MOBILE"_T.data(),
+			g_notification_service->push_success("MOBILE"_T.data(),
 			    std::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
 			        std::make_format_args(amount_fixed,
 			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
 		});
+
+		ImGui::SameLine();
+		components::button("DELETE"_T, [] {
+			auto handle = self::veh;
+			if (ENTITY::DOES_ENTITY_EXIST(handle))
+				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped), entity::delete_entity(handle);
+		});
+
 		ImGui::SameLine();
 		components::button("REPAIR"_T, [] {
 			vehicle::repair(self::veh);
@@ -52,14 +60,14 @@ namespace big
 		ImGui::Checkbox("DISABLE_ENGINE_AUTO_START"_T.data(), &g.vehicle.disable_engine_auto_start);
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);
+		ImGui::SameLine();
+		components::command_checkbox<"keepengine">();
 
-		ImGui::Separator();
-
-		components::sub_title("GENERAL"_T);
+		ImGui::SeparatorText("GENERAL"_T.data());
 		{
 			ImGui::BeginGroup();
 
-			ImGui::Checkbox("GOD_MODE"_T.data(), &g.vehicle.god_mode);
+			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
 			components::command_checkbox<"invisveh">();
@@ -69,6 +77,7 @@ namespace big
 			}
 			components::command_checkbox<"vehnocollision">();
 			components::command_checkbox<"vehallweapons">();
+			components::command_checkbox<"allvehsinheists">();
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
@@ -77,6 +86,9 @@ namespace big
 			components::command_checkbox<"instantbrake">();
 			components::command_checkbox<"blockhoming">();
 			components::command_checkbox<"driveonwater">();
+			components::command_checkbox<"vehiclecontrol">();
+			components::command_checkbox<"keepvehicleclean">();
+
 
 			ImGui::EndGroup();
 			ImGui::SameLine();
@@ -91,12 +103,28 @@ namespace big
 			components::command_checkbox<"driveunder">();
 			components::command_checkbox<"keeponground">();
 
+			components::command_checkbox<"mutesiren">();
+
+			components::command_checkbox<"speedometer">();
+			components::options_modal("Speedometer", [] {
+				ImGui::Text("POS_X_Y"_T.data());
+
+				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
+
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				components::command_checkbox<"speedometerleftside">();
+				ImGui::SameLine();
+				components::command_checkbox<"speedometergears">();
+			});
+
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("PROOFS"_T);
+		ImGui::SeparatorText("PROOFS"_T.data());
 		{
 			if (ImGui::Button("CHECK_ALL"_T.data()))
 			{
@@ -149,39 +177,13 @@ namespace big
 
 			ImGui::EndGroup();
 		}
-		ImGui::Separator();
-
-
-		components::sub_title("SPEED_UNIT"_T);
+		ImGui::SeparatorText("SPEED_UNIT"_T.data());
 		{
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::KMPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::KMPH);
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MIPH].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MIPH);
 			ImGui::SameLine();
 			ImGui::RadioButton(speed_unit_strings[(int)SpeedUnit::MPS].c_str(), (int*)&g.vehicle.speed_unit, (int)SpeedUnit::MPS);
-		}
-		ImGui::Separator();
-
-		components::sub_title("SPEEDO_METER"_T);
-		{
-			ImGui::Checkbox("ENABLED"_T.data(), &g.vehicle.speedo_meter.enabled);
-
-			if (g.vehicle.speedo_meter.enabled)
-			{
-				ImGui::Text("POS_X_Y"_T.data());
-
-				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
-
-				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
-				{
-					g.vehicle.speedo_meter.x = pos[0];
-					g.vehicle.speedo_meter.y = pos[1];
-				}
-
-				ImGui::SameLine();
-
-				ImGui::Checkbox("LEFT_SIDED"_T.data(), &g.vehicle.speedo_meter.left_side);
-			}
 		}
 
 		g.vehicle.proof_mask = 0;

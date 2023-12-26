@@ -1,5 +1,5 @@
-#include "natives.hpp"
 #include "backend/looped_command.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -20,15 +20,18 @@ namespace big
 
 			if (g_local_player->m_weapon_manager)
 			{
-				if (p_modified_weapon != g_local_player->m_weapon_manager->m_weapon_info
-				    && g_local_player->m_weapon_manager->m_weapon_info)
+				if (p_modified_weapon != g_local_player->m_weapon_manager->m_weapon_info)
 				{
 					if (p_modified_weapon)
 						p_modified_weapon->m_weapon_range = og_range;
 
-					og_range          = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range;
 					p_modified_weapon = g_local_player->m_weapon_manager->m_weapon_info;
-					g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1000.0f;
+
+					if (g_local_player->m_weapon_manager->m_weapon_info)
+					{
+						og_range = g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range;
+						g_local_player->m_weapon_manager->m_weapon_info->m_weapon_range = 1000.0f;
+					}
 				}
 			}
 		}
@@ -43,5 +46,5 @@ namespace big
 		}
 	};
 
-	infinite_range g_infinite_range("infrange", "Infinite Range", "Kill anything at any distance.", g.weapons.infinite_range);
+	infinite_range g_infinite_range("infrange", "BACKEND_LOOPED_WEAPONS_INFINITE_RANGE", "BACKEND_LOOPED_WEAPONS_INFINITE_RANGE_DESC", g.weapons.infinite_range);
 }

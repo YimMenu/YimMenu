@@ -8,18 +8,18 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			if (!player->get_ped())
 				return;
 
-			g_pointers->m_send_network_damage((CEntity*)g_player_service->get_self()->get_ped(),
-			    (CEntity*)player->get_ped(),
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(),
+			    player->get_ped(),
 			    player->get_ped()->m_navigation->get_position(),
 			    0,
 			    true,
@@ -39,5 +39,5 @@ namespace big
 		}
 	};
 
-	kill_player g_kill_player("kill", "Kill Player", "Kills the player, bypassing most forms of interior godmode", 0);
+	kill_player g_kill_player("kill", "KILL_PLAYER", "KILL_PLAYER_DESC", 0);
 }

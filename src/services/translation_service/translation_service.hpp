@@ -4,6 +4,8 @@
 #include "local_index.hpp"
 #include "remote_index.hpp"
 
+#include <cpr/response.h>
+
 namespace big
 {
 	using translation_map = std::unordered_map<rage::joaat_t, std::string>;
@@ -21,14 +23,21 @@ namespace big
 		void init();
 
 		std::string_view get_translation(const std::string_view translation_key) const;
-		std::string_view get_translation(const rage::joaat_t translation_key) const;
+		std::string_view get_translation(const rage::joaat_t translation_key, const std::string_view fallback = {0, 0}) const;
 
 		std::map<std::string, translation_entry>& available_translations();
 		const std::string& current_language_pack();
 		void select_language_pack(const std::string& pack_id);
 
+		/**
+		 * @brief Updates the language packs and reloads the language cache
+		 * 
+		 */
+		void update_n_reload_language_packs();
+
 	private:
 		void load_translations();
+		bool does_language_exist(const std::string_view language);
 		nlohmann::json load_translation(const std::string_view pack_id);
 
 		bool download_language_pack(const std::string_view pack_id);
@@ -47,9 +56,14 @@ namespace big
          * @brief Attempts to load the remote from the local index fallback
          */
 		void use_fallback_remote();
+		cpr::Response download_file(const std::string& filename);
+
+		void try_set_default_language();
 
 	private:
 		const std::string m_url;
+		const std::string m_fallback_url;
+
 		std::unique_ptr<folder> m_translation_directory;
 		local_index m_local_index;
 		remote_index m_remote_index;

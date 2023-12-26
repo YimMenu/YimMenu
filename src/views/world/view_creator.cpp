@@ -23,7 +23,7 @@ namespace big
 		ImGui::PushItemWidth(250);
 		components::sub_title("CREATOR_SAVED_JOBS"_T);
 
-		if (ImGui::ListBoxHeader("##empty", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##empty", ImVec2(200, 200)))
 		{
 			for (const auto& pair : creator_files)
 			{
@@ -31,7 +31,7 @@ namespace big
 					selected_creator_file = pair;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 		ImGui::SameLine();
@@ -75,7 +75,7 @@ namespace big
 		components::button("CREATOR_JOB_IMPORT"_T, [] {
 			g_thread_pool->push([] {
 				std::string content_id = job_link;
-				nlohmann::json job_details;
+
 				if (content_id.starts_with("https://"))
 					content_id = content_id.substr(46);
 
@@ -91,7 +91,7 @@ namespace big
 						if (g_api_service->download_job_metadata(content_id, f1 < 0 ? 0 : f1, f0 < 0 ? 0 : f0, NETWORK::UGC_GET_CONTENT_LANGUAGE(0)))
 						{
 							cached_creator_files = false;
-							g_notification_service->push("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
+							g_notification_service->push_success("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
 							    "CREATOR_JOB_IMPORT_SUCCESS"_T.data());
 						}
 						else

@@ -4,7 +4,6 @@
 #include "natives.hpp"
 #include "renderer.hpp"
 #include "script.hpp"
-#include "util/is_key_pressed.hpp"
 #include "views/view.hpp"
 
 #include <imgui.h>
@@ -12,7 +11,8 @@
 namespace big
 {
 	gui::gui() :
-	    m_is_open(false)
+	    m_is_open(false),
+	    m_override_mouse(false)
 	{
 		g_renderer->add_dx_callback(view::gta_data, -1);
 		g_renderer->add_dx_callback(view::notifications, -2);
@@ -27,9 +27,17 @@ namespace big
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
+		g_renderer->add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+			if (g.cmd_executor.enabled && msg == WM_KEYUP && wparam == VK_ESCAPE)
+			{
+				g.cmd_executor.enabled = false;
+			}
+		});
 
+		g_renderer->add_dx_callback(view::vehicle_control, 3);
 		g_renderer->add_dx_callback(esp::draw, 2); // TODO: move to ESP service
 		g_renderer->add_dx_callback(view::context_menu, 1);
+
 
 		dx_init();
 
@@ -50,6 +58,13 @@ namespace big
 	void gui::toggle(bool toggle)
 	{
 		m_is_open = toggle;
+
+		toggle_mouse();
+	}
+
+	void gui::override_mouse(bool override)
+	{
+		m_override_mouse = override;
 
 		toggle_mouse();
 	}
@@ -77,10 +92,10 @@ namespace big
 		style.ChildRounding     = 4.0f;
 
 		auto& colors                          = style.Colors;
-		colors[ImGuiCol_Text]                 = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+		colors[ImGuiCol_Text]                 = ImGui::ColorConvertU32ToFloat4(g.window.text_color);
 		colors[ImGuiCol_TextDisabled]         = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.color);
-		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.color);
+		colors[ImGuiCol_WindowBg]             = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
+		colors[ImGuiCol_ChildBg]              = ImGui::ColorConvertU32ToFloat4(g.window.background_color);
 		colors[ImGuiCol_PopupBg]              = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
 		colors[ImGuiCol_Border]               = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 		colors[ImGuiCol_BorderShadow]         = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
@@ -95,7 +110,7 @@ namespace big
 		colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 		colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 		colors[ImGuiCol_ScrollbarGrabActive]  = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-		colors[ImGuiCol_CheckMark]            = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+		colors[ImGuiCol_CheckMark]            = ImVec4(1.00f, 0.98f, 0.95f, 0.61f);
 		colors[ImGuiCol_SliderGrab]           = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 		colors[ImGuiCol_SliderGrabActive]     = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 		colors[ImGuiCol_Button]               = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
@@ -113,17 +128,22 @@ namespace big
 		colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		colors[ImGuiCol_TextSelectedBg]       = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 
-		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
+		save_default_style();
 	}
 
 	void gui::dx_on_tick()
 	{
 		if (m_is_open)
 		{
-			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.color));
-			view::root();
-			ImGui::PopStyleColor();
+			push_theme_colors();
+			view::root(); // frame bg
+			pop_theme_colors();
 		}
+	}
+
+	void gui::save_default_style()
+	{
+		memcpy(&m_default_config, &ImGui::GetStyle(), sizeof(ImGuiStyle));
 	}
 
 	void gui::restore_default_style()
@@ -131,9 +151,37 @@ namespace big
 		memcpy(&ImGui::GetStyle(), &m_default_config, sizeof(ImGuiStyle));
 	}
 
+	void gui::push_theme_colors()
+	{
+		auto button_color = ImGui::ColorConvertU32ToFloat4(g.window.button_color);
+		auto button_active_color =
+		    ImVec4(button_color.x + 0.33f, button_color.y + 0.33f, button_color.z + 0.33f, button_color.w);
+		auto button_hovered_color =
+		    ImVec4(button_color.x + 0.15f, button_color.y + 0.15f, button_color.z + 0.15f, button_color.w);
+		auto frame_color = ImGui::ColorConvertU32ToFloat4(g.window.frame_color);
+		auto frame_hovered_color =
+		    ImVec4(frame_color.x + 0.14f, frame_color.y + 0.14f, frame_color.z + 0.14f, button_color.w);
+		auto frame_active_color =
+		    ImVec4(frame_color.x + 0.30f, frame_color.y + 0.30f, frame_color.z + 0.30f, button_color.w);
+
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImGui::ColorConvertU32ToFloat4(g.window.background_color));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::ColorConvertU32ToFloat4(g.window.text_color));
+		ImGui::PushStyleColor(ImGuiCol_Button, button_color);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, button_hovered_color);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, button_active_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, frame_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, frame_hovered_color);
+		ImGui::PushStyleColor(ImGuiCol_FrameBgActive, frame_active_color);
+	}
+
+	void gui::pop_theme_colors()
+	{
+		ImGui::PopStyleColor(8);
+	}
+
 	void gui::script_on_tick()
 	{
-		if (g_gui->m_is_open)
+		if (g_gui->m_is_open || g_gui->m_override_mouse)
 		{
 			for (uint8_t i = 0; i <= 6; i++)
 				PAD::DISABLE_CONTROL_ACTION(2, i, true);
@@ -162,21 +210,6 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(2, 257, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 262, true);
 			PAD::DISABLE_CONTROL_ACTION(2, 331, true);
-		}
-
-		//wndproc will not work here. the timing here is very difficult. mayby can we hook the creation of the pause menu?
-		//this should be improved..
-		if (is_key_pressed(VK_ESCAPE) && g.cmd_executor.enabled)
-		{
-			g_fiber_pool->queue_job([] {
-				g.cmd_executor.enabled = false;
-				//50 should run stable, IMPROVE THIS!!!
-				for (uint8_t i = 0; i <= 50; i++)
-				{
-					HUD::SET_PAUSE_MENU_ACTIVE(false);
-					script::get_current()->yield();
-				}
-			});
 		}
 	}
 
@@ -212,7 +245,7 @@ namespace big
 
 	void gui::toggle_mouse()
 	{
-		if (m_is_open)
+		if (m_is_open || g_gui->m_override_mouse)
 		{
 			ImGui::GetIO().MouseDrawCursor = true;
 			ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;

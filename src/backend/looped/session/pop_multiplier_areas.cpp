@@ -12,7 +12,7 @@ namespace big
 
 	void looped::session_pop_multiplier_areas()
 	{
-		bool used = (g.session.disable_traffic || g.session.disable_peds) && *g_pointers->m_is_session_started;
+		bool used = (g.session.disable_traffic || g.session.disable_peds) && *g_pointers->m_gta.m_is_session_started;
 		if (!bLastPopMultiplierAreasEnabled && used)
 		{
 			if (!STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() && gta_util::find_script_thread(RAGE_JOAAT("freemode")) && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) == 0)

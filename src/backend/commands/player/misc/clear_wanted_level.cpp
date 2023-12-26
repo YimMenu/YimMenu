@@ -9,16 +9,16 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::FRIENDLY;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			globals::clear_wanted_player(player->id());
 		}
 	};
 
-	clear_wanted_level g_clear_wanted_level("clearwanted", "Clear Wanted Level", "Clears the player's wanted level", 0);
+	clear_wanted_level g_clear_wanted_level("clearwanted", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC", 0);
 }

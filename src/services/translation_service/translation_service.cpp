@@ -1,20 +1,22 @@
 #include "translation_service.hpp"
 
+#include "fiber_pool.hpp"
 #include "file_manager.hpp"
+#include "http_client/http_client.hpp"
+#include "pointers.hpp"
 #include "thread_pool.hpp"
-
-#include <cpr/cpr.h>
 
 namespace big
 {
 	translation_service::translation_service() :
-	    m_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
+	    m_url("https://raw.githubusercontent.com/YimMenu/Translations/master"),
+	    m_fallback_url("https://cdn.jsdelivr.net/gh/YimMenu/Translations@master")
 	{
 	}
 
 	void translation_service::init()
 	{
-		m_translation_directory = std::make_unique<folder>(g_file_manager->get_project_folder("./translations").get_path());
+		m_translation_directory = std::make_unique<folder>(g_file_manager.get_project_folder("./translations").get_path());
 
 		bool loaded_remote_index = false;
 		for (size_t i = 0; i < 5 && !loaded_remote_index; i++)
@@ -38,7 +40,11 @@ namespace big
 				update_language_packs();
 				m_local_index.version = m_remote_index.version;
 			}
+
 			load_translations();
+
+			if (loaded_remote_index)
+				try_set_default_language();
 
 			return;
 		}
@@ -56,20 +62,21 @@ namespace big
 		m_local_index.version                   = m_remote_index.version;
 
 		load_translations();
+		try_set_default_language();
 	}
 
 	std::string_view translation_service::get_translation(const std::string_view translation_key) const
 	{
-		return get_translation(rage::joaat(translation_key));
+		return get_translation(rage::joaat(translation_key), translation_key);
 	}
 
 
-	std::string_view translation_service::get_translation(const rage::joaat_t translation_key) const
+	std::string_view translation_service::get_translation(const rage::joaat_t translation_key, const std::string_view fallback) const
 	{
 		if (auto it = m_translations.find(translation_key); it != m_translations.end())
 			return it->second.c_str();
 
-		return {0, 0};
+		return fallback;
 	}
 
 	std::map<std::string, translation_entry>& translation_service::available_translations()
@@ -88,6 +95,28 @@ namespace big
 			m_local_index.selected_language = pack_id;
 			load_translations();
 		});
+	}
+
+	void translation_service::update_language_packs()
+	{
+		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
+		{
+			const auto path = item.path();
+			const auto stem = path.stem().string();
+			if (stem == "index" || item.path().extension() != ".json")
+				continue;
+
+			if (!download_language_pack(stem))
+			{
+				LOG(WARNING) << "Failed to update '" << stem << "' language pack";
+			}
+		}
+	}
+
+	void translation_service::update_n_reload_language_packs()
+	{
+		update_language_packs();
+		load_translations();
 	}
 
 	void translation_service::load_translations()
@@ -114,6 +143,18 @@ namespace big
 		save_local_index();
 	}
 
+	bool translation_service::does_language_exist(const std::string_view language)
+	{
+		auto file = m_translation_directory->get_file(std::format("./{}.json", language));
+		if (file.exists())
+			return true;
+
+		if (auto it = m_remote_index.translations.find(language.data()); it != m_remote_index.translations.end())
+			return true;
+
+		return false;
+	}
+
 	nlohmann::json translation_service::load_translation(const std::string_view pack_id)
 	{
 		auto file = m_translation_directory->get_file(std::format("./{}.json", pack_id));
@@ -128,23 +169,43 @@ namespace big
 			// make a copy available
 			m_local_index.fallback_languages[pack_id.data()] = m_remote_index.translations[pack_id.data()];
 		}
-		return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+
+		try
+		{
+			return nlohmann::json::parse(std::ifstream(file.get_path(), std::ios::binary));
+		}
+		catch (std::exception& e)
+		{
+			LOG(WARNING) << "Failed to parse language pack. " << e.what();
+
+			if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end()) // ensure that local language files are not removed
+				std::filesystem::remove(file.get_path());
+
+			return {};
+		}
 	}
 
 	bool translation_service::download_language_pack(const std::string_view pack_id)
 	{
 		if (auto it = m_remote_index.translations.find(pack_id.data()); it != m_remote_index.translations.end())
 		{
-			cpr::Response response = cpr::Get(cpr::Url{m_url + "/" + it->second.file});
-
+			const auto response = download_file("/" + it->second.file);
 			if (response.status_code == 200)
 			{
-				auto json      = nlohmann::json::parse(response.text);
-				auto lang_file = m_translation_directory->get_file("./" + it->second.file);
+				try
+				{
+					auto json      = nlohmann::json::parse(response.text);
+					auto lang_file = m_translation_directory->get_file("./" + it->second.file);
 
-				auto out_file = std::ofstream(lang_file.get_path(), std::ios::binary | std::ios::trunc);
-				out_file << json.dump(4);
-				out_file.close();
+					auto out_file = std::ofstream(lang_file.get_path(), std::ios::binary | std::ios::trunc);
+					out_file << json.dump(4);
+					out_file.close();
+				}
+				catch (std::exception& e)
+				{
+					LOG(WARNING) << "Failed to parse language pack. " << e.what();
+					return false;
+				}
 
 				return true;
 			}
@@ -152,29 +213,20 @@ namespace big
 		return false;
 	}
 
-	void translation_service::update_language_packs()
-	{
-		for (auto item : std::filesystem::directory_iterator(m_translation_directory->get_path()))
-		{
-			const auto path = item.path();
-			const auto stem = path.stem().string();
-			if (stem == "index" || item.path().extension() != ".json")
-				continue;
-
-			if (!download_language_pack(stem))
-			{
-				LOG(WARNING) << "Failed to update '" << stem << "' language pack";
-			}
-		}
-	}
-
 	bool translation_service::download_index()
 	{
-		cpr::Response response = cpr::Get(cpr::Url{m_url + "/index.json"});
-
+		const auto response = download_file("/index.json");
 		if (response.status_code == 200)
 		{
-			m_remote_index = nlohmann::json::parse(response.text);
+			try
+			{
+				m_remote_index = nlohmann::json::parse(response.text);
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "Failed to load remote index. " << e.what();
+				return false;
+			}
 
 			return true;
 		}
@@ -186,8 +238,16 @@ namespace big
 		const auto local_index = m_translation_directory->get_file("./index.json");
 		if (local_index.exists())
 		{
-			const auto path = local_index.get_path();
-			m_local_index   = nlohmann::json::parse(std::ifstream(path, std::ios::binary));
+			try
+			{
+				const auto path = local_index.get_path();
+				m_local_index   = nlohmann::json::parse(std::ifstream(path, std::ios::binary));
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "Failed to load local index. " << e.what();
+				return false;
+			}
 
 			return true;
 		}
@@ -209,5 +269,49 @@ namespace big
 	{
 		m_remote_index.default_lang = m_local_index.fallback_default_language;
 		m_remote_index.translations = m_local_index.fallback_languages;
+	}
+
+	cpr::Response translation_service::download_file(const std::string& filename)
+	{
+		auto response = g_http_client.get(m_url + filename);
+		if (response.status_code != 200)
+			response = g_http_client.get(m_fallback_url + filename);
+		return response;
+	}
+
+	void translation_service::try_set_default_language()
+	{
+		if (!m_local_index.default_language_set)
+		{
+			g_fiber_pool->queue_job([this] {
+				std::string preferred_lang = "en_US";
+				auto game_lang             = *g_pointers->m_gta.m_language;
+
+				switch (game_lang)
+				{
+				case 1: preferred_lang = "fr_FR"; break;
+				case 2: preferred_lang = "de_DE"; break;
+				case 3: preferred_lang = "it_IT"; break;
+				case 4:
+				case 11: preferred_lang = "es_ES"; break;
+				case 5: preferred_lang = "pt_BR"; break;
+				case 6: preferred_lang = "pl_PL"; break;
+				case 7: preferred_lang = "ru_RU"; break;
+				case 8: preferred_lang = "ko_KR"; break;
+				case 9: preferred_lang = "zh_TW"; break;
+				case 10: preferred_lang = "ja_JP"; break;
+				case 12: preferred_lang = "zh_CN"; break;
+				}
+
+				if (does_language_exist(preferred_lang))
+				{
+					m_local_index.selected_language = preferred_lang;
+					save_local_index();
+				}
+
+				m_local_index.default_language_set = true;
+				load_translations();
+			});
+		}
 	}
 }

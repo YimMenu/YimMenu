@@ -1,130 +1,76 @@
+#include "backend/bool_command.hpp"
+#include "backend/int_command.hpp"
 #include "backend/looped/looped.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 
 namespace big
 {
-	enum rgb_controller_t
-	{
-		rgb_controller_green_up,
-		rgb_controller_red_down,
-		rgb_controller_blue_up,
-		rgb_controller_green_down,
-		rgb_controller_red_up,
-		rgb_controller_blue_down,
-	};
-
-	std::chrono::system_clock::time_point last_rgb_run_time;
-	std::chrono::milliseconds delay = 0s;
-
+	float red = 255.f, green = 0.f, blue = 0.f;
 	void looped::vehicle_rainbow_paint()
 	{
-		static int rgb_controller_v = rgb_controller_green_up;
+		static std::chrono::system_clock::time_point last_rgb_run_time;
+		static std::chrono::milliseconds delay = 0s;
+		static bool ran                        = false;
 
-		static int red   = 255;
-		static int green = 0;
-		static int blue  = 0;
-
-		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off && last_rgb_run_time + delay < std::chrono::system_clock::now())
+		if (self::veh && g.vehicle.rainbow_paint.type != RainbowPaintType::Off)
 		{
-			int delay_step = 100;
-
-			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm)
+			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Spasm && last_rgb_run_time + delay < std::chrono::system_clock::now())
 			{
-				red   = rand() % 256;
-				green = rand() % 256;
-				blue  = rand() % 256;
+				red   = rand() % 255;
+				green = rand() % 255;
+				blue  = rand() % 255;
+				delay             = std::chrono::milliseconds((110) - (g.vehicle.rainbow_paint.speed * 10));
+				last_rgb_run_time = std::chrono::system_clock::now();
+				ran               = true;
 			}
-			else if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade)
-			{
-				delay_step = 10;
 
-				switch (rgb_controller_v)
+			if (g.vehicle.rainbow_paint.type == RainbowPaintType::Fade) //messy but gets job done
+			{
+				if (ran) { red = 255; green = 0; blue  = 0; ran   = false; }
+
+				if (red > 0 && blue == 0)
 				{
-				case rgb_controller_green_up:
-					green += 5;
-					if (green >= 255)
-					{
-						green            = 255;
-						rgb_controller_v = rgb_controller_red_down;
-					}
-					break;
-
-				case rgb_controller_red_down:
-					red -= 5;
-					if (red < 0)
-					{
-						red              = 0;
-						rgb_controller_v = rgb_controller_blue_up;
-					}
-					break;
-
-				case rgb_controller_blue_up:
-					blue += 5;
-					if (blue >= 255)
-					{
-						blue             = 255;
-						rgb_controller_v = rgb_controller_green_down;
-					}
-					break;
-
-				case rgb_controller_green_down:
-					green -= 5;
-					if (green < 0)
-					{
-						green            = 0;
-						rgb_controller_v = rgb_controller_red_up;
-					}
-					break;
-
-				case rgb_controller_red_up:
-					red += 5;
-					if (red >= 255)
-					{
-						red              = 255;
-						rgb_controller_v = rgb_controller_blue_down;
-					}
-					break;
-
-				case rgb_controller_blue_down:
-					blue -= 5;
-					if (blue < 0)
-					{
-						blue             = 0;
-						rgb_controller_v = rgb_controller_green_up;
-					}
-					break;
-
-				default: break;
+					green += g.vehicle.rainbow_paint.speed;
+					red -= g.vehicle.rainbow_paint.speed;
 				}
+				if (green > 0 && red == 0)
+				{
+					blue += g.vehicle.rainbow_paint.speed;
+					green -= g.vehicle.rainbow_paint.speed;
+				}
+				if (blue > 0 && green == 0)
+				{
+					red += g.vehicle.rainbow_paint.speed;
+					blue -= g.vehicle.rainbow_paint.speed;
+				}
+				red   = std::clamp(red, 0.f, 255.f);
+				green = std::clamp(green, 0.f, 255.f);
+				blue  = std::clamp(blue, 0.f, 255.f);
 			}
-
-
-			Vehicle vehicle = self::veh;
 
 			if (g.vehicle.rainbow_paint.primary)
 			{
-				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(vehicle, red, green, blue);
+				VEHICLE::SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(self::veh, red, green, blue);
 			}
 			if (g.vehicle.rainbow_paint.secondary)
 			{
-				VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicle, red, green, blue);
+				VEHICLE::SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(self::veh, red, green, blue);
 			}
 			if (g.vehicle.rainbow_paint.neon)
 			{
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 0, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 1, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 2, 1);
-				VEHICLE::SET_VEHICLE_NEON_ENABLED(vehicle, 3, 1);
-				VEHICLE::SET_VEHICLE_NEON_COLOUR(vehicle, red, green, blue);
+				VEHICLE::SET_VEHICLE_NEON_COLOUR(self::veh, red, green, blue);
 			}
 			if (g.vehicle.rainbow_paint.smoke)
 			{
-				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(vehicle, red, green, blue);
+				VEHICLE::SET_VEHICLE_TYRE_SMOKE_COLOR(self::veh, red, green, blue);
 			}
-
-			delay = std::chrono::milliseconds(((delay_step * 10) + 10) - (g.vehicle.rainbow_paint.speed * delay_step));
-			last_rgb_run_time = std::chrono::system_clock::now();
 		}
 	}
+
+	bool_command g_rainbow_paint_primary("rainbowpri", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_PRIMARY", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_PRIMARY_DESC", g.vehicle.rainbow_paint.primary);
+	bool_command g_rainbow_paint_secondary("rainbowsec", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SECONDARY", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SECONDARY_DESC", g.vehicle.rainbow_paint.secondary);
+	bool_command g_rainbow_paint_neon("rainbowneons", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_NEONS", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_NEONS_DESC", g.vehicle.rainbow_paint.neon);
+	bool_command g_rainbow_paint_smoke("rainbowsmoke", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_TIRE", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_TIRE_DESC", g.vehicle.rainbow_paint.smoke);
+	int_command g_rainbow_paint_speed("rainbowspeed", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SPEED", "BACKEND_LOOPED_VEHICLE_RGB_PAINT_SPEED_DESC", g.vehicle.rainbow_paint.speed, 1, 10);
 }

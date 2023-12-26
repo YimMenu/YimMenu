@@ -11,22 +11,31 @@ namespace big
 {
 	hotkey_service::hotkey_service()
 	{
-		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
-		register_hotkey("objective", g.settings.hotkeys.teleport_objective, RAGE_JOAAT("objectivetp"));
-		register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
-		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
-		register_hotkey("invis", g.settings.hotkeys.invis, RAGE_JOAAT("invis"));
-		register_hotkey("heal", g.settings.hotkeys.heal, RAGE_JOAAT("heal"));
-		register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, RAGE_JOAAT("fillsnacks"));
-		register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, RAGE_JOAAT("skipcutscene"));
-		register_hotkey("superjump", g.settings.hotkeys.superjump, RAGE_JOAAT("superjump"));
+		// ordered alphabetically to more easily see if a certain hotkey is present
 		register_hotkey("beastjump", g.settings.hotkeys.beastjump, RAGE_JOAAT("beastjump"));
+		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
+		register_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted, RAGE_JOAAT("clearwantedlvl"));
+		register_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
+		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
+		register_hotkey("fastrun", g.settings.hotkeys.superrun, RAGE_JOAAT("fastrun"));
+		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
+		register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, RAGE_JOAAT("fillsnacks"));
+		register_hotkey("freecam", g.settings.hotkeys.freecam, RAGE_JOAAT("freecam"));
+		register_hotkey("heal", g.settings.hotkeys.heal, RAGE_JOAAT("heal"));
+		register_hotkey("invis", g.settings.hotkeys.invis, RAGE_JOAAT("invis"));
 		register_hotkey("invisveh", g.settings.hotkeys.invisveh, RAGE_JOAAT("invisveh"));
 		register_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh, RAGE_JOAAT("localinvisveh"));
-		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
-		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
-		register_hotkey("quicksearch", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
+		register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
+		register_hotkey("objective", g.settings.hotkeys.teleport_objective, RAGE_JOAAT("objectivetp"));
+		register_hotkey("pvtp", g.settings.hotkeys.teleport_pv, RAGE_JOAAT("pvtp"));
+		register_hotkey("passive", g.settings.hotkeys.passive, RAGE_JOAAT("passive"));
 		register_hotkey("repairpv", g.settings.hotkeys.repairpv, RAGE_JOAAT("repairpv"));
+		register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, RAGE_JOAAT("skipcutscene"));
+		register_hotkey("superjump", g.settings.hotkeys.superjump, RAGE_JOAAT("superjump"));
+		register_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller, RAGE_JOAAT("vehiclecontrol"));
+		register_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode, RAGE_JOAAT("vehiclefly"));
+		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
+		register_hotkey("highlighttp", g.settings.hotkeys.teleport_selected, RAGE_JOAAT("highlighttp"));
 
 		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(static_cast<eKeyState>(msg), wparam);
@@ -48,6 +57,8 @@ namespace big
 	bool hotkey_service::update_hotkey(const std::string_view name, const key_t key)
 	{
 		static auto update_hotkey_map = [](hotkey_map& hotkey_map, rage::joaat_t name_hash, key_t new_key) -> bool {
+			bool processed = false;
+
 			for (auto it = hotkey_map.begin(); it != hotkey_map.end(); ++it)
 			{
 				auto hotkey = it->second;
@@ -58,9 +69,9 @@ namespace big
 				hotkey.set_key(new_key);
 				hotkey_map.emplace(new_key, hotkey);
 
-				return true;
+				processed = true;
 			}
-			return false;
+			return processed;
 		};
 
 		const auto name_hash = rage::joaat(name);
@@ -70,20 +81,30 @@ namespace big
 
 	void hotkey_service::wndproc(eKeyState state, key_t key)
 	{
-		if (const auto chat_data = *g_pointers->m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
 			return;
 
 		//command executer is opened
 		if (g.cmd_executor.enabled)
 			return;
 
-		if (g_gui->is_open())
+		bool is_using_cellphone = false;
+		for (auto script : *g_pointers->m_gta.m_script_threads)
+		{
+			if (script && script->m_script_hash == RAGE_JOAAT("cellphone_flashhand"))
+			{
+				is_using_cellphone = script->m_context.m_state == rage::eThreadState::running;
+			}
+		}
+
+		if (g_gui->is_open() || *g_pointers->m_gta.m_is_social_club_overlay_active || is_using_cellphone
+		    || g.settings.hotkeys.is_mp_chat_active)
 			return;
 
 		if (state == eKeyState::RELEASE || state == eKeyState::DOWN)
 		{
 			auto& hotkey_map = m_hotkeys[state == eKeyState::RELEASE];
-			if (const auto& it = hotkey_map.find(key); it != hotkey_map.end())
+			for (auto [ it, end ] = hotkey_map.equal_range(key); it != end; ++it)
 			{
 				if (auto& hotkey = it->second; hotkey.can_exec())
 				{

@@ -35,6 +35,8 @@
 #include <functional>
 #include <utility>
 
+#include <set>
+#include <unordered_set>
 #include <stack>
 #include <vector>
 
@@ -53,12 +55,15 @@
 
 #include "logger/logger.hpp"
 
-#include "core/globals.hpp"
+#include "core/settings.hpp"
 #include "gta/natives.hpp"
 #include "ped/CPed.hpp"
 
 #include "services/notifications/notification_service.hpp"
 #include "services/translation_service/translation_service.hpp"
+
+#define SOL_ALL_SAFETIES_ON 1
+#include "lua/sol.hpp"
 
 // clang-format on
 
@@ -79,7 +84,10 @@ namespace self
 	inline Ped ped;
 	inline Player id;
 	inline Vector3 pos;
+	inline Vector3 rot;
 	inline Vehicle veh;
+	inline int char_index;
+	inline std::unordered_set<int> spawned_vehicles;
 }
 
 template<size_t N>

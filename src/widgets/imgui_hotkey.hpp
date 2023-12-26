@@ -31,8 +31,7 @@ namespace ImGui
 		//const bool focus_requested = ImGui::FocusableItemRegister(window, g.ActiveId == id, false);
 		//const bool focus_requested_by_code = focus_requested && (window->FocusIdxAllCounter == window->FocusIdxAllRequestCurrent);
 
-		const bool hovered = ImGui::ItemHoverable(frame_bb, id);
-
+		const bool hovered = ImGui::ItemHoverable(frame_bb, id, ImGuiItemFlags_None);
 		if (hovered)
 		{
 			ImGui::SetHoveredID(id);
@@ -112,7 +111,7 @@ namespace ImGui
 
 		ImGui::RenderFrame(frame_bb.Min,
 		    frame_bb.Max,
-		    ImGui::GetColorU32(ImVec4(0.20f, 0.25f, 0.30f, 1.0f)),
+		    (ImColor)style.Colors[ImGuiCol_FrameBg],
 		    true,
 		    style.FrameRounding);
 

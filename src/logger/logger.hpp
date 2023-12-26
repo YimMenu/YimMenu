@@ -1,5 +1,4 @@
 #pragma once
-#include "common.hpp"
 #include "file_manager.hpp"
 
 #include <AsyncLogger/Logger.hpp>

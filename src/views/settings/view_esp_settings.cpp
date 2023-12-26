@@ -8,8 +8,6 @@ namespace big
 
 		if (g.esp.enabled)
 		{
-			ImGui::Checkbox("SETTINGS_ESP_HIDE_SELF"_T.data(), &g.esp.hide_self);
-
 			ImGui::Text("SETTINGS_ESP_GLOBAL_RENDER_DISTANCE"_T.data());
 			ImGui::SliderFloat2("###Global Render Distance", g.esp.global_render_distance, 0.f, 1500.f);
 
@@ -40,6 +38,11 @@ namespace big
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_GOD_MODE"_T.data(), &g.esp.god);
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_HEALTH"_T.data(), &g.esp.health);
 			ImGui::Checkbox("SETTINGS_ESP_PLAYER_ARMOR"_T.data(), &g.esp.armor);
+			ImGui::Checkbox("SETTINGS_ESP_OBJECT_ESP"_T.data(), &g.esp.object_esp);
+			if (g.esp.object_esp)
+			{
+				ImGui::Checkbox("SETTINGS_ESP_OBJECT_ESP_GS_CACHE"_T.data(), &g.esp.show_gs_cache_boxes);
+			}
 
 			ImGui::Checkbox("SETTINGS_ESP_COLOR_W_DISTANCE"_T.data(), &g.esp.change_esp_color_from_dist);
 			if (g.esp.health)

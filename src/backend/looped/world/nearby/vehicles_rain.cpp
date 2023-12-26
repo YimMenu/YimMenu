@@ -14,9 +14,9 @@ namespace big
 		{
 			for (auto vehicles : entity::get_entities(true, false))
 			{
-				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles))
+				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles) && vehicles != self::veh)
 				{
-					if (entity::take_control_of(vehicles))
+					if (entity::take_control_of(vehicles, 0))
 					{
 						Vector3 my_location = ENTITY::GET_ENTITY_COORDS(self::ped, 1);
 						my_location.x       = my_location.x + (rand() % 100 + (-50));
@@ -30,7 +30,5 @@ namespace big
 		}
 	};
 
-	vehicle_rain g_vehicle_rain("vehiclerain", "Rain Vehicles", "Drops surround vehicles, vehicles can hit and kill you!",
-	    g.world.nearby.veh_rain);
-
+	vehicle_rain g_vehicle_rain("vehiclerain", "BACKEND_LOOPED_WORLD_RAIN_VEHICLES", "BACKEND_LOOPED_WORLD_RAIN_VEHICLES_DESC",g.world.nearby.veh_rain);
 }

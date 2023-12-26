@@ -1,6 +1,6 @@
 #pragma once
 #include "native_hooks.hpp"
-#include "script_global.hpp"
+#include "core/scr_globals.hpp"
 
 namespace big
 {
@@ -13,9 +13,9 @@ namespace big
 				if (g.notifications.transaction_rate_limit.log)
 					LOG(WARNING) << "Received transaction rate limit";
 				if (g.notifications.transaction_rate_limit.notify)
-					g_notification_service->push_warning("Transaction Rate Limit", "You're receiving transaction rate limits, whatever you're doing do it less.");
+					g_notification_service->push_warning("TRANSACTION_RATE_LIMIT"_T.data(), "TRANSACTION_RATE_LIMIT_MESSAGE"_T.data());
 
-				*script_global(4536673).as<int*>() = 0;
+				*scr_globals::transaction_overlimit.as<PBOOL>() = FALSE;
 
 				return;
 			}

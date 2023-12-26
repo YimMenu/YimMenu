@@ -11,16 +11,17 @@ namespace big
 	{
 		using player_command::player_command;
 
-		virtual CommandAccessLevel get_access_level()
+		virtual CommandAccessLevel get_access_level() override
 		{
 			return CommandAccessLevel::AGGRESSIVE;
 		}
 
-		virtual void execute(player_ptr player, const std::vector<std::uint64_t>& _args, const std::shared_ptr<command_context> ctx)
-		{
-			const size_t arg_count  = 8;
+		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx)override
+		{ 
+			const size_t arg_count  = 9;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::TransactionError,
 			    (int64_t)self::id,
+			    1 << player->id(),
 			    1,
 			    0,
 			    0,
@@ -28,9 +29,9 @@ namespace big
 			    *scr_globals::gsbd_fm_events.at(9).as<int*>(),
 			    *scr_globals::gsbd_fm_events.at(10).as<int*>()};
 
-			g_pointers->m_trigger_script_event(1, args, arg_count, 1 << player->id());
+			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::TransactionError);
 		}
 	};
 
-	show_transaction_error g_show_transaction_error("error", "Show Transaction Error", "Shows a transaction error to the player", 0);
+	show_transaction_error g_show_transaction_error("error", "SHOW_TRANSACTION_ERROR", "SHOW_TRANSACTION_ERROR_DESC", 0);
 }

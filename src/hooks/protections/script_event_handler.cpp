@@ -3,6 +3,8 @@
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking.hpp"
+#include "lua/lua_manager.hpp"
+#include "util/math.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -50,6 +52,11 @@ namespace big
 		return false;
 	}
 
+	inline bool is_player_our_boss(Player sender)
+	{
+		return sender == scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss;
+	}
+
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
 		const auto args = scripted_game_event->m_args;
@@ -59,10 +66,22 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(player->m_player_id);
 
+		if (g_lua_manager && g_lua_manager->get_module_count() > 0)
+		{
+			std::vector<int32_t> script_event_args;
+
+			for (int i = 0; i < scripted_game_event->m_args_size; i++)
+				script_event_args.push_back(args[i]);
+
+			auto event_ret = g_lua_manager->trigger_event<menu_event::ScriptedGameEventReceived, bool>((int)player->m_player_id, script_event_args);
+			if (event_ret.has_value())
+				return true; // don't care, block event if any bool is returned
+		}
+
 		switch (hash)
 		{
 		case eRemoteEvent::Bounty:
-			if (g.protections.script_events.bounty && args[2] == self::id)
+			if (g.protections.script_events.bounty && args[3] == self::id)
 			{
 				g.reactions.bounty.process(plyr);
 				return true;
@@ -92,7 +111,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash: g.reactions.crash.process(plyr); return true;
 		case eRemoteEvent::Crash2:
-			if (args[2] > 32)// actual crash condition is if args[2] is above 255
+			if (args[3] > 32) // actual crash condition is if args[2] is above 255
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -100,7 +119,7 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]))
+			if (isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -108,19 +127,27 @@ namespace big
 			break;
 		}
 		case eRemoteEvent::Notification:
-			switch (static_cast<eRemoteEvent>(args[2]))
+		{
+			switch (static_cast<eRemoteEvent>(args[3]))
 			{
-			case eRemoteEvent::NotificationMoneyBanked:
+			case eRemoteEvent::NotificationMoneyBanked: // never used
 			case eRemoteEvent::NotificationMoneyRemoved:
-			case eRemoteEvent::NotificationMoneyStolen:
-				if (g.protections.script_events.fake_deposit)
+			case eRemoteEvent::NotificationMoneyStolen: g.reactions.fake_deposit.process(plyr); return true;
+			case eRemoteEvent::NotificationCrash1:                             // this isn't used by the game
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
+				return true;
+			case eRemoteEvent::NotificationCrash2:
+				if (!gta_util::find_script_thread(RAGE_JOAAT("gb_salvage")))
 				{
-					g.reactions.fake_deposit.process(plyr);
+					// This looks like it's meant to trigger a sound crash by spamming too many notifications. We've already patched it, but the notifications are still annoying
+					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 					return true;
 				}
 				break;
 			}
+
 			break;
+		}
 		case eRemoteEvent::ForceMission:
 			if (g.protections.script_events.force_mission)
 			{
@@ -143,12 +170,18 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::MCTeleport:
-			if (g.protections.script_events.mc_teleport && args[3] <= 32)
+			if (g.protections.script_events.mc_teleport && args[4] <= 32 && !is_player_our_boss(plyr->id()))
 			{
-				g.reactions.mc_teleport.process(plyr);
-				return true;
+				for (int i = 0; i < 32; i++)
+				{
+					if (args[5 + i] == NETWORK::NETWORK_HASH_FROM_PLAYER_HANDLE(self::id))
+					{
+						g.reactions.mc_teleport.process(plyr);
+						return true;
+					}
+				}
 			}
-			else if (args[3] > 32)
+			else if (args[4] > 32)
 			{
 				g.reactions.crash.process(plyr);
 				return true;
@@ -162,31 +195,28 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::RemoteOffradar:
-			if (g.protections.script_events.remote_off_radar
-			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.remote_off_radar && !is_player_our_boss(plyr->id()) && !is_player_driver_of_local_vehicle(plyr->id()))
 			{
 				g.reactions.remote_off_radar.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[2]) == eRemoteEvent::TSECommandRotateCam
-			    && !gta_util::get_network()->m_is_activity_session)
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::SendToCayoPerico:
-			if (g.protections.script_events.send_to_location && args[3] == 0)
+			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{
 				g.reactions.send_to_location.process(plyr);
 				return true;
 			}
 			break;
 		case eRemoteEvent::SendToCutscene:
-			if (g.protections.script_events.send_to_cutscene
-			    && player->m_player_id != scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss)
+			if (g.protections.script_events.send_to_cutscene && !is_player_our_boss(plyr->id()))
 			{
 				g.reactions.send_to_cutscene.process(plyr);
 				return true;
@@ -194,11 +224,14 @@ namespace big
 			break;
 		case eRemoteEvent::SendToLocation:
 		{
+			if (is_player_our_boss(plyr->id()))
+				break;
+
 			bool known_location = false;
 
-			if (args[2] == 0 && args[3] == 0)
+			if (args[3] == 0 && args[4] == 0)
 			{
-				if (args[4] == 4 && args[5] == 0)
+				if (args[5] == 4 && args[6] == 0)
 				{
 					known_location = true;
 
@@ -208,7 +241,7 @@ namespace big
 						return true;
 					}
 				}
-				else if ((args[4] == 3 || args[4] == 4) && args[5] == 1)
+				else if ((args[5] == 3 || args[5] == 4) && args[6] == 1)
 				{
 					known_location = true;
 
@@ -229,11 +262,9 @@ namespace big
 		}
 		case eRemoteEvent::SoundSpam:
 		{
-			auto plyr = g_player_service->get_by_id(player->m_player_id);
-
 			if (g.protections.script_events.sound_spam && (!plyr || plyr->m_invites_rate_limit.process()))
 			{
-				if (plyr && plyr->m_invites_rate_limit.exceeded_last_process())
+				if (plyr->m_invites_rate_limit.exceeded_last_process())
 					g.reactions.sound_spam.process(plyr);
 				return true;
 			}
@@ -262,8 +293,7 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::NetworkBail:
-			if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-				session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
+			session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 			g.reactions.network_bail.process(plyr);
 			return true;
 		case eRemoteEvent::TeleportToWarehouse:
@@ -275,7 +305,7 @@ namespace big
 			break;
 		case eRemoteEvent::StartActivity:
 		{
-			eActivityType activity = static_cast<eActivityType>(args[2]);
+			eActivityType activity = static_cast<eActivityType>(args[3]);
 			if (g.protections.script_events.start_activity)
 			{
 				if (activity == eActivityType::Survival || activity == eActivityType::Mission || activity == eActivityType::Deathmatch || activity == eActivityType::BaseJump || activity == eActivityType::Race)
@@ -298,7 +328,7 @@ namespace big
 					g.reactions.start_activity.process(plyr);
 					return true;
 				}
-				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[2] == 238)
+				else if (activity == eActivityType::DefendSpecialCargo || activity == eActivityType::GunrunningDefend || activity == eActivityType::BikerDefend || args[3] == 238)
 				{
 					g.reactions.trigger_business_raid.process(plyr);
 					return true;
@@ -320,31 +350,38 @@ namespace big
 		}
 		case eRemoteEvent::InteriorControl:
 		{
-			int interior = (int)args[2];
-			if (interior < 0 || interior > 161)// the upper bound will change after an update
+			int interior = (int)args[3];
+			if (interior < 0 || interior > 166) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
 				g.reactions.null_function_kick.process(plyr);
 				return true;
 			}
+
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (!g_local_player)
+				break;
+
+			if (is_player_our_boss(plyr->id()))
+				break;
+
+			if (is_player_driver_of_local_vehicle(plyr->id()))
+				break;
+
+			if (!plyr->get_ped() || math::distance_between_vectors(*plyr->get_ped()->get_position(), *g_local_player->get_position()) > 75.0f)
+			{
+				// g.reactions.send_to_interior.process(plyr); false positives
+				return true; // this is fine, the game will reject our false positives anyway
+			}
+
 			break;
 		}
-		case eRemoteEvent::SMS:
-			if (g.protections.script_events.send_sms)
-			{
-				if (g.session.kick_chat_spammers)
-				{
-					if (auto plyr = g_player_service->get_by_id(player->m_player_id))
-					{
-						((player_command*)command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-					}
-				}
-
-				return true;
-			}
-			break;
-		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
+		case eRemoteEvent::DestroyPersonalVehicle:
+			g.reactions.destroy_personal_vehicle.process(plyr);
+			return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
 			{
@@ -356,7 +393,8 @@ namespace big
 		{
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
+				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.trigger_business_raid.process(plyr);
 				}
@@ -369,7 +407,8 @@ namespace big
 			// TODO: Breaks stuff
 			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
 			{
-				if (script->m_net_component && script->m_net_component->m_host && script->m_net_component->m_host->m_net_game_player != player)
+				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
+				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
 				{
 					g.reactions.start_script.process(plyr);
 					return true;

@@ -4,8 +4,9 @@
 
 namespace big
 {
-	script_patch::script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<std::uint8_t> patch, bool* enable_bool) :
+	script_patch::script_patch(rage::joaat_t script, std::string name, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool) :
 	    m_script(script),
+	    m_name(name),
 	    m_pattern(pattern),
 	    m_offset(offset),
 	    m_patch(std::move(patch)),
@@ -14,17 +15,17 @@ namespace big
 	{
 	}
 
-	std::uint8_t* script_patch::get_code_address(script_data* data, std::uint32_t index)
+	uint8_t* script_patch::get_code_address(script_data* data, uint32_t index)
 	{
 		return &data->m_bytecode[index >> 14][index & 0x3FFF];
 	}
 
 	const std::optional<uint32_t> script_patch::get_code_location_by_pattern(script_data* data, const memory::pattern& pattern)
 	{
-		std::uint32_t code_size = data->m_code_size;
-		for (std::uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
+		uint32_t code_size = data->m_code_size;
+		for (uint32_t i = 0; i < (code_size - pattern.m_bytes.size()); i++)
 		{
-			for (std::uint32_t j = 0; j < pattern.m_bytes.size(); j++)
+			for (uint32_t j = 0; j < pattern.m_bytes.size(); j++)
 				if (pattern.m_bytes[j].has_value())
 					if (pattern.m_bytes[j].value() != *get_code_address(data, i + j))
 						goto incorrect;
@@ -53,7 +54,7 @@ namespace big
 		{
 			auto result = get_code_location_by_pattern(data, m_pattern);
 			if (!result.has_value())
-				LOG(FATAL) << "Failed to find pattern";
+				LOG(FATAL) << "Failed to find pattern: " << m_name;
 
 			m_ip = result.value() + m_offset;
 

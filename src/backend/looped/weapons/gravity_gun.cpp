@@ -24,16 +24,16 @@ namespace big
 				dist += 5;
 
 			if (!entity::take_control_of(e))
-				return;// TODO: remove from vector
+				return; // TODO: remove from vector
 
 			ENTITY::SET_ENTITY_COLLISION(e, false, false);
 
 			other = ENTITY::GET_ENTITY_COORDS(e, true);
 
 			Vector3 rot = CAM::GET_GAMEPLAY_CAM_ROT(2);
-			float pitch = math::deg_to_rad(rot.x);// vertical
+			float pitch = math::deg_to_rad(rot.x); // vertical
 			// float roll = rot.y;
-			float yaw = math::deg_to_rad(rot.z + 90);// horizontal
+			float yaw = math::deg_to_rad(rot.z + 90); // horizontal
 
 			Vector3 velocity;
 
@@ -51,7 +51,7 @@ namespace big
 		bool is_gravity_gun_selected = g.weapons.custom_weapon == CustomWeapon::GRAVITY_GUN;
 
 		auto is_zoomed_in = is_gravity_gun_selected && PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
-		if (is_zoomed_in)
+		if (is_zoomed_in && (!g.self.custom_weapon_stop || WEAPON::IS_PED_ARMED(self::ped, 4 | 2)))
 		{
 			location = self::pos;
 
@@ -65,7 +65,7 @@ namespace big
 				{
 					if (ENTITY::IS_ENTITY_A_PED(ent_to_add) && PED::IS_PED_A_PLAYER(ent_to_add))
 					{
-						g_notification_service->push_warning("Weapons", "You can't move player entities!");
+						g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_PLAYER"_T.data());
 					}
 					else
 					{
@@ -79,7 +79,7 @@ namespace big
 
 						if (temp_dist > 500)
 						{
-							g_notification_service->push_warning("Weapons", "Entity is too far.");
+							g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_TOO_FAR"_T.data());
 						}
 						else
 						{
@@ -87,7 +87,7 @@ namespace big
 							{
 								TASK::SET_HIGH_FALL_TASK(ent_to_add, 0, 0, 0);
 
-								g_notification_service->push_warning("Weapons", "Selected entity at crosshair.");
+								g_notification_service->push_warning("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_SET"_T.data());
 							}
 
 							ents.push_back(ent_to_add);
@@ -121,7 +121,7 @@ namespace big
 
 			ents.clear();
 
-			g_notification_service->push("Weapons", "Released entity.");
+			g_notification_service->push_success("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_GRAVITY_GUN_UNSET"_T.data());
 		}
 	}
 }

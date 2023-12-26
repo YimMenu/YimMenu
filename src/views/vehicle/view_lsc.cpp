@@ -15,6 +15,7 @@ namespace big
 		static Vehicle player_vehicle = 0;
 		static bool ready             = true;
 
+		static Hash model;
 		static std::map<int, int32_t> owned_mods;
 		static std::map<int, std::string> slot_display_names;
 		static std::map<int, std::map<int, std::string>> mod_display_names;
@@ -58,7 +59,7 @@ namespace big
 
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
 
-				Hash model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
+				model = ENTITY::GET_ENTITY_MODEL(player_vehicle);
 
 				owned_mods = vehicle::get_owned_mods_from_vehicle(player_vehicle);
 				VEHICLE::SET_VEHICLE_MOD_KIT(player_vehicle, 0);
@@ -90,6 +91,8 @@ namespace big
 						{
 							continue;
 						}
+						slot_name.append("##");
+						slot_name.append(std::to_string(slot));
 						tmp_slot_display_names[slot] = slot_name;
 
 						std::map<int, std::string> mod_names;
@@ -203,6 +206,17 @@ namespace big
 			});
 		}
 
+		ImGui::SameLine();
+		if (components::button("MAX_VEHICLE_PERFORMANCE"_T))
+		{
+			g_fiber_pool->queue_job([] {
+				vehicle::max_vehicle_performance(self::veh);
+
+				// refresh mod names
+				player_vehicle = 0;
+			});
+		}
+
 		ImGui::Separator();
 
 		static char plate[9];
@@ -217,8 +231,7 @@ namespace big
 			});
 		}
 
-		ImGui::Separator();
-		components::sub_title("MOD_OPTIONS"_T);
+		ImGui::SeparatorText("MOD_OPTIONS"_T.data());
 
 		bool is_bulletproof_tires = !owned_mods[MOD_TIRE_CAN_BURST];
 		if (ImGui::Checkbox("BULLETPROOF_TIRES"_T.data(), (bool*)&is_bulletproof_tires))
@@ -245,19 +258,41 @@ namespace big
 			});
 		}
 		ImGui::SameLine();
-		if (ImGui::Checkbox("TIRESMOKE"_T.data(), (bool*)&owned_mods[MOD_TYRE_SMOKE]))
+		if (ImGui::Checkbox("TIRE_SMOKE"_T.data(), (bool*)&owned_mods[MOD_TYRE_SMOKE]))
 		{
 			g_fiber_pool->queue_job([] {
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
 		}
+		rage::fvector3 blank;
+		float scale;
+		if (GetVehicleInfoForClanLogo(model, blank, blank, blank, scale))
+		{
+			auto has_clan_logo = (bool*)&owned_mods[MOD_HAS_CLAN_LOGO];
+			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), has_clan_logo))
+			{
+				if (*has_clan_logo)
+				{
+					g_fiber_pool->queue_job([] {
+						vehicle_helper::add_clan_logo_to_vehicle(player_vehicle, self::ped);
+					});
+				}
+				else
+				{
+					g_fiber_pool->queue_job([] {
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
+					});
+				}
+			}
+		}
 
-		ImGui::Separator();
+		ImGui::SeparatorText("VIEW_LSC_MOD_SLOTS"_T.data());
 
 		ImGui::BeginGroup();
 
 		components::sub_title("SLOT"_T);
-		if (ImGui::ListBoxHeader("##slot", ImVec2(200, 200)))
+		if (ImGui::BeginListBox("##slot", ImVec2(200, 200)))
 		{
 			for (const auto& [slot, name] : slot_display_names)
 			{
@@ -266,9 +301,8 @@ namespace big
 					selected_slot = slot;
 				}
 			}
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
-
 		ImGui::EndGroup();
 
 		if (selected_slot != -1)
@@ -296,7 +330,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			components::sub_title("MOD"_T);
-			if (ImGui::ListBoxHeader("##mod", ImVec2(240, 200)))
+			if (ImGui::BeginListBox("##mod", ImVec2(240, 200)))
 			{
 				for (const auto& it : mod_display_names[selected_slot])
 				{
@@ -317,13 +351,20 @@ namespace big
 
 							if (selected_slot >= 0)
 							{
-								VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
-								owned_mods[selected_slot] = mod;
-
-								if (is_wheel_mod)
+								if (!VEHICLE::IS_VEHICLE_MOD_GEN9_EXCLUSIVE(player_vehicle, selected_slot, mod))
 								{
-									*wheel_stock_mod = mod;
-									*wheel_custom    = false;
+									VEHICLE::SET_VEHICLE_MOD(player_vehicle, selected_slot, mod, false);
+									owned_mods[selected_slot] = mod;
+
+									if (is_wheel_mod)
+									{
+										*wheel_stock_mod = mod;
+										*wheel_custom    = false;
+									}
+								}
+								else
+								{
+									g_notification_service->push_error("GUI_TAB_LSC"_T.data(), "VIEW_LSC_SELECTED_MOD_IS_INVALID"_T.data());
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)
@@ -346,7 +387,7 @@ namespace big
 						});
 					}
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 
 			ImGui::EndGroup();
@@ -364,7 +405,7 @@ namespace big
 				ImGui::BeginGroup();
 
 				components::sub_title("STYLE"_T);
-				if (ImGui::ListBoxHeader("##style", ImVec2(200, 200)))
+				if (ImGui::BeginListBox("##style", ImVec2(200, 200)))
 				{
 					std::string mod_name = mod_display_names[selected_slot][*wheel_stock_mod];
 					auto wheel_mods      = wheel_map[mod_name];
@@ -401,16 +442,44 @@ namespace big
 							});
 						}
 					}
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 
 				ImGui::EndGroup();
 			}
 		}
 
+		int item_counter = 0;
+		for (int extra = MOD_EXTRA_0; extra >= MOD_EXTRA_14; extra--)
+		{
+			if (owned_mods.find(extra) != owned_mods.end())
+			{
+				if (item_counter == 0)
+				{
+					ImGui::SeparatorText("VIEW_LSC_VEHICLE_EXTRAS"_T.data());
+					ImGui::BeginGroup();
+				}
+				if ((item_counter % 5) != 0)
+					ImGui::SameLine();
+				int gta_extra_id      = (extra - MOD_EXTRA_0) * -1;
+				auto name             = std::format("{}: #{}", "VIEW_LSC_EXTRAS"_T, gta_extra_id);
+				bool is_extra_enabled = owned_mods[extra] == 1;
+				if (ImGui::Checkbox(name.c_str(), &is_extra_enabled))
+				{
+					owned_mods[extra] = is_extra_enabled;
+					g_fiber_pool->queue_job([gta_extra_id, is_extra_enabled] {
+						VEHICLE::SET_VEHICLE_EXTRA(player_vehicle, gta_extra_id, !is_extra_enabled);
+					});
+				}
+				item_counter++;
+			}
+		}
+		if (item_counter != 0)
+		{
+			ImGui::EndGroup();
+		}
 
-		ImGui::Separator();
-		components::sub_title("NEON_LIGHT_OPTIONS"_T);
+		ImGui::SeparatorText("NEON_LIGHT_OPTIONS"_T.data());
 
 		ImGui::PushID("##headlight_en");
 		if (ImGui::Checkbox("HEADLIGHT"_T.data(), (bool*)&owned_mods[MOD_XENON_LIGHTS]))
@@ -481,8 +550,7 @@ namespace big
 		});
 		ImGui::PopID();
 
-		ImGui::Separator();
-		components::sub_title("COLOR_OPTIONS"_T);
+		ImGui::SeparatorText("COLOR_OPTIONS"_T.data());
 
 		static int color_to_change = 0;
 		static int color_type      = 8;
@@ -493,7 +561,7 @@ namespace big
 			color_type      = 8;
 		}
 
-		if (ImGui::ListBoxHeader("##color_options", ImVec2(120, 254)))
+		if (ImGui::BeginListBox("##color_options", ImVec2(120, 254)))
 		{
 			if (ImGui::Selectable("PRIMARY"_T.data(), color_to_change == 0, ImGuiSelectableFlags_SelectOnClick))
 			{
@@ -565,7 +633,7 @@ namespace big
 				color_type      = 8;
 			}
 
-			ImGui::ListBoxFooter();
+			ImGui::EndListBox();
 		}
 
 
@@ -579,7 +647,7 @@ namespace big
 			// primary and secondary color
 
 			ImGui::SameLine();
-			if (ImGui::ListBoxHeader("##colors", ImVec2(140, 254)))
+			if (ImGui::BeginListBox("##colors", ImVec2(140, 254)))
 			{
 				if (ImGui::Selectable("CUSTOM"_T.data(), color_type == 8, ImGuiSelectableFlags_SelectOnClick))
 				{
@@ -616,7 +684,7 @@ namespace big
 				{
 					color_type = 3;
 				}
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 		else if (color_to_change == 7)
@@ -660,7 +728,7 @@ namespace big
 			if (color_to_change == 5)
 			{
 				ImGui::SameLine();
-				if (ImGui::ListBoxHeader("##tire_smoke_rgb", ImVec2(140, 254)))
+				if (ImGui::BeginListBox("##tire_smoke_rgb", ImVec2(140, 254)))
 				{
 					for (const auto& it : lsc_tire_smoke_rgb)
 					{
@@ -678,13 +746,13 @@ namespace big
 						}
 					}
 
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 			}
 			else if (color_to_change == 8)
 			{
 				ImGui::SameLine();
-				if (ImGui::ListBoxHeader("##neon_rgb", ImVec2(140, 254)))
+				if (ImGui::BeginListBox("##neon_rgb", ImVec2(140, 254)))
 				{
 					for (const auto& it : lsc_neon_rgb)
 					{
@@ -702,7 +770,7 @@ namespace big
 						}
 					}
 
-					ImGui::ListBoxFooter();
+					ImGui::EndListBox();
 				}
 			}
 
@@ -750,11 +818,11 @@ namespace big
 				ImGui::SameLine();
 			}
 
-			if (ImGui::ListBoxHeader("##color", ImVec2(180, 254)))
+			if (ImGui::BeginListBox("##color", ImVec2(180, 254)))
 			{
 				switch (color_type)
 				{
-				case 0://Chrome
+				case 0: //Chrome
 				{
 					if (ImGui::Selectable("CHROME"_T.data(), selected_color == COLOR_CHROME))
 					{
@@ -773,7 +841,7 @@ namespace big
 					}
 					break;
 				}
-				case 1://Classic
+				case 1: //Classic
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -797,7 +865,7 @@ namespace big
 					}
 					break;
 				}
-				case 2://Matte
+				case 2: //Matte
 				{
 					for (const auto& [color, name] : lsc_matte_colors)
 					{
@@ -821,7 +889,7 @@ namespace big
 					}
 					break;
 				}
-				case 3://Metals
+				case 3: //Metals
 				{
 					for (const auto& [color, name] : lsc_metal_colors)
 					{
@@ -845,7 +913,7 @@ namespace big
 					}
 					break;
 				}
-				case 4://Pearlescent
+				case 4: //Pearlescent
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -861,7 +929,7 @@ namespace big
 					}
 					break;
 				}
-				case 5://Wheel Color
+				case 5: //Wheel Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -877,7 +945,7 @@ namespace big
 					}
 					break;
 				}
-				case 6://Interior Color
+				case 6: //Interior Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -893,7 +961,7 @@ namespace big
 					}
 					break;
 				}
-				case 7://Dashboard Color
+				case 7: //Dashboard Color
 				{
 					for (const auto& [color, name] : lsc_classic_colors)
 					{
@@ -909,7 +977,7 @@ namespace big
 					}
 					break;
 				}
-				case 9://Headlight Color
+				case 9: //Headlight Color
 				{
 					for (const auto& [color, name] : lsc_headlight_colors)
 					{
@@ -927,7 +995,7 @@ namespace big
 				}
 				}
 
-				ImGui::ListBoxFooter();
+				ImGui::EndListBox();
 			}
 		}
 	}

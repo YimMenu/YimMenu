@@ -10,14 +10,9 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			//this is a hack to prevent the warning notify..
-			if (!teleport::to_blip((int)BlipIcons::Waypoint))
-				return;
-
-			teleport::to_waypoint();
+			teleport::to_blip((int)BlipIcons::Waypoint);
 		}
 	};
 
-	auto_tp_to_waypoint g_auto_tp_to_waypoint("autotptowp", "Auto-Teleport To Waypoint", "Automatically teleports you to a waypoint as soon as you set one.",
-	    g.self.auto_tp);
+	auto_tp_to_waypoint g_auto_tp_to_waypoint("autotptowp", "BACKEND_LOOPED_AUTO_TP_TO_WAYPOINT", "BACKEND_LOOPED_AUTO_TP_TO_WAYPOINT_DESC", g.self.auto_tp);
 }

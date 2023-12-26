@@ -22,6 +22,5 @@ namespace big
 		}
 	};
 
-	no_water_collision
-	    g_no_water_collision("walkunder", "Walk Underwater", "Allows you to walk and shoot underwater", g.self.no_water_collision);
+	no_water_collision g_no_water_collision("walkunder", "WALK_UNDERWATER", "WALK_UNDERWATER_DESC", g.self.no_water_collision);
 }

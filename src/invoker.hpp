@@ -10,8 +10,8 @@ namespace big
 		native_call_context();
 
 	private:
-		std::uint64_t m_return_stack[10];
-		std::uint64_t m_arg_stack[100];
+		uint64_t m_return_stack[10];
+		uint64_t m_arg_stack[100];
 	};
 
 	class native_invoker
@@ -37,7 +37,7 @@ namespace big
 			return *m_call_context.get_return_value<T>();
 		}
 
-	private:
+	public:
 		native_call_context m_call_context;
 		std::unordered_map<rage::scrNativeHash, rage::scrNativeHandler> m_handler_cache;
 		bool m_handlers_cached = false;

@@ -4,7 +4,9 @@ namespace big
 {
 	void view::player_vehicle()
 	{
-		if (ImGui::TreeNode("Vehicle"))
+		ImGui::BeginGroup();
+		components::sub_title("VEHICLE"_T);
+		if (ImGui::BeginListBox("##veh", get_listbox_dimensions()))
 		{
 			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
@@ -34,11 +36,22 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"closedoors">(g_player_service->get_selected(), {});
 
+			components::player_command_button<"breakdoors">(g_player_service->get_selected(), {});
+
 			components::player_command_button<"upgradeveh">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"downgradeveh">(g_player_service->get_selected(), {});
 
-			ImGui::TreePop();
+			components::player_command_button<"svehjump">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"svehboost">(g_player_service->get_selected(), {});
+
+			components::player_command_button<"sshuntleft">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"sshuntright">(g_player_service->get_selected(), {});
+
+			ImGui::EndListBox();
 		}
+		ImGui::EndGroup();
 	}
 }

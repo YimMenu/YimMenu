@@ -22,7 +22,7 @@ namespace big
 		for (const rage::scrNativeMapping& mapping : g_crossmap)
 		{
 			rage::scrNativeHandler handler =
-			    g_pointers->m_get_native_handler(g_pointers->m_native_registration_table, mapping.second);
+			    g_pointers->m_gta.m_get_native_handler(g_pointers->m_gta.m_native_registration_table, mapping.second);
 			m_handler_cache.emplace(mapping.first, handler);
 		}
 
@@ -36,6 +36,9 @@ namespace big
 
 	void native_invoker::end_call(rage::scrNativeHash hash)
 	{
+		if (!m_handlers_cached)
+			cache_handlers();
+
 		if (auto it = m_handler_cache.find(hash); it != m_handler_cache.end())
 		{
 			rage::scrNativeHandler handler = it->second;
@@ -43,14 +46,14 @@ namespace big
 			[this, hash, handler] {
 				__try
 				{
-					_call_asm(&m_call_context, handler, g_pointers->m_native_return);
-					// handler(&m_call_context);
-					g_pointers->m_fix_vectors(&m_call_context);
+					// return address checks are no longer a thing
+					handler(&m_call_context);
+					g_pointers->m_gta.m_fix_vectors(&m_call_context);
 				}
 				__except (EXCEPTION_EXECUTE_HANDLER)
 				{
 					[hash]() {
-						LOG(WARNING) << "Exception caught while trying to call " << hash << " native.";
+						LOG(WARNING) << "Exception caught while trying to call " << HEX_TO_UPPER(hash) << " native.";
 					}();
 				}
 			}();

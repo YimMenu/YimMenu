@@ -36,7 +36,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::InputInt("###rank", &g.spoofing.rank))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace big
 			ImGui::SameLine();
 			if (ImGui::InputFloat("###kd_ratio", &g.spoofing.kd_ratio))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 
@@ -54,9 +54,10 @@ namespace big
 		if (g.spoofing.spoof_bad_sport)
 		{
 			ImGui::SameLine();
-			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, "Clean Player\0Dirty Player\0Bad Sport"))
+			static const std::string badsport_options = std::string("CLEAN_PLAYER"_T.data()) + '\0' + std::string("VIEW_SPOOFING_DIRTY_PLAYER"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
+			if (ImGui::Combo("###badsport_select", &g.spoofing.badsport_type, badsport_options.c_str()))
 			{
-				*g_pointers->m_force_player_card_refresh = true;
+				*g_pointers->m_gta.m_force_player_card_refresh = true;
 			}
 		}
 
@@ -82,11 +83,11 @@ namespace big
 
 		components::command_checkbox<"vcaudio">();
 
-		components::sub_title("SPOOFING_HIDE_FEATURES"_T);
+		ImGui::SeparatorText("SPOOFING_HIDE_FEATURES"_T.data());
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
 		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
-		components::sub_title("CREW"_T);
+		ImGui::SeparatorText("CREW"_T.data());
 
 		ImGui::Checkbox("SPOOFING_CREW"_T.data(), &g.spoofing.spoof_crew_data);
 
@@ -104,7 +105,7 @@ namespace big
 
 		ImGui::Checkbox("SPOOFING_CREW_SQUARE_TAG"_T.data(), &g.spoofing.square_crew_tag);
 
-		components::sub_title("SPOOFING_SESSION_ATTRIBUTES"_T);
+		ImGui::SeparatorText("SPOOFING_SESSION_ATTRIBUTES"_T.data());
 		components::small_text("SPOOFING_ONLY_WORKS_AS_HOST"_T);
 
 		ImGui::Checkbox("SPOOFING_ATTRIBUTE_REGION"_T.data(), &g.spoofing.spoof_session_region_type);
@@ -146,6 +147,13 @@ namespace big
 		{
 			ImGui::SameLine();
 			ImGui::InputInt("###player_count", &g.spoofing.session_player_count);
+		}
+
+		ImGui::Checkbox("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T.data(), &g.spoofing.spoof_session_bad_sport_status);
+		if (g.spoofing.spoof_session_bad_sport_status)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("VIEW_SPOOFING_BADSPORT"_T.data(), &g.spoofing.session_bad_sport);
 		}
 	}
 }

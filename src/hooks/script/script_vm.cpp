@@ -25,7 +25,7 @@ namespace big
 			if (auto bytecode = g_script_patcher_service->get_script_bytecode(program->m_name_hash))
 				program->m_code_blocks = bytecode;
 
-			if (g_pointers->m_script_globals[0xA])
+			if (g_pointers->m_gta.m_script_globals[0xA])
 			{
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex = old_shop_index;
 				scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags  = old_cayo_flags;
@@ -38,7 +38,7 @@ namespace big
 		{
 			m_program->m_code_blocks = m_orig_bytecode;
 
-			if (g_pointers->m_script_globals[0xA])
+			if (g_pointers->m_gta.m_script_globals[0xA])
 			{
 				old_shop_index = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CurrentShopIndex;
 				old_cayo_flags = scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].CayoPericoFlags;

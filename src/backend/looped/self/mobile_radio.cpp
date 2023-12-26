@@ -20,5 +20,5 @@ namespace big
 		}
 	};
 
-	mobile_radio g_mobile_radio("mobileradio", "Mobile Radio", "Allows you to listen to the radio on foot", g.self.mobile_radio);
+	mobile_radio g_mobile_radio("mobileradio", "MOBILE_RADIO", "MOBILE_RADIO_DESC", g.self.mobile_radio);
 }

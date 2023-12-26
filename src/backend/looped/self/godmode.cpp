@@ -37,5 +37,5 @@ namespace big
 
 	static bool true_ref = true;
 	godmode_internal g_godmode_internal("$$godmode", "", "", true_ref);
-	bool_command g_godmode("godmode", "God Mode", "Prevents you from taking any form of damage", g.self.god_mode);
+	bool_command g_godmode("godmode", "GODMODE", "GODMODE_DESC", g.self.god_mode);
 }

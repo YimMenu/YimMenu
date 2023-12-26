@@ -11,29 +11,29 @@ namespace memory
 	{
 	}
 
-	handle range::begin()
+	handle range::begin() const
 	{
 		return m_base;
 	}
 
-	handle range::end()
+	handle range::end() const
 	{
 		return m_base.add(m_size);
 	}
 
-	std::size_t range::size()
+	std::size_t range::size() const
 	{
 		return m_size;
 	}
 
-	bool range::contains(handle h)
+	bool range::contains(handle h) const
 	{
 		return h.as<std::uintptr_t>() >= begin().as<std::uintptr_t>() && h.as<std::uintptr_t>() <= end().as<std::uintptr_t>();
 	}
 
 	// https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm
 	// https://www.youtube.com/watch?v=AuZUeshhy-s
-	handle scan_pattern(const std::optional<std::uint8_t>* sig, std::size_t length, handle begin, std::size_t module_size)
+	std::optional<handle> scan_pattern(const std::optional<uint8_t>* sig, std::size_t length, handle begin, std::size_t module_size)
 	{
 		std::size_t maxShift = length;
 		std::size_t max_idx  = length - 1;
@@ -80,10 +80,10 @@ namespace memory
 				}
 			}
 		}
-		return nullptr;
+		return std::nullopt;
 	}
 
-	handle range::scan(pattern const& sig)
+	std::optional<handle> range::scan(pattern const& sig) const
 	{
 		auto data   = sig.m_bytes.data();
 		auto length = sig.m_bytes.size();
@@ -93,10 +93,10 @@ namespace memory
 			return result;
 		}
 
-		return nullptr;
+		return std::nullopt;
 	}
 
-	bool pattern_matches(std::uint8_t* target, const std::optional<std::uint8_t>* sig, std::size_t length)
+	bool pattern_matches(uint8_t* target, const std::optional<uint8_t>* sig, std::size_t length)
 	{
 		for (std::size_t i{}; i != length; ++i)
 		{
@@ -109,7 +109,7 @@ namespace memory
 		return true;
 	}
 
-	std::vector<handle> range::scan_all(pattern const& sig)
+	std::vector<handle> range::scan_all(pattern const& sig) const
 	{
 		std::vector<handle> result{};
 		auto data   = sig.m_bytes.data();
@@ -118,12 +118,12 @@ namespace memory
 		const auto scan_end = m_size - length;
 		for (std::uintptr_t i{}; i != scan_end; ++i)
 		{
-			if (pattern_matches(m_base.add(i).as<std::uint8_t*>(), data, length))
+			if (pattern_matches(m_base.add(i).as<uint8_t*>(), data, length))
 			{
 				result.push_back(m_base.add(i));
 			}
 		}
 
-		return std::move(result);
+		return result;
 	}
 }

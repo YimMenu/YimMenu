@@ -22,7 +22,7 @@ namespace big
 
 		void add_patch(script_patch&& patch);
 		void on_script_load(rage::scrProgram* program);
-		std::uint8_t** get_script_bytecode(rage::joaat_t script);
+		uint8_t** get_script_bytecode(rage::joaat_t script);
 		void update();
 	};
 

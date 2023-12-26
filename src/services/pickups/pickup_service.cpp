@@ -43,7 +43,7 @@ namespace big
 		{
 			if (weapon.m_reward_ammo_hash != 0 || weapon.m_throwable)
 			{
-				g_pointers->m_give_pickup_rewards(targets, weapon.m_reward_ammo_hash);
+				g_pointers->m_gta.m_give_pickup_rewards(targets, weapon.m_reward_ammo_hash);
 				script::get_current()->yield(20ms);
 			}
 		}
@@ -51,15 +51,15 @@ namespace big
 
 	void pickup_service::give_armour(const int targets) const
 	{
-		g_pointers->m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_ARMOUR"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_ARMOUR"));
 		script::get_current()->yield(20ms);
 	}
 
 	void pickup_service::give_health(const int targets) const
 	{
-		g_pointers->m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
 		script::get_current()->yield(20ms);
-		g_pointers->m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
 		script::get_current()->yield(20ms);
 	}
 
@@ -69,12 +69,12 @@ namespace big
 		{
 			if (weapon.m_reward_hash != 0)
 			{
-				g_pointers->m_give_pickup_rewards(targets, weapon.m_reward_hash);
+				g_pointers->m_gta.m_give_pickup_rewards(targets, weapon.m_reward_hash);
 				script::get_current()->yield(20ms);
 			}
 		}
 
-		g_pointers->m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_PARACHUTE"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_PARACHUTE"));
 		script::get_current()->yield(20ms);
 	}
 }

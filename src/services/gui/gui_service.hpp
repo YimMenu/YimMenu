@@ -3,6 +3,7 @@
 
 namespace big
 {
+	// Lua API: Tabs
 	enum class tabs
 	{
 		NONE,
@@ -10,7 +11,11 @@ namespace big
 		SELF,
 		WEAPONS,
 		TELEPORT,
+		CUSTOM_TELEPORT,
 		MOBILE,
+		OUTFIT_EDITOR,
+		OUTFIT_SLOTS,
+		ANIMATIONS,
 
 		VEHICLE,
 		HANDLING,
@@ -20,143 +25,141 @@ namespace big
 		HANDLING_CURRENT_PROFILE,
 		LSC,
 		SPAWN_VEHICLE,
-		PV,
-		PERSIST_CAR,
 		FUN_VEHICLE,
 
 		WORLD,
 		SPAWN_PED,
-		TIME_AND_WEATHER,
+		SQUAD_SPAWNER,
 		CREATOR,
 		TRAIN,
-		WATER,
 		BLACKHOLE,
 		MODEL_SWAPPER,
-		NEARBY,
-		ORBITAL_DRONE,
+		VFX,
+		XML_MAPS,
 
 		NETWORK,
-		SESSION,
 		MISSIONS,
 		SPOOFING,
 		PLAYER_DATABASE,
 		SESSION_BROWSER,
+		STAT_EDITOR,
 
 		SETTINGS,
-		OUTFIT_EDITOR,
-		OUTFIT_SLOTS,
-		STAT_EDITOR,
+		LUA_SCRIPTS,
 		CONTEXT_MENU_SETTINGS,
 		ESP_SETTINGS,
+		GTA_CACHE_SETTINGS,
 		GUI_SETTINGS,
 		HOTKEY_SETTINGS,
 		REACTION_SETTINGS,
 		PROTECTION_SETTINGS,
 		TRANSLATION_SETTINGS,
+		PROXY_SETTINGS,
 		DEBUG,
 
-		PLAYER
+		PLAYER,
+
+		// Added at runtime by things like lua scripts.
+		RUNTIME_CUSTOM
 	};
 
 	struct navigation_struct
 	{
-		const char name[48]        = "";
+		char name[48]              = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
+		rage::joaat_t hash = rage::joaat(name);
 	};
+
+// Used for constructing translation key for tabs
+#define TAB_DECL_INTERNAL(prefix, tab) \
+	tabs::tab,                         \
+	{                                  \
+		#prefix #tab
+#define TAB_DECL(tab) TAB_DECL_INTERNAL(GUI_TAB_, tab)
 
 	class gui_service final
 	{
 		std::vector<tabs> current_tab{};
 		bool switched_view = true;
 
+		// clang-format off
 		std::map<tabs, navigation_struct> nav = {
 		    {
-		        tabs::SELF,
-		        {
-		            "GUI_TAB_SELF",
+				TAB_DECL(SELF),
 		            view::self,
 		            {
-		                {tabs::WEAPONS, {"GUI_TAB_WEAPONS", view::weapons}},
-		                {tabs::MOBILE, {"GUI_TAB_MOBILE", view::mobile}},
-		                {tabs::TELEPORT, {"GUI_TAB_TELEPORT", view::teleport}},
+						{TAB_DECL(WEAPONS), view::weapons}},
+						{TAB_DECL(MOBILE), view::mobile}},
+						{TAB_DECL(TELEPORT), view::teleport,
+						{
+							{TAB_DECL(CUSTOM_TELEPORT), view::custom_teleport}},
+						}}},
+						{TAB_DECL(OUTFIT_EDITOR), view::outfit_editor}},
+		                {TAB_DECL(OUTFIT_SLOTS), view::outfit_slots}},
+						{TAB_DECL(ANIMATIONS), view::animations}},
 		            },
 		        },
 		    },
 		    {
-		        tabs::VEHICLE,
-		        {
-		            "GUI_TAB_VEHICLE",
+		        TAB_DECL(VEHICLE),
 		            view::vehicle,
 		            {
 		                {
-		                    tabs::HANDLING,
-		                    {
-		                        "GUI_TAB_HANDLING",
-		                        view::handling_current_profile,
+		                    TAB_DECL(HANDLING),
+								view::handling_current_profile,
 		                        {
-		                            {tabs::HANDLING_CURRENT_PROFILE, {"GUI_TAB_HANDLING_CURRENT_PROFILE", view::handling_current_profile}},
-		                            {tabs::HANDLING_SAVED_PROFILE, {"GUI_TAB_HANDLING_SAVED_PROFILES", view::handling_saved_profiles}},
+		                            {TAB_DECL(HANDLING_CURRENT_PROFILE), view::handling_current_profile}},
+		                            {TAB_DECL(HANDLING_SAVED_PROFILE), view::handling_saved_profiles}},
 		                        },
 		                    },
 		                },
-		                {tabs::LSC, {"GUI_TAB_LSC", view::lsc}},
-		                {tabs::SPAWN_VEHICLE, {"GUI_TAB_SPAWN_VEHICLE", view::spawn_vehicle}},
-		                {tabs::PV, {"GUI_TAB_PERSONAL_VEHICLE", view::pv}},
-		                {tabs::PERSIST_CAR, {"GUI_TAB_PERSIST_CAR", view::persist_car}},
-		                {tabs::FUN_VEHICLE, {"GUI_TAB_VEHICLE_FUN_FEATURES", view::fun_vehicle}},
+						{TAB_DECL(LSC), view::lsc}},
+						{TAB_DECL(SPAWN_VEHICLE), view::spawn_vehicle}},
+						{TAB_DECL(FUN_VEHICLE), view::fun_vehicle}},
 		            },
 		        },
 		    },
 		    {
-		        tabs::WORLD,
-		        {
-		            "GUI_TAB_WORLD",
-		            nullptr,
+				TAB_DECL(WORLD),
+		            view::world,
 		            {
-		                {tabs::SPAWN_PED, {"GUI_TAB_SPAWN_PED", view::spawn_ped}},
-		                {tabs::TIME_AND_WEATHER, {"GUI_TAB_TIME_N_WEATHER", view::time_and_weather}},
-		                {tabs::CREATOR, {"GUI_TAB_CREATOR", view::creator}},
-		                {tabs::TRAIN, {"GUI_TAB_TRAIN", view::train}},
-		                {tabs::WATER, {"GUI_TAB_WATER", view::water}},
-		                {tabs::BLACKHOLE, {"GUI_TAB_BLACKHOLE", view::blackhole}},
-		                {tabs::MODEL_SWAPPER, {"GUI_TAB_MODEL_SWAPPER", view::model_swapper}},
-		                {tabs::NEARBY, {"GUI_TAB_NEARBY", view::nearby}},
-		                {tabs::ORBITAL_DRONE, {"Orbital Drone", view::orbital_drone}},
+						{TAB_DECL(SPAWN_PED), view::spawn_ped}},
+						{TAB_DECL(SQUAD_SPAWNER), view::squad_spawner}},
+						{TAB_DECL(CREATOR), view::creator}},
+						{TAB_DECL(TRAIN), view::train}},
+						{TAB_DECL(BLACKHOLE), view::blackhole}},
+						{TAB_DECL(MODEL_SWAPPER), view::model_swapper}},
+						{TAB_DECL(VFX), view::vfx}},
+						{TAB_DECL(XML_MAPS), view::xml_maps}},
 		            },
 		        },
 		    },
 		    {
-		        tabs::NETWORK,
-		        {
-		            "GUI_TAB_NETWORK",
-		            nullptr,
+		        TAB_DECL(NETWORK),
+		            view::network,
 		            {
-		                {tabs::SPOOFING, {"GUI_TAB_SPOOFING", view::spoofing}},
-		                {tabs::SESSION, {"GUI_TAB_SESSION", view::session}},
-		                {tabs::MISSIONS, {"GUI_TAB_MISSIONS", view::missions}},
-		                {tabs::PLAYER_DATABASE, {"GUI_TAB_PLAYER_DB", view::player_database}},
-		                {tabs::SESSION_BROWSER, {"GUI_TAB_SESSION_BROWSER", view::session_browser}},
+						{TAB_DECL(SPOOFING), view::spoofing}},
+						{TAB_DECL(MISSIONS), view::missions}},
+						{TAB_DECL(PLAYER_DATABASE), view::player_database}},
+						{TAB_DECL(SESSION_BROWSER), view::session_browser}},
+						{TAB_DECL(STAT_EDITOR), view::stat_editor}},
 		            },
 		        },
 		    },
 		    {
-		        tabs::SETTINGS,
-		        {
-		            "GUI_TAB_SETTINGS",
+		        TAB_DECL(SETTINGS),
 		            view::settings,
 		            {
-		                {tabs::OUTFIT_EDITOR, {"GUI_TAB_OUTFIT_EDITOR", view::outfit_editor}},
-		                {tabs::OUTFIT_SLOTS, {"GUI_TAB_OUTFIT_SLOTS", view::outfit_slots}},
-		                {tabs::STAT_EDITOR, {"GUI_TAB_STAT_EDITOR", view::stat_editor}},
-		                {tabs::CONTEXT_MENU_SETTINGS, {"GUI_TAB_CONTEXT_MENU", view::context_menu_settings}},
-		                {tabs::ESP_SETTINGS, {"GUI_TAB_ESP", view::esp_settings}},
-		                {tabs::GUI_SETTINGS, {"GUI_TAB_GUI", view::gui_settings}},
-		                {tabs::HOTKEY_SETTINGS, {"GUI_TAB_HOTKEYS", view::hotkey_settings}},
-		                {tabs::REACTION_SETTINGS, {"GUI_TAB_REACTIONS", view::reaction_settings}},
-		                {tabs::PROTECTION_SETTINGS, {"GUI_TAB_PROTECTION", view::protection_settings}},
-		                {tabs::TRANSLATION_SETTINGS, {"GUI_TAB_TRANSLATION", view::translation_settings}},
-		                {tabs::DEBUG, {"GUI_TAB_DEBUG", nullptr}},
+						{TAB_DECL(LUA_SCRIPTS), view::lua_scripts}},
+						{TAB_DECL(ESP_SETTINGS), view::esp_settings}},
+						{TAB_DECL(GTA_CACHE_SETTINGS), view::gta_cache}},
+						{TAB_DECL(GUI_SETTINGS), view::gui_settings}},
+						{TAB_DECL(HOTKEY_SETTINGS), view::hotkey_settings}},
+						{TAB_DECL(REACTION_SETTINGS), view::reaction_settings}},
+						{TAB_DECL(PROTECTION_SETTINGS), view::protection_settings}},
+						{TAB_DECL(PROXY_SETTINGS), view::proxy_settings}},
+						{TAB_DECL(DEBUG), nullptr}},
 		            },
 		        },
 		    },
@@ -165,6 +168,9 @@ namespace big
 		        {"", view::view_player},
 		    },
 		};
+		// clang-format on
+
+		void remove_from_nav_internal(std::map<big::tabs, big::navigation_struct>& nav, big::tabs existing_tab_id);
 
 	public:
 		gui_service();
@@ -180,6 +186,7 @@ namespace big
 		void increment_nav_size();
 		void reset_nav_size();
 		std::map<tabs, navigation_struct>& get_navigation();
+		void remove_from_nav(tabs existing_tab_id);
 	};
 
 	inline gui_service* g_gui_service{};

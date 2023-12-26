@@ -136,7 +136,7 @@ namespace big
 
 	const char* get_level_string(const eLogLevel level)
 	{
-		constexpr std::array<const char*, 4> levelStrings = {{{"DEBUG"}, {"INFO"}, {"WARN"}, {"ERROR"}}};
+		constexpr std::array<const char*, 4> levelStrings = {{{"DEBUG"}, {"INFO"}, {"WARN"}, {"FATAL"}}};
 
 		return levelStrings[level];
 	}

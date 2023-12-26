@@ -1,11 +1,12 @@
 #include "context_menu_service.hpp"
 
-#include "gta/replay.hpp"
+#include "fiber_pool.hpp"
 #include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "util/misc.hpp"
-#include "fiber_pool.hpp"
+
+#include <network/ChatData.hpp>
 
 namespace big
 {
@@ -30,7 +31,11 @@ namespace big
 		MISC::GET_MODEL_DIMENSIONS(hash, &min, &max);
 		const auto dimensions = (max - min) * 0.5f;
 
-		const auto& position = *m_pointer->m_navigation->get_position();
+		// sanity check
+		if (!m_pointer || !m_pointer->m_navigation)
+			return;
+		// make copy just in case
+		const auto position = *m_pointer->m_navigation->get_position();
 
 		rage::fvector3 front_upper_right, back_lower_left;
 		front_upper_right.x = position.x + dimensions.y * forward.x + dimensions.x * right.x + dimensions.z * up.x;
@@ -85,8 +90,8 @@ namespace big
 			    &screen_result.y);
 			if (success)
 			{
-				screen_result.x = static_cast<float>(*g_pointers->m_resolution_x) * screen_result.x;
-				screen_result.y = static_cast<float>(*g_pointers->m_resolution_y) * screen_result.y;
+				screen_result.x = static_cast<float>(*g_pointers->m_gta.m_resolution_x) * screen_result.x;
+				screen_result.y = static_cast<float>(*g_pointers->m_gta.m_resolution_y) * screen_result.y;
 			}
 			else
 			{
@@ -113,19 +118,19 @@ namespace big
 
 	double context_menu_service::distance_to_middle_of_screen(const rage::fvector2& screen_pos)
 	{
-		double cumulative_distance{};
+		double cum_dist{};
 
 		if (screen_pos.x > 0.5)
-			cumulative_distance += screen_pos.x - 0.5;
+			cum_dist += screen_pos.x - 0.5;
 		else
-			cumulative_distance += 0.5 - screen_pos.x;
+			cum_dist += 0.5 - screen_pos.x;
 
 		if (screen_pos.y > 0.5)
-			cumulative_distance += screen_pos.y - 0.5;
+			cum_dist += screen_pos.y - 0.5;
 		else
-			cumulative_distance += 0.5 - screen_pos.y;
+			cum_dist += 0.5 - screen_pos.y;
 
-		return cumulative_distance;
+		return cum_dist;
 	}
 
 	s_context_menu* context_menu_service::get_context_menu()
@@ -142,6 +147,7 @@ namespace big
 				}
 				return &options.at(ContextEntityType::OBJECT);
 			}
+			case eModelType::OnlineOnlyPed:
 			case eModelType::Ped:
 			{
 				if (const auto ped = reinterpret_cast<CPed*>(m_pointer); ped)
@@ -191,61 +197,9 @@ namespace big
 
 	void context_menu_service::get_entity_closest_to_screen_center()
 	{
-		m_pointer = nullptr;
-		if (const auto replay = *g_pointers->m_replay_interface; replay)
-		{
-			const auto veh_interface = replay->m_vehicle_interface;
-			const auto ped_interface = replay->m_ped_interface;
-			const auto obj_interface = replay->m_object_interface;
-
-			if (veh_interface && ped_interface && obj_interface)
-			{
-				const auto veh_interface_size = veh_interface->m_max_vehicles;
-				const auto ped_interface_size = ped_interface->m_max_peds;
-				const auto obj_interface_size = obj_interface->m_max_objects;
-				const auto all_entities = std::make_unique<rage::CEntityHandle[]>(veh_interface_size + ped_interface_size + obj_interface_size);
-
-				const auto ptr       = all_entities.get();
-				std::uint32_t offset = 0;
-				std::copy(ped_interface->m_ped_list->m_peds, ped_interface->m_ped_list->m_peds + ped_interface_size, ptr);
-				offset += ped_interface_size;
-
-				std::copy(veh_interface->m_vehicle_list->m_vehicles, veh_interface->m_vehicle_list->m_vehicles + veh_interface_size, ptr + offset);
-				offset += veh_interface_size;
-
-				std::copy(obj_interface->m_object_list->m_objects, obj_interface->m_object_list->m_objects + obj_interface_size, ptr + offset);
-				offset += obj_interface_size;
-
-				double distance    = 1;
-				bool got_an_entity = false;
-				rage::fvector2 screen_pos{};
-				for (std::uint32_t i = 0; i < offset; i++)
-				{
-					if (!all_entities[i].m_entity_ptr)
-						continue;
-
-					const auto temp_pointer = all_entities[i].m_entity_ptr;
-					const auto temp_handle  = g_pointers->m_ptr_to_handle(temp_pointer);
-					if (!temp_pointer->m_navigation)
-						continue;
-
-					const auto pos = *temp_pointer->m_navigation->get_position();
-					HUD::GET_HUD_SCREEN_POSITION_FROM_WORLD_POSITION(pos.x, pos.y, pos.z, &screen_pos.x, &screen_pos.y);
-					if (distance_to_middle_of_screen(screen_pos) < distance && ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(PLAYER::PLAYER_PED_ID(), temp_handle, 17) && temp_handle != PLAYER::PLAYER_PED_ID())
-					{
-						m_handle      = temp_handle;
-						m_pointer     = temp_pointer;
-						distance      = distance_to_middle_of_screen(screen_pos);
-						got_an_entity = true;
-					}
-				}
-
-				if (got_an_entity)
-				{
-					fill_model_bounding_box_screen_space();
-				}
-			}
-		}
+		m_handle = entity::get_entity_closest_to_middle_of_screen(&m_pointer);
+		if (ENTITY::DOES_ENTITY_EXIST(m_handle) && m_pointer)
+			fill_model_bounding_box_screen_space();
 	}
 
 	void context_menu_service::load_shared()
@@ -258,7 +212,7 @@ namespace big
 			    options.at(ContextEntityType::SHARED).options.begin(),
 			    options.at(ContextEntityType::SHARED).options.end());
 
-			std::uint32_t max_size = 0;
+			uint32_t max_size = 0;
 			for (auto& [name, _] : menu.options)
 			{
 				max_size = static_cast<int>(max_size < name.length() ? name.length() : max_size);
@@ -275,11 +229,11 @@ namespace big
 	    ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON,
 	    ControllerInputs::INPUT_SELECT_NEXT_WEAPON,
 	    ControllerInputs::INPUT_SELECT_PREV_WEAPON,
-	    ControllerInputs::INPUT_WEAPON_WHEEL_NEXT,
-	    ControllerInputs::INPUT_WEAPON_WHEEL_PREV,
 	    ControllerInputs::INPUT_ATTACK,
+	    ControllerInputs::INPUT_ATTACK2,
 	    ControllerInputs::INPUT_SPECIAL_ABILITY,
 	    ControllerInputs::INPUT_VEH_MOUSE_CONTROL_OVERRIDE,
+	    ControllerInputs::INPUT_SNIPER_ZOOM,
 	};
 
 	void context_menu_service::disable_control_action_loop()
@@ -295,6 +249,13 @@ namespace big
 	{
 		while (g_running)
 		{
+			if (g_gui->is_open() || HUD::IS_PAUSE_MENU_ACTIVE()
+			    || (*g_pointers->m_gta.m_chat_data && (*g_pointers->m_gta.m_chat_data)->m_chat_open) || g.cmd_executor.enabled)
+			{
+				script::get_current()->yield();
+				continue;
+			}
+
 			if (!g.context_menu.enabled)
 			{
 				g_context_menu_service->enabled = false;
@@ -303,15 +264,19 @@ namespace big
 				continue;
 			}
 
-			if (g_gui->is_open())
+			if (PAD::IS_USING_KEYBOARD_AND_MOUSE(0))
 			{
-				script::get_current()->yield();
-				continue;
+				if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
+				{
+					g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				}
 			}
-
-			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_VEH_DUCK))
+			else
 			{
-				g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM) && PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_FRONTEND_Y))
+				{
+					g_context_menu_service->enabled = !g_context_menu_service->enabled;
+				}
 			}
 
 			if (g_context_menu_service->enabled)
@@ -326,25 +291,31 @@ namespace big
 					script::get_current()->yield();
 					continue;
 				}
-				else
+
+				ControllerInputs next_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_WEAPON_WHEEL_NEXT : ControllerInputs::INPUT_SCRIPT_PAD_DOWN;
+				ControllerInputs prev_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_WEAPON_WHEEL_PREV : ControllerInputs::INPUT_SCRIPT_PAD_UP;
+				ControllerInputs execute_key = PAD::IS_USING_KEYBOARD_AND_MOUSE(0) ? ControllerInputs::INPUT_ATTACK : ControllerInputs::INPUT_FRONTEND_ACCEPT;
+
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(next_key), true);
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(prev_key), true);
+				PAD::DISABLE_CONTROL_ACTION(0, static_cast<int>(execute_key), true);
+
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)next_key))
+					cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)prev_key))
+					cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
+
+				if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)execute_key))
 				{
-					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_NEXT))
-						cm->current_option = cm->options.size() <= cm->current_option + 1 ? 0 : cm->current_option + 1;
-					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_WEAPON_WHEEL_PREV))
-						cm->current_option = 0 > cm->current_option - 1 ? static_cast<int>(cm->options.size()) - 1 : cm->current_option - 1;
-
-					if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, (int)ControllerInputs::INPUT_SPECIAL_ABILITY))
+					if (!g_context_menu_service->m_pointer)
 					{
-						if (!g_context_menu_service->m_pointer)
-						{
-							continue;
-						}
-
-						g_fiber_pool->queue_job([cm] {
-							cm->options.at(cm->current_option).command();
-						});
-						
+						script::get_current()->yield();
+						continue;
 					}
+
+					g_fiber_pool->queue_job([cm] {
+						cm->options.at(cm->current_option).command();
+					});
 				}
 			}
 

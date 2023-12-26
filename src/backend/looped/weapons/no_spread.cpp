@@ -21,14 +21,18 @@ namespace big
 			auto* const weapon_mgr = g_local_player->m_weapon_manager;
 			if (weapon_mgr)
 			{
-				if (p_modified_weapon != weapon_mgr->m_weapon_info && weapon_mgr->m_weapon_info)
+				if (p_modified_weapon != weapon_mgr->m_weapon_info)
 				{
 					if (p_modified_weapon)
 						p_modified_weapon->m_accuracy_spread = og_spread_value;
 
-					og_spread_value                              = weapon_mgr->m_weapon_info->m_accuracy_spread;
-					p_modified_weapon                            = weapon_mgr->m_weapon_info;
-					weapon_mgr->m_weapon_info->m_accuracy_spread = 0.0f;
+					p_modified_weapon = weapon_mgr->m_weapon_info;
+
+					if (weapon_mgr->m_weapon_info)
+					{
+						og_spread_value                              = weapon_mgr->m_weapon_info->m_accuracy_spread;
+						weapon_mgr->m_weapon_info->m_accuracy_spread = 0.0f;
+					}
 				}
 			}
 		}
@@ -43,5 +47,5 @@ namespace big
 		}
 	};
 
-	no_spread g_no_spread("nospread", "No Spread", "Removes weapon spread when shooting", g.weapons.no_spread);
+	no_spread g_no_spread("nospread", "BACKEND_LOOPED_WEAPONS_NO_SPREAD", "BACKEND_LOOPED_WEAPONS_NO_SPREAD_DESC", g.weapons.no_spread);
 }

@@ -8,11 +8,11 @@ namespace big
 	{
 		using command::command;
 
-		virtual void execute(const std::vector<std::uint64_t>&, const std::shared_ptr<command_context> ctx)
+		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			teleport::to_waypoint();
 		}
 	};
 
-	teleport_to_waypoint g_teleport_to_waypoint("waypointtp", "Teleport To Waypoint", "Teleports you to your waypoint", 0);
+	teleport_to_waypoint g_teleport_to_waypoint("waypointtp", "VIEW_HOTKEY_SETTINGS_TELEPORT_TO_WAYPOINT", "BACKEND_TELEPORT_TO_WAYPOINT_DESC", 0);
 }

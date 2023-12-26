@@ -9,6 +9,7 @@ namespace big
 		stack_trace();
 		virtual ~stack_trace();
 
+		const std::vector<uint64_t>& frame_pointers();
 		void new_stack_trace(EXCEPTION_POINTERS* exception_info);
 		std::string str() const;
 
@@ -38,6 +39,7 @@ namespace big
 		void dump_registers();
 		void dump_stacktrace();
 		void dump_script_info();
+		void dump_cpp_exception();
 		void grab_stacktrace();
 		const module_info* get_module_by_address(uint64_t addr) const;
 
