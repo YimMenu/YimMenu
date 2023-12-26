@@ -14,7 +14,6 @@ include(scripts/async-logger.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
-include(scripts/zydis.cmake)
 
 message("\nFetching custom modules")
 include(scripts/imgui.cmake)
@@ -43,10 +42,11 @@ target_include_directories(YimMenu PRIVATE
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
+    "${minhook_SOURCE_DIR}/src/hde"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
@@ -56,3 +56,13 @@ add_compile_definitions(YimMenu
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"
 )
+
+# Optimizations
+if(MSVC)
+  set(CMAKE_MODULE_LINKER_FLAGS
+      "${CMAKE_MODULE_LINKER_FLAGS} /pdbaltpath:YimMenu.pdb /LTCG /OPT:REF,ICF /GUARD:NO")
+
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Ox /Oi /Ot /Oy /Ob3 /GR- /sdl- /GL /GF /GS- /Gw")
+  string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+endif()
