@@ -144,7 +144,7 @@ namespace lua::native
 	static std::tuple<bool, int, bool> LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_GET_SESSION_STATE_AND_STATUS(int p0, bool p1)
 	{
 		std::tuple<bool, int, bool> return_values;
-		std::get<0>(return_values) = (bool)NETSHOPPING::NET_GAMESERVER_GET_SESSION_STATE_AND_STATUS(&p0, &p1);
+		std::get<0>(return_values) = (bool)NETSHOPPING::NET_GAMESERVER_GET_SESSION_STATE_AND_STATUS(&p0, (BOOL*)&p1);
 		std::get<1>(return_values) = p0;
 		std::get<2>(return_values) = p1;
 

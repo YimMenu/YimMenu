@@ -144,7 +144,7 @@ namespace lua::native
 	static std::tuple<bool, bool> LUA_NATIVE_DATAFILE_DATAFILE_UPDATE_SAVE_TO_CLOUD(bool p0)
 	{
 		std::tuple<bool, bool> return_values;
-		std::get<0>(return_values) = (bool)DATAFILE::DATAFILE_UPDATE_SAVE_TO_CLOUD(&p0);
+		std::get<0>(return_values) = (bool)DATAFILE::DATAFILE_UPDATE_SAVE_TO_CLOUD((BOOL*)&p0);
 		std::get<1>(return_values) = p0;
 
 		return return_values;

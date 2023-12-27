@@ -54,7 +54,7 @@ namespace lua::native
 	static std::tuple<bool, bool> LUA_NATIVE_DLC_HAS_CLOUD_REQUESTS_FINISHED(bool p0, int unused)
 	{
 		std::tuple<bool, bool> return_values;
-		std::get<0>(return_values) = (bool)DLC::HAS_CLOUD_REQUESTS_FINISHED(&p0, unused);
+		std::get<0>(return_values) = (bool)DLC::HAS_CLOUD_REQUESTS_FINISHED((BOOL*)&p0, unused);
 		std::get<1>(return_values) = p0;
 
 		return return_values;

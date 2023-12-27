@@ -2600,7 +2600,7 @@ namespace lua::native
 	static std::tuple<bool, bool> LUA_NATIVE_HUD_GET_MENU_PED_BOOL_STAT(Hash statHash, bool outValue)
 	{
 		std::tuple<bool, bool> return_values;
-		std::get<0>(return_values) = (bool)HUD::GET_MENU_PED_BOOL_STAT(statHash, &outValue);
+		std::get<0>(return_values) = (bool)HUD::GET_MENU_PED_BOOL_STAT(statHash, (BOOL*)&outValue);
 		std::get<1>(return_values) = outValue;
 
 		return return_values;

@@ -3944,7 +3944,7 @@ namespace lua::native
 	static std::tuple<bool, bool> LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(Hash contextHash, Hash nameHash, bool value)
 	{
 		std::tuple<bool, bool> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(contextHash, nameHash, &value);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(contextHash, nameHash, (BOOL*)&value);
 		std::get<1>(return_values) = value;
 
 		return return_values;

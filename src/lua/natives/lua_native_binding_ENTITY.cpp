@@ -833,7 +833,7 @@ namespace lua::native
 	static std::tuple<bool, bool, bool, bool, bool, bool, bool, bool, bool> LUA_NATIVE_ENTITY_GET_ENTITY_PROOFS(Entity entity, bool bulletProof, bool fireProof, bool explosionProof, bool collisionProof, bool meleeProof, bool steamProof, bool p7, bool drownProof)
 	{
 		std::tuple<bool, bool, bool, bool, bool, bool, bool, bool, bool> return_values;
-		std::get<0>(return_values) = (bool)ENTITY::GET_ENTITY_PROOFS(entity, &bulletProof, &fireProof, &explosionProof, &collisionProof, &meleeProof, &steamProof, &p7, &drownProof);
+		std::get<0>(return_values) = (bool)ENTITY::GET_ENTITY_PROOFS(entity, (BOOL*)&bulletProof, (BOOL*)&fireProof, (BOOL*)&explosionProof, (BOOL*)&collisionProof, (BOOL*)&meleeProof, (BOOL*)&steamProof, (BOOL*)&p7, (BOOL*)&drownProof);
 		std::get<1>(return_values) = bulletProof;
 		std::get<2>(return_values) = fireProof;
 		std::get<3>(return_values) = explosionProof;

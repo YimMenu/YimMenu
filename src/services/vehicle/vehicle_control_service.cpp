@@ -63,7 +63,7 @@ namespace big
 
 	void update_controlled_vehicle_lights(controlled_vehicle& veh)
 	{
-		VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh.handle, &veh.headlights, &veh.highbeams);
+		VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh.handle, (BOOL*)&veh.headlights, (BOOL*)&veh.highbeams);
 
 		for (int i = 0; i < 4; i++)
 			veh.neons[i] = VEHICLE::GET_VEHICLE_NEON_ENABLED(veh.handle, i);

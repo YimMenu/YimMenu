@@ -120,7 +120,7 @@ class NativeFunc:
             for arg in self.args:
                 if arg.is_pointer_arg:
                     if arg.type_ == "bool*":
-                        call_native += ""
+                        call_native += "(BOOL*)"
                     call_native += "&"
 
                 call_native += arg.name + ", "
