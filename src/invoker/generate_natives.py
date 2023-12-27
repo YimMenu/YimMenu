@@ -8,7 +8,7 @@ crossmap_hash_list = []
 class Arg:
     def __init__(self, name: str, type: str):
         self.name = name
-        self.type = type.replace("BOOL", "bool")# .replace("Any*", "void*")
+        self.type = type#.replace("BOOL", "bool")# .replace("Any*", "void*")
 
     def __str__(self) -> str:
         return str(self.type) + " " + str(self.name)
@@ -19,7 +19,7 @@ class NativeFunc:
         self.name = name
         self.hash = hash
         self.args: list[Arg] = []
-        self.return_type = return_type.replace("BOOL", "bool")# .replace("Any*", "void*")
+        self.return_type = return_type#.replace("BOOL", "bool")# .replace("Any*", "void*")
         self.native_index = -1
         self.fix_vectors = "false"
 
