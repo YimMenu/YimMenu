@@ -7,7 +7,7 @@
 #include "script.hpp"
 #include "services/players/player_service.hpp"
 #include "fiber_pool.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 
 #include <script/HudColor.hpp>
 

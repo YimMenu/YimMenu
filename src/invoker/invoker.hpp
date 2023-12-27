@@ -1,16 +1,15 @@
 #pragma once
-#include "Crossmap.hpp"
-#include "game/pointers/Pointers.hpp"
+#include "crossmap.hpp"
 
 #include <script/scrNativeHandler.hpp>
 #include <script/types.hpp>
 
 namespace big
 {
-	class CustomCallContext : public rage::scrNativeCallContext
+	class custom_call_context : public rage::scrNativeCallContext
 	{
 	public:
-		constexpr CustomCallContext()
+		constexpr custom_call_context()
 		{
 			m_return_value = &m_return_stack[0];
 			m_args         = &m_arg_stack[0];
@@ -21,61 +20,71 @@ namespace big
 		uint64_t m_arg_stack[40];
 	};
 
-	class NativeInvoker
+	class native_invoker
 	{
-		static inline rage::scrNativeHandler m_Handlers[g_Crossmap.size()];
-		static inline bool m_AreHandlersCached{false};
+		static inline rage::scrNativeHandler m_handlers[g_crossmap.size()];
+		static inline bool m_are_handlers_cached{false};
 
 	public:
-		constexpr NativeInvoker(){};
+		constexpr native_invoker(){};
 
-		constexpr void BeginCall()
+		constexpr void begin_call()
 		{
-			m_CallContext.reset();
+			m_call_context.reset();
 		}
 
 		template<int index, bool fix_vectors>
-		constexpr void EndCall()
+		constexpr void end_call()
 		{
 			// TODO: try to get rid of this
-			if (!m_AreHandlersCached)
-				CacheHandlers();
+			if (!m_are_handlers_cached)
+				cache_handlers();
 
-			m_Handlers[index](&m_CallContext);
+			m_handlers[index](&m_call_context);
 			if constexpr (fix_vectors)
-				Pointers.FixVectors(&m_CallContext);
+				this->fix_vectors();
 		}
 
 		template<typename T>
-		constexpr void PushArg(T&& value)
+		constexpr void push_arg(T&& value)
 		{
-			m_CallContext.push_arg(std::forward<T>(value));
+			m_call_context.push_arg(std::forward<T>(value));
 		}
 
 		template<typename T>
-		constexpr T& GetReturnValue()
+		constexpr T& get_return_value()
 		{
-			return *m_CallContext.get_return_value<T>();
+			return *m_call_context.get_return_value<T>();
 		}
+
+		void fix_vectors();
 
 	public:
-		static void CacheHandlers();
+		static void __declspec(noinline) cache_handlers();
 
-		template<int index, typename Ret, typename... Args>
-		static constexpr FORCEINLINE Ret Invoke(Args&&... args)
+		static rage::scrNativeHandler* get_handlers()
 		{
-			NativeInvoker invoker{};
+			if (!m_are_handlers_cached)
+				cache_handlers();
 
-			invoker.BeginCall();
-			(invoker.PushArg(std::forward<Args>(args)), ...);
-			invoker.EndCall<index, std::is_same_v<Ret, Vector3>>();
+			return m_handlers;
+		}
+
+		template<int index, bool fix_vectors, typename Ret, typename... Args>
+		static constexpr FORCEINLINE Ret invoke(Args&&... args)
+		{
+			native_invoker invoker{};
+
+			invoker.begin_call();
+			(invoker.push_arg(std::forward<Args>(args)), ...);
+			invoker.end_call<index, fix_vectors>();
 
 			if constexpr (!std::is_same_v<Ret, void>)
 			{
-				return invoker.GetReturnValue<Ret>();
+				return invoker.get_return_value<Ret>();
 			}
 		}
 
-		CustomCallContext m_CallContext{};
+		custom_call_context m_call_context{};
 	};
 }

@@ -109,7 +109,7 @@ namespace lua::native
 	static std::tuple<bool, float> LUA_NATIVE_OBJECT_GET_STATE_OF_CLOSEST_DOOR_OF_TYPE(Hash type, float x, float y, float z, bool locked, float heading)
 	{
 		std::tuple<bool, float> return_values;
-		OBJECT::GET_STATE_OF_CLOSEST_DOOR_OF_TYPE(type, x, y, z, (BOOL*)&locked, &heading);
+		OBJECT::GET_STATE_OF_CLOSEST_DOOR_OF_TYPE(type, x, y, z, &locked, &heading);
 		std::get<0>(return_values) = locked;
 		std::get<1>(return_values) = heading;
 

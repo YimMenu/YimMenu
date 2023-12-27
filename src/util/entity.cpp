@@ -68,7 +68,7 @@ namespace big::entity
 
 	bool raycast(Entity* ent)
 	{
-		BOOL hit;
+		bool hit;
 		Vector3 endCoords;
 		Vector3 surfaceNormal;
 
@@ -98,7 +98,7 @@ namespace big::entity
 	bool raycast(Vector3* endcoor)
 	{
 		Entity ent;
-		BOOL hit;
+		bool hit;
 		Vector3 surfaceNormal;
 
 		Vector3 camCoords = CAM::GET_GAMEPLAY_CAM_COORD();

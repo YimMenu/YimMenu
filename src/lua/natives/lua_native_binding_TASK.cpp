@@ -241,7 +241,7 @@ namespace lua::native
 	static std::tuple<int, float, bool> LUA_NATIVE_TASK_GET_NAVMESH_ROUTE_DISTANCE_REMAINING(Ped ped, float distanceRemaining, bool isPathReady)
 	{
 		std::tuple<int, float, bool> return_values;
-		std::get<0>(return_values) = TASK::GET_NAVMESH_ROUTE_DISTANCE_REMAINING(ped, &distanceRemaining, (BOOL*)&isPathReady);
+		std::get<0>(return_values) = TASK::GET_NAVMESH_ROUTE_DISTANCE_REMAINING(ped, &distanceRemaining, &isPathReady);
 		std::get<1>(return_values) = distanceRemaining;
 		std::get<2>(return_values) = isPathReady;
 

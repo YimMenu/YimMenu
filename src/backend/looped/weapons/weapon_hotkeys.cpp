@@ -30,7 +30,7 @@ namespace big
 		}
 
 		Hash current_weapon, current_vehicle_weapon;
-		WEAPON::GET_CURRENT_PED_WEAPON(player_ped, &current_weapon, -1);
+		WEAPON::GET_CURRENT_PED_WEAPON(player_ped, &current_weapon, false);
 		WEAPON::GET_CURRENT_PED_VEHICLE_WEAPON(player_ped, &current_vehicle_weapon);
 		for (int iterator_keys = 0; iterator_keys < 6; iterator_keys++)
 		{

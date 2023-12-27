@@ -748,7 +748,7 @@ namespace lua::native
 	static std::tuple<bool, Vector3, float, bool, bool> LUA_NATIVE_MISC_GET_SAVE_HOUSE_DETAILS_AFTER_SUCCESSFUL_LOAD(Vector3 p0, float p1, bool fadeInAfterLoad, bool p3)
 	{
 		std::tuple<bool, Vector3, float, bool, bool> return_values;
-		std::get<0>(return_values) = (bool)MISC::GET_SAVE_HOUSE_DETAILS_AFTER_SUCCESSFUL_LOAD(&p0, &p1, (BOOL*)&fadeInAfterLoad, (BOOL*)&p3);
+		std::get<0>(return_values) = (bool)MISC::GET_SAVE_HOUSE_DETAILS_AFTER_SUCCESSFUL_LOAD(&p0, &p1, &fadeInAfterLoad, &p3);
 		std::get<1>(return_values) = p0;
 		std::get<2>(return_values) = p1;
 		std::get<3>(return_values) = fadeInAfterLoad;

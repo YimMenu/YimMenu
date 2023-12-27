@@ -1,6 +1,6 @@
 #include "matchmaking_service.hpp"
 
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 

@@ -4,13 +4,14 @@
 #include "core/data/packet_types.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
+#include "gta/enums.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>

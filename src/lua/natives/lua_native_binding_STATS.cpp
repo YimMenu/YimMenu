@@ -197,7 +197,7 @@ namespace lua::native
 	static std::tuple<bool, bool> LUA_NATIVE_STATS_STAT_GET_BOOL(Hash statHash, bool outValue, Any p2)
 	{
 		std::tuple<bool, bool> return_values;
-		std::get<0>(return_values) = (bool)STATS::STAT_GET_BOOL(statHash, (BOOL*)&outValue, p2);
+		std::get<0>(return_values) = (bool)STATS::STAT_GET_BOOL(statHash, &outValue, p2);
 		std::get<1>(return_values) = outValue;
 
 		return return_values;

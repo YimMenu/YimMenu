@@ -40,7 +40,7 @@ namespace big::math
 
 	inline Vector3 raycast_coords(Vector3 coord, Vector3 rot, Entity ignore)
 	{
-		BOOL hit;
+		bool hit;
 		Vector3 end_coords;
 		Vector3 surface_normal;
 		Entity hit_entity;

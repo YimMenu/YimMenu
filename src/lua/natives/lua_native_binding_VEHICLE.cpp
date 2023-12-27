@@ -553,7 +553,7 @@ namespace lua::native
 	static std::tuple<bool, bool, bool> LUA_NATIVE_VEHICLE_GET_VEHICLE_LIGHTS_STATE(Vehicle vehicle, bool lightsOn, bool highbeamsOn)
 	{
 		std::tuple<bool, bool, bool> return_values;
-		std::get<0>(return_values) = (bool)VEHICLE::GET_VEHICLE_LIGHTS_STATE(vehicle, (BOOL*)&lightsOn, (BOOL*)&highbeamsOn);
+		std::get<0>(return_values) = (bool)VEHICLE::GET_VEHICLE_LIGHTS_STATE(vehicle, &lightsOn, &highbeamsOn);
 		std::get<1>(return_values) = lightsOn;
 		std::get<2>(return_values) = highbeamsOn;
 

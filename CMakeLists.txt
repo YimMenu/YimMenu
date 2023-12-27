@@ -14,7 +14,6 @@ include(scripts/async-logger.cmake)
 include(scripts/pugixml.cmake)
 include(scripts/json.cmake)
 include(scripts/cpr.cmake)
-include(scripts/zydis.cmake)
 include(scripts/lua.cmake)
 include(scripts/imgui.cmake)
 message("\nFetching custom modules")
@@ -33,7 +32,7 @@ file(GLOB_RECURSE SRC_MAIN
 )
 
 if (MSVC)
-  add_compile_options(/bigobj)
+  #add_compile_options(/bigobj)
   add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
   add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 else ()
@@ -56,7 +55,7 @@ target_include_directories(YimMenu PRIVATE
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr Zydis lua_static)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
@@ -70,9 +69,9 @@ add_compile_definitions(YimMenu
 # Optimizations
 if(MSVC)
   set(CMAKE_MODULE_LINKER_FLAGS
-      "${CMAKE_MODULE_LINKER_FLAGS} /pdbaltpath:YimMenu.pdb /LTCG /OPT:REF,ICF /GUARD:NO")
+      "${CMAKE_MODULE_LINKER_FLAGS} /LTCG /OPT:REF,ICF /GUARD:NO")
 
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Ox /Oi /Ot /Oy /Ob3 /GR- /sdl- /GL /GF /GS- /Gw")
+      "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Ox /Oi /Ot /Oy /Ob3 /sdl- /GL /GF /GS- /Gw")
   string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 endif()

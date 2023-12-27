@@ -58,7 +58,7 @@ namespace lua::native
 	static std::tuple<int, bool, Vector3, Vector3, Entity> LUA_NATIVE_SHAPETEST_GET_SHAPE_TEST_RESULT(int shapeTestHandle, bool hit, Vector3 endCoords, Vector3 surfaceNormal, Entity entityHit)
 	{
 		std::tuple<int, bool, Vector3, Vector3, Entity> return_values;
-		std::get<0>(return_values) = SHAPETEST::GET_SHAPE_TEST_RESULT(shapeTestHandle, (BOOL*)&hit, &endCoords, &surfaceNormal, &entityHit);
+		std::get<0>(return_values) = SHAPETEST::GET_SHAPE_TEST_RESULT(shapeTestHandle, &hit, &endCoords, &surfaceNormal, &entityHit);
 		std::get<1>(return_values) = hit;
 		std::get<2>(return_values) = endCoords;
 		std::get<3>(return_values) = surfaceNormal;
@@ -70,7 +70,7 @@ namespace lua::native
 	static std::tuple<int, bool, Vector3, Vector3, Hash, Entity> LUA_NATIVE_SHAPETEST_GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL(int shapeTestHandle, bool hit, Vector3 endCoords, Vector3 surfaceNormal, Hash materialHash, Entity entityHit)
 	{
 		std::tuple<int, bool, Vector3, Vector3, Hash, Entity> return_values;
-		std::get<0>(return_values) = SHAPETEST::GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL(shapeTestHandle, (BOOL*)&hit, &endCoords, &surfaceNormal, &materialHash, &entityHit);
+		std::get<0>(return_values) = SHAPETEST::GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL(shapeTestHandle, &hit, &endCoords, &surfaceNormal, &materialHash, &entityHit);
 		std::get<1>(return_values) = hit;
 		std::get<2>(return_values) = endCoords;
 		std::get<3>(return_values) = surfaceNormal;

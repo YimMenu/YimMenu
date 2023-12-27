@@ -8,7 +8,7 @@ crossmap_hash_list = []
 class Arg:
     def __init__(self, name: str, type: str):
         self.name = name
-        self.type = type.replace("BOOL", "bool").replace("Any*", "void*")
+        self.type = type.replace("BOOL", "bool")# .replace("Any*", "void*")
 
     def __str__(self) -> str:
         return str(self.type) + " " + str(self.name)
@@ -19,11 +19,14 @@ class NativeFunc:
         self.name = name
         self.hash = hash
         self.args: list[Arg] = []
-        self.return_type = return_type.replace("BOOL", "bool").replace("Any*", "void*")
+        self.return_type = return_type.replace("BOOL", "bool")# .replace("Any*", "void*")
         self.native_index = -1
+        self.fix_vectors = "false"
 
         for arg in args:
             self.args.append(Arg(arg["name"], arg["type"]))
+            if arg["type"] == "Vector3*":
+                self.fix_vectors = "true"
     
     def get_native_def_str(self) -> str:
         assert self.native_index != -1
@@ -37,7 +40,7 @@ class NativeFunc:
             param_decl = param_decl[:-2]
             param_pass = param_pass[:-2]
         
-        return f"FORCEINLINE constexpr {self.return_type} {self.name}({param_decl}) {{ return big::native_invoker::invoke<{self.native_index}, {self.return_type}>({param_pass}); }}"
+        return f"FORCEINLINE constexpr {self.return_type} {self.name}({param_decl}) {{ return big::native_invoker::invoke<{self.native_index}, {self.fix_vectors}, {self.return_type}>({param_pass}); }}"
 
 class CrossmapEntry:
     def __init__(self, translated_hash: int):
@@ -106,7 +109,7 @@ def write_natives_header():
 // clang-format off
 enum class NativeIndex
 {{
-{natives_index_buf}}}
+{natives_index_buf}}};
 
 {natives_buf}
 // clang-format on
