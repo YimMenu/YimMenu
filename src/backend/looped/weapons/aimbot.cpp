@@ -96,7 +96,8 @@ namespace big
 				{
 					camera_target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
 				}
-				//We actually need this. For some unknow reasons it gets entity or something there.
+				//  We actually need this. For some unknow reasons it gets entity or something there.
+				//  Then it will start leading to 0,0,0 coords.Aim will start pointing at 0,0,0 as well.
 				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
 					return;
 
