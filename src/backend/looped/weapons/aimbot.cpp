@@ -96,15 +96,16 @@ namespace big
 				{
 					camera_target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
 				}
+				//We actually need this. For some unknow reasons it gets entity or something there.
 				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
 					return;
-				//PEMDAS looks good
 
-				float camera_heading = atan2f(camera_target.x, camera_target.y) * 180.0f / std::numbers::pi;
+				float RADPI = 180.0f / std::numbers::pi;
+				float camera_heading = atan2f(camera_target.x, camera_target.y) * RADPI;
 				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
                     + camera_target.z * camera_target.z);
 
-				float camera_pitch = asinf(camera_target.z / magnitude) * 180.0f / std::numbers::pi;
+				float camera_pitch = asinf(camera_target.z / magnitude) * RADPI;
 				float self_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 				float self_pitch   = ENTITY::GET_ENTITY_PITCH(self::ped);
 				if (camera_heading >= 0.0f && camera_heading <= 180.0f)
@@ -115,7 +116,7 @@ namespace big
 				{
 					camera_heading = -camera_heading;
 				}
-				if (CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == 4)
+				if (CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() == CameraMode::FIRST_PERSON)
 				{
 					CAM::SET_FIRST_PERSON_SHOOTER_CAMERA_HEADING(camera_heading - self_heading);
 					CAM::SET_FIRST_PERSON_SHOOTER_CAMERA_PITCH(camera_pitch - self_pitch);
