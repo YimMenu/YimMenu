@@ -2,6 +2,7 @@
 
 namespace big
 {
+	// Get new values from gameconfig.xml
 	constexpr inline static const std::pair<const char*, int> stack_sizes[] = {
 	    {"MICRO", 128},
 	    {"MINI", 512},
@@ -10,26 +11,26 @@ namespace big
 	    {"FRIEND", 2050},
 	    {"SHOP", 2324},
 	    {"CELLPHONE", 2552},
-	    {"VEHICLE_SPAWN", 3568},
-	    {"CAR_MOD_SHOP", 3650},
+	    {"VEHICLE_SPAWN", 3868},
+	    {"CAR_MOD_SHOP", 3750},
 	    {"PAUSE_MENU_SCRIPT", 3076},
 	    {"APP_INTERNET", 4592},
 	    {"MULTIPLAYER_MISSION", 5050},
 	    {"CONTACTS_APP", 4000},
 	    {"INTERACTION_MENU", 9800},
-	    {"SCRIPT_XML", 8344},
+	    {"SCRIPT_XML", 8500},
 	    {"PROPERTY_INT", 19400},
 	    {"ACTIVITY_CREATOR_INT", 15900},
-	    {"SMPL_INTERIOR", 2512},
+	    {"SMPL_INTERIOR", 6500},
 	    {"WAREHOUSE", 14100},
 	    {"IE_DELIVERY", 2324},
 	    {"SHOP_CONTROLLER", 3800},
 	    {"AM_MP_YACHT", 5000},
 	    {"INGAMEHUD", 4600},
 	    {"TRANSITION", 8032},
-	    {"FMMC_LAUNCHER", 24000},
-	    {"MULTIPLAYER_FREEMODE", 72500},
-	    {"MISSION", 54000},
-	    {"MP_LAUNCH_SCRIPT", 33750},
+	    {"FMMC_LAUNCHER", 26000},
+	    {"MULTIPLAYER_FREEMODE", 82500},
+	    {"MISSION", 60500},
+	    {"MP_LAUNCH_SCRIPT", 37500},
 	};
 }

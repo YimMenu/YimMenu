@@ -2,7 +2,7 @@
 
 #include "backend/player_command.hpp"
 #include "fiber_pool.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/player_database/player_database_service.hpp"

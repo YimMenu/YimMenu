@@ -21,7 +21,7 @@ namespace big
 
 		inline void NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(rage::scrNativeCallContext* src)
 		{
-			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<BOOL*>(2));
+			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<bool*>(2));
 			src->set_return_value<BOOL>(NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(src->get_arg<Hash>(0), src->get_arg<Hash>(1), src->get_arg<BOOL*>(2)));
 		};
 

@@ -2,7 +2,7 @@
 #include "core/data/admin_rids.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "packet.hpp"
 #include "services/player_database/player_database_service.hpp"

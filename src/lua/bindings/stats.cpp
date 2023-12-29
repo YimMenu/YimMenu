@@ -41,7 +41,7 @@ namespace lua::stats
 	// Returns: boolean: The value of the given stat.
 	static bool get_bool_hash(Hash stat_hash)
 	{
-		int out_value;
+		BOOL out_value;
 		STATS::STAT_GET_BOOL(stat_hash, &out_value, -1);
 
 		return out_value;

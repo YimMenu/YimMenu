@@ -1,7 +1,6 @@
 #include "script_connection.hpp"
 
 #include "gta_util.hpp"
-#include "hooking.hpp"
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/scripts.hpp"

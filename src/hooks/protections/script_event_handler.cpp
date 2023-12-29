@@ -2,7 +2,7 @@
 #include "gta/net_game_event.hpp"
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "util/math.hpp"
 #include "util/session.hpp"
@@ -70,6 +70,7 @@ namespace big
 		{
 			std::vector<int32_t> script_event_args;
 
+			script_event_args.reserve(scripted_game_event->m_args_size);
 			for (int i = 0; i < scripted_game_event->m_args_size; i++)
 				script_event_args.push_back(args[i]);
 

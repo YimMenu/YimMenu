@@ -1,4 +1,4 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "util/model_info.hpp"
 
 #include <netsync/nodes/player/CPlayerAppearanceDataNode.hpp>

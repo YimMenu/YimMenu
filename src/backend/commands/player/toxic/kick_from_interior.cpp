@@ -1,13 +1,8 @@
 #include "backend/player_command.hpp"
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
-#include "gta/net_object_mgr.hpp"
-#include "gta/script_handler.hpp"
-#include "hooking.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
 #include "services/script_connection/script_connection_service.hpp"
-#include "util/scripts.hpp"
 
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>

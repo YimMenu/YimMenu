@@ -4,7 +4,7 @@
 #include "core/data/warehouse_names.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "util/notify.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
