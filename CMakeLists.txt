@@ -5,19 +5,19 @@ project(YimMenu CXX ASM_MASM)
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
 # Git commit embed
-include(scripts/git.cmake)
+include(cmake/git.cmake)
 
 # Fetch modules
 message("\nFetching modules")
-include(scripts/minhook.cmake)
-include(scripts/async-logger.cmake)
-include(scripts/pugixml.cmake)
-include(scripts/json.cmake)
-include(scripts/cpr.cmake)
-include(scripts/lua.cmake)
-include(scripts/imgui.cmake)
+include(cmake/minhook.cmake)
+include(cmake/async-logger.cmake)
+include(cmake/pugixml.cmake)
+include(cmake/json.cmake)
+include(cmake/cpr.cmake)
+include(cmake/lua.cmake)
+include(cmake/imgui.cmake)
 message("\nFetching custom modules")
-include(scripts/gtav-classes.cmake)
+include(cmake/gtav-classes.cmake)
 
 
 # YimMenu
