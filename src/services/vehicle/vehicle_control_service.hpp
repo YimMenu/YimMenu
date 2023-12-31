@@ -19,7 +19,7 @@ namespace big
 	struct vehicle_door
 	{
 		eDoorId id;
-		eVehicleLockState lockstate;
+		eVehicleLockState lock_state;
 		bool open;
 		float doorAngle;
 		bool valid;
@@ -30,7 +30,6 @@ namespace big
 		eWindowId id;
 	};
 
-
 	struct controlled_vehicle
 	{
 		Vehicle handle;
@@ -38,13 +37,13 @@ namespace big
 		char model_name[100];
 		vehicle_door doors[6];
 		vehicle_window windows[4];
-		int doorCount;
-		eVehicleLockState lockstate;
+		int door_count;
+		eVehicleLockState lock_state;
 		bool engine;
 		bool neons[4];
-		bool isconvertible;
-		int convertibelstate;
-		int headlights, highbeams;
+		bool is_convertible;
+		int convertible_state;
+		bool headlights, highbeams;
 	};
 
 	class vehicle_control

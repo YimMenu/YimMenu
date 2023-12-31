@@ -89,8 +89,8 @@ namespace big
 
 		if (g.vehicle.ls_customs && bModshopReady && g.m_modshop_thread && g.m_modshop_thread->m_stack)
 		{
-			*scr_locals::carmod_shop::ready.set(g.m_modshop_thread->m_stack).as<PBOOL*>() = FALSE;
-			*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::vehicle_state).as<int*>() = -1;
+			*scr_locals::carmod_shop::ready.set(g.m_modshop_thread->m_stack).as<PBOOL>() = FALSE;
+			*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::vehicle_state).as<PINT>() = -1;
 			*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::vehicle_ent_id).as<Vehicle*>() = self::veh;
 
 			if (*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::state).as<PINT>() == 0)

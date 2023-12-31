@@ -20,6 +20,10 @@ namespace big
 				return;
 			}
 
+			HUD::SET_TEXT_RENDER_ID(HUD::GET_DEFAULT_SCRIPT_RENDERTARGET_RENDER_ID());
+			GRAPHICS::SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(TRUE);
+			GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(0);
+
 			HUD::SET_TEXT_FONT(2);
 			HUD::SET_TEXT_SCALE(.9f, .9f);
 			HUD::SET_TEXT_OUTLINE();
@@ -27,7 +31,7 @@ namespace big
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(m_speed_types[(int)g.vehicle.speed_unit].data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y, 1);
 
-			const auto vehicle_speed = vehicle::mps_to_speed(g_local_player->m_vehicle->get_speed(), g.vehicle.speed_unit);
+			const auto vehicle_speed = vehicle::mps_to_speed(ENTITY::GET_ENTITY_SPEED(self::veh), g.vehicle.speed_unit);
 			auto char_width{0};
 			if (!g.vehicle.speedo_meter.left_side)
 			{
@@ -59,7 +63,7 @@ namespace big
 				    1);
 			}
 
-			GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(1);
+			GRAPHICS::RESET_SCRIPT_GFX_ALIGN();
 		}
 	};
 

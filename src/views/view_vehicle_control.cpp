@@ -78,7 +78,7 @@ namespace big
 				continue;
 			ImGui::SetNextItemWidth(200);
 			ImGui::PushID(i);
-			if (ImGui::BeginCombo(doornames[i], locknames[(int)g_vehicle_control_service.m_controlled_vehicle.doors[i].lockstate]))
+			if (ImGui::BeginCombo(doornames[i], locknames[(int)g_vehicle_control_service.m_controlled_vehicle.doors[i].lock_state]))
 			{
 				for (int lockindex = 0; lockindex < MAX_VEHICLE_LOCK_STATES; lockindex++)
 				{
@@ -256,11 +256,11 @@ namespace big
 		    "VIEW_VEHICLE_CONTROL_RAISING"_T.data(),
 		};
 
-		if (g_vehicle_control_service.m_controlled_vehicle.isconvertible)
+		if (g_vehicle_control_service.m_controlled_vehicle.is_convertible)
 		{
-			components::button(g_vehicle_control_service.m_controlled_vehicle.convertibelstate ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T, [] {
+			components::button(g_vehicle_control_service.m_controlled_vehicle.convertible_state ? "VIEW_VEHICLE_CONTROL_RAISE"_T : "VIEW_VEHICLE_CONTROL_LOWER"_T, [] {
 				g_vehicle_control_service.vehicle_operation([] {
-					if (g_vehicle_control_service.m_controlled_vehicle.convertibelstate > 0)
+					if (g_vehicle_control_service.m_controlled_vehicle.convertible_state > 0)
 						VEHICLE::RAISE_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
 					else
 						VEHICLE::LOWER_CONVERTIBLE_ROOF(g_vehicle_control_service.m_controlled_vehicle.handle, false);
@@ -270,7 +270,7 @@ namespace big
 			ImGui::SameLine();
 			ImGui::Text(std::format("{}: {}",
 			    "VIEW_VEHICLE_CONTROL_CONVERTIBLE_STATE"_T,
-			    convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertibelstate])
+			    convertiblestates[g_vehicle_control_service.m_controlled_vehicle.convertible_state])
 			                .c_str());
 		}
 

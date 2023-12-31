@@ -43,7 +43,7 @@ namespace big
 					        -1,
 					        0,
 					        7);
-					int did_raycast_hit = 0;
+					BOOL did_raycast_hit{FALSE};
 					Vector3 raycast_hit_position{};
 					Vector3 raycast_surface_normal_hit_position{};
 					Entity raycast_hit_entity{};

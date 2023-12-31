@@ -1,5 +1,6 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "rage/rlMetric.hpp"
+#include "gta/json_serializer.hpp"
 
 namespace big
 {

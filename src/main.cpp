@@ -3,7 +3,7 @@
 #include "common.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "http_client/http_client.hpp"
 #include "logger/exception_handler.hpp"
 #include "lua/lua_manager.hpp"

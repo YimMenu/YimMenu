@@ -3,7 +3,7 @@
 #include "backend/bool_command.hpp"
 #include "file_manager.hpp"
 #include "gta/enums.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "util/session.hpp"
 

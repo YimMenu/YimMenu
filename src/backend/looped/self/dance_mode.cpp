@@ -1,5 +1,4 @@
 #include "backend/looped/looped.hpp"
-#include "hooking.hpp"
 #include "natives.hpp"
 #include "script_function.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"

@@ -1,5 +1,5 @@
 #include "gta/net_game_event.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/globals.hpp"
 #include "util/misc.hpp"

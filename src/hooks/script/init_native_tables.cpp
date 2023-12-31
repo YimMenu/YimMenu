@@ -1,4 +1,4 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
 

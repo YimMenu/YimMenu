@@ -762,7 +762,7 @@ namespace big::vehicle
 		{
 			VEHICLE::SET_VEHICLE_FULLBEAM(veh, highbeams);
 			VEHICLE::SET_VEHICLE_LIGHTS(veh, lights ? 3 : 4);
-			int regular, highbeam;
+			BOOL regular, highbeam;
 			VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh, &regular, &highbeam);
 			return regular == (int)lights && (int)highbeams == highbeam;
 		}

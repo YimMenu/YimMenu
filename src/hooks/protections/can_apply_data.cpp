@@ -3,7 +3,7 @@
 #include "core/data/task_types.hpp"
 #include "entities/fwEntity.hpp"
 #include "gta/net_object_mgr.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "netsync/netSyncDataNode.hpp"
 #include "netsync/netSyncTree.hpp"
 #include "netsync/nodes/automobile/CAutomobileCreationNode.hpp"

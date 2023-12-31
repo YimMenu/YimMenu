@@ -1,12 +1,8 @@
 #include "pointers.hpp"
 
 #include "gta_pointers_layout_info.hpp"
-#include "hooking.hpp"
-#include "memory/all.hpp"
-#include "rage/atSingleton.hpp"
-#include "rage/gameSkeleton.hpp"
 #include "sc_pointers_layout_info.hpp"
-#include "security/RageSecurity.hpp"
+#include "memory/all.hpp"
 
 namespace big
 {
@@ -1742,13 +1738,13 @@ namespace big
                 g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
             }
         },
-        // Get Ped Bone
+        // Get Ped Seat
         {
-            "GPB",
-            "48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 60 48 8B 01 41 8B E8 48 8B F2",
+            "GPS",
+            "E8 ? ? ? ? 48 85 DB 74 66",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_ped_bone = ptr.as<functions::get_ped_bone>();
+                g_pointers->m_gta.m_get_ped_seat = ptr.add(1).rip().as<functions::get_ped_seat>();
             }
         }
         >(); // don't leave a trailing comma at the end
@@ -1787,11 +1783,11 @@ namespace big
         // Read Attribute Patch
         {
             "RAP",
-            "75 72 EB 23 80 F9 03",
+            "75 70 EB 23",
             [](memory::handle ptr)
             {
                 g_pointers->m_sc.m_read_attribute_patch = ptr.as<PVOID>();
-                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x74).as<PVOID>();
+                g_pointers->m_sc.m_read_attribute_patch_2 = ptr.add(0x72).as<PVOID>();
             }
         }
         >();

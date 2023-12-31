@@ -231,10 +231,6 @@ namespace lua::imgui
 		const auto vec2{ImGui::GetWindowContentRegionMax()};
 		return std::make_tuple(vec2.x, vec2.y);
 	}
-	inline float GetWindowContentRegionWidth()
-	{
-		return ImGui::GetWindowContentRegionWidth();
-	}
 
 	// Windows Scrolling
 	inline float GetScrollX()
@@ -3242,7 +3238,7 @@ namespace lua::imgui
 #pragma endregion MouseButton
 
 #pragma region ImDrawCorner Flags
-		luaGlobals.new_enum("ImDrawCornerFlags", "None", ImDrawCornerFlags_None, "TopLeft", ImDrawCornerFlags_TopLeft, "TopRight", ImDrawCornerFlags_TopRight, "BotLeft", ImDrawCornerFlags_BotLeft, "BotRight", ImDrawCornerFlags_BotRight, "Top", ImDrawCornerFlags_Top, "Bot", ImDrawCornerFlags_Bot, "Left", ImDrawCornerFlags_Left, "Right", ImDrawCornerFlags_Right, "All", ImDrawCornerFlags_All);
+		luaGlobals.new_enum("ImDrawCornerFlags", "None", ImDrawFlags_RoundCornersNone, "TopLeft", ImDrawFlags_RoundCornersTopLeft, "TopRight", ImDrawFlags_RoundCornersTopRight, "BotLeft", ImDrawFlags_RoundCornersBottomLeft, "BotRight", ImDrawFlags_RoundCornersBottomRight, "Top", ImDrawFlags_RoundCornersTop, "Bot", ImDrawFlags_RoundCornersBottom, "Left", ImDrawFlags_RoundCornersLeft, "Right", ImDrawFlags_RoundCornersRight, "All", ImDrawFlags_RoundCornersAll);
 #pragma endregion ImDrawCorner Flags
 	}
 
@@ -3294,7 +3290,6 @@ namespace lua::imgui
 		ImGui.set_function("GetContentRegionAvail", GetContentRegionAvail);
 		ImGui.set_function("GetWindowContentRegionMin", GetWindowContentRegionMin);
 		ImGui.set_function("GetWindowContentRegionMax", GetWindowContentRegionMax);
-		ImGui.set_function("GetWindowContentRegionWidth", GetWindowContentRegionWidth);
 #pragma endregion Content Region
 
 #pragma region Windows Scrolling
