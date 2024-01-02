@@ -21,7 +21,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "variables": [ {"name": "OPTOMIZE", "value": "YES", "type": "BOOL"} ]
+      "variables": [ {"name": "OPTIMIZE", "value": "YES", "type": "BOOL"} ]
     },
     {
       "name": "x64-Debug",

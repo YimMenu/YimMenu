@@ -68,7 +68,7 @@ add_compile_definitions(YimMenu
 
 # Optimizations
 if(MSVC)
-    if(OPTOMIZE)
+    if(OPTIMIZE)
       set(CMAKE_MODULE_LINKER_FLAGS
           "${CMAKE_MODULE_LINKER_FLAGS} /LTCG /OPT:REF,ICF /GUARD:NO")
 
