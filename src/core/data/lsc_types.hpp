@@ -9,6 +9,13 @@ static const std::map<int, std::string> lsc_plate_styles = {
     {PLATE_YELLOWONBLACK, "Yellow on Black"},
     {PLATE_YELLOWONBLUE, "Yellow on Blue"},
     {PLATE_YANKTON, "Yankton"},
+    {PLATE_ECOLA, "Ecola"},
+    {PLATE_LASVENTURAS, "Las Venturas"},
+    {PLATE_LIBERTYCITY, "Liberty City"},
+    {PLATE_LOSSANTOSCARMEET, "Los Santos Car Meet"},
+    {PLATE_LOSSANTOSPANIC, "Los Santos Panicc"},
+    {PLATE_LOSSANTOSPOUNDERS, "Los Santos Pounders"},
+    {PLATE_SPRUNK, "Sprunk"},
 };
 
 static const std::map<int, std::string> lsc_wheel_styles = {
