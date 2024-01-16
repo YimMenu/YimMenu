@@ -253,15 +253,15 @@ namespace lua::native
 		PAD::ENABLE_ALL_CONTROL_ACTIONS(control);
 	}
 
-	static bool LUA_NATIVE_PAD_INIT_PC_SCRIPTED_CONTROLS(const char* schemeName)
+	static bool LUA_NATIVE_PAD_INIT_PC_SCRIPTED_CONTROLS(sol::stack_object schemeName)
 	{
-		auto retval = (bool)PAD::INIT_PC_SCRIPTED_CONTROLS(schemeName);
+		auto retval = (bool)PAD::INIT_PC_SCRIPTED_CONTROLS(schemeName.is<const char*>() ? schemeName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_PAD_SWITCH_PC_SCRIPTED_CONTROLS(const char* schemeName)
+	static bool LUA_NATIVE_PAD_SWITCH_PC_SCRIPTED_CONTROLS(sol::stack_object schemeName)
 	{
-		auto retval = (bool)PAD::SWITCH_PC_SCRIPTED_CONTROLS(schemeName);
+		auto retval = (bool)PAD::SWITCH_PC_SCRIPTED_CONTROLS(schemeName.is<const char*>() ? schemeName.as<const char*>() : nullptr);
 		return retval;
 	}
 

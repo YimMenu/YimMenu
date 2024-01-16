@@ -3,25 +3,25 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_SCRIPT_REQUEST_SCRIPT(const char* scriptName)
+	static void LUA_NATIVE_SCRIPT_REQUEST_SCRIPT(sol::stack_object scriptName)
 	{
-		SCRIPT::REQUEST_SCRIPT(scriptName);
+		SCRIPT::REQUEST_SCRIPT(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_SCRIPT_SET_SCRIPT_AS_NO_LONGER_NEEDED(const char* scriptName)
+	static void LUA_NATIVE_SCRIPT_SET_SCRIPT_AS_NO_LONGER_NEEDED(sol::stack_object scriptName)
 	{
-		SCRIPT::SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
+		SCRIPT::SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_SCRIPT_HAS_SCRIPT_LOADED(const char* scriptName)
+	static bool LUA_NATIVE_SCRIPT_HAS_SCRIPT_LOADED(sol::stack_object scriptName)
 	{
-		auto retval = (bool)SCRIPT::HAS_SCRIPT_LOADED(scriptName);
+		auto retval = (bool)SCRIPT::HAS_SCRIPT_LOADED(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_SCRIPT_DOES_SCRIPT_EXIST(const char* scriptName)
+	static bool LUA_NATIVE_SCRIPT_DOES_SCRIPT_EXIST(sol::stack_object scriptName)
 	{
-		auto retval = (bool)SCRIPT::DOES_SCRIPT_EXIST(scriptName);
+		auto retval = (bool)SCRIPT::DOES_SCRIPT_EXIST(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -179,25 +179,25 @@ namespace lua::native
 		SCRIPT::BG_END_CONTEXT_HASH(contextHash);
 	}
 
-	static void LUA_NATIVE_SCRIPT_BG_START_CONTEXT(const char* contextName)
+	static void LUA_NATIVE_SCRIPT_BG_START_CONTEXT(sol::stack_object contextName)
 	{
-		SCRIPT::BG_START_CONTEXT(contextName);
+		SCRIPT::BG_START_CONTEXT(contextName.is<const char*>() ? contextName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_SCRIPT_BG_END_CONTEXT(const char* contextName)
+	static void LUA_NATIVE_SCRIPT_BG_END_CONTEXT(sol::stack_object contextName)
 	{
-		SCRIPT::BG_END_CONTEXT(contextName);
+		SCRIPT::BG_END_CONTEXT(contextName.is<const char*>() ? contextName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_SCRIPT_BG_DOES_LAUNCH_PARAM_EXIST(int scriptIndex, const char* p1)
+	static bool LUA_NATIVE_SCRIPT_BG_DOES_LAUNCH_PARAM_EXIST(int scriptIndex, sol::stack_object p1)
 	{
-		auto retval = (bool)SCRIPT::BG_DOES_LAUNCH_PARAM_EXIST(scriptIndex, p1);
+		auto retval = (bool)SCRIPT::BG_DOES_LAUNCH_PARAM_EXIST(scriptIndex, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SCRIPT_BG_GET_LAUNCH_PARAM_VALUE(int scriptIndex, const char* p1)
+	static int LUA_NATIVE_SCRIPT_BG_GET_LAUNCH_PARAM_VALUE(int scriptIndex, sol::stack_object p1)
 	{
-		auto retval = SCRIPT::BG_GET_LAUNCH_PARAM_VALUE(scriptIndex, p1);
+		auto retval = SCRIPT::BG_GET_LAUNCH_PARAM_VALUE(scriptIndex, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -207,7 +207,7 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_(int eventGroup, Any eventData, int eventDataSize, int playerBits, int eventType)
+	static Any LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_(int eventGroup, Any eventData, int eventDataSize, int playerBits, Hash eventType)
 	{
 		SCRIPT::_SEND_TU_SCRIPT_EVENT_NEW(eventGroup, &eventData, eventDataSize, playerBits, eventType);
 		return eventData;

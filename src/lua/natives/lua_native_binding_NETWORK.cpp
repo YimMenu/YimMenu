@@ -123,6 +123,12 @@ namespace lua::native
 		return retval;
 	}
 
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES_()
+	{
+		auto retval = (bool)NETWORK::_NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES();
+		return retval;
+	}
+
 	static bool LUA_NATIVE_NETWORK_NETWORK_CHECK_ONLINE_PRIVILEGES(Any p0, bool p1)
 	{
 		auto retval = (bool)NETWORK::NETWORK_CHECK_ONLINE_PRIVILEGES(p0, p1);
@@ -344,6 +350,12 @@ namespace lua::native
 		return retval;
 	}
 
+	static bool LUA_NATIVE_NETWORK_NETWORK_SESSION_LEAVE_INCLUDING_REASON_(int leaveFlags, int leaveReason)
+	{
+		auto retval = (bool)NETWORK::_NETWORK_SESSION_LEAVE_INCLUDING_REASON(leaveFlags, leaveReason);
+		return retval;
+	}
+
 	static bool LUA_NATIVE_NETWORK_NETWORK_SESSION_END(bool p0, bool p1)
 	{
 		auto retval = (bool)NETWORK::NETWORK_SESSION_END(p0, p1);
@@ -409,6 +421,12 @@ namespace lua::native
 	static void LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT(Any p0)
 	{
 		NETWORK::NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT(p0);
+	}
+
+	static int LUA_NATIVE_NETWORK_NETWORK_SESSION_GET_UNIQUE_CREW_LIMIT()
+	{
+		auto retval = NETWORK::NETWORK_SESSION_GET_UNIQUE_CREW_LIMIT();
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT_TRANSITION(Any p0)
@@ -700,6 +718,12 @@ namespace lua::native
 		return retval;
 	}
 
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_AMERICAS_VERSION_()
+	{
+		auto retval = (bool)NETWORK::_NETWORK_IS_AMERICAS_VERSION();
+		return retval;
+	}
+
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_SESSION_STARTED()
 	{
 		auto retval = (bool)NETWORK::NETWORK_IS_SESSION_STARTED();
@@ -797,10 +821,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TEXT_MESSAGE(const char* message, Any gamerHandle)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TEXT_MESSAGE(sol::stack_object message, Any gamerHandle)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TEXT_MESSAGE(message, &gamerHandle);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TEXT_MESSAGE(message.is<const char*>() ? message.as<const char*>() : nullptr, &gamerHandle);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
@@ -1033,15 +1057,15 @@ namespace lua::native
 		NETWORK::NETWORK_APPLY_TRANSITION_PARAMETER(p0, p1);
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_APPLY_TRANSITION_PARAMETER_STRING(int p0, const char* string, bool p2)
+	static void LUA_NATIVE_NETWORK_NETWORK_APPLY_TRANSITION_PARAMETER_STRING(int p0, sol::stack_object string, bool p2)
 	{
-		NETWORK::NETWORK_APPLY_TRANSITION_PARAMETER_STRING(p0, string, p2);
+		NETWORK::NETWORK_APPLY_TRANSITION_PARAMETER_STRING(p0, string.is<const char*>() ? string.as<const char*>() : nullptr, p2);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(Any gamerHandle, const char* p1, int p2, int p3, bool p4)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(Any gamerHandle, sol::stack_object p1, int p2, int p3, bool p4)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(&gamerHandle, p1, p2, p3, p4);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2, p3, p4);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
@@ -1219,28 +1243,28 @@ namespace lua::native
 		NETWORK::NETWORK_SET_PRESENCE_SESSION_INVITES_BLOCKED(toggle);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_INVITE_VIA_PRESENCE(Any gamerHandle, const char* p1, int dataCount, int p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_INVITE_VIA_PRESENCE(&gamerHandle, p1, dataCount, p3);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, const char* p1, int dataCount, int p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1, dataCount, p3);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, const char* p1, int dataCount, int p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1, dataCount, p3);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
@@ -1660,15 +1684,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_NETWORK_NETWORK_REGISTER_HOST_BROADCAST_VARIABLES(int vars, int numVars, const char* debugName)
+	static int LUA_NATIVE_NETWORK_NETWORK_REGISTER_HOST_BROADCAST_VARIABLES(int vars, int numVars, sol::stack_object debugName)
 	{
-		NETWORK::NETWORK_REGISTER_HOST_BROADCAST_VARIABLES(&vars, numVars, debugName);
+		NETWORK::NETWORK_REGISTER_HOST_BROADCAST_VARIABLES(&vars, numVars, debugName.is<const char*>() ? debugName.as<const char*>() : nullptr);
 		return vars;
 	}
 
-	static int LUA_NATIVE_NETWORK_NETWORK_REGISTER_PLAYER_BROADCAST_VARIABLES(int vars, int numVars, const char* debugName)
+	static int LUA_NATIVE_NETWORK_NETWORK_REGISTER_PLAYER_BROADCAST_VARIABLES(int vars, int numVars, sol::stack_object debugName)
 	{
-		NETWORK::NETWORK_REGISTER_PLAYER_BROADCAST_VARIABLES(&vars, numVars, debugName);
+		NETWORK::NETWORK_REGISTER_PLAYER_BROADCAST_VARIABLES(&vars, numVars, debugName.is<const char*>() ? debugName.as<const char*>() : nullptr);
 		return vars;
 	}
 
@@ -1759,9 +1783,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Player LUA_NATIVE_NETWORK_NETWORK_GET_HOST_OF_SCRIPT(const char* scriptName, int instance_id, int position_hash)
+	static Player LUA_NATIVE_NETWORK_NETWORK_GET_HOST_OF_SCRIPT(sol::stack_object scriptName, int instance_id, int position_hash)
 	{
-		auto retval = NETWORK::NETWORK_GET_HOST_OF_SCRIPT(scriptName, instance_id, position_hash);
+		auto retval = NETWORK::NETWORK_GET_HOST_OF_SCRIPT(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr, instance_id, position_hash);
 		return retval;
 	}
 
@@ -1770,9 +1794,9 @@ namespace lua::native
 		NETWORK::NETWORK_SET_MISSION_FINISHED();
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_IS_SCRIPT_ACTIVE(const char* scriptName, int instance_id, bool p2, int position_hash)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_SCRIPT_ACTIVE(sol::stack_object scriptName, int instance_id, bool p2, int position_hash)
 	{
-		auto retval = (bool)NETWORK::NETWORK_IS_SCRIPT_ACTIVE(scriptName, instance_id, p2, position_hash);
+		auto retval = (bool)NETWORK::NETWORK_IS_SCRIPT_ACTIVE(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr, instance_id, p2, position_hash);
 		return retval;
 	}
 
@@ -1788,9 +1812,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_NETWORK_NETWORK_GET_NUM_SCRIPT_PARTICIPANTS(const char* scriptName, int instance_id, int position_hash)
+	static int LUA_NATIVE_NETWORK_NETWORK_GET_NUM_SCRIPT_PARTICIPANTS(sol::stack_object scriptName, int instance_id, int position_hash)
 	{
-		auto retval = NETWORK::NETWORK_GET_NUM_SCRIPT_PARTICIPANTS(scriptName, instance_id, position_hash);
+		auto retval = NETWORK::NETWORK_GET_NUM_SCRIPT_PARTICIPANTS(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr, instance_id, position_hash);
 		return retval;
 	}
 
@@ -1806,9 +1830,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(Player player, const char* script, int instance_id)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(Player player, sol::stack_object script, int instance_id)
 	{
-		auto retval = (bool)NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(player, script, instance_id);
+		auto retval = (bool)NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(player, script.is<const char*>() ? script.as<const char*>() : nullptr, instance_id);
 		return retval;
 	}
 
@@ -1888,9 +1912,9 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_SET_CURRENT_PUBLIC_CONTENT_ID(const char* missionId)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_CURRENT_PUBLIC_CONTENT_ID(sol::stack_object missionId)
 	{
-		NETWORK::NETWORK_SET_CURRENT_PUBLIC_CONTENT_ID(missionId);
+		NETWORK::NETWORK_SET_CURRENT_PUBLIC_CONTENT_ID(missionId.is<const char*>() ? missionId.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SET_CURRENT_CHAT_OPTION(int newChatOption)
@@ -2098,15 +2122,15 @@ namespace lua::native
 		return gamerHandle;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_USER_ID(const char* userId, Any gamerHandle, int gamerHandleSize)
+	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_USER_ID(sol::stack_object userId, Any gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_USER_ID(userId, &gamerHandle, gamerHandleSize);
+		NETWORK::NETWORK_HANDLE_FROM_USER_ID(userId.is<const char*>() ? userId.as<const char*>() : nullptr, &gamerHandle, gamerHandleSize);
 		return gamerHandle;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_MEMBER_ID(const char* memberId, Any gamerHandle, int gamerHandleSize)
+	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_MEMBER_ID(sol::stack_object memberId, Any gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID(memberId, &gamerHandle, gamerHandleSize);
+		NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID(memberId.is<const char*>() ? memberId.as<const char*>() : nullptr, &gamerHandle, gamerHandleSize);
 		return gamerHandle;
 	}
 
@@ -2306,9 +2330,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_ONLINE(const char* name)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_ONLINE(sol::stack_object name)
 	{
-		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_ONLINE(name);
+		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_ONLINE(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -2321,15 +2345,15 @@ namespace lua::native
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_IN_SAME_TITLE(const char* friendName)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_IN_SAME_TITLE(sol::stack_object friendName)
 	{
-		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_IN_SAME_TITLE(friendName);
+		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_IN_SAME_TITLE(friendName.is<const char*>() ? friendName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_IN_MULTIPLAYER(const char* friendName)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_IN_MULTIPLAYER(sol::stack_object friendName)
 	{
-		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_IN_MULTIPLAYER(friendName);
+		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_IN_MULTIPLAYER(friendName.is<const char*>() ? friendName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -2354,10 +2378,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_ADD_FRIEND(Any gamerHandle, const char* message)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_ADD_FRIEND(Any gamerHandle, sol::stack_object message)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ADD_FRIEND(&gamerHandle, message);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ADD_FRIEND(&gamerHandle, message.is<const char*>() ? message.as<const char*>() : nullptr);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
@@ -2389,6 +2413,23 @@ namespace lua::native
 	static void LUA_NATIVE_NETWORK_NETWORK_IGNORE_REMOTE_WAYPOINTS()
 	{
 		NETWORK::NETWORK_IGNORE_REMOTE_WAYPOINTS();
+	}
+
+	static bool LUA_NATIVE_NETWORK_NETWORK_DOES_COMMUNICATION_GROUP_EXIST_(int communicationType)
+	{
+		auto retval = (bool)NETWORK::_NETWORK_DOES_COMMUNICATION_GROUP_EXIST(communicationType);
+		return retval;
+	}
+
+	static int LUA_NATIVE_NETWORK_NETWORK_GET_COMMUNICATION_GROUP_FLAGS_(int communicationType)
+	{
+		auto retval = NETWORK::_NETWORK_GET_COMMUNICATION_GROUP_FLAGS(communicationType);
+		return retval;
+	}
+
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_COMMUNICATION_GROUP_FLAGS_(int communicationType, int communicationGroupFlag)
+	{
+		NETWORK::_NETWORK_SET_COMMUNICATION_GROUP_FLAGS(communicationType, communicationGroupFlag);
 	}
 
 	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_ON_BLOCKLIST(Any gamerHandle)
@@ -2775,9 +2816,9 @@ namespace lua::native
 		NETWORK::NETWORK_SET_RICH_PRESENCE(p0, p1, p2, p3);
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_SET_RICH_PRESENCE_STRING(int p0, const char* textLabel)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_RICH_PRESENCE_STRING(int p0, sol::stack_object textLabel)
 	{
-		NETWORK::NETWORK_SET_RICH_PRESENCE_STRING(p0, textLabel);
+		NETWORK::NETWORK_SET_RICH_PRESENCE_STRING(p0, textLabel.is<const char*>() ? textLabel.as<const char*>() : nullptr);
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_TIMEOUT_TIME()
@@ -2938,15 +2979,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_CREWINFO_GET_STRING_VALUE(const char* animDict, const char* animName)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_CREWINFO_GET_STRING_VALUE(sol::stack_object animDict, sol::stack_object animName)
 	{
-		auto retval = (bool)NETWORK::NETWORK_CLAN_CREWINFO_GET_STRING_VALUE(animDict, animName);
+		auto retval = (bool)NETWORK::NETWORK_CLAN_CREWINFO_GET_STRING_VALUE(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_CREWINFO_GET_CREWRANKTITLE(int p0, const char* p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_CREWINFO_GET_CREWRANKTITLE(int p0, sol::stack_object p1)
 	{
-		auto retval = (bool)NETWORK::NETWORK_CLAN_CREWINFO_GET_CREWRANKTITLE(p0, p1);
+		auto retval = (bool)NETWORK::NETWORK_CLAN_CREWINFO_GET_CREWRANKTITLE(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -3568,9 +3609,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE(Ped ped, int netScene, const char* animDict, const char* animnName, float speed, float speedMultiplier, int duration, int flag, float playbackRate, Any p9)
+	static void LUA_NATIVE_NETWORK_NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE(Ped ped, int netScene, sol::stack_object animDict, sol::stack_object animnName, float speed, float speedMultiplier, int duration, int flag, float playbackRate, Any p9)
 	{
-		NETWORK::NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE(ped, netScene, animDict, animnName, speed, speedMultiplier, duration, flag, playbackRate, p9);
+		NETWORK::NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE(ped, netScene, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animnName.is<const char*>() ? animnName.as<const char*>() : nullptr, speed, speedMultiplier, duration, flag, playbackRate, p9);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE_WITH_IK(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7, Any p8, Any p9)
@@ -3578,19 +3619,19 @@ namespace lua::native
 		NETWORK::NETWORK_ADD_PED_TO_SYNCHRONISED_SCENE_WITH_IK(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9);
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_ADD_ENTITY_TO_SYNCHRONISED_SCENE(Entity entity, int netScene, const char* animDict, const char* animName, float speed, float speedMulitiplier, int flag)
+	static void LUA_NATIVE_NETWORK_NETWORK_ADD_ENTITY_TO_SYNCHRONISED_SCENE(Entity entity, int netScene, sol::stack_object animDict, sol::stack_object animName, float speed, float speedMulitiplier, int flag)
 	{
-		NETWORK::NETWORK_ADD_ENTITY_TO_SYNCHRONISED_SCENE(entity, netScene, animDict, animName, speed, speedMulitiplier, flag);
+		NETWORK::NETWORK_ADD_ENTITY_TO_SYNCHRONISED_SCENE(entity, netScene, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, speed, speedMulitiplier, flag);
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_ADD_MAP_ENTITY_TO_SYNCHRONISED_SCENE(int netScene, Hash modelHash, float x, float y, float z, float p5, const char* p6, float p7, float p8, int flags)
+	static void LUA_NATIVE_NETWORK_NETWORK_ADD_MAP_ENTITY_TO_SYNCHRONISED_SCENE(int netScene, Hash modelHash, float x, float y, float z, float p5, sol::stack_object p6, float p7, float p8, int flags)
 	{
-		NETWORK::NETWORK_ADD_MAP_ENTITY_TO_SYNCHRONISED_SCENE(netScene, modelHash, x, y, z, p5, p6, p7, p8, flags);
+		NETWORK::NETWORK_ADD_MAP_ENTITY_TO_SYNCHRONISED_SCENE(netScene, modelHash, x, y, z, p5, p6.is<const char*>() ? p6.as<const char*>() : nullptr, p7, p8, flags);
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_ADD_SYNCHRONISED_SCENE_CAMERA(int netScene, const char* animDict, const char* animName)
+	static void LUA_NATIVE_NETWORK_NETWORK_ADD_SYNCHRONISED_SCENE_CAMERA(int netScene, sol::stack_object animDict, sol::stack_object animName)
 	{
-		NETWORK::NETWORK_ADD_SYNCHRONISED_SCENE_CAMERA(netScene, animDict, animName);
+		NETWORK::NETWORK_ADD_SYNCHRONISED_SCENE_CAMERA(netScene, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_ATTACH_SYNCHRONISED_SCENE_TO_ENTITY(int netScene, Entity entity, int bone)
@@ -3857,33 +3898,33 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_DOES_TUNABLE_EXIST(const char* tunableContext, const char* tunableName)
+	static bool LUA_NATIVE_NETWORK_NETWORK_DOES_TUNABLE_EXIST(sol::stack_object tunableContext, sol::stack_object tunableName)
 	{
-		auto retval = (bool)NETWORK::NETWORK_DOES_TUNABLE_EXIST(tunableContext, tunableName);
+		auto retval = (bool)NETWORK::NETWORK_DOES_TUNABLE_EXIST(tunableContext.is<const char*>() ? tunableContext.as<const char*>() : nullptr, tunableName.is<const char*>() ? tunableName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_INT(const char* tunableContext, const char* tunableName, int value)
+	static std::tuple<bool, int> LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_INT(sol::stack_object tunableContext, sol::stack_object tunableName, int value)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_INT(tunableContext, tunableName, &value);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_INT(tunableContext.is<const char*>() ? tunableContext.as<const char*>() : nullptr, tunableName.is<const char*>() ? tunableName.as<const char*>() : nullptr, &value);
 		std::get<1>(return_values) = value;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_FLOAT(const char* tunableContext, const char* tunableName, float value)
+	static std::tuple<bool, float> LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_FLOAT(sol::stack_object tunableContext, sol::stack_object tunableName, float value)
 	{
 		std::tuple<bool, float> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_FLOAT(tunableContext, tunableName, &value);
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_FLOAT(tunableContext.is<const char*>() ? tunableContext.as<const char*>() : nullptr, tunableName.is<const char*>() ? tunableName.as<const char*>() : nullptr, &value);
 		std::get<1>(return_values) = value;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL(const char* tunableContext, const char* tunableName)
+	static bool LUA_NATIVE_NETWORK_NETWORK_ACCESS_TUNABLE_BOOL(sol::stack_object tunableContext, sol::stack_object tunableName)
 	{
-		auto retval = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_BOOL(tunableContext, tunableName);
+		auto retval = (bool)NETWORK::NETWORK_ACCESS_TUNABLE_BOOL(tunableContext.is<const char*>() ? tunableContext.as<const char*>() : nullptr, tunableName.is<const char*>() ? tunableName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -4127,9 +4168,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_NETWORK_OPEN_COMMERCE_STORE(const char* p0, const char* p1, int p2)
+	static void LUA_NATIVE_NETWORK_OPEN_COMMERCE_STORE(sol::stack_object p0, sol::stack_object p1, int p2)
 	{
-		NETWORK::OPEN_COMMERCE_STORE(p0, p1, p2);
+		NETWORK::OPEN_COMMERCE_STORE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2);
 	}
 
 	static bool LUA_NATIVE_NETWORK_IS_COMMERCE_STORE_OPEN()
@@ -4199,9 +4240,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_NETWORK_CLOUD_DELETE_MEMBER_FILE(const char* p0)
+	static int LUA_NATIVE_NETWORK_CLOUD_DELETE_MEMBER_FILE(sol::stack_object p0)
 	{
-		auto retval = NETWORK::CLOUD_DELETE_MEMBER_FILE(p0);
+		auto retval = NETWORK::CLOUD_DELETE_MEMBER_FILE(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -4311,88 +4352,88 @@ namespace lua::native
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CATEGORY(Any p0, Any p1, Any p2, const char* p3, Any p4, bool p5)
+	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CATEGORY(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4, bool p5)
 	{
-		auto retval = (bool)NETWORK::UGC_QUERY_BY_CATEGORY(p0, p1, p2, p3, p4, p5);
+		auto retval = (bool)NETWORK::UGC_QUERY_BY_CATEGORY(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, p4, p5);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_ID(const char* contentId, bool latestVersion, const char* contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_ID(sol::stack_object contentId, bool latestVersion, sol::stack_object contentTypeName)
 	{
-		auto retval = (bool)NETWORK::UGC_QUERY_BY_CONTENT_ID(contentId, latestVersion, contentTypeName);
+		auto retval = (bool)NETWORK::UGC_QUERY_BY_CONTENT_ID(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, latestVersion, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_IDS(Any data, int count, bool latestVersion, const char* contentTypeName)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_IDS(Any data, int count, bool latestVersion, sol::stack_object contentTypeName)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_QUERY_BY_CONTENT_IDS(&data, count, latestVersion, contentTypeName);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_QUERY_BY_CONTENT_IDS(&data, count, latestVersion, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
 		std::get<1>(return_values) = data;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(int offset, int count, const char* contentTypeName, int p3)
+	static bool LUA_NATIVE_NETWORK_UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(int offset, int count, sol::stack_object contentTypeName, int p3)
 	{
-		auto retval = (bool)NETWORK::UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(offset, count, contentTypeName, p3);
+		auto retval = (bool)NETWORK::UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(offset, count, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, p3);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_BOOKMARKED_CONTENT(Any p0, Any p1, const char* p2, Any p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_BOOKMARKED_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_BOOKMARKED_CONTENT(p0, p1, p2, &p3);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_BOOKMARKED_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
 		std::get<1>(return_values) = p3;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_MY_CONTENT(Any p0, Any p1, const char* p2, Any p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_MY_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_MY_CONTENT(p0, p1, p2, &p3);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_MY_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
 		std::get<1>(return_values) = p3;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_FRIEND_CONTENT(Any p0, Any p1, const char* p2, Any p3)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_FRIEND_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_FRIEND_CONTENT(p0, p1, p2, &p3);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_FRIEND_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
 		std::get<1>(return_values) = p3;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_CREW_CONTENT(Any p0, Any p1, Any p2, const char* p3, Any p4)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_CREW_CONTENT(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_CREW_CONTENT(p0, p1, p2, p3, &p4);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_CREW_CONTENT(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, &p4);
 		std::get<1>(return_values) = p4;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CATEGORY(Any p0, Any p1, Any p2, const char* p3, Any p4)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CATEGORY(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CATEGORY(p0, p1, p2, p3, &p4);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CATEGORY(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, &p4);
 		std::get<1>(return_values) = p4;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_ID(const char* contentId, const char* contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_ID(sol::stack_object contentId, sol::stack_object contentTypeName)
 	{
-		auto retval = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_ID(contentId, contentTypeName);
+		auto retval = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_ID(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_IDS(Any data, int dataCount, const char* contentTypeName)
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_IDS(Any data, int dataCount, sol::stack_object contentTypeName)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_IDS(&data, dataCount, contentTypeName);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_IDS(&data, dataCount, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
 		std::get<1>(return_values) = data;
 
 		return return_values;
@@ -4639,9 +4680,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_NETWORK_UGC_REQUEST_CONTENT_DATA_FROM_PARAMS(const char* contentTypeName, const char* contentId, int p2, int p3, int p4)
+	static int LUA_NATIVE_NETWORK_UGC_REQUEST_CONTENT_DATA_FROM_PARAMS(sol::stack_object contentTypeName, sol::stack_object contentId, int p2, int p3, int p4)
 	{
-		auto retval = NETWORK::UGC_REQUEST_CONTENT_DATA_FROM_PARAMS(contentTypeName, contentId, p2, p3, p4);
+		auto retval = NETWORK::UGC_REQUEST_CONTENT_DATA_FROM_PARAMS(contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, p2, p3, p4);
 		return retval;
 	}
 
@@ -4686,22 +4727,28 @@ namespace lua::native
 		NETWORK::UGC_RELEASE_ALL_CACHED_DESCRIPTIONS();
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_PUBLISH(const char* contentId, const char* baseContentId, const char* contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_HAS_PERMISSION_TO_WRITE()
 	{
-		auto retval = (bool)NETWORK::UGC_PUBLISH(contentId, baseContentId, contentTypeName);
+		auto retval = (bool)NETWORK::UGC_HAS_PERMISSION_TO_WRITE();
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_UGC_SET_BOOKMARKED(const char* contentId, bool bookmarked, const char* contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_PUBLISH(sol::stack_object contentId, sol::stack_object baseContentId, sol::stack_object contentTypeName)
 	{
-		auto retval = (bool)NETWORK::UGC_SET_BOOKMARKED(contentId, bookmarked, contentTypeName);
+		auto retval = (bool)NETWORK::UGC_PUBLISH(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, baseContentId.is<const char*>() ? baseContentId.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_SET_DELETED(Any p0, bool p1, const char* p2)
+	static bool LUA_NATIVE_NETWORK_UGC_SET_BOOKMARKED(sol::stack_object contentId, bool bookmarked, sol::stack_object contentTypeName)
+	{
+		auto retval = (bool)NETWORK::UGC_SET_BOOKMARKED(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, bookmarked, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
+		return retval;
+	}
+
+	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_SET_DELETED(Any p0, bool p1, sol::stack_object p2)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_SET_DELETED(&p0, p1, p2);
+		std::get<0>(return_values) = (bool)NETWORK::UGC_SET_DELETED(&p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p0;
 
 		return return_values;
@@ -4791,9 +4838,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETWORK_FACEBOOK_POST_COMPLETED_HEIST(const char* heistName, int cashEarned, int xpEarned)
+	static bool LUA_NATIVE_NETWORK_FACEBOOK_POST_COMPLETED_HEIST(sol::stack_object heistName, int cashEarned, int xpEarned)
 	{
-		auto retval = (bool)NETWORK::FACEBOOK_POST_COMPLETED_HEIST(heistName, cashEarned, xpEarned);
+		auto retval = (bool)NETWORK::FACEBOOK_POST_COMPLETED_HEIST(heistName.is<const char*>() ? heistName.as<const char*>() : nullptr, cashEarned, xpEarned);
 		return retval;
 	}
 
@@ -4827,24 +4874,24 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_TEXTURE_DOWNLOAD_REQUEST(Any gamerHandle, const char* filePath, const char* name, bool p3)
+	static std::tuple<int, Any> LUA_NATIVE_NETWORK_TEXTURE_DOWNLOAD_REQUEST(Any gamerHandle, sol::stack_object filePath, sol::stack_object name, bool p3)
 	{
 		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::TEXTURE_DOWNLOAD_REQUEST(&gamerHandle, filePath, name, p3);
+		std::get<0>(return_values) = NETWORK::TEXTURE_DOWNLOAD_REQUEST(&gamerHandle, filePath.is<const char*>() ? filePath.as<const char*>() : nullptr, name.is<const char*>() ? name.as<const char*>() : nullptr, p3);
 		std::get<1>(return_values) = gamerHandle;
 
 		return return_values;
 	}
 
-	static int LUA_NATIVE_NETWORK_TITLE_TEXTURE_DOWNLOAD_REQUEST(const char* filePath, const char* name, bool p2)
+	static int LUA_NATIVE_NETWORK_TITLE_TEXTURE_DOWNLOAD_REQUEST(sol::stack_object filePath, sol::stack_object name, bool p2)
 	{
-		auto retval = NETWORK::TITLE_TEXTURE_DOWNLOAD_REQUEST(filePath, name, p2);
+		auto retval = NETWORK::TITLE_TEXTURE_DOWNLOAD_REQUEST(filePath.is<const char*>() ? filePath.as<const char*>() : nullptr, name.is<const char*>() ? name.as<const char*>() : nullptr, p2);
 		return retval;
 	}
 
-	static int LUA_NATIVE_NETWORK_UGC_TEXTURE_DOWNLOAD_REQUEST(const char* p0, int p1, int p2, int p3, const char* p4, bool p5)
+	static int LUA_NATIVE_NETWORK_UGC_TEXTURE_DOWNLOAD_REQUEST(sol::stack_object p0, int p1, int p2, int p3, sol::stack_object p4, bool p5)
 	{
-		auto retval = NETWORK::UGC_TEXTURE_DOWNLOAD_REQUEST(p0, p1, p2, p3, p4, p5);
+		auto retval = NETWORK::UGC_TEXTURE_DOWNLOAD_REQUEST(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1, p2, p3, p4.is<const char*>() ? p4.as<const char*>() : nullptr, p5);
 		return retval;
 	}
 
@@ -4950,6 +4997,18 @@ namespace lua::native
 	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_SPECIAL_EDITION_CONTENT()
 	{
 		auto retval = (bool)NETWORK::NETWORK_HAS_ROS_PRIVILEGE_SPECIAL_EDITION_CONTENT();
+		return retval;
+	}
+
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_MP_TEXT_COMMUNICATION_()
+	{
+		auto retval = (bool)NETWORK::_NETWORK_HAS_ROS_PRIVILEGE_MP_TEXT_COMMUNICATION();
+		return retval;
+	}
+
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION_()
+	{
+		auto retval = (bool)NETWORK::_NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION();
 		return retval;
 	}
 
@@ -5142,6 +5201,7 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_HAS_AGE_RESTRICTIONS", LUA_NATIVE_NETWORK_NETWORK_HAS_AGE_RESTRICTIONS);
 		NETWORK.set_function("NETWORK_HAVE_USER_CONTENT_PRIVILEGES", LUA_NATIVE_NETWORK_NETWORK_HAVE_USER_CONTENT_PRIVILEGES);
 		NETWORK.set_function("NETWORK_HAVE_COMMUNICATION_PRIVILEGES", LUA_NATIVE_NETWORK_NETWORK_HAVE_COMMUNICATION_PRIVILEGES);
+		NETWORK.set_function("NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES_", LUA_NATIVE_NETWORK_NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES_);
 		NETWORK.set_function("NETWORK_CHECK_ONLINE_PRIVILEGES", LUA_NATIVE_NETWORK_NETWORK_CHECK_ONLINE_PRIVILEGES);
 		NETWORK.set_function("NETWORK_CHECK_USER_CONTENT_PRIVILEGES", LUA_NATIVE_NETWORK_NETWORK_CHECK_USER_CONTENT_PRIVILEGES);
 		NETWORK.set_function("NETWORK_CHECK_COMMUNICATION_PRIVILEGES", LUA_NATIVE_NETWORK_NETWORK_CHECK_COMMUNICATION_PRIVILEGES);
@@ -5179,6 +5239,7 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_SESSION_IS_CLOSED_CREW", LUA_NATIVE_NETWORK_NETWORK_SESSION_IS_CLOSED_CREW);
 		NETWORK.set_function("NETWORK_SESSION_IS_SOLO", LUA_NATIVE_NETWORK_NETWORK_SESSION_IS_SOLO);
 		NETWORK.set_function("NETWORK_SESSION_IS_PRIVATE", LUA_NATIVE_NETWORK_NETWORK_SESSION_IS_PRIVATE);
+		NETWORK.set_function("NETWORK_SESSION_LEAVE_INCLUDING_REASON_", LUA_NATIVE_NETWORK_NETWORK_SESSION_LEAVE_INCLUDING_REASON_);
 		NETWORK.set_function("NETWORK_SESSION_END", LUA_NATIVE_NETWORK_NETWORK_SESSION_END);
 		NETWORK.set_function("NETWORK_SESSION_LEAVE", LUA_NATIVE_NETWORK_NETWORK_SESSION_LEAVE);
 		NETWORK.set_function("NETWORK_SESSION_KICK_PLAYER", LUA_NATIVE_NETWORK_NETWORK_SESSION_KICK_PLAYER);
@@ -5191,6 +5252,7 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_SESSION_GET_MATCHMAKING_GROUP_FREE", LUA_NATIVE_NETWORK_NETWORK_SESSION_GET_MATCHMAKING_GROUP_FREE);
 		NETWORK.set_function("NETWORK_SESSION_ADD_ACTIVE_MATCHMAKING_GROUP", LUA_NATIVE_NETWORK_NETWORK_SESSION_ADD_ACTIVE_MATCHMAKING_GROUP);
 		NETWORK.set_function("NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT", LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT);
+		NETWORK.set_function("NETWORK_SESSION_GET_UNIQUE_CREW_LIMIT", LUA_NATIVE_NETWORK_NETWORK_SESSION_GET_UNIQUE_CREW_LIMIT);
 		NETWORK.set_function("NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT_TRANSITION", LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_UNIQUE_CREW_LIMIT_TRANSITION);
 		NETWORK.set_function("NETWORK_SESSION_SET_UNIQUE_CREW_ONLY_CREWS_TRANSITION", LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_UNIQUE_CREW_ONLY_CREWS_TRANSITION);
 		NETWORK.set_function("NETWORK_SESSION_SET_CREW_LIMIT_MAX_MEMBERS_TRANSITION", LUA_NATIVE_NETWORK_NETWORK_SESSION_SET_CREW_LIMIT_MAX_MEMBERS_TRANSITION);
@@ -5241,6 +5303,7 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_IS_GAME_IN_PROGRESS", LUA_NATIVE_NETWORK_NETWORK_IS_GAME_IN_PROGRESS);
 		NETWORK.set_function("NETWORK_IS_SESSION_ACTIVE", LUA_NATIVE_NETWORK_NETWORK_IS_SESSION_ACTIVE);
 		NETWORK.set_function("NETWORK_IS_IN_SESSION", LUA_NATIVE_NETWORK_NETWORK_IS_IN_SESSION);
+		NETWORK.set_function("NETWORK_IS_AMERICAS_VERSION_", LUA_NATIVE_NETWORK_NETWORK_IS_AMERICAS_VERSION_);
 		NETWORK.set_function("NETWORK_IS_SESSION_STARTED", LUA_NATIVE_NETWORK_NETWORK_IS_SESSION_STARTED);
 		NETWORK.set_function("NETWORK_IS_SESSION_BUSY", LUA_NATIVE_NETWORK_NETWORK_IS_SESSION_BUSY);
 		NETWORK.set_function("NETWORK_CAN_SESSION_END", LUA_NATIVE_NETWORK_NETWORK_CAN_SESSION_END);
@@ -5507,6 +5570,9 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_GET_PLAYER_OWNS_WAYPOINT", LUA_NATIVE_NETWORK_NETWORK_GET_PLAYER_OWNS_WAYPOINT);
 		NETWORK.set_function("NETWORK_CAN_SET_WAYPOINT", LUA_NATIVE_NETWORK_NETWORK_CAN_SET_WAYPOINT);
 		NETWORK.set_function("NETWORK_IGNORE_REMOTE_WAYPOINTS", LUA_NATIVE_NETWORK_NETWORK_IGNORE_REMOTE_WAYPOINTS);
+		NETWORK.set_function("NETWORK_DOES_COMMUNICATION_GROUP_EXIST_", LUA_NATIVE_NETWORK_NETWORK_DOES_COMMUNICATION_GROUP_EXIST_);
+		NETWORK.set_function("NETWORK_GET_COMMUNICATION_GROUP_FLAGS_", LUA_NATIVE_NETWORK_NETWORK_GET_COMMUNICATION_GROUP_FLAGS_);
+		NETWORK.set_function("NETWORK_SET_COMMUNICATION_GROUP_FLAGS_", LUA_NATIVE_NETWORK_NETWORK_SET_COMMUNICATION_GROUP_FLAGS_);
 		NETWORK.set_function("NETWORK_IS_PLAYER_ON_BLOCKLIST", LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_ON_BLOCKLIST);
 		NETWORK.set_function("NETWORK_SET_SCRIPT_AUTOMUTED", LUA_NATIVE_NETWORK_NETWORK_SET_SCRIPT_AUTOMUTED);
 		NETWORK.set_function("NETWORK_HAS_AUTOMUTE_OVERRIDE", LUA_NATIVE_NETWORK_NETWORK_HAS_AUTOMUTE_OVERRIDE);
@@ -5883,6 +5949,7 @@ namespace lua::native
 		NETWORK.set_function("UGC_GET_CACHED_DESCRIPTION", LUA_NATIVE_NETWORK_UGC_GET_CACHED_DESCRIPTION);
 		NETWORK.set_function("UGC_RELEASE_CACHED_DESCRIPTION", LUA_NATIVE_NETWORK_UGC_RELEASE_CACHED_DESCRIPTION);
 		NETWORK.set_function("UGC_RELEASE_ALL_CACHED_DESCRIPTIONS", LUA_NATIVE_NETWORK_UGC_RELEASE_ALL_CACHED_DESCRIPTIONS);
+		NETWORK.set_function("UGC_HAS_PERMISSION_TO_WRITE", LUA_NATIVE_NETWORK_UGC_HAS_PERMISSION_TO_WRITE);
 		NETWORK.set_function("UGC_PUBLISH", LUA_NATIVE_NETWORK_UGC_PUBLISH);
 		NETWORK.set_function("UGC_SET_BOOKMARKED", LUA_NATIVE_NETWORK_UGC_SET_BOOKMARKED);
 		NETWORK.set_function("UGC_SET_DELETED", LUA_NATIVE_NETWORK_UGC_SET_DELETED);
@@ -5926,6 +5993,8 @@ namespace lua::native
 		NETWORK.set_function("NETWORK_HAS_ROS_PRIVILEGE_END_DATE", LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_END_DATE);
 		NETWORK.set_function("NETWORK_HAS_ROS_PRIVILEGE_PLAYED_LAST_GEN", LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_PLAYED_LAST_GEN);
 		NETWORK.set_function("NETWORK_HAS_ROS_PRIVILEGE_SPECIAL_EDITION_CONTENT", LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_SPECIAL_EDITION_CONTENT);
+		NETWORK.set_function("NETWORK_HAS_ROS_PRIVILEGE_MP_TEXT_COMMUNICATION_", LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_MP_TEXT_COMMUNICATION_);
+		NETWORK.set_function("NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION_", LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION_);
 		NETWORK.set_function("NETWORK_START_COMMUNICATION_PERMISSIONS_CHECK", LUA_NATIVE_NETWORK_NETWORK_START_COMMUNICATION_PERMISSIONS_CHECK);
 		NETWORK.set_function("NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK", LUA_NATIVE_NETWORK_NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK);
 		NETWORK.set_function("NETWORK_SKIP_RADIO_RESET_NEXT_CLOSE", LUA_NATIVE_NETWORK_NETWORK_SKIP_RADIO_RESET_NEXT_CLOSE);

@@ -3,9 +3,9 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_BUSYSPINNER_ON(const char* string)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_BUSYSPINNER_ON(sol::stack_object string)
 	{
-		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON(string);
+		HUD::BEGIN_TEXT_COMMAND_BUSYSPINNER_ON(string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_BUSYSPINNER_ON(int busySpinnerType)
@@ -199,49 +199,49 @@ namespace lua::native
 		HUD::THEFEED_SET_SNAP_FEED_ITEM_POSITIONS(p0);
 	}
 
-	static void LUA_NATIVE_HUD_THEFEED_UPDATE_ITEM_TEXTURE(const char* txdString1, const char* txnString1, const char* txdString2, const char* txnString2)
+	static void LUA_NATIVE_HUD_THEFEED_UPDATE_ITEM_TEXTURE(sol::stack_object txdString1, sol::stack_object txnString1, sol::stack_object txdString2, sol::stack_object txnString2)
 	{
-		HUD::THEFEED_UPDATE_ITEM_TEXTURE(txdString1, txnString1, txdString2, txnString2);
+		HUD::THEFEED_UPDATE_ITEM_TEXTURE(txdString1.is<const char*>() ? txdString1.as<const char*>() : nullptr, txnString1.is<const char*>() ? txnString1.as<const char*>() : nullptr, txdString2.is<const char*>() ? txdString2.as<const char*>() : nullptr, txnString2.is<const char*>() ? txnString2.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_THEFEED_POST(const char* text)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_THEFEED_POST(sol::stack_object text)
 	{
-		HUD::BEGIN_TEXT_COMMAND_THEFEED_POST(text);
+		HUD::BEGIN_TEXT_COMMAND_THEFEED_POST(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_STATS(const char* statTitle, int iconEnum, bool stepVal, int barValue, bool isImportant, const char* pictureTextureDict, const char* pictureTextureName)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_STATS(sol::stack_object statTitle, int iconEnum, bool stepVal, int barValue, bool isImportant, sol::stack_object pictureTextureDict, sol::stack_object pictureTextureName)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_STATS(statTitle, iconEnum, stepVal, barValue, isImportant, pictureTextureDict, pictureTextureName);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_STATS(statTitle.is<const char*>() ? statTitle.as<const char*>() : nullptr, iconEnum, stepVal, barValue, isImportant, pictureTextureDict.is<const char*>() ? pictureTextureDict.as<const char*>() : nullptr, pictureTextureName.is<const char*>() ? pictureTextureName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(const char* txdName, const char* textureName, bool flash, int iconType, const char* sender, const char* subject)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(sol::stack_object txdName, sol::stack_object textureName, bool flash, int iconType, sol::stack_object sender, sol::stack_object subject)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(txdName, textureName, flash, iconType, sender, subject);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(txdName.is<const char*>() ? txdName.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, flash, iconType, sender.is<const char*>() ? sender.as<const char*>() : nullptr, subject.is<const char*>() ? subject.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(const char* txdName, const char* textureName, bool flash, int iconType, const char* sender, const char* subject)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(sol::stack_object txdName, sol::stack_object textureName, bool flash, int iconType, sol::stack_object sender, sol::stack_object subject)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(txdName, textureName, flash, iconType, sender, subject);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_SUBTITLE_LABEL(txdName.is<const char*>() ? txdName.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, flash, iconType, sender.is<const char*>() ? sender.as<const char*>() : nullptr, subject.is<const char*>() ? subject.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(const char* txdName, const char* textureName, bool flash, int iconType, const char* sender, const char* subject, float duration)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(sol::stack_object txdName, sol::stack_object textureName, bool flash, int iconType, sol::stack_object sender, sol::stack_object subject, float duration)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(txdName, textureName, flash, iconType, sender, subject, duration);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_TU(txdName.is<const char*>() ? txdName.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, flash, iconType, sender.is<const char*>() ? sender.as<const char*>() : nullptr, subject.is<const char*>() ? subject.as<const char*>() : nullptr, duration);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(const char* txdName, const char* textureName, bool flash, int iconType, const char* sender, const char* subject, float duration, const char* clanTag)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(sol::stack_object txdName, sol::stack_object textureName, bool flash, int iconType, sol::stack_object sender, sol::stack_object subject, float duration, sol::stack_object clanTag)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(txdName, textureName, flash, iconType, sender, subject, duration, clanTag);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG(txdName.is<const char*>() ? txdName.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, flash, iconType, sender.is<const char*>() ? sender.as<const char*>() : nullptr, subject.is<const char*>() ? subject.as<const char*>() : nullptr, duration, clanTag.is<const char*>() ? clanTag.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(const char* txdName, const char* textureName, bool flash, int iconType1, const char* sender, const char* subject, float duration, const char* clanTag, int iconType2, int p9)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(sol::stack_object txdName, sol::stack_object textureName, bool flash, int iconType1, sol::stack_object sender, sol::stack_object subject, float duration, sol::stack_object clanTag, int iconType2, int p9)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(txdName, textureName, flash, iconType1, sender, subject, duration, clanTag, iconType2, p9);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT_WITH_CREW_TAG_AND_ADDITIONAL_ICON(txdName.is<const char*>() ? txdName.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, flash, iconType1, sender.is<const char*>() ? sender.as<const char*>() : nullptr, subject.is<const char*>() ? subject.as<const char*>() : nullptr, duration, clanTag.is<const char*>() ? clanTag.as<const char*>() : nullptr, iconType2, p9);
 		return retval;
 	}
 
@@ -263,9 +263,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_AWARD(const char* textureDict, const char* textureName, int rpBonus, int colorOverlay, const char* titleLabel)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_AWARD(sol::stack_object textureDict, sol::stack_object textureName, int rpBonus, int colorOverlay, sol::stack_object titleLabel)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_AWARD(textureDict, textureName, rpBonus, colorOverlay, titleLabel);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_AWARD(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, rpBonus, colorOverlay, titleLabel.is<const char*>() ? titleLabel.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -278,24 +278,24 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<int, int> LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_CREWTAG_WITH_GAME_NAME(bool p0, bool p1, int p2, int p3, bool isLeader, bool unk0, int clanDesc, const char* playerName, int R, int G, int B)
+	static std::tuple<int, int> LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_CREWTAG_WITH_GAME_NAME(bool p0, bool p1, int p2, int p3, bool isLeader, bool unk0, int clanDesc, sol::stack_object playerName, int R, int G, int B)
 	{
 		std::tuple<int, int> return_values;
-		std::get<0>(return_values) = HUD::END_TEXT_COMMAND_THEFEED_POST_CREWTAG_WITH_GAME_NAME(p0, p1, &p2, p3, isLeader, unk0, clanDesc, playerName, R, G, B);
+		std::get<0>(return_values) = HUD::END_TEXT_COMMAND_THEFEED_POST_CREWTAG_WITH_GAME_NAME(p0, p1, &p2, p3, isLeader, unk0, clanDesc, playerName.is<const char*>() ? playerName.as<const char*>() : nullptr, R, G, B);
 		std::get<1>(return_values) = p2;
 
 		return return_values;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_UNLOCK(const char* gxtLabel1, int p1, const char* gxtLabel2)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_UNLOCK(sol::stack_object gxtLabel1, int p1, sol::stack_object gxtLabel2)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK(gxtLabel1, p1, gxtLabel2);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK(gxtLabel1.is<const char*>() ? gxtLabel1.as<const char*>() : nullptr, p1, gxtLabel2.is<const char*>() ? gxtLabel2.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU(const char* gxtLabel1, int p1, const char* gxtLabel2, int p3)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU(sol::stack_object gxtLabel1, int p1, sol::stack_object gxtLabel2, int p3)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU(gxtLabel1, p1, gxtLabel2, p3);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_UNLOCK_TU(gxtLabel1.is<const char*>() ? gxtLabel1.as<const char*>() : nullptr, p1, gxtLabel2.is<const char*>() ? gxtLabel2.as<const char*>() : nullptr, p3);
 		return retval;
 	}
 
@@ -311,33 +311,33 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_CREW_RANKUP_WITH_LITERAL_FLAG(const char* p0, const char* p1, const char* p2, bool p3, bool p4)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_CREW_RANKUP_WITH_LITERAL_FLAG(sol::stack_object p0, sol::stack_object p1, sol::stack_object p2, bool p3, bool p4)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_CREW_RANKUP_WITH_LITERAL_FLAG(p0, p1, p2, p3, p4);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_CREW_RANKUP_WITH_LITERAL_FLAG(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3, p4);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_VERSUS_TU(const char* txdName1, const char* textureName1, int count1, const char* txdName2, const char* textureName2, int count2, int hudColor1, int hudColor2)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_VERSUS_TU(sol::stack_object txdName1, sol::stack_object textureName1, int count1, sol::stack_object txdName2, sol::stack_object textureName2, int count2, int hudColor1, int hudColor2)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_VERSUS_TU(txdName1, textureName1, count1, txdName2, textureName2, count2, hudColor1, hudColor2);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_VERSUS_TU(txdName1.is<const char*>() ? txdName1.as<const char*>() : nullptr, textureName1.is<const char*>() ? textureName1.as<const char*>() : nullptr, count1, txdName2.is<const char*>() ? txdName2.as<const char*>() : nullptr, textureName2.is<const char*>() ? textureName2.as<const char*>() : nullptr, count2, hudColor1, hudColor2);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_REPLAY(int type, int image, const char* text)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_REPLAY(int type, int image, sol::stack_object text)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY(type, image, text);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY(type, image, text.is<const char*>() ? text.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_REPLAY_INPUT(int type, const char* button, const char* text)
+	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_THEFEED_POST_REPLAY_INPUT(int type, sol::stack_object button, sol::stack_object text)
 	{
-		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY_INPUT(type, button, text);
+		auto retval = HUD::END_TEXT_COMMAND_THEFEED_POST_REPLAY_INPUT(type, button.is<const char*>() ? button.as<const char*>() : nullptr, text.is<const char*>() ? text.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_PRINT(const char* GxtEntry)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_PRINT(sol::stack_object GxtEntry)
 	{
-		HUD::BEGIN_TEXT_COMMAND_PRINT(GxtEntry);
+		HUD::BEGIN_TEXT_COMMAND_PRINT(GxtEntry.is<const char*>() ? GxtEntry.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_PRINT(int duration, bool drawImmediately)
@@ -345,9 +345,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_PRINT(duration, drawImmediately);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_IS_MESSAGE_DISPLAYED(const char* text)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_IS_MESSAGE_DISPLAYED(sol::stack_object text)
 	{
-		HUD::BEGIN_TEXT_COMMAND_IS_MESSAGE_DISPLAYED(text);
+		HUD::BEGIN_TEXT_COMMAND_IS_MESSAGE_DISPLAYED(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_HUD_END_TEXT_COMMAND_IS_MESSAGE_DISPLAYED()
@@ -356,9 +356,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_DISPLAY_TEXT(const char* text)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_DISPLAY_TEXT(sol::stack_object text)
 	{
-		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT(text);
+		HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_DISPLAY_TEXT(float x, float y, int p2)
@@ -366,9 +366,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_DISPLAY_TEXT(x, y, p2);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(const char* text)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(sol::stack_object text)
 	{
-		HUD::BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(text);
+		HUD::BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
 	static float LUA_NATIVE_HUD_END_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT(bool p0)
@@ -377,9 +377,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(const char* entry)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(sol::stack_object entry)
 	{
-		HUD::BEGIN_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(entry);
+		HUD::BEGIN_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(entry.is<const char*>() ? entry.as<const char*>() : nullptr);
 	}
 
 	static int LUA_NATIVE_HUD_END_TEXT_COMMAND_GET_NUMBER_OF_LINES_FOR_STRING(float x, float y)
@@ -388,9 +388,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_DISPLAY_HELP(const char* inputType)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_DISPLAY_HELP(sol::stack_object inputType)
 	{
-		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP(inputType);
+		HUD::BEGIN_TEXT_COMMAND_DISPLAY_HELP(inputType.is<const char*>() ? inputType.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_DISPLAY_HELP(int p0, bool loop, bool beep, int shape)
@@ -398,9 +398,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_DISPLAY_HELP(p0, loop, beep, shape);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(const char* labelName)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(sol::stack_object labelName)
 	{
-		HUD::BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(labelName);
+		HUD::BEGIN_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(labelName.is<const char*>() ? labelName.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_HUD_END_TEXT_COMMAND_IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(int p0)
@@ -409,9 +409,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_SET_BLIP_NAME(const char* textLabel)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_SET_BLIP_NAME(sol::stack_object textLabel)
 	{
-		HUD::BEGIN_TEXT_COMMAND_SET_BLIP_NAME(textLabel);
+		HUD::BEGIN_TEXT_COMMAND_SET_BLIP_NAME(textLabel.is<const char*>() ? textLabel.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_SET_BLIP_NAME(Blip blip)
@@ -419,9 +419,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_SET_BLIP_NAME(blip);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(const char* p0)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(sol::stack_object p0)
 	{
-		HUD::BEGIN_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(p0);
+		HUD::BEGIN_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(bool p0)
@@ -429,9 +429,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_ADD_DIRECTLY_TO_PREVIOUS_BRIEFS(p0);
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_CLEAR_PRINT(const char* text)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_CLEAR_PRINT(sol::stack_object text)
 	{
-		HUD::BEGIN_TEXT_COMMAND_CLEAR_PRINT(text);
+		HUD::BEGIN_TEXT_COMMAND_CLEAR_PRINT(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_CLEAR_PRINT()
@@ -439,9 +439,9 @@ namespace lua::native
 		HUD::END_TEXT_COMMAND_CLEAR_PRINT();
 	}
 
-	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_OVERRIDE_BUTTON_TEXT(const char* gxtEntry)
+	static void LUA_NATIVE_HUD_BEGIN_TEXT_COMMAND_OVERRIDE_BUTTON_TEXT(sol::stack_object gxtEntry)
 	{
-		HUD::BEGIN_TEXT_COMMAND_OVERRIDE_BUTTON_TEXT(gxtEntry);
+		HUD::BEGIN_TEXT_COMMAND_OVERRIDE_BUTTON_TEXT(gxtEntry.is<const char*>() ? gxtEntry.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_END_TEXT_COMMAND_OVERRIDE_BUTTON_TEXT(int p0)
@@ -459,9 +459,9 @@ namespace lua::native
 		HUD::ADD_TEXT_COMPONENT_FLOAT(value, decimalPlaces);
 	}
 
-	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL(const char* labelName)
+	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL(sol::stack_object labelName)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL(labelName);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL(labelName.is<const char*>() ? labelName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_TEXT_LABEL_HASH_KEY(Hash gxtEntryHash)
@@ -474,9 +474,9 @@ namespace lua::native
 		HUD::ADD_TEXT_COMPONENT_SUBSTRING_BLIP_NAME(blip);
 	}
 
-	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(const char* text)
+	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(sol::stack_object text)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text.is<const char*>() ? text.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_TIME(int timestamp, int flags)
@@ -489,19 +489,19 @@ namespace lua::native
 		HUD::ADD_TEXT_COMPONENT_FORMATTED_INTEGER(value, commaSeparated);
 	}
 
-	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_PHONE_NUMBER(const char* p0, int p1)
+	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_PHONE_NUMBER(sol::stack_object p0, int p1)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PHONE_NUMBER(p0, p1);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_PHONE_NUMBER(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1);
 	}
 
-	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_WEBSITE(const char* website)
+	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_WEBSITE(sol::stack_object website)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_WEBSITE(website);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_WEBSITE(website.is<const char*>() ? website.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_KEYBOARD_DISPLAY(const char* string)
+	static void LUA_NATIVE_HUD_ADD_TEXT_COMPONENT_SUBSTRING_KEYBOARD_DISPLAY(sol::stack_object string)
 	{
-		HUD::ADD_TEXT_COMPONENT_SUBSTRING_KEYBOARD_DISPLAY(string);
+		HUD::ADD_TEXT_COMPONENT_SUBSTRING_KEYBOARD_DISPLAY(string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_SET_COLOUR_OF_NEXT_TEXT_COMPONENT(int hudColor)
@@ -509,27 +509,27 @@ namespace lua::native
 		HUD::SET_COLOUR_OF_NEXT_TEXT_COMPONENT(hudColor);
 	}
 
-	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME(const char* text, int position, int length)
+	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME(sol::stack_object text, int position, int length)
 	{
-		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME(text, position, length);
+		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME(text.is<const char*>() ? text.as<const char*>() : nullptr, position, length);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_WITH_BYTE_LIMIT(const char* text, int position, int length, int maxLength)
+	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_WITH_BYTE_LIMIT(sol::stack_object text, int position, int length, int maxLength)
 	{
-		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_WITH_BYTE_LIMIT(text, position, length, maxLength);
+		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_WITH_BYTE_LIMIT(text.is<const char*>() ? text.as<const char*>() : nullptr, position, length, maxLength);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_BYTES(const char* text, int startPosition, int endPosition)
+	static const char* LUA_NATIVE_HUD_GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_BYTES(sol::stack_object text, int startPosition, int endPosition)
 	{
-		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_BYTES(text, startPosition, endPosition);
+		auto retval = HUD::GET_CHARACTER_FROM_AUDIO_CONVERSATION_FILENAME_BYTES(text.is<const char*>() ? text.as<const char*>() : nullptr, startPosition, endPosition);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_HUD_GET_FILENAME_FOR_AUDIO_CONVERSATION(const char* labelName)
+	static const char* LUA_NATIVE_HUD_GET_FILENAME_FOR_AUDIO_CONVERSATION(sol::stack_object labelName)
 	{
-		auto retval = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(labelName);
+		auto retval = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(labelName.is<const char*>() ? labelName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -548,9 +548,9 @@ namespace lua::native
 		HUD::CLEAR_ALL_HELP_MESSAGES();
 	}
 
-	static void LUA_NATIVE_HUD_CLEAR_THIS_PRINT(const char* p0)
+	static void LUA_NATIVE_HUD_CLEAR_THIS_PRINT(sol::stack_object p0)
 	{
-		HUD::CLEAR_THIS_PRINT(p0);
+		HUD::CLEAR_THIS_PRINT(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_CLEAR_SMALL_PRINTS()
@@ -558,20 +558,20 @@ namespace lua::native
 		HUD::CLEAR_SMALL_PRINTS();
 	}
 
-	static bool LUA_NATIVE_HUD_DOES_TEXT_BLOCK_EXIST(const char* gxt)
+	static bool LUA_NATIVE_HUD_DOES_TEXT_BLOCK_EXIST(sol::stack_object gxt)
 	{
-		auto retval = (bool)HUD::DOES_TEXT_BLOCK_EXIST(gxt);
+		auto retval = (bool)HUD::DOES_TEXT_BLOCK_EXIST(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_REQUEST_ADDITIONAL_TEXT(const char* gxt, int slot)
+	static void LUA_NATIVE_HUD_REQUEST_ADDITIONAL_TEXT(sol::stack_object gxt, int slot)
 	{
-		HUD::REQUEST_ADDITIONAL_TEXT(gxt, slot);
+		HUD::REQUEST_ADDITIONAL_TEXT(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr, slot);
 	}
 
-	static void LUA_NATIVE_HUD_REQUEST_ADDITIONAL_TEXT_FOR_DLC(const char* gxt, int slot)
+	static void LUA_NATIVE_HUD_REQUEST_ADDITIONAL_TEXT_FOR_DLC(sol::stack_object gxt, int slot)
 	{
-		HUD::REQUEST_ADDITIONAL_TEXT_FOR_DLC(gxt, slot);
+		HUD::REQUEST_ADDITIONAL_TEXT_FOR_DLC(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr, slot);
 	}
 
 	static bool LUA_NATIVE_HUD_HAS_ADDITIONAL_TEXT_LOADED(int slot)
@@ -591,9 +591,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_HAS_THIS_ADDITIONAL_TEXT_LOADED(const char* gxt, int slot)
+	static bool LUA_NATIVE_HUD_HAS_THIS_ADDITIONAL_TEXT_LOADED(sol::stack_object gxt, int slot)
 	{
-		auto retval = (bool)HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED(gxt, slot);
+		auto retval = (bool)HUD::HAS_THIS_ADDITIONAL_TEXT_LOADED(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr, slot);
 		return retval;
 	}
 
@@ -603,33 +603,33 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_DOES_TEXT_LABEL_EXIST(const char* gxt)
+	static bool LUA_NATIVE_HUD_DOES_TEXT_LABEL_EXIST(sol::stack_object gxt)
 	{
-		auto retval = (bool)HUD::DOES_TEXT_LABEL_EXIST(gxt);
+		auto retval = (bool)HUD::DOES_TEXT_LABEL_EXIST(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_HUD_GET_FIRST_N_CHARACTERS_OF_LITERAL_STRING(const char* string, int length)
+	static const char* LUA_NATIVE_HUD_GET_FIRST_N_CHARACTERS_OF_LITERAL_STRING(sol::stack_object string, int length)
 	{
-		auto retval = HUD::GET_FIRST_N_CHARACTERS_OF_LITERAL_STRING(string, length);
+		auto retval = HUD::GET_FIRST_N_CHARACTERS_OF_LITERAL_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr, length);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_GET_LENGTH_OF_STRING_WITH_THIS_TEXT_LABEL(const char* gxt)
+	static int LUA_NATIVE_HUD_GET_LENGTH_OF_STRING_WITH_THIS_TEXT_LABEL(sol::stack_object gxt)
 	{
-		auto retval = HUD::GET_LENGTH_OF_STRING_WITH_THIS_TEXT_LABEL(gxt);
+		auto retval = HUD::GET_LENGTH_OF_STRING_WITH_THIS_TEXT_LABEL(gxt.is<const char*>() ? gxt.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_GET_LENGTH_OF_LITERAL_STRING(const char* string)
+	static int LUA_NATIVE_HUD_GET_LENGTH_OF_LITERAL_STRING(sol::stack_object string)
 	{
-		auto retval = HUD::GET_LENGTH_OF_LITERAL_STRING(string);
+		auto retval = HUD::GET_LENGTH_OF_LITERAL_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(const char* string)
+	static int LUA_NATIVE_HUD_GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(sol::stack_object string)
 	{
-		auto retval = HUD::GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(string);
+		auto retval = HUD::GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(string.is<const char*>() ? string.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -709,6 +709,11 @@ namespace lua::native
 	static void LUA_NATIVE_HUD_USE_VEHICLE_TARGETING_RETICULE(Any p0)
 	{
 		HUD::USE_VEHICLE_TARGETING_RETICULE(p0);
+	}
+
+	static void LUA_NATIVE_HUD_USE_VEHICLE_TARGETING_RETICULE_ON_VEHICLES_(bool enable)
+	{
+		HUD::_USE_VEHICLE_TARGETING_RETICULE_ON_VEHICLES(enable);
 	}
 
 	static void LUA_NATIVE_HUD_ADD_VALID_VEHICLE_HIT_HASH(Any p0)
@@ -884,6 +889,11 @@ namespace lua::native
 		HUD::SET_TEXT_JUSTIFICATION(justifyType);
 	}
 
+	static void LUA_NATIVE_HUD_SET_TEXT_LINE_HEIGHT_MULT(float lineHeightMult)
+	{
+		HUD::SET_TEXT_LINE_HEIGHT_MULT(lineHeightMult);
+	}
+
 	static void LUA_NATIVE_HUD_SET_TEXT_WRAP(float start, float end)
 	{
 		HUD::SET_TEXT_WRAP(start, end);
@@ -935,21 +945,21 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_REGISTER_NAMED_RENDERTARGET(const char* name, bool p1)
+	static bool LUA_NATIVE_HUD_REGISTER_NAMED_RENDERTARGET(sol::stack_object name, bool p1)
 	{
-		auto retval = (bool)HUD::REGISTER_NAMED_RENDERTARGET(name, p1);
+		auto retval = (bool)HUD::REGISTER_NAMED_RENDERTARGET(name.is<const char*>() ? name.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_IS_NAMED_RENDERTARGET_REGISTERED(const char* name)
+	static bool LUA_NATIVE_HUD_IS_NAMED_RENDERTARGET_REGISTERED(sol::stack_object name)
 	{
-		auto retval = (bool)HUD::IS_NAMED_RENDERTARGET_REGISTERED(name);
+		auto retval = (bool)HUD::IS_NAMED_RENDERTARGET_REGISTERED(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_RELEASE_NAMED_RENDERTARGET(const char* name)
+	static bool LUA_NATIVE_HUD_RELEASE_NAMED_RENDERTARGET(sol::stack_object name)
 	{
-		auto retval = (bool)HUD::RELEASE_NAMED_RENDERTARGET(name);
+		auto retval = (bool)HUD::RELEASE_NAMED_RENDERTARGET(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -958,9 +968,9 @@ namespace lua::native
 		HUD::LINK_NAMED_RENDERTARGET(modelHash);
 	}
 
-	static int LUA_NATIVE_HUD_GET_NAMED_RENDERTARGET_RENDER_ID(const char* name)
+	static int LUA_NATIVE_HUD_GET_NAMED_RENDERTARGET_RENDER_ID(sol::stack_object name)
 	{
-		auto retval = HUD::GET_NAMED_RENDERTARGET_RENDER_ID(name);
+		auto retval = HUD::GET_NAMED_RENDERTARGET_RENDER_ID(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1148,9 +1158,9 @@ namespace lua::native
 		HUD::SET_COP_BLIP_SPRITE_AS_STANDARD();
 	}
 
-	static void LUA_NATIVE_HUD_SET_BLIP_NAME_FROM_TEXT_FILE(Blip blip, const char* gxtEntry)
+	static void LUA_NATIVE_HUD_SET_BLIP_NAME_FROM_TEXT_FILE(Blip blip, sol::stack_object gxtEntry)
 	{
-		HUD::SET_BLIP_NAME_FROM_TEXT_FILE(blip, gxtEntry);
+		HUD::SET_BLIP_NAME_FROM_TEXT_FILE(blip, gxtEntry.is<const char*>() ? gxtEntry.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_SET_BLIP_NAME_TO_PLAYER_NAME(Blip blip, Player player)
@@ -1498,6 +1508,11 @@ namespace lua::native
 		HUD::CLEAR_FAKE_CONE_ARRAY();
 	}
 
+	static void LUA_NATIVE_HUD_SET_BLIP_GPS_ROUTE_DISPLAY_DISTANCE_(Blip blip, int blipChangeParam46, bool blipChangeParam47)
+	{
+		HUD::_SET_BLIP_GPS_ROUTE_DISPLAY_DISTANCE(blip, blipChangeParam46, blipChangeParam47);
+	}
+
 	static bool LUA_NATIVE_HUD_SET_MINIMAP_COMPONENT(int componentId, bool toggle, int overrideColor)
 	{
 		auto retval = (bool)HUD::SET_MINIMAP_COMPONENT(componentId, toggle, overrideColor);
@@ -1687,9 +1702,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_DISPLAY_HELP_TEXT_THIS_FRAME(const char* message, bool p1)
+	static void LUA_NATIVE_HUD_DISPLAY_HELP_TEXT_THIS_FRAME(sol::stack_object message, bool p1)
 	{
-		HUD::DISPLAY_HELP_TEXT_THIS_FRAME(message, p1);
+		HUD::DISPLAY_HELP_TEXT_THIS_FRAME(message.is<const char*>() ? message.as<const char*>() : nullptr, p1);
 	}
 
 	static void LUA_NATIVE_HUD_HUD_FORCE_WEAPON_WHEEL(bool show)
@@ -1824,19 +1839,19 @@ namespace lua::native
 		HUD::SET_MINIMAP_IN_SPECTATOR_MODE(toggle, ped);
 	}
 
-	static void LUA_NATIVE_HUD_SET_MISSION_NAME(bool p0, const char* name)
+	static void LUA_NATIVE_HUD_SET_MISSION_NAME(bool p0, sol::stack_object name)
 	{
-		HUD::SET_MISSION_NAME(p0, name);
+		HUD::SET_MISSION_NAME(p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_HUD_SET_MISSION_NAME_FOR_UGC_MISSION(bool p0, const char* name)
+	static void LUA_NATIVE_HUD_SET_MISSION_NAME_FOR_UGC_MISSION(bool p0, sol::stack_object name)
 	{
-		HUD::SET_MISSION_NAME_FOR_UGC_MISSION(p0, name);
+		HUD::SET_MISSION_NAME_FOR_UGC_MISSION(p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_HUD_SET_DESCRIPTION_FOR_UGC_MISSION_EIGHT_STRINGS(bool p0, const char* p1, const char* p2, const char* p3, const char* p4, const char* p5, const char* p6, const char* p7, const char* p8)
+	static void LUA_NATIVE_HUD_SET_DESCRIPTION_FOR_UGC_MISSION_EIGHT_STRINGS(bool p0, sol::stack_object p1, sol::stack_object p2, sol::stack_object p3, sol::stack_object p4, sol::stack_object p5, sol::stack_object p6, sol::stack_object p7, sol::stack_object p8)
 	{
-		HUD::SET_DESCRIPTION_FOR_UGC_MISSION_EIGHT_STRINGS(p0, p1, p2, p3, p4, p5, p6, p7, p8);
+		HUD::SET_DESCRIPTION_FOR_UGC_MISSION_EIGHT_STRINGS(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3.is<const char*>() ? p3.as<const char*>() : nullptr, p4.is<const char*>() ? p4.as<const char*>() : nullptr, p5.is<const char*>() ? p5.as<const char*>() : nullptr, p6.is<const char*>() ? p6.as<const char*>() : nullptr, p7.is<const char*>() ? p7.as<const char*>() : nullptr, p8.is<const char*>() ? p8.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_SET_MINIMAP_BLOCK_WAYPOINT(bool toggle)
@@ -2057,9 +2072,9 @@ namespace lua::native
 		HUD::CLEAR_FLOATING_HELP(hudIndex, p1);
 	}
 
-	static void LUA_NATIVE_HUD_CREATE_MP_GAMER_TAG_WITH_CREW_COLOR(Player player, const char* username, bool pointedClanTag, bool isRockstarClan, const char* clanTag, int clanFlag, int r, int g, int b)
+	static void LUA_NATIVE_HUD_CREATE_MP_GAMER_TAG_WITH_CREW_COLOR(Player player, sol::stack_object username, bool pointedClanTag, bool isRockstarClan, sol::stack_object clanTag, int clanFlag, int r, int g, int b)
 	{
-		HUD::CREATE_MP_GAMER_TAG_WITH_CREW_COLOR(player, username, pointedClanTag, isRockstarClan, clanTag, clanFlag, r, g, b);
+		HUD::CREATE_MP_GAMER_TAG_WITH_CREW_COLOR(player, username.is<const char*>() ? username.as<const char*>() : nullptr, pointedClanTag, isRockstarClan, clanTag.is<const char*>() ? clanTag.as<const char*>() : nullptr, clanFlag, r, g, b);
 	}
 
 	static bool LUA_NATIVE_HUD_IS_MP_GAMER_TAG_MOVIE_ACTIVE()
@@ -2068,9 +2083,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_HUD_CREATE_FAKE_MP_GAMER_TAG(Ped ped, const char* username, bool pointedClanTag, bool isRockstarClan, const char* clanTag, int clanFlag)
+	static int LUA_NATIVE_HUD_CREATE_FAKE_MP_GAMER_TAG(Ped ped, sol::stack_object username, bool pointedClanTag, bool isRockstarClan, sol::stack_object clanTag, int clanFlag)
 	{
-		auto retval = HUD::CREATE_FAKE_MP_GAMER_TAG(ped, username, pointedClanTag, isRockstarClan, clanTag, clanFlag);
+		auto retval = HUD::CREATE_FAKE_MP_GAMER_TAG(ped, username.is<const char*>() ? username.as<const char*>() : nullptr, pointedClanTag, isRockstarClan, clanTag.is<const char*>() ? clanTag.as<const char*>() : nullptr, clanFlag);
 		return retval;
 	}
 
@@ -2141,9 +2156,9 @@ namespace lua::native
 		HUD::SET_MP_GAMER_TAG_NUM_PACKAGES(gamerTagId, p1);
 	}
 
-	static void LUA_NATIVE_HUD_SET_MP_GAMER_TAG_NAME(int gamerTagId, const char* string)
+	static void LUA_NATIVE_HUD_SET_MP_GAMER_TAG_NAME(int gamerTagId, sol::stack_object string)
 	{
-		HUD::SET_MP_GAMER_TAG_NAME(gamerTagId, string);
+		HUD::SET_MP_GAMER_TAG_NAME(gamerTagId, string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_HUD_IS_UPDATING_MP_GAMER_TAG_NAME_AND_CREW_DETAILS(int gamerTagId)
@@ -2152,9 +2167,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_SET_MP_GAMER_TAG_BIG_TEXT(int gamerTagId, const char* string)
+	static void LUA_NATIVE_HUD_SET_MP_GAMER_TAG_BIG_TEXT(int gamerTagId, sol::stack_object string)
 	{
-		HUD::SET_MP_GAMER_TAG_BIG_TEXT(gamerTagId, string);
+		HUD::SET_MP_GAMER_TAG_BIG_TEXT(gamerTagId, string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
 	static int LUA_NATIVE_HUD_GET_CURRENT_WEBPAGE_ID()
@@ -2186,39 +2201,39 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE(const char* titleMsg, int flags, const char* promptMsg, bool p3, int p4, const char* p5, const char* p6, bool showBackground, int errorCode)
+	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE(sol::stack_object titleMsg, int flags, sol::stack_object promptMsg, bool p3, int p4, sol::stack_object p5, sol::stack_object p6, bool showBackground, int errorCode)
 	{
-		HUD::SET_WARNING_MESSAGE(titleMsg, flags, promptMsg, p3, p4, p5, p6, showBackground, errorCode);
+		HUD::SET_WARNING_MESSAGE(titleMsg.is<const char*>() ? titleMsg.as<const char*>() : nullptr, flags, promptMsg.is<const char*>() ? promptMsg.as<const char*>() : nullptr, p3, p4, p5.is<const char*>() ? p5.as<const char*>() : nullptr, p6.is<const char*>() ? p6.as<const char*>() : nullptr, showBackground, errorCode);
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER(const char* entryHeader, const char* entryLine1, int instructionalKey, const char* entryLine2, bool p4, Any p5, Any showBackground, Any p7, bool p8, Any p9)
+	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER(sol::stack_object entryHeader, sol::stack_object entryLine1, int instructionalKey, sol::stack_object entryLine2, bool p4, Any p5, Any showBackground, Any p7, bool p8, Any p9)
 	{
 		std::tuple<Any, Any> return_values;
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER(entryHeader, entryLine1, instructionalKey, entryLine2, p4, p5, &showBackground, &p7, p8, p9);
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, instructionalKey, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, &showBackground, &p7, p8, p9);
 		std::get<0>(return_values) = showBackground;
 		std::get<1>(return_values) = p7;
 
 		return return_values;
 	}
 
-	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(const char* entryHeader, const char* entryLine1, int instructionalKey, const char* entryLine2, bool p4, Any p5, Any additionalIntInfo, const char* additionalTextInfoLine1, const char* additionalTextInfoLine2, bool showBackground, int errorCode)
+	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(sol::stack_object entryHeader, sol::stack_object entryLine1, int instructionalKey, sol::stack_object entryLine2, bool p4, Any p5, Any additionalIntInfo, sol::stack_object additionalTextInfoLine1, sol::stack_object additionalTextInfoLine2, bool showBackground, int errorCode)
 	{
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(entryHeader, entryLine1, instructionalKey, entryLine2, p4, p5, additionalIntInfo, additionalTextInfoLine1, additionalTextInfoLine2, showBackground, errorCode);
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, instructionalKey, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, additionalIntInfo, additionalTextInfoLine1.is<const char*>() ? additionalTextInfoLine1.as<const char*>() : nullptr, additionalTextInfoLine2.is<const char*>() ? additionalTextInfoLine2.as<const char*>() : nullptr, showBackground, errorCode);
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(const char* entryHeader, const char* entryLine1, int flags, const char* entryLine2, bool p4, Any p5, Any p6, Any p7, bool showBg, Any p9, Any p10)
+	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(sol::stack_object entryHeader, sol::stack_object entryLine1, int flags, sol::stack_object entryLine2, bool p4, Any p5, Any p6, Any p7, bool showBg, Any p9, Any p10)
 	{
 		std::tuple<Any, Any> return_values;
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(entryHeader, entryLine1, flags, entryLine2, p4, p5, &p6, &p7, showBg, p9, p10);
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, flags, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, &p6, &p7, showBg, p9, p10);
 		std::get<0>(return_values) = p6;
 		std::get<1>(return_values) = p7;
 
 		return return_values;
 	}
 
-	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS_EXTENDED(const char* labelTitle, const char* labelMessage, int p2, int p3, const char* labelMessage2, bool p5, int p6, int p7, const char* p8, const char* p9, bool background, int errorCode)
+	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS_EXTENDED(sol::stack_object labelTitle, sol::stack_object labelMessage, int p2, int p3, sol::stack_object labelMessage2, bool p5, int p6, int p7, sol::stack_object p8, sol::stack_object p9, bool background, int errorCode)
 	{
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS_EXTENDED(labelTitle, labelMessage, p2, p3, labelMessage2, p5, p6, p7, p8, p9, background, errorCode);
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS_EXTENDED(labelTitle.is<const char*>() ? labelTitle.as<const char*>() : nullptr, labelMessage.is<const char*>() ? labelMessage.as<const char*>() : nullptr, p2, p3, labelMessage2.is<const char*>() ? labelMessage2.as<const char*>() : nullptr, p5, p6, p7, p8.is<const char*>() ? p8.as<const char*>() : nullptr, p9.is<const char*>() ? p9.as<const char*>() : nullptr, background, errorCode);
 	}
 
 	static Hash LUA_NATIVE_HUD_GET_WARNING_SCREEN_MESSAGE_HASH()
@@ -2227,9 +2242,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_HUD_SET_WARNING_MESSAGE_OPTION_ITEMS(int index, const char* name, int cash, int rp, int lvl, int colour)
+	static bool LUA_NATIVE_HUD_SET_WARNING_MESSAGE_OPTION_ITEMS(int index, sol::stack_object name, int cash, int rp, int lvl, int colour)
 	{
-		auto retval = (bool)HUD::SET_WARNING_MESSAGE_OPTION_ITEMS(index, name, cash, rp, lvl, colour);
+		auto retval = (bool)HUD::SET_WARNING_MESSAGE_OPTION_ITEMS(index, name.is<const char*>() ? name.as<const char*>() : nullptr, cash, rp, lvl, colour);
 		return retval;
 	}
 
@@ -2374,9 +2389,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_HUD_FORCE_SCRIPTED_GFX_WHEN_FRONTEND_ACTIVE(const char* p0)
+	static void LUA_NATIVE_HUD_FORCE_SCRIPTED_GFX_WHEN_FRONTEND_ACTIVE(sol::stack_object p0)
 	{
-		HUD::FORCE_SCRIPTED_GFX_WHEN_FRONTEND_ACTIVE(p0);
+		HUD::FORCE_SCRIPTED_GFX_WHEN_FRONTEND_ACTIVE(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_HUD_PAUSE_MENUCEPTION_GO_DEEPER(int page)
@@ -2653,9 +2668,9 @@ namespace lua::native
 		HUD::CLOSE_SOCIAL_CLUB_MENU();
 	}
 
-	static void LUA_NATIVE_HUD_SET_SOCIAL_CLUB_TOUR(const char* name)
+	static void LUA_NATIVE_HUD_SET_SOCIAL_CLUB_TOUR(sol::stack_object name)
 	{
-		HUD::SET_SOCIAL_CLUB_TOUR(name);
+		HUD::SET_SOCIAL_CLUB_TOUR(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_HUD_IS_SOCIAL_CLUB_ACTIVE()
@@ -2926,6 +2941,7 @@ namespace lua::native
 		HUD.set_function("IS_RADAR_HIDDEN", LUA_NATIVE_HUD_IS_RADAR_HIDDEN);
 		HUD.set_function("IS_MINIMAP_RENDERING", LUA_NATIVE_HUD_IS_MINIMAP_RENDERING);
 		HUD.set_function("USE_VEHICLE_TARGETING_RETICULE", LUA_NATIVE_HUD_USE_VEHICLE_TARGETING_RETICULE);
+		HUD.set_function("USE_VEHICLE_TARGETING_RETICULE_ON_VEHICLES_", LUA_NATIVE_HUD_USE_VEHICLE_TARGETING_RETICULE_ON_VEHICLES_);
 		HUD.set_function("ADD_VALID_VEHICLE_HIT_HASH", LUA_NATIVE_HUD_ADD_VALID_VEHICLE_HIT_HASH);
 		HUD.set_function("CLEAR_VALID_VEHICLE_HIT_HASHES", LUA_NATIVE_HUD_CLEAR_VALID_VEHICLE_HIT_HASHES);
 		HUD.set_function("SET_BLIP_ROUTE", LUA_NATIVE_HUD_SET_BLIP_ROUTE);
@@ -2959,6 +2975,7 @@ namespace lua::native
 		HUD.set_function("SET_TEXT_CENTRE", LUA_NATIVE_HUD_SET_TEXT_CENTRE);
 		HUD.set_function("SET_TEXT_RIGHT_JUSTIFY", LUA_NATIVE_HUD_SET_TEXT_RIGHT_JUSTIFY);
 		HUD.set_function("SET_TEXT_JUSTIFICATION", LUA_NATIVE_HUD_SET_TEXT_JUSTIFICATION);
+		HUD.set_function("SET_TEXT_LINE_HEIGHT_MULT", LUA_NATIVE_HUD_SET_TEXT_LINE_HEIGHT_MULT);
 		HUD.set_function("SET_TEXT_WRAP", LUA_NATIVE_HUD_SET_TEXT_WRAP);
 		HUD.set_function("SET_TEXT_LEADING", LUA_NATIVE_HUD_SET_TEXT_LEADING);
 		HUD.set_function("SET_TEXT_PROPORTIONAL", LUA_NATIVE_HUD_SET_TEXT_PROPORTIONAL);
@@ -3073,6 +3090,7 @@ namespace lua::native
 		HUD.set_function("SETUP_FAKE_CONE_DATA", LUA_NATIVE_HUD_SETUP_FAKE_CONE_DATA);
 		HUD.set_function("REMOVE_FAKE_CONE_DATA", LUA_NATIVE_HUD_REMOVE_FAKE_CONE_DATA);
 		HUD.set_function("CLEAR_FAKE_CONE_ARRAY", LUA_NATIVE_HUD_CLEAR_FAKE_CONE_ARRAY);
+		HUD.set_function("SET_BLIP_GPS_ROUTE_DISPLAY_DISTANCE_", LUA_NATIVE_HUD_SET_BLIP_GPS_ROUTE_DISPLAY_DISTANCE_);
 		HUD.set_function("SET_MINIMAP_COMPONENT", LUA_NATIVE_HUD_SET_MINIMAP_COMPONENT);
 		HUD.set_function("SET_MINIMAP_SONAR_SWEEP", LUA_NATIVE_HUD_SET_MINIMAP_SONAR_SWEEP);
 		HUD.set_function("SHOW_ACCOUNT_PICKER", LUA_NATIVE_HUD_SHOW_ACCOUNT_PICKER);
