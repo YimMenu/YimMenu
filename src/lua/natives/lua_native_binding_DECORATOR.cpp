@@ -3,68 +3,68 @@
 
 namespace lua::native
 {
-	static bool LUA_NATIVE_DECORATOR_DECOR_SET_TIME(Entity entity, const char* propertyName, int timestamp)
+	static bool LUA_NATIVE_DECORATOR_DECOR_SET_TIME(Entity entity, sol::stack_object propertyName, int timestamp)
 	{
-		auto retval = (bool)DECORATOR::DECOR_SET_TIME(entity, propertyName, timestamp);
+		auto retval = (bool)DECORATOR::DECOR_SET_TIME(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, timestamp);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_SET_BOOL(Entity entity, const char* propertyName, bool value)
+	static bool LUA_NATIVE_DECORATOR_DECOR_SET_BOOL(Entity entity, sol::stack_object propertyName, bool value)
 	{
-		auto retval = (bool)DECORATOR::DECOR_SET_BOOL(entity, propertyName, value);
+		auto retval = (bool)DECORATOR::DECOR_SET_BOOL(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, value);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_SET_FLOAT(Entity entity, const char* propertyName, float value)
+	static bool LUA_NATIVE_DECORATOR_DECOR_SET_FLOAT(Entity entity, sol::stack_object propertyName, float value)
 	{
-		auto retval = (bool)DECORATOR::DECOR_SET_FLOAT(entity, propertyName, value);
+		auto retval = (bool)DECORATOR::DECOR_SET_FLOAT(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, value);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_SET_INT(Entity entity, const char* propertyName, int value)
+	static bool LUA_NATIVE_DECORATOR_DECOR_SET_INT(Entity entity, sol::stack_object propertyName, int value)
 	{
-		auto retval = (bool)DECORATOR::DECOR_SET_INT(entity, propertyName, value);
+		auto retval = (bool)DECORATOR::DECOR_SET_INT(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, value);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_GET_BOOL(Entity entity, const char* propertyName)
+	static bool LUA_NATIVE_DECORATOR_DECOR_GET_BOOL(Entity entity, sol::stack_object propertyName)
 	{
-		auto retval = (bool)DECORATOR::DECOR_GET_BOOL(entity, propertyName);
+		auto retval = (bool)DECORATOR::DECOR_GET_BOOL(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static float LUA_NATIVE_DECORATOR_DECOR_GET_FLOAT(Entity entity, const char* propertyName)
+	static float LUA_NATIVE_DECORATOR_DECOR_GET_FLOAT(Entity entity, sol::stack_object propertyName)
 	{
-		auto retval = DECORATOR::DECOR_GET_FLOAT(entity, propertyName);
+		auto retval = DECORATOR::DECOR_GET_FLOAT(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_DECORATOR_DECOR_GET_INT(Entity entity, const char* propertyName)
+	static int LUA_NATIVE_DECORATOR_DECOR_GET_INT(Entity entity, sol::stack_object propertyName)
 	{
-		auto retval = DECORATOR::DECOR_GET_INT(entity, propertyName);
+		auto retval = DECORATOR::DECOR_GET_INT(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_EXIST_ON(Entity entity, const char* propertyName)
+	static bool LUA_NATIVE_DECORATOR_DECOR_EXIST_ON(Entity entity, sol::stack_object propertyName)
 	{
-		auto retval = (bool)DECORATOR::DECOR_EXIST_ON(entity, propertyName);
+		auto retval = (bool)DECORATOR::DECOR_EXIST_ON(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_REMOVE(Entity entity, const char* propertyName)
+	static bool LUA_NATIVE_DECORATOR_DECOR_REMOVE(Entity entity, sol::stack_object propertyName)
 	{
-		auto retval = (bool)DECORATOR::DECOR_REMOVE(entity, propertyName);
+		auto retval = (bool)DECORATOR::DECOR_REMOVE(entity, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_DECORATOR_DECOR_REGISTER(const char* propertyName, int type)
+	static void LUA_NATIVE_DECORATOR_DECOR_REGISTER(sol::stack_object propertyName, int type)
 	{
-		DECORATOR::DECOR_REGISTER(propertyName, type);
+		DECORATOR::DECOR_REGISTER(propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, type);
 	}
 
-	static bool LUA_NATIVE_DECORATOR_DECOR_IS_REGISTERED_AS_TYPE(const char* propertyName, int type)
+	static bool LUA_NATIVE_DECORATOR_DECOR_IS_REGISTERED_AS_TYPE(sol::stack_object propertyName, int type)
 	{
-		auto retval = (bool)DECORATOR::DECOR_IS_REGISTERED_AS_TYPE(propertyName, type);
+		auto retval = (bool)DECORATOR::DECOR_IS_REGISTERED_AS_TYPE(propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, type);
 		return retval;
 	}
 

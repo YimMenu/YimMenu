@@ -91,9 +91,9 @@ namespace lua::native
 		INTERIOR::FORCE_ROOM_FOR_GAME_VIEWPORT(interiorID, roomHashKey);
 	}
 
-	static void LUA_NATIVE_INTERIOR_SET_ROOM_FOR_GAME_VIEWPORT_BY_NAME(const char* roomName)
+	static void LUA_NATIVE_INTERIOR_SET_ROOM_FOR_GAME_VIEWPORT_BY_NAME(sol::stack_object roomName)
 	{
-		INTERIOR::SET_ROOM_FOR_GAME_VIEWPORT_BY_NAME(roomName);
+		INTERIOR::SET_ROOM_FOR_GAME_VIEWPORT_BY_NAME(roomName.is<const char*>() ? roomName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_INTERIOR_SET_ROOM_FOR_GAME_VIEWPORT_BY_KEY(Hash roomHashKey)
@@ -124,9 +124,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_INTERIOR_ADD_PICKUP_TO_INTERIOR_ROOM_BY_NAME(Pickup pickup, const char* roomName)
+	static void LUA_NATIVE_INTERIOR_ADD_PICKUP_TO_INTERIOR_ROOM_BY_NAME(Pickup pickup, sol::stack_object roomName)
 	{
-		INTERIOR::ADD_PICKUP_TO_INTERIOR_ROOM_BY_NAME(pickup, roomName);
+		INTERIOR::ADD_PICKUP_TO_INTERIOR_ROOM_BY_NAME(pickup, roomName.is<const char*>() ? roomName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_INTERIOR_PIN_INTERIOR_IN_MEMORY(Interior interior)
@@ -151,9 +151,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Interior LUA_NATIVE_INTERIOR_GET_INTERIOR_AT_COORDS_WITH_TYPE(float x, float y, float z, const char* interiorType)
+	static Interior LUA_NATIVE_INTERIOR_GET_INTERIOR_AT_COORDS_WITH_TYPE(float x, float y, float z, sol::stack_object interiorType)
 	{
-		auto retval = INTERIOR::GET_INTERIOR_AT_COORDS_WITH_TYPE(x, y, z, interiorType);
+		auto retval = INTERIOR::GET_INTERIOR_AT_COORDS_WITH_TYPE(x, y, z, interiorType.is<const char*>() ? interiorType.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -185,25 +185,25 @@ namespace lua::native
 		INTERIOR::ENABLE_STADIUM_PROBES_THIS_FRAME(toggle);
 	}
 
-	static void LUA_NATIVE_INTERIOR_ACTIVATE_INTERIOR_ENTITY_SET(Interior interior, const char* entitySetName)
+	static void LUA_NATIVE_INTERIOR_ACTIVATE_INTERIOR_ENTITY_SET(Interior interior, sol::stack_object entitySetName)
 	{
-		INTERIOR::ACTIVATE_INTERIOR_ENTITY_SET(interior, entitySetName);
+		INTERIOR::ACTIVATE_INTERIOR_ENTITY_SET(interior, entitySetName.is<const char*>() ? entitySetName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_INTERIOR_DEACTIVATE_INTERIOR_ENTITY_SET(Interior interior, const char* entitySetName)
+	static void LUA_NATIVE_INTERIOR_DEACTIVATE_INTERIOR_ENTITY_SET(Interior interior, sol::stack_object entitySetName)
 	{
-		INTERIOR::DEACTIVATE_INTERIOR_ENTITY_SET(interior, entitySetName);
+		INTERIOR::DEACTIVATE_INTERIOR_ENTITY_SET(interior, entitySetName.is<const char*>() ? entitySetName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_INTERIOR_IS_INTERIOR_ENTITY_SET_ACTIVE(Interior interior, const char* entitySetName)
+	static bool LUA_NATIVE_INTERIOR_IS_INTERIOR_ENTITY_SET_ACTIVE(Interior interior, sol::stack_object entitySetName)
 	{
-		auto retval = (bool)INTERIOR::IS_INTERIOR_ENTITY_SET_ACTIVE(interior, entitySetName);
+		auto retval = (bool)INTERIOR::IS_INTERIOR_ENTITY_SET_ACTIVE(interior, entitySetName.is<const char*>() ? entitySetName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_INTERIOR_SET_INTERIOR_ENTITY_SET_TINT_INDEX(Interior interior, const char* entitySetName, int color)
+	static void LUA_NATIVE_INTERIOR_SET_INTERIOR_ENTITY_SET_TINT_INDEX(Interior interior, sol::stack_object entitySetName, int color)
 	{
-		INTERIOR::SET_INTERIOR_ENTITY_SET_TINT_INDEX(interior, entitySetName, color);
+		INTERIOR::SET_INTERIOR_ENTITY_SET_TINT_INDEX(interior, entitySetName.is<const char*>() ? entitySetName.as<const char*>() : nullptr, color);
 	}
 
 	static void LUA_NATIVE_INTERIOR_REFRESH_INTERIOR(Interior interior)

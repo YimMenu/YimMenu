@@ -3,9 +3,9 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_REPLAY_REGISTER_EFFECT_FOR_REPLAY_EDITOR(const char* p0, bool p1)
+	static void LUA_NATIVE_REPLAY_REGISTER_EFFECT_FOR_REPLAY_EDITOR(sol::stack_object p0, bool p1)
 	{
-		REPLAY::REGISTER_EFFECT_FOR_REPLAY_EDITOR(p0, p1);
+		REPLAY::REGISTER_EFFECT_FOR_REPLAY_EDITOR(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1);
 	}
 
 	static bool LUA_NATIVE_REPLAY_REPLAY_SYSTEM_HAS_REQUESTED_A_SCRIPT_CLEANUP()

@@ -38,9 +38,9 @@ namespace lua::native
 		TASK::TASK_OPEN_VEHICLE_DOOR(ped, vehicle, timeOut, seat, speed);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE(Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, const char* overrideEntryClipsetName, bool network_is_activity_session)
+	static void LUA_NATIVE_TASK_TASK_ENTER_VEHICLE(Ped ped, Vehicle vehicle, int timeout, int seat, float speed, int flag, sol::stack_object overrideEntryClipsetName, Any p7)
 	{
-		TASK::TASK_ENTER_VEHICLE(ped, vehicle, timeout, seat, speed, flag, overrideEntryClipsetName, network_is_activity_session);
+		TASK::TASK_ENTER_VEHICLE(ped, vehicle, timeout, seat, speed, flag, overrideEntryClipsetName.is<const char*>() ? overrideEntryClipsetName.as<const char*>() : nullptr, p7);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_LEAVE_VEHICLE(Ped ped, Vehicle vehicle, int flags)
@@ -168,9 +168,9 @@ namespace lua::native
 		TASK::TASK_WANDER_STANDARD(ped, heading, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_WANDER_SPECIFIC(Ped ped, const char* conditionalAnimGroupStr, const char* conditionalAnimStr, float heading)
+	static void LUA_NATIVE_TASK_TASK_WANDER_SPECIFIC(Ped ped, sol::stack_object conditionalAnimGroupStr, sol::stack_object conditionalAnimStr, float heading)
 	{
-		TASK::TASK_WANDER_SPECIFIC(ped, conditionalAnimGroupStr, conditionalAnimStr, heading);
+		TASK::TASK_WANDER_SPECIFIC(ped, conditionalAnimGroupStr.is<const char*>() ? conditionalAnimGroupStr.as<const char*>() : nullptr, conditionalAnimStr.is<const char*>() ? conditionalAnimStr.as<const char*>() : nullptr, heading);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_VEHICLE_PARK(Ped ped, Vehicle vehicle, float x, float y, float z, float heading, int mode, float radius, bool keepEngineOn)
@@ -275,19 +275,19 @@ namespace lua::native
 		TASK::TASK_GO_TO_COORD_ANY_MEANS_EXTRA_PARAMS_WITH_CRUISE_SPEED(ped, x, y, z, moveBlendRatio, vehicle, useLongRangeVehiclePathing, drivingFlags, maxRangeToShootTargets, extraVehToTargetDistToPreferVehicle, driveStraightLineDistance, extraFlags, cruiseSpeed, targetArriveDist);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM(Ped ped, const char* animDictionary, const char* animationName, float blendInSpeed, float blendOutSpeed, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ)
+	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM(Ped ped, sol::stack_object animDictionary, sol::stack_object animationName, float blendInSpeed, float blendOutSpeed, int duration, int flag, float playbackRate, bool lockX, bool lockY, bool lockZ)
 	{
-		TASK::TASK_PLAY_ANIM(ped, animDictionary, animationName, blendInSpeed, blendOutSpeed, duration, flag, playbackRate, lockX, lockY, lockZ);
+		TASK::TASK_PLAY_ANIM(ped, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animationName.is<const char*>() ? animationName.as<const char*>() : nullptr, blendInSpeed, blendOutSpeed, duration, flag, playbackRate, lockX, lockY, lockZ);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM_ADVANCED(Ped ped, const char* animDict, const char* animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float animEnterSpeed, float animExitSpeed, int duration, Any flag, float animTime, int rotOrder, int ikFlags)
+	static void LUA_NATIVE_TASK_TASK_PLAY_ANIM_ADVANCED(Ped ped, sol::stack_object animDict, sol::stack_object animName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float animEnterSpeed, float animExitSpeed, int duration, Any flag, float animTime, int rotOrder, int ikFlags)
 	{
-		TASK::TASK_PLAY_ANIM_ADVANCED(ped, animDict, animName, posX, posY, posZ, rotX, rotY, rotZ, animEnterSpeed, animExitSpeed, duration, flag, animTime, rotOrder, ikFlags);
+		TASK::TASK_PLAY_ANIM_ADVANCED(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, posX, posY, posZ, rotX, rotY, rotZ, animEnterSpeed, animExitSpeed, duration, flag, animTime, rotOrder, ikFlags);
 	}
 
-	static void LUA_NATIVE_TASK_STOP_ANIM_TASK(Entity entity, const char* animDictionary, const char* animationName, float blendDelta)
+	static void LUA_NATIVE_TASK_STOP_ANIM_TASK(Entity entity, sol::stack_object animDictionary, sol::stack_object animationName, float blendDelta)
 	{
-		TASK::STOP_ANIM_TASK(entity, animDictionary, animationName, blendDelta);
+		TASK::STOP_ANIM_TASK(entity, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animationName.is<const char*>() ? animationName.as<const char*>() : nullptr, blendDelta);
 	}
 
 	static std::tuple<int, int, int> LUA_NATIVE_TASK_TASK_SCRIPTED_ANIMATION(Ped ped, int priorityLowData, int priorityMidData, int priorityHighData, float blendInDelta, float blendOutDelta)
@@ -337,9 +337,9 @@ namespace lua::native
 		TASK::SET_ANIM_LOOPED(entity, looped, priority, secondary);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PLAY_PHONE_GESTURE_ANIMATION(Ped ped, const char* animDict, const char* animation, const char* boneMaskType, float blendInDuration, float blendOutDuration, bool isLooping, bool holdLastFrame)
+	static void LUA_NATIVE_TASK_TASK_PLAY_PHONE_GESTURE_ANIMATION(Ped ped, sol::stack_object animDict, sol::stack_object animation, sol::stack_object boneMaskType, float blendInDuration, float blendOutDuration, bool isLooping, bool holdLastFrame)
 	{
-		TASK::TASK_PLAY_PHONE_GESTURE_ANIMATION(ped, animDict, animation, boneMaskType, blendInDuration, blendOutDuration, isLooping, holdLastFrame);
+		TASK::TASK_PLAY_PHONE_GESTURE_ANIMATION(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animation.is<const char*>() ? animation.as<const char*>() : nullptr, boneMaskType.is<const char*>() ? boneMaskType.as<const char*>() : nullptr, blendInDuration, blendOutDuration, isLooping, holdLastFrame);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_STOP_PHONE_GESTURE_ANIMATION(Ped ped, float blendOutOverride)
@@ -365,9 +365,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_PLAY_ANIM(Vehicle vehicle, const char* animationSet, const char* animationName)
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_PLAY_ANIM(Vehicle vehicle, sol::stack_object animationSet, sol::stack_object animationName)
 	{
-		TASK::TASK_VEHICLE_PLAY_ANIM(vehicle, animationSet, animationName);
+		TASK::TASK_VEHICLE_PLAY_ANIM(vehicle, animationSet.is<const char*>() ? animationSet.as<const char*>() : nullptr, animationName.is<const char*>() ? animationName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_LOOK_AT_COORD(Entity entity, float x, float y, float z, int duration, int flags, int priority)
@@ -710,9 +710,9 @@ namespace lua::native
 		TASK::TASK_CLIMB_LADDER(ped, fast);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, const char* clipSet, Any p10, Any p11)
+	static void LUA_NATIVE_TASK_TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(Ped ped, float x1, float y1, float z1, float x2, float y2, float z2, float minZ, int ropeHandle, sol::stack_object clipSet, Any p10, Any p11)
 	{
-		TASK::TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(ped, x1, y1, z1, x2, y2, z2, minZ, ropeHandle, clipSet, p10, p11);
+		TASK::TASK_RAPPEL_DOWN_WALL_USING_CLIPSET_OVERRIDE(ped, x1, y1, z1, x2, y2, z2, minZ, ropeHandle, clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr, p10, p11);
 	}
 
 	static int LUA_NATIVE_TASK_GET_TASK_RAPPEL_DOWN_WALL_STATE(Ped ped)
@@ -875,9 +875,9 @@ namespace lua::native
 		TASK::TASK_GUARD_SPHERE_DEFENSIVE_AREA(ped, defendPositionX, defendPositionY, defendPositionZ, heading, maxPatrolProximity, time, x, y, z, defensiveAreaRadius);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_STAND_GUARD(Ped ped, float x, float y, float z, float heading, const char* scenarioName)
+	static void LUA_NATIVE_TASK_TASK_STAND_GUARD(Ped ped, float x, float y, float z, float heading, sol::stack_object scenarioName)
 	{
-		TASK::TASK_STAND_GUARD(ped, x, y, z, heading, scenarioName);
+		TASK::TASK_STAND_GUARD(ped, x, y, z, heading, scenarioName.is<const char*>() ? scenarioName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_TASK_SET_DRIVE_TASK_CRUISE_SPEED(Ped driver, float cruiseSpeed)
@@ -915,14 +915,14 @@ namespace lua::native
 		TASK::REMOVE_SPECIFIC_COVER_BLOCKING_AREAS(startX, startY, startZ, endX, endY, endZ, blockObjects, blockVehicles, blockMap, blockPlayer);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_IN_PLACE(Ped ped, const char* scenarioName, int unkDelay, bool playEnterAnim)
+	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_IN_PLACE(Ped ped, sol::stack_object scenarioName, int unkDelay, bool playEnterAnim)
 	{
-		TASK::TASK_START_SCENARIO_IN_PLACE(ped, scenarioName, unkDelay, playEnterAnim);
+		TASK::TASK_START_SCENARIO_IN_PLACE(ped, scenarioName.is<const char*>() ? scenarioName.as<const char*>() : nullptr, unkDelay, playEnterAnim);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_AT_POSITION(Ped ped, const char* scenarioName, float x, float y, float z, float heading, int duration, bool sittingScenario, bool teleport)
+	static void LUA_NATIVE_TASK_TASK_START_SCENARIO_AT_POSITION(Ped ped, sol::stack_object scenarioName, float x, float y, float z, float heading, int duration, bool sittingScenario, bool teleport)
 	{
-		TASK::TASK_START_SCENARIO_AT_POSITION(ped, scenarioName, x, y, z, heading, duration, sittingScenario, teleport);
+		TASK::TASK_START_SCENARIO_AT_POSITION(ped, scenarioName.is<const char*>() ? scenarioName.as<const char*>() : nullptr, x, y, z, heading, duration, sittingScenario, teleport);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped ped, float x, float y, float z, float distance, int duration)
@@ -951,9 +951,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(float x, float y, float z, const char* scenarioName, float radius, bool mustBeFree)
+	static bool LUA_NATIVE_TASK_DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(float x, float y, float z, sol::stack_object scenarioName, float radius, bool mustBeFree)
 	{
-		auto retval = (bool)TASK::DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(x, y, z, scenarioName, radius, mustBeFree);
+		auto retval = (bool)TASK::DOES_SCENARIO_OF_TYPE_EXIST_IN_AREA(x, y, z, scenarioName.is<const char*>() ? scenarioName.as<const char*>() : nullptr, radius, mustBeFree);
 		return retval;
 	}
 
@@ -969,26 +969,26 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_PLAY_ANIM_ON_RUNNING_SCENARIO(Ped ped, const char* animDict, const char* animName)
+	static void LUA_NATIVE_TASK_PLAY_ANIM_ON_RUNNING_SCENARIO(Ped ped, sol::stack_object animDict, sol::stack_object animName)
 	{
-		TASK::PLAY_ANIM_ON_RUNNING_SCENARIO(ped, animDict, animName);
+		TASK::PLAY_ANIM_ON_RUNNING_SCENARIO(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_TASK_DOES_SCENARIO_GROUP_EXIST(const char* scenarioGroup)
+	static bool LUA_NATIVE_TASK_DOES_SCENARIO_GROUP_EXIST(sol::stack_object scenarioGroup)
 	{
-		auto retval = (bool)TASK::DOES_SCENARIO_GROUP_EXIST(scenarioGroup);
+		auto retval = (bool)TASK::DOES_SCENARIO_GROUP_EXIST(scenarioGroup.is<const char*>() ? scenarioGroup.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_IS_SCENARIO_GROUP_ENABLED(const char* scenarioGroup)
+	static bool LUA_NATIVE_TASK_IS_SCENARIO_GROUP_ENABLED(sol::stack_object scenarioGroup)
 	{
-		auto retval = (bool)TASK::IS_SCENARIO_GROUP_ENABLED(scenarioGroup);
+		auto retval = (bool)TASK::IS_SCENARIO_GROUP_ENABLED(scenarioGroup.is<const char*>() ? scenarioGroup.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_SCENARIO_GROUP_ENABLED(const char* scenarioGroup, bool enabled)
+	static void LUA_NATIVE_TASK_SET_SCENARIO_GROUP_ENABLED(sol::stack_object scenarioGroup, bool enabled)
 	{
-		TASK::SET_SCENARIO_GROUP_ENABLED(scenarioGroup, enabled);
+		TASK::SET_SCENARIO_GROUP_ENABLED(scenarioGroup.is<const char*>() ? scenarioGroup.as<const char*>() : nullptr, enabled);
 	}
 
 	static void LUA_NATIVE_TASK_RESET_SCENARIO_GROUPS_ENABLED()
@@ -996,9 +996,9 @@ namespace lua::native
 		TASK::RESET_SCENARIO_GROUPS_ENABLED();
 	}
 
-	static void LUA_NATIVE_TASK_SET_EXCLUSIVE_SCENARIO_GROUP(const char* scenarioGroup)
+	static void LUA_NATIVE_TASK_SET_EXCLUSIVE_SCENARIO_GROUP(sol::stack_object scenarioGroup)
 	{
-		TASK::SET_EXCLUSIVE_SCENARIO_GROUP(scenarioGroup);
+		TASK::SET_EXCLUSIVE_SCENARIO_GROUP(scenarioGroup.is<const char*>() ? scenarioGroup.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_TASK_RESET_EXCLUSIVE_SCENARIO_GROUP()
@@ -1006,15 +1006,15 @@ namespace lua::native
 		TASK::RESET_EXCLUSIVE_SCENARIO_GROUP();
 	}
 
-	static bool LUA_NATIVE_TASK_IS_SCENARIO_TYPE_ENABLED(const char* scenarioType)
+	static bool LUA_NATIVE_TASK_IS_SCENARIO_TYPE_ENABLED(sol::stack_object scenarioType)
 	{
-		auto retval = (bool)TASK::IS_SCENARIO_TYPE_ENABLED(scenarioType);
+		auto retval = (bool)TASK::IS_SCENARIO_TYPE_ENABLED(scenarioType.is<const char*>() ? scenarioType.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_SET_SCENARIO_TYPE_ENABLED(const char* scenarioType, bool toggle)
+	static void LUA_NATIVE_TASK_SET_SCENARIO_TYPE_ENABLED(sol::stack_object scenarioType, bool toggle)
 	{
-		TASK::SET_SCENARIO_TYPE_ENABLED(scenarioType, toggle);
+		TASK::SET_SCENARIO_TYPE_ENABLED(scenarioType.is<const char*>() ? scenarioType.as<const char*>() : nullptr, toggle);
 	}
 
 	static void LUA_NATIVE_TASK_RESET_SCENARIO_TYPES_ENABLED()
@@ -1086,9 +1086,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_OPEN_PATROL_ROUTE(const char* patrolRoute)
+	static void LUA_NATIVE_TASK_OPEN_PATROL_ROUTE(sol::stack_object patrolRoute)
 	{
-		TASK::OPEN_PATROL_ROUTE(patrolRoute);
+		TASK::OPEN_PATROL_ROUTE(patrolRoute.is<const char*>() ? patrolRoute.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_TASK_CLOSE_PATROL_ROUTE()
@@ -1096,9 +1096,9 @@ namespace lua::native
 		TASK::CLOSE_PATROL_ROUTE();
 	}
 
-	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_NODE(int nodeId, const char* nodeType, float posX, float posY, float posZ, float headingX, float headingY, float headingZ, int duration)
+	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_NODE(int nodeId, sol::stack_object nodeType, float posX, float posY, float posZ, float headingX, float headingY, float headingZ, int duration)
 	{
-		TASK::ADD_PATROL_ROUTE_NODE(nodeId, nodeType, posX, posY, posZ, headingX, headingY, headingZ, duration);
+		TASK::ADD_PATROL_ROUTE_NODE(nodeId, nodeType.is<const char*>() ? nodeType.as<const char*>() : nullptr, posX, posY, posZ, headingX, headingY, headingZ, duration);
 	}
 
 	static void LUA_NATIVE_TASK_ADD_PATROL_ROUTE_LINK(int nodeId1, int nodeId2)
@@ -1111,9 +1111,9 @@ namespace lua::native
 		TASK::CREATE_PATROL_ROUTE();
 	}
 
-	static void LUA_NATIVE_TASK_DELETE_PATROL_ROUTE(const char* patrolRoute)
+	static void LUA_NATIVE_TASK_DELETE_PATROL_ROUTE(sol::stack_object patrolRoute)
 	{
-		TASK::DELETE_PATROL_ROUTE(patrolRoute);
+		TASK::DELETE_PATROL_ROUTE(patrolRoute.is<const char*>() ? patrolRoute.as<const char*>() : nullptr);
 	}
 
 	static std::tuple<bool, int, int> LUA_NATIVE_TASK_GET_PATROL_TASK_INFO(Ped ped, int timeLeftAtNode, int nodeId)
@@ -1126,9 +1126,9 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_PATROL(Ped ped, const char* patrolRouteName, int alertState, bool canChatToPeds, bool useHeadLookAt)
+	static void LUA_NATIVE_TASK_TASK_PATROL(Ped ped, sol::stack_object patrolRouteName, int alertState, bool canChatToPeds, bool useHeadLookAt)
 	{
-		TASK::TASK_PATROL(ped, patrolRouteName, alertState, canChatToPeds, useHeadLookAt);
+		TASK::TASK_PATROL(ped, patrolRouteName.is<const char*>() ? patrolRouteName.as<const char*>() : nullptr, alertState, canChatToPeds, useHeadLookAt);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_STAY_IN_COVER(Ped ped)
@@ -1201,58 +1201,58 @@ namespace lua::native
 		TASK::SET_HIGH_FALL_TASK(ped, minTime, maxTime, entryType);
 	}
 
-	static void LUA_NATIVE_TASK_REQUEST_WAYPOINT_RECORDING(const char* name)
+	static void LUA_NATIVE_TASK_REQUEST_WAYPOINT_RECORDING(sol::stack_object name)
 	{
-		TASK::REQUEST_WAYPOINT_RECORDING(name);
+		TASK::REQUEST_WAYPOINT_RECORDING(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_TASK_GET_IS_WAYPOINT_RECORDING_LOADED(const char* name)
+	static bool LUA_NATIVE_TASK_GET_IS_WAYPOINT_RECORDING_LOADED(sol::stack_object name)
 	{
-		auto retval = (bool)TASK::GET_IS_WAYPOINT_RECORDING_LOADED(name);
+		auto retval = (bool)TASK::GET_IS_WAYPOINT_RECORDING_LOADED(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_REMOVE_WAYPOINT_RECORDING(const char* name)
+	static void LUA_NATIVE_TASK_REMOVE_WAYPOINT_RECORDING(sol::stack_object name)
 	{
-		TASK::REMOVE_WAYPOINT_RECORDING(name);
+		TASK::REMOVE_WAYPOINT_RECORDING(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_NUM_POINTS(const char* name, int points)
+	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_NUM_POINTS(sol::stack_object name, int points)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_NUM_POINTS(name, &points);
+		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_NUM_POINTS(name.is<const char*>() ? name.as<const char*>() : nullptr, &points);
 		std::get<1>(return_values) = points;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Vector3> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_COORD(const char* name, int point, Vector3 coord)
+	static std::tuple<bool, Vector3> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_COORD(sol::stack_object name, int point, Vector3 coord)
 	{
 		std::tuple<bool, Vector3> return_values;
-		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_COORD(name, point, &coord);
+		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_COORD(name.is<const char*>() ? name.as<const char*>() : nullptr, point, &coord);
 		std::get<1>(return_values) = coord;
 
 		return return_values;
 	}
 
-	static float LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_SPEED_AT_POINT(const char* name, int point)
+	static float LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_SPEED_AT_POINT(sol::stack_object name, int point)
 	{
-		auto retval = TASK::WAYPOINT_RECORDING_GET_SPEED_AT_POINT(name, point);
+		auto retval = TASK::WAYPOINT_RECORDING_GET_SPEED_AT_POINT(name.is<const char*>() ? name.as<const char*>() : nullptr, point);
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(const char* name, float x, float y, float z, int point)
+	static std::tuple<bool, int> LUA_NATIVE_TASK_WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(sol::stack_object name, float x, float y, float z, int point)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(name, x, y, z, &point);
+		std::get<0>(return_values) = (bool)TASK::WAYPOINT_RECORDING_GET_CLOSEST_WAYPOINT(name.is<const char*>() ? name.as<const char*>() : nullptr, x, y, z, &point);
 		std::get<1>(return_values) = point;
 
 		return return_values;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_FOLLOW_WAYPOINT_RECORDING(Ped ped, const char* name, int p2, int p3, int p4)
+	static void LUA_NATIVE_TASK_TASK_FOLLOW_WAYPOINT_RECORDING(Ped ped, sol::stack_object name, int p2, int p3, int p4)
 	{
-		TASK::TASK_FOLLOW_WAYPOINT_RECORDING(ped, name, p2, p3, p4);
+		TASK::TASK_FOLLOW_WAYPOINT_RECORDING(ped, name.is<const char*>() ? name.as<const char*>() : nullptr, p2, p3, p4);
 	}
 
 	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_PED(Ped ped)
@@ -1279,9 +1279,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static float LUA_NATIVE_TASK_GET_WAYPOINT_DISTANCE_ALONG_ROUTE(const char* name, int point)
+	static float LUA_NATIVE_TASK_GET_WAYPOINT_DISTANCE_ALONG_ROUTE(sol::stack_object name, int point)
 	{
-		auto retval = TASK::GET_WAYPOINT_DISTANCE_ALONG_ROUTE(name, point);
+		auto retval = TASK::GET_WAYPOINT_DISTANCE_ALONG_ROUTE(name.is<const char*>() ? name.as<const char*>() : nullptr, point);
 		return retval;
 	}
 
@@ -1311,9 +1311,9 @@ namespace lua::native
 		TASK::WAYPOINT_PLAYBACK_USE_DEFAULT_SPEED(p0);
 	}
 
-	static void LUA_NATIVE_TASK_USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(const char* name, bool p1, float p2, float p3)
+	static void LUA_NATIVE_TASK_USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(sol::stack_object name, bool p1, float p2, float p3)
 	{
-		TASK::USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(name, p1, p2, p3);
+		TASK::USE_WAYPOINT_RECORDING_AS_ASSISTED_MOVEMENT_ROUTE(name.is<const char*>() ? name.as<const char*>() : nullptr, p1, p2, p3);
 	}
 
 	static void LUA_NATIVE_TASK_WAYPOINT_PLAYBACK_START_AIMING_AT_PED(Ped ped, Ped target, bool p2)
@@ -1341,25 +1341,25 @@ namespace lua::native
 		TASK::WAYPOINT_PLAYBACK_STOP_AIMING_OR_SHOOTING(ped);
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REQUEST_ROUTE(const char* route)
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REQUEST_ROUTE(sol::stack_object route)
 	{
-		TASK::ASSISTED_MOVEMENT_REQUEST_ROUTE(route);
+		TASK::ASSISTED_MOVEMENT_REQUEST_ROUTE(route.is<const char*>() ? route.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REMOVE_ROUTE(const char* route)
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_REMOVE_ROUTE(sol::stack_object route)
 	{
-		TASK::ASSISTED_MOVEMENT_REMOVE_ROUTE(route);
+		TASK::ASSISTED_MOVEMENT_REMOVE_ROUTE(route.is<const char*>() ? route.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_TASK_ASSISTED_MOVEMENT_IS_ROUTE_LOADED(const char* route)
+	static bool LUA_NATIVE_TASK_ASSISTED_MOVEMENT_IS_ROUTE_LOADED(sol::stack_object route)
 	{
-		auto retval = (bool)TASK::ASSISTED_MOVEMENT_IS_ROUTE_LOADED(route);
+		auto retval = (bool)TASK::ASSISTED_MOVEMENT_IS_ROUTE_LOADED(route.is<const char*>() ? route.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(const char* route, int props)
+	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(sol::stack_object route, int props)
 	{
-		TASK::ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(route, props);
+		TASK::ASSISTED_MOVEMENT_SET_ROUTE_PROPERTIES(route.is<const char*>() ? route.as<const char*>() : nullptr, props);
 	}
 
 	static void LUA_NATIVE_TASK_ASSISTED_MOVEMENT_OVERRIDE_LOAD_DISTANCE_THIS_FRAME(float dist)
@@ -1367,9 +1367,9 @@ namespace lua::native
 		TASK::ASSISTED_MOVEMENT_OVERRIDE_LOAD_DISTANCE_THIS_FRAME(dist);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(Ped ped, Vehicle vehicle, const char* WPRecording, int p3, int p4, int p5, int p6, float p7, bool p8, float p9)
+	static void LUA_NATIVE_TASK_TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(Ped ped, Vehicle vehicle, sol::stack_object WPRecording, int p3, int p4, int p5, int p6, float p7, bool p8, float p9)
 	{
-		TASK::TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(ped, vehicle, WPRecording, p3, p4, p5, p6, p7, p8, p9);
+		TASK::TASK_VEHICLE_FOLLOW_WAYPOINT_RECORDING(ped, vehicle, WPRecording.is<const char*>() ? WPRecording.as<const char*>() : nullptr, p3, p4, p5, p6, p7, p8, p9);
 	}
 
 	static bool LUA_NATIVE_TASK_IS_WAYPOINT_PLAYBACK_GOING_ON_FOR_VEHICLE(Vehicle vehicle)
@@ -1420,25 +1420,25 @@ namespace lua::native
 		TASK::TASK_FORCE_MOTION_STATE(ped, state, forceRestart);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME(Ped ped, const char* task, float multiplier, bool allowOverrideCloneUpdate, const char* animDict, int flags)
+	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME(Ped ped, sol::stack_object task, float multiplier, bool allowOverrideCloneUpdate, sol::stack_object animDict, int flags)
 	{
-		TASK::TASK_MOVE_NETWORK_BY_NAME(ped, task, multiplier, allowOverrideCloneUpdate, animDict, flags);
+		TASK::TASK_MOVE_NETWORK_BY_NAME(ped, task.is<const char*>() ? task.as<const char*>() : nullptr, multiplier, allowOverrideCloneUpdate, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, flags);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME(Ped ped, const char* network, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags)
+	static void LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME(Ped ped, sol::stack_object network, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, sol::stack_object animDict, int flags)
 	{
-		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME(ped, network, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, animDict, flags);
+		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME(ped, network.is<const char*>() ? network.as<const char*>() : nullptr, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, flags);
 	}
 
-	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(Ped ped, const char* network, int initialParameters, float blendDuration, bool allowOverrideCloneUpdate, const char* animDict, int flags)
+	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(Ped ped, sol::stack_object network, int initialParameters, float blendDuration, bool allowOverrideCloneUpdate, sol::stack_object animDict, int flags)
 	{
-		TASK::TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, blendDuration, allowOverrideCloneUpdate, animDict, flags);
+		TASK::TASK_MOVE_NETWORK_BY_NAME_WITH_INIT_PARAMS(ped, network.is<const char*>() ? network.as<const char*>() : nullptr, &initialParameters, blendDuration, allowOverrideCloneUpdate, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, flags);
 		return initialParameters;
 	}
 
-	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(Ped ped, const char* network, int initialParameters, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, const char* dictionary, int flags)
+	static int LUA_NATIVE_TASK_TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(Ped ped, sol::stack_object network, int initialParameters, float x, float y, float z, float rotX, float rotY, float rotZ, int rotOrder, float blendDuration, bool allowOverrideCloneUpdate, sol::stack_object dictionary, int flags)
 	{
-		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(ped, network, &initialParameters, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, dictionary, flags);
+		TASK::TASK_MOVE_NETWORK_ADVANCED_BY_NAME_WITH_INIT_PARAMS(ped, network.is<const char*>() ? network.as<const char*>() : nullptr, &initialParameters, x, y, z, rotX, rotY, rotZ, rotOrder, blendDuration, allowOverrideCloneUpdate, dictionary.is<const char*>() ? dictionary.as<const char*>() : nullptr, flags);
 		return initialParameters;
 	}
 
@@ -1454,15 +1454,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(Ped ped, const char* name)
+	static bool LUA_NATIVE_TASK_REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(Ped ped, sol::stack_object name)
 	{
-		auto retval = (bool)TASK::REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(ped, name);
+		auto retval = (bool)TASK::REQUEST_TASK_MOVE_NETWORK_STATE_TRANSITION(ped, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(Ped ped, const char* state)
+	static bool LUA_NATIVE_TASK_SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(Ped ped, sol::stack_object state)
 	{
-		auto retval = (bool)TASK::SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(ped, state);
+		auto retval = (bool)TASK::SET_EXPECTED_CLONE_NEXT_TASK_MOVE_NETWORK_STATE(ped, state.is<const char*>() ? state.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1477,41 +1477,41 @@ namespace lua::native
 		TASK::SET_TASK_MOVE_NETWORK_ANIM_SET(ped, clipSet, variableClipSet);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, const char* signalName, float value)
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, sol::stack_object signalName, float value)
 	{
-		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName, value);
+		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(Ped ped, const char* signalName, float value)
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(Ped ped, sol::stack_object signalName, float value)
 	{
-		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(ped, signalName, value);
+		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_LOCAL_FLOAT(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(Ped ped, const char* signalName, float value)
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(Ped ped, sol::stack_object signalName, float value)
 	{
-		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(ped, signalName, value);
+		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_FLOAT_LERP_RATE(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr, value);
 	}
 
-	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, const char* signalName, bool value)
+	static void LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, sol::stack_object signalName, bool value)
 	{
-		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName, value);
+		TASK::SET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr, value);
 	}
 
-	static float LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, const char* signalName)
+	static float LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, sol::stack_object signalName)
 	{
-		auto retval = TASK::GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName);
+		auto retval = TASK::GET_TASK_MOVE_NETWORK_SIGNAL_FLOAT(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, const char* signalName)
+	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(Ped ped, sol::stack_object signalName)
 	{
-		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName);
+		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_SIGNAL_BOOL(ped, signalName.is<const char*>() ? signalName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_EVENT(Ped ped, const char* eventName)
+	static bool LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_EVENT(Ped ped, sol::stack_object eventName)
 	{
-		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_EVENT(ped, eventName);
+		auto retval = (bool)TASK::GET_TASK_MOVE_NETWORK_EVENT(ped, eventName.is<const char*>() ? eventName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1519,6 +1519,11 @@ namespace lua::native
 	{
 		auto retval = (bool)TASK::SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(ped, enable);
 		return retval;
+	}
+
+	static void LUA_NATIVE_TASK_SET_SCRIPT_TASK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED_(Ped ped, bool enable)
+	{
+		TASK::_SET_SCRIPT_TASK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED(ped, enable);
 	}
 
 	static bool LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_STILL(Ped ped)
@@ -1575,9 +1580,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SYNCHRONIZED_SCENE(Ped ped, int scene, const char* animDictionary, const char* animationName, float blendIn, float blendOut, int flags, int ragdollBlockingFlags, float moverBlendDelta, int ikFlags)
+	static void LUA_NATIVE_TASK_TASK_SYNCHRONIZED_SCENE(Ped ped, int scene, sol::stack_object animDictionary, sol::stack_object animationName, float blendIn, float blendOut, int flags, int ragdollBlockingFlags, float moverBlendDelta, int ikFlags)
 	{
-		TASK::TASK_SYNCHRONIZED_SCENE(ped, scene, animDictionary, animationName, blendIn, blendOut, flags, ragdollBlockingFlags, moverBlendDelta, ikFlags);
+		TASK::TASK_SYNCHRONIZED_SCENE(ped, scene, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animationName.is<const char*>() ? animationName.as<const char*>() : nullptr, blendIn, blendOut, flags, ragdollBlockingFlags, moverBlendDelta, ikFlags);
 	}
 
 	static void LUA_NATIVE_TASK_TASK_AGITATED_ACTION_CONFRONT_RESPONSE(Ped ped, Ped ped2)
@@ -1585,9 +1590,9 @@ namespace lua::native
 		TASK::TASK_AGITATED_ACTION_CONFRONT_RESPONSE(ped, ped2);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_ENTITY(Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, Entity targetEntity, float turnRate, float blendInDuration)
+	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_ENTITY(Ped ped, sol::stack_object animDict, sol::stack_object lowAnimName, sol::stack_object medAnimName, sol::stack_object hiAnimName, int runtime, Entity targetEntity, float turnRate, float blendInDuration)
 	{
-		TASK::TASK_SWEEP_AIM_ENTITY(ped, animDict, lowAnimName, medAnimName, hiAnimName, runtime, targetEntity, turnRate, blendInDuration);
+		TASK::TASK_SWEEP_AIM_ENTITY(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, lowAnimName.is<const char*>() ? lowAnimName.as<const char*>() : nullptr, medAnimName.is<const char*>() ? medAnimName.as<const char*>() : nullptr, hiAnimName.is<const char*>() ? hiAnimName.as<const char*>() : nullptr, runtime, targetEntity, turnRate, blendInDuration);
 	}
 
 	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_ENTITY(Ped ped, Entity entity)
@@ -1595,9 +1600,9 @@ namespace lua::native
 		TASK::UPDATE_TASK_SWEEP_AIM_ENTITY(ped, entity);
 	}
 
-	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_POSITION(Ped ped, const char* animDict, const char* lowAnimName, const char* medAnimName, const char* hiAnimName, int runtime, float x, float y, float z, float turnRate, float blendInDuration)
+	static void LUA_NATIVE_TASK_TASK_SWEEP_AIM_POSITION(Ped ped, sol::stack_object animDict, sol::stack_object lowAnimName, sol::stack_object medAnimName, sol::stack_object hiAnimName, int runtime, float x, float y, float z, float turnRate, float blendInDuration)
 	{
-		TASK::TASK_SWEEP_AIM_POSITION(ped, animDict, lowAnimName, medAnimName, hiAnimName, runtime, x, y, z, turnRate, blendInDuration);
+		TASK::TASK_SWEEP_AIM_POSITION(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, lowAnimName.is<const char*>() ? lowAnimName.as<const char*>() : nullptr, medAnimName.is<const char*>() ? medAnimName.as<const char*>() : nullptr, hiAnimName.is<const char*>() ? hiAnimName.as<const char*>() : nullptr, runtime, x, y, z, turnRate, blendInDuration);
 	}
 
 	static void LUA_NATIVE_TASK_UPDATE_TASK_SWEEP_AIM_POSITION(Ped ped, float x, float y, float z)
@@ -1922,6 +1927,7 @@ namespace lua::native
 		TASK.set_function("GET_TASK_MOVE_NETWORK_SIGNAL_BOOL", LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_SIGNAL_BOOL);
 		TASK.set_function("GET_TASK_MOVE_NETWORK_EVENT", LUA_NATIVE_TASK_GET_TASK_MOVE_NETWORK_EVENT);
 		TASK.set_function("SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED", LUA_NATIVE_TASK_SET_TASK_MOVE_NETWORK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED);
+		TASK.set_function("SET_SCRIPT_TASK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED_", LUA_NATIVE_TASK_SET_SCRIPT_TASK_ENABLE_COLLISION_ON_NETWORK_CLONE_WHEN_FIXED_);
 		TASK.set_function("IS_MOVE_BLEND_RATIO_STILL", LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_STILL);
 		TASK.set_function("IS_MOVE_BLEND_RATIO_WALKING", LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_WALKING);
 		TASK.set_function("IS_MOVE_BLEND_RATIO_RUNNING", LUA_NATIVE_TASK_IS_MOVE_BLEND_RATIO_RUNNING);

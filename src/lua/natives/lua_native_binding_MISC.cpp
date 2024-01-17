@@ -53,19 +53,19 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_CREATE(const char* p0, const char* p1)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_CREATE(sol::stack_object p0, sol::stack_object p1)
 	{
-		MISC::ACTIVITY_FEED_CREATE(p0, p1);
+		MISC::ACTIVITY_FEED_CREATE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ADD_SUBSTRING_TO_CAPTION(const char* p0)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ADD_SUBSTRING_TO_CAPTION(sol::stack_object p0)
 	{
-		MISC::ACTIVITY_FEED_ADD_SUBSTRING_TO_CAPTION(p0);
+		MISC::ACTIVITY_FEED_ADD_SUBSTRING_TO_CAPTION(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ADD_LITERAL_SUBSTRING_TO_CAPTION(const char* p0)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ADD_LITERAL_SUBSTRING_TO_CAPTION(sol::stack_object p0)
 	{
-		MISC::ACTIVITY_FEED_ADD_LITERAL_SUBSTRING_TO_CAPTION(p0);
+		MISC::ACTIVITY_FEED_ADD_LITERAL_SUBSTRING_TO_CAPTION(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ADD_INT_TO_CAPTION(Any p0)
@@ -73,19 +73,19 @@ namespace lua::native
 		MISC::ACTIVITY_FEED_ADD_INT_TO_CAPTION(p0);
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_LARGE_IMAGE_URL(const char* p0)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_LARGE_IMAGE_URL(sol::stack_object p0)
 	{
-		MISC::ACTIVITY_FEED_LARGE_IMAGE_URL(p0);
+		MISC::ACTIVITY_FEED_LARGE_IMAGE_URL(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE(const char* p0, const char* p1)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE(sol::stack_object p0, sol::stack_object p1)
 	{
-		MISC::ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE(p0, p1);
+		MISC::ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE_ADD(const char* p0)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE_ADD(sol::stack_object p0)
 	{
-		MISC::ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE_ADD(p0);
+		MISC::ACTIVITY_FEED_ACTION_START_WITH_COMMAND_LINE_ADD(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_MISC_ACTIVITY_FEED_POST()
@@ -93,9 +93,9 @@ namespace lua::native
 		MISC::ACTIVITY_FEED_POST();
 	}
 
-	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ONLINE_PLAYED_WITH_POST(const char* p0)
+	static void LUA_NATIVE_MISC_ACTIVITY_FEED_ONLINE_PLAYED_WITH_POST(sol::stack_object p0)
 	{
-		MISC::ACTIVITY_FEED_ONLINE_PLAYED_WITH_POST(p0);
+		MISC::ACTIVITY_FEED_ONLINE_PLAYED_WITH_POST(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_MISC_HAS_RESUMED_FROM_SUSPEND()
@@ -114,9 +114,9 @@ namespace lua::native
 		MISC::SET_THIS_IS_A_TRIGGER_SCRIPT(toggle);
 	}
 
-	static void LUA_NATIVE_MISC_INFORM_CODE_OF_CONTENT_ID_OF_CURRENT_UGC_MISSION(const char* p0)
+	static void LUA_NATIVE_MISC_INFORM_CODE_OF_CONTENT_ID_OF_CURRENT_UGC_MISSION(sol::stack_object p0)
 	{
-		MISC::INFORM_CODE_OF_CONTENT_ID_OF_CURRENT_UGC_MISSION(p0);
+		MISC::INFORM_CODE_OF_CONTENT_ID_OF_CURRENT_UGC_MISSION(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static std::tuple<bool, Any, Any> LUA_NATIVE_MISC_GET_BASE_ELEMENT_LOCATION_FROM_METADATA_BLOCK(Any p0, Any p1, Any p2, bool p3)
@@ -141,36 +141,36 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_MISC_IS_PREV_WEATHER_TYPE(const char* weatherType)
+	static bool LUA_NATIVE_MISC_IS_PREV_WEATHER_TYPE(sol::stack_object weatherType)
 	{
-		auto retval = (bool)MISC::IS_PREV_WEATHER_TYPE(weatherType);
+		auto retval = (bool)MISC::IS_PREV_WEATHER_TYPE(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_MISC_IS_NEXT_WEATHER_TYPE(const char* weatherType)
+	static bool LUA_NATIVE_MISC_IS_NEXT_WEATHER_TYPE(sol::stack_object weatherType)
 	{
-		auto retval = (bool)MISC::IS_NEXT_WEATHER_TYPE(weatherType);
+		auto retval = (bool)MISC::IS_NEXT_WEATHER_TYPE(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_PERSIST(const char* weatherType)
+	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_PERSIST(sol::stack_object weatherType)
 	{
-		MISC::SET_WEATHER_TYPE_PERSIST(weatherType);
+		MISC::SET_WEATHER_TYPE_PERSIST(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_NOW_PERSIST(const char* weatherType)
+	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_NOW_PERSIST(sol::stack_object weatherType)
 	{
-		MISC::SET_WEATHER_TYPE_NOW_PERSIST(weatherType);
+		MISC::SET_WEATHER_TYPE_NOW_PERSIST(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_NOW(const char* weatherType)
+	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_NOW(sol::stack_object weatherType)
 	{
-		MISC::SET_WEATHER_TYPE_NOW(weatherType);
+		MISC::SET_WEATHER_TYPE_NOW(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_OVERTIME_PERSIST(const char* weatherType, float time)
+	static void LUA_NATIVE_MISC_SET_WEATHER_TYPE_OVERTIME_PERSIST(sol::stack_object weatherType, float time)
 	{
-		MISC::SET_WEATHER_TYPE_OVERTIME_PERSIST(weatherType, time);
+		MISC::SET_WEATHER_TYPE_OVERTIME_PERSIST(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr, time);
 	}
 
 	static void LUA_NATIVE_MISC_SET_RANDOM_WEATHER_TYPE()
@@ -204,14 +204,14 @@ namespace lua::native
 		MISC::SET_CURR_WEATHER_STATE(weatherType1, weatherType2, percentWeather2);
 	}
 
-	static void LUA_NATIVE_MISC_SET_OVERRIDE_WEATHER(const char* weatherType)
+	static void LUA_NATIVE_MISC_SET_OVERRIDE_WEATHER(sol::stack_object weatherType)
 	{
-		MISC::SET_OVERRIDE_WEATHER(weatherType);
+		MISC::SET_OVERRIDE_WEATHER(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_SET_OVERRIDE_WEATHEREX(const char* weatherType, bool p1)
+	static void LUA_NATIVE_MISC_SET_OVERRIDE_WEATHEREX(sol::stack_object weatherType, bool p1)
 	{
-		MISC::SET_OVERRIDE_WEATHEREX(weatherType, p1);
+		MISC::SET_OVERRIDE_WEATHEREX(weatherType.is<const char*>() ? weatherType.as<const char*>() : nullptr, p1);
 	}
 
 	static void LUA_NATIVE_MISC_CLEAR_OVERRIDE_WEATHER()
@@ -343,24 +343,24 @@ namespace lua::native
 		MISC::FORCE_LIGHTNING_FLASH();
 	}
 
-	static void LUA_NATIVE_MISC_SET_CLOUD_SETTINGS_OVERRIDE(const char* p0)
+	static void LUA_NATIVE_MISC_SET_CLOUD_SETTINGS_OVERRIDE(sol::stack_object p0)
 	{
-		MISC::SET_CLOUD_SETTINGS_OVERRIDE(p0);
+		MISC::SET_CLOUD_SETTINGS_OVERRIDE(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_PRELOAD_CLOUD_HAT(const char* name)
+	static void LUA_NATIVE_MISC_PRELOAD_CLOUD_HAT(sol::stack_object name)
 	{
-		MISC::PRELOAD_CLOUD_HAT(name);
+		MISC::PRELOAD_CLOUD_HAT(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MISC_LOAD_CLOUD_HAT(const char* name, float transitionTime)
+	static void LUA_NATIVE_MISC_LOAD_CLOUD_HAT(sol::stack_object name, float transitionTime)
 	{
-		MISC::LOAD_CLOUD_HAT(name, transitionTime);
+		MISC::LOAD_CLOUD_HAT(name.is<const char*>() ? name.as<const char*>() : nullptr, transitionTime);
 	}
 
-	static void LUA_NATIVE_MISC_UNLOAD_CLOUD_HAT(const char* name, float p1)
+	static void LUA_NATIVE_MISC_UNLOAD_CLOUD_HAT(sol::stack_object name, float p1)
 	{
-		MISC::UNLOAD_CLOUD_HAT(name, p1);
+		MISC::UNLOAD_CLOUD_HAT(name.is<const char*>() ? name.as<const char*>() : nullptr, p1);
 	}
 
 	static void LUA_NATIVE_MISC_UNLOAD_ALL_CLOUD_HATS()
@@ -536,9 +536,9 @@ namespace lua::native
 		return address;
 	}
 
-	static Hash LUA_NATIVE_MISC_GET_HASH_KEY(const char* string)
+	static Hash LUA_NATIVE_MISC_GET_HASH_KEY(sol::stack_object string)
 	{
-		auto retval = MISC::GET_HASH_KEY(string);
+		auto retval = MISC::GET_HASH_KEY(string.is<const char*>() ? string.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -656,9 +656,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_MISC_TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(const char* scriptName)
+	static void LUA_NATIVE_MISC_TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(sol::stack_object scriptName)
 	{
-		MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(scriptName);
+		MISC::TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_MISC_NETWORK_SET_SCRIPT_IS_SAFE_FOR_NETWORK_GAME()
@@ -728,9 +728,9 @@ namespace lua::native
 		MISC::SET_FADE_IN_AFTER_LOAD(toggle);
 	}
 
-	static int LUA_NATIVE_MISC_REGISTER_SAVE_HOUSE(float x, float y, float z, float p3, const char* p4, Any p5, Any p6)
+	static int LUA_NATIVE_MISC_REGISTER_SAVE_HOUSE(float x, float y, float z, float p3, sol::stack_object p4, Any p5, Any p6)
 	{
-		auto retval = MISC::REGISTER_SAVE_HOUSE(x, y, z, p3, p4, p5, p6);
+		auto retval = MISC::REGISTER_SAVE_HOUSE(x, y, z, p3, p4.is<const char*>() ? p4.as<const char*>() : nullptr, p5, p6);
 		return retval;
 	}
 
@@ -946,15 +946,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_MISC_ARE_STRINGS_EQUAL(const char* string1, const char* string2)
+	static bool LUA_NATIVE_MISC_ARE_STRINGS_EQUAL(sol::stack_object string1, sol::stack_object string2)
 	{
-		auto retval = (bool)MISC::ARE_STRINGS_EQUAL(string1, string2);
+		auto retval = (bool)MISC::ARE_STRINGS_EQUAL(string1.is<const char*>() ? string1.as<const char*>() : nullptr, string2.is<const char*>() ? string2.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_MISC_COMPARE_STRINGS(const char* str1, const char* str2, bool matchCase, int maxLength)
+	static int LUA_NATIVE_MISC_COMPARE_STRINGS(sol::stack_object str1, sol::stack_object str2, bool matchCase, int maxLength)
 	{
-		auto retval = MISC::COMPARE_STRINGS(str1, str2, matchCase, maxLength);
+		auto retval = MISC::COMPARE_STRINGS(str1.is<const char*>() ? str1.as<const char*>() : nullptr, str2.is<const char*>() ? str2.as<const char*>() : nullptr, matchCase, maxLength);
 		return retval;
 	}
 
@@ -1139,22 +1139,22 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_MISC_IS_STRING_NULL(const char* string)
+	static bool LUA_NATIVE_MISC_IS_STRING_NULL(sol::stack_object string)
 	{
-		auto retval = (bool)MISC::IS_STRING_NULL(string);
+		auto retval = (bool)MISC::IS_STRING_NULL(string.is<const char*>() ? string.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_MISC_IS_STRING_NULL_OR_EMPTY(const char* string)
+	static bool LUA_NATIVE_MISC_IS_STRING_NULL_OR_EMPTY(sol::stack_object string)
 	{
-		auto retval = (bool)MISC::IS_STRING_NULL_OR_EMPTY(string);
+		auto retval = (bool)MISC::IS_STRING_NULL_OR_EMPTY(string.is<const char*>() ? string.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_MISC_STRING_TO_INT(const char* string, int outInteger)
+	static std::tuple<bool, int> LUA_NATIVE_MISC_STRING_TO_INT(sol::stack_object string, int outInteger)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)MISC::STRING_TO_INT(string, &outInteger);
+		std::get<0>(return_values) = (bool)MISC::STRING_TO_INT(string.is<const char*>() ? string.as<const char*>() : nullptr, &outInteger);
 		std::get<1>(return_values) = outInteger;
 
 		return return_values;
@@ -1319,69 +1319,69 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_INT_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_INT_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_INT_TO_SAVE(&p0, name);
+		MISC::REGISTER_INT_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_INT64_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_INT64_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_INT64_TO_SAVE(&p0, name);
+		MISC::REGISTER_INT64_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_ENUM_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_ENUM_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_ENUM_TO_SAVE(&p0, name);
+		MISC::REGISTER_ENUM_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_FLOAT_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_FLOAT_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_FLOAT_TO_SAVE(&p0, name);
+		MISC::REGISTER_FLOAT_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_BOOL_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_BOOL_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_BOOL_TO_SAVE(&p0, name);
+		MISC::REGISTER_BOOL_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_TEXT_LABEL_TO_SAVE(&p0, name);
+		MISC::REGISTER_TEXT_LABEL_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_15_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_15_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_TEXT_LABEL_15_TO_SAVE(&p0, name);
+		MISC::REGISTER_TEXT_LABEL_15_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_23_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_23_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_TEXT_LABEL_23_TO_SAVE(&p0, name);
+		MISC::REGISTER_TEXT_LABEL_23_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_31_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_31_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_TEXT_LABEL_31_TO_SAVE(&p0, name);
+		MISC::REGISTER_TEXT_LABEL_31_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_63_TO_SAVE(Any p0, const char* name)
+	static Any LUA_NATIVE_MISC_REGISTER_TEXT_LABEL_63_TO_SAVE(Any p0, sol::stack_object name)
 	{
-		MISC::REGISTER_TEXT_LABEL_63_TO_SAVE(&p0, name);
+		MISC::REGISTER_TEXT_LABEL_63_TO_SAVE(&p0, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return p0;
 	}
 
-	static Any LUA_NATIVE_MISC_START_SAVE_STRUCT_WITH_SIZE(Any p0, int size, const char* structName)
+	static Any LUA_NATIVE_MISC_START_SAVE_STRUCT_WITH_SIZE(Any p0, int size, sol::stack_object structName)
 	{
-		MISC::START_SAVE_STRUCT_WITH_SIZE(&p0, size, structName);
+		MISC::START_SAVE_STRUCT_WITH_SIZE(&p0, size, structName.is<const char*>() ? structName.as<const char*>() : nullptr);
 		return p0;
 	}
 
@@ -1390,9 +1390,9 @@ namespace lua::native
 		MISC::STOP_SAVE_STRUCT();
 	}
 
-	static Any LUA_NATIVE_MISC_START_SAVE_ARRAY_WITH_SIZE(Any p0, int size, const char* arrayName)
+	static Any LUA_NATIVE_MISC_START_SAVE_ARRAY_WITH_SIZE(Any p0, int size, sol::stack_object arrayName)
 	{
-		MISC::START_SAVE_ARRAY_WITH_SIZE(&p0, size, arrayName);
+		MISC::START_SAVE_ARRAY_WITH_SIZE(&p0, size, arrayName.is<const char*>() ? arrayName.as<const char*>() : nullptr);
 		return p0;
 	}
 
@@ -1526,9 +1526,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_MISC_PLAY_TENNIS_SWING_ANIM(Ped ped, const char* animDict, const char* animName, float p3, float p4, bool p5)
+	static void LUA_NATIVE_MISC_PLAY_TENNIS_SWING_ANIM(Ped ped, sol::stack_object animDict, sol::stack_object animName, float p3, float p4, bool p5)
 	{
-		MISC::PLAY_TENNIS_SWING_ANIM(ped, animDict, animName, p3, p4, p5);
+		MISC::PLAY_TENNIS_SWING_ANIM(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p3, p4, p5);
 	}
 
 	static bool LUA_NATIVE_MISC_GET_TENNIS_SWING_ANIM_COMPLETE(Ped ped)
@@ -1554,9 +1554,9 @@ namespace lua::native
 		MISC::PLAY_TENNIS_DIVE_ANIM(ped, p1, p2, p3, p4, p5);
 	}
 
-	static void LUA_NATIVE_MISC_SET_TENNIS_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, const char* p1, float p2)
+	static void LUA_NATIVE_MISC_SET_TENNIS_MOVE_NETWORK_SIGNAL_FLOAT(Ped ped, sol::stack_object p1, float p2)
 	{
-		MISC::SET_TENNIS_MOVE_NETWORK_SIGNAL_FLOAT(ped, p1, p2);
+		MISC::SET_TENNIS_MOVE_NETWORK_SIGNAL_FLOAT(ped, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2);
 	}
 
 	static void LUA_NATIVE_MISC_RESET_DISPATCH_SPAWN_LOCATION()
@@ -1641,15 +1641,15 @@ namespace lua::native
 		MISC::SET_RIOT_MODE_ENABLED(toggle);
 	}
 
-	static Any LUA_NATIVE_MISC_DISPLAY_ONSCREEN_KEYBOARD_WITH_LONGER_INITIAL_STRING(int p0, const char* windowTitle, Any p2, const char* defaultText, const char* defaultConcat1, const char* defaultConcat2, const char* defaultConcat3, const char* defaultConcat4, const char* defaultConcat5, const char* defaultConcat6, const char* defaultConcat7, int maxInputLength)
+	static Any LUA_NATIVE_MISC_DISPLAY_ONSCREEN_KEYBOARD_WITH_LONGER_INITIAL_STRING(int p0, sol::stack_object windowTitle, Any p2, sol::stack_object defaultText, sol::stack_object defaultConcat1, sol::stack_object defaultConcat2, sol::stack_object defaultConcat3, sol::stack_object defaultConcat4, sol::stack_object defaultConcat5, sol::stack_object defaultConcat6, sol::stack_object defaultConcat7, int maxInputLength)
 	{
-		MISC::DISPLAY_ONSCREEN_KEYBOARD_WITH_LONGER_INITIAL_STRING(p0, windowTitle, &p2, defaultText, defaultConcat1, defaultConcat2, defaultConcat3, defaultConcat4, defaultConcat5, defaultConcat6, defaultConcat7, maxInputLength);
+		MISC::DISPLAY_ONSCREEN_KEYBOARD_WITH_LONGER_INITIAL_STRING(p0, windowTitle.is<const char*>() ? windowTitle.as<const char*>() : nullptr, &p2, defaultText.is<const char*>() ? defaultText.as<const char*>() : nullptr, defaultConcat1.is<const char*>() ? defaultConcat1.as<const char*>() : nullptr, defaultConcat2.is<const char*>() ? defaultConcat2.as<const char*>() : nullptr, defaultConcat3.is<const char*>() ? defaultConcat3.as<const char*>() : nullptr, defaultConcat4.is<const char*>() ? defaultConcat4.as<const char*>() : nullptr, defaultConcat5.is<const char*>() ? defaultConcat5.as<const char*>() : nullptr, defaultConcat6.is<const char*>() ? defaultConcat6.as<const char*>() : nullptr, defaultConcat7.is<const char*>() ? defaultConcat7.as<const char*>() : nullptr, maxInputLength);
 		return p2;
 	}
 
-	static void LUA_NATIVE_MISC_DISPLAY_ONSCREEN_KEYBOARD(int p0, const char* windowTitle, const char* p2, const char* defaultText, const char* defaultConcat1, const char* defaultConcat2, const char* defaultConcat3, int maxInputLength)
+	static void LUA_NATIVE_MISC_DISPLAY_ONSCREEN_KEYBOARD(int p0, sol::stack_object windowTitle, sol::stack_object p2, sol::stack_object defaultText, sol::stack_object defaultConcat1, sol::stack_object defaultConcat2, sol::stack_object defaultConcat3, int maxInputLength)
 	{
-		MISC::DISPLAY_ONSCREEN_KEYBOARD(p0, windowTitle, p2, defaultText, defaultConcat1, defaultConcat2, defaultConcat3, maxInputLength);
+		MISC::DISPLAY_ONSCREEN_KEYBOARD(p0, windowTitle.is<const char*>() ? windowTitle.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, defaultText.is<const char*>() ? defaultText.as<const char*>() : nullptr, defaultConcat1.is<const char*>() ? defaultConcat1.as<const char*>() : nullptr, defaultConcat2.is<const char*>() ? defaultConcat2.as<const char*>() : nullptr, defaultConcat3.is<const char*>() ? defaultConcat3.as<const char*>() : nullptr, maxInputLength);
 	}
 
 	static int LUA_NATIVE_MISC_UPDATE_ONSCREEN_KEYBOARD()
@@ -1895,6 +1895,17 @@ namespace lua::native
 	static int LUA_NATIVE_MISC_GET_CONTENT_ID_INDEX(Hash contentId)
 	{
 		auto retval = MISC::GET_CONTENT_ID_INDEX(contentId);
+		return retval;
+	}
+
+	static void LUA_NATIVE_MISC_SET_CONTENT_PROP_TYPE_(Hash model, int type)
+	{
+		MISC::_SET_CONTENT_PROP_TYPE(model, type);
+	}
+
+	static int LUA_NATIVE_MISC_GET_CONTENT_PROP_TYPE_(Hash model)
+	{
+		auto retval = MISC::_GET_CONTENT_PROP_TYPE(model);
 		return retval;
 	}
 
@@ -2232,5 +2243,7 @@ namespace lua::native
 		MISC.set_function("USE_ACTIVE_CAMERA_FOR_TIMESLICING_CENTRE", LUA_NATIVE_MISC_USE_ACTIVE_CAMERA_FOR_TIMESLICING_CENTRE);
 		MISC.set_function("SET_CONTENT_ID_INDEX", LUA_NATIVE_MISC_SET_CONTENT_ID_INDEX);
 		MISC.set_function("GET_CONTENT_ID_INDEX", LUA_NATIVE_MISC_GET_CONTENT_ID_INDEX);
+		MISC.set_function("SET_CONTENT_PROP_TYPE_", LUA_NATIVE_MISC_SET_CONTENT_PROP_TYPE_);
+		MISC.set_function("GET_CONTENT_PROP_TYPE_", LUA_NATIVE_MISC_GET_CONTENT_PROP_TYPE_);
 	}
 }

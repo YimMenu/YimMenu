@@ -256,6 +256,17 @@ namespace lua::native
 		VEHICLE::SET_VEHICLE_DONT_TERMINATE_TASK_WHEN_ACHIEVED(vehicle);
 	}
 
+	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_MAX_LAUNCH_ENGINE_REVS_(Vehicle vehicle, float modifier)
+	{
+		VEHICLE::_SET_VEHICLE_MAX_LAUNCH_ENGINE_REVS(vehicle, modifier);
+	}
+
+	static float LUA_NATIVE_VEHICLE_GET_VEHICLE_THROTTLE_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_THROTTLE(vehicle);
+		return retval;
+	}
+
 	static void LUA_NATIVE_VEHICLE_EXPLODE_VEHICLE(Vehicle vehicle, bool isAudible, bool isInvisible)
 	{
 		VEHICLE::EXPLODE_VEHICLE(vehicle, isAudible, isInvisible);
@@ -309,9 +320,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_VEHICLE_IS_VEHICLE_IN_GARAGE_AREA(const char* garageName, Vehicle vehicle)
+	static bool LUA_NATIVE_VEHICLE_IS_VEHICLE_IN_GARAGE_AREA(sol::stack_object garageName, Vehicle vehicle)
 	{
-		auto retval = (bool)VEHICLE::IS_VEHICLE_IN_GARAGE_AREA(garageName, vehicle);
+		auto retval = (bool)VEHICLE::IS_VEHICLE_IN_GARAGE_AREA(garageName.is<const char*>() ? garageName.as<const char*>() : nullptr, vehicle);
 		return retval;
 	}
 
@@ -855,9 +866,9 @@ namespace lua::native
 		VEHICLE::SET_VEHICLE_TYRE_FIXED(vehicle, tyreIndex);
 	}
 
-	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_NUMBER_PLATE_TEXT(Vehicle vehicle, const char* plateText)
+	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_NUMBER_PLATE_TEXT(Vehicle vehicle, sol::stack_object plateText)
 	{
-		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, plateText);
+		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT(vehicle, plateText.is<const char*>() ? plateText.as<const char*>() : nullptr);
 	}
 
 	static const char* LUA_NATIVE_VEHICLE_GET_VEHICLE_NUMBER_PLATE_TEXT(Vehicle vehicle)
@@ -945,26 +956,26 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_RECORDING_ID(int recording, const char* script)
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_RECORDING_ID(int recording, sol::stack_object script)
 	{
-		auto retval = VEHICLE::GET_VEHICLE_RECORDING_ID(recording, script);
+		auto retval = VEHICLE::GET_VEHICLE_RECORDING_ID(recording, script.is<const char*>() ? script.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_VEHICLE_REQUEST_VEHICLE_RECORDING(int recording, const char* script)
+	static void LUA_NATIVE_VEHICLE_REQUEST_VEHICLE_RECORDING(int recording, sol::stack_object script)
 	{
-		VEHICLE::REQUEST_VEHICLE_RECORDING(recording, script);
+		VEHICLE::REQUEST_VEHICLE_RECORDING(recording, script.is<const char*>() ? script.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_VEHICLE_HAS_VEHICLE_RECORDING_BEEN_LOADED(int recording, const char* script)
+	static bool LUA_NATIVE_VEHICLE_HAS_VEHICLE_RECORDING_BEEN_LOADED(int recording, sol::stack_object script)
 	{
-		auto retval = (bool)VEHICLE::HAS_VEHICLE_RECORDING_BEEN_LOADED(recording, script);
+		auto retval = (bool)VEHICLE::HAS_VEHICLE_RECORDING_BEEN_LOADED(recording, script.is<const char*>() ? script.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_VEHICLE_REMOVE_VEHICLE_RECORDING(int recording, const char* script)
+	static void LUA_NATIVE_VEHICLE_REMOVE_VEHICLE_RECORDING(int recording, sol::stack_object script)
 	{
-		VEHICLE::REMOVE_VEHICLE_RECORDING(recording, script);
+		VEHICLE::REMOVE_VEHICLE_RECORDING(recording, script.is<const char*>() ? script.as<const char*>() : nullptr);
 	}
 
 	static Vector3 LUA_NATIVE_VEHICLE_GET_POSITION_OF_VEHICLE_RECORDING_ID_AT_TIME(int id, float time)
@@ -973,9 +984,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Vector3 LUA_NATIVE_VEHICLE_GET_POSITION_OF_VEHICLE_RECORDING_AT_TIME(int recording, float time, const char* script)
+	static Vector3 LUA_NATIVE_VEHICLE_GET_POSITION_OF_VEHICLE_RECORDING_AT_TIME(int recording, float time, sol::stack_object script)
 	{
-		auto retval = VEHICLE::GET_POSITION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script);
+		auto retval = VEHICLE::GET_POSITION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script.is<const char*>() ? script.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -985,9 +996,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Vector3 LUA_NATIVE_VEHICLE_GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(int recording, float time, const char* script)
+	static Vector3 LUA_NATIVE_VEHICLE_GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(int recording, float time, sol::stack_object script)
 	{
-		auto retval = VEHICLE::GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script);
+		auto retval = VEHICLE::GET_ROTATION_OF_VEHICLE_RECORDING_AT_TIME(recording, time, script.is<const char*>() ? script.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -997,9 +1008,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static float LUA_NATIVE_VEHICLE_GET_TOTAL_DURATION_OF_VEHICLE_RECORDING(int recording, const char* script)
+	static float LUA_NATIVE_VEHICLE_GET_TOTAL_DURATION_OF_VEHICLE_RECORDING(int recording, sol::stack_object script)
 	{
-		auto retval = VEHICLE::GET_TOTAL_DURATION_OF_VEHICLE_RECORDING(recording, script);
+		auto retval = VEHICLE::GET_TOTAL_DURATION_OF_VEHICLE_RECORDING(recording, script.is<const char*>() ? script.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1015,14 +1026,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE(Vehicle vehicle, int recording, const char* script, bool p3)
+	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE(Vehicle vehicle, int recording, sol::stack_object script, bool p3)
 	{
-		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE(vehicle, recording, script, p3);
+		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE(vehicle, recording, script.is<const char*>() ? script.as<const char*>() : nullptr, p3);
 	}
 
-	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE_WITH_FLAGS(Vehicle vehicle, int recording, const char* script, int flags, int time, int drivingStyle)
+	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE_WITH_FLAGS(Vehicle vehicle, int recording, sol::stack_object script, int flags, int time, int drivingStyle)
 	{
-		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_WITH_FLAGS(vehicle, recording, script, flags, time, drivingStyle);
+		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_WITH_FLAGS(vehicle, recording, script.is<const char*>() ? script.as<const char*>() : nullptr, flags, time, drivingStyle);
 	}
 
 	static void LUA_NATIVE_VEHICLE_FORCE_PLAYBACK_RECORDED_VEHICLE_UPDATE(Vehicle vehicle, bool p1)
@@ -1073,9 +1084,9 @@ namespace lua::native
 		VEHICLE::SET_PLAYBACK_SPEED(vehicle, speed);
 	}
 
-	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE_USING_AI(Vehicle vehicle, int recording, const char* script, float speed, int drivingStyle)
+	static void LUA_NATIVE_VEHICLE_START_PLAYBACK_RECORDED_VEHICLE_USING_AI(Vehicle vehicle, int recording, sol::stack_object script, float speed, int drivingStyle)
 	{
-		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_USING_AI(vehicle, recording, script, speed, drivingStyle);
+		VEHICLE::START_PLAYBACK_RECORDED_VEHICLE_USING_AI(vehicle, recording, script.is<const char*>() ? script.as<const char*>() : nullptr, speed, drivingStyle);
 	}
 
 	static void LUA_NATIVE_VEHICLE_SKIP_TIME_IN_PLAYBACK_RECORDED_VEHICLE(Vehicle vehicle, float time)
@@ -1911,9 +1922,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_NAME_DEBUG(Vehicle vehicle, const char* name)
+	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_NAME_DEBUG(Vehicle vehicle, sol::stack_object name)
 	{
-		VEHICLE::SET_VEHICLE_NAME_DEBUG(vehicle, name);
+		VEHICLE::SET_VEHICLE_NAME_DEBUG(vehicle, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_EXPLODES_ON_HIGH_EXPLOSION_DAMAGE(Vehicle vehicle, bool toggle)
@@ -1964,6 +1975,30 @@ namespace lua::native
 		VEHICLE::REQUEST_VEHICLE_HIGH_DETAIL_MODEL(vehicle);
 	}
 
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_MODEL_NUM_DRIVE_GEARS_(Hash vehicleModel)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_MODEL_NUM_DRIVE_GEARS(vehicleModel);
+		return retval;
+	}
+
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_MAX_DRIVE_GEAR_COUNT_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_MAX_DRIVE_GEAR_COUNT(vehicle);
+		return retval;
+	}
+
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_CURRENT_DRIVE_GEAR_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_CURRENT_DRIVE_GEAR(vehicle);
+		return retval;
+	}
+
+	static float LUA_NATIVE_VEHICLE_GET_VEHICLE_CURRENT_REV_RATIO_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_CURRENT_REV_RATIO(vehicle);
+		return retval;
+	}
+
 	static void LUA_NATIVE_VEHICLE_REMOVE_VEHICLE_HIGH_DETAIL_MODEL(Vehicle vehicle)
 	{
 		VEHICLE::REMOVE_VEHICLE_HIGH_DETAIL_MODEL(vehicle);
@@ -1994,6 +2029,11 @@ namespace lua::native
 	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_TOW_TRUCK_ARM_POSITION(Vehicle vehicle, float position)
 	{
 		VEHICLE::SET_VEHICLE_TOW_TRUCK_ARM_POSITION(vehicle, position);
+	}
+
+	static void LUA_NATIVE_VEHICLE_SET_ATTACHED_VEHICLE_TO_TOW_TRUCK_ARM_(Vehicle towTruck, Vehicle vehicle)
+	{
+		VEHICLE::_SET_ATTACHED_VEHICLE_TO_TOW_TRUCK_ARM(towTruck, vehicle);
 	}
 
 	static void LUA_NATIVE_VEHICLE_ATTACH_VEHICLE_TO_TOW_TRUCK(Vehicle towTruck, Vehicle vehicle, bool rear, float hookOffsetX, float hookOffsetY, float hookOffsetZ)
@@ -2594,6 +2634,17 @@ namespace lua::native
 		VEHICLE::OVERRIDE_PLANE_DAMAGE_THREHSOLD(vehicle, health);
 	}
 
+	static void LUA_NATIVE_VEHICLE_SET_TRANSMISSION_REDUCED_GEAR_RATIO_(Vehicle vehicle, bool toggle)
+	{
+		VEHICLE::_SET_TRANSMISSION_REDUCED_GEAR_RATIO(vehicle, toggle);
+	}
+
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_DESIRED_DRIVE_GEAR_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_DESIRED_DRIVE_GEAR(vehicle);
+		return retval;
+	}
+
 	static bool LUA_NATIVE_VEHICLE_GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED(Vehicle vehicle)
 	{
 		auto retval = (bool)VEHICLE::GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED(vehicle);
@@ -2978,9 +3029,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_VEHICLE_ATTACH_VEHICLE_TO_CARGOBOB(Vehicle vehicle, Vehicle cargobob, int p2, float x, float y, float z)
+	static void LUA_NATIVE_VEHICLE_ATTACH_VEHICLE_TO_CARGOBOB(Vehicle cargobob, Vehicle vehicle, int p2, float x, float y, float z)
 	{
-		VEHICLE::ATTACH_VEHICLE_TO_CARGOBOB(vehicle, cargobob, p2, x, y, z);
+		VEHICLE::ATTACH_VEHICLE_TO_CARGOBOB(cargobob, vehicle, p2, x, y, z);
 	}
 
 	static void LUA_NATIVE_VEHICLE_ATTACH_ENTITY_TO_CARGOBOB(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5)
@@ -3227,9 +3278,9 @@ namespace lua::native
 		VEHICLE::CLEAR_VEHICLE_ROUTE_HISTORY(vehicle);
 	}
 
-	static Vehicle LUA_NATIVE_VEHICLE_DOES_VEHICLE_EXIST_WITH_DECORATOR(const char* decorator)
+	static Vehicle LUA_NATIVE_VEHICLE_DOES_VEHICLE_EXIST_WITH_DECORATOR(sol::stack_object decorator)
 	{
-		auto retval = VEHICLE::DOES_VEHICLE_EXIST_WITH_DECORATOR(decorator);
+		auto retval = VEHICLE::DOES_VEHICLE_EXIST_WITH_DECORATOR(decorator.is<const char*>() ? decorator.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -3682,6 +3733,11 @@ namespace lua::native
 		VEHICLE::SET_VEHICLE_USE_BOOST_BUTTON_FOR_WHEEL_RETRACT(toggle);
 	}
 
+	static void LUA_NATIVE_VEHICLE_SET_VEHICLE_USE_HORN_BUTTON_FOR_NITROUS_(bool toggle)
+	{
+		VEHICLE::_SET_VEHICLE_USE_HORN_BUTTON_FOR_NITROUS(toggle);
+	}
+
 	static void LUA_NATIVE_VEHICLE_VEHICLE_SET_PARACHUTE_MODEL_OVERRIDE(Vehicle vehicle, Hash modelHash)
 	{
 		VEHICLE::VEHICLE_SET_PARACHUTE_MODEL_OVERRIDE(vehicle, modelHash);
@@ -3969,6 +4025,48 @@ namespace lua::native
 		VEHICLE::SET_OVERRIDE_NITROUS_LEVEL(vehicle, toggle, level, power, rechargeTime, disableSound);
 	}
 
+	static void LUA_NATIVE_VEHICLE_SET_NITROUS_IS_ACTIVE(Vehicle vehicle, bool enabled)
+	{
+		VEHICLE::SET_NITROUS_IS_ACTIVE(vehicle, enabled);
+	}
+
+	static void LUA_NATIVE_VEHICLE_SET_OVERRIDE_TRACTION_LOSS_MULTIPLIER_(Vehicle vehicle, float modifier)
+	{
+		VEHICLE::_SET_OVERRIDE_TRACTION_LOSS_MULTIPLIER(vehicle, modifier);
+	}
+
+	static void LUA_NATIVE_VEHICLE_SET_DRIFT_SLIP_ANGLE_LIMITS_(Vehicle vehicle, float durationScalar, float amplitudeScalar, float slipAngleLimit)
+	{
+		VEHICLE::_SET_DRIFT_SLIP_ANGLE_LIMITS(vehicle, durationScalar, amplitudeScalar, slipAngleLimit);
+	}
+
+	static void LUA_NATIVE_VEHICLE_SET_MINIMUM_TIME_BETWEEN_GEAR_SHIFTS_(Vehicle vehicle, int time)
+	{
+		VEHICLE::_SET_MINIMUM_TIME_BETWEEN_GEAR_SHIFTS(vehicle, time);
+	}
+
+	static void LUA_NATIVE_VEHICLE_FULLY_CHARGE_NITROUS(Vehicle vehicle)
+	{
+		VEHICLE::FULLY_CHARGE_NITROUS(vehicle);
+	}
+
+	static float LUA_NATIVE_VEHICLE_GET_REMAINING_NITROUS_DURATION_(Vehicle vehicle)
+	{
+		auto retval = VEHICLE::_GET_REMAINING_NITROUS_DURATION(vehicle);
+		return retval;
+	}
+
+	static bool LUA_NATIVE_VEHICLE_IS_NITROUS_ACTIVE(Vehicle vehicle)
+	{
+		auto retval = (bool)VEHICLE::IS_NITROUS_ACTIVE(vehicle);
+		return retval;
+	}
+
+	static void LUA_NATIVE_VEHICLE_CLEAR_NITROUS(Vehicle vehicle)
+	{
+		VEHICLE::CLEAR_NITROUS(vehicle);
+	}
+
 	static void LUA_NATIVE_VEHICLE_SET_INCREASE_WHEEL_CRUSH_DAMAGE(Vehicle vehicle, bool toggle)
 	{
 		VEHICLE::SET_INCREASE_WHEEL_CRUSH_DAMAGE(vehicle, toggle);
@@ -3993,6 +4091,11 @@ namespace lua::native
 	static void LUA_NATIVE_VEHICLE_HIDE_TOMBSTONE(Vehicle vehicle, bool toggle)
 	{
 		VEHICLE::HIDE_TOMBSTONE(vehicle, toggle);
+	}
+
+	static void LUA_NATIVE_VEHICLE_APPLY_EMP_EFFECT(Vehicle vehicle)
+	{
+		VEHICLE::APPLY_EMP_EFFECT(vehicle);
 	}
 
 	static bool LUA_NATIVE_VEHICLE_GET_IS_VEHICLE_DISABLED_BY_EMP(Vehicle vehicle)
@@ -4069,6 +4172,33 @@ namespace lua::native
 		VEHICLE::SET_CHECK_FOR_ENOUGH_ROOM_FOR_PED(vehicle, p1);
 	}
 
+	static void LUA_NATIVE_VEHICLE_SET_ALLOW_COLLISION_WHEN_IN_VEHICLE_(Vehicle vehicle, bool toggle)
+	{
+		VEHICLE::_SET_ALLOW_COLLISION_WHEN_IN_VEHICLE(vehicle, toggle);
+	}
+
+	static bool LUA_NATIVE_VEHICLE_IS_VEHICLE_GEN9_EXCLUSIVE_MODEL_(Hash vehicleModel)
+	{
+		auto retval = (bool)VEHICLE::_IS_VEHICLE_GEN9_EXCLUSIVE_MODEL(vehicleModel);
+		return retval;
+	}
+
+	static int LUA_NATIVE_VEHICLE_GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_()
+	{
+		auto retval = VEHICLE::_GET_VEHICLE_MAX_EXHAUST_BONE_COUNT();
+		return retval;
+	}
+
+	static std::tuple<bool, int, bool> LUA_NATIVE_VEHICLE_GET_VEHICLE_EXHAUST_BONE_(Vehicle vehicle, int index, int boneIndex, bool axisX)
+	{
+		std::tuple<bool, int, bool> return_values;
+		std::get<0>(return_values) = (bool)VEHICLE::_GET_VEHICLE_EXHAUST_BONE(vehicle, index, &boneIndex, (BOOL*)&axisX);
+		std::get<1>(return_values) = boneIndex;
+		std::get<2>(return_values) = axisX;
+
+		return return_values;
+	}
+
 	void init_native_binding_VEHICLE(sol::state& L)
 	{
 		auto VEHICLE = L["VEHICLE"].get_or_create<sol::table>();
@@ -4119,6 +4249,8 @@ namespace lua::native
 		VEHICLE.set_function("SET_VEHICLE_DOORS_LOCKED_FOR_TEAM", LUA_NATIVE_VEHICLE_SET_VEHICLE_DOORS_LOCKED_FOR_TEAM);
 		VEHICLE.set_function("SET_VEHICLE_DOORS_LOCKED_FOR_ALL_TEAMS", LUA_NATIVE_VEHICLE_SET_VEHICLE_DOORS_LOCKED_FOR_ALL_TEAMS);
 		VEHICLE.set_function("SET_VEHICLE_DONT_TERMINATE_TASK_WHEN_ACHIEVED", LUA_NATIVE_VEHICLE_SET_VEHICLE_DONT_TERMINATE_TASK_WHEN_ACHIEVED);
+		VEHICLE.set_function("SET_VEHICLE_MAX_LAUNCH_ENGINE_REVS_", LUA_NATIVE_VEHICLE_SET_VEHICLE_MAX_LAUNCH_ENGINE_REVS_);
+		VEHICLE.set_function("GET_VEHICLE_THROTTLE_", LUA_NATIVE_VEHICLE_GET_VEHICLE_THROTTLE_);
 		VEHICLE.set_function("EXPLODE_VEHICLE", LUA_NATIVE_VEHICLE_EXPLODE_VEHICLE);
 		VEHICLE.set_function("SET_VEHICLE_OUT_OF_CONTROL", LUA_NATIVE_VEHICLE_SET_VEHICLE_OUT_OF_CONTROL);
 		VEHICLE.set_function("SET_VEHICLE_TIMED_EXPLOSION", LUA_NATIVE_VEHICLE_SET_VEHICLE_TIMED_EXPLOSION);
@@ -4431,12 +4563,17 @@ namespace lua::native
 		VEHICLE.set_function("GET_LANDING_GEAR_STATE", LUA_NATIVE_VEHICLE_GET_LANDING_GEAR_STATE);
 		VEHICLE.set_function("IS_ANY_VEHICLE_NEAR_POINT", LUA_NATIVE_VEHICLE_IS_ANY_VEHICLE_NEAR_POINT);
 		VEHICLE.set_function("REQUEST_VEHICLE_HIGH_DETAIL_MODEL", LUA_NATIVE_VEHICLE_REQUEST_VEHICLE_HIGH_DETAIL_MODEL);
+		VEHICLE.set_function("GET_VEHICLE_MODEL_NUM_DRIVE_GEARS_", LUA_NATIVE_VEHICLE_GET_VEHICLE_MODEL_NUM_DRIVE_GEARS_);
+		VEHICLE.set_function("GET_VEHICLE_MAX_DRIVE_GEAR_COUNT_", LUA_NATIVE_VEHICLE_GET_VEHICLE_MAX_DRIVE_GEAR_COUNT_);
+		VEHICLE.set_function("GET_VEHICLE_CURRENT_DRIVE_GEAR_", LUA_NATIVE_VEHICLE_GET_VEHICLE_CURRENT_DRIVE_GEAR_);
+		VEHICLE.set_function("GET_VEHICLE_CURRENT_REV_RATIO_", LUA_NATIVE_VEHICLE_GET_VEHICLE_CURRENT_REV_RATIO_);
 		VEHICLE.set_function("REMOVE_VEHICLE_HIGH_DETAIL_MODEL", LUA_NATIVE_VEHICLE_REMOVE_VEHICLE_HIGH_DETAIL_MODEL);
 		VEHICLE.set_function("IS_VEHICLE_HIGH_DETAIL", LUA_NATIVE_VEHICLE_IS_VEHICLE_HIGH_DETAIL);
 		VEHICLE.set_function("REQUEST_VEHICLE_ASSET", LUA_NATIVE_VEHICLE_REQUEST_VEHICLE_ASSET);
 		VEHICLE.set_function("HAS_VEHICLE_ASSET_LOADED", LUA_NATIVE_VEHICLE_HAS_VEHICLE_ASSET_LOADED);
 		VEHICLE.set_function("REMOVE_VEHICLE_ASSET", LUA_NATIVE_VEHICLE_REMOVE_VEHICLE_ASSET);
 		VEHICLE.set_function("SET_VEHICLE_TOW_TRUCK_ARM_POSITION", LUA_NATIVE_VEHICLE_SET_VEHICLE_TOW_TRUCK_ARM_POSITION);
+		VEHICLE.set_function("SET_ATTACHED_VEHICLE_TO_TOW_TRUCK_ARM_", LUA_NATIVE_VEHICLE_SET_ATTACHED_VEHICLE_TO_TOW_TRUCK_ARM_);
 		VEHICLE.set_function("ATTACH_VEHICLE_TO_TOW_TRUCK", LUA_NATIVE_VEHICLE_ATTACH_VEHICLE_TO_TOW_TRUCK);
 		VEHICLE.set_function("DETACH_VEHICLE_FROM_TOW_TRUCK", LUA_NATIVE_VEHICLE_DETACH_VEHICLE_FROM_TOW_TRUCK);
 		VEHICLE.set_function("DETACH_VEHICLE_FROM_ANY_TOW_TRUCK", LUA_NATIVE_VEHICLE_DETACH_VEHICLE_FROM_ANY_TOW_TRUCK);
@@ -4539,6 +4676,8 @@ namespace lua::native
 		VEHICLE.set_function("GET_VEHICLE_COLOURS_WHICH_CAN_BE_SET", LUA_NATIVE_VEHICLE_GET_VEHICLE_COLOURS_WHICH_CAN_BE_SET);
 		VEHICLE.set_function("GET_VEHICLE_CAUSE_OF_DESTRUCTION", LUA_NATIVE_VEHICLE_GET_VEHICLE_CAUSE_OF_DESTRUCTION);
 		VEHICLE.set_function("OVERRIDE_PLANE_DAMAGE_THREHSOLD", LUA_NATIVE_VEHICLE_OVERRIDE_PLANE_DAMAGE_THREHSOLD);
+		VEHICLE.set_function("SET_TRANSMISSION_REDUCED_GEAR_RATIO_", LUA_NATIVE_VEHICLE_SET_TRANSMISSION_REDUCED_GEAR_RATIO_);
+		VEHICLE.set_function("GET_VEHICLE_DESIRED_DRIVE_GEAR_", LUA_NATIVE_VEHICLE_GET_VEHICLE_DESIRED_DRIVE_GEAR_);
 		VEHICLE.set_function("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", LUA_NATIVE_VEHICLE_GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED);
 		VEHICLE.set_function("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", LUA_NATIVE_VEHICLE_GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED);
 		VEHICLE.set_function("GET_BOTH_VEHICLE_HEADLIGHTS_DAMAGED", LUA_NATIVE_VEHICLE_GET_BOTH_VEHICLE_HEADLIGHTS_DAMAGED);
@@ -4741,6 +4880,7 @@ namespace lua::native
 		VEHICLE.set_function("VEHICLE_SET_JET_WASH_FORCE_ENABLED", LUA_NATIVE_VEHICLE_VEHICLE_SET_JET_WASH_FORCE_ENABLED);
 		VEHICLE.set_function("SET_VEHICLE_WEAPON_CAN_TARGET_OBJECTS", LUA_NATIVE_VEHICLE_SET_VEHICLE_WEAPON_CAN_TARGET_OBJECTS);
 		VEHICLE.set_function("SET_VEHICLE_USE_BOOST_BUTTON_FOR_WHEEL_RETRACT", LUA_NATIVE_VEHICLE_SET_VEHICLE_USE_BOOST_BUTTON_FOR_WHEEL_RETRACT);
+		VEHICLE.set_function("SET_VEHICLE_USE_HORN_BUTTON_FOR_NITROUS_", LUA_NATIVE_VEHICLE_SET_VEHICLE_USE_HORN_BUTTON_FOR_NITROUS_);
 		VEHICLE.set_function("VEHICLE_SET_PARACHUTE_MODEL_OVERRIDE", LUA_NATIVE_VEHICLE_VEHICLE_SET_PARACHUTE_MODEL_OVERRIDE);
 		VEHICLE.set_function("VEHICLE_SET_PARACHUTE_MODEL_TINT_INDEX", LUA_NATIVE_VEHICLE_VEHICLE_SET_PARACHUTE_MODEL_TINT_INDEX);
 		VEHICLE.set_function("VEHICLE_SET_OVERRIDE_EXTENABLE_SIDE_RATIO", LUA_NATIVE_VEHICLE_VEHICLE_SET_OVERRIDE_EXTENABLE_SIDE_RATIO);
@@ -4795,11 +4935,20 @@ namespace lua::native
 		VEHICLE.set_function("GET_LAST_SHUNT_VEHICLE", LUA_NATIVE_VEHICLE_GET_LAST_SHUNT_VEHICLE);
 		VEHICLE.set_function("SET_DISABLE_VEHICLE_EXPLOSIONS_DAMAGE", LUA_NATIVE_VEHICLE_SET_DISABLE_VEHICLE_EXPLOSIONS_DAMAGE);
 		VEHICLE.set_function("SET_OVERRIDE_NITROUS_LEVEL", LUA_NATIVE_VEHICLE_SET_OVERRIDE_NITROUS_LEVEL);
+		VEHICLE.set_function("SET_NITROUS_IS_ACTIVE", LUA_NATIVE_VEHICLE_SET_NITROUS_IS_ACTIVE);
+		VEHICLE.set_function("SET_OVERRIDE_TRACTION_LOSS_MULTIPLIER_", LUA_NATIVE_VEHICLE_SET_OVERRIDE_TRACTION_LOSS_MULTIPLIER_);
+		VEHICLE.set_function("SET_DRIFT_SLIP_ANGLE_LIMITS_", LUA_NATIVE_VEHICLE_SET_DRIFT_SLIP_ANGLE_LIMITS_);
+		VEHICLE.set_function("SET_MINIMUM_TIME_BETWEEN_GEAR_SHIFTS_", LUA_NATIVE_VEHICLE_SET_MINIMUM_TIME_BETWEEN_GEAR_SHIFTS_);
+		VEHICLE.set_function("FULLY_CHARGE_NITROUS", LUA_NATIVE_VEHICLE_FULLY_CHARGE_NITROUS);
+		VEHICLE.set_function("GET_REMAINING_NITROUS_DURATION_", LUA_NATIVE_VEHICLE_GET_REMAINING_NITROUS_DURATION_);
+		VEHICLE.set_function("IS_NITROUS_ACTIVE", LUA_NATIVE_VEHICLE_IS_NITROUS_ACTIVE);
+		VEHICLE.set_function("CLEAR_NITROUS", LUA_NATIVE_VEHICLE_CLEAR_NITROUS);
 		VEHICLE.set_function("SET_INCREASE_WHEEL_CRUSH_DAMAGE", LUA_NATIVE_VEHICLE_SET_INCREASE_WHEEL_CRUSH_DAMAGE);
 		VEHICLE.set_function("SET_DISABLE_WEAPON_BLADE_FORCES", LUA_NATIVE_VEHICLE_SET_DISABLE_WEAPON_BLADE_FORCES);
 		VEHICLE.set_function("SET_USE_DOUBLE_CLICK_FOR_CAR_JUMP", LUA_NATIVE_VEHICLE_SET_USE_DOUBLE_CLICK_FOR_CAR_JUMP);
 		VEHICLE.set_function("GET_DOES_VEHICLE_HAVE_TOMBSTONE", LUA_NATIVE_VEHICLE_GET_DOES_VEHICLE_HAVE_TOMBSTONE);
 		VEHICLE.set_function("HIDE_TOMBSTONE", LUA_NATIVE_VEHICLE_HIDE_TOMBSTONE);
+		VEHICLE.set_function("APPLY_EMP_EFFECT", LUA_NATIVE_VEHICLE_APPLY_EMP_EFFECT);
 		VEHICLE.set_function("GET_IS_VEHICLE_DISABLED_BY_EMP", LUA_NATIVE_VEHICLE_GET_IS_VEHICLE_DISABLED_BY_EMP);
 		VEHICLE.set_function("SET_DISABLE_RETRACTING_WEAPON_BLADES", LUA_NATIVE_VEHICLE_SET_DISABLE_RETRACTING_WEAPON_BLADES);
 		VEHICLE.set_function("GET_TYRE_HEALTH", LUA_NATIVE_VEHICLE_GET_TYRE_HEALTH);
@@ -4814,5 +4963,9 @@ namespace lua::native
 		VEHICLE.set_function("GET_DRIFT_TYRES_SET", LUA_NATIVE_VEHICLE_GET_DRIFT_TYRES_SET);
 		VEHICLE.set_function("NETWORK_USE_HIGH_PRECISION_TRAIN_BLENDING", LUA_NATIVE_VEHICLE_NETWORK_USE_HIGH_PRECISION_TRAIN_BLENDING);
 		VEHICLE.set_function("SET_CHECK_FOR_ENOUGH_ROOM_FOR_PED", LUA_NATIVE_VEHICLE_SET_CHECK_FOR_ENOUGH_ROOM_FOR_PED);
+		VEHICLE.set_function("SET_ALLOW_COLLISION_WHEN_IN_VEHICLE_", LUA_NATIVE_VEHICLE_SET_ALLOW_COLLISION_WHEN_IN_VEHICLE_);
+		VEHICLE.set_function("IS_VEHICLE_GEN9_EXCLUSIVE_MODEL_", LUA_NATIVE_VEHICLE_IS_VEHICLE_GEN9_EXCLUSIVE_MODEL_);
+		VEHICLE.set_function("GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_", LUA_NATIVE_VEHICLE_GET_VEHICLE_MAX_EXHAUST_BONE_COUNT_);
+		VEHICLE.set_function("GET_VEHICLE_EXHAUST_BONE_", LUA_NATIVE_VEHICLE_GET_VEHICLE_EXHAUST_BONE_);
 	}
 }

@@ -8,16 +8,16 @@ namespace lua::native
 		SYSTEM::WAIT(ms);
 	}
 
-	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT(const char* scriptName, int stackSize)
+	static int LUA_NATIVE_SYSTEM_START_NEW_SCRIPT(sol::stack_object scriptName, int stackSize)
 	{
-		auto retval = SYSTEM::START_NEW_SCRIPT(scriptName, stackSize);
+		auto retval = SYSTEM::START_NEW_SCRIPT(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr, stackSize);
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_ARGS(const char* scriptName, Any args, int argCount, int stackSize)
+	static std::tuple<int, Any> LUA_NATIVE_SYSTEM_START_NEW_SCRIPT_WITH_ARGS(sol::stack_object scriptName, Any args, int argCount, int stackSize)
 	{
 		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = SYSTEM::START_NEW_SCRIPT_WITH_ARGS(scriptName, &args, argCount, stackSize);
+		std::get<0>(return_values) = SYSTEM::START_NEW_SCRIPT_WITH_ARGS(scriptName.is<const char*>() ? scriptName.as<const char*>() : nullptr, &args, argCount, stackSize);
 		std::get<1>(return_values) = args;
 
 		return return_values;
