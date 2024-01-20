@@ -25,6 +25,7 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("UNLOAD"_T))
 			{
+				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 				// allow to unload in the main title screen.
 				if (g_script_mgr.can_tick())
 				{

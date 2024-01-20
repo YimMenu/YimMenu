@@ -80,6 +80,28 @@ namespace lua::event
 	// end)
 	// ```
 
+	// Lua API: Field
+	// Table: menu_event
+	// Field: MenuUnloaded: integer
+	// Event that is triggered when we unload YimMenu.
+	// **Example Usage:**
+	// ```lua
+	// event.register_handler(menu_event.MenuUnloaded, function ()
+	//     log.info("Menu unloaded.")
+	// end)
+	// ```
+
+	// Lua API: Field
+	// Table: menu_event
+	// Field: ScriptsReloaded: integer
+	// Event that is triggered when we reload the Lua scripts.
+	// **Example Usage:**
+	// ```lua
+	// event.register_handler(menu_event.ScriptsReloaded, function ()
+	//     log.info("Scripts reloaded.")
+	// end)
+	// ```
+
 	// Lua API: Table
 	// Name: event
 	// Table for responding to various events. The list of events is available in the menu_event table.
@@ -107,6 +129,8 @@ namespace lua::event
 		        {"PlayerMgrShutdown", menu_event::PlayerMgrShutdown},
 		        {"ChatMessageReceived", menu_event::ChatMessageReceived},
 		        {"ScriptedGameEventReceived", menu_event::ScriptedGameEventReceived},
+				{"MenuUnloaded", menu_event::MenuUnloaded},
+				{"ScriptsReloaded", menu_event::ScriptsReloaded},
 		    });
 
 

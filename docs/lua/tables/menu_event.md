@@ -2,7 +2,7 @@
 
 Table containing all possible events to which you can respond.
 
-## Fields (6)
+## Fields (8)
 
 ### `PlayerLeave`
 
@@ -74,6 +74,30 @@ Event that is triggered when we receive a scripted game event.
 event.register_handler(menu_event.ScriptedGameEventReceived, function (player_id, script_event_args)
     log.info(player_id)
     log.info(script_event_args)
+end)
+```
+
+- Type: `integer`
+
+### `MenuUnloaded`
+
+Event that is triggered when we unload YimMenu.
+**Example Usage:**
+```lua
+event.register_handler(menu_event.MenuUnloaded, function ()
+    log.info("Menu unloaded.")
+end)
+```
+
+- Type: `integer`
+
+### `ScriptsReloaded`
+
+Event that is triggered when we reload the Lua scripts.
+**Example Usage:**
+```lua
+event.register_handler(menu_event.ScriptsReloaded, function ()
+    log.info("Scripts reloaded.")
 end)
 ```
 
