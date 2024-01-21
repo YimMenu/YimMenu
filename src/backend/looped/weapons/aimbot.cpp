@@ -101,10 +101,9 @@ namespace big
 				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
 					return;
 
-				float RADPI = 180.0f / std::numbers::pi;
-				float camera_heading = atan2f(camera_target.x, camera_target.y) * RADPI;
-				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
-                    + camera_target.z * camera_target.z);
+				constexpr float RADPI = 180.0f / std::numbers::pi;
+				float magnitude       = hypotf(camera_target.x, camera_target.y);
+				float camera_heading  = atan2f(camera_target.x, camera_target.y) * RADPI;
 
 				float camera_pitch = asinf(camera_target.z / magnitude) * RADPI;
 				float self_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
