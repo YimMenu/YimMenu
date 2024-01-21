@@ -856,6 +856,12 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, distance, selected_bone)
 			} aimbot{};
 
+			struct flying_axe
+			{
+				bool enable            = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
+			} flying_axe{};
+
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
 			bool infinite_ammo            = false;
 			bool always_full_ammo         = false;
