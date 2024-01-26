@@ -194,7 +194,7 @@ namespace big::entity
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
 		constexpr float max_ground_check	= 1000.f;
-		constexpr int max_attempts			= 100;
+		constexpr int max_attempts			= 200;
 		float ground_z						= location.z + 1.f;
 		int current_attempts				= 0;
 
