@@ -194,26 +194,35 @@ namespace big::entity
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
 		constexpr float max_ground_check	= 1000.f;
-		constexpr int max_attempts			= 200;
-		float ground_z						= location.z + 1.f;
+		constexpr int max_attempts			= 300;
+		float ground_z						= location.z;
 		int current_attempts				= 0;
 
-		while (!MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE))
+		while (!MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE) && current_attempts != max_attempts)
 		{
-			STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
-			if (current_attempts >= max_attempts)
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE))
 			{
-				return false;
+				break;
 			}
-			current_attempts++;
+
+			STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
+
 			if (current_attempts % 10 == 0)
 			{
 				location.z += 25.f;
 			}
+
+			current_attempts++;
+
 			script::get_current()->yield();
 		}
 
-		location.z = ground_z;
+		if (current_attempts >= max_attempts)
+		{
+			return false;
+		}
+
+		location.z = ground_z + 1.f;
 		return true;
 	}
 
