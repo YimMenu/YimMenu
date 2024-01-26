@@ -191,7 +191,7 @@ namespace big::entity
 		return target_entities;
 	}
 
-	bool load_ground_at_3dcoord(Vector3& location)
+	bool force_manual_ground_check(Vector3& location)
 	{
 		float groundZ;
 		bool done = false;
@@ -202,7 +202,7 @@ namespace big::entity
 			{
 				float ground_iteration = static_cast<float>(z);
 				// Only request a collision after the first try failed because the location might already be loaded on first attempt.
-				if (i >= 1 && (z % 100 == 0))
+				if (i >= 1 && z % 100 == 0)
 				{
 					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, ground_iteration);
 					script::get_current()->yield();
@@ -230,6 +230,33 @@ namespace big::entity
 		location.z = 1000.f;
 
 		return false;
+	}
+
+	bool load_ground_at_3dcoord(Vector3& location)
+	{
+		constexpr float max_ground_check	= 1000.f;
+		constexpr int max_attempts			= 100;
+		float ground_z						= location.z + 1.f;
+		int current_attempts				= 0;
+
+		while (!MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE))
+		{
+			STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
+			if (current_attempts >= max_attempts)
+			{
+				if (force_manual_ground_check(location))
+				{
+					return true;
+				}
+
+				return false;
+			}
+			current_attempts++;
+			script::get_current()->yield();
+		}
+
+		location.z = ground_z;
+		return true;
 	}
 
 	double distance_to_middle_of_screen(const rage::fvector2& screen_pos)
