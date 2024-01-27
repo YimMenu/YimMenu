@@ -193,43 +193,33 @@ namespace big::entity
 
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
-		float groundZ;
-		bool done = false;
+	    constexpr float max_ground_check = 1000.f;
+	    constexpr int max_attempts = 300;
+	    float ground_z = location.z;
+	    int current_attempts = 0;
+	    bool found_ground;
 
-		for (int i = 0; i < 10; i++)
-		{
-			for (int z = 0; z < 1000; z += 25)
-			{
-				float ground_iteration = static_cast<float>(z);
-				// Only request a collision after the first try failed because the location might already be loaded on first attempt.
-				if (i >= 1 && (z % 100 == 0))
-				{
-					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, ground_iteration);
-					script::get_current()->yield();
-				}
+	    do {
+	        found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
+	        STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, location.z);
 
-				if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, ground_iteration, &groundZ, false, false))
-				{
-					location.z = groundZ + 1.f;
-					done       = true;
-				}
-			}
+	        if (current_attempts % 10 == 0)
+	        {
+	            location.z += 25.f;
+	        }
 
-			float height;
-			if (done && WATER::GET_WATER_HEIGHT(location.x, location.y, location.z, &height))
-			{
-				location.z = height + 1.f;
-			}
+	        ++current_attempts;
 
-			if (done)
-			{
-				return true;
-			}
-		}
+	        script::get_current()->yield();
+	    } while (!found_ground && current_attempts < max_attempts);
 
-		location.z = 1000.f;
+	    if (!found_ground)
+	    {
+	        return false;
+	    }
 
-		return false;
+	    location.z = ground_z + 1.f;
+	    return true;
 	}
 
 	double distance_to_middle_of_screen(const rage::fvector2& screen_pos)
