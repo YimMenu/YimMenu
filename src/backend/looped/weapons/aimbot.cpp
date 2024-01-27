@@ -5,20 +5,20 @@
 #include <numbers>
 namespace big
 {
-	inline Vector3 aim_lock;
-	inline Vector3 smooth_factor;
-	inline bool using_aimbot_first_time = true;
-	inline Entity target_entity;
-
 	class aimbot : looped_command
 	{
+		static inline Vector3 aim_lock;
+		static inline Vector3 smooth_factor;
+		static inline bool initalized;
+		static inline Entity target_entity;
+
 		using looped_command::looped_command;
 		virtual void on_tick() override
 		{
 			float local_fov_change = g.weapons.aimbot.fov;
 			for (auto ped : entity::get_entities(false, true))
 			{
-				if (!ENTITY::IS_ENTITY_DEAD(ped, 0)) // Tracetype is always 17. LOS check
+				if (!ENTITY::IS_ENTITY_DEAD(ped, 0))
 				{
 					int relation = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped); // relation for enemy check
 					int type     = PED::GET_PED_TYPE(ped); // for police check, cop types are 6, swat is 27
@@ -52,13 +52,12 @@ namespace big
 					// Update aim lock coords
 					aimbot_handler:
 					{
-						if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, ped, 17))
+						if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY_ADJUST_FOR_COVER(self::ped, ped, 17))
 							continue;
 
 						// Jump to here to handle instead of continue statements
 						target_entity = ped;
-						aim_lock =
-						    ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(ped, PED::GET_PED_BONE_INDEX(ped, g.weapons.aimbot.selected_bone));
+						aim_lock = ENTITY::GET_ENTITY_BONE_POSTION(ped, PED::GET_PED_BONE_INDEX(ped, g.weapons.aimbot.selected_bone));
 					}
 				}
 			}
@@ -66,14 +65,14 @@ namespace big
 			{
 				return;
 			}
-			if (PED::GET_PED_CONFIG_FLAG(self::ped, 78, 0))
+			if (PLAYER::IS_PLAYER_FREE_AIMING(self::id))
 			{
 				Vector3 camera_target;
 
 				if (g.weapons.aimbot.smoothing)
 				{
 					//Avoid buggy cam
-					if (using_aimbot_first_time)
+					if (!initalized)
 					{
 						Vector3 cam_coords               = CAM::GET_GAMEPLAY_CAM_COORD();
 						Vector3 cam_rot                  = CAM::GET_GAMEPLAY_CAM_ROT(0);
@@ -82,8 +81,8 @@ namespace big
 						Vector3 multiply                 = cam_direction * distance;
 						Vector3 front_cam                = cam_coords + multiply;
 						camera_target                    = front_cam - CAM::GET_GAMEPLAY_CAM_COORD();
-						smooth_factor           = camera_target;
-						using_aimbot_first_time = false;
+						smooth_factor                    = camera_target;
+						initalized                       = true;
 					}
 					Vector3 target = aim_lock - CAM::GET_GAMEPLAY_CAM_COORD();
 					smooth_factor.x += (target.x - smooth_factor.x) * g.weapons.aimbot.smoothing_speed / 10.f;
@@ -101,10 +100,9 @@ namespace big
 				if (aim_lock.x == 0.f && aim_lock.y == 0.f && aim_lock.z == 0.f)
 					return;
 
-				float RADPI = 180.0f / std::numbers::pi;
-				float camera_heading = atan2f(camera_target.x, camera_target.y) * RADPI;
-				float magnitude      = sqrtf(camera_target.x * camera_target.x + camera_target.y * camera_target.y
-                    + camera_target.z * camera_target.z);
+				constexpr float RADPI = 180.0f / std::numbers::pi;
+				float magnitude       = std::hypot(camera_target.x, camera_target.y, camera_target.z);
+				float camera_heading  = atan2f(camera_target.x, camera_target.y) * RADPI;
 
 				float camera_pitch = asinf(camera_target.z / magnitude) * RADPI;
 				float self_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
@@ -131,12 +129,12 @@ namespace big
 			else
 			{
 				target_entity           = 0;
-				using_aimbot_first_time = true;
+				initalized = false;
 			}
 		}
 		virtual void on_disable() override
 		{
-			using_aimbot_first_time = true;
+			initalized = false;
 		}
 
 	};
