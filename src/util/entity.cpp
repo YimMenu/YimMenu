@@ -201,7 +201,7 @@ namespace big::entity
 
 	    do {
 	        found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
-	        STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
+	        STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, location.z);
 
 	        if (current_attempts % 10 == 0)
 	        {
