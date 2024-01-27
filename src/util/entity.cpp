@@ -193,37 +193,33 @@ namespace big::entity
 
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
-		constexpr float max_ground_check	= 1000.f;
-		constexpr int max_attempts			= 300;
-		float ground_z						= location.z;
-		int current_attempts				= 0;
+	    constexpr float max_ground_check = 1000.f;
+	    constexpr int max_attempts = 300;
+	    float ground_z = location.z;
+	    int current_attempts = 0;
+	    bool found_ground;
 
-		while (!MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE) && current_attempts != max_attempts)
-		{
-			if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE))
-			{
-				break;
-			}
+	    do {
+	        found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
+	        STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
 
-			STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(location.x, location.y, location.z);
+	        if (current_attempts % 10 == 0)
+	        {
+	            location.z += 25.f;
+	        }
 
-			if (current_attempts % 10 == 0)
-			{
-				location.z += 25.f;
-			}
+	        ++current_attempts;
 
-			current_attempts++;
+	        script::get_current()->yield();
+	    } while (!found_ground && current_attempts < max_attempts);
 
-			script::get_current()->yield();
-		}
+	    if (!found_ground)
+	    {
+	        return false;
+	    }
 
-		if (current_attempts >= max_attempts)
-		{
-			return false;
-		}
-
-		location.z = ground_z + 1.f;
-		return true;
+	    location.z = ground_z + 1.f;
+	    return true;
 	}
 
 	double distance_to_middle_of_screen(const rage::fvector2& screen_pos)
