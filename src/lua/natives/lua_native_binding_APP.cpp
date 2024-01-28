@@ -9,47 +9,47 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_APP_APP_GET_INT(const char* property)
+	static int LUA_NATIVE_APP_APP_GET_INT(sol::stack_object property)
 	{
-		auto retval = APP::APP_GET_INT(property);
+		auto retval = APP::APP_GET_INT(property.is<const char*>() ? property.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static float LUA_NATIVE_APP_APP_GET_FLOAT(const char* property)
+	static float LUA_NATIVE_APP_APP_GET_FLOAT(sol::stack_object property)
 	{
-		auto retval = APP::APP_GET_FLOAT(property);
+		auto retval = APP::APP_GET_FLOAT(property.is<const char*>() ? property.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static const char* LUA_NATIVE_APP_APP_GET_STRING(const char* property)
+	static const char* LUA_NATIVE_APP_APP_GET_STRING(sol::stack_object property)
 	{
-		auto retval = APP::APP_GET_STRING(property);
+		auto retval = APP::APP_GET_STRING(property.is<const char*>() ? property.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_APP_APP_SET_INT(const char* property, int value)
+	static void LUA_NATIVE_APP_APP_SET_INT(sol::stack_object property, int value)
 	{
-		APP::APP_SET_INT(property, value);
+		APP::APP_SET_INT(property.is<const char*>() ? property.as<const char*>() : nullptr, value);
 	}
 
-	static void LUA_NATIVE_APP_APP_SET_FLOAT(const char* property, float value)
+	static void LUA_NATIVE_APP_APP_SET_FLOAT(sol::stack_object property, float value)
 	{
-		APP::APP_SET_FLOAT(property, value);
+		APP::APP_SET_FLOAT(property.is<const char*>() ? property.as<const char*>() : nullptr, value);
 	}
 
-	static void LUA_NATIVE_APP_APP_SET_STRING(const char* property, const char* value)
+	static void LUA_NATIVE_APP_APP_SET_STRING(sol::stack_object property, sol::stack_object value)
 	{
-		APP::APP_SET_STRING(property, value);
+		APP::APP_SET_STRING(property.is<const char*>() ? property.as<const char*>() : nullptr, value.is<const char*>() ? value.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_APP_APP_SET_APP(const char* appName)
+	static void LUA_NATIVE_APP_APP_SET_APP(sol::stack_object appName)
 	{
-		APP::APP_SET_APP(appName);
+		APP::APP_SET_APP(appName.is<const char*>() ? appName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_APP_APP_SET_BLOCK(const char* blockName)
+	static void LUA_NATIVE_APP_APP_SET_BLOCK(sol::stack_object blockName)
 	{
-		APP::APP_SET_BLOCK(blockName);
+		APP::APP_SET_BLOCK(blockName.is<const char*>() ? blockName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_APP_APP_CLEAR_BLOCK()
@@ -73,9 +73,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_APP_APP_HAS_SYNCED_DATA(const char* appName)
+	static bool LUA_NATIVE_APP_APP_HAS_SYNCED_DATA(sol::stack_object appName)
 	{
-		auto retval = (bool)APP::APP_HAS_SYNCED_DATA(appName);
+		auto retval = (bool)APP::APP_HAS_SYNCED_DATA(appName.is<const char*>() ? appName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -90,9 +90,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_APP_APP_DELETE_APP_DATA(const char* appName)
+	static bool LUA_NATIVE_APP_APP_DELETE_APP_DATA(sol::stack_object appName)
 	{
-		auto retval = (bool)APP::APP_DELETE_APP_DATA(appName);
+		auto retval = (bool)APP::APP_DELETE_APP_DATA(appName.is<const char*>() ? appName.as<const char*>() : nullptr);
 		return retval;
 	}
 

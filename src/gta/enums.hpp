@@ -1974,6 +1974,23 @@ enum class eTaskTypeIndex
 	CTaskAnimatedFallback                                                = 530
 };
 
+enum class eTaskFlags
+{
+	ParachuteWhenCoordThresholdIsReached = 1 << 3,
+	CamShakeOnFall = 1 << 4,
+	PlayRagdollAnim = 1 << 5,
+	PlayDiveAnim = 1 << 7,
+	NoFallAnimation = 1 << 10,
+	NoSlowFall = 1 << 11,
+	Unk12 = 1 << 12,
+	SuperJump = 1 << 15,
+	LandOnJump = 1 << 16,
+	BeastJump = 1 << 17,
+	BeastJumpWithSuper = SuperJump | BeastJump,
+	GracefulLanding = NoFallAnimation | NoSlowFall | Unk12 | LandOnJump,
+	RagdollOnFall = BeastJump | PlayRagdollAnim
+};
+
 enum class eDoorId
 {
 	VEH_EXT_DOOR_INVALID_ID = -1,

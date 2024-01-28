@@ -9,9 +9,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static int LUA_NATIVE_ZONE_GET_ZONE_FROM_NAME_ID(const char* zoneName)
+	static int LUA_NATIVE_ZONE_GET_ZONE_FROM_NAME_ID(sol::stack_object zoneName)
 	{
-		auto retval = ZONE::GET_ZONE_FROM_NAME_ID(zoneName);
+		auto retval = ZONE::GET_ZONE_FROM_NAME_ID(zoneName.is<const char*>() ? zoneName.as<const char*>() : nullptr);
 		return retval;
 	}
 

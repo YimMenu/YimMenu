@@ -47,14 +47,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_REFUND_CASH(int index, const char* context, const char* reason, bool p3)
+	static void LUA_NATIVE_MONEY_NETWORK_REFUND_CASH(int index, sol::stack_object context, sol::stack_object reason, bool p3)
 	{
-		MONEY::NETWORK_REFUND_CASH(index, context, reason, p3);
+		MONEY::NETWORK_REFUND_CASH(index, context.is<const char*>() ? context.as<const char*>() : nullptr, reason.is<const char*>() ? reason.as<const char*>() : nullptr, p3);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_DEDUCT_CASH(int amount, const char* p1, const char* p2, bool p3, bool p4, bool p5)
+	static void LUA_NATIVE_MONEY_NETWORK_DEDUCT_CASH(int amount, sol::stack_object p1, sol::stack_object p2, bool p3, bool p4, bool p5)
 	{
-		MONEY::NETWORK_DEDUCT_CASH(amount, p1, p2, p3, p4, p5);
+		MONEY::NETWORK_DEDUCT_CASH(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3, p4, p5);
 	}
 
 	static bool LUA_NATIVE_MONEY_NETWORK_MONEY_CAN_BET(int amount, bool p1, bool p2)
@@ -149,29 +149,29 @@ namespace lua::native
 		MONEY::NETWORK_EARN_FROM_CRATE_DROP(amount);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_BETTING(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_BETTING(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_FROM_BETTING(amount, p1);
+		MONEY::NETWORK_EARN_FROM_BETTING(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_JOB(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_JOB(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_FROM_JOB(amount, p1);
+		MONEY::NETWORK_EARN_FROM_JOB(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_JOBX2(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_JOBX2(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_FROM_JOBX2(amount, p1);
+		MONEY::NETWORK_EARN_FROM_JOBX2(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_PREMIUM_JOB(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_PREMIUM_JOB(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_FROM_PREMIUM_JOB(amount, p1);
+		MONEY::NETWORK_EARN_FROM_PREMIUM_JOB(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_BEND_JOB(int amount, const char* heistHash)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_BEND_JOB(int amount, sol::stack_object heistHash)
 	{
-		MONEY::NETWORK_EARN_FROM_BEND_JOB(amount, heistHash);
+		MONEY::NETWORK_EARN_FROM_BEND_JOB(amount, heistHash.is<const char*>() ? heistHash.as<const char*>() : nullptr);
 	}
 
 	static Any LUA_NATIVE_MONEY_NETWORK_EARN_FROM_CHALLENGE_WIN(Any p0, Any p1, bool p2)
@@ -225,14 +225,14 @@ namespace lua::native
 		MONEY::NETWORK_EARN_FROM_PERSONAL_VEHICLE(p0, p1, p2, p3, p4, p5, p6, p7, p8);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_DAILY_OBJECTIVES(int amount, const char* type, int characterSlot)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_FROM_DAILY_OBJECTIVES(int amount, sol::stack_object type, int characterSlot)
 	{
-		MONEY::NETWORK_EARN_FROM_DAILY_OBJECTIVES(amount, type, characterSlot);
+		MONEY::NETWORK_EARN_FROM_DAILY_OBJECTIVES(amount, type.is<const char*>() ? type.as<const char*>() : nullptr, characterSlot);
 	}
 
-	static Any LUA_NATIVE_MONEY_NETWORK_EARN_FROM_AMBIENT_JOB(int p0, const char* p1, Any p2)
+	static Any LUA_NATIVE_MONEY_NETWORK_EARN_FROM_AMBIENT_JOB(int p0, sol::stack_object p1, Any p2)
 	{
-		MONEY::NETWORK_EARN_FROM_AMBIENT_JOB(p0, p1, &p2);
+		MONEY::NETWORK_EARN_FROM_AMBIENT_JOB(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr, &p2);
 		return p2;
 	}
 
@@ -371,9 +371,9 @@ namespace lua::native
 		return return_values;
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_BUY_ITEM(int amount, Hash item, Any p2, Any p3, bool p4, const char* item_name, Any p6, Any p7, Any p8, bool p9)
+	static void LUA_NATIVE_MONEY_NETWORK_BUY_ITEM(int amount, Hash item, Any p2, Any p3, bool p4, sol::stack_object item_name, Any p6, Any p7, Any p8, bool p9)
 	{
-		MONEY::NETWORK_BUY_ITEM(amount, item, p2, p3, p4, item_name, p6, p7, p8, p9);
+		MONEY::NETWORK_BUY_ITEM(amount, item, p2, p3, p4, item_name.is<const char*>() ? item_name.as<const char*>() : nullptr, p6, p7, p8, p9);
 	}
 
 	static void LUA_NATIVE_MONEY_NETWORK_SPENT_TAXI(int amount, bool p1, bool p2, Any p3, Any p4)
@@ -386,14 +386,14 @@ namespace lua::native
 		MONEY::NETWORK_PAY_EMPLOYEE_WAGE(p0, p1, p2);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_PAY_MATCH_ENTRY_FEE(int amount, const char* matchId, bool p2, bool p3)
+	static void LUA_NATIVE_MONEY_NETWORK_PAY_MATCH_ENTRY_FEE(int amount, sol::stack_object matchId, bool p2, bool p3)
 	{
-		MONEY::NETWORK_PAY_MATCH_ENTRY_FEE(amount, matchId, p2, p3);
+		MONEY::NETWORK_PAY_MATCH_ENTRY_FEE(amount, matchId.is<const char*>() ? matchId.as<const char*>() : nullptr, p2, p3);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_SPENT_BETTING(int amount, int p1, const char* matchId, bool p3, bool p4)
+	static void LUA_NATIVE_MONEY_NETWORK_SPENT_BETTING(int amount, int p1, sol::stack_object matchId, bool p3, bool p4)
 	{
-		MONEY::NETWORK_SPENT_BETTING(amount, p1, matchId, p3, p4);
+		MONEY::NETWORK_SPENT_BETTING(amount, p1, matchId.is<const char*>() ? matchId.as<const char*>() : nullptr, p3, p4);
 	}
 
 	static void LUA_NATIVE_MONEY_NETWORK_SPENT_WAGER(Any p0, Any p1, int amount)
@@ -565,10 +565,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<const char*, int, int> LUA_NATIVE_MONEY_PROCESS_CASH_GIFT(int p0, int p1, const char* p2)
+	static std::tuple<const char*, int, int> LUA_NATIVE_MONEY_PROCESS_CASH_GIFT(int p0, int p1, sol::stack_object p2)
 	{
 		std::tuple<const char*, int, int> return_values;
-		std::get<0>(return_values) = MONEY::PROCESS_CASH_GIFT(&p0, &p1, p2);
+		std::get<0>(return_values) = MONEY::PROCESS_CASH_GIFT(&p0, &p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p0;
 		std::get<2>(return_values) = p1;
 
@@ -616,9 +616,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_SPENT_JOB_SKIP(int amount, const char* matchId, bool p2, bool p3)
+	static void LUA_NATIVE_MONEY_NETWORK_SPENT_JOB_SKIP(int amount, sol::stack_object matchId, bool p2, bool p3)
 	{
-		MONEY::NETWORK_SPENT_JOB_SKIP(amount, matchId, p2, p3);
+		MONEY::NETWORK_SPENT_JOB_SKIP(amount, matchId.is<const char*>() ? matchId.as<const char*>() : nullptr, p2, p3);
 	}
 
 	static bool LUA_NATIVE_MONEY_NETWORK_SPENT_BOSS_GOON(int amount, bool p1, bool p2)
@@ -928,14 +928,14 @@ namespace lua::native
 		MONEY::NETWORK_EARN_DOOMSDAY_FINALE_BONUS(amount, vehicleHash);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_AWARD(int amount, const char* p1, Any p2)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_AWARD(int amount, sol::stack_object p1, Any p2)
 	{
-		MONEY::NETWORK_EARN_GANGOPS_AWARD(amount, p1, p2);
+		MONEY::NETWORK_EARN_GANGOPS_AWARD(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_ELITE(int amount, const char* p1, int actIndex)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_ELITE(int amount, sol::stack_object p1, int actIndex)
 	{
-		MONEY::NETWORK_EARN_GANGOPS_ELITE(amount, p1, actIndex);
+		MONEY::NETWORK_EARN_GANGOPS_ELITE(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr, actIndex);
 	}
 
 	static void LUA_NATIVE_MONEY_NETWORK_SERVICE_EARN_GANGOPS_RIVAL_DELIVERY(int earnedMoney)
@@ -958,14 +958,14 @@ namespace lua::native
 		MONEY::NETWORK_EARN_GANGOPS_PREP_PARTICIPATION(amount);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_SETUP(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_SETUP(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_GANGOPS_SETUP(amount, p1);
+		MONEY::NETWORK_EARN_GANGOPS_SETUP(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_FINALE(int amount, const char* p1)
+	static void LUA_NATIVE_MONEY_NETWORK_EARN_GANGOPS_FINALE(int amount, sol::stack_object p1)
 	{
-		MONEY::NETWORK_EARN_GANGOPS_FINALE(amount, p1);
+		MONEY::NETWORK_EARN_GANGOPS_FINALE(amount, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_MONEY_NETWORK_SPEND_GANGOPS_REPAIR_COST(Any p0, Any p1, Any p2)
@@ -1068,14 +1068,14 @@ namespace lua::native
 		MONEY::NETWORK_SPEND_MAKE_IT_RAIN(amount, p1, p2);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_SPEND_BUY_ARENA(int amount, bool p1, bool p2, const char* p3)
+	static void LUA_NATIVE_MONEY_NETWORK_SPEND_BUY_ARENA(int amount, bool p1, bool p2, sol::stack_object p3)
 	{
-		MONEY::NETWORK_SPEND_BUY_ARENA(amount, p1, p2, p3);
+		MONEY::NETWORK_SPEND_BUY_ARENA(amount, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ARENA(int amount, bool p1, bool p2, const char* p3)
+	static void LUA_NATIVE_MONEY_NETWORK_SPEND_UPGRADE_ARENA(int amount, bool p1, bool p2, sol::stack_object p3)
 	{
-		MONEY::NETWORK_SPEND_UPGRADE_ARENA(amount, p1, p2, p3);
+		MONEY::NETWORK_SPEND_UPGRADE_ARENA(amount, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_MONEY_NETWORK_SPEND_ARENA_SPECTATOR_BOX(int amount, int type, bool p2, bool p3)
@@ -1721,6 +1721,23 @@ namespace lua::native
 		MONEY::_NETWORK_SPENT_MISSILE_JAMMER(amount, fromBank, fromBankAndWallet, p3);
 	}
 
+	static Any LUA_NATIVE_MONEY_NETWORK_SPENT_GENERIC_(int price, bool p1, bool p2, Hash stat, Hash spent, sol::stack_object p5, sol::stack_object p6, Any data)
+	{
+		MONEY::_NETWORK_SPENT_GENERIC(price, p1, p2, stat, spent, p5.is<const char*>() ? p5.as<const char*>() : nullptr, p6.is<const char*>() ? p6.as<const char*>() : nullptr, &data);
+		return data;
+	}
+
+	static Any LUA_NATIVE_MONEY_NETWORK_EARN_GENERIC_(int amount, Hash earn, sol::stack_object p2, sol::stack_object p3, Any data)
+	{
+		MONEY::_NETWORK_EARN_GENERIC(amount, earn, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3.is<const char*>() ? p3.as<const char*>() : nullptr, &data);
+		return data;
+	}
+
+	static void LUA_NATIVE_MONEY_NETWORK_CLEAR_TRANSACTION_TELEMETRY_NONCE_()
+	{
+		MONEY::_NETWORK_CLEAR_TRANSACTION_TELEMETRY_NONCE();
+	}
+
 	static int LUA_NATIVE_MONEY_NETWORK_GET_VC_BANK_BALANCE()
 	{
 		auto retval = MONEY::NETWORK_GET_VC_BANK_BALANCE();
@@ -2172,6 +2189,9 @@ namespace lua::native
 		MONEY.set_function("NETWORK_SPENT_SKIP_CARGO_SOURCE_SETUP_", LUA_NATIVE_MONEY_NETWORK_SPENT_SKIP_CARGO_SOURCE_SETUP_);
 		MONEY.set_function("NETWORK_SPENT_STEALTH_MODULE_", LUA_NATIVE_MONEY_NETWORK_SPENT_STEALTH_MODULE_);
 		MONEY.set_function("NETWORK_SPENT_MISSILE_JAMMER_", LUA_NATIVE_MONEY_NETWORK_SPENT_MISSILE_JAMMER_);
+		MONEY.set_function("NETWORK_SPENT_GENERIC_", LUA_NATIVE_MONEY_NETWORK_SPENT_GENERIC_);
+		MONEY.set_function("NETWORK_EARN_GENERIC_", LUA_NATIVE_MONEY_NETWORK_EARN_GENERIC_);
+		MONEY.set_function("NETWORK_CLEAR_TRANSACTION_TELEMETRY_NONCE_", LUA_NATIVE_MONEY_NETWORK_CLEAR_TRANSACTION_TELEMETRY_NONCE_);
 		MONEY.set_function("NETWORK_GET_VC_BANK_BALANCE", LUA_NATIVE_MONEY_NETWORK_GET_VC_BANK_BALANCE);
 		MONEY.set_function("NETWORK_GET_VC_WALLET_BALANCE", LUA_NATIVE_MONEY_NETWORK_GET_VC_WALLET_BALANCE);
 		MONEY.set_function("NETWORK_GET_VC_BALANCE", LUA_NATIVE_MONEY_NETWORK_GET_VC_BALANCE);

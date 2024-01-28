@@ -3,14 +3,14 @@
 
 namespace lua::native
 {
-	static void LUA_NATIVE_CUTSCENE_REQUEST_CUTSCENE(const char* cutsceneName, int flags)
+	static void LUA_NATIVE_CUTSCENE_REQUEST_CUTSCENE(sol::stack_object cutsceneName, int flags)
 	{
-		CUTSCENE::REQUEST_CUTSCENE(cutsceneName, flags);
+		CUTSCENE::REQUEST_CUTSCENE(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr, flags);
 	}
 
-	static void LUA_NATIVE_CUTSCENE_REQUEST_CUTSCENE_WITH_PLAYBACK_LIST(const char* cutsceneName, int playbackFlags, int flags)
+	static void LUA_NATIVE_CUTSCENE_REQUEST_CUTSCENE_WITH_PLAYBACK_LIST(sol::stack_object cutsceneName, int playbackFlags, int flags)
 	{
-		CUTSCENE::REQUEST_CUTSCENE_WITH_PLAYBACK_LIST(cutsceneName, playbackFlags, flags);
+		CUTSCENE::REQUEST_CUTSCENE_WITH_PLAYBACK_LIST(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr, playbackFlags, flags);
 	}
 
 	static void LUA_NATIVE_CUTSCENE_REMOVE_CUTSCENE()
@@ -24,9 +24,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_HAS_THIS_CUTSCENE_LOADED(const char* cutsceneName)
+	static bool LUA_NATIVE_CUTSCENE_HAS_THIS_CUTSCENE_LOADED(sol::stack_object cutsceneName)
 	{
-		auto retval = (bool)CUTSCENE::HAS_THIS_CUTSCENE_LOADED(cutsceneName);
+		auto retval = (bool)CUTSCENE::HAS_THIS_CUTSCENE_LOADED(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -47,30 +47,30 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_ENTITY_STREAMING_FLAGS(const char* cutsceneEntName, int p1, int p2)
+	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_ENTITY_STREAMING_FLAGS(sol::stack_object cutsceneEntName, int p1, int p2)
 	{
-		CUTSCENE::SET_CUTSCENE_ENTITY_STREAMING_FLAGS(cutsceneEntName, p1, p2);
+		CUTSCENE::SET_CUTSCENE_ENTITY_STREAMING_FLAGS(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, p1, p2);
 	}
 
-	static void LUA_NATIVE_CUTSCENE_REQUEST_CUT_FILE(const char* cutsceneName)
+	static void LUA_NATIVE_CUTSCENE_REQUEST_CUT_FILE(sol::stack_object cutsceneName)
 	{
-		CUTSCENE::REQUEST_CUT_FILE(cutsceneName);
+		CUTSCENE::REQUEST_CUT_FILE(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_HAS_CUT_FILE_LOADED(const char* cutsceneName)
+	static bool LUA_NATIVE_CUTSCENE_HAS_CUT_FILE_LOADED(sol::stack_object cutsceneName)
 	{
-		auto retval = (bool)CUTSCENE::HAS_CUT_FILE_LOADED(cutsceneName);
+		auto retval = (bool)CUTSCENE::HAS_CUT_FILE_LOADED(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_CUTSCENE_REMOVE_CUT_FILE(const char* cutsceneName)
+	static void LUA_NATIVE_CUTSCENE_REMOVE_CUT_FILE(sol::stack_object cutsceneName)
 	{
-		CUTSCENE::REMOVE_CUT_FILE(cutsceneName);
+		CUTSCENE::REMOVE_CUT_FILE(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 	}
 
-	static int LUA_NATIVE_CUTSCENE_GET_CUT_FILE_CONCAT_COUNT(const char* cutsceneName)
+	static int LUA_NATIVE_CUTSCENE_GET_CUT_FILE_CONCAT_COUNT(sol::stack_object cutsceneName)
 	{
-		auto retval = CUTSCENE::GET_CUT_FILE_CONCAT_COUNT(cutsceneName);
+		auto retval = CUTSCENE::GET_CUT_FILE_CONCAT_COUNT(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -158,9 +158,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Entity LUA_NATIVE_CUTSCENE_GET_ENTITY_INDEX_OF_CUTSCENE_ENTITY(const char* cutsceneEntName, Hash modelHash)
+	static Entity LUA_NATIVE_CUTSCENE_GET_ENTITY_INDEX_OF_CUTSCENE_ENTITY(sol::stack_object cutsceneEntName, Hash modelHash)
 	{
-		auto retval = CUTSCENE::GET_ENTITY_INDEX_OF_CUTSCENE_ENTITY(cutsceneEntName, modelHash);
+		auto retval = CUTSCENE::GET_ENTITY_INDEX_OF_CUTSCENE_ENTITY(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, modelHash);
 		return retval;
 	}
 
@@ -170,9 +170,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_IS_CUTSCENE_AUTHORIZED(const char* cutsceneName)
+	static bool LUA_NATIVE_CUTSCENE_IS_CUTSCENE_AUTHORIZED(sol::stack_object cutsceneName)
 	{
-		auto retval = (bool)CUTSCENE::IS_CUTSCENE_AUTHORIZED(cutsceneName);
+		auto retval = (bool)CUTSCENE::IS_CUTSCENE_AUTHORIZED(cutsceneName.is<const char*>() ? cutsceneName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -182,14 +182,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_CUTSCENE_REGISTER_ENTITY_FOR_CUTSCENE(Ped cutscenePed, const char* cutsceneEntName, int p2, Hash modelHash, int p4)
+	static void LUA_NATIVE_CUTSCENE_REGISTER_ENTITY_FOR_CUTSCENE(Ped cutscenePed, sol::stack_object cutsceneEntName, int p2, Hash modelHash, int p4)
 	{
-		CUTSCENE::REGISTER_ENTITY_FOR_CUTSCENE(cutscenePed, cutsceneEntName, p2, modelHash, p4);
+		CUTSCENE::REGISTER_ENTITY_FOR_CUTSCENE(cutscenePed, cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, p2, modelHash, p4);
 	}
 
-	static Entity LUA_NATIVE_CUTSCENE_GET_ENTITY_INDEX_OF_REGISTERED_ENTITY(const char* cutsceneEntName, Hash modelHash)
+	static Entity LUA_NATIVE_CUTSCENE_GET_ENTITY_INDEX_OF_REGISTERED_ENTITY(sol::stack_object cutsceneEntName, Hash modelHash)
 	{
-		auto retval = CUTSCENE::GET_ENTITY_INDEX_OF_REGISTERED_ENTITY(cutsceneEntName, modelHash);
+		auto retval = CUTSCENE::GET_ENTITY_INDEX_OF_REGISTERED_ENTITY(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, modelHash);
 		return retval;
 	}
 
@@ -203,15 +203,15 @@ namespace lua::native
 		CUTSCENE::SET_CUTSCENE_TRIGGER_AREA(x1, y1, z1, x2, y2, z2);
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_CAN_SET_ENTER_STATE_FOR_REGISTERED_ENTITY(const char* cutsceneEntName, Hash modelHash)
+	static bool LUA_NATIVE_CUTSCENE_CAN_SET_ENTER_STATE_FOR_REGISTERED_ENTITY(sol::stack_object cutsceneEntName, Hash modelHash)
 	{
-		auto retval = (bool)CUTSCENE::CAN_SET_ENTER_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName, modelHash);
+		auto retval = (bool)CUTSCENE::CAN_SET_ENTER_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, modelHash);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_CAN_SET_EXIT_STATE_FOR_REGISTERED_ENTITY(const char* cutsceneEntName, Hash modelHash)
+	static bool LUA_NATIVE_CUTSCENE_CAN_SET_EXIT_STATE_FOR_REGISTERED_ENTITY(sol::stack_object cutsceneEntName, Hash modelHash)
 	{
-		auto retval = (bool)CUTSCENE::CAN_SET_EXIT_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName, modelHash);
+		auto retval = (bool)CUTSCENE::CAN_SET_EXIT_STATE_FOR_REGISTERED_ENTITY(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, modelHash);
 		return retval;
 	}
 
@@ -273,25 +273,25 @@ namespace lua::native
 		CUTSCENE::SET_CAN_DISPLAY_MINIMAP_DURING_CUTSCENE_THIS_UPDATE();
 	}
 
-	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_COMPONENT_VARIATION(const char* cutsceneEntName, int componentId, int drawableId, int textureId, Hash modelHash)
+	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_COMPONENT_VARIATION(sol::stack_object cutsceneEntName, int componentId, int drawableId, int textureId, Hash modelHash)
 	{
-		CUTSCENE::SET_CUTSCENE_PED_COMPONENT_VARIATION(cutsceneEntName, componentId, drawableId, textureId, modelHash);
+		CUTSCENE::SET_CUTSCENE_PED_COMPONENT_VARIATION(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, componentId, drawableId, textureId, modelHash);
 	}
 
-	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_COMPONENT_VARIATION_FROM_PED(const char* cutsceneEntName, Ped ped, Hash modelHash)
+	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_COMPONENT_VARIATION_FROM_PED(sol::stack_object cutsceneEntName, Ped ped, Hash modelHash)
 	{
-		CUTSCENE::SET_CUTSCENE_PED_COMPONENT_VARIATION_FROM_PED(cutsceneEntName, ped, modelHash);
+		CUTSCENE::SET_CUTSCENE_PED_COMPONENT_VARIATION_FROM_PED(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, ped, modelHash);
 	}
 
-	static bool LUA_NATIVE_CUTSCENE_DOES_CUTSCENE_ENTITY_EXIST(const char* cutsceneEntName, Hash modelHash)
+	static bool LUA_NATIVE_CUTSCENE_DOES_CUTSCENE_ENTITY_EXIST(sol::stack_object cutsceneEntName, Hash modelHash)
 	{
-		auto retval = (bool)CUTSCENE::DOES_CUTSCENE_ENTITY_EXIST(cutsceneEntName, modelHash);
+		auto retval = (bool)CUTSCENE::DOES_CUTSCENE_ENTITY_EXIST(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, modelHash);
 		return retval;
 	}
 
-	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_PROP_VARIATION(const char* cutsceneEntName, int componentId, int drawableId, int textureId, Hash modelHash)
+	static void LUA_NATIVE_CUTSCENE_SET_CUTSCENE_PED_PROP_VARIATION(sol::stack_object cutsceneEntName, int componentId, int drawableId, int textureId, Hash modelHash)
 	{
-		CUTSCENE::SET_CUTSCENE_PED_PROP_VARIATION(cutsceneEntName, componentId, drawableId, textureId, modelHash);
+		CUTSCENE::SET_CUTSCENE_PED_PROP_VARIATION(cutsceneEntName.is<const char*>() ? cutsceneEntName.as<const char*>() : nullptr, componentId, drawableId, textureId, modelHash);
 	}
 
 	static bool LUA_NATIVE_CUTSCENE_HAS_CUTSCENE_CUT_THIS_FRAME()

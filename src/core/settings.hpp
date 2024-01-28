@@ -341,6 +341,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
+			bool graceful_landing			  = false;	
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
@@ -853,8 +854,14 @@ namespace big
 				float fov              = 90.f;
 				float distance         = 200.f;
 				uint32_t selected_bone = 0x796E; // Default to head
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, distance, selected_bone)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, on_player, on_enemy, on_police, on_npc, fov, distance)
 			} aimbot{};
+
+			struct flying_axe
+			{
+				bool enable            = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
+			} flying_axe{};
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
 			bool infinite_ammo            = false;

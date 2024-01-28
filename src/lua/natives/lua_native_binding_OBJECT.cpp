@@ -395,9 +395,9 @@ namespace lua::native
 		OBJECT::SET_CUTSCENES_WEAPON_FLASHLIGHT_ON_THIS_FRAME(object, toggle);
 	}
 
-	static Object LUA_NATIVE_OBJECT_GET_RAYFIRE_MAP_OBJECT(float x, float y, float z, float radius, const char* name)
+	static Object LUA_NATIVE_OBJECT_GET_RAYFIRE_MAP_OBJECT(float x, float y, float z, float radius, sol::stack_object name)
 	{
-		auto retval = OBJECT::GET_RAYFIRE_MAP_OBJECT(x, y, z, radius, name);
+		auto retval = OBJECT::GET_RAYFIRE_MAP_OBJECT(x, y, z, radius, name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 

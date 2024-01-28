@@ -23,9 +23,9 @@ namespace lua::native
 		RECORDING::REPLAY_RECORD_BACK_FOR_TIME(p0, p1, p2);
 	}
 
-	static void LUA_NATIVE_RECORDING_REPLAY_CHECK_FOR_EVENT_THIS_FRAME(const char* missionNameLabel, Any p1)
+	static void LUA_NATIVE_RECORDING_REPLAY_CHECK_FOR_EVENT_THIS_FRAME(sol::stack_object missionNameLabel, Any p1)
 	{
-		RECORDING::REPLAY_CHECK_FOR_EVENT_THIS_FRAME(missionNameLabel, p1);
+		RECORDING::REPLAY_CHECK_FOR_EVENT_THIS_FRAME(missionNameLabel.is<const char*>() ? missionNameLabel.as<const char*>() : nullptr, p1);
 	}
 
 	static void LUA_NATIVE_RECORDING_REPLAY_PREVENT_RECORDING_THIS_FRAME()

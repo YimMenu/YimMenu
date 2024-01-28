@@ -50,7 +50,7 @@ namespace big
 				command_arguments _args(args);
 				command->call(_args);
 			}
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
@@ -63,7 +63,7 @@ namespace big
 
 			if (ImGui::Button(label_override.value_or(command->get_label()).data()))
 				command->call(player, args);
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
@@ -80,7 +80,7 @@ namespace big
 			bool updated;
 			if (updated = ImGui::Checkbox(label_override.value_or(command->get_label()).data(), &command->is_enabled()))
 				command->refresh();
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 
 			return updated;
@@ -98,7 +98,7 @@ namespace big
 			    command->get_lower_bound(),
 			    command->get_upper_bound());
 
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
@@ -114,7 +114,7 @@ namespace big
 			    command->get_lower_bound(),
 			    command->get_upper_bound());
 
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 
@@ -130,7 +130,7 @@ namespace big
 			    command->get_lower_bound(),
 			    command->get_upper_bound());
 
-			if (ImGui::IsItemHovered())
+			if (ImGui::IsItemHovered() && !command->get_description().empty())
 				ImGui::SetTooltip(command->get_description().c_str());
 		}
 

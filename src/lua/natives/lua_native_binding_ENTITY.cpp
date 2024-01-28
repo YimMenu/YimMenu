@@ -39,9 +39,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_HAS_ENTITY_ANIM_FINISHED(Entity entity, const char* animDict, const char* animName, int p3)
+	static bool LUA_NATIVE_ENTITY_HAS_ENTITY_ANIM_FINISHED(Entity entity, sol::stack_object animDict, sol::stack_object animName, int p3)
 	{
-		auto retval = (bool)ENTITY::HAS_ENTITY_ANIM_FINISHED(entity, animDict, animName, p3);
+		auto retval = (bool)ENTITY::HAS_ENTITY_ANIM_FINISHED(entity, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p3);
 		return retval;
 	}
 
@@ -116,21 +116,21 @@ namespace lua::native
 		ENTITY::FORCE_ENTITY_AI_AND_ANIMATION_UPDATE(entity);
 	}
 
-	static float LUA_NATIVE_ENTITY_GET_ENTITY_ANIM_CURRENT_TIME(Entity entity, const char* animDict, const char* animName)
+	static float LUA_NATIVE_ENTITY_GET_ENTITY_ANIM_CURRENT_TIME(Entity entity, sol::stack_object animDict, sol::stack_object animName)
 	{
-		auto retval = ENTITY::GET_ENTITY_ANIM_CURRENT_TIME(entity, animDict, animName);
+		auto retval = ENTITY::GET_ENTITY_ANIM_CURRENT_TIME(entity, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static float LUA_NATIVE_ENTITY_GET_ENTITY_ANIM_TOTAL_TIME(Entity entity, const char* animDict, const char* animName)
+	static float LUA_NATIVE_ENTITY_GET_ENTITY_ANIM_TOTAL_TIME(Entity entity, sol::stack_object animDict, sol::stack_object animName)
 	{
-		auto retval = ENTITY::GET_ENTITY_ANIM_TOTAL_TIME(entity, animDict, animName);
+		auto retval = ENTITY::GET_ENTITY_ANIM_TOTAL_TIME(entity, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static float LUA_NATIVE_ENTITY_GET_ANIM_DURATION(const char* animDict, const char* animName)
+	static float LUA_NATIVE_ENTITY_GET_ANIM_DURATION(sol::stack_object animDict, sol::stack_object animName)
 	{
-		auto retval = ENTITY::GET_ANIM_DURATION(animDict, animName);
+		auto retval = ENTITY::GET_ANIM_DURATION(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -454,9 +454,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_IS_ENTITY_IN_ZONE(Entity entity, const char* zone)
+	static bool LUA_NATIVE_ENTITY_IS_ENTITY_IN_ZONE(Entity entity, sol::stack_object zone)
 	{
-		auto retval = (bool)ENTITY::IS_ENTITY_IN_ZONE(entity, zone);
+		auto retval = (bool)ENTITY::IS_ENTITY_IN_ZONE(entity, zone.is<const char*>() ? zone.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -483,9 +483,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_IS_ENTITY_PLAYING_ANIM(Entity entity, const char* animDict, const char* animName, int taskFlag)
+	static bool LUA_NATIVE_ENTITY_IS_ENTITY_PLAYING_ANIM(Entity entity, sol::stack_object animDict, sol::stack_object animName, int taskFlag)
 	{
-		auto retval = (bool)ENTITY::IS_ENTITY_PLAYING_ANIM(entity, animDict, animName, taskFlag);
+		auto retval = (bool)ENTITY::IS_ENTITY_PLAYING_ANIM(entity, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, taskFlag);
 		return retval;
 	}
 
@@ -589,9 +589,9 @@ namespace lua::native
 		ENTITY::PROCESS_ENTITY_ATTACHMENTS(entity);
 	}
 
-	static int LUA_NATIVE_ENTITY_GET_ENTITY_BONE_INDEX_BY_NAME(Entity entity, const char* boneName)
+	static int LUA_NATIVE_ENTITY_GET_ENTITY_BONE_INDEX_BY_NAME(Entity entity, sol::stack_object boneName)
 	{
-		auto retval = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(entity, boneName);
+		auto retval = ENTITY::GET_ENTITY_BONE_INDEX_BY_NAME(entity, boneName.is<const char*>() ? boneName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -621,21 +621,21 @@ namespace lua::native
 		ENTITY::SET_ENTITY_SHOULD_FREEZE_WAITING_ON_COLLISION(entity, toggle);
 	}
 
-	static bool LUA_NATIVE_ENTITY_PLAY_ENTITY_ANIM(Entity entity, const char* animName, const char* animDict, float p3, bool loop, bool stayInAnim, bool p6, float delta, Any bitset)
+	static bool LUA_NATIVE_ENTITY_PLAY_ENTITY_ANIM(Entity entity, sol::stack_object animName, sol::stack_object animDict, float p3, bool loop, bool stayInAnim, bool p6, float delta, Any bitset)
 	{
-		auto retval = (bool)ENTITY::PLAY_ENTITY_ANIM(entity, animName, animDict, p3, loop, stayInAnim, p6, delta, bitset);
+		auto retval = (bool)ENTITY::PLAY_ENTITY_ANIM(entity, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, p3, loop, stayInAnim, p6, delta, bitset);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_PLAY_SYNCHRONIZED_ENTITY_ANIM(Entity entity, int syncedScene, const char* animation, const char* propName, float p4, float p5, Any p6, float p7)
+	static bool LUA_NATIVE_ENTITY_PLAY_SYNCHRONIZED_ENTITY_ANIM(Entity entity, int syncedScene, sol::stack_object animation, sol::stack_object propName, float p4, float p5, Any p6, float p7)
 	{
-		auto retval = (bool)ENTITY::PLAY_SYNCHRONIZED_ENTITY_ANIM(entity, syncedScene, animation, propName, p4, p5, p6, p7);
+		auto retval = (bool)ENTITY::PLAY_SYNCHRONIZED_ENTITY_ANIM(entity, syncedScene, animation.is<const char*>() ? animation.as<const char*>() : nullptr, propName.is<const char*>() ? propName.as<const char*>() : nullptr, p4, p5, p6, p7);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM(float x1, float y1, float z1, float x2, Any y2, float z2, const char* p6, const char* p7, float p8, float p9, Any p10, float p11)
+	static bool LUA_NATIVE_ENTITY_PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM(float x1, float y1, float z1, float x2, Any y2, float z2, sol::stack_object p6, sol::stack_object p7, float p8, float p9, Any p10, float p11)
 	{
-		auto retval = (bool)ENTITY::PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM(x1, y1, z1, x2, y2, z2, p6, p7, p8, p9, p10, p11);
+		auto retval = (bool)ENTITY::PLAY_SYNCHRONIZED_MAP_ENTITY_ANIM(x1, y1, z1, x2, y2, z2, p6.is<const char*>() ? p6.as<const char*>() : nullptr, p7.is<const char*>() ? p7.as<const char*>() : nullptr, p8, p9, p10, p11);
 		return retval;
 	}
 
@@ -645,9 +645,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_ENTITY_STOP_ENTITY_ANIM(Entity entity, const char* animation, const char* animGroup, float p3)
+	static bool LUA_NATIVE_ENTITY_STOP_ENTITY_ANIM(Entity entity, sol::stack_object animation, sol::stack_object animGroup, float p3)
 	{
-		auto retval = (bool)ENTITY::STOP_ENTITY_ANIM(entity, animation, animGroup, p3);
+		auto retval = (bool)ENTITY::STOP_ENTITY_ANIM(entity, animation.is<const char*>() ? animation.as<const char*>() : nullptr, animGroup.is<const char*>() ? animGroup.as<const char*>() : nullptr, p3);
 		return retval;
 	}
 
@@ -663,24 +663,24 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_ENTITY_FIND_ANIM_EVENT_PHASE(const char* animDictionary, const char* animName, const char* p2, Any p3, Any p4)
+	static std::tuple<bool, Any, Any> LUA_NATIVE_ENTITY_FIND_ANIM_EVENT_PHASE(sol::stack_object animDictionary, sol::stack_object animName, sol::stack_object p2, Any p3, Any p4)
 	{
 		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)ENTITY::FIND_ANIM_EVENT_PHASE(animDictionary, animName, p2, &p3, &p4);
+		std::get<0>(return_values) = (bool)ENTITY::FIND_ANIM_EVENT_PHASE(animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3, &p4);
 		std::get<1>(return_values) = p3;
 		std::get<2>(return_values) = p4;
 
 		return return_values;
 	}
 
-	static void LUA_NATIVE_ENTITY_SET_ENTITY_ANIM_CURRENT_TIME(Entity entity, const char* animDictionary, const char* animName, float time)
+	static void LUA_NATIVE_ENTITY_SET_ENTITY_ANIM_CURRENT_TIME(Entity entity, sol::stack_object animDictionary, sol::stack_object animName, float time)
 	{
-		ENTITY::SET_ENTITY_ANIM_CURRENT_TIME(entity, animDictionary, animName, time);
+		ENTITY::SET_ENTITY_ANIM_CURRENT_TIME(entity, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, time);
 	}
 
-	static void LUA_NATIVE_ENTITY_SET_ENTITY_ANIM_SPEED(Entity entity, const char* animDictionary, const char* animName, float speedMultiplier)
+	static void LUA_NATIVE_ENTITY_SET_ENTITY_ANIM_SPEED(Entity entity, sol::stack_object animDictionary, sol::stack_object animName, float speedMultiplier)
 	{
-		ENTITY::SET_ENTITY_ANIM_SPEED(entity, animDictionary, animName, speedMultiplier);
+		ENTITY::SET_ENTITY_ANIM_SPEED(entity, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, speedMultiplier);
 	}
 
 	static void LUA_NATIVE_ENTITY_SET_ENTITY_AS_MISSION_ENTITY(Entity entity, bool p1, bool p2)
@@ -779,9 +779,9 @@ namespace lua::native
 		ENTITY::SET_ENTITY_HEADING(entity, heading);
 	}
 
-	static void LUA_NATIVE_ENTITY_SET_ENTITY_HEALTH(Entity entity, int health, int p2, int p3)
+	static void LUA_NATIVE_ENTITY_SET_ENTITY_HEALTH(Entity entity, int health, Entity instigator, Hash weaponType)
 	{
-		ENTITY::SET_ENTITY_HEALTH(entity, health, p2, p3);
+		ENTITY::SET_ENTITY_HEALTH(entity, health, instigator, weaponType);
 	}
 
 	static void LUA_NATIVE_ENTITY_SET_ENTITY_INVINCIBLE(Entity entity, bool toggle)
