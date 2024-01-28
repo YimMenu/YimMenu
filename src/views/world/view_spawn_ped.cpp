@@ -134,7 +134,9 @@ namespace big
 		PED::SET_PED_ID_RANGE(ped, 200.0f);
 		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
 		PED::SET_PED_SHOOT_RATE(ped, 150);
-		ped::set_ped_random_component_variation(ped);
+
+		if (!clone)
+			ped::set_ped_random_component_variation(ped);
 
 		if (is_bodyguard)
 		{
