@@ -46,9 +46,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_MODELS_IN_ROOM(Interior interior, const char* roomName)
+	static void LUA_NATIVE_STREAMING_REQUEST_MODELS_IN_ROOM(Interior interior, sol::stack_object roomName)
 	{
-		STREAMING::REQUEST_MODELS_IN_ROOM(interior, roomName);
+		STREAMING::REQUEST_MODELS_IN_ROOM(interior, roomName.is<const char*>() ? roomName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_STREAMING_SET_MODEL_AS_NO_LONGER_NEEDED(Hash model)
@@ -101,73 +101,73 @@ namespace lua::native
 		STREAMING::REQUEST_ADDITIONAL_COLLISION_AT_COORD(x, y, z);
 	}
 
-	static bool LUA_NATIVE_STREAMING_DOES_ANIM_DICT_EXIST(const char* animDict)
+	static bool LUA_NATIVE_STREAMING_DOES_ANIM_DICT_EXIST(sol::stack_object animDict)
 	{
-		auto retval = (bool)STREAMING::DOES_ANIM_DICT_EXIST(animDict);
+		auto retval = (bool)STREAMING::DOES_ANIM_DICT_EXIST(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_ANIM_DICT(const char* animDict)
+	static void LUA_NATIVE_STREAMING_REQUEST_ANIM_DICT(sol::stack_object animDict)
 	{
-		STREAMING::REQUEST_ANIM_DICT(animDict);
+		STREAMING::REQUEST_ANIM_DICT(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_STREAMING_HAS_ANIM_DICT_LOADED(const char* animDict)
+	static bool LUA_NATIVE_STREAMING_HAS_ANIM_DICT_LOADED(sol::stack_object animDict)
 	{
-		auto retval = (bool)STREAMING::HAS_ANIM_DICT_LOADED(animDict);
+		auto retval = (bool)STREAMING::HAS_ANIM_DICT_LOADED(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REMOVE_ANIM_DICT(const char* animDict)
+	static void LUA_NATIVE_STREAMING_REMOVE_ANIM_DICT(sol::stack_object animDict)
 	{
-		STREAMING::REMOVE_ANIM_DICT(animDict);
+		STREAMING::REMOVE_ANIM_DICT(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_ANIM_SET(const char* animSet)
+	static void LUA_NATIVE_STREAMING_REQUEST_ANIM_SET(sol::stack_object animSet)
 	{
-		STREAMING::REQUEST_ANIM_SET(animSet);
+		STREAMING::REQUEST_ANIM_SET(animSet.is<const char*>() ? animSet.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_STREAMING_HAS_ANIM_SET_LOADED(const char* animSet)
+	static bool LUA_NATIVE_STREAMING_HAS_ANIM_SET_LOADED(sol::stack_object animSet)
 	{
-		auto retval = (bool)STREAMING::HAS_ANIM_SET_LOADED(animSet);
+		auto retval = (bool)STREAMING::HAS_ANIM_SET_LOADED(animSet.is<const char*>() ? animSet.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REMOVE_ANIM_SET(const char* animSet)
+	static void LUA_NATIVE_STREAMING_REMOVE_ANIM_SET(sol::stack_object animSet)
 	{
-		STREAMING::REMOVE_ANIM_SET(animSet);
+		STREAMING::REMOVE_ANIM_SET(animSet.is<const char*>() ? animSet.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_CLIP_SET(const char* clipSet)
+	static void LUA_NATIVE_STREAMING_REQUEST_CLIP_SET(sol::stack_object clipSet)
 	{
-		STREAMING::REQUEST_CLIP_SET(clipSet);
+		STREAMING::REQUEST_CLIP_SET(clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_STREAMING_HAS_CLIP_SET_LOADED(const char* clipSet)
+	static bool LUA_NATIVE_STREAMING_HAS_CLIP_SET_LOADED(sol::stack_object clipSet)
 	{
-		auto retval = (bool)STREAMING::HAS_CLIP_SET_LOADED(clipSet);
+		auto retval = (bool)STREAMING::HAS_CLIP_SET_LOADED(clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REMOVE_CLIP_SET(const char* clipSet)
+	static void LUA_NATIVE_STREAMING_REMOVE_CLIP_SET(sol::stack_object clipSet)
 	{
-		STREAMING::REMOVE_CLIP_SET(clipSet);
+		STREAMING::REMOVE_CLIP_SET(clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_IPL(const char* iplName)
+	static void LUA_NATIVE_STREAMING_REQUEST_IPL(sol::stack_object iplName)
 	{
-		STREAMING::REQUEST_IPL(iplName);
+		STREAMING::REQUEST_IPL(iplName.is<const char*>() ? iplName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_STREAMING_REMOVE_IPL(const char* iplName)
+	static void LUA_NATIVE_STREAMING_REMOVE_IPL(sol::stack_object iplName)
 	{
-		STREAMING::REMOVE_IPL(iplName);
+		STREAMING::REMOVE_IPL(iplName.is<const char*>() ? iplName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_STREAMING_IS_IPL_ACTIVE(const char* iplName)
+	static bool LUA_NATIVE_STREAMING_IS_IPL_ACTIVE(sol::stack_object iplName)
 	{
-		auto retval = (bool)STREAMING::IS_IPL_ACTIVE(iplName);
+		auto retval = (bool)STREAMING::IS_IPL_ACTIVE(iplName.is<const char*>() ? iplName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -229,20 +229,20 @@ namespace lua::native
 		STREAMING::REMOVE_PTFX_ASSET();
 	}
 
-	static void LUA_NATIVE_STREAMING_REQUEST_NAMED_PTFX_ASSET(const char* fxName)
+	static void LUA_NATIVE_STREAMING_REQUEST_NAMED_PTFX_ASSET(sol::stack_object fxName)
 	{
-		STREAMING::REQUEST_NAMED_PTFX_ASSET(fxName);
+		STREAMING::REQUEST_NAMED_PTFX_ASSET(fxName.is<const char*>() ? fxName.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_STREAMING_HAS_NAMED_PTFX_ASSET_LOADED(const char* fxName)
+	static bool LUA_NATIVE_STREAMING_HAS_NAMED_PTFX_ASSET_LOADED(sol::stack_object fxName)
 	{
-		auto retval = (bool)STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(fxName);
+		auto retval = (bool)STREAMING::HAS_NAMED_PTFX_ASSET_LOADED(fxName.is<const char*>() ? fxName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_REMOVE_NAMED_PTFX_ASSET(const char* fxName)
+	static void LUA_NATIVE_STREAMING_REMOVE_NAMED_PTFX_ASSET(sol::stack_object fxName)
 	{
-		STREAMING::REMOVE_NAMED_PTFX_ASSET(fxName);
+		STREAMING::REMOVE_NAMED_PTFX_ASSET(fxName.is<const char*>() ? fxName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_STREAMING_SET_VEHICLE_POPULATION_BUDGET(int p0)
@@ -281,9 +281,9 @@ namespace lua::native
 		STREAMING::SET_RESTORE_FOCUS_ENTITY(p0);
 	}
 
-	static void LUA_NATIVE_STREAMING_SET_MAPDATACULLBOX_ENABLED(const char* name, bool toggle)
+	static void LUA_NATIVE_STREAMING_SET_MAPDATACULLBOX_ENABLED(sol::stack_object name, bool toggle)
 	{
-		STREAMING::SET_MAPDATACULLBOX_ENABLED(name, toggle);
+		STREAMING::SET_MAPDATACULLBOX_ENABLED(name.is<const char*>() ? name.as<const char*>() : nullptr, toggle);
 	}
 
 	static void LUA_NATIVE_STREAMING_SET_ALL_MAPDATA_CULLED(Any p0)
@@ -423,9 +423,9 @@ namespace lua::native
 		STREAMING::SET_PLAYER_SWITCH_OUTRO(cameraCoordX, cameraCoordY, cameraCoordZ, camRotationX, camRotationY, camRotationZ, camFov, camFarClip, rotationOrder);
 	}
 
-	static void LUA_NATIVE_STREAMING_SET_PLAYER_SWITCH_ESTABLISHING_SHOT(const char* name)
+	static void LUA_NATIVE_STREAMING_SET_PLAYER_SWITCH_ESTABLISHING_SHOT(sol::stack_object name)
 	{
-		STREAMING::SET_PLAYER_SWITCH_ESTABLISHING_SHOT(name);
+		STREAMING::SET_PLAYER_SWITCH_ESTABLISHING_SHOT(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_STREAMING_ALLOW_PLAYER_SWITCH_PAN()
@@ -534,9 +534,9 @@ namespace lua::native
 		STREAMING::FORCE_ALLOW_TIME_BASED_FADING_THIS_FRAME();
 	}
 
-	static void LUA_NATIVE_STREAMING_IPL_GROUP_SWAP_START(const char* iplName1, const char* iplName2)
+	static void LUA_NATIVE_STREAMING_IPL_GROUP_SWAP_START(sol::stack_object iplName1, sol::stack_object iplName2)
 	{
-		STREAMING::IPL_GROUP_SWAP_START(iplName1, iplName2);
+		STREAMING::IPL_GROUP_SWAP_START(iplName1.is<const char*>() ? iplName1.as<const char*>() : nullptr, iplName2.is<const char*>() ? iplName2.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_STREAMING_IPL_GROUP_SWAP_CANCEL()
@@ -561,9 +561,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_PREFETCH_SRL(const char* srl)
+	static void LUA_NATIVE_STREAMING_PREFETCH_SRL(sol::stack_object srl)
 	{
-		STREAMING::PREFETCH_SRL(srl);
+		STREAMING::PREFETCH_SRL(srl.is<const char*>() ? srl.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_STREAMING_IS_SRL_LOADED()
@@ -644,9 +644,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_STREAMING_SET_ISLAND_ENABLED(const char* name, bool toggle)
+	static void LUA_NATIVE_STREAMING_SET_ISLAND_ENABLED(sol::stack_object name, bool toggle)
 	{
-		STREAMING::SET_ISLAND_ENABLED(name, toggle);
+		STREAMING::SET_ISLAND_ENABLED(name.is<const char*>() ? name.as<const char*>() : nullptr, toggle);
 	}
 
 	void init_native_binding_STREAMING(sol::state& L)

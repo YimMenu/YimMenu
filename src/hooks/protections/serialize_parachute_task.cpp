@@ -1,4 +1,4 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "util/notify.hpp"
 
 #include <entities/CDynamicEntity.hpp>

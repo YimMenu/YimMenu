@@ -1,4 +1,4 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 
 #include <netsync/nodes/player/CPlayerCreationDataNode.hpp>
 

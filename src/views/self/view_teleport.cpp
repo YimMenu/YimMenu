@@ -93,7 +93,7 @@ namespace big
 
 		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
-		static int current_select = -1;
+		static int current_select = 0;
 		static int last_select    = current_select;
 
 		ImGui::SetNextItemWidth(400);

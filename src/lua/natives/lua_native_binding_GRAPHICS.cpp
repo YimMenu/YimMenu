@@ -33,14 +33,14 @@ namespace lua::native
 		GRAPHICS::DRAW_DEBUG_CROSS(x, y, z, size, red, green, blue, alpha);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_DEBUG_TEXT(const char* text, float x, float y, float z, int red, int green, int blue, int alpha)
+	static void LUA_NATIVE_GRAPHICS_DRAW_DEBUG_TEXT(sol::stack_object text, float x, float y, float z, int red, int green, int blue, int alpha)
 	{
-		GRAPHICS::DRAW_DEBUG_TEXT(text, x, y, z, red, green, blue, alpha);
+		GRAPHICS::DRAW_DEBUG_TEXT(text.is<const char*>() ? text.as<const char*>() : nullptr, x, y, z, red, green, blue, alpha);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_DEBUG_TEXT_2D(const char* text, float x, float y, float z, int red, int green, int blue, int alpha)
+	static void LUA_NATIVE_GRAPHICS_DRAW_DEBUG_TEXT_2D(sol::stack_object text, float x, float y, float z, int red, int green, int blue, int alpha)
 	{
-		GRAPHICS::DRAW_DEBUG_TEXT_2D(text, x, y, z, red, green, blue, alpha);
+		GRAPHICS::DRAW_DEBUG_TEXT_2D(text.is<const char*>() ? text.as<const char*>() : nullptr, x, y, z, red, green, blue, alpha);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_DRAW_LINE(float x1, float y1, float z1, float x2, float y2, float z2, int red, int green, int blue, int alpha)
@@ -53,9 +53,9 @@ namespace lua::native
 		GRAPHICS::DRAW_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_TEXTURED_POLY(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, int red, int green, int blue, int alpha, const char* textureDict, const char* textureName, float u1, float v1, float w1, float u2, float v2, float w2, float u3, float v3, float w3)
+	static void LUA_NATIVE_GRAPHICS_DRAW_TEXTURED_POLY(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, int red, int green, int blue, int alpha, sol::stack_object textureDict, sol::stack_object textureName, float u1, float v1, float w1, float u2, float v2, float w2, float u3, float v3, float w3)
 	{
-		GRAPHICS::DRAW_TEXTURED_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha, textureDict, textureName, u1, v1, w1, u2, v2, w2, u3, v3, w3);
+		GRAPHICS::DRAW_TEXTURED_POLY(x1, y1, z1, x2, y2, z2, x3, y3, z3, red, green, blue, alpha, textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, u1, v1, w1, u2, v2, w2, u3, v3, w3);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_DRAW_BOX(float x1, float y1, float z1, float x2, float y2, float z2, int red, int green, int blue, int alpha)
@@ -285,14 +285,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_MARKER(int type, float posX, float posY, float posZ, float dirX, float dirY, float dirZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, int p19, bool rotate, const char* textureDict, const char* textureName, bool drawOnEnts)
+	static void LUA_NATIVE_GRAPHICS_DRAW_MARKER(int type, float posX, float posY, float posZ, float dirX, float dirY, float dirZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, int p19, bool rotate, sol::stack_object textureDict, sol::stack_object textureName, bool drawOnEnts)
 	{
-		GRAPHICS::DRAW_MARKER(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts);
+		GRAPHICS::DRAW_MARKER(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, drawOnEnts);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_MARKER_EX(int type, float posX, float posY, float posZ, float dirX, float dirY, float dirZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, Any p19, bool rotate, const char* textureDict, const char* textureName, bool drawOnEnts, bool p24, bool p25)
+	static void LUA_NATIVE_GRAPHICS_DRAW_MARKER_EX(int type, float posX, float posY, float posZ, float dirX, float dirY, float dirZ, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ, int red, int green, int blue, int alpha, bool bobUpAndDown, bool faceCamera, Any p19, bool rotate, sol::stack_object textureDict, sol::stack_object textureName, bool drawOnEnts, bool p24, bool p25)
 	{
-		GRAPHICS::DRAW_MARKER_EX(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts, p24, p25);
+		GRAPHICS::DRAW_MARKER_EX(type, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, drawOnEnts, p24, p25);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_DRAW_MARKER_SPHERE(float x, float y, float z, float radius, int red, int green, int blue, float alpha)
@@ -371,20 +371,20 @@ namespace lua::native
 		GRAPHICS::FORCE_RENDER_IN_GAME_UI(toggle);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_REQUEST_STREAMED_TEXTURE_DICT(const char* textureDict, bool p1)
+	static void LUA_NATIVE_GRAPHICS_REQUEST_STREAMED_TEXTURE_DICT(sol::stack_object textureDict, bool p1)
 	{
-		GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(textureDict, p1);
+		GRAPHICS::REQUEST_STREAMED_TEXTURE_DICT(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, p1);
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_HAS_STREAMED_TEXTURE_DICT_LOADED(const char* textureDict)
+	static bool LUA_NATIVE_GRAPHICS_HAS_STREAMED_TEXTURE_DICT_LOADED(sol::stack_object textureDict)
 	{
-		auto retval = (bool)GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(textureDict);
+		auto retval = (bool)GRAPHICS::HAS_STREAMED_TEXTURE_DICT_LOADED(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(const char* textureDict)
+	static void LUA_NATIVE_GRAPHICS_SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(sol::stack_object textureDict)
 	{
-		GRAPHICS::SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(textureDict);
+		GRAPHICS::SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_DRAW_RECT(float x, float y, float width, float height, int r, int g, int b, int a, bool p8)
@@ -433,29 +433,29 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE(const char* textureDict, const char* textureName, float screenX, float screenY, float width, float height, float heading, int red, int green, int blue, int alpha, bool p11, Any p12)
+	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE(sol::stack_object textureDict, sol::stack_object textureName, float screenX, float screenY, float width, float height, float heading, int red, int green, int blue, int alpha, bool p11, Any p12)
 	{
-		GRAPHICS::DRAW_SPRITE(textureDict, textureName, screenX, screenY, width, height, heading, red, green, blue, alpha, p11, p12);
+		GRAPHICS::DRAW_SPRITE(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, screenX, screenY, width, height, heading, red, green, blue, alpha, p11, p12);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_ARX(const char* textureDict, const char* textureName, float x, float y, float width, float height, float p6, int red, int green, int blue, int alpha, Any p11, Any p12)
+	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_ARX(sol::stack_object textureDict, sol::stack_object textureName, float x, float y, float width, float height, float p6, int red, int green, int blue, int alpha, Any p11, Any p12)
 	{
-		GRAPHICS::DRAW_SPRITE_ARX(textureDict, textureName, x, y, width, height, p6, red, green, blue, alpha, p11, p12);
+		GRAPHICS::DRAW_SPRITE_ARX(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, x, y, width, height, p6, red, green, blue, alpha, p11, p12);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_NAMED_RENDERTARGET(const char* textureDict, const char* textureName, float screenX, float screenY, float width, float height, float heading, int red, int green, int blue, int alpha, Any p11)
+	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_NAMED_RENDERTARGET(sol::stack_object textureDict, sol::stack_object textureName, float screenX, float screenY, float width, float height, float heading, int red, int green, int blue, int alpha, Any p11)
 	{
-		GRAPHICS::DRAW_SPRITE_NAMED_RENDERTARGET(textureDict, textureName, screenX, screenY, width, height, heading, red, green, blue, alpha, p11);
+		GRAPHICS::DRAW_SPRITE_NAMED_RENDERTARGET(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, screenX, screenY, width, height, heading, red, green, blue, alpha, p11);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_ARX_WITH_UV(const char* textureDict, const char* textureName, float x, float y, float width, float height, float u1, float v1, float u2, float v2, float heading, int red, int green, int blue, int alpha, Any p15)
+	static void LUA_NATIVE_GRAPHICS_DRAW_SPRITE_ARX_WITH_UV(sol::stack_object textureDict, sol::stack_object textureName, float x, float y, float width, float height, float u1, float v1, float u2, float v2, float heading, int red, int green, int blue, int alpha, Any p15)
 	{
-		GRAPHICS::DRAW_SPRITE_ARX_WITH_UV(textureDict, textureName, x, y, width, height, u1, v1, u2, v2, heading, red, green, blue, alpha, p15);
+		GRAPHICS::DRAW_SPRITE_ARX_WITH_UV(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr, x, y, width, height, u1, v1, u2, v2, heading, red, green, blue, alpha, p15);
 	}
 
-	static int LUA_NATIVE_GRAPHICS_ADD_ENTITY_ICON(Entity entity, const char* icon)
+	static int LUA_NATIVE_GRAPHICS_ADD_ENTITY_ICON(Entity entity, sol::stack_object icon)
 	{
-		auto retval = GRAPHICS::ADD_ENTITY_ICON(entity, icon);
+		auto retval = GRAPHICS::ADD_ENTITY_ICON(entity, icon.is<const char*>() ? icon.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -479,9 +479,9 @@ namespace lua::native
 		GRAPHICS::CLEAR_DRAW_ORIGIN();
 	}
 
-	static int LUA_NATIVE_GRAPHICS_SET_BINK_MOVIE(const char* name)
+	static int LUA_NATIVE_GRAPHICS_SET_BINK_MOVIE(sol::stack_object name)
 	{
-		auto retval = GRAPHICS::SET_BINK_MOVIE(name);
+		auto retval = GRAPHICS::SET_BINK_MOVIE(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -541,9 +541,9 @@ namespace lua::native
 		GRAPHICS::SET_BINK_SHOULD_SKIP(binkMovie, bShouldSkip);
 	}
 
-	static int LUA_NATIVE_GRAPHICS_LOAD_MOVIE_MESH_SET(const char* movieMeshSetName)
+	static int LUA_NATIVE_GRAPHICS_LOAD_MOVIE_MESH_SET(sol::stack_object movieMeshSetName)
 	{
-		auto retval = GRAPHICS::LOAD_MOVIE_MESH_SET(movieMeshSetName);
+		auto retval = GRAPHICS::LOAD_MOVIE_MESH_SET(movieMeshSetName.is<const char*>() ? movieMeshSetName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -659,15 +659,15 @@ namespace lua::native
 		return return_values;
 	}
 
-	static Vector3 LUA_NATIVE_GRAPHICS_GET_TEXTURE_RESOLUTION(const char* textureDict, const char* textureName)
+	static Vector3 LUA_NATIVE_GRAPHICS_GET_TEXTURE_RESOLUTION(sol::stack_object textureDict, sol::stack_object textureName)
 	{
-		auto retval = GRAPHICS::GET_TEXTURE_RESOLUTION(textureDict, textureName);
+		auto retval = GRAPHICS::GET_TEXTURE_RESOLUTION(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_OVERRIDE_PED_CREW_LOGO_TEXTURE(Ped ped, const char* txd, const char* txn)
+	static bool LUA_NATIVE_GRAPHICS_OVERRIDE_PED_CREW_LOGO_TEXTURE(Ped ped, sol::stack_object txd, sol::stack_object txn)
 	{
-		auto retval = (bool)GRAPHICS::OVERRIDE_PED_CREW_LOGO_TEXTURE(ped, txd, txn);
+		auto retval = (bool)GRAPHICS::OVERRIDE_PED_CREW_LOGO_TEXTURE(ped, txd.is<const char*>() ? txd.as<const char*>() : nullptr, txn.is<const char*>() ? txn.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -825,9 +825,9 @@ namespace lua::native
 		GRAPHICS::CASCADE_SHADOWS_SET_SCREEN_SIZE_CHECK_ENABLED(p0);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CASCADE_SHADOWS_SET_SHADOW_SAMPLE_TYPE(const char* type)
+	static void LUA_NATIVE_GRAPHICS_CASCADE_SHADOWS_SET_SHADOW_SAMPLE_TYPE(sol::stack_object type)
 	{
-		GRAPHICS::CASCADE_SHADOWS_SET_SHADOW_SAMPLE_TYPE(type);
+		GRAPHICS::CASCADE_SHADOWS_SET_SHADOW_SAMPLE_TYPE(type.is<const char*>() ? type.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_CASCADE_SHADOWS_CLEAR_SHADOW_SAMPLE_TYPE()
@@ -1082,51 +1082,51 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_PHONEPHOTOEDITOR_SET_FRAME_TXD(const char* textureDict, bool p1)
+	static bool LUA_NATIVE_GRAPHICS_PHONEPHOTOEDITOR_SET_FRAME_TXD(sol::stack_object textureDict, bool p1)
 	{
-		auto retval = (bool)GRAPHICS::PHONEPHOTOEDITOR_SET_FRAME_TXD(textureDict, p1);
+		auto retval = (bool)GRAPHICS::PHONEPHOTOEDITOR_SET_FRAME_TXD(textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_AT_COORD(const char* effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis)
+	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_AT_COORD(sol::stack_object effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis)
 	{
-		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
+		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(const char* effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11)
+	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(sol::stack_object effectName, float xPos, float yPos, float zPos, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11)
 	{
-		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
+		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_AT_COORD(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, xPos, yPos, zPos, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(const char* effectName, Ped ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
+	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(sol::stack_object effectName, Ped ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
 	{
-		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
+		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(const char* effectName, Ped ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
+	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(sol::stack_object effectName, Ped ped, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
 	{
-		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
+		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_PED_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, ped, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(const char* effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ)
+	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(sol::stack_object effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ)
 	{
-		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
+		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(const char* effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ)
+	static bool LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(sol::stack_object effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, float scale, bool axisX, bool axisY, bool axisZ)
 	{
-		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
+		auto retval = (bool)GRAPHICS::START_NETWORKED_PARTICLE_FX_NON_LOOPED_ON_ENTITY(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, scale, axisX, axisY, axisZ);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(const char* effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
+	static bool LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(sol::stack_object effectName, Entity entity, float offsetX, float offsetY, float offsetZ, float rotX, float rotY, float rotZ, int boneIndex, float scale, bool axisX, bool axisY, bool axisZ)
 	{
-		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(effectName, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
+		auto retval = (bool)GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, offsetX, offsetY, offsetZ, rotX, rotY, rotZ, boneIndex, scale, axisX, axisY, axisZ);
 		return retval;
 	}
 
@@ -1155,39 +1155,39 @@ namespace lua::native
 		GRAPHICS::SET_PARTICLE_FX_FORCE_VEHICLE_INTERIOR(toggle);
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_AT_COORD(const char* effectName, float x, float y, float z, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11)
+	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_AT_COORD(sol::stack_object effectName, float x, float y, float z, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, bool p11)
 	{
-		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_AT_COORD(effectName, x, y, z, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
+		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_AT_COORD(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, x, y, z, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, p11);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_PED_BONE(const char* effectName, Ped ped, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis)
+	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_PED_BONE(sol::stack_object effectName, Ped ped, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis)
 	{
-		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_PED_BONE(effectName, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
+		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_PED_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, ped, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY(const char* effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis)
+	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY(sol::stack_object effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis)
 	{
-		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
+		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(const char* effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis)
+	static int LUA_NATIVE_GRAPHICS_START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(sol::stack_object effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis)
 	{
-		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
+		auto retval = GRAPHICS::START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(const char* effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, float r, float g, float b, float a)
+	static int LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(sol::stack_object effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, float scale, bool xAxis, bool yAxis, bool zAxis, float r, float g, float b, float a)
 	{
-		auto retval = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, r, g, b, a);
+		auto retval = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, scale, xAxis, yAxis, zAxis, r, g, b, a);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(const char* effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis, float r, float g, float b, float a)
+	static int LUA_NATIVE_GRAPHICS_START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(sol::stack_object effectName, Entity entity, float xOffset, float yOffset, float zOffset, float xRot, float yRot, float zRot, int boneIndex, float scale, bool xAxis, bool yAxis, bool zAxis, float r, float g, float b, float a)
 	{
-		auto retval = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis, r, g, b, a);
+		auto retval = GRAPHICS::START_NETWORKED_PARTICLE_FX_LOOPED_ON_ENTITY_BONE(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, entity, xOffset, yOffset, zOffset, xRot, yRot, zRot, boneIndex, scale, xAxis, yAxis, zAxis, r, g, b, a);
 		return retval;
 	}
 
@@ -1227,9 +1227,9 @@ namespace lua::native
 		GRAPHICS::SET_PARTICLE_FX_LOOPED_OFFSETS(ptfxHandle, x, y, z, rotX, rotY, rotZ);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_EVOLUTION(int ptfxHandle, const char* propertyName, float amount, bool noNetwork)
+	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_EVOLUTION(int ptfxHandle, sol::stack_object propertyName, float amount, bool noNetwork)
 	{
-		GRAPHICS::SET_PARTICLE_FX_LOOPED_EVOLUTION(ptfxHandle, propertyName, amount, noNetwork);
+		GRAPHICS::SET_PARTICLE_FX_LOOPED_EVOLUTION(ptfxHandle, propertyName.is<const char*>() ? propertyName.as<const char*>() : nullptr, amount, noNetwork);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_COLOUR(int ptfxHandle, float r, float g, float b, bool p4)
@@ -1250,6 +1250,11 @@ namespace lua::native
 	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_FAR_CLIP_DIST(int ptfxHandle, float range)
 	{
 		GRAPHICS::SET_PARTICLE_FX_LOOPED_FAR_CLIP_DIST(ptfxHandle, range);
+	}
+
+	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_CAMERA_BIAS_(int ptfxHandle, float p1)
+	{
+		GRAPHICS::_SET_PARTICLE_FX_LOOPED_CAMERA_BIAS(ptfxHandle, p1);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_CAM_INSIDE_VEHICLE(bool p0)
@@ -1327,9 +1332,9 @@ namespace lua::native
 		GRAPHICS::SET_PARTICLE_FX_FOOT_LODRANGE_SCALE(p0);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_FOOT_OVERRIDE_NAME(const char* p0)
+	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_FOOT_OVERRIDE_NAME(sol::stack_object p0)
 	{
-		GRAPHICS::SET_PARTICLE_FX_FOOT_OVERRIDE_NAME(p0);
+		GRAPHICS::SET_PARTICLE_FX_FOOT_OVERRIDE_NAME(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_SKIDMARK_RANGE_SCALE(float scale)
@@ -1352,19 +1357,25 @@ namespace lua::native
 		GRAPHICS::FORCE_POSTFX_BULLET_IMPACTS_AFTER_HUD(p0);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_USE_PARTICLE_FX_ASSET(const char* name)
+	static void LUA_NATIVE_GRAPHICS_USE_PARTICLE_FX_ASSET(sol::stack_object name)
 	{
-		GRAPHICS::USE_PARTICLE_FX_ASSET(name);
+		GRAPHICS::USE_PARTICLE_FX_ASSET(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_OVERRIDE(const char* oldAsset, const char* newAsset)
+	static void LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_OVERRIDE(sol::stack_object oldAsset, sol::stack_object newAsset)
 	{
-		GRAPHICS::SET_PARTICLE_FX_OVERRIDE(oldAsset, newAsset);
+		GRAPHICS::SET_PARTICLE_FX_OVERRIDE(oldAsset.is<const char*>() ? oldAsset.as<const char*>() : nullptr, newAsset.is<const char*>() ? newAsset.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_RESET_PARTICLE_FX_OVERRIDE(const char* name)
+	static void LUA_NATIVE_GRAPHICS_RESET_PARTICLE_FX_OVERRIDE(sol::stack_object name)
 	{
-		GRAPHICS::RESET_PARTICLE_FX_OVERRIDE(name);
+		GRAPHICS::RESET_PARTICLE_FX_OVERRIDE(name.is<const char*>() ? name.as<const char*>() : nullptr);
+	}
+
+	static int LUA_NATIVE_GRAPHICS_START_VEHICLE_PARTICLE_FX_LOOPED_(Vehicle vehicle, sol::stack_object effectName, bool frontBack, bool leftRight, bool localOnly)
+	{
+		auto retval = GRAPHICS::_START_VEHICLE_PARTICLE_FX_LOOPED(vehicle, effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, frontBack, leftRight, localOnly);
+		return retval;
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_WEATHER_PTFX_USE_OVERRIDE_SETTINGS(bool p0)
@@ -1483,9 +1494,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_GRAPHICS_PATCH_DECAL_DIFFUSE_MAP(int decalType, const char* textureDict, const char* textureName)
+	static void LUA_NATIVE_GRAPHICS_PATCH_DECAL_DIFFUSE_MAP(int decalType, sol::stack_object textureDict, sol::stack_object textureName)
 	{
-		GRAPHICS::PATCH_DECAL_DIFFUSE_MAP(decalType, textureDict, textureName);
+		GRAPHICS::PATCH_DECAL_DIFFUSE_MAP(decalType, textureDict.is<const char*>() ? textureDict.as<const char*>() : nullptr, textureName.is<const char*>() ? textureName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_UNPATCH_DECAL_DIFFUSE_MAP(int decalType)
@@ -1545,9 +1556,9 @@ namespace lua::native
 		GRAPHICS::SET_DECAL_BULLET_IMPACT_RANGE_SCALE(p0);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_OVERRIDE_INTERIOR_SMOKE_NAME(const char* name)
+	static void LUA_NATIVE_GRAPHICS_OVERRIDE_INTERIOR_SMOKE_NAME(sol::stack_object name)
 	{
-		GRAPHICS::OVERRIDE_INTERIOR_SMOKE_NAME(name);
+		GRAPHICS::OVERRIDE_INTERIOR_SMOKE_NAME(name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_OVERRIDE_INTERIOR_SMOKE_LEVEL(float level)
@@ -1585,6 +1596,11 @@ namespace lua::native
 		GRAPHICS::USE_SNOW_FOOT_VFX_WHEN_UNSHELTERED(toggle);
 	}
 
+	static void LUA_NATIVE_GRAPHICS_FORCE_ALLOW_SNOW_FOOT_VFX_ON_ICE_(bool toggle)
+	{
+		GRAPHICS::_FORCE_ALLOW_SNOW_FOOT_VFX_ON_ICE(toggle);
+	}
+
 	static void LUA_NATIVE_GRAPHICS_USE_SNOW_WHEEL_VFX_WHEN_UNSHELTERED(bool toggle)
 	{
 		GRAPHICS::USE_SNOW_WHEEL_VFX_WHEN_UNSHELTERED(toggle);
@@ -1595,14 +1611,19 @@ namespace lua::native
 		GRAPHICS::DISABLE_REGION_VFX(p0);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_PRESET_INTERIOR_AMBIENT_CACHE(const char* timecycleModifierName)
+	static void LUA_NATIVE_GRAPHICS_FORCE_GROUND_SNOW_PASS_(bool toggle)
 	{
-		GRAPHICS::PRESET_INTERIOR_AMBIENT_CACHE(timecycleModifierName);
+		GRAPHICS::_FORCE_GROUND_SNOW_PASS(toggle);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_TIMECYCLE_MODIFIER(const char* modifierName)
+	static void LUA_NATIVE_GRAPHICS_PRESET_INTERIOR_AMBIENT_CACHE(sol::stack_object timecycleModifierName)
 	{
-		GRAPHICS::SET_TIMECYCLE_MODIFIER(modifierName);
+		GRAPHICS::PRESET_INTERIOR_AMBIENT_CACHE(timecycleModifierName.is<const char*>() ? timecycleModifierName.as<const char*>() : nullptr);
+	}
+
+	static void LUA_NATIVE_GRAPHICS_SET_TIMECYCLE_MODIFIER(sol::stack_object modifierName)
+	{
+		GRAPHICS::SET_TIMECYCLE_MODIFIER(modifierName.is<const char*>() ? modifierName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_TIMECYCLE_MODIFIER_STRENGTH(float strength)
@@ -1610,9 +1631,9 @@ namespace lua::native
 		GRAPHICS::SET_TIMECYCLE_MODIFIER_STRENGTH(strength);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_TRANSITION_TIMECYCLE_MODIFIER(const char* modifierName, float transition)
+	static void LUA_NATIVE_GRAPHICS_SET_TRANSITION_TIMECYCLE_MODIFIER(sol::stack_object modifierName, float transition)
 	{
-		GRAPHICS::SET_TRANSITION_TIMECYCLE_MODIFIER(modifierName, transition);
+		GRAPHICS::SET_TRANSITION_TIMECYCLE_MODIFIER(modifierName.is<const char*>() ? modifierName.as<const char*>() : nullptr, transition);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_TRANSITION_OUT_OF_TIMECYCLE_MODIFIER(float strength)
@@ -1653,9 +1674,9 @@ namespace lua::native
 		GRAPHICS::POP_TIMECYCLE_MODIFIER();
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_CURRENT_PLAYER_TCMODIFIER(const char* modifierName)
+	static void LUA_NATIVE_GRAPHICS_SET_CURRENT_PLAYER_TCMODIFIER(sol::stack_object modifierName)
 	{
-		GRAPHICS::SET_CURRENT_PLAYER_TCMODIFIER(modifierName);
+		GRAPHICS::SET_CURRENT_PLAYER_TCMODIFIER(modifierName.is<const char*>() ? modifierName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_SET_PLAYER_TCMODIFIER_TRANSITION(float value)
@@ -1663,24 +1684,24 @@ namespace lua::native
 		GRAPHICS::SET_PLAYER_TCMODIFIER_TRANSITION(value);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_NEXT_PLAYER_TCMODIFIER(const char* modifierName)
+	static void LUA_NATIVE_GRAPHICS_SET_NEXT_PLAYER_TCMODIFIER(sol::stack_object modifierName)
 	{
-		GRAPHICS::SET_NEXT_PLAYER_TCMODIFIER(modifierName);
+		GRAPHICS::SET_NEXT_PLAYER_TCMODIFIER(modifierName.is<const char*>() ? modifierName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_ADD_TCMODIFIER_OVERRIDE(const char* modifierName1, const char* modifierName2)
+	static void LUA_NATIVE_GRAPHICS_ADD_TCMODIFIER_OVERRIDE(sol::stack_object modifierName1, sol::stack_object modifierName2)
 	{
-		GRAPHICS::ADD_TCMODIFIER_OVERRIDE(modifierName1, modifierName2);
+		GRAPHICS::ADD_TCMODIFIER_OVERRIDE(modifierName1.is<const char*>() ? modifierName1.as<const char*>() : nullptr, modifierName2.is<const char*>() ? modifierName2.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CLEAR_ALL_TCMODIFIER_OVERRIDES(const char* p0)
+	static void LUA_NATIVE_GRAPHICS_CLEAR_ALL_TCMODIFIER_OVERRIDES(sol::stack_object p0)
 	{
-		GRAPHICS::CLEAR_ALL_TCMODIFIER_OVERRIDES(p0);
+		GRAPHICS::CLEAR_ALL_TCMODIFIER_OVERRIDES(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_EXTRA_TCMODIFIER(const char* modifierName)
+	static void LUA_NATIVE_GRAPHICS_SET_EXTRA_TCMODIFIER(sol::stack_object modifierName)
 	{
-		GRAPHICS::SET_EXTRA_TCMODIFIER(modifierName);
+		GRAPHICS::SET_EXTRA_TCMODIFIER(modifierName.is<const char*>() ? modifierName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_CLEAR_EXTRA_TCMODIFIER()
@@ -1704,27 +1725,27 @@ namespace lua::native
 		GRAPHICS::DISABLE_MOON_CYCLE_OVERRIDE();
 	}
 
-	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE(const char* scaleformName)
+	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE(sol::stack_object scaleformName)
 	{
-		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE(scaleformName);
+		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE(scaleformName.is<const char*>() ? scaleformName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_WITH_IGNORE_SUPER_WIDESCREEN(const char* scaleformName)
+	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_WITH_IGNORE_SUPER_WIDESCREEN(sol::stack_object scaleformName)
 	{
-		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_WITH_IGNORE_SUPER_WIDESCREEN(scaleformName);
+		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_WITH_IGNORE_SUPER_WIDESCREEN(scaleformName.is<const char*>() ? scaleformName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_INSTANCE(const char* scaleformName)
+	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_INSTANCE(sol::stack_object scaleformName)
 	{
-		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_INSTANCE(scaleformName);
+		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_INSTANCE(scaleformName.is<const char*>() ? scaleformName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_SKIP_RENDER_WHILE_PAUSED(const char* scaleformName)
+	static int LUA_NATIVE_GRAPHICS_REQUEST_SCALEFORM_MOVIE_SKIP_RENDER_WHILE_PAUSED(sol::stack_object scaleformName)
 	{
-		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_SKIP_RENDER_WHILE_PAUSED(scaleformName);
+		auto retval = GRAPHICS::REQUEST_SCALEFORM_MOVIE_SKIP_RENDER_WHILE_PAUSED(scaleformName.is<const char*>() ? scaleformName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1746,9 +1767,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_HAS_SCALEFORM_MOVIE_FILENAME_LOADED(const char* scaleformName)
+	static bool LUA_NATIVE_GRAPHICS_HAS_SCALEFORM_MOVIE_FILENAME_LOADED(sol::stack_object scaleformName)
 	{
-		auto retval = (bool)GRAPHICS::HAS_SCALEFORM_MOVIE_FILENAME_LOADED(scaleformName);
+		auto retval = (bool)GRAPHICS::HAS_SCALEFORM_MOVIE_FILENAME_LOADED(scaleformName.is<const char*>() ? scaleformName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1804,47 +1825,47 @@ namespace lua::native
 		GRAPHICS::DRAW_SCALEFORM_MOVIE_3D_SOLID(scaleform, posX, posY, posZ, rotX, rotY, rotZ, p7, p8, p9, scaleX, scaleY, scaleZ, rotationOrder);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD(int scaleform, const char* method)
+	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD(int scaleform, sol::stack_object method)
 	{
-		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD(scaleform, method);
+		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD(scaleform, method.is<const char*>() ? method.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER(int scaleform, const char* methodName, float param1, float param2, float param3, float param4, float param5)
+	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER(int scaleform, sol::stack_object methodName, float param1, float param2, float param3, float param4, float param5)
 	{
-		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER(scaleform, methodName, param1, param2, param3, param4, param5);
+		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER(scaleform, methodName.is<const char*>() ? methodName.as<const char*>() : nullptr, param1, param2, param3, param4, param5);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_STRING(int scaleform, const char* methodName, const char* param1, const char* param2, const char* param3, const char* param4, const char* param5)
+	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_STRING(int scaleform, sol::stack_object methodName, sol::stack_object param1, sol::stack_object param2, sol::stack_object param3, sol::stack_object param4, sol::stack_object param5)
 	{
-		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_STRING(scaleform, methodName, param1, param2, param3, param4, param5);
+		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_STRING(scaleform, methodName.is<const char*>() ? methodName.as<const char*>() : nullptr, param1.is<const char*>() ? param1.as<const char*>() : nullptr, param2.is<const char*>() ? param2.as<const char*>() : nullptr, param3.is<const char*>() ? param3.as<const char*>() : nullptr, param4.is<const char*>() ? param4.as<const char*>() : nullptr, param5.is<const char*>() ? param5.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER_AND_STRING(int scaleform, const char* methodName, float floatParam1, float floatParam2, float floatParam3, float floatParam4, float floatParam5, const char* stringParam1, const char* stringParam2, const char* stringParam3, const char* stringParam4, const char* stringParam5)
+	static void LUA_NATIVE_GRAPHICS_CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER_AND_STRING(int scaleform, sol::stack_object methodName, float floatParam1, float floatParam2, float floatParam3, float floatParam4, float floatParam5, sol::stack_object stringParam1, sol::stack_object stringParam2, sol::stack_object stringParam3, sol::stack_object stringParam4, sol::stack_object stringParam5)
 	{
-		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER_AND_STRING(scaleform, methodName, floatParam1, floatParam2, floatParam3, floatParam4, floatParam5, stringParam1, stringParam2, stringParam3, stringParam4, stringParam5);
+		GRAPHICS::CALL_SCALEFORM_MOVIE_METHOD_WITH_NUMBER_AND_STRING(scaleform, methodName.is<const char*>() ? methodName.as<const char*>() : nullptr, floatParam1, floatParam2, floatParam3, floatParam4, floatParam5, stringParam1.is<const char*>() ? stringParam1.as<const char*>() : nullptr, stringParam2.is<const char*>() ? stringParam2.as<const char*>() : nullptr, stringParam3.is<const char*>() ? stringParam3.as<const char*>() : nullptr, stringParam4.is<const char*>() ? stringParam4.as<const char*>() : nullptr, stringParam5.is<const char*>() ? stringParam5.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_SCRIPT_HUD_MOVIE_METHOD(int hudComponent, const char* methodName)
+	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_SCRIPT_HUD_MOVIE_METHOD(int hudComponent, sol::stack_object methodName)
 	{
-		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_SCRIPT_HUD_MOVIE_METHOD(hudComponent, methodName);
+		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_SCRIPT_HUD_MOVIE_METHOD(hudComponent, methodName.is<const char*>() ? methodName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD(int scaleform, const char* methodName)
+	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD(int scaleform, sol::stack_object methodName)
 	{
-		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, methodName);
+		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, methodName.is<const char*>() ? methodName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND(const char* methodName)
+	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND(sol::stack_object methodName)
 	{
-		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND(methodName);
+		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND(methodName.is<const char*>() ? methodName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND_HEADER(const char* methodName)
+	static bool LUA_NATIVE_GRAPHICS_BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND_HEADER(sol::stack_object methodName)
 	{
-		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND_HEADER(methodName);
+		auto retval = (bool)GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD_ON_FRONTEND_HEADER(methodName.is<const char*>() ? methodName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -1898,9 +1919,9 @@ namespace lua::native
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(value);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_BEGIN_TEXT_COMMAND_SCALEFORM_STRING(const char* componentType)
+	static void LUA_NATIVE_GRAPHICS_BEGIN_TEXT_COMMAND_SCALEFORM_STRING(sol::stack_object componentType)
 	{
-		GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING(componentType);
+		GRAPHICS::BEGIN_TEXT_COMMAND_SCALEFORM_STRING(componentType.is<const char*>() ? componentType.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_END_TEXT_COMMAND_SCALEFORM_STRING()
@@ -1913,19 +1934,19 @@ namespace lua::native
 		GRAPHICS::END_TEXT_COMMAND_UNPARSED_SCALEFORM_STRING();
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(const char* string)
+	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(sol::stack_object string)
 	{
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(string);
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(const char* string)
+	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(sol::stack_object string)
 	{
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(string);
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(const char* string)
+	static void LUA_NATIVE_GRAPHICS_SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(sol::stack_object string)
 	{
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(string);
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_GRAPHICS_DOES_LATEST_BRIEF_STRING_EXIST(int p0)
@@ -1988,14 +2009,19 @@ namespace lua::native
 		GRAPHICS::DRAW_TV_CHANNEL(xPos, yPos, xScale, yScale, rotation, red, green, blue, alpha);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST(int tvChannel, const char* playlistName, bool restart)
+	static void LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST(int tvChannel, sol::stack_object playlistName, bool restart)
 	{
-		GRAPHICS::SET_TV_CHANNEL_PLAYLIST(tvChannel, playlistName, restart);
+		GRAPHICS::SET_TV_CHANNEL_PLAYLIST(tvChannel, playlistName.is<const char*>() ? playlistName.as<const char*>() : nullptr, restart);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST_AT_HOUR(int tvChannel, const char* playlistName, int hour)
+	static void LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST_AT_HOUR(int tvChannel, sol::stack_object playlistName, int hour)
 	{
-		GRAPHICS::SET_TV_CHANNEL_PLAYLIST_AT_HOUR(tvChannel, playlistName, hour);
+		GRAPHICS::SET_TV_CHANNEL_PLAYLIST_AT_HOUR(tvChannel, playlistName.is<const char*>() ? playlistName.as<const char*>() : nullptr, hour);
+	}
+
+	static void LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST_DIRTY_(int tvChannel, bool p1)
+	{
+		GRAPHICS::_SET_TV_CHANNEL_PLAYLIST_DIRTY(tvChannel, p1);
 	}
 
 	static void LUA_NATIVE_GRAPHICS_CLEAR_TV_CHANNEL_PLAYLIST(int tvChannel)
@@ -2042,15 +2068,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_UI3DSCENE_PUSH_PRESET(const char* presetName)
+	static bool LUA_NATIVE_GRAPHICS_UI3DSCENE_PUSH_PRESET(sol::stack_object presetName)
 	{
-		auto retval = (bool)GRAPHICS::UI3DSCENE_PUSH_PRESET(presetName);
+		auto retval = (bool)GRAPHICS::UI3DSCENE_PUSH_PRESET(presetName.is<const char*>() ? presetName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_UI3DSCENE_ASSIGN_PED_TO_SLOT(const char* presetName, Ped ped, int slot, float posX, float posY, float posZ)
+	static bool LUA_NATIVE_GRAPHICS_UI3DSCENE_ASSIGN_PED_TO_SLOT(sol::stack_object presetName, Ped ped, int slot, float posX, float posY, float posZ)
 	{
-		auto retval = (bool)GRAPHICS::UI3DSCENE_ASSIGN_PED_TO_SLOT(presetName, ped, slot, posX, posY, posZ);
+		auto retval = (bool)GRAPHICS::UI3DSCENE_ASSIGN_PED_TO_SLOT(presetName.is<const char*>() ? presetName.as<const char*>() : nullptr, ped, slot, posX, posY, posZ);
 		return retval;
 	}
 
@@ -2079,25 +2105,25 @@ namespace lua::native
 		GRAPHICS::TERRAINGRID_SET_COLOURS(lowR, lowG, lowB, lowAlpha, r, g, b, alpha, highR, highG, highB, highAlpha);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_PLAY(const char* effectName, int duration, bool looped)
+	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_PLAY(sol::stack_object effectName, int duration, bool looped)
 	{
-		GRAPHICS::ANIMPOSTFX_PLAY(effectName, duration, looped);
+		GRAPHICS::ANIMPOSTFX_PLAY(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr, duration, looped);
 	}
 
-	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_STOP(const char* effectName)
+	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_STOP(sol::stack_object effectName)
 	{
-		GRAPHICS::ANIMPOSTFX_STOP(effectName);
+		GRAPHICS::ANIMPOSTFX_STOP(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr);
 	}
 
-	static float LUA_NATIVE_GRAPHICS_ANIMPOSTFX_GET_CURRENT_TIME(const char* effectName)
+	static float LUA_NATIVE_GRAPHICS_ANIMPOSTFX_GET_CURRENT_TIME(sol::stack_object effectName)
 	{
-		auto retval = GRAPHICS::ANIMPOSTFX_GET_CURRENT_TIME(effectName);
+		auto retval = GRAPHICS::ANIMPOSTFX_GET_CURRENT_TIME(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_GRAPHICS_ANIMPOSTFX_IS_RUNNING(const char* effectName)
+	static bool LUA_NATIVE_GRAPHICS_ANIMPOSTFX_IS_RUNNING(sol::stack_object effectName)
 	{
-		auto retval = (bool)GRAPHICS::ANIMPOSTFX_IS_RUNNING(effectName);
+		auto retval = (bool)GRAPHICS::ANIMPOSTFX_IS_RUNNING(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -2106,9 +2132,9 @@ namespace lua::native
 		GRAPHICS::ANIMPOSTFX_STOP_ALL();
 	}
 
-	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_STOP_AND_FLUSH_REQUESTS(const char* effectName)
+	static void LUA_NATIVE_GRAPHICS_ANIMPOSTFX_STOP_AND_FLUSH_REQUESTS(sol::stack_object effectName)
 	{
-		GRAPHICS::ANIMPOSTFX_STOP_AND_FLUSH_REQUESTS(effectName);
+		GRAPHICS::ANIMPOSTFX_STOP_AND_FLUSH_REQUESTS(effectName.is<const char*>() ? effectName.as<const char*>() : nullptr);
 	}
 
 	void init_native_binding_GRAPHICS(sol::state& L)
@@ -2345,6 +2371,7 @@ namespace lua::native
 		GRAPHICS.set_function("SET_PARTICLE_FX_LOOPED_ALPHA", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_ALPHA);
 		GRAPHICS.set_function("SET_PARTICLE_FX_LOOPED_SCALE", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_SCALE);
 		GRAPHICS.set_function("SET_PARTICLE_FX_LOOPED_FAR_CLIP_DIST", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_FAR_CLIP_DIST);
+		GRAPHICS.set_function("SET_PARTICLE_FX_LOOPED_CAMERA_BIAS_", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_LOOPED_CAMERA_BIAS_);
 		GRAPHICS.set_function("SET_PARTICLE_FX_CAM_INSIDE_VEHICLE", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_CAM_INSIDE_VEHICLE);
 		GRAPHICS.set_function("SET_PARTICLE_FX_CAM_INSIDE_NONPLAYER_VEHICLE", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_CAM_INSIDE_NONPLAYER_VEHICLE);
 		GRAPHICS.set_function("SET_PARTICLE_FX_SHOOTOUT_BOAT", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_SHOOTOUT_BOAT);
@@ -2368,6 +2395,7 @@ namespace lua::native
 		GRAPHICS.set_function("USE_PARTICLE_FX_ASSET", LUA_NATIVE_GRAPHICS_USE_PARTICLE_FX_ASSET);
 		GRAPHICS.set_function("SET_PARTICLE_FX_OVERRIDE", LUA_NATIVE_GRAPHICS_SET_PARTICLE_FX_OVERRIDE);
 		GRAPHICS.set_function("RESET_PARTICLE_FX_OVERRIDE", LUA_NATIVE_GRAPHICS_RESET_PARTICLE_FX_OVERRIDE);
+		GRAPHICS.set_function("START_VEHICLE_PARTICLE_FX_LOOPED_", LUA_NATIVE_GRAPHICS_START_VEHICLE_PARTICLE_FX_LOOPED_);
 		GRAPHICS.set_function("SET_WEATHER_PTFX_USE_OVERRIDE_SETTINGS", LUA_NATIVE_GRAPHICS_SET_WEATHER_PTFX_USE_OVERRIDE_SETTINGS);
 		GRAPHICS.set_function("SET_WEATHER_PTFX_OVERRIDE_CURR_LEVEL", LUA_NATIVE_GRAPHICS_SET_WEATHER_PTFX_OVERRIDE_CURR_LEVEL);
 		GRAPHICS.set_function("WASH_DECALS_IN_RANGE", LUA_NATIVE_GRAPHICS_WASH_DECALS_IN_RANGE);
@@ -2409,8 +2437,10 @@ namespace lua::native
 		GRAPHICS.set_function("RENDER_SHADOWED_LIGHTS_WITH_NO_SHADOWS", LUA_NATIVE_GRAPHICS_RENDER_SHADOWED_LIGHTS_WITH_NO_SHADOWS);
 		GRAPHICS.set_function("REQUEST_EARLY_LIGHT_CHECK", LUA_NATIVE_GRAPHICS_REQUEST_EARLY_LIGHT_CHECK);
 		GRAPHICS.set_function("USE_SNOW_FOOT_VFX_WHEN_UNSHELTERED", LUA_NATIVE_GRAPHICS_USE_SNOW_FOOT_VFX_WHEN_UNSHELTERED);
+		GRAPHICS.set_function("FORCE_ALLOW_SNOW_FOOT_VFX_ON_ICE_", LUA_NATIVE_GRAPHICS_FORCE_ALLOW_SNOW_FOOT_VFX_ON_ICE_);
 		GRAPHICS.set_function("USE_SNOW_WHEEL_VFX_WHEN_UNSHELTERED", LUA_NATIVE_GRAPHICS_USE_SNOW_WHEEL_VFX_WHEN_UNSHELTERED);
 		GRAPHICS.set_function("DISABLE_REGION_VFX", LUA_NATIVE_GRAPHICS_DISABLE_REGION_VFX);
+		GRAPHICS.set_function("FORCE_GROUND_SNOW_PASS_", LUA_NATIVE_GRAPHICS_FORCE_GROUND_SNOW_PASS_);
 		GRAPHICS.set_function("PRESET_INTERIOR_AMBIENT_CACHE", LUA_NATIVE_GRAPHICS_PRESET_INTERIOR_AMBIENT_CACHE);
 		GRAPHICS.set_function("SET_TIMECYCLE_MODIFIER", LUA_NATIVE_GRAPHICS_SET_TIMECYCLE_MODIFIER);
 		GRAPHICS.set_function("SET_TIMECYCLE_MODIFIER_STRENGTH", LUA_NATIVE_GRAPHICS_SET_TIMECYCLE_MODIFIER_STRENGTH);
@@ -2486,6 +2516,7 @@ namespace lua::native
 		GRAPHICS.set_function("DRAW_TV_CHANNEL", LUA_NATIVE_GRAPHICS_DRAW_TV_CHANNEL);
 		GRAPHICS.set_function("SET_TV_CHANNEL_PLAYLIST", LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST);
 		GRAPHICS.set_function("SET_TV_CHANNEL_PLAYLIST_AT_HOUR", LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST_AT_HOUR);
+		GRAPHICS.set_function("SET_TV_CHANNEL_PLAYLIST_DIRTY_", LUA_NATIVE_GRAPHICS_SET_TV_CHANNEL_PLAYLIST_DIRTY_);
 		GRAPHICS.set_function("CLEAR_TV_CHANNEL_PLAYLIST", LUA_NATIVE_GRAPHICS_CLEAR_TV_CHANNEL_PLAYLIST);
 		GRAPHICS.set_function("IS_PLAYLIST_ON_CHANNEL", LUA_NATIVE_GRAPHICS_IS_PLAYLIST_ON_CHANNEL);
 		GRAPHICS.set_function("IS_TVSHOW_CURRENTLY_PLAYING", LUA_NATIVE_GRAPHICS_IS_TVSHOW_CURRENTLY_PLAYING);

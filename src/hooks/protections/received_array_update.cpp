@@ -2,7 +2,7 @@
 #include "gta/net_array.hpp"
 #include "gta/script_handler.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "script_local.hpp"
 #include "services/players/player_service.hpp"
 #include "util/misc.hpp"

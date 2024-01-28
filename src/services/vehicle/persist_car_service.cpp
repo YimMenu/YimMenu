@@ -103,7 +103,7 @@ namespace big
 
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(tow, pos.x, pos.y, 0.f, true, true, false);
 
-			VEHICLE::ATTACH_VEHICLE_TO_TOW_TRUCK(vehicle, tow, -1, 0.f, 0.5f, 0.f);
+			VEHICLE::ATTACH_VEHICLE_TO_TOW_TRUCK(vehicle, tow, true, 0.f, 0.5f, 0.f);
 			VEHICLE::SET_VEHICLE_TOW_TRUCK_ARM_POSITION(vehicle, 1.f);
 
 			const auto rotation = ENTITY::GET_ENTITY_ROTATION(tow, 2);

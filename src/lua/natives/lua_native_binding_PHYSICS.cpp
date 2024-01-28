@@ -44,9 +44,9 @@ namespace lua::native
 		return ropeId;
 	}
 
-	static void LUA_NATIVE_PHYSICS_LOAD_ROPE_DATA(int ropeId, const char* rope_preset)
+	static void LUA_NATIVE_PHYSICS_LOAD_ROPE_DATA(int ropeId, sol::stack_object rope_preset)
 	{
-		PHYSICS::LOAD_ROPE_DATA(ropeId, rope_preset);
+		PHYSICS::LOAD_ROPE_DATA(ropeId, rope_preset.is<const char*>() ? rope_preset.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PHYSICS_PIN_ROPE_VERTEX(int ropeId, int vertex, float x, float y, float z)

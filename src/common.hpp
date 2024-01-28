@@ -56,7 +56,6 @@
 #include "logger/logger.hpp"
 
 #include "core/settings.hpp"
-#include "gta/natives.hpp"
 #include "ped/CPed.hpp"
 
 #include "services/notifications/notification_service.hpp"
@@ -64,6 +63,8 @@
 
 #define SOL_ALL_SAFETIES_ON 1
 #include "lua/sol.hpp"
+
+#include <script/types.hpp>
 
 // clang-format on
 

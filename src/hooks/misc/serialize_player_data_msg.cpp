@@ -1,5 +1,5 @@
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 
 #include <network/CNetGamePlayerDataMsg.hpp>
 #include <network/Network.hpp>

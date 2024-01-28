@@ -194,7 +194,7 @@ namespace big
 			{
 				ImGui::SameLine();
 				ImGui::PushItemWidth(220);
-				ImGui::SliderFloat("VIEW_WEAPON_AIM_SPEED"_T.data(), &g.weapons.aimbot.smoothing_speed, 0.f, 8.f, "%.1f");
+				ImGui::SliderFloat("VIEW_WEAPON_AIM_SPEED"_T.data(), &g.weapons.aimbot.smoothing_speed, 1.f, 8.f, "%.1f");
 				ImGui::PopItemWidth();
 			}
 			ImGui::PushItemWidth(350);

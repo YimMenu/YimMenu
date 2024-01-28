@@ -1,5 +1,6 @@
 #pragma once
 #include <rage/rlTaskStatus.hpp>
+#include <script/scrNativeHandler.hpp>
 
 class CMsgJoinResponse;
 class NetworkGameFilterMatchmakingComponent;
@@ -12,6 +13,9 @@ class GenericPool;
 class CGetPedSeatReturnClass;
 enum eVehicleGadgetType : uint32_t;
 enum class PedBones : uint16_t;
+class CNetComplaintMgr;
+class Network;
+class CNetworkObjectMgr;
 
 namespace rage
 {
@@ -36,6 +40,10 @@ namespace rage
 	class fwEntity;
 	class netGameEvent;
 	class netEventMgr;
+	class fiDevice;
+	class fiPackfile;
+	class scrNativeRegistrationTable;
+	class rlSessionByGamerTaskResult;
 	struct rlScTaskStatus
 	{
 		void* pad  = 0;

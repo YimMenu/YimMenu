@@ -51,19 +51,19 @@ namespace big
 
 			veh_door.valid     = true;
 			veh_door.id        = (eDoorId)i;
-			veh_door.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh.handle, i);
+			veh_door.lock_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh.handle, i);
 			veh_door.open      = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(veh.handle, i) > 0;
 			veh_door.doorAngle = VEHICLE::GET_VEHICLE_DOOR_ANGLE_RATIO(veh.handle, i);
 
 			veh.doors[i] = veh_door;
 		}
 
-		veh.lockstate = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh.handle);
+		veh.lock_state = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh.handle);
 	}
 
 	void update_controlled_vehicle_lights(controlled_vehicle& veh)
 	{
-		VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh.handle, &veh.headlights, &veh.highbeams);
+		VEHICLE::GET_VEHICLE_LIGHTS_STATE(veh.handle, (BOOL*)&veh.headlights, (BOOL*)&veh.highbeams);
 
 		for (int i = 0; i < 4; i++)
 			veh.neons[i] = VEHICLE::GET_VEHICLE_NEON_ENABLED(veh.handle, i);
@@ -79,9 +79,9 @@ namespace big
 		new_veh.handle = veh;
 		new_veh.ptr    = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh);
 		strcpy(new_veh.model_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))));
-		new_veh.doorCount     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
-		new_veh.lockstate     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
-		new_veh.isconvertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
+		new_veh.door_count     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
+		new_veh.lock_state     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
+		new_veh.is_convertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
 
 		update_controlled_vehicle_doors(new_veh);
 		update_controlled_vehicle_lights(new_veh);
@@ -97,7 +97,7 @@ namespace big
 		update_controlled_vehicle_doors(veh);
 		update_controlled_vehicle_lights(veh);
 
-		veh.convertibelstate = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(veh.handle);
+		veh.convertible_state = VEHICLE::GET_CONVERTIBLE_ROOF_STATE(veh.handle);
 		veh.engine           = VEHICLE::GET_IS_VEHICLE_ENGINE_RUNNING(veh.handle);
 		
 		if (g.window.vehicle_control.render_distance_on_veh

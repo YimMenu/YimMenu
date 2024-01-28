@@ -9,9 +9,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_CATALOG_ITEM_IS_VALID(const char* name)
+	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_CATALOG_ITEM_IS_VALID(sol::stack_object name)
 	{
-		auto retval = (bool)NETSHOPPING::NET_GAMESERVER_CATALOG_ITEM_IS_VALID(name);
+		auto retval = (bool)NETSHOPPING::NET_GAMESERVER_CATALOG_ITEM_IS_VALID(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 

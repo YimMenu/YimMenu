@@ -1,17 +1,6 @@
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 
-#include "common.hpp"
-#include "function_types.hpp"
-#include "gta/script_thread.hpp"
-#include "gui.hpp"
-#include "memory/module.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
-#include "script_mgr.hpp"
-
-#include <MinHook.h>
-#include <vehicle/CVehicle.hpp>
 
 namespace big
 {
@@ -210,15 +199,5 @@ namespace big
 			m_detour_hook->enable();
 			MH_ApplyQueued();
 		}
-	}
-
-	bool hooks::run_script_threads(uint32_t ops_to_execute)
-	{
-		if (g_running)
-		{
-			g_script_mgr.tick();
-		}
-
-		return g_hooking->get_original<run_script_threads>()(ops_to_execute);
 	}
 }

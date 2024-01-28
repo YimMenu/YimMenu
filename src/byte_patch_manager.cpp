@@ -1,7 +1,7 @@
 #include "byte_patch_manager.hpp"
 
 #include "gta/net_array.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 #include "util/explosion_anti_cheat_bypass.hpp"

@@ -555,7 +555,7 @@ namespace big::helper
 
 	std::string stat_get_bool(std::string stat)
 	{
-		int result = 0;
+		BOOL result = FALSE;
 		if (stat != "")
 			STATS::STAT_GET_BOOL(get_text_stat_hash(stat), &result, -1);
 		return std::to_string(result);

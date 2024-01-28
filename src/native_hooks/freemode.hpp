@@ -54,13 +54,13 @@ namespace big
 		void SET_BIGMAP_ACTIVE(rage::scrNativeCallContext* src)
 		{
 			if (!g.m_mission_creator_thread)
-				HUD::SET_BIGMAP_ACTIVE(src->get_arg<BOOL>(0), src->get_arg<BOOL>(1));
+				HUD::SET_BIGMAP_ACTIVE(src->get_arg<bool>(0), src->get_arg<bool>(1));
 		};
 
 		void SET_BLIP_DISPLAY(rage::scrNativeCallContext* src)
 		{
 			if ((!g.m_mission_creator_thread) || src->get_arg<Blip>(0) != HUD::GET_MAIN_PLAYER_BLIP_ID())
-				HUD::SET_BLIP_DISPLAY(src->get_arg<Blip>(0), src->get_arg<BOOL>(1));
+				HUD::SET_BLIP_DISPLAY(src->get_arg<Blip>(0), src->get_arg<bool>(1));
 		};
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
