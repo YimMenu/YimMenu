@@ -5,10 +5,10 @@
 #include <numbers>
 namespace big
 {
-	inline Vector3 aim_lock;
-	inline Vector3 smooth_factor;
-	inline bool using_aimbot_first_time = true;
-	inline Entity target_entity;
+	static inline Vector3 aim_lock;
+	static inline Vector3 smooth_factor;
+	static inline bool initalized;
+	static inline Entity target_entity;
 
 	class aimbot : looped_command
 	{
@@ -110,7 +110,7 @@ namespace big
 				if (g.weapons.aimbot.smoothing)
 				{
 					//Avoid buggy cam
-					if (using_aimbot_first_time)
+					if (!initalized)
 					{
 						Vector3 cam_coords      = CAM::GET_FINAL_RENDERED_CAM_COORD();
 						Vector3 cam_rot         = CAM::GET_GAMEPLAY_CAM_ROT(0);
@@ -120,7 +120,7 @@ namespace big
 						Vector3 front_cam       = cam_coords + multiply;
 						camera_target           = front_cam - CAM::GET_FINAL_RENDERED_CAM_COORD();
 						smooth_factor           = camera_target;
-						using_aimbot_first_time = false;
+						initalized              = true;
 					}
 					Vector3 target = aim_lock - CAM::GET_FINAL_RENDERED_CAM_COORD();
 					smooth_factor.x += (target.x - smooth_factor.x) * g.weapons.aimbot.smoothing_speed / 10.f;
@@ -169,12 +169,12 @@ namespace big
 			else
 			{
 				target_entity           = 0;
-				using_aimbot_first_time = true;
+				initalized    = false;
 			}
 		}
 		virtual void on_disable() override
 		{
-			using_aimbot_first_time = true;
+			initalized = false;
 		}
 	};
 
