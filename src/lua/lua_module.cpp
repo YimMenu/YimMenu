@@ -13,6 +13,7 @@
 #include "bindings/native.hpp"
 #include "bindings/network.hpp"
 #include "bindings/script.hpp"
+#include "bindings/self.hpp"
 #include "bindings/stats.hpp"
 #include "bindings/tunables.hpp"
 #include "bindings/vector.hpp"
@@ -283,6 +284,7 @@ namespace big
 		lua::global_table::bind(m_state);
 		lua::imgui::bind(m_state, m_state.globals());
 		lua::entities::bind(m_state);
+		lua::self::bind(m_state);
 		lua::stats::bind(m_state);
 		lua::weapons::bind(m_state);
 		lua::vehicles::bind(m_state);
