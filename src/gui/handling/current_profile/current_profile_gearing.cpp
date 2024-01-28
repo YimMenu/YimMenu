@@ -12,10 +12,10 @@ namespace big
 				g_local_player->m_vehicle->m_handling_data->m_initial_drive_gears = initial_drive_gears;
 
 			ImGui::Text("HANDLING_UPSHIFT_MULTIPLIER"_T.data());
-			ImGui::DragFloat("###handling_upshift", &g_local_player->m_vehicle->m_handling_data->m_upshift, .01f, 0.f, 10.f);
+			ImGui::SliderFloat("###handling_upshift", &g_local_player->m_vehicle->m_handling_data->m_upshift, .01f, 10.f);
 
 			ImGui::Text("HANDLING_DOWNSHIFT_MULTIPLIER"_T.data());
-			ImGui::DragFloat("###handling_downshift", &g_local_player->m_vehicle->m_handling_data->m_downshift, .01f, 0.f, 10.f);
+			ImGui::SliderFloat("###handling_downshift", &g_local_player->m_vehicle->m_handling_data->m_downshift, .01f, 10.f);
 
 			ImGui::EndTabItem();
 		}
