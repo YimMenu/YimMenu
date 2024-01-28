@@ -3,8 +3,22 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "util/is_key_pressed.hpp"
-#include "windows.h"
+#include "pointers.hpp"
+
+namespace
+{
+	inline bool is_key_pressed(uint16_t key)
+	{
+		if (GetForegroundWindow() == big::g_pointers->m_hwnd)
+		{
+			if (GetAsyncKeyState(key) & 0x8000)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+}
 
 namespace big
 {
@@ -42,7 +56,7 @@ namespace big
 
 		void update_key_state(key_state& key_last_tick)
 		{
-			if (big::is_key_pressed(key_last_tick.v_key))
+			if (is_key_pressed(key_last_tick.v_key))
 			{
 				switch (key_last_tick.state)
 				{
