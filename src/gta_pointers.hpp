@@ -277,6 +277,7 @@ namespace big
 		PVOID m_allow_weapons_in_vehicle;
 
 		PVOID m_taskjump_constructor;
+		PVOID m_taskfall_constructor;
 
 		PVOID m_write_vehicle_proximity_migration_data_node;
 		functions::migrate_object m_migrate_object;
