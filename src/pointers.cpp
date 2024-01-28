@@ -1267,6 +1267,15 @@ namespace big
                 g_pointers->m_gta.m_taskjump_constructor = ptr.as<PVOID>();
             }
         },
+        // Task Fall Constructor
+        {
+            "TFC",
+            "E8 ? ? ? ? B3 04 08 98 A0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_taskfall_constructor = ptr.add(1).rip().as<PVOID>();
+            }
+        },
         // NetFilter Handle Message
         {
             "NHM",

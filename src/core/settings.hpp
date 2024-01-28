@@ -341,6 +341,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
+			bool graceful_landing			  = false;	
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
