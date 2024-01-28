@@ -25,13 +25,13 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("UNLOAD"_T))
 			{
-				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 				// allow to unload in the main title screen.
 				if (g_script_mgr.can_tick())
 				{
 					// empty the pool, we want the that job below run no matter what for clean up purposes.
 					g_fiber_pool->reset();
 					g_fiber_pool->queue_job([] {
+						g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 						for (auto& command : g_looped_commands)
 							if (command->is_enabled())
 								command->on_disable();
@@ -41,6 +41,7 @@ namespace big
 				}
 				else
 				{
+					g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 					g_running = false;
 				}
 			}
