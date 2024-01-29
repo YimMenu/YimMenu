@@ -198,6 +198,7 @@ namespace big::entity
 	    float ground_z = location.z;
 	    int current_attempts = 0;
 	    bool found_ground;
+		float height;
 
 	    do {
 	        found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
@@ -218,7 +219,15 @@ namespace big::entity
 	        return false;
 	    }
 
-	    location.z = ground_z + 1.f;
+        if (WATER::GET_WATER_HEIGHT(location.x, location.y, location.z, &height))
+        {
+			location.z = height;
+        }
+		else
+		{
+			location.z = ground_z + 1.f;	
+		}
+
 	    return true;
 	}
 
