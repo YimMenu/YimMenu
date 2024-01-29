@@ -26,7 +26,7 @@ namespace big
 		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx) override
 		{
             const auto hash = args.get<rage::joaat_t>(0);
-			if (!STREAMING::IS_MODEL_IN_CDIMAGE(hash) || !STREAMING::IS_MODEL_A_VEHICLE(hash))
+			if (!STREAMING::IS_MODEL_VALID(hash) || !STREAMING::IS_MODEL_IN_CDIMAGE(hash) || !STREAMING::IS_MODEL_A_VEHICLE(hash))
 			{
 				ctx->report_error("BACKEND_SPAWN_VEHICLE_INVALID_MODEL"_T.data());
 				return;

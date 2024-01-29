@@ -15,11 +15,15 @@ namespace big::world_model
 
 	inline Object spawn(Hash hash, Vector3 location = Vector3(), bool is_networked = true)
 	{
-		STREAMING::REQUEST_MODEL(hash);
-		for (int i = 0; i < 100 && !STREAMING::HAS_MODEL_LOADED(hash); i++)
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash) && !STREAMING::HAS_MODEL_LOADED(hash))
 		{
-			script::get_current()->yield();
+			while (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				STREAMING::REQUEST_MODEL(hash);
+				script::get_current()->yield();
+			}
 		}
+
 		if (!STREAMING::HAS_MODEL_LOADED(hash))
 		{
 			LOG(WARNING) << "Failed to load model " << HEX_TO_UPPER(hash);

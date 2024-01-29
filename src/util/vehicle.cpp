@@ -152,10 +152,13 @@ namespace big::vehicle
 
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked, bool script_veh)
 	{
-		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash) && !STREAMING::HAS_MODEL_LOADED(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
+			while (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				STREAMING::REQUEST_MODEL(hash);
+				script::get_current()->yield();
+			}
 		}
 
 		if (!STREAMING::HAS_MODEL_LOADED(hash))

@@ -446,17 +446,20 @@ namespace big::ped
 
 	inline bool change_player_model(const Hash hash)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash) && !STREAMING::HAS_MODEL_LOADED(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
+			while (!STREAMING::HAS_MODEL_LOADED(hash))
+			{
+				STREAMING::REQUEST_MODEL(hash);
+				script::get_current()->yield();
+			}
 		}
 		if (!STREAMING::HAS_MODEL_LOADED(hash))
 		{
 			return false;
 		}
-		PLAYER::SET_PLAYER_MODEL(self::id, hash);
 		self::ped = PLAYER::PLAYER_PED_ID();
+		PLAYER::SET_PLAYER_MODEL(self::id, hash);
 		script::get_current()->yield();
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 		for (int i = 0; i < 12; i++)
@@ -512,29 +515,33 @@ namespace big::ped
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
-		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
-		}
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash) && !STREAMING::HAS_MODEL_LOADED(hash))
+	    {
+	        STREAMING::REQUEST_MODEL(hash);
 
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return 0;
-		}
+	        while (!STREAMING::HAS_MODEL_LOADED(hash))
+	        {
+	            script::get_current()->yield();
+	        }
+	    }
 
-		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
+	    if (!STREAMING::HAS_MODEL_LOADED(hash))
+	    {
+	        return 0;
+	    }
 
-		script::get_current()->yield();
+		Ped ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
 
-		if (clone)
-		{
-			PED::CLONE_PED_TO_TARGET(clone, ped);
-		}
+	    script::get_current()->yield();
 
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+	    if (clone)
+	    {
+	        PED::CLONE_PED_TO_TARGET(clone, ped);
+	    }
 
-		return ped;
+	    STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+	    return ped;
 	}
 
 	inline void set_ped_random_component_variation(Ped ped)
