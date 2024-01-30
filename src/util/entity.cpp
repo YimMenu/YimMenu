@@ -234,6 +234,11 @@ namespace big::entity
 
 	bool request_model(rage::joaat_t hash)
 	{
+		if (STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return true;
+		}
+
 		bool has_loaded;
 
 		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash))
@@ -249,11 +254,6 @@ namespace big::entity
 				script::get_current()->yield();
 			} while (!has_loaded);
 
-			return true;
-		}
-
-		if (STREAMING::HAS_MODEL_LOADED(hash))
-		{
 			return true;
 		}
 
