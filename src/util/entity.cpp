@@ -234,21 +234,25 @@ namespace big::entity
 
 	bool request_model(rage::joaat_t hash)
 	{
-		bool has_loaded = STREAMING::HAS_MODEL_LOADED(hash);
+		bool has_loaded;
 
-		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash) && !has_loaded)
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash))
 		{
-			while (!has_loaded)
+			do
 			{
+				has_loaded = STREAMING::HAS_MODEL_LOADED(hash);
 				if (has_loaded)
 					break;
+
 				STREAMING::REQUEST_MODEL(hash);
+
 				script::get_current()->yield();
-			}
+			} while (!has_loaded);
+
 			return true;
 		}
 
-		if (has_loaded)
+		if (STREAMING::HAS_MODEL_LOADED(hash))
 		{
 			return true;
 		}

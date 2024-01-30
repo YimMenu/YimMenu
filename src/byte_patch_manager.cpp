@@ -7,6 +7,7 @@
 #include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/police.hpp"
 #include "util/vehicle.hpp"
+#include "util/world_model.hpp"
 
 extern "C" void sound_overload_detour();
 uint64_t g_sound_overload_ret_addr;
@@ -20,6 +21,10 @@ namespace big
 		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(5).rip().as<uint32_t*>(), 0).get();
 		police::m_max_wanted_level_2 =
 		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
+
+		// Patch World Model Spawn Bypass
+		world_model_bypass::m_world_model_spawn_bypass =
+		    memory::byte_patch::make(g_pointers->m_gta.m_world_model_spawn_bypass.as<PVOID*>(), 0).get();
 
 		// Patch blocked explosions
 		explosion_anti_cheat_bypass::m_can_blame_others =
