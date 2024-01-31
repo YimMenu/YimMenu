@@ -391,6 +391,8 @@ namespace big
 						bool is_gun         = false;
 						bool is_rechargable = false;
 
+						const char* category = "";
+
 						std::size_t pos;
 						while ((pos = weapon_flags.find(' ')) != std::string::npos)
 						{
@@ -415,7 +417,7 @@ namespace big
 							weapon_flags.erase(0, pos + 1);
 						}
 
-						const char* category = item.child("Group").text().as_string();
+						category = item.child("Group").text().as_string();
 
 						if (std::strlen(category) == 0 || std::strcmp(category, "GROUP_DIGISCANNER") == 0)
 							continue;
