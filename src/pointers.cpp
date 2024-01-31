@@ -1,8 +1,8 @@
 #include "pointers.hpp"
 
 #include "gta_pointers_layout_info.hpp"
-#include "sc_pointers_layout_info.hpp"
 #include "memory/all.hpp"
+#include "sc_pointers_layout_info.hpp"
 
 namespace big
 {
@@ -157,15 +157,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
-            }
-        },
-        // World Model Spawn Bypass
-        {
-            "WMSB",
-            "48 85 C0 0F 84 ? ? ? ? 8B 48 50",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_world_model_spawn_bypass = ptr.as<PVOID>();
             }
         },
         // Native Return Spoofer
@@ -1515,6 +1506,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_max_wanted_level = ptr;
+            }
+        },
+        // World Model Spawn Bypass
+        {
+            "WMSB",
+            "48 85 C0 0F 84 ? ? ? ? 8B 48 50",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_world_model_spawn_bypass = ptr;
             }
         },
         // Blame Explode

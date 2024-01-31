@@ -6,8 +6,8 @@ namespace big::vehicle
 	{
 		switch (speed_unit)
 		{
-		case SpeedUnit::KMPH: return mps * 3.6f; break;
-		case SpeedUnit::MIPH: return mps * 2.2369f; break;
+		case SpeedUnit::KMPH: return mps * 3.6f;
+		case SpeedUnit::MIPH: return mps * 2.2369f;
 		}
 
 		return mps;
@@ -17,8 +17,8 @@ namespace big::vehicle
 	{
 		switch (speed_unit)
 		{
-		case SpeedUnit::KMPH: return speed / 3.6f; break;
-		case SpeedUnit::MIPH: return speed / 2.2369f; break;
+		case SpeedUnit::KMPH: return speed / 3.6f;
+		case SpeedUnit::MIPH: return speed / 2.2369f;
 		}
 
 		return speed;
@@ -77,7 +77,7 @@ namespace big::vehicle
 
 			if (driver_ped != 0)
 			{
-				if (PED::GET_PED_TYPE(driver_ped) == ePedType::PED_TYPE_NETWORK_PLAYER)
+				if (PED::GET_PED_TYPE(driver_ped) == PED_TYPE_NETWORK_PLAYER)
 				{
 					TASK::CLEAR_PED_TASKS_IMMEDIATELY(driver_ped);
 				}
@@ -152,27 +152,20 @@ namespace big::vehicle
 
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked, bool script_veh)
 	{
-		for (int i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (entity::request_model(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
+			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
+
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+			if (*g_pointers->m_gta.m_is_session_started)
+			{
+				set_mp_bitset(veh);
+			}
+
+			return veh;
 		}
-
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return 0;
-		}
-
-		auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
-
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-
-		if (*g_pointers->m_gta.m_is_session_started)
-		{
-			set_mp_bitset(veh);
-		}
-
-		return veh;
+		return 0;
 	}
 
 	Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading)
@@ -226,7 +219,7 @@ namespace big::vehicle
 			return 0;
 		}
 
-		auto veh = vehicle::get_closest_to_location(tmpLocation, 200);
+		auto veh = get_closest_to_location(tmpLocation, 200);
 		if (veh == 0)
 		{
 			return 0;
@@ -551,8 +544,6 @@ namespace big::vehicle
 
 	void max_vehicle(Vehicle veh)
 	{
-		Hash model = ENTITY::GET_ENTITY_MODEL(veh);
-
 		VEHICLE::SET_VEHICLE_MOD_KIT(veh, 0);
 
 		VEHICLE::TOGGLE_VEHICLE_MOD(veh, MOD_TURBO, TRUE);
@@ -688,13 +679,10 @@ namespace big::vehicle
 					VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, i, (int)state);
 				return VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh) == (int)state;
 			}
-			else
-			{
-				if (VEHICLE::GET_IS_DOOR_VALID(veh, (int)doorId))
-					VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, (int)doorId, (int)state);
+			if (VEHICLE::GET_IS_DOOR_VALID(veh, (int)doorId))
+				VEHICLE::SET_VEHICLE_INDIVIDUAL_DOORS_LOCKED(veh, (int)doorId, (int)state);
 
-				return VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh, (int)doorId) == (int)state;
-			}
+			return VEHICLE::GET_VEHICLE_INDIVIDUAL_DOOR_LOCK_STATUS(veh, (int)doorId) == (int)state;
 		}
 
 		return false;

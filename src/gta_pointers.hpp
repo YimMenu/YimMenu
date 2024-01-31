@@ -42,6 +42,8 @@ namespace big
 	{
 		memory::handle m_max_wanted_level;
 
+		memory::handle m_world_model_spawn_bypass;
+
 		memory::handle m_blame_explode;
 
 		memory::handle m_explosion_patch;
@@ -100,7 +102,6 @@ namespace big
 		float* m_gravity_level;
 		functions::set_gravity_level m_set_gravity_level;
 
-		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
 		functions::check_chat_profanity* m_check_chat_profanity;

@@ -56,7 +56,7 @@ namespace big::entity
 				ENTITY::DELETE_ENTITY(&vehicle);
 			}
 		}
-		
+
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
 		if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
@@ -193,33 +193,71 @@ namespace big::entity
 
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
-	    constexpr float max_ground_check = 1000.f;
-	    constexpr int max_attempts = 300;
-	    float ground_z = location.z;
-	    int current_attempts = 0;
-	    bool found_ground;
+		constexpr float max_ground_check = 1000.f;
+		constexpr int max_attempts       = 300;
+		float ground_z                   = location.z;
+		int current_attempts             = 0;
+		bool found_ground;
+		float height;
 
-	    do {
-	        found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
-	        STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, location.z);
+		do
+		{
+			found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
+			STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, location.z);
 
-	        if (current_attempts % 10 == 0)
-	        {
-	            location.z += 25.f;
-	        }
+			if (current_attempts % 10 == 0)
+			{
+				location.z += 25.f;
+			}
 
-	        ++current_attempts;
+			++current_attempts;
 
-	        script::get_current()->yield();
-	    } while (!found_ground && current_attempts < max_attempts);
+			script::get_current()->yield();
+		} while (!found_ground && current_attempts < max_attempts);
 
-	    if (!found_ground)
-	    {
-	        return false;
-	    }
+		if (!found_ground)
+		{
+			return false;
+		}
 
-	    location.z = ground_z + 1.f;
-	    return true;
+		if (WATER::GET_WATER_HEIGHT(location.x, location.y, location.z, &height))
+		{
+			location.z = height;
+		}
+		else
+		{
+			location.z = ground_z + 1.f;
+		}
+
+		return true;
+	}
+
+	bool request_model(rage::joaat_t hash)
+	{
+		if (STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return true;
+		}
+
+		bool has_loaded;
+
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash))
+		{
+			do
+			{
+				has_loaded = STREAMING::HAS_MODEL_LOADED(hash);
+				if (has_loaded)
+					break;
+
+				STREAMING::REQUEST_MODEL(hash);
+
+				script::get_current()->yield();
+			} while (!has_loaded);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	double distance_to_middle_of_screen(const rage::fvector2& screen_pos)

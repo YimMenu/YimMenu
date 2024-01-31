@@ -25,8 +25,8 @@ namespace big
 
 		virtual void execute(const command_arguments& args, const std::shared_ptr<command_context> ctx) override
 		{
-            const auto hash = args.get<rage::joaat_t>(0);
-			if (!STREAMING::IS_MODEL_IN_CDIMAGE(hash) || !STREAMING::IS_MODEL_A_VEHICLE(hash))
+			const auto hash = args.get<rage::joaat_t>(0);
+			if (!entity::request_model(hash))
 			{
 				ctx->report_error("BACKEND_SPAWN_VEHICLE_INVALID_MODEL"_T.data());
 				return;
@@ -61,8 +61,6 @@ namespace big
 	};
 
 	spawn_vehicle g_spawn_vehicle("spawn", "GUI_TAB_SPAWN_VEHICLE", "BACKEND_SPAWN_VEHICLE_DESC", 1);
-	bool_command g_spawn_maxed("spawnmaxed", "SPAWN_MAXED", "SPAWN_MAXED_DESC",
-	    g.spawn_vehicle.spawn_maxed);
-	bool_command g_spawn_inside("spawnin", "SPAWN_IN", "SPAWN_IN_DESC",
-	    g.spawn_vehicle.spawn_inside);
+	bool_command g_spawn_maxed("spawnmaxed", "SPAWN_MAXED", "SPAWN_MAXED_DESC", g.spawn_vehicle.spawn_maxed);
+	bool_command g_spawn_inside("spawnin", "SPAWN_IN", "SPAWN_IN_DESC", g.spawn_vehicle.spawn_inside);
 }
