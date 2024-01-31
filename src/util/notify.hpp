@@ -1,13 +1,14 @@
 #pragma once
+#include "fiber_pool.hpp"
 #include "gta/enums.hpp"
+#include "hooking/hooking.hpp"
 #include "natives.hpp"
 #include "network/CNetGamePlayer.hpp"
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/players/player_service.hpp"
-#include "fiber_pool.hpp"
-#include "hooking/hooking.hpp"
+#include "util/gxt_label.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -31,7 +32,8 @@ namespace big::notify
 		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(
+		    get_gxt_label(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL").c_str());                 // scope
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);                               // teamOnly
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
 		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
@@ -56,8 +58,7 @@ namespace big::notify
 		if (player)
 		{
 			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
-			    || g_player_service->get_by_id(player->m_player_id)->is_trusted
-			    || g.session.trust_session)
+			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
 				return;
 
 			if (g.reactions.crash.notify)
@@ -66,7 +67,7 @@ namespace big::notify
 			if (g.reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
 				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-			
+
 			if (g.reactions.crash.announce_in_chat)
 			{
 				g_fiber_pool->queue_job([player, crash] {

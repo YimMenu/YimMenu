@@ -8,6 +8,7 @@
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 #include "util/mobile.hpp"
+#include "util/gxt_label.hpp"
 
 namespace big
 {
@@ -78,7 +79,7 @@ namespace big
 
 		new_veh.handle = veh;
 		new_veh.ptr    = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh);
-		strcpy(new_veh.model_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))));
+		strcpy(new_veh.model_name, get_gxt_label(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))).c_str());
 		new_veh.door_count     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
 		new_veh.lock_state     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
 		new_veh.is_convertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);
@@ -102,7 +103,7 @@ namespace big
 		
 		if (g.window.vehicle_control.render_distance_on_veh
 		    && math::distance_between_vectors(self::pos, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true)) > 10.f)
-			vehicle_control::render_distance_on_vehicle();
+			render_distance_on_vehicle();
 	}
 
 	/*
@@ -177,8 +178,7 @@ namespace big
 					script::get_current()->yield(500ms);
 				}
 
-				m_distance_to_destination =
-				    math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true));
+				m_distance_to_destination = (int)math::distance_between_vectors(m_destination, ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, true));
 			}
 		}
 	}
@@ -305,7 +305,7 @@ namespace big
 			Vector3 destination{};
 			float heading{};
 
-			if (vehicle_control::find_suitable_destination_near_player(destination, heading))
+			if (find_suitable_destination_near_player(destination, heading))
 			{
 				//LOG(INFO) << "Suitable destination found";
 				g_notification_service->push_success("VEHICLE_CONTROLLER"_T.data(),
@@ -323,7 +323,7 @@ namespace big
 
 			Vector3 nav_mesh_region = ENTITY::GET_ENTITY_COORDS(m_driver, true);
 
-			if (pathfind::load_navmesh_area(nav_mesh_region, m_distance_to_destination))
+			if (pathfind::load_navmesh_area(nav_mesh_region, (float)m_distance_to_destination))
 			{
 				TASK::TASK_VEHICLE_GOTO_NAVMESH(m_driver,
 				    m_controlled_vehicle.handle,
@@ -352,34 +352,34 @@ namespace big
 			if (g_local_player->m_vehicle)
 			{
 				if (m_controlled_vehicle.handle != g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle))
-					m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
+					m_controlled_vehicle = update_vehicle(self::veh);
 			}
 		}
 
 		//Manually check if vehicle has changed
 		if (ENTITY::DOES_ENTITY_EXIST(self::veh) && self::veh != m_controlled_vehicle.handle)
 		{
-			m_controlled_vehicle = vehicle_control::update_vehicle(self::veh);
+			m_controlled_vehicle = update_vehicle(self::veh);
 		}
 
 		//Manual check if there is a last driven vehicle
 		if (!m_controlled_vehicle_exists && ENTITY::DOES_ENTITY_EXIST(VEHICLE::GET_LAST_DRIVEN_VEHICLE()))
-			m_controlled_vehicle = vehicle_control::update_vehicle(VEHICLE::GET_LAST_DRIVEN_VEHICLE());
+			m_controlled_vehicle = update_vehicle(VEHICLE::GET_LAST_DRIVEN_VEHICLE());
 	}
 
 	void vehicle_control::get_personal_vehicle()
 	{
 		if(ENTITY::DOES_ENTITY_EXIST(mobile::mechanic::get_personal_vehicle()))
-			m_controlled_vehicle = vehicle_control::update_vehicle(mobile::mechanic::get_personal_vehicle());
+			m_controlled_vehicle = update_vehicle(mobile::mechanic::get_personal_vehicle());
 	}
 
 	void vehicle_control::get_closest_vehicle()
 	{
 		if(PED::IS_PED_IN_ANY_VEHICLE(self::ped, true))
-			m_controlled_vehicle = vehicle_control::update_vehicle(PED::GET_VEHICLE_PED_IS_USING(self::ped));
+			m_controlled_vehicle = update_vehicle(PED::GET_VEHICLE_PED_IS_USING(self::ped));
 		else
 		{
-			m_controlled_vehicle = vehicle_control::update_vehicle(vehicle::get_closest_to_location(self::pos, 1000));
+			m_controlled_vehicle = update_vehicle(vehicle::get_closest_to_location(self::pos, 1000));
 		}
 	}
 

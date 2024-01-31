@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/mobile.hpp"
+#include <util/gxt_label.hpp>
 
 #define MAX_GARAGE_NUM 30
 
@@ -153,11 +154,11 @@ namespace big
 				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(295).as<PINT>();
 				switch (hangar_id)
 				{
-					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_1"); //LSIA Hangar 1
-					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_2"); //LSIA Hangar A17
-					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_3"); //Fort Zancudo Hangar A2
-					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_4"); //Fort Zancudo Hangar 3497
-					case 5: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_5"); //Fort Zancudo Hangar 3499
+					case 1: return get_gxt_label("MP_HANGAR_1"); //LSIA Hangar 1
+					case 2: return get_gxt_label("MP_HANGAR_2"); //LSIA Hangar A17
+					case 3: return get_gxt_label("MP_HANGAR_3"); //Fort Zancudo Hangar A2
+					case 4: return get_gxt_label("MP_HANGAR_4"); //Fort Zancudo Hangar 3497
+					case 5: return get_gxt_label("MP_HANGAR_5"); //Fort Zancudo Hangar 3499
 				}
 				break;
 			}
@@ -166,34 +167,34 @@ namespace big
 				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(302).as<PINT>();
 				switch (facility_id)
 				{
-					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility
-					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_2"); //Route 68 Facility
-					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_3"); //Sandy Shores Facility
-					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_4"); //Mount Gordo Facility
-					case 5: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_6"); //Paleto Bay Facility
-					case 6: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_7"); //Lago Zancudo Facility
-					case 7: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_8"); //Zancudo River Facility
-					case 8: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_9"); //Ron Alternates Wind Farm Facility
-					case 9: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_10"); //Land Act Reservoir Facility
+					case 1: return get_gxt_label("MP_DBASE_1"); //Grand Senora Desert Facility
+					case 2: return get_gxt_label("MP_DBASE_2"); //Route 68 Facility
+					case 3: return get_gxt_label("MP_DBASE_3"); //Sandy Shores Facility
+					case 4: return get_gxt_label("MP_DBASE_4"); //Mount Gordo Facility
+					case 5: return get_gxt_label("MP_DBASE_6"); //Paleto Bay Facility
+					case 6: return get_gxt_label("MP_DBASE_7"); //Lago Zancudo Facility
+					case 7: return get_gxt_label("MP_DBASE_8"); //Zancudo River Facility
+					case 8: return get_gxt_label("MP_DBASE_9"); //Ron Alternates Wind Farm Facility
+					case 9: return get_gxt_label("MP_DBASE_10"); //Land Act Reservoir Facility
 				}
 				break;
 			}
-			case 14: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBG"); //Nightclub Service Entrance
-			case 15: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR1"); //Nightclub B2
-			case 16: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR2"); //Nightclub B3
-			case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
-			case 18: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F0"); //Arena Workshop
-			case 19: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F1"); //Arena Workshop B1
-			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B1
-			case 21: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CASINO_GARNAME"); //Casino Penthouse
-			case 22: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARCADE_GARNAME"); //Arcade
-			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
-			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
-			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
-			case MAX_GARAGE_NUM+0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
-			case MAX_GARAGE_NUM+1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
-			case MAX_GARAGE_NUM+2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
-			case MAX_GARAGE_NUM+3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_SUB"); //Kosatka
+			case 14: return get_gxt_label("MP_BHUB_CLUBG"); //Nightclub Service Entrance
+			case 15: return get_gxt_label("MP_BHUB_GAR1"); //Nightclub B2
+			case 16: return get_gxt_label("MP_BHUB_GAR2"); //Nightclub B3
+			case 17: return get_gxt_label("MP_BHUB_GAR3"); //Nightclub B4
+			case 18: return get_gxt_label("ARENA_GAR_F0"); //Arena Workshop
+			case 19: return get_gxt_label("ARENA_GAR_F1"); //Arena Workshop B1
+			case 20: return get_gxt_label("ARENA_GAR_F2"); //Arena Workshop B1
+			case 21: return get_gxt_label("CASINO_GARNAME"); //Casino Penthouse
+			case 22: return get_gxt_label("ARCADE_GARNAME"); //Arcade
+			case 25: return get_gxt_label("AUT_SHP_GAR"); //Auto Shop
+			case 26: return get_gxt_label("FIXER_GARNAME"); //Agency
+			case 29: return get_gxt_label("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case MAX_GARAGE_NUM+0: return get_gxt_label("GRTRUCK"); //Mobile Operations Center
+			case MAX_GARAGE_NUM+1: return get_gxt_label("MP_BHUB_GAR0"); //Nightclub B1
+			case MAX_GARAGE_NUM+2: return get_gxt_label("MP_BHUB_CLUBT"); //Terrorbyte
+			case MAX_GARAGE_NUM+3: return get_gxt_label("MP_BHUB_SUB"); //Kosatka
 		}
 		return std::string();
 	}
@@ -215,7 +216,7 @@ namespace big
 						auto static_property_string = get_static_property_name(property_iterator);
 						if (static_property_string.empty())
 						{
-							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
+							m_garage = get_gxt_label(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
 						}
 						else
 						{
@@ -236,7 +237,7 @@ namespace big
 		m_hash           = *m_vehicle_idx.at(66).as<Hash*>();
 		set_garage();
 
-		m_name = std::format("{} ({})", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
+		m_name = std::format("{} ({})", get_gxt_label(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(m_hash)), m_plate);
 	}
 
 	std::string personal_vehicle::get_display_name() const

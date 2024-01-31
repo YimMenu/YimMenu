@@ -4,6 +4,8 @@
 #include "pointers.hpp"
 #include "script.hpp"
 
+#include <util/gxt_label.hpp>
+
 namespace big
 {
 	void vehicle_helper::add_clan_logo_to_vehicle(Vehicle vehicle, Ped ped)
@@ -27,93 +29,103 @@ namespace big
 	{
 		switch (mod_slot)
 		{
-		case MOD_HOOD: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_HOD");
-		case MOD_ARMOR: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_ARM");
-		case MOD_BRAKES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_BRA");
-		case MOD_ENGINE: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_ENG");
-		case MOD_SUSPENSION: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_SUS");
-		case MOD_TRANSMISSION: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_TRN");
-		case MOD_HORNS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_HRN");
+		case MOD_HOOD: return get_gxt_label("CMOD_MOD_HOD").c_str();
+		case MOD_ARMOR: return get_gxt_label("CMOD_MOD_ARM").c_str();
+		case MOD_BRAKES: return get_gxt_label("CMOD_MOD_BRA").c_str();
+		case MOD_ENGINE: return get_gxt_label("CMOD_MOD_ENG").c_str();
+		case MOD_SUSPENSION: return get_gxt_label("CMOD_MOD_SUS").c_str();
+		case MOD_TRANSMISSION: return get_gxt_label("CMOD_MOD_TRN").c_str();
+		case MOD_HORNS: return get_gxt_label("CMOD_MOD_HRN").c_str();
 		case MOD_FRONTWHEEL:
+		{
 			if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_MOD_WHEM");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE0_0");
+				return get_gxt_label("CMOD_MOD_WHEM").c_str();
+			return get_gxt_label("CMOD_WHE0_0").c_str();
+		}
 		case MOD_REARWHEEL:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE0_1");
+			return get_gxt_label("CMOD_WHE0_1").c_str();
 			//Bennys
-		case MOD_PLATEHOLDER: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S0");
-		case MOD_VANITYPLATES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S1");
+		case MOD_PLATEHOLDER: return get_gxt_label("CMM_MOD_S0").c_str();
+		case MOD_VANITYPLATES: return get_gxt_label("CMM_MOD_S1").c_str();
 		case MOD_TRIMDESIGN:
+		{
 			if (model == VEHICLE_SULTANRS)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S2b");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S2");
-		case MOD_ORNAMENTS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S3");
-		case MOD_DASHBOARD: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S4");
-		case MOD_DIALDESIGN: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S5");
-		case MOD_DOORSPEAKERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S6");
-		case MOD_SEATS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S7");
-		case MOD_STEERINGWHEELS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S8");
-		case MOD_COLUMNSHIFTERLEVERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S9");
-		case MOD_PLAQUES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S10");
-		case MOD_SPEAKERS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S11");
-		case MOD_TRUNK: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S12");
-		case MOD_HYDRO: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S13");
-		case MOD_ENGINEBLOCK: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S14");
+				return get_gxt_label("CMM_MOD_S2b").c_str();
+			return get_gxt_label("CMM_MOD_S2").c_str();
+		}
+		case MOD_ORNAMENTS: return get_gxt_label("CMM_MOD_S3").c_str();
+		case MOD_DASHBOARD: return get_gxt_label("CMM_MOD_S4").c_str();
+		case MOD_DIALDESIGN: return get_gxt_label("CMM_MOD_S5").c_str();
+		case MOD_DOORSPEAKERS: return get_gxt_label("CMM_MOD_S6").c_str();
+		case MOD_SEATS: return get_gxt_label("CMM_MOD_S7").c_str();
+		case MOD_STEERINGWHEELS: return get_gxt_label("CMM_MOD_S8").c_str();
+		case MOD_COLUMNSHIFTERLEVERS: return get_gxt_label("CMM_MOD_S9").c_str();
+		case MOD_PLAQUES: return get_gxt_label("CMM_MOD_S10").c_str();
+		case MOD_SPEAKERS: return get_gxt_label("CMM_MOD_S11").c_str();
+		case MOD_TRUNK: return get_gxt_label("CMM_MOD_S12").c_str();
+		case MOD_HYDRO: return get_gxt_label("CMM_MOD_S13").c_str();
+		case MOD_ENGINEBLOCK: return get_gxt_label("CMM_MOD_S14").c_str();
 		case MOD_AIRFILTER:
+		{
 			if (model == VEHICLE_SULTANRS)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S15b");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S15");
+				return get_gxt_label("CMM_MOD_S15b").c_str();
+			return get_gxt_label("CMM_MOD_S15").c_str();
+		}
 		case MOD_STRUTS:
+		{
 			if (model == VEHICLE_SULTANRS || model == VEHICLE_BANSHEE2)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S16b");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S16");
+				return get_gxt_label("CMM_MOD_S16b").c_str();
+			return get_gxt_label("CMM_MOD_S16").c_str();
+		}
 		case MOD_ARCHCOVER:
+		{
 			if (model == VEHICLE_SULTANRS)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S17b");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S17");
+				return get_gxt_label("CMM_MOD_S17b").c_str();
+			return get_gxt_label("CMM_MOD_S17").c_str();
+		}
 		case MOD_AERIALS:
+		{
 			if (model == VEHICLE_SULTANRS)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18b");
-			else if (model == VEHICLE_BTYPE3)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18c");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S18");
-		case MOD_TRIM:
-			if (model == VEHICLE_SULTANRS)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19b");
-			else if (model == VEHICLE_BTYPE3)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19c");
-			else if (model == VEHICLE_VIRGO2)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19d");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S19");
-		case MOD_TANK:
-			if (model == VEHICLE_SLAMVAN3)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S27");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S20");
-		case MOD_WINDOWS:
+				return get_gxt_label("CMM_MOD_S18b").c_str();
 			if (model == VEHICLE_BTYPE3)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S21b");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S21");
-		case MOD_DOORS:
+				return get_gxt_label("CMM_MOD_S18c").c_str();
+			return get_gxt_label("CMM_MOD_S18").c_str();
+		}
+		case MOD_TRIM:
+		{
+			if (model == VEHICLE_SULTANRS)
+				return get_gxt_label("CMM_MOD_S19b").c_str();
+			if (model == VEHICLE_BTYPE3)
+				return get_gxt_label("CMM_MOD_S19c").c_str();
+			if (model == VEHICLE_VIRGO2)
+				return get_gxt_label("CMM_MOD_S19d").c_str();
+			return get_gxt_label("CMM_MOD_S19").c_str();
+		}
+		case MOD_TANK:
+		{
 			if (model == VEHICLE_SLAMVAN3)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("SLVAN3_RDOOR");
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S22");
-		case MOD_LIVERY: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMM_MOD_S23");
+				return get_gxt_label("CMM_MOD_S27").c_str();
+			return get_gxt_label("CMM_MOD_S20").c_str();
+		}
+		case MOD_WINDOWS:
+		{
+			if (model == VEHICLE_BTYPE3)
+				return get_gxt_label("CMM_MOD_S21b").c_str();
+			return get_gxt_label("CMM_MOD_S21").c_str();
+		}
+		case MOD_DOORS:
+		{
+			if (model == VEHICLE_SLAMVAN3)
+				return get_gxt_label("SLVAN3_RDOOR").c_str();
+			return get_gxt_label("CMM_MOD_S22").c_str();
+		}
+		case MOD_LIVERY: return get_gxt_label("CMM_MOD_S23").c_str();
 		default:
 			auto name = VEHICLE::GET_MOD_SLOT_NAME(vehicle, mod_slot);
 			if (name == nullptr)
 				return "";
 			if (strstr(name, "_"))
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(name);
+				return get_gxt_label(name).c_str();
 			return name;
 		}
 	}
@@ -171,9 +183,9 @@ namespace big
 			return "";
 		if (mod_slot == MOD_HORNS)
 		{
-			if (horn_map.find(mod) != horn_map.end())
+			if (horn_map.contains(mod))
 			{
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(horn_map.find(mod)->second);
+				return get_gxt_label(horn_map.find(mod)->second).c_str();
 			}
 			return "";
 		}
@@ -183,30 +195,25 @@ namespace big
 			if (mod == -1)
 			{
 				if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-					return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE_0");
-				else
-					return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_WHE_B_0");
+					return get_gxt_label("CMOD_WHE_0").c_str();
+				return get_gxt_label("CMOD_WHE_B_0").c_str();
 			}
 			if (mod >= mod_count / 2)
-				//return std::format("{} {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CHROME"), HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
-				return std::format("Chrome {}", HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod)))
-				    .c_str();
-			else
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod));
+				//return std::format("{} {}", get_gxt_label("CHROME"), get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
+				return std::format("Chrome {}", get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
+			return get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod)).c_str();
 		}
 
 		switch (mod_slot)
 		{
-		case MOD_ARMOR: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ARM_{}", (mod + 1)).c_str());
-		case MOD_BRAKES: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_BRA_{}", (mod + 1)).c_str());
+		case MOD_ARMOR: return get_gxt_label(std::format("CMOD_ARM_{}", mod + 1)).c_str();
+		case MOD_BRAKES: return get_gxt_label(std::format("CMOD_BRA_{}", mod + 1)).c_str();
 		case MOD_ENGINE:
 			if (mod == -1)
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_ARM_0");
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_ENG_{}", (mod + 1)).c_str());
-		case MOD_SUSPENSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_SUS_{}", (mod + 1)).c_str());
-		case MOD_TRANSMISSION:
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(std::format("CMOD_GBX_{}", (mod + 1)).c_str());
+				return get_gxt_label("CMOD_ARM_0").c_str();
+			return get_gxt_label(std::format("CMOD_ENG_{}", mod + 1)).c_str();
+		case MOD_SUSPENSION: return get_gxt_label(std::format("CMOD_SUS_{}", mod + 1)).c_str();
+		case MOD_TRANSMISSION: return get_gxt_label(std::format("CMOD_GBX_{}", mod + 1)).c_str();
 		}
 
 
@@ -214,29 +221,26 @@ namespace big
 		{
 			if (mod_slot == MOD_SIDESKIRT && VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, MOD_SIDESKIRT) < 2)
 			{
-				return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_SKI_1");
+				return get_gxt_label("CMOD_SKI_1").c_str();
 			}
 			auto label = VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod);
 			if (label == nullptr || strlen(label) == 0)
 				return "MISSING_LABEL";
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(label);
+			return get_gxt_label(label).c_str();
 		}
-		else
+		switch (mod_slot)
 		{
-			switch (mod_slot)
+		case MOD_AIRFILTER: break;
+		case MOD_STRUTS:
+			switch (model)
 			{
-			case MOD_AIRFILTER: break;
-			case MOD_STRUTS:
-				switch (model)
-				{
-				case VEHICLE_BANSHEE:
-				case VEHICLE_BANSHEE2:
-				case VEHICLE_SULTANRS: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_COL5_41");
-				}
-				break;
+			case VEHICLE_BANSHEE:
+			case VEHICLE_BANSHEE2:
+			case VEHICLE_SULTANRS: return get_gxt_label("CMOD_COL5_41").c_str();
 			}
-			return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CMOD_DEF_0");
+			break;
 		}
+		return get_gxt_label("CMOD_DEF_0").c_str();
 	}
 
 
@@ -244,19 +248,19 @@ namespace big
 
 	bool vehicle_helper::check_mod_blacklist(Hash model, int mod_slot, int mod)
 	{
-		if (mod_blacklists.find(model) == mod_blacklists.end())
+		if (!mod_blacklists.contains(model))
 		{
 			return false;
 		}
 
 		auto veh_slot_blacklist = mod_blacklists.find(model)->second;
-		if (veh_slot_blacklist.find(mod_slot) == veh_slot_blacklist.end())
+		if (!veh_slot_blacklist.contains(mod_slot))
 		{
 			return false;
 		}
 
 		auto veh_mod_blacklist = veh_slot_blacklist.find(mod_slot)->second;
-		if (std::find(veh_mod_blacklist.begin(), veh_mod_blacklist.end(), mod) != veh_mod_blacklist.end())
+		if (std::ranges::find(veh_mod_blacklist, mod) != veh_mod_blacklist.end())
 		{
 			return true;
 		}

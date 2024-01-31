@@ -7,6 +7,7 @@
 #include "pugixml.hpp"
 #include "script.hpp"
 #include "thread_pool.hpp"
+#include "util/gxt_label.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
 #include "util/protection.hpp"
@@ -20,7 +21,7 @@ namespace big
 {
 	bool add_if_not_exists(string_vec& vec, std::string str)
 	{
-		if (std::find(vec.begin(), vec.end(), str) != vec.end())
+		if (std::ranges::find(vec, str) != vec.end())
 			return true;
 
 		vec.emplace_back(std::move(str));
@@ -75,7 +76,7 @@ namespace big
 		for (const auto& [name, ped] : m_peds)
 			if (ped.m_hash == hash)
 				return ped;
-		return gta_data_service::empty_ped;
+		return empty_ped;
 	}
 
 	const vehicle_item& gta_data_service::vehicle_by_hash(uint32_t hash)
@@ -83,7 +84,7 @@ namespace big
 		for (const auto& [name, veh] : m_vehicles)
 			if (veh.m_hash == hash)
 				return veh;
-		return gta_data_service::empty_vehicle;
+		return empty_vehicle;
 	}
 
 	const weapon_item& gta_data_service::weapon_by_hash(uint32_t hash)
@@ -91,7 +92,7 @@ namespace big
 		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
 			if (weapon.m_hash == hash)
 				return weapon;
-		return gta_data_service::empty_weapon;
+		return empty_weapon;
 	}
 
 	const weapon_component& gta_data_service::weapon_component_by_hash(uint32_t hash)
@@ -99,7 +100,7 @@ namespace big
 		for (const auto& [name, component] : m_weapons_cache.weapon_components)
 			if (component.m_hash == hash)
 				return component;
-		return gta_data_service::empty_component;
+		return empty_component;
 	}
 
 	const weapon_component& gta_data_service::weapon_component_by_name(std::string name)
@@ -107,7 +108,7 @@ namespace big
 		for (const auto& [name_key, component] : m_weapons_cache.weapon_components)
 			if (name_key == name)
 				return component;
-		return gta_data_service::empty_component;
+		return empty_component;
 	}
 
 	string_vec& gta_data_service::ped_types()
@@ -180,7 +181,7 @@ namespace big
 			m_peds.insert({ped.m_name, ped});
 		}
 
-		std::sort(m_ped_types.begin(), m_ped_types.end());
+		std::ranges::sort(m_ped_types);
 		m_peds_cache.free();
 	}
 
@@ -198,7 +199,7 @@ namespace big
 			m_vehicles.insert({vehicle.m_name, vehicle});
 		}
 
-		std::sort(m_vehicle_classes.begin(), m_vehicle_classes.end());
+		std::ranges::sort(m_vehicle_classes);
 		m_vehicles_cache.free();
 	}
 
@@ -212,7 +213,7 @@ namespace big
 			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
 		}
 
-		std::sort(m_weapon_types.begin(), m_weapon_types.end());
+		std::ranges::sort(m_weapon_types);
 	}
 
 	inline void parse_ped(std::vector<ped_item>& peds, std::vector<uint32_t>& mapped_peds, pugi::xml_document& doc)
@@ -227,7 +228,7 @@ namespace big
 			if (protection::is_crash_ped(hash))
 				continue;
 
-			if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
+			if (std::ranges::find(mapped_peds, hash) != mapped_peds.end())
 				continue;
 
 			mapped_peds.emplace_back(hash);
@@ -241,8 +242,24 @@ namespace big
 
 			ped.m_hash = hash;
 
-			peds.emplace_back(std::move(ped));
+			peds.emplace_back(ped);
 		}
+	}
+
+	// Function to get the vehicle class label
+	std::string get_vehicle_class_label(uint32_t vehicle_hash)
+	{
+		char vehicle_class[32];
+		std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(vehicle_hash));
+		return get_gxt_label(vehicle_class);
+	}
+
+	// Function to update the display strings
+	void update_display_strings(vehicle_item& item)
+	{
+		std::strncpy(item.m_display_manufacturer, get_gxt_label(item.m_display_manufacturer).c_str(), sizeof(item.m_display_manufacturer));
+		std::strncpy(item.m_display_name, get_gxt_label(item.m_display_name).c_str(), sizeof(item.m_display_name));
+		std::strncpy(item.m_vehicle_class, get_vehicle_class_label(item.m_hash).c_str(), sizeof(item.m_vehicle_class));
 	}
 
 	void gta_data_service::rebuild_cache()
@@ -259,7 +276,7 @@ namespace big
 		std::vector<weapon_component> weapon_components;
 
 		constexpr auto exists = [](const hash_array& arr, uint32_t val) -> bool {
-			return std::find(arr.begin(), arr.end(), val) != arr.end();
+			return std::ranges::find(arr, val) != arr.end();
 		};
 
 		LOG(INFO) << "Rebuilding cache started...";
@@ -273,7 +290,7 @@ namespace big
 						const auto item = item_node.node();
 
 						std::string name = item.child("modelName").text().as_string();
-						std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+						std::ranges::transform(name, name.begin(), ::toupper);
 						const auto hash = rage::joaat(name);
 						if (protection::is_crash_vehicle(hash))
 							continue;
@@ -298,7 +315,7 @@ namespace big
 
 						veh.m_hash = hash;
 
-						vehicles.emplace_back(std::move(veh));
+						vehicles.emplace_back(veh);
 					}
 				});
 			}
@@ -374,8 +391,6 @@ namespace big
 						bool is_gun         = false;
 						bool is_rechargable = false;
 
-						const char* category = "";
-
 						std::size_t pos;
 						while ((pos = weapon_flags.find(' ')) != std::string::npos)
 						{
@@ -400,7 +415,7 @@ namespace big
 							weapon_flags.erase(0, pos + 1);
 						}
 
-						category = item.child("Group").text().as_string();
+						const char* category = item.child("Group").text().as_string();
 
 						if (std::strlen(category) == 0 || std::strcmp(category, "GROUP_DIGISCANNER") == 0)
 							continue;
@@ -426,7 +441,7 @@ namespace big
 						{
 							for (pugi::xml_node component : attach_point.child("Components").children("Item"))
 							{
-								weapon.m_attachments.push_back(component.child_value("Name"));
+								weapon.m_attachments.emplace_back(component.child_value("Name"));
 							}
 						}
 
@@ -452,7 +467,7 @@ namespace big
 				if (protection::is_crash_ped(hash))
 					return;
 
-				if (std::find(mapped_peds.begin(), mapped_peds.end(), hash) != mapped_peds.end())
+				if (std::ranges::find(mapped_peds, hash) != mapped_peds.end())
 					return;
 
 				mapped_peds.emplace_back(hash);
@@ -463,7 +478,7 @@ namespace big
 
 				ped.m_hash = hash;
 
-				peds.emplace_back(std::move(ped));
+				peds.emplace_back(ped);
 			}
 		});
 
@@ -477,20 +492,16 @@ namespace big
 		g_fiber_pool->queue_job([&] {
 			for (auto& item : vehicles)
 			{
-				std::strncpy(item.m_display_manufacturer, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_manufacturer), sizeof(item.m_display_manufacturer));
-				std::strncpy(item.m_display_name, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name), sizeof(item.m_display_name));
-				char vehicle_class[32];
-				std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(item.m_hash));
-				std::strncpy(item.m_vehicle_class, HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(vehicle_class), sizeof(item.m_vehicle_class));
+				update_display_strings(item);
 			}
 			for (auto& item : weapons)
 			{
-				item.m_display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name.c_str());
+				item.m_display_name = get_gxt_label(item.m_display_name);
 			}
 			for (auto& item : weapon_components)
 			{
-				item.m_display_name = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_name.c_str());
-				item.m_display_desc = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(item.m_display_desc.c_str());
+				item.m_display_name = get_gxt_label(item.m_display_name);
+				item.m_display_desc = get_gxt_label(item.m_display_desc);
 			}
 			for (auto it = peds.begin(); it != peds.end();)
 			{
@@ -508,12 +519,16 @@ namespace big
 			translate_label = true;
 		});
 
-		while (!translate_label)
+		while (!translate_label && state() != eGtaDataUpdateState::IDLE)
 		{
 			if (state() == eGtaDataUpdateState::UPDATING)
+			{
 				script::get_current()->yield();
+			}
 			else
+			{
 				std::this_thread::sleep_for(100ms);
+			}
 		}
 
 		m_update_state = eGtaDataUpdateState::IDLE;
@@ -530,7 +545,6 @@ namespace big
 				std::memcpy(m_peds_cache.data(), peds.data(), data_size);
 
 				m_peds_cache.set_header_version(file_version);
-				m_peds_cache.write();
 			}
 
 			{
@@ -539,7 +553,6 @@ namespace big
 				std::memcpy(m_vehicles_cache.data(), vehicles.data(), data_size);
 
 				m_vehicles_cache.set_header_version(file_version);
-				m_vehicles_cache.write();
 			}
 
 			{

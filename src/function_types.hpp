@@ -205,6 +205,9 @@ namespace big::functions
 
 	using decal_manager_remove = void (*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
 
+	using get_gxt_label_from_table = const char* (*)(void* this_, const char* label);
+	using get_joaated_gxt_label_from_table = const char* (*)(void* this_, rage::joaat_t hash);
+
 	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
 
 	using get_ped_seat = CGetPedSeatReturnClass*(*)(PVOID seat_info, CPed* ped);
