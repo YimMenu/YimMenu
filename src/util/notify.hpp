@@ -7,6 +7,7 @@
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/custom_text/custom_text_service.hpp"
 #include "services/players/player_service.hpp"
 
 #include <script/HudColor.hpp>
