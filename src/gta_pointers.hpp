@@ -358,10 +358,6 @@ namespace big
 		functions::decal_manager_remove m_decal_manager_remove;
 		PVOID m_decal_manager;
 
-		void* g_gxt_labels;
-		functions::get_gxt_label_from_table m_get_gxt_label_from_table;
-		functions::get_joaated_gxt_label_from_table m_get_joaated_gxt_label_from_table;
-
 		bool* m_is_social_club_overlay_active;
 
 		functions::get_ped_seat m_get_ped_seat;

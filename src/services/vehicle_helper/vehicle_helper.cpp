@@ -3,6 +3,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/custom_text/custom_text_service.hpp"
 
 #include <util/gxt_label.hpp>
 
@@ -29,103 +30,103 @@ namespace big
 	{
 		switch (mod_slot)
 		{
-		case MOD_HOOD: return get_gxt_label("CMOD_MOD_HOD").c_str();
-		case MOD_ARMOR: return get_gxt_label("CMOD_MOD_ARM").c_str();
-		case MOD_BRAKES: return get_gxt_label("CMOD_MOD_BRA").c_str();
-		case MOD_ENGINE: return get_gxt_label("CMOD_MOD_ENG").c_str();
-		case MOD_SUSPENSION: return get_gxt_label("CMOD_MOD_SUS").c_str();
-		case MOD_TRANSMISSION: return get_gxt_label("CMOD_MOD_TRN").c_str();
-		case MOD_HORNS: return get_gxt_label("CMOD_MOD_HRN").c_str();
+		case MOD_HOOD: return g_custom_text_service->get_text("CMOD_MOD_HOD");
+		case MOD_ARMOR: return g_custom_text_service->get_text("CMOD_MOD_ARM");
+		case MOD_BRAKES: return g_custom_text_service->get_text("CMOD_MOD_BRA");
+		case MOD_ENGINE: return g_custom_text_service->get_text("CMOD_MOD_ENG");
+		case MOD_SUSPENSION: return g_custom_text_service->get_text("CMOD_MOD_SUS");
+		case MOD_TRANSMISSION: return g_custom_text_service->get_text("CMOD_MOD_TRN");
+		case MOD_HORNS: return g_custom_text_service->get_text("CMOD_MOD_HRN");
 		case MOD_FRONTWHEEL:
 		{
 			if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-				return get_gxt_label("CMOD_MOD_WHEM").c_str();
-			return get_gxt_label("CMOD_WHE0_0").c_str();
+				return g_custom_text_service->get_text("CMOD_MOD_WHEM");
+			return g_custom_text_service->get_text("CMOD_WHE0_0");
 		}
 		case MOD_REARWHEEL:
-			return get_gxt_label("CMOD_WHE0_1").c_str();
+			return g_custom_text_service->get_text("CMOD_WHE0_1");
 			//Bennys
-		case MOD_PLATEHOLDER: return get_gxt_label("CMM_MOD_S0").c_str();
-		case MOD_VANITYPLATES: return get_gxt_label("CMM_MOD_S1").c_str();
+		case MOD_PLATEHOLDER: return g_custom_text_service->get_text("CMM_MOD_S0");
+		case MOD_VANITYPLATES: return g_custom_text_service->get_text("CMM_MOD_S1");
 		case MOD_TRIMDESIGN:
 		{
 			if (model == VEHICLE_SULTANRS)
-				return get_gxt_label("CMM_MOD_S2b").c_str();
-			return get_gxt_label("CMM_MOD_S2").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S2b");
+			return g_custom_text_service->get_text("CMM_MOD_S2");
 		}
-		case MOD_ORNAMENTS: return get_gxt_label("CMM_MOD_S3").c_str();
-		case MOD_DASHBOARD: return get_gxt_label("CMM_MOD_S4").c_str();
-		case MOD_DIALDESIGN: return get_gxt_label("CMM_MOD_S5").c_str();
-		case MOD_DOORSPEAKERS: return get_gxt_label("CMM_MOD_S6").c_str();
-		case MOD_SEATS: return get_gxt_label("CMM_MOD_S7").c_str();
-		case MOD_STEERINGWHEELS: return get_gxt_label("CMM_MOD_S8").c_str();
-		case MOD_COLUMNSHIFTERLEVERS: return get_gxt_label("CMM_MOD_S9").c_str();
-		case MOD_PLAQUES: return get_gxt_label("CMM_MOD_S10").c_str();
-		case MOD_SPEAKERS: return get_gxt_label("CMM_MOD_S11").c_str();
-		case MOD_TRUNK: return get_gxt_label("CMM_MOD_S12").c_str();
-		case MOD_HYDRO: return get_gxt_label("CMM_MOD_S13").c_str();
-		case MOD_ENGINEBLOCK: return get_gxt_label("CMM_MOD_S14").c_str();
+		case MOD_ORNAMENTS: return g_custom_text_service->get_text("CMM_MOD_S3");
+		case MOD_DASHBOARD: return g_custom_text_service->get_text("CMM_MOD_S4");
+		case MOD_DIALDESIGN: return g_custom_text_service->get_text("CMM_MOD_S5");
+		case MOD_DOORSPEAKERS: return g_custom_text_service->get_text("CMM_MOD_S6");
+		case MOD_SEATS: return g_custom_text_service->get_text("CMM_MOD_S7");
+		case MOD_STEERINGWHEELS: return g_custom_text_service->get_text("CMM_MOD_S8");
+		case MOD_COLUMNSHIFTERLEVERS: return g_custom_text_service->get_text("CMM_MOD_S9");
+		case MOD_PLAQUES: return g_custom_text_service->get_text("CMM_MOD_S10");
+		case MOD_SPEAKERS: return g_custom_text_service->get_text("CMM_MOD_S11");
+		case MOD_TRUNK: return g_custom_text_service->get_text("CMM_MOD_S12");
+		case MOD_HYDRO: return g_custom_text_service->get_text("CMM_MOD_S13");
+		case MOD_ENGINEBLOCK: return g_custom_text_service->get_text("CMM_MOD_S14");
 		case MOD_AIRFILTER:
 		{
 			if (model == VEHICLE_SULTANRS)
-				return get_gxt_label("CMM_MOD_S15b").c_str();
-			return get_gxt_label("CMM_MOD_S15").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S15b");
+			return g_custom_text_service->get_text("CMM_MOD_S15");
 		}
 		case MOD_STRUTS:
 		{
 			if (model == VEHICLE_SULTANRS || model == VEHICLE_BANSHEE2)
-				return get_gxt_label("CMM_MOD_S16b").c_str();
-			return get_gxt_label("CMM_MOD_S16").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S16b");
+			return g_custom_text_service->get_text("CMM_MOD_S16");
 		}
 		case MOD_ARCHCOVER:
 		{
 			if (model == VEHICLE_SULTANRS)
-				return get_gxt_label("CMM_MOD_S17b").c_str();
-			return get_gxt_label("CMM_MOD_S17").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S17b");
+			return g_custom_text_service->get_text("CMM_MOD_S17");
 		}
 		case MOD_AERIALS:
 		{
 			if (model == VEHICLE_SULTANRS)
-				return get_gxt_label("CMM_MOD_S18b").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S18b");
 			if (model == VEHICLE_BTYPE3)
-				return get_gxt_label("CMM_MOD_S18c").c_str();
-			return get_gxt_label("CMM_MOD_S18").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S18c");
+			return g_custom_text_service->get_text("CMM_MOD_S18");
 		}
 		case MOD_TRIM:
 		{
 			if (model == VEHICLE_SULTANRS)
-				return get_gxt_label("CMM_MOD_S19b").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S19b");
 			if (model == VEHICLE_BTYPE3)
-				return get_gxt_label("CMM_MOD_S19c").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S19c");
 			if (model == VEHICLE_VIRGO2)
-				return get_gxt_label("CMM_MOD_S19d").c_str();
-			return get_gxt_label("CMM_MOD_S19").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S19d");
+			return g_custom_text_service->get_text("CMM_MOD_S19");
 		}
 		case MOD_TANK:
 		{
 			if (model == VEHICLE_SLAMVAN3)
-				return get_gxt_label("CMM_MOD_S27").c_str();
-			return get_gxt_label("CMM_MOD_S20").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S27");
+			return g_custom_text_service->get_text("CMM_MOD_S20");
 		}
 		case MOD_WINDOWS:
 		{
 			if (model == VEHICLE_BTYPE3)
-				return get_gxt_label("CMM_MOD_S21b").c_str();
-			return get_gxt_label("CMM_MOD_S21").c_str();
+				return g_custom_text_service->get_text("CMM_MOD_S21b");
+			return g_custom_text_service->get_text("CMM_MOD_S21");
 		}
 		case MOD_DOORS:
 		{
 			if (model == VEHICLE_SLAMVAN3)
-				return get_gxt_label("SLVAN3_RDOOR").c_str();
-			return get_gxt_label("CMM_MOD_S22").c_str();
+				return g_custom_text_service->get_text("SLVAN3_RDOOR");
+			return g_custom_text_service->get_text("CMM_MOD_S22");
 		}
-		case MOD_LIVERY: return get_gxt_label("CMM_MOD_S23").c_str();
+		case MOD_LIVERY: return g_custom_text_service->get_text("CMM_MOD_S23");
 		default:
 			auto name = VEHICLE::GET_MOD_SLOT_NAME(vehicle, mod_slot);
 			if (name == nullptr)
 				return "";
 			if (strstr(name, "_"))
-				return get_gxt_label(name).c_str();
+				return g_custom_text_service->get_text(name);
 			return name;
 		}
 	}
@@ -185,7 +186,7 @@ namespace big
 		{
 			if (horn_map.contains(mod))
 			{
-				return get_gxt_label(horn_map.find(mod)->second).c_str();
+				return g_custom_text_service->get_text(horn_map.find(mod)->second);
 			}
 			return "";
 		}
@@ -195,25 +196,25 @@ namespace big
 			if (mod == -1)
 			{
 				if (!VEHICLE::IS_THIS_MODEL_A_BIKE(model) && VEHICLE::IS_THIS_MODEL_A_BICYCLE(model))
-					return get_gxt_label("CMOD_WHE_0").c_str();
-				return get_gxt_label("CMOD_WHE_B_0").c_str();
+					return g_custom_text_service->get_text("CMOD_WHE_0");
+				return g_custom_text_service->get_text("CMOD_WHE_B_0");
 			}
 			if (mod >= mod_count / 2)
-				//return std::format("{} {}", get_gxt_label("CHROME"), get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str(); //Bug with FMT library? Returns Chrome Chrome...
-				return std::format("Chrome {}", get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
-			return get_gxt_label(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod)).c_str();
+				//return std::format("{} {}", g_custom_text_service->get_text("CHROME"), g_custom_text_service->get_text(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))); //Bug with FMT library? Returns Chrome Chrome...
+				return std::format("Chrome {}", g_custom_text_service->get_text(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod))).c_str();
+			return g_custom_text_service->get_text(VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod));
 		}
 
 		switch (mod_slot)
 		{
-		case MOD_ARMOR: return get_gxt_label(std::format("CMOD_ARM_{}", mod + 1)).c_str();
-		case MOD_BRAKES: return get_gxt_label(std::format("CMOD_BRA_{}", mod + 1)).c_str();
+		case MOD_ARMOR: return g_custom_text_service->get_text(std::format("CMOD_ARM_{}", mod + 1).c_str());
+		case MOD_BRAKES: return g_custom_text_service->get_text(std::format("CMOD_BRA_{}", mod + 1).c_str());
 		case MOD_ENGINE:
 			if (mod == -1)
-				return get_gxt_label("CMOD_ARM_0").c_str();
-			return get_gxt_label(std::format("CMOD_ENG_{}", mod + 1)).c_str();
-		case MOD_SUSPENSION: return get_gxt_label(std::format("CMOD_SUS_{}", mod + 1)).c_str();
-		case MOD_TRANSMISSION: return get_gxt_label(std::format("CMOD_GBX_{}", mod + 1)).c_str();
+				return g_custom_text_service->get_text("CMOD_ARM_0");
+			return g_custom_text_service->get_text(std::format("CMOD_ENG_{}", mod + 1).c_str());
+		case MOD_SUSPENSION: return g_custom_text_service->get_text(std::format("CMOD_SUS_{}", mod + 1).c_str());
+		case MOD_TRANSMISSION: return g_custom_text_service->get_text(std::format("CMOD_GBX_{}", mod + 1).c_str());
 		}
 
 
@@ -221,12 +222,12 @@ namespace big
 		{
 			if (mod_slot == MOD_SIDESKIRT && VEHICLE::GET_NUM_VEHICLE_MODS(vehicle, MOD_SIDESKIRT) < 2)
 			{
-				return get_gxt_label("CMOD_SKI_1").c_str();
+				return g_custom_text_service->get_text("CMOD_SKI_1");
 			}
 			auto label = VEHICLE::GET_MOD_TEXT_LABEL(vehicle, mod_slot, mod);
 			if (label == nullptr || strlen(label) == 0)
 				return "MISSING_LABEL";
-			return get_gxt_label(label).c_str();
+			return g_custom_text_service->get_text(label);
 		}
 		switch (mod_slot)
 		{
@@ -236,11 +237,11 @@ namespace big
 			{
 			case VEHICLE_BANSHEE:
 			case VEHICLE_BANSHEE2:
-			case VEHICLE_SULTANRS: return get_gxt_label("CMOD_COL5_41").c_str();
+			case VEHICLE_SULTANRS: return g_custom_text_service->get_text("CMOD_COL5_41");
 			}
 			break;
 		}
-		return get_gxt_label("CMOD_DEF_0").c_str();
+		return g_custom_text_service->get_text("CMOD_DEF_0");
 	}
 
 

@@ -8,7 +8,6 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/players/player_service.hpp"
-#include "util/gxt_label.hpp"
 
 #include <script/HudColor.hpp>
 
@@ -32,8 +31,7 @@ namespace big::notify
 		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(
-		    get_gxt_label(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL").c_str());                 // scope
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(g_custom_text_service->get_text(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);                               // teamOnly
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
 		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();

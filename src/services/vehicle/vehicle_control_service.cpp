@@ -4,11 +4,12 @@
 #include "gui.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/custom_text/custom_text_service.hpp"
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 #include "util/mobile.hpp"
-#include "util/gxt_label.hpp"
+
 
 namespace big
 {
@@ -79,7 +80,7 @@ namespace big
 
 		new_veh.handle = veh;
 		new_veh.ptr    = (CVehicle*)g_pointers->m_gta.m_handle_to_ptr(veh);
-		strcpy(new_veh.model_name, get_gxt_label(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))).c_str());
+		strcpy(new_veh.model_name, g_custom_text_service->get_text(VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh))));
 		new_veh.door_count     = VEHICLE::GET_NUMBER_OF_VEHICLE_DOORS(veh);
 		new_veh.lock_state     = (eVehicleLockState)VEHICLE::GET_VEHICLE_DOOR_LOCK_STATUS(veh);
 		new_veh.is_convertible = VEHICLE::IS_VEHICLE_A_CONVERTIBLE(veh, 0);

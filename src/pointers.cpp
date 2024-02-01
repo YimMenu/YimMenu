@@ -1755,33 +1755,6 @@ namespace big
             {
                 g_pointers->m_gta.m_get_ped_seat = ptr.add(1).rip().as<functions::get_ped_seat>();
             }
-        },
-        // GXT Labels
-        {
-            "GL",
-            "48 8D 0D ? ? ? ? E8 ? ? ? ? 8B 0D ? ? ? ? 48 8B 5C 24",
-            [](memory::handle ptr)
-        	{
-                g_pointers->m_gta.g_gxt_labels = ptr.add(3).rip().as<void*>();
-            }
-        },
-        // Get GXT Label From Table
-        {
-            "GGLFT",
-            "E8 ? ? ? ? 48 8D 4B 0B",
-            [](memory::handle ptr)
-        	{
-                g_pointers->m_gta.m_get_gxt_label_from_table = ptr.add(1).rip().as<functions::get_gxt_label_from_table>();
-            }
-        },
-        // Get Joaated GXT Label From Table
-        {
-            "GJGLFT",
-            "48 83 EC 28 E8 ? ? ? ? 48 85 C0 75 34 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1",
-            [](memory::handle ptr)
-        	{
-                g_pointers->m_gta.m_get_joaated_gxt_label_from_table = ptr.as<functions::get_joaated_gxt_label_from_table>();
-            }
         }
         >(); // don't leave a trailing comma at the end
 

@@ -6,8 +6,8 @@
 #include "pointers.hpp"
 #include "pugixml.hpp"
 #include "script.hpp"
+#include "services/custom_text/custom_text_service.hpp"
 #include "thread_pool.hpp"
-#include "util/gxt_label.hpp"
 #include "util/misc.hpp"
 #include "util/model_info.hpp"
 #include "util/protection.hpp"
@@ -251,14 +251,14 @@ namespace big
 	{
 		char vehicle_class[32];
 		std::sprintf(vehicle_class, "VEH_CLASS_%i", VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(vehicle_hash));
-		return get_gxt_label(vehicle_class);
+		return g_custom_text_service->get_text(vehicle_class);
 	}
 
 	// Function to update the display strings
 	void update_display_strings(vehicle_item& item)
 	{
-		std::strncpy(item.m_display_manufacturer, get_gxt_label(item.m_display_manufacturer).c_str(), sizeof(item.m_display_manufacturer));
-		std::strncpy(item.m_display_name, get_gxt_label(item.m_display_name).c_str(), sizeof(item.m_display_name));
+		std::strncpy(item.m_display_manufacturer, g_custom_text_service->get_text(item.m_display_manufacturer), sizeof(item.m_display_manufacturer));
+		std::strncpy(item.m_display_name, g_custom_text_service->get_text(item.m_display_name), sizeof(item.m_display_name));
 		std::strncpy(item.m_vehicle_class, get_vehicle_class_label(item.m_hash).c_str(), sizeof(item.m_vehicle_class));
 	}
 
@@ -498,12 +498,12 @@ namespace big
 			}
 			for (auto& item : weapons)
 			{
-				item.m_display_name = get_gxt_label(item.m_display_name);
+				item.m_display_name = g_custom_text_service->get_text(item.m_display_name.c_str());
 			}
 			for (auto& item : weapon_components)
 			{
-				item.m_display_name = get_gxt_label(item.m_display_name);
-				item.m_display_desc = get_gxt_label(item.m_display_desc);
+				item.m_display_name = g_custom_text_service->get_text(item.m_display_name.c_str());
+				item.m_display_desc = g_custom_text_service->get_text(item.m_display_desc.c_str());
 			}
 			for (auto it = peds.begin(); it != peds.end();)
 			{
