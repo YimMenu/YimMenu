@@ -39,6 +39,8 @@ namespace big
 		file font_file_path = windows_fonts.get_file("./msyh.ttc");
 		if (!font_file_path.exists())
 			font_file_path = windows_fonts.get_file("./msyh.ttf");
+		if (!font_file_path.exists())
+			throw std::runtime_error("Failed to retrieve msyh font.");
 		auto font_file            = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
 		const auto font_data_size = static_cast<int>(font_file.tellg());
 		const auto font_data      = std::make_unique<uint8_t[]>(font_data_size);
