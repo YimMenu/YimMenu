@@ -105,7 +105,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
 #ifndef NDEBUG
-			    LOG(INFO) << "Debug Build";
+			    LOG(WARNING) << "Debug Build. Switch to RelWithDebInfo or Release Build for a more stable experience";
 #endif
 
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
