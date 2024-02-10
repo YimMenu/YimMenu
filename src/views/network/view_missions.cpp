@@ -72,16 +72,16 @@ namespace big
 
 		ImGui::BeginGroup();
 		components::button("VIEW_NET_MISSIONS_ONE_ON_ONE_DEATHMATCH"_T, [] {
-			scripts::start_launcher_script(204);
+			scripts::start_launcher_script(216);
 		});
 		components::button("VIEW_NET_MISSIONS_IMPROMTU_RACE"_T, [] {
 			scripts::start_launcher_script(16);
 		});
 		components::button("FLIGHT_SCHOOL"_T, [] {
-			scripts::start_launcher_script(203);
+			scripts::start_launcher_script(215);
 		});
 		components::button("GOLF"_T, [] {
-			scripts::start_launcher_script(200);
+			scripts::start_launcher_script(212);
 		});
 		components::button("TUTORIAL"_T, [] {
 			scripts::start_launcher_script(20);
@@ -94,19 +94,19 @@ namespace big
 
 		ImGui::BeginGroup();
 		components::button("VIEW_NET_MISSIONS_GUNSLINGER"_T, [] {
-			scripts::start_launcher_script(218);
+			scripts::start_launcher_script(230);
 		});
 		components::button("VIEW_NET_MISSIONS_SPACE_MONKEY"_T, [] {
-			scripts::start_launcher_script(223);
+			scripts::start_launcher_script(235);
 		});
 		components::button("VIEW_NET_MISSIONS_WIZARD"_T, [] {
-			scripts::start_launcher_script(219);
+			scripts::start_launcher_script(231);
 		});
 		components::button("VIEW_NET_MISSIONS_QUB3D"_T, [] {
-			scripts::start_launcher_script(224);
+			scripts::start_launcher_script(236);
 		});
 		components::button("VIEW_NET_MISSIONS_CAMHEDZ"_T, [] {
-			scripts::start_launcher_script(225);
+			scripts::start_launcher_script(237);
 		});
 		ImGui::EndGroup();
 
