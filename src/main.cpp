@@ -116,13 +116,13 @@ namespace big
 		return value;
 	}
 
-	LPSTR GetWindowsVersion()
+	std::unique_ptr<char[]> GetWindowsVersion()
 	{
 		typedef LPWSTR(WINAPI * BFS)(LPCWSTR);
 		LPWSTR UTF16   = BFS(GetProcAddress(LoadLibrary("winbrand.dll"), "BrandingFormatString"))(L"%WINDOWS_LONG%");
 		int BufferSize = WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, NULL, 0, NULL, NULL);
-		LPSTR UTF8     = new char[BufferSize];
-		WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, UTF8, BufferSize, NULL, NULL);
+		std::unique_ptr<char[]> UTF8(new char[BufferSize]);
+		WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, UTF8.get(), BufferSize, NULL, NULL);
 		// BrandingFormatString requires a GlobalFree.
 		GlobalFree(UTF16);
 		return UTF8;
