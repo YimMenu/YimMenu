@@ -28,22 +28,22 @@ namespace big
 	{
 		mission_found = false;
 
-		components::sub_title("VIEW_NET_MISSIONS_EVENT_STARTER"_T);
+		components::sub_title("Event Starter");
 
 		ImGui::BeginGroup();
-		components::button("VIEW_NET_MISSIONS_HOT_TARGET"_T, [] {
+		components::button("Hot Target", [] {
 			scripts::start_launcher_script(36);
 		});
-		components::button("KILL_LIST"_T, [] {
+		components::button("Kill List", [] {
 			scripts::start_launcher_script(37);
 		});
-		components::button("VIEW_NET_MISSIONS_CHECKPOINTS"_T, [] {
+		components::button("Checkpoints", [] {
 			scripts::start_launcher_script(39);
 		});
-		components::button("CHALLENGES"_T, [] {
+		components::button("Challenges", [] {
 			scripts::start_launcher_script(40);
 		});
-		components::button("PENNED_IN"_T, [] {
+		components::button("Penned In", [] {
 			scripts::start_launcher_script(41);
 		});
 		ImGui::EndGroup();
@@ -51,19 +51,19 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("HOT_PROPERTY"_T, [] {
+		components::button("Hot Property", [] {
 			scripts::start_launcher_script(43);
 		});
-		components::button("KING_OF_THE_CASTLE"_T, [] {
+		components::button("King Of The Castle", [] {
 			scripts::start_launcher_script(45);
 		});
-		components::button("CRIMINAL_DAMAGE"_T, [] {
+		components::button("Criminal Damage", [] {
 			scripts::start_launcher_script(46);
 		});
-		components::button("HUNT_THE_BEAST"_T, [] {
+		components::button("Hunt The Beast", [] {
 			scripts::start_launcher_script(47);
 		});
-		components::button("BUSINESS_BATTLES"_T, [] {
+		components::button("Business Battles", [] {
 			scripts::start_launcher_script(114);
 		});
 		ImGui::EndGroup();
@@ -71,50 +71,50 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("VIEW_NET_MISSIONS_ONE_ON_ONE_DEATHMATCH"_T, [] {
-			scripts::start_launcher_script(204);
+		components::button("One-On-One Deathmatch", [] {
+			scripts::start_launcher_script(216);
 		});
-		components::button("VIEW_NET_MISSIONS_IMPROMTU_RACE"_T, [] {
+		components::button("Impromptu Race", [] {
 			scripts::start_launcher_script(16);
 		});
-		components::button("FLIGHT_SCHOOL"_T, [] {
-			scripts::start_launcher_script(203);
+		components::button("Flight School", [] {
+			scripts::start_launcher_script(215);
 		});
-		components::button("GOLF"_T, [] {
-			scripts::start_launcher_script(200);
+		components::button("Golf", [] {
+			scripts::start_launcher_script(212);
 		});
-		components::button("TUTORIAL"_T, [] {
+		components::button("Tutorial", [] {
 			scripts::start_launcher_script(20);
 		});
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("VIEW_NET_MISSIONS_ONLY_WORK_ON_JOINING"_T.data());
+			ImGui::SetTooltip("Only works on joining players");
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::button("VIEW_NET_MISSIONS_GUNSLINGER"_T, [] {
-			scripts::start_launcher_script(218);
+		components::button("Gunslinger", [] {
+			scripts::start_launcher_script(230);
 		});
-		components::button("VIEW_NET_MISSIONS_SPACE_MONKEY"_T, [] {
-			scripts::start_launcher_script(223);
+		components::button("Space Monkey", [] {
+			scripts::start_launcher_script(235);
 		});
-		components::button("VIEW_NET_MISSIONS_WIZARD"_T, [] {
-			scripts::start_launcher_script(219);
+		components::button("Wizard", [] {
+			scripts::start_launcher_script(231);
 		});
-		components::button("VIEW_NET_MISSIONS_QUB3D"_T, [] {
-			scripts::start_launcher_script(224);
+		components::button("QUB3D", [] {
+			scripts::start_launcher_script(236);
 		});
-		components::button("VIEW_NET_MISSIONS_CAMHEDZ"_T, [] {
-			scripts::start_launcher_script(225);
+		components::button("Camhedz", [] {
+			scripts::start_launcher_script(237);
 		});
 		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
-		components::button("VIEW_NET_MISSIONS_GHOST_HUNT"_T, [] {
+		components::button("Ghost Hunt", [] {
 			scripts::start_launcher_script(174);
 		});
-		components::button("VIEW_NET_MISSIONS_POSESSED_ANIMALS"_T, [] {
+		components::button("Possesed Animals", [] {
 			scripts::start_launcher_script(179);
 		});
 		ImGui::EndGroup();
@@ -135,7 +135,7 @@ namespace big
 
 		if (!mission_found)
 		{
-			ImGui::Text("VIEW_NET_MISSIONS_NO_ACTIVE_MISSION"_T.data());
+			ImGui::Text("No active mission");
 		}
 	}
 }
