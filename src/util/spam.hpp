@@ -63,6 +63,8 @@ namespace
 	    "Instant Delivery",
 	    "0 Ban Risk",
 	    "Discord For Cheap Money",
+	    "10-30m",
+	    "Discord todo",
 	};
 }
 
