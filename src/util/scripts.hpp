@@ -102,7 +102,7 @@ namespace big::scripts
 			{
 				if (((CGameScriptHandlerNetComponent*)launcher->m_net_component)->is_player_a_participant(plyr->get_net_game_player()))
 				{
-					if (*script_local(launcher->m_stack, 233).at(plyr->id(), 3).at(2).as<int*>() == state)
+					if (*script_local(launcher->m_stack, 236).at(plyr->id(), 3).at(2).as<int*>() == state)
 					{
 						set = true;
 						break;
@@ -170,7 +170,7 @@ namespace big::scripts
 			// 6) Actually get the script to start
 			misc::set_bit(scr_globals::launcher_global.at(1).as<int*>(), 1); // run immediately
 			*scr_globals::launcher_global.at(2).as<int*>() = 6; // will change to 7 shortly but that's fine as players are guaranteed not to be in the waiting stage
-			*script_local(launcher->m_stack, 233).at(self::id, 3).at(2).as<int*>() = 6;
+			*script_local(launcher->m_stack, 236).at(self::id, 3).at(2).as<int*>() = 6;
 			*scr_globals::launcher_global.at(3).at(1).as<int*>()                   = script_id;
 
 			launcher->m_context.m_state = rage::eThreadState::running;

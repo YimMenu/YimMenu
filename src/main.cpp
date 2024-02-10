@@ -158,10 +158,15 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
+
 			    auto display_version = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "DisplayVersion");
 			    auto current_build = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "CurrentBuild");
 			    auto UBR = ReadRegistryKeyDWORD(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "UBR");
 			    LOG(INFO) << GetWindowsVersion() << " Version " << display_version << " (OS Build " << current_build << "." << UBR << ")";
+
+#ifndef NDEBUG
+			    LOG(WARNING) << "Debug Build. Switch to RelWithDebInfo or Release Build for a more stable experience";
+#endif
 
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
