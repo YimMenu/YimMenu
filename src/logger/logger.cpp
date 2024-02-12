@@ -1,7 +1,6 @@
 #pragma once
 #include "logger.hpp"
-
-#include "memory/module.hpp"
+#include "util/is_proton.hpp"
 
 namespace big
 {
@@ -22,8 +21,7 @@ namespace big
 	    m_console_handle(nullptr),
 	    m_file(file)
 	{
-		auto module = memory::module("ntdll.dll");
-		if (const auto env_no_color = std::getenv("NO_COLOR"); module.get_export("wine_get_version") || (env_no_color && strlen(env_no_color)))
+		if (is_proton())
 		{
 			LOG(VERBOSE) << "Using simple logger.";
 			m_console_logger = &logger::format_console_simple;
