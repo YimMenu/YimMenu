@@ -66,7 +66,7 @@ namespace lua::stats
 	static bool get_bool_masked_hash(Hash stat_hash, int bit_index)
 	{
 		int out_value;
-		constexpr int bit_count = 8;
+		constexpr int bit_count = 1;
 		STATS::STAT_GET_MASKED_INT(stat_hash, &out_value, bit_index, bit_count, -1);
 
 		return out_value;
@@ -187,7 +187,7 @@ namespace lua::stats
 	// Returns: boolean: True if succeeded.
 	static bool set_bool_masked_hash(Hash stat_hash, bool new_value, int bit_index)
 	{
-		constexpr int bit_count = 8;
+		constexpr int bit_count = 1;
 		return STATS::STAT_SET_MASKED_INT(stat_hash, new_value, bit_index, bit_count, true);
 	}
 
