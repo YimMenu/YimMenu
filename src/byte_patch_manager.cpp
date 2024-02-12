@@ -24,7 +24,7 @@ namespace big
 
 		// Patch World Model Spawn Bypass
 		world_model_bypass::m_world_model_spawn_bypass =
-		    memory::byte_patch::make(g_pointers->m_gta.m_world_model_spawn_bypass.as<PVOID*>(), 0).get();
+		    memory::byte_patch::make(g_pointers->m_gta.m_world_model_spawn_bypass.add(3).rip().as<PVOID*>(), 0).get();
 
 		// Patch blocked explosions
 		explosion_anti_cheat_bypass::m_can_blame_others =
