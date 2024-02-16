@@ -110,15 +110,6 @@ namespace big
 		});
 		ImGui::EndGroup();
 
-		ImGui::BeginGroup();
-		components::button("VIEW_NET_MISSIONS_GHOST_HUNT"_T, [] {
-			scripts::start_launcher_script(174);
-		});
-		components::button("VIEW_NET_MISSIONS_POSESSED_ANIMALS"_T, [] {
-			scripts::start_launcher_script(179);
-		});
-		ImGui::EndGroup();
-
 		ImGui::Separator();
 
 		if (check_script(RAGE_JOAAT("am_criminal_damage")))
