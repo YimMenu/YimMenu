@@ -39,6 +39,16 @@ namespace big
 		file font_file_path = windows_fonts.get_file("./msyh.ttc");
 		if (!font_file_path.exists())
 			font_file_path = windows_fonts.get_file("./msyh.ttf");
+
+		if (*g_pointers->m_gta.m_language == 8)
+		{
+			file font_file_path = windows_fonts.get_file("./malgun.ttf");
+			if (!font_file_path.exists())
+			{
+				LOG(WARNING) << "Korean language detected, but failed to find Korean font, you may not be able to read the menu!";
+			}
+		}
+
 		if (!font_file_path.exists())
 		{
 			LOG(WARNING) << "Failed to find msyh font, falling back to Arial!";
