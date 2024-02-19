@@ -1237,7 +1237,6 @@ namespace big
             [](memory::handle ptr)
 		    {
 			    g_pointers->m_gta.m_prop_pool = ptr.add(3).rip().as<GenericPool**>();
-			    g_pointers->m_gta.m_pickup_pool = ptr.add(0xE).rip().as<GenericPool**>();
 		    }
         },
         // Vehicle Pool

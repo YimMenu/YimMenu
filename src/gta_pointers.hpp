@@ -288,7 +288,6 @@ namespace big
 
 		GenericPool** m_ped_pool;
 		GenericPool** m_prop_pool;
-		GenericPool** m_pickup_pool;
 		VehiclePool*** m_vehicle_pool;
 
 		PVOID m_netfilter_handle_message;
