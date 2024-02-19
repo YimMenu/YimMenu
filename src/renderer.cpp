@@ -34,34 +34,36 @@ namespace big
 		ImGui_ImplDX11_Init(m_d3d_device, m_d3d_device_context);
 		ImGui_ImplWin32_Init(g_pointers->m_hwnd);
 
-		folder windows_fonts(std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts");
+		const auto fonts_folder = std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts";
 
-		file font_file_path = windows_fonts.get_file("./msyh.ttc");
-		if (!font_file_path.exists())
-			font_file_path = windows_fonts.get_file("./msyh.ttf");
+		file font_file(fonts_folder / "msyh.ttc");
+		if (!font_file.exists())
+			font_file = file(fonts_folder / "msyh.ttf");
 
 		if (*g_pointers->m_gta.m_language == 8)
 		{
-			font_file_path = windows_fonts.get_file("./malgun.ttf");
-			if (!font_file_path.exists())
+			font_file = file(fonts_folder / "malgun.ttf");
+			if (!font_file.exists())
 			{
 				LOG(WARNING) << "Korean language detected, but failed to find Korean font, you may not be able to read the menu!";
 			}
 		}
 
-		if (!font_file_path.exists())
+		LOG(INFO) << font_file.get_path();
+
+		if (!font_file.exists())
 		{
 			LOG(WARNING) << "Failed to find msyh font, falling back to Arial!";
-			font_file_path = windows_fonts.get_file("./arial.ttf");
+			font_file = file(fonts_folder / "arial.ttf");
 		}
 
-		auto font_file            = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
-		const auto font_data_size = static_cast<int>(font_file.tellg());
+		auto font_file_stream     = std::ifstream(font_file.get_path(), std::ios::binary | std::ios::ate);
+		const auto font_data_size = static_cast<int>(font_file_stream.tellg());
 		const auto font_data      = std::make_unique<uint8_t[]>(font_data_size);
 
-		font_file.seekg(0);
-		font_file.read(reinterpret_cast<char*>(font_data.get()), font_data_size);
-		font_file.close();
+		font_file_stream.seekg(0);
+		font_file_stream.read(reinterpret_cast<char*>(font_data.get()), font_data_size);
+		font_file_stream.close();
 
 		auto& io = ImGui::GetIO();
 
