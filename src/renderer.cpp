@@ -49,8 +49,6 @@ namespace big
 			}
 		}
 
-		LOG(INFO) << font_file.get_path();
-
 		if (!font_file.exists())
 		{
 			LOG(WARNING) << "Failed to find msyh font, falling back to Arial!";
@@ -79,6 +77,8 @@ namespace big
 			    io.Fonts->GetGlyphRangesDefault());
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			if (*g_pointers->m_gta.m_language == 8)
+				io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesKorean());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			io.Fonts->Build();
 		}
@@ -91,6 +91,8 @@ namespace big
 			g.window.font_title = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia), sizeof(font_storopia), 28.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			if (*g_pointers->m_gta.m_language == 8)
+				io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesKorean());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 28.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			io.Fonts->Build();
 		}
@@ -103,6 +105,8 @@ namespace big
 			g.window.font_sub_title = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia), sizeof(font_storopia), 24.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			if (*g_pointers->m_gta.m_language == 8)
+				io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesKorean());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 24.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			io.Fonts->Build();
 		}
@@ -115,6 +119,8 @@ namespace big
 			g.window.font_small = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia), sizeof(font_storopia), 18.f, &fnt_cfg);
 			fnt_cfg.MergeMode = true;
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			if (*g_pointers->m_gta.m_language == 8)
+				io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 20.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesKorean());
 			io.Fonts->AddFontFromMemoryTTF(font_data.get(), font_data_size, 18.f, &fnt_cfg, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 			io.Fonts->Build();
 		}
