@@ -42,7 +42,7 @@ namespace big
 
 		if (*g_pointers->m_gta.m_language == 8)
 		{
-			file font_file_path = windows_fonts.get_file("./malgun.ttf");
+			font_file_path = windows_fonts.get_file("./malgun.ttf");
 			if (!font_file_path.exists())
 			{
 				LOG(WARNING) << "Korean language detected, but failed to find Korean font, you may not be able to read the menu!";
@@ -54,8 +54,6 @@ namespace big
 			LOG(WARNING) << "Failed to find msyh font, falling back to Arial!";
 			font_file_path = windows_fonts.get_file("./arial.ttf");
 		}
-
-		LOG(INFO) << "Language: " << *g_pointers->m_gta.m_language << " using font: " << font_file_path.get_path().filename();
 
 		auto font_file            = std::ifstream(font_file_path.get_path(), std::ios::binary | std::ios::ate);
 		const auto font_data_size = static_cast<int>(font_file.tellg());
