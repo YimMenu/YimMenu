@@ -25,7 +25,8 @@ namespace big
 			id.m_instance_id = buffer.Read<int32_t>(8);
 	}
 
-	void scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
+	// Returns true if bad event
+	bool scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
 	{
 		uint8_t damageType;
 		uint32_t weaponType; // weaponHash
@@ -75,7 +76,7 @@ namespace big
 		if (is_crash_weapon)
 		{
 			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
-			return;
+			return true;
 		}
 
 		overrideDefaultDamage   = buffer->Read<uint8_t>(1);
@@ -221,6 +222,8 @@ namespace big
 				    player->get_ped()->m_navigation->get_position());
 			});
 		}
+
+		return false;
 	}
 
 	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -712,7 +715,10 @@ namespace big
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
 		{
-			scan_weapon_damage_event(event_manager, source_player, target_player, event_index, event_handled_bitset, buffer);
+			if (scan_weapon_damage_event(event_manager, source_player, target_player, event_index, event_handled_bitset, buffer))
+			{
+				return;
+			}
 			break;
 		}
 		default: break;
