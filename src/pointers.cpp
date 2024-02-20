@@ -1754,6 +1754,15 @@ namespace big
             {
                 g_pointers->m_gta.m_get_ped_seat = ptr.add(1).rip().as<functions::get_ped_seat>();
             }
+        },
+        // RECEIVED_CLONE_REMOVE
+        {
+            "RCR",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 50 4C 8B F2 4D 8B E0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_received_clone_remove = ptr.as<functions::received_clone_remove>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

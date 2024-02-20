@@ -1,10 +1,10 @@
 #pragma once
 #include "MinHook.h"
-
 #include "detour_hook.hpp"
 #include "vmt_hook.hpp"
 #include "vtable_hook.hpp"
 
+#include <gta/enums.hpp>
 #include <network/netConnection.hpp> // cannot stub this
 
 class CPlayerGamerDataNode;
@@ -175,6 +175,8 @@ namespace big
 		static __int64 render_big_ped(__int64 renderer, CPed* ped, __int64 a3, __int64 a4);
 
 		static bool read_bits_single(void* data, int* out_value, int size, int offset);
+
+		static void received_clone_remove(CNetworkObjectMgr* mgr, CNetGamePlayer* src, CNetGamePlayer* dst, int16_t object_id, uint32_t ownership_token);
 
 		static bool sync_reader_serialize_dword(void* _this, uint32_t* dword, int size);
 		static bool sync_reader_serialize_word(void* _this, uint16_t* word, int size);
