@@ -1,11 +1,14 @@
 #include "font_mgr.hpp"
 #include "fonts/fonts.hpp"
+#include "renderer.hpp"
+#include "thread_pool.hpp"
 
 namespace big
 {
 	font_mgr::font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes) :
         m_extra_font_sizes(extra_font_sizes),
         m_require_extra(eAlphabetType::LATIN),
+        m_fonts_available(false),
         m_should_rebuild_font_map(true),
         m_fonts({
             { eAlphabetType::CHINESE, { "msyh.ttc", "msyh.ttf", "arial.ttf" } },
@@ -21,13 +24,23 @@ namespace big
 	{
 	}
 
-	void font_mgr::rebuild_now()
-	{
-        if (!m_should_rebuild_font_map)
+    void font_mgr::rebuild_now()
+    {
+        if (!m_should_rebuild_font_map && !m_fonts_available)
         {
             return;
         }
+        m_fonts_available = false;
         m_should_rebuild_font_map = false;
+        
+        g_thread_pool->push([this]{
+            rebuild();
+        });
+    }
+
+	void font_mgr::rebuild()
+	{
+        g_renderer.pre_reset();
 
         const auto extra_font_file = get_available_font_file_for_alphabet_type();
         if (m_require_extra != eAlphabetType::LATIN && !extra_font_file.exists())
@@ -77,6 +90,9 @@ namespace big
 			std::strcpy(font_icons_cfg.Name, "Icons");
 			g.window.font_icon = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_icons), sizeof(font_icons), 24.f, &font_icons_cfg);
 		}
+
+        g_renderer.post_reset();
+        m_fonts_available = true;
 	}
 
 	void font_mgr::update_required_alphabet_type(eAlphabetType type)
@@ -95,7 +111,6 @@ namespace big
         for (const auto& font : fonts->second)
         {
             auto font_file = file(fonts_folder / font);
-            LOG(INFO) << font_file.get_path().lexically_normal();
             if (font_file.exists())
             {
                 return font_file;

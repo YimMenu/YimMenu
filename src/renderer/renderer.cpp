@@ -1,6 +1,5 @@
 #include "renderer.hpp"
 
-#include "common.hpp"
 #include "file_manager.hpp"
 #include "fonts/fonts.hpp"
 #include "gui.hpp"
@@ -80,14 +79,15 @@ namespace big
 		if (m_font_mgr.rebuild_required())
 		{
 			m_font_mgr.rebuild_now();
-			pre_reset();
-			post_reset();
 		}
 
-		new_frame();
-		for (const auto& cb : m_dx_callbacks | std::views::values)
-			cb();
-		end_frame();
+		if (m_font_mgr.fonts_available())
+		{
+			new_frame();
+			for (const auto& cb : m_dx_callbacks | std::views::values)
+				cb();
+			end_frame();
+		}
 	}
 
 	void renderer::rescale(float rel_size)

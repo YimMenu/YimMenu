@@ -11,6 +11,7 @@ namespace big
         const std::unordered_map<eAlphabetType, std::vector<std::string>> m_fonts;
         // extra alphabet types that may be required to be added to the atlas
         eAlphabetType m_require_extra;
+        bool m_fonts_available;
         /**
          * @brief Internal tracker if the font atlas should be updated at the start of the next frame.
          */
@@ -20,6 +21,8 @@ namespace big
         font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes = { { 28.f, &g.window.font_title }, { 24.f, &g.window.font_sub_title }, { 18.f, &g.window.font_small } });
         ~font_mgr();
 
+        inline bool fonts_available() const
+        { return m_fonts_available; }
         inline bool rebuild_required() const
         { return m_should_rebuild_font_map; }
 
@@ -35,6 +38,8 @@ namespace big
         void update_required_alphabet_type(eAlphabetType type);
 
     private:
+        void rebuild();
+
         file get_available_font_file_for_alphabet_type();
         const ImWchar* get_imgui_alphabet_type();
 
