@@ -138,6 +138,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
 
+		detour_hook_helper::add<hooks::received_clone_remove>("RCR", g_pointers->m_gta.m_received_clone_remove);
+
 		g_hooking = this;
 	}
 

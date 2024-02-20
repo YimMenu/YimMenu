@@ -208,4 +208,6 @@ namespace big::functions
 	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
 
 	using get_ped_seat = CGetPedSeatReturnClass*(*)(PVOID seat_info, CPed* ped);
+	
+	using received_clone_remove = void (*)(CNetworkObjectMgr*, CNetGamePlayer*, CNetGamePlayer*, int16_t, uint32_t);
 }
