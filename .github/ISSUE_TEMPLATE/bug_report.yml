@@ -82,10 +82,12 @@ body:
       - English (US)
       - Español (España)
       - Français (FR)
+      - Italiano (IT)
       - Portuguese (BR)
       - Русский (RU)
       - Chinese (CN)
       - Chinese (TW)
+      - Korean (KR)
   validations:
     required: true
 - type: textarea
