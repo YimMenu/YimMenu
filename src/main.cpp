@@ -10,7 +10,7 @@
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "rage/gameSkeleton.hpp"
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 #include "script_mgr.hpp"
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
@@ -195,7 +195,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 			    LOG(INFO) << "Byte Patch Manager initialized.";
 
-			    auto renderer_instance = std::make_unique<renderer>();
+			    g_renderer.init();
 			    LOG(INFO) << "Renderer initialized.";
 			    auto gui_instance = std::make_unique<gui>();
 
@@ -327,7 +327,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    fiber_pool_instance.reset();
 			    LOG(INFO) << "Fiber pool uninitialized.";
 
-			    renderer_instance.reset();
+			    g_renderer.destroy();
 			    LOG(INFO) << "Renderer uninitialized.";
 
 			    byte_patch_manager_instance.reset();
