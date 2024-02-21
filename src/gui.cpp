@@ -2,7 +2,7 @@
 
 #include "common.hpp"
 #include "natives.hpp"
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 #include "script.hpp"
 #include "views/view.hpp"
 
@@ -14,35 +14,35 @@ namespace big
 	    m_is_open(false),
 	    m_override_mouse(false)
 	{
-		g_renderer->add_dx_callback(view::gta_data, -1);
-		g_renderer->add_dx_callback(view::notifications, -2);
-		g_renderer->add_dx_callback(view::overlay, -3);
-		g_renderer->add_dx_callback(view::cmd_executor, -4);
-		g_renderer->add_dx_callback(
+		g_renderer.add_dx_callback(view::gta_data, -1);
+		g_renderer.add_dx_callback(view::notifications, -2);
+		g_renderer.add_dx_callback(view::overlay, -3);
+		g_renderer.add_dx_callback(view::cmd_executor, -4);
+		g_renderer.add_dx_callback(
 		    [this] {
 			    dx_on_tick();
 		    },
 		    -5);
 
-		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+		g_renderer.add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
 		});
-		g_renderer->add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+		g_renderer.add_wndproc_callback([](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			if (g.cmd_executor.enabled && msg == WM_KEYUP && wparam == VK_ESCAPE)
 			{
 				g.cmd_executor.enabled = false;
 			}
 		});
 
-		g_renderer->add_dx_callback(view::vehicle_control, 3);
-		g_renderer->add_dx_callback(esp::draw, 2); // TODO: move to ESP service
-		g_renderer->add_dx_callback(view::context_menu, 1);
+		g_renderer.add_dx_callback(view::vehicle_control, 3);
+		g_renderer.add_dx_callback(esp::draw, 2); // TODO: move to ESP service
+		g_renderer.add_dx_callback(view::context_menu, 1);
 
 
 		dx_init();
 
 		g_gui = this;
-		g_renderer->rescale(g.window.gui_scale);
+		g_renderer.rescale(g.window.gui_scale);
 	}
 
 	gui::~gui()
