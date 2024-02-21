@@ -11,7 +11,7 @@ namespace big
 		const std::unordered_map<eAlphabetType, std::vector<std::string>> m_fonts;
 		// extra alphabet types that may be required to be added to the atlas
 		eAlphabetType m_require_extra;
-		// prevent crashes when doing 
+		// prevent crashes when doing thread unsafe actions
 		std::mutex m_update_lock;
 
 	public:

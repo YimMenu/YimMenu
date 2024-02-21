@@ -22,12 +22,12 @@ namespace big
 
 	bool font_mgr::can_use()
 	{
-		return try_lock(m_update_lock);
+		return m_update_lock.try_lock();
 	}
 
 	void font_mgr::release_use()
 	{
-		release(m_update_lock);
+		m_update_lock.unlock();
 	}
 
 	void font_mgr::rebuild()
@@ -95,7 +95,7 @@ namespace big
 
 		g_renderer.post_reset();
 
-		m_update_lock.release();
+		m_update_lock.unlock();
 	}
 
 	void font_mgr::update_required_alphabet_type(eAlphabetType type)
