@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
+#include "gta/weapon_info_manager.hpp"
 #include "hooking/hooking.hpp"
 #include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
@@ -23,6 +24,19 @@ namespace big
 
 		if (buffer.Read<bool>(1))
 			id.m_instance_id = buffer.Read<int32_t>(8);
+	}
+
+	static bool is_valid_weapon(rage::joaat_t hash)
+	{
+		for (const auto& info : g_pointers->m_gta.m_weapon_info_manager->m_item_infos)
+		{
+			if (info && info->m_name == hash && info->GetClassId() == RAGE_JOAAT("cweaponinfo"))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -70,6 +84,12 @@ namespace big
 
 		damageType = buffer->Read<uint8_t>(2);
 		weaponType = buffer->Read<uint32_t>(32);
+
+		if (!is_valid_weapon(weaponType))
+		{
+			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
+			return true;
+		}
 
 		overrideDefaultDamage   = buffer->Read<uint8_t>(1);
 		hitEntityWeapon         = buffer->Read<uint8_t>(1);
