@@ -10,11 +10,29 @@ namespace big
 	{
 		using looped_command::looped_command;
 
+		const std::size_t m_tick_rate = 5u;
+		std::size_t m_current_tick = 0;
+
+		/**
+		 * @brief We have to limit the fire rate for some shotguns as they can fill the bullet pool and crash the game.
+		 * 
+		 * @return true 
+		 * @return false 
+		 */
+		inline bool can_shoot()
+		{
+			if (m_current_tick == m_tick_rate)
+			{
+				m_current_tick = 0;
+			}
+			return m_current_tick++ == 0;
+		}
+
 		virtual void on_tick() override
 		{
 			if (!HUD::IS_PAUSE_MENU_ACTIVE() && !g_gui->is_open() && !PED::IS_PED_DEAD_OR_DYING(self::ped, true))
 			{
-				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK))
+				if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_ATTACK) && can_shoot())
 				{
 					const auto weapon_entity = WEAPON::GET_CURRENT_PED_WEAPON_ENTITY_INDEX(self::ped, 0);
 					if (!weapon_entity)
