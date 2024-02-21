@@ -9,8 +9,6 @@ namespace big
 	font_mgr::font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes) :
 	    m_extra_font_sizes(extra_font_sizes),
 	    m_require_extra(eAlphabetType::LATIN),
-	    m_fonts_available(false),
-	    m_should_rebuild_font_map(true),
 	    m_fonts({
 	        {eAlphabetType::CHINESE, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	        {eAlphabetType::CYRILLIC, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
