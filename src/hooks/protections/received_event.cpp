@@ -88,6 +88,7 @@ namespace big
 
 		if (!is_valid_weapon(weaponType))
 		{
+			notify::crash_blocked(player, "invalid weapon type");
 			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
 			return true;
 		}
