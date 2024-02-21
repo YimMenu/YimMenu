@@ -82,7 +82,7 @@ namespace big
 				cb();
 			end_frame();
 			
-			m_font_mgr.release();
+			m_font_mgr.release_use();
 		}
 	}
 
