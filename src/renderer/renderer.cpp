@@ -75,17 +75,14 @@ namespace big
 
 	void renderer::on_present()
 	{
-		if (m_font_mgr.rebuild_required())
-		{
-			m_font_mgr.rebuild_now();
-		}
-
-		if (m_font_mgr.fonts_available())
+		if (m_font_mgr.can_use())
 		{
 			new_frame();
 			for (const auto& cb : m_dx_callbacks | std::views::values)
 				cb();
 			end_frame();
+			
+			m_font_mgr.release();
 		}
 	}
 

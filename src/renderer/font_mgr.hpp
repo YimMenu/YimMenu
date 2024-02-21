@@ -3,7 +3,7 @@
 
 namespace big
 {
-	class font_mgr
+	class font_mgr final
 	{
 	private:
 		const std::vector<std::pair<float, ImFont**>> m_extra_font_sizes;
@@ -11,31 +11,18 @@ namespace big
 		const std::unordered_map<eAlphabetType, std::vector<std::string>> m_fonts;
 		// extra alphabet types that may be required to be added to the atlas
 		eAlphabetType m_require_extra;
-		bool m_fonts_available;
-		/**
-         * @brief Internal tracker if the font atlas should be updated at the start of the next frame.
-         */
-		bool m_should_rebuild_font_map;
+		// prevent crashes when doing 
+		std::mutex m_update_lock;
 
 	public:
 		font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes = {{28.f, &g.window.font_title},
 		             {24.f, &g.window.font_sub_title},
 		             {18.f, &g.window.font_small}});
-		~font_mgr();
+		virtual ~font_mgr() = default;
 
-		inline bool fonts_available() const
-		{
-			return m_fonts_available;
-		}
-		inline bool rebuild_required() const
-		{
-			return m_should_rebuild_font_map;
-		}
+		bool can_use();
+		void release_use();
 
-		/**
-         * @brief Syncronously invalidates the old font atlas and builds a new one.
-         */
-		void rebuild_now();
 		/**
          * @brief Updates the required underlying glyph ranges to be loaded into the font atlas. Fonts will be updated on the next frame.
          * 

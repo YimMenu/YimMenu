@@ -20,26 +20,20 @@ namespace big
 	{
 	}
 
-	font_mgr::~font_mgr()
+	bool font_mgr::can_use()
 	{
+		return try_lock(m_update_lock);
 	}
 
-	void font_mgr::rebuild_now()
+	void font_mgr::release_use()
 	{
-		if (!m_should_rebuild_font_map && !m_fonts_available)
-		{
-			return;
-		}
-		m_fonts_available         = false;
-		m_should_rebuild_font_map = false;
-
-		g_thread_pool->push([this] {
-			rebuild();
-		});
+		release(m_update_lock);
 	}
 
 	void font_mgr::rebuild()
 	{
+		m_update_lock.lock();
+
 		g_renderer.pre_reset();
 
 		const auto extra_font_file = get_available_font_file_for_alphabet_type();
@@ -100,13 +94,18 @@ namespace big
 		}
 
 		g_renderer.post_reset();
-		m_fonts_available = true;
+
+		m_update_lock.release();
 	}
 
 	void font_mgr::update_required_alphabet_type(eAlphabetType type)
 	{
-		m_require_extra           = type;
-		m_should_rebuild_font_map = true;
+		m_require_extra = type;
+		
+		g_thread_pool->push([this]
+		{
+			rebuild();
+		});
 	}
 
 	file font_mgr::get_available_font_file_for_alphabet_type()
