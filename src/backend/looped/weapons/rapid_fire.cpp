@@ -11,7 +11,7 @@ namespace big
 		using looped_command::looped_command;
 
 		const std::size_t m_tick_rate = 5u;
-		std::size_t m_current_tick = 0;
+		std::size_t m_current_tick    = 0;
 
 		/**
 		 * @brief We have to limit the fire rate for some shotguns as they can fill the bullet pool and crash the game.
@@ -21,11 +21,9 @@ namespace big
 		 */
 		inline bool can_shoot()
 		{
-			if (m_current_tick == m_tick_rate)
-			{
-				m_current_tick = 0;
-			}
-			return m_current_tick++ == 0;
+			bool result    = (m_current_tick == 0);
+			m_current_tick = (m_current_tick + 1) % m_tick_rate;
+			return result;
 		}
 
 		virtual void on_tick() override
@@ -80,5 +78,6 @@ namespace big
 		}
 	};
 
-	rapid_fire g_rapid_fire("rapidfire", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE_DESC", g.weapons.rapid_fire);
+	rapid_fire g_rapid_fire("rapidfire", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE", "BACKEND_LOOPED_WEAPONS_RAPID_FIRE_DESC",
+	    g.weapons.rapid_fire);
 }
