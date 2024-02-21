@@ -180,10 +180,12 @@ namespace big
 			const auto module_path = module->module_path();
 
 			// unload module
+			{
 			std::lock_guard guard(m_disabled_module_lock);
 			std::erase_if(m_disabled_modules, [module_id](auto& module) {
 				return module_id == module->module_id();
 			});
+			}
 
 			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), module_path);
 			if (new_module_path)
@@ -202,10 +204,12 @@ namespace big
 			const auto module_path = module->module_path();
 
 			// unload module
+			{
 			std::lock_guard guard(m_disabled_module_lock);
 			std::erase_if(m_modules, [module_id](auto& module) {
 				return module_id == module->module_id();
 			});
+			}
 
 			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), module_path);
 			if (new_module_path)
@@ -219,8 +223,12 @@ namespace big
 	void lua_manager::unload_module(rage::joaat_t module_id)
 	{
 		std::lock_guard guard(m_module_lock);
-
 		std::erase_if(m_modules, [module_id](auto& module) {
+			return module_id == module->module_id();
+		});
+
+		std::lock_guard guard2(m_disabled_module_lock);
+		std::erase_if(m_disabled_modules, [module_id](auto& module) {
 			return module_id == module->module_id();
 		});
 	}
@@ -234,7 +242,7 @@ namespace big
 		}
 
 		const auto module_name = module_path.filename().string();
-		const auto id = rage::joaat(module_name);
+		const auto id          = rage::joaat(module_name);
 
 		std::lock_guard guard(m_module_lock);
 		for (const auto& module : m_modules)
@@ -246,9 +254,9 @@ namespace big
 			}
 		}
 
-		const auto rel = relative(module_path, m_disabled_scripts_folder.get_path());
+		const auto rel                = relative(module_path, m_disabled_scripts_folder.get_path());
 		const auto is_disabled_module = !rel.empty() && rel.native()[0] != '.';
-		const auto module = std::make_shared<lua_module>(module_path, m_scripts_folder, is_disabled_module);
+		const auto module             = std::make_shared<lua_module>(module_path, m_scripts_folder, is_disabled_module);
 		if (!module->is_disabled())
 		{
 			module->load_and_call_script();
