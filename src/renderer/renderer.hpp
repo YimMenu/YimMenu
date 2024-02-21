@@ -14,7 +14,9 @@ namespace big
 		~renderer() = default;
 
 		font_mgr& get_font_mgr()
-		{ return m_font_mgr; }
+		{
+			return m_font_mgr;
+		}
 
 		bool init();
 		void destroy();

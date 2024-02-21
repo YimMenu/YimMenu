@@ -17,7 +17,6 @@ namespace big
 	renderer::renderer() :
 	    m_font_mgr()
 	{
-		
 	}
 
 	bool renderer::init()

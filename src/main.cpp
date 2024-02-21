@@ -159,10 +159,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
-				// more tech debt, YAY!
+			    // more tech debt, YAY!
 			    if (is_proton())
 			    {
-					LOG(INFO) << "Running on proton!";
+				    LOG(INFO) << "Running on proton!";
 			    }
 			    else
 			    {
