@@ -19,25 +19,11 @@
 
 namespace big
 {
-	/*struct SessionType
+	struct SessionType
 	{
 		eSessionType id;
-		const std::string_view name;
+		const char* name;
 	};
-
-	const SessionType sessions[] = {
-	    {eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T},
-	    {eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T},
-	    {eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T},
-	    {eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T},
-	    {eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T},
-	    {eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T},
-	    {eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T},
-	    {eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T},
-	    {eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T},
-	    {eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T},
-	    {eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T},
-	};*/
 
 	void render_rid_joiner()
 	{
@@ -105,23 +91,23 @@ namespace big
 
 			ImGui::Spacing();
 
-			static const std::vector<std::tuple<eSessionType, std::string_view>> sessions = { //This has to be here because if it's generated at compile time, the translations break for some reason.
-				make_tuple(eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"_T),
-				make_tuple(eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"_T),
-				make_tuple(eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"_T),
-				make_tuple(eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"_T),
-				make_tuple(eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"_T),
-				make_tuple(eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"_T),
-				make_tuple(eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"_T),
-				make_tuple(eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"_T),
-				make_tuple(eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"_T),
-				make_tuple(eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"_T),
-				make_tuple(eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"_T)
-			};
+			static const auto sessions = std::to_array<SessionType>({ //This has to be here because if it's generated at compile time, the translations break for some reason.
+				{eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"},
+				{eSessionType::NEW_PUBLIC, "BACKEND_SESSION_TYPE_NEW_PUBLIC"},
+				{eSessionType::CLOSED_CREW, "BACKEND_SESSION_TYPE_CLOSED_CREW"},
+				{eSessionType::CREW, "BACKEND_SESSION_TYPE_CREW"},
+				{eSessionType::CLOSED_FRIENDS, "BACKEND_SESSION_TYPE_CLOSED_FRIENDS"},
+				{eSessionType::FIND_FRIEND, "BACKEND_SESSION_TYPE_FIND_FRIEND"},
+				{eSessionType::SOLO, "BACKEND_SESSION_TYPE_SOLO"},
+				{eSessionType::INVITE_ONLY, "BACKEND_SESSION_TYPE_INVITE_ONLY"},
+				{eSessionType::JOIN_CREW, "BACKEND_SESSION_TYPE_JOIN_CREW"},
+				{eSessionType::SC_TV, "BACKEND_SESSION_TYPE_SC_TV"},
+				{eSessionType::LEAVE_ONLINE, "BACKEND_SESSION_TYPE_LEAVE_ONLINE"}
+			});
 
 			for (const auto& [id, name] : sessions)
 			{
-				components::selectable(name, false, [&id] {
+				components::selectable(g_translation_service.get_translation(name), false, [&id] {
 					session::join_type(id);
 				});
 			}

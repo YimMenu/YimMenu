@@ -1510,10 +1510,10 @@ namespace big
         // World Model Spawn Bypass
         {
             "WMSB",
-            "48 85 C0 0F 84 ? ? ? ? 8B 48 ? C1 E9 ? F6 C1 ? 0F 84 ? ? ? ? 45 84 E4",
+            "48 85 C0 0F 84 ? ? ? ? 8B 48 50",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_world_model_spawn_bypass = ptr;
+                g_pointers->m_gta.m_world_model_spawn_bypass = ptr.as<PVOID>();
             }
         },
         // Blame Explode

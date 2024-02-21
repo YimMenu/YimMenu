@@ -625,7 +625,7 @@ namespace big
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(auto_disarm, enable, neutralize)
 				} auto_disarm{};
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush, combative, auto_disarm)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, high_alert, ped_rush, auto_disarm)
 			} nearby{};
 
 			struct model_swapper

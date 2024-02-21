@@ -14,20 +14,20 @@ namespace big
 	struct custom_weapon
 	{
 		big::CustomWeapon id;
-		const std::string_view name;
+		const char* name;
 	};
 
-	const custom_weapon custom_weapons[] = {
-	    {big::CustomWeapon::NONE, "VIEW_SELF_WEAPONS_NONE"_T},
-	    {big::CustomWeapon::CAGE_GUN, "VIEW_SELF_WEAPONS_CAGE_GUN"_T},
-	    {big::CustomWeapon::DELETE_GUN, "VIEW_SELF_WEAPONS_DELETE_GUN"_T},
-	    {big::CustomWeapon::GRAVITY_GUN, "VIEW_SELF_WEAPONS_GRAVITY_GUN"_T},
-	    {big::CustomWeapon::STEAL_VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"_T},
-	    {big::CustomWeapon::REPAIR_GUN, "BACKEND_LOOPED_WEAPONS_REPAIR_GUN"_T},
-	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_VEHICLE_GUN"_T},
-	    {big::CustomWeapon::TP_GUN, "VIEW_SELF_WEAPONS_TP_GUN"_T},
-	    {big::CustomWeapon::PAINT_GUN, "VIEW_SELF_WEAPONS_PAINT_GUN"_T},
-	};
+	constexpr auto custom_weapons = std::to_array<custom_weapon>({
+	    {big::CustomWeapon::NONE, "VIEW_SELF_WEAPONS_NONE"},
+	    {big::CustomWeapon::CAGE_GUN, "VIEW_SELF_WEAPONS_CAGE_GUN"},
+	    {big::CustomWeapon::DELETE_GUN, "VIEW_SELF_WEAPONS_DELETE_GUN"},
+	    {big::CustomWeapon::GRAVITY_GUN, "VIEW_SELF_WEAPONS_GRAVITY_GUN"},
+	    {big::CustomWeapon::STEAL_VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_STEAL_VEHICLE_GUN"},
+	    {big::CustomWeapon::REPAIR_GUN, "BACKEND_LOOPED_WEAPONS_REPAIR_GUN"},
+	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_VEHICLE_GUN"},
+	    {big::CustomWeapon::TP_GUN, "VIEW_SELF_WEAPONS_TP_GUN"},
+	    {big::CustomWeapon::PAINT_GUN, "VIEW_SELF_WEAPONS_PAINT_GUN"},
+	});
 
 	void view::weapons()
 	{
@@ -133,11 +133,11 @@ namespace big
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("WEAPON"_T.data(), custom_weapons[(int)selected].name.data()))
+		if (ImGui::BeginCombo("WEAPON"_T.data(), g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
-				if (ImGui::Selectable(weapon.name.data(), weapon.id == selected))
+				if (ImGui::Selectable(g_translation_service.get_translation(weapon.name).data(), weapon.id == selected))
 				{
 					g.weapons.custom_weapon = weapon.id;
 				}

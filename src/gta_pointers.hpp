@@ -43,7 +43,7 @@ namespace big
 	{
 		memory::handle m_max_wanted_level;
 
-		memory::handle m_world_model_spawn_bypass;
+		PVOID m_world_model_spawn_bypass;
 
 		memory::handle m_blame_explode;
 
