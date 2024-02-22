@@ -123,7 +123,7 @@ namespace big
 				std::int16_t syncing_object_id = -1;
 			} fuzzer{};
 
-			bool external_console = false;
+			bool external_console = true;
 			bool window_hook = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook)
@@ -455,6 +455,7 @@ namespace big
 
 		struct settings
 		{
+			bool onboarding_complete = false;
 			bool dev_dlc = false;
 
 			struct hotkeys
@@ -491,7 +492,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_selected, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, passive, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
 			} hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc, onboarding_complete)
 		} settings{};
 
 		struct spawn_vehicle

@@ -77,12 +77,15 @@ namespace big
 		static void lua_scripts();
 		static void vfx();
 
+		static void onboarding();
+
+		static void cmd_executor();
+
 		static void player_info();
 		static void player_teleport();
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();
-		static void cmd_executor();
 		static void player_vehicle();
 	};
 }
