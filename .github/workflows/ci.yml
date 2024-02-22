@@ -6,6 +6,7 @@ on:
       - src/**
       - cmake/**
       - CMakeLists.txt
+      - .github/workflows/ci.yml
 
 jobs:
   ci:
