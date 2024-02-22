@@ -52,8 +52,6 @@ namespace big::scr_globals
 	static inline const script_global session5(1575007);
 	static inline const script_global session6(2695909);
 
-	static inline const script_global gooch(1882037);
-
 	static inline const script_global gun_van(1948900);
 
 	static inline const script_global interaction_menu_access(2710115); // am_pi_menu -> PI_BIK_13_2_H -> global = true;
@@ -64,8 +62,6 @@ namespace big::scr_globals
 
 	static inline const script_global property_garage(1936959);
 	static inline const script_global property_names(1312263);
-
-	static inline const script_global pickups(2707706);
 
 	static inline const script_global reset_clothing(103936); // freemode 75, &iLocal_.*, 2\);
 }

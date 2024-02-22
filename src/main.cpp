@@ -10,7 +10,7 @@
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
 #include "rage/gameSkeleton.hpp"
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 #include "script_mgr.hpp"
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
@@ -35,6 +35,7 @@
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
+#include "util/is_proton.hpp"
 #include "version.hpp"
 
 namespace big
@@ -73,6 +74,60 @@ namespace big
 		}
 		return patched;
 	}
+
+	std::string ReadRegistryKeySZ(HKEY hKeyParent, std::string subkey, std::string valueName)
+	{
+		HKEY hKey;
+		char value[1024];
+		DWORD value_length = 1024;
+		LONG ret           = RegOpenKeyEx(hKeyParent, subkey.c_str(), 0, KEY_READ, &hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << subkey;
+			return "";
+		}
+		ret = RegQueryValueEx(hKey, valueName.c_str(), NULL, NULL, (LPBYTE)&value, &value_length);
+		RegCloseKey(hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << valueName;
+			return "";
+		}
+		return std::string(value);
+	}
+
+	DWORD ReadRegistryKeyDWORD(HKEY hKeyParent, std::string subkey, std::string valueName)
+	{
+		HKEY hKey;
+		DWORD value;
+		DWORD value_length = sizeof(DWORD);
+		LONG ret           = RegOpenKeyEx(hKeyParent, subkey.c_str(), 0, KEY_READ, &hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << subkey;
+			return NULL;
+		}
+		ret = RegQueryValueEx(hKey, valueName.c_str(), NULL, NULL, (LPBYTE)&value, &value_length);
+		RegCloseKey(hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << valueName;
+			return NULL;
+		}
+		return value;
+	}
+
+	std::unique_ptr<char[]> GetWindowsVersion()
+	{
+		typedef LPWSTR(WINAPI * BFS)(LPCWSTR);
+		LPWSTR UTF16   = BFS(GetProcAddress(LoadLibrary("winbrand.dll"), "BrandingFormatString"))(L"%WINDOWS_LONG%");
+		int BufferSize = WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, NULL, 0, NULL, NULL);
+		std::unique_ptr<char[]> UTF8(new char[BufferSize]);
+		WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, UTF8.get(), BufferSize, NULL, NULL);
+		// BrandingFormatString requires a GlobalFree.
+		GlobalFree(UTF16);
+		return UTF8;
+	}
 }
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
@@ -104,6 +159,23 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
 
+			    // more tech debt, YAY!
+			    if (is_proton())
+			    {
+				    LOG(INFO) << "Running on proton!";
+			    }
+			    else
+			    {
+				    auto display_version = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "DisplayVersion");
+				    auto current_build = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "CurrentBuild");
+				    auto UBR = ReadRegistryKeyDWORD(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "UBR");
+				    LOG(INFO) << GetWindowsVersion() << " Version " << display_version << " (OS Build " << current_build << "." << UBR << ")";
+			    }
+
+#ifndef NDEBUG
+			    LOG(WARNING) << "Debug Build. Switch to RelWithDebInfo or Release Build for a more stable experience";
+#endif
+
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
 
@@ -120,7 +192,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 			    LOG(INFO) << "Byte Patch Manager initialized.";
 
-			    auto renderer_instance = std::make_unique<renderer>();
+			    g_renderer.init();
 			    LOG(INFO) << "Renderer initialized.";
 			    auto gui_instance = std::make_unique<gui>();
 
@@ -256,7 +328,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    fiber_pool_instance.reset();
 			    LOG(INFO) << "Fiber pool uninitialized.";
 
-			    renderer_instance.reset();
+			    g_renderer.destroy();
 			    LOG(INFO) << "Renderer uninitialized.";
 
 			    byte_patch_manager_instance.reset();

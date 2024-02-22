@@ -16,6 +16,7 @@ class CVehicleDriveByMetadataMgr;
 class CBlipList;
 class TimecycleKeyframeData;
 class CTrainConfig;
+class CWeaponInfoManager;
 
 namespace rage
 {
@@ -41,6 +42,8 @@ namespace big
 	struct gta_pointers
 	{
 		memory::handle m_max_wanted_level;
+
+		PVOID m_world_model_spawn_bypass;
 
 		memory::handle m_blame_explode;
 
@@ -100,7 +103,6 @@ namespace big
 		float* m_gravity_level;
 		functions::set_gravity_level m_set_gravity_level;
 
-		PVOID m_world_model_spawn_bypass;
 		PVOID m_native_return;
 		PVOID m_get_label_text;
 		functions::check_chat_profanity* m_check_chat_profanity;
@@ -277,6 +279,7 @@ namespace big
 		PVOID m_allow_weapons_in_vehicle;
 
 		PVOID m_taskjump_constructor;
+		PVOID m_taskfall_constructor;
 
 		PVOID m_write_vehicle_proximity_migration_data_node;
 		functions::migrate_object m_migrate_object;
@@ -286,7 +289,6 @@ namespace big
 
 		GenericPool** m_ped_pool;
 		GenericPool** m_prop_pool;
-		GenericPool** m_pickup_pool;
 		VehiclePool*** m_vehicle_pool;
 
 		PVOID m_netfilter_handle_message;
@@ -359,6 +361,10 @@ namespace big
 		bool* m_is_social_club_overlay_active;
 
 		functions::get_ped_seat m_get_ped_seat;
+
+		functions::received_clone_remove m_received_clone_remove;
+    
+    CWeaponInfoManager* m_weapon_info_manager;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

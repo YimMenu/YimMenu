@@ -732,9 +732,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_STEALTH_MOVEMENT(Ped ped, bool p1, const char* action)
+	static void LUA_NATIVE_PED_SET_PED_STEALTH_MOVEMENT(Ped ped, bool p1, sol::stack_object action)
 	{
-		PED::SET_PED_STEALTH_MOVEMENT(ped, p1, action);
+		PED::SET_PED_STEALTH_MOVEMENT(ped, p1, action.is<const char*>() ? action.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_PED_GET_PED_STEALTH_MOVEMENT(Ped ped)
@@ -892,6 +892,12 @@ namespace lua::native
 		return retval;
 	}
 
+	static bool LUA_NATIVE_PED_HAS_PED_CLEAR_LOS_TO_ENTITY_(Ped ped, Entity entity, float x, float y, float z, int p5, bool p6, bool p7)
+	{
+		auto retval = (bool)PED::_HAS_PED_CLEAR_LOS_TO_ENTITY(ped, entity, x, y, z, p5, p6, p7);
+		return retval;
+	}
+
 	static int LUA_NATIVE_PED_GET_SEAT_PED_IS_TRYING_TO_ENTER(Ped ped)
 	{
 		auto retval = PED::GET_SEAT_PED_IS_TRYING_TO_ENTER(ped);
@@ -954,10 +960,10 @@ namespace lua::native
 		PED::CLEAR_RELATIONSHIP_BETWEEN_GROUPS(relationship, group1, group2);
 	}
 
-	static std::tuple<bool, Hash> LUA_NATIVE_PED_ADD_RELATIONSHIP_GROUP(const char* name, Hash groupHash)
+	static std::tuple<bool, Hash> LUA_NATIVE_PED_ADD_RELATIONSHIP_GROUP(sol::stack_object name, Hash groupHash)
 	{
 		std::tuple<bool, Hash> return_values;
-		std::get<0>(return_values) = (bool)PED::ADD_RELATIONSHIP_GROUP(name, &groupHash);
+		std::get<0>(return_values) = (bool)PED::ADD_RELATIONSHIP_GROUP(name.is<const char*>() ? name.as<const char*>() : nullptr, &groupHash);
 		std::get<1>(return_values) = groupHash;
 
 		return return_values;
@@ -1120,9 +1126,9 @@ namespace lua::native
 		PED::SET_PED_GRAVITY(ped, toggle);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_DAMAGE_TO_PED(Ped ped, int damageAmount, bool p2, Any p3, int p4)
+	static void LUA_NATIVE_PED_APPLY_DAMAGE_TO_PED(Ped ped, int damageAmount, bool p2, Any p3, Hash weaponType)
 	{
-		PED::APPLY_DAMAGE_TO_PED(ped, damageAmount, p2, p3, p4);
+		PED::APPLY_DAMAGE_TO_PED(ped, damageAmount, p2, p3, weaponType);
 	}
 
 	static int LUA_NATIVE_PED_GET_TIME_PED_DAMAGED_BY_WEAPON(Ped ped, Hash weaponHash)
@@ -1348,9 +1354,9 @@ namespace lua::native
 		PED::SET_PED_GET_OUT_UPSIDE_DOWN_VEHICLE(ped, toggle);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_MOVEMENT_CLIPSET(Ped ped, const char* clipSet, float transitionSpeed)
+	static void LUA_NATIVE_PED_SET_PED_MOVEMENT_CLIPSET(Ped ped, sol::stack_object clipSet, float transitionSpeed)
 	{
-		PED::SET_PED_MOVEMENT_CLIPSET(ped, clipSet, transitionSpeed);
+		PED::SET_PED_MOVEMENT_CLIPSET(ped, clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr, transitionSpeed);
 	}
 
 	static void LUA_NATIVE_PED_RESET_PED_MOVEMENT_CLIPSET(Ped ped, float p1)
@@ -1358,9 +1364,9 @@ namespace lua::native
 		PED::RESET_PED_MOVEMENT_CLIPSET(ped, p1);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_STRAFE_CLIPSET(Ped ped, const char* clipSet)
+	static void LUA_NATIVE_PED_SET_PED_STRAFE_CLIPSET(Ped ped, sol::stack_object clipSet)
 	{
-		PED::SET_PED_STRAFE_CLIPSET(ped, clipSet);
+		PED::SET_PED_STRAFE_CLIPSET(ped, clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_RESET_PED_STRAFE_CLIPSET(Ped ped)
@@ -1368,9 +1374,9 @@ namespace lua::native
 		PED::RESET_PED_STRAFE_CLIPSET(ped);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_WEAPON_MOVEMENT_CLIPSET(Ped ped, const char* clipSet)
+	static void LUA_NATIVE_PED_SET_PED_WEAPON_MOVEMENT_CLIPSET(Ped ped, sol::stack_object clipSet)
 	{
-		PED::SET_PED_WEAPON_MOVEMENT_CLIPSET(ped, clipSet);
+		PED::SET_PED_WEAPON_MOVEMENT_CLIPSET(ped, clipSet.is<const char*>() ? clipSet.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_RESET_PED_WEAPON_MOVEMENT_CLIPSET(Ped ped)
@@ -1378,9 +1384,9 @@ namespace lua::native
 		PED::RESET_PED_WEAPON_MOVEMENT_CLIPSET(ped);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_DRIVE_BY_CLIPSET_OVERRIDE(Ped ped, const char* clipset)
+	static void LUA_NATIVE_PED_SET_PED_DRIVE_BY_CLIPSET_OVERRIDE(Ped ped, sol::stack_object clipset)
 	{
-		PED::SET_PED_DRIVE_BY_CLIPSET_OVERRIDE(ped, clipset);
+		PED::SET_PED_DRIVE_BY_CLIPSET_OVERRIDE(ped, clipset.is<const char*>() ? clipset.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_PED_DRIVE_BY_CLIPSET_OVERRIDE(Ped ped)
@@ -1388,9 +1394,9 @@ namespace lua::native
 		PED::CLEAR_PED_DRIVE_BY_CLIPSET_OVERRIDE(ped);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Ped ped, const char* p1)
+	static void LUA_NATIVE_PED_SET_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Ped ped, sol::stack_object p1)
 	{
-		PED::SET_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(ped, p1);
+		PED::SET_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(ped, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Ped ped)
@@ -1413,15 +1419,15 @@ namespace lua::native
 		PED::RESET_PED_IN_VEHICLE_CONTEXT(ped);
 	}
 
-	static bool LUA_NATIVE_PED_IS_SCRIPTED_SCENARIO_PED_USING_CONDITIONAL_ANIM(Ped ped, const char* animDict, const char* anim)
+	static bool LUA_NATIVE_PED_IS_SCRIPTED_SCENARIO_PED_USING_CONDITIONAL_ANIM(Ped ped, sol::stack_object animDict, sol::stack_object anim)
 	{
-		auto retval = (bool)PED::IS_SCRIPTED_SCENARIO_PED_USING_CONDITIONAL_ANIM(ped, animDict, anim);
+		auto retval = (bool)PED::IS_SCRIPTED_SCENARIO_PED_USING_CONDITIONAL_ANIM(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, anim.is<const char*>() ? anim.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_ALTERNATE_WALK_ANIM(Ped ped, const char* animDict, const char* animName, float p3, bool p4)
+	static void LUA_NATIVE_PED_SET_PED_ALTERNATE_WALK_ANIM(Ped ped, sol::stack_object animDict, sol::stack_object animName, float p3, bool p4)
 	{
-		PED::SET_PED_ALTERNATE_WALK_ANIM(ped, animDict, animName, p3, p4);
+		PED::SET_PED_ALTERNATE_WALK_ANIM(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p3, p4);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_PED_ALTERNATE_WALK_ANIM(Ped ped, float p1)
@@ -1429,9 +1435,9 @@ namespace lua::native
 		PED::CLEAR_PED_ALTERNATE_WALK_ANIM(ped, p1);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_ALTERNATE_MOVEMENT_ANIM(Ped ped, int stance, const char* animDictionary, const char* animationName, float p4, bool p5)
+	static void LUA_NATIVE_PED_SET_PED_ALTERNATE_MOVEMENT_ANIM(Ped ped, int stance, sol::stack_object animDictionary, sol::stack_object animationName, float p4, bool p5)
 	{
-		PED::SET_PED_ALTERNATE_MOVEMENT_ANIM(ped, stance, animDictionary, animationName, p4, p5);
+		PED::SET_PED_ALTERNATE_MOVEMENT_ANIM(ped, stance, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animationName.is<const char*>() ? animationName.as<const char*>() : nullptr, p4, p5);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_PED_ALTERNATE_MOVEMENT_ANIM(Ped ped, int stance, float p2)
@@ -1439,20 +1445,20 @@ namespace lua::native
 		PED::CLEAR_PED_ALTERNATE_MOVEMENT_ANIM(ped, stance, p2);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_GESTURE_GROUP(Ped ped, const char* animGroupGesture)
+	static void LUA_NATIVE_PED_SET_PED_GESTURE_GROUP(Ped ped, sol::stack_object animGroupGesture)
 	{
-		PED::SET_PED_GESTURE_GROUP(ped, animGroupGesture);
+		PED::SET_PED_GESTURE_GROUP(ped, animGroupGesture.is<const char*>() ? animGroupGesture.as<const char*>() : nullptr);
 	}
 
-	static Vector3 LUA_NATIVE_PED_GET_ANIM_INITIAL_OFFSET_POSITION(const char* animDict, const char* animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9)
+	static Vector3 LUA_NATIVE_PED_GET_ANIM_INITIAL_OFFSET_POSITION(sol::stack_object animDict, sol::stack_object animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9)
 	{
-		auto retval = PED::GET_ANIM_INITIAL_OFFSET_POSITION(animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9);
+		auto retval = PED::GET_ANIM_INITIAL_OFFSET_POSITION(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, x, y, z, xRot, yRot, zRot, p8, p9);
 		return retval;
 	}
 
-	static Vector3 LUA_NATIVE_PED_GET_ANIM_INITIAL_OFFSET_ROTATION(const char* animDict, const char* animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9)
+	static Vector3 LUA_NATIVE_PED_GET_ANIM_INITIAL_OFFSET_ROTATION(sol::stack_object animDict, sol::stack_object animName, float x, float y, float z, float xRot, float yRot, float zRot, float p8, int p9)
 	{
-		auto retval = PED::GET_ANIM_INITIAL_OFFSET_ROTATION(animDict, animName, x, y, z, xRot, yRot, zRot, p8, p9);
+		auto retval = PED::GET_ANIM_INITIAL_OFFSET_ROTATION(animDict.is<const char*>() ? animDict.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, x, y, z, xRot, yRot, zRot, p8, p9);
 		return retval;
 	}
 
@@ -2038,9 +2044,9 @@ namespace lua::native
 		PED::RESURRECT_PED(ped);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_NAME_DEBUG(Ped ped, const char* name)
+	static void LUA_NATIVE_PED_SET_PED_NAME_DEBUG(Ped ped, sol::stack_object name)
 	{
-		PED::SET_PED_NAME_DEBUG(ped, name);
+		PED::SET_PED_NAME_DEBUG(ped, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static Vector3 LUA_NATIVE_PED_GET_PED_EXTRACTED_DISPLACEMENT(Ped ped, bool worldSpace)
@@ -2074,29 +2080,29 @@ namespace lua::native
 		PED::APPLY_PED_BLOOD_DAMAGE_BY_ZONE(ped, p1, p2, p3, p4);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_PED_BLOOD(Ped ped, int boneIndex, float xRot, float yRot, float zRot, const char* woundType)
+	static void LUA_NATIVE_PED_APPLY_PED_BLOOD(Ped ped, int boneIndex, float xRot, float yRot, float zRot, sol::stack_object woundType)
 	{
-		PED::APPLY_PED_BLOOD(ped, boneIndex, xRot, yRot, zRot, woundType);
+		PED::APPLY_PED_BLOOD(ped, boneIndex, xRot, yRot, zRot, woundType.is<const char*>() ? woundType.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_PED_BLOOD_BY_ZONE(Ped ped, int p1, float p2, float p3, const char* p4)
+	static void LUA_NATIVE_PED_APPLY_PED_BLOOD_BY_ZONE(Ped ped, int p1, float p2, float p3, sol::stack_object p4)
 	{
-		PED::APPLY_PED_BLOOD_BY_ZONE(ped, p1, p2, p3, p4);
+		PED::APPLY_PED_BLOOD_BY_ZONE(ped, p1, p2, p3, p4.is<const char*>() ? p4.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_PED_BLOOD_SPECIFIC(Ped ped, int p1, float p2, float p3, float p4, float p5, int p6, float p7, const char* p8)
+	static void LUA_NATIVE_PED_APPLY_PED_BLOOD_SPECIFIC(Ped ped, int p1, float p2, float p3, float p4, float p5, int p6, float p7, sol::stack_object p8)
 	{
-		PED::APPLY_PED_BLOOD_SPECIFIC(ped, p1, p2, p3, p4, p5, p6, p7, p8);
+		PED::APPLY_PED_BLOOD_SPECIFIC(ped, p1, p2, p3, p4, p5, p6, p7, p8.is<const char*>() ? p8.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_PED_DAMAGE_DECAL(Ped ped, int damageZone, float xOffset, float yOffset, float heading, float scale, float alpha, int variation, bool fadeIn, const char* decalName)
+	static void LUA_NATIVE_PED_APPLY_PED_DAMAGE_DECAL(Ped ped, int damageZone, float xOffset, float yOffset, float heading, float scale, float alpha, int variation, bool fadeIn, sol::stack_object decalName)
 	{
-		PED::APPLY_PED_DAMAGE_DECAL(ped, damageZone, xOffset, yOffset, heading, scale, alpha, variation, fadeIn, decalName);
+		PED::APPLY_PED_DAMAGE_DECAL(ped, damageZone, xOffset, yOffset, heading, scale, alpha, variation, fadeIn, decalName.is<const char*>() ? decalName.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_APPLY_PED_DAMAGE_PACK(Ped ped, const char* damagePack, float damage, float mult)
+	static void LUA_NATIVE_PED_APPLY_PED_DAMAGE_PACK(Ped ped, sol::stack_object damagePack, float damage, float mult)
 	{
-		PED::APPLY_PED_DAMAGE_PACK(ped, damagePack, damage, mult);
+		PED::APPLY_PED_DAMAGE_PACK(ped, damagePack.is<const char*>() ? damagePack.as<const char*>() : nullptr, damage, mult);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_PED_BLOOD_DAMAGE(Ped ped)
@@ -2114,9 +2120,9 @@ namespace lua::native
 		PED::HIDE_PED_BLOOD_DAMAGE_BY_ZONE(ped, p1, p2);
 	}
 
-	static void LUA_NATIVE_PED_CLEAR_PED_DAMAGE_DECAL_BY_ZONE(Ped ped, int p1, const char* p2)
+	static void LUA_NATIVE_PED_CLEAR_PED_DAMAGE_DECAL_BY_ZONE(Ped ped, int p1, sol::stack_object p2)
 	{
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, p1, p2);
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 	}
 
 	static int LUA_NATIVE_PED_GET_PED_DECORATIONS_STATE(Ped ped)
@@ -2235,9 +2241,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_PED_IS_PED_USING_SCENARIO(Ped ped, const char* scenario)
+	static bool LUA_NATIVE_PED_IS_PED_USING_SCENARIO(Ped ped, sol::stack_object scenario)
 	{
-		auto retval = (bool)PED::IS_PED_USING_SCENARIO(ped, scenario);
+		auto retval = (bool)PED::IS_PED_USING_SCENARIO(ped, scenario.is<const char*>() ? scenario.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -2312,19 +2318,19 @@ namespace lua::native
 		PED::RESET_FACIAL_IDLE_ANIM(ped);
 	}
 
-	static void LUA_NATIVE_PED_PLAY_FACIAL_ANIM(Ped ped, const char* animName, const char* animDict)
+	static void LUA_NATIVE_PED_PLAY_FACIAL_ANIM(Ped ped, sol::stack_object animName, sol::stack_object animDict)
 	{
-		PED::PLAY_FACIAL_ANIM(ped, animName, animDict);
+		PED::PLAY_FACIAL_ANIM(ped, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_SET_FACIAL_CLIPSET(Ped ped, const char* animDict)
+	static void LUA_NATIVE_PED_SET_FACIAL_CLIPSET(Ped ped, sol::stack_object animDict)
 	{
-		PED::SET_FACIAL_CLIPSET(ped, animDict);
+		PED::SET_FACIAL_CLIPSET(ped, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_SET_FACIAL_IDLE_ANIM_OVERRIDE(Ped ped, const char* animName, const char* animDict)
+	static void LUA_NATIVE_PED_SET_FACIAL_IDLE_ANIM_OVERRIDE(Ped ped, sol::stack_object animName, sol::stack_object animDict)
 	{
-		PED::SET_FACIAL_IDLE_ANIM_OVERRIDE(ped, animName, animDict);
+		PED::SET_FACIAL_IDLE_ANIM_OVERRIDE(ped, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDict.is<const char*>() ? animDict.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_CLEAR_FACIAL_IDLE_ANIM_OVERRIDE(Ped ped)
@@ -2731,9 +2737,9 @@ namespace lua::native
 		PED::SET_PED_FLEE_ATTRIBUTES(ped, attributeFlags, enable);
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_COWER_HASH(Ped ped, const char* p1)
+	static void LUA_NATIVE_PED_SET_PED_COWER_HASH(Ped ped, sol::stack_object p1)
 	{
-		PED::SET_PED_COWER_HASH(ped, p1);
+		PED::SET_PED_COWER_HASH(ped, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_SET_PED_STEERS_AROUND_DEAD_BODIES(Ped ped, bool toggle)
@@ -3091,14 +3097,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_PED_SET_PED_USING_ACTION_MODE(Ped ped, bool p1, int p2, const char* action)
+	static void LUA_NATIVE_PED_SET_PED_USING_ACTION_MODE(Ped ped, bool p1, int p2, sol::stack_object action)
 	{
-		PED::SET_PED_USING_ACTION_MODE(ped, p1, p2, action);
+		PED::SET_PED_USING_ACTION_MODE(ped, p1, p2, action.is<const char*>() ? action.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_SET_MOVEMENT_MODE_OVERRIDE(Ped ped, const char* name)
+	static void LUA_NATIVE_PED_SET_MOVEMENT_MODE_OVERRIDE(Ped ped, sol::stack_object name)
 	{
-		PED::SET_MOVEMENT_MODE_OVERRIDE(ped, name);
+		PED::SET_MOVEMENT_MODE_OVERRIDE(ped, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_SET_PED_CAPSULE(Ped ped, float value)
@@ -3252,36 +3258,36 @@ namespace lua::native
 		PED::FORCE_INSTANT_LEG_IK_SETUP(ped);
 	}
 
-	static void LUA_NATIVE_PED_REQUEST_ACTION_MODE_ASSET(const char* asset)
+	static void LUA_NATIVE_PED_REQUEST_ACTION_MODE_ASSET(sol::stack_object asset)
 	{
-		PED::REQUEST_ACTION_MODE_ASSET(asset);
+		PED::REQUEST_ACTION_MODE_ASSET(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_PED_HAS_ACTION_MODE_ASSET_LOADED(const char* asset)
+	static bool LUA_NATIVE_PED_HAS_ACTION_MODE_ASSET_LOADED(sol::stack_object asset)
 	{
-		auto retval = (bool)PED::HAS_ACTION_MODE_ASSET_LOADED(asset);
+		auto retval = (bool)PED::HAS_ACTION_MODE_ASSET_LOADED(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_PED_REMOVE_ACTION_MODE_ASSET(const char* asset)
+	static void LUA_NATIVE_PED_REMOVE_ACTION_MODE_ASSET(sol::stack_object asset)
 	{
-		PED::REMOVE_ACTION_MODE_ASSET(asset);
+		PED::REMOVE_ACTION_MODE_ASSET(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 	}
 
-	static void LUA_NATIVE_PED_REQUEST_STEALTH_MODE_ASSET(const char* asset)
+	static void LUA_NATIVE_PED_REQUEST_STEALTH_MODE_ASSET(sol::stack_object asset)
 	{
-		PED::REQUEST_STEALTH_MODE_ASSET(asset);
+		PED::REQUEST_STEALTH_MODE_ASSET(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 	}
 
-	static bool LUA_NATIVE_PED_HAS_STEALTH_MODE_ASSET_LOADED(const char* asset)
+	static bool LUA_NATIVE_PED_HAS_STEALTH_MODE_ASSET_LOADED(sol::stack_object asset)
 	{
-		auto retval = (bool)PED::HAS_STEALTH_MODE_ASSET_LOADED(asset);
+		auto retval = (bool)PED::HAS_STEALTH_MODE_ASSET_LOADED(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static void LUA_NATIVE_PED_REMOVE_STEALTH_MODE_ASSET(const char* asset)
+	static void LUA_NATIVE_PED_REMOVE_STEALTH_MODE_ASSET(sol::stack_object asset)
 	{
-		PED::REMOVE_STEALTH_MODE_ASSET(asset);
+		PED::REMOVE_STEALTH_MODE_ASSET(asset.is<const char*>() ? asset.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_PED_SET_PED_LOD_MULTIPLIER(Ped ped, float multiplier)
@@ -3545,6 +3551,7 @@ namespace lua::native
 		PED.set_function("IS_PED_IN_HIGH_COVER", LUA_NATIVE_PED_IS_PED_IN_HIGH_COVER);
 		PED.set_function("IS_PED_GOING_INTO_COVER", LUA_NATIVE_PED_IS_PED_GOING_INTO_COVER);
 		PED.set_function("SET_PED_PINNED_DOWN", LUA_NATIVE_PED_SET_PED_PINNED_DOWN);
+		PED.set_function("HAS_PED_CLEAR_LOS_TO_ENTITY_", LUA_NATIVE_PED_HAS_PED_CLEAR_LOS_TO_ENTITY_);
 		PED.set_function("GET_SEAT_PED_IS_TRYING_TO_ENTER", LUA_NATIVE_PED_GET_SEAT_PED_IS_TRYING_TO_ENTER);
 		PED.set_function("GET_VEHICLE_PED_IS_TRYING_TO_ENTER", LUA_NATIVE_PED_GET_VEHICLE_PED_IS_TRYING_TO_ENTER);
 		PED.set_function("GET_PED_SOURCE_OF_DEATH", LUA_NATIVE_PED_GET_PED_SOURCE_OF_DEATH);

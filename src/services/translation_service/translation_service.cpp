@@ -4,6 +4,7 @@
 #include "file_manager.hpp"
 #include "http_client/http_client.hpp"
 #include "pointers.hpp"
+#include "renderer/renderer.hpp"
 #include "thread_pool.hpp"
 
 namespace big
@@ -139,6 +140,10 @@ namespace big
 				m_translations[rage::joaat(key)] = value;
 			}
 		}
+
+		// local index is saved below so this is prime location to update a value and be sure to have it persisted!
+		m_local_index.alphabet_type = m_remote_index.translations[m_local_index.selected_language].alphabet_type;
+		g_renderer.get_font_mgr().update_required_alphabet_type(m_local_index.alphabet_type);
 
 		save_local_index();
 	}

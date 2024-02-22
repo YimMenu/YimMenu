@@ -18,11 +18,6 @@ namespace big::pools
 		return **g_pointers->m_gta.m_prop_pool;
 	}
 
-	inline auto& get_all_pickups()
-	{
-		return **g_pointers->m_gta.m_pickup_pool;
-	}
-
 	inline auto get_all_peds_array()
 	{
 		return get_all_peds().to_array();
@@ -36,10 +31,5 @@ namespace big::pools
 	inline auto get_all_props_array()
 	{
 		return get_all_props().to_array();
-	}
-
-	inline auto get_all_pickups_array()
-	{
-		return get_all_pickups().to_array();
 	}
 };

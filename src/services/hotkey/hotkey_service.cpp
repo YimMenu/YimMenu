@@ -4,7 +4,7 @@
 #include "gui.hpp"
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
+#include "renderer/renderer.hpp"
 #include "util/teleport.hpp"
 
 namespace big
@@ -37,7 +37,7 @@ namespace big
 		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
 		register_hotkey("highlighttp", g.settings.hotkeys.teleport_selected, RAGE_JOAAT("highlighttp"));
 
-		g_renderer->add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+		g_renderer.add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(static_cast<eKeyState>(msg), wparam);
 		});
 

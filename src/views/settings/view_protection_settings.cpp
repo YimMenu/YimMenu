@@ -56,6 +56,7 @@ namespace big
 			ImGui::SetTooltip("VIEW_PROTECTION_SETTINGS_RECEIVE_PICKUP_TOOLTIP"_T.data());
 		ImGui::Checkbox("ADMIN_CHECK"_T.data(), &g.protections.admin_check);
 		ImGui::Checkbox("VIEW_PROTECTION_SETTINGS_KICK_REJOIN"_T.data(), &g.protections.kick_rejoin);
+		ImGui::Checkbox("BLOCK_TRAFFIC_MANIPULATION"_T.data(), &g.protections.stop_traffic);
 		components::command_checkbox<"forcerelays">();
 		ImGui::EndGroup();
 

@@ -31,6 +31,7 @@ namespace big
 					// empty the pool, we want the that job below run no matter what for clean up purposes.
 					g_fiber_pool->reset();
 					g_fiber_pool->queue_job([] {
+						g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 						for (auto& command : g_looped_commands)
 							if (command->is_enabled())
 								command->on_disable();
@@ -40,6 +41,7 @@ namespace big
 				}
 				else
 				{
+					g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
 					g_running = false;
 				}
 			}

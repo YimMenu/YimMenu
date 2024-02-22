@@ -43,39 +43,39 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_UGC_CREATE_CONTENT(Any data, int dataCount, const char* contentName, const char* description, const char* tagsCsv, const char* contentTypeName, bool publish, Any p7)
+	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_UGC_CREATE_CONTENT(Any data, int dataCount, sol::stack_object contentName, sol::stack_object description, sol::stack_object tagsCsv, sol::stack_object contentTypeName, bool publish, Any p7)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)DATAFILE::UGC_CREATE_CONTENT(&data, dataCount, contentName, description, tagsCsv, contentTypeName, publish, p7);
+		std::get<0>(return_values) = (bool)DATAFILE::UGC_CREATE_CONTENT(&data, dataCount, contentName.is<const char*>() ? contentName.as<const char*>() : nullptr, description.is<const char*>() ? description.as<const char*>() : nullptr, tagsCsv.is<const char*>() ? tagsCsv.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, publish, p7);
 		std::get<1>(return_values) = data;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_DATAFILE_UGC_CREATE_MISSION(const char* contentName, const char* description, const char* tagsCsv, const char* contentTypeName, bool publish, Any p5)
+	static bool LUA_NATIVE_DATAFILE_UGC_CREATE_MISSION(sol::stack_object contentName, sol::stack_object description, sol::stack_object tagsCsv, sol::stack_object contentTypeName, bool publish, Any p5)
 	{
-		auto retval = (bool)DATAFILE::UGC_CREATE_MISSION(contentName, description, tagsCsv, contentTypeName, publish, p5);
+		auto retval = (bool)DATAFILE::UGC_CREATE_MISSION(contentName.is<const char*>() ? contentName.as<const char*>() : nullptr, description.is<const char*>() ? description.as<const char*>() : nullptr, tagsCsv.is<const char*>() ? tagsCsv.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, publish, p5);
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_UGC_UPDATE_CONTENT(const char* contentId, Any data, int dataCount, const char* contentName, const char* description, const char* tagsCsv, const char* contentTypeName, Any p7)
+	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_UGC_UPDATE_CONTENT(sol::stack_object contentId, Any data, int dataCount, sol::stack_object contentName, sol::stack_object description, sol::stack_object tagsCsv, sol::stack_object contentTypeName, Any p7)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)DATAFILE::UGC_UPDATE_CONTENT(contentId, &data, dataCount, contentName, description, tagsCsv, contentTypeName, p7);
+		std::get<0>(return_values) = (bool)DATAFILE::UGC_UPDATE_CONTENT(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, &data, dataCount, contentName.is<const char*>() ? contentName.as<const char*>() : nullptr, description.is<const char*>() ? description.as<const char*>() : nullptr, tagsCsv.is<const char*>() ? tagsCsv.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, p7);
 		std::get<1>(return_values) = data;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_DATAFILE_UGC_UPDATE_MISSION(const char* contentId, const char* contentName, const char* description, const char* tagsCsv, const char* contentTypeName, Any p5)
+	static bool LUA_NATIVE_DATAFILE_UGC_UPDATE_MISSION(sol::stack_object contentId, sol::stack_object contentName, sol::stack_object description, sol::stack_object tagsCsv, sol::stack_object contentTypeName, Any p5)
 	{
-		auto retval = (bool)DATAFILE::UGC_UPDATE_MISSION(contentId, contentName, description, tagsCsv, contentTypeName, p5);
+		auto retval = (bool)DATAFILE::UGC_UPDATE_MISSION(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, contentName.is<const char*>() ? contentName.as<const char*>() : nullptr, description.is<const char*>() ? description.as<const char*>() : nullptr, tagsCsv.is<const char*>() ? tagsCsv.as<const char*>() : nullptr, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, p5);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DATAFILE_UGC_SET_PLAYER_DATA(const char* contentId, float rating, const char* contentTypeName, Any p3)
+	static bool LUA_NATIVE_DATAFILE_UGC_SET_PLAYER_DATA(sol::stack_object contentId, float rating, sol::stack_object contentTypeName, Any p3)
 	{
-		auto retval = (bool)DATAFILE::UGC_SET_PLAYER_DATA(contentId, rating, contentTypeName, p3);
+		auto retval = (bool)DATAFILE::UGC_SET_PLAYER_DATA(contentId.is<const char*>() ? contentId.as<const char*>() : nullptr, rating, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr, p3);
 		return retval;
 	}
 
@@ -103,9 +103,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DATAFILE_DATAFILE_LOAD_OFFLINE_UGC(const char* filename, Any p1)
+	static bool LUA_NATIVE_DATAFILE_DATAFILE_LOAD_OFFLINE_UGC(sol::stack_object filename, Any p1)
 	{
-		auto retval = (bool)DATAFILE::DATAFILE_LOAD_OFFLINE_UGC(filename, p1);
+		auto retval = (bool)DATAFILE::DATAFILE_LOAD_OFFLINE_UGC(filename.is<const char*>() ? filename.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
@@ -135,9 +135,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_DATAFILE_DATAFILE_START_SAVE_TO_CLOUD(const char* filename, Any p1)
+	static bool LUA_NATIVE_DATAFILE_DATAFILE_START_SAVE_TO_CLOUD(sol::stack_object filename, Any p1)
 	{
-		auto retval = (bool)DATAFILE::DATAFILE_START_SAVE_TO_CLOUD(filename, p1);
+		auto retval = (bool)DATAFILE::DATAFILE_START_SAVE_TO_CLOUD(filename.is<const char*>() ? filename.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
@@ -173,121 +173,121 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_BOOL(Any objectData, const char* key, bool value)
+	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_BOOL(Any objectData, sol::stack_object key, bool value)
 	{
-		DATAFILE::DATADICT_SET_BOOL(&objectData, key, value);
+		DATAFILE::DATADICT_SET_BOOL(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr, value);
 		return objectData;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_INT(Any objectData, const char* key, int value)
+	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_INT(Any objectData, sol::stack_object key, int value)
 	{
-		DATAFILE::DATADICT_SET_INT(&objectData, key, value);
+		DATAFILE::DATADICT_SET_INT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr, value);
 		return objectData;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_FLOAT(Any objectData, const char* key, float value)
+	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_FLOAT(Any objectData, sol::stack_object key, float value)
 	{
-		DATAFILE::DATADICT_SET_FLOAT(&objectData, key, value);
+		DATAFILE::DATADICT_SET_FLOAT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr, value);
 		return objectData;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_STRING(Any objectData, const char* key, const char* value)
+	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_STRING(Any objectData, sol::stack_object key, sol::stack_object value)
 	{
-		DATAFILE::DATADICT_SET_STRING(&objectData, key, value);
+		DATAFILE::DATADICT_SET_STRING(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr, value.is<const char*>() ? value.as<const char*>() : nullptr);
 		return objectData;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_VECTOR(Any objectData, const char* key, float valueX, float valueY, float valueZ)
+	static Any LUA_NATIVE_DATAFILE_DATADICT_SET_VECTOR(Any objectData, sol::stack_object key, float valueX, float valueY, float valueZ)
 	{
-		DATAFILE::DATADICT_SET_VECTOR(&objectData, key, valueX, valueY, valueZ);
+		DATAFILE::DATADICT_SET_VECTOR(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr, valueX, valueY, valueZ);
 		return objectData;
 	}
 
-	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_CREATE_DICT(Any objectData, const char* key)
+	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_CREATE_DICT(Any objectData, sol::stack_object key)
 	{
 		std::tuple<Any*, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_CREATE_DICT(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_CREATE_DICT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_CREATE_ARRAY(Any objectData, const char* key)
+	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_CREATE_ARRAY(Any objectData, sol::stack_object key)
 	{
 		std::tuple<Any*, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_CREATE_ARRAY(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_CREATE_ARRAY(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_BOOL(Any objectData, const char* key)
+	static std::tuple<bool, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_BOOL(Any objectData, sol::stack_object key)
 	{
 		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)DATAFILE::DATADICT_GET_BOOL(&objectData, key);
+		std::get<0>(return_values) = (bool)DATAFILE::DATADICT_GET_BOOL(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_INT(Any objectData, const char* key)
+	static std::tuple<int, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_INT(Any objectData, sol::stack_object key)
 	{
 		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_INT(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_INT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<float, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_FLOAT(Any objectData, const char* key)
+	static std::tuple<float, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_FLOAT(Any objectData, sol::stack_object key)
 	{
 		std::tuple<float, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_FLOAT(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_FLOAT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<const char*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_STRING(Any objectData, const char* key)
+	static std::tuple<const char*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_STRING(Any objectData, sol::stack_object key)
 	{
 		std::tuple<const char*, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_STRING(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_STRING(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<Vector3, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_VECTOR(Any objectData, const char* key)
+	static std::tuple<Vector3, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_VECTOR(Any objectData, sol::stack_object key)
 	{
 		std::tuple<Vector3, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_VECTOR(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_VECTOR(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_DICT(Any objectData, const char* key)
+	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_DICT(Any objectData, sol::stack_object key)
 	{
 		std::tuple<Any*, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_DICT(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_DICT(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_ARRAY(Any objectData, const char* key)
+	static std::tuple<Any*, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_ARRAY(Any objectData, sol::stack_object key)
 	{
 		std::tuple<Any*, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_ARRAY(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_ARRAY(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_TYPE(Any objectData, const char* key)
+	static std::tuple<int, Any> LUA_NATIVE_DATAFILE_DATADICT_GET_TYPE(Any objectData, sol::stack_object key)
 	{
 		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = DATAFILE::DATADICT_GET_TYPE(&objectData, key);
+		std::get<0>(return_values) = DATAFILE::DATADICT_GET_TYPE(&objectData, key.is<const char*>() ? key.as<const char*>() : nullptr);
 		std::get<1>(return_values) = objectData;
 
 		return return_values;
@@ -311,9 +311,9 @@ namespace lua::native
 		return arrayData;
 	}
 
-	static Any LUA_NATIVE_DATAFILE_DATAARRAY_ADD_STRING(Any arrayData, const char* value)
+	static Any LUA_NATIVE_DATAFILE_DATAARRAY_ADD_STRING(Any arrayData, sol::stack_object value)
 	{
-		DATAFILE::DATAARRAY_ADD_STRING(&arrayData, value);
+		DATAFILE::DATAARRAY_ADD_STRING(&arrayData, value.is<const char*>() ? value.as<const char*>() : nullptr);
 		return arrayData;
 	}
 

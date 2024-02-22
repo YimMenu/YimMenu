@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
+#include "gta/weapon_info_manager.hpp"
 #include "hooking/hooking.hpp"
 #include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
@@ -25,7 +26,21 @@ namespace big
 			id.m_instance_id = buffer.Read<int32_t>(8);
 	}
 
-	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	static bool is_valid_weapon(rage::joaat_t hash)
+	{
+		for (const auto& info : g_pointers->m_gta.m_weapon_info_manager->m_item_infos)
+		{
+			if (info && info->m_name == hash && info->GetClassId() == RAGE_JOAAT("cweaponinfo"))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+  
+	// Returns true if bad event
+	bool scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
 	{
 		uint8_t damageType;
 		uint32_t weaponType; // weaponHash
@@ -70,6 +85,13 @@ namespace big
 
 		damageType = buffer->Read<uint8_t>(2);
 		weaponType = buffer->Read<uint32_t>(32);
+
+		if (!is_valid_weapon(weaponType))
+		{
+			notify::crash_blocked(player, "invalid weapon type");
+			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
+			return true;
+		}
 
 		overrideDefaultDamage   = buffer->Read<uint8_t>(1);
 		hitEntityWeapon         = buffer->Read<uint8_t>(1);
@@ -214,6 +236,8 @@ namespace big
 				    player->get_ped()->m_navigation->get_position());
 			});
 		}
+
+		return false;
 	}
 
 	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -564,6 +588,11 @@ namespace big
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
+			else if (type == WorldStateDataType::PopMultiplierArea && g.protections.stop_traffic && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
 
 			buffer->Seek(0);
 			break;
@@ -700,7 +729,10 @@ namespace big
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
 		{
-			scan_weapon_damage_event(source_player, buffer);
+			if (scan_weapon_damage_event(event_manager, source_player, target_player, event_index, event_handled_bitset, buffer))
+			{
+				return;
+			}
 			break;
 		}
 		default: break;

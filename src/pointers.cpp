@@ -1,8 +1,8 @@
 #include "pointers.hpp"
 
 #include "gta_pointers_layout_info.hpp"
-#include "sc_pointers_layout_info.hpp"
 #include "memory/all.hpp"
+#include "sc_pointers_layout_info.hpp"
 
 namespace big
 {
@@ -157,15 +157,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_swapchain = ptr.add(3).rip().as<IDXGISwapChain**>();
-            }
-        },
-        // World Model Spawn Bypass
-        {
-            "WMSB",
-            "48 85 C0 0F 84 ? ? ? ? 8B 48 50",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_world_model_spawn_bypass = ptr.as<PVOID>();
             }
         },
         // Native Return Spoofer
@@ -1246,7 +1237,6 @@ namespace big
             [](memory::handle ptr)
 		    {
 			    g_pointers->m_gta.m_prop_pool = ptr.add(3).rip().as<GenericPool**>();
-			    g_pointers->m_gta.m_pickup_pool = ptr.add(0xE).rip().as<GenericPool**>();
 		    }
         },
         // Vehicle Pool
@@ -1265,6 +1255,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_taskjump_constructor = ptr.as<PVOID>();
+            }
+        },
+        // Task Fall Constructor
+        {
+            "TFC",
+            "E8 ? ? ? ? B3 04 08 98 A0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_taskfall_constructor = ptr.add(1).rip().as<PVOID>();
             }
         },
         // NetFilter Handle Message
@@ -1508,6 +1507,15 @@ namespace big
                 g_pointers->m_gta.m_max_wanted_level = ptr;
             }
         },
+        // World Model Spawn Bypass
+        {
+            "WMSB",
+            "48 85 C0 0F 84 ? ? ? ? 8B 48 50",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_world_model_spawn_bypass = ptr.as<PVOID>();
+            }
+        },
         // Blame Explode
         {
             "BE",
@@ -1746,6 +1754,24 @@ namespace big
             {
                 g_pointers->m_gta.m_get_ped_seat = ptr.add(1).rip().as<functions::get_ped_seat>();
             }
+        },
+        // RECEIVED_CLONE_REMOVE
+        {
+            "RCR",
+            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 54 41 56 41 57 48 83 EC 50 4C 8B F2 4D 8B E0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_received_clone_remove = ptr.as<functions::received_clone_remove>();
+            }
+        },
+        // CWeaponInfoManager
+        {
+            "CWIM",
+            "0F B7 15 ? ? ? ? ? 33 D2 2B D3 78 ? ? 8B 1D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_weapon_info_manager = ptr.add(3).rip().sub(72).as<CWeaponInfoManager*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
@@ -1763,7 +1789,7 @@ namespace big
         // Update instructions: Scan 48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 41 8B E9 and xref it to get to the vtable. Xref the vtable and generate a new signature
         {
             "PD",
-            "48 8D 05 ? ? ? ? 48 8B D9 48 89 01 48 83 C1 08 E8 ? ? ? ? 33 C0",
+            "48 8D 05 ? ? ? ? 48 8B F9 48 89 01 48 83 C1 08 E8 ? ? ? ? 33 C0",
             [](memory::handle ptr)
             {
                 auto presence_data_vft             = ptr.add(3).rip().as<PVOID*>();

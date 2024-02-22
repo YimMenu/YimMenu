@@ -285,8 +285,9 @@ namespace big
 			bool admin_check             = true;
 			bool kick_rejoin             = true;
 			bool force_relay_connections = false;
+			bool stop_traffic            = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic)
 		} protections{};
 
 		struct self
@@ -343,6 +344,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
+			bool graceful_landing			  = false;	
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
@@ -625,7 +627,7 @@ namespace big
 					NLOHMANN_DEFINE_TYPE_INTRUSIVE(auto_disarm, enable, neutralize)
 				} auto_disarm{};
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, ped_rain, veh_rain, high_alert, ped_rush, combative, auto_disarm)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(nearby, ignore, high_alert, ped_rush, auto_disarm)
 			} nearby{};
 
 			struct model_swapper
@@ -855,8 +857,14 @@ namespace big
 				float fov              = 90.f;
 				float distance         = 200.f;
 				uint32_t selected_bone = 0x796E; // Default to head
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, fov, distance, selected_bone)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, on_player, on_enemy, on_police, on_npc, fov, distance)
 			} aimbot{};
+
+			struct flying_axe
+			{
+				bool enable            = false;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
+			} flying_axe{};
 
 			CustomWeapon custom_weapon    = CustomWeapon::NONE;
 			bool infinite_ammo            = false;
@@ -973,15 +981,13 @@ namespace big
 			bool change_esp_color_from_dist = false;
 			bool scale_health_from_dist     = false;
 			bool scale_armor_from_dist      = false;
-			bool object_esp                 = false;
-			bool show_gs_cache_boxes        = false;
 			float distance_threshold[2]     = {100.f, 200.f};
 			ImU32 enemy_color               = 4281479904;
 			ImU32 enemy_near_color          = 4283794943;
 			ImU32 default_color             = 4285713522;
 			ImU32 friend_color              = 4293244509;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, object_esp, show_gs_cache_boxes, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(esp, enabled, global_render_distance, tracer_render_distance, box_render_distance, tracer, tracer_draw_position, box, health, armor, god, distance, name, change_esp_color_from_dist, scale_health_from_dist, scale_armor_from_dist, distance_threshold, enemy_color, enemy_near_color, default_color, friend_color)
 		} esp{};
 
 		struct session_browser

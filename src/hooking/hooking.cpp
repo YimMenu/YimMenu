@@ -115,6 +115,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::task_jump_constructor>("TJC", g_pointers->m_gta.m_taskjump_constructor);
 
+		detour_hook_helper::add<hooks::task_fall_constructor>("TFC", g_pointers->m_gta.m_taskfall_constructor);
+
 		detour_hook_helper::add<hooks::enumerate_audio_devices>("EAD", g_pointers->m_gta.m_enumerate_audio_devices);
 		detour_hook_helper::add<hooks::direct_sound_capture_create>("DSCC", g_pointers->m_gta.m_direct_sound_capture_create);
 
@@ -135,6 +137,8 @@ namespace big
 		detour_hook_helper::add<hooks::render_big_ped>("RBP", g_pointers->m_gta.m_render_big_ped);
 
 		detour_hook_helper::add<hooks::read_bits_single>("RBS", g_pointers->m_gta.m_read_bits_single);
+
+		detour_hook_helper::add<hooks::received_clone_remove>("RCR", g_pointers->m_gta.m_received_clone_remove);
 
 		g_hooking = this;
 	}

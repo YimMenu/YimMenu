@@ -446,24 +446,19 @@ namespace big::ped
 
 	inline bool change_player_model(const Hash hash)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (entity::request_model(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
+			self::ped = PLAYER::PLAYER_PED_ID();
+			PLAYER::SET_PLAYER_MODEL(self::id, hash);
 			script::get_current()->yield();
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+			for (int i = 0; i < 12; i++)
+			{
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, i, PED::GET_PED_DRAWABLE_VARIATION(self::ped, i), PED::GET_PED_TEXTURE_VARIATION(self::ped, i), PED::GET_PED_PALETTE_VARIATION(self::ped, i));
+			}
+			return true;	
 		}
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return false;
-		}
-		PLAYER::SET_PLAYER_MODEL(self::id, hash);
-		self::ped = PLAYER::PLAYER_PED_ID();
-		script::get_current()->yield();
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		for (int i = 0; i < 12; i++)
-		{
-			PED::SET_PED_COMPONENT_VARIATION(self::ped, i, PED::GET_PED_DRAWABLE_VARIATION(self::ped, i), PED::GET_PED_TEXTURE_VARIATION(self::ped, i), PED::GET_PED_PALETTE_VARIATION(self::ped, i));
-		}
-		return true;
+		return false;
 	}
 
 	inline bool steal_outfit(const Ped target)
@@ -512,29 +507,22 @@ namespace big::ped
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (entity::request_model(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
+			Ped ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
+
+		    script::get_current()->yield();
+
+		    if (clone)
+		    {
+		        PED::CLONE_PED_TO_TARGET(clone, ped);
+		    }
+
+		    STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		    return ped;	
 		}
-
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return 0;
-		}
-
-		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
-
-		script::get_current()->yield();
-
-		if (clone)
-		{
-			PED::CLONE_PED_TO_TARGET(clone, ped);
-		}
-
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-
-		return ped;
+		return 0;
 	}
 
 	inline void set_ped_random_component_variation(Ped ped)
