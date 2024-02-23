@@ -12,12 +12,19 @@ namespace big::entity
 
 	void clean_ped(Ped ped)
 	{
-		Ped player_ped = self::ped;
-
-		PED::CLEAR_PED_BLOOD_DAMAGE(player_ped);
-		PED::CLEAR_PED_WETNESS(player_ped);
-		PED::CLEAR_PED_ENV_DIRT(player_ped);
-		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
+		PED::CLEAR_PED_BLOOD_DAMAGE(ped);
+		PED::CLEAR_PED_WETNESS(ped);
+		PED::CLEAR_PED_ENV_DIRT(ped);
+		PED::RESET_PED_VISIBLE_DAMAGE(ped);
+			
+		// https://forum.cfx.re/t/information-needed-to-clear-visible-player-damage-scars-etc/283216
+		// https://docs.fivem.net/natives/?_0x397C38AA7B4A5F83
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 0, "ALL");
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 1, "ALL");
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 2, "ALL");
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 3, "ALL");
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 4, "ALL");
+		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 5, "ALL");
 	}
 
 	void delete_entity(Entity& ent, bool force)
