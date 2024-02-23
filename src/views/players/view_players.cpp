@@ -119,22 +119,40 @@ namespace big
 			// used to account for scrollbar width
 			has_scrollbar = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f;
 
-			// basically whichever is smaller, the max available screenspace or the calculated window_height
-			window_height = has_scrollbar ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
-
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, {0.f, 0.f, 0.f, 0.f});
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});
 
-			if (ImGui::BeginListBox("##players", {ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2, window_height}))
+			auto width_of_player_list   = ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2;
+
+			static std::string search_player_name;
+			ImGui::SetNextItemWidth(width_of_player_list);
+			components::input_text_with_hint("###search_player_name", "search name", search_player_name);
+
+			auto height_of_search_input = ImGui::GetItemRectSize().y; // Get the size of the last element
+
+			// basically whichever is smaller, the max available screenspace or the calculated window_height
+			window_height = has_scrollbar ? (float)*g_pointers->m_gta.m_resolution_y - (window_pos + 40.f) : window_height;
+			window_height -= height_of_search_input; // subtract height of search_input
+
+			if (ImGui::BeginListBox("##players", {width_of_player_list, window_height}))
 			{
 				ImGui::SetScrollX(0);
 				player_button(g_player_service->get_self());
 
 				if (player_count > 1)
+				{
 					ImGui::Separator();
 
-				for (const auto& [_, player] : g_player_service->players())
-					player_button(player);
+					for (const auto& [_, player] : g_player_service->players())
+						if (search_player_name.length())
+						{
+							std::string lowercaseSearchString = to_lower_case(search_player_name);
+							if (std::string lowercaseStr = to_lower_case(player->get_name()); lowercaseStr.find(lowercaseSearchString) != std::string::npos)
+								player_button(player);
+						}
+						else
+							player_button(player);
+				}
 
 				ImGui::EndListBox();
 			}
