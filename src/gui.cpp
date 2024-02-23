@@ -32,7 +32,6 @@ namespace big
 
 		// should remain in a league of its own
 		NOTIFICATIONS = 0x4000,
-
 	};
 
 	gui::gui() :
@@ -48,11 +47,12 @@ namespace big
 		g_renderer.add_dx_callback(view::vehicle_control, eRenderPriority::VEHICLE_CONTROL);
 		g_renderer.add_dx_callback(esp::draw, eRenderPriority::ESP); // TODO: move to ESP service
 		g_renderer.add_dx_callback(view::context_menu, eRenderPriority::CONTEXT_MENU);
-		
+
 		g_renderer.add_dx_callback(
 		    [this] {
 			    dx_on_tick();
-		    }, eRenderPriority::MENU);
+		    },
+		    eRenderPriority::MENU);
 
 		g_renderer.add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);

@@ -263,11 +263,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_running = true;
 
 			    while (g_running)
-				{
-					g.attempt_save();
+			    {
+				    g.attempt_save();
 
 				    std::this_thread::sleep_for(500ms);
-				}
+			    }
 
 			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";

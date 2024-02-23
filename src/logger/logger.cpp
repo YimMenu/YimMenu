@@ -1,5 +1,5 @@
-#pragma once
 #include "logger.hpp"
+
 #include "util/is_proton.hpp"
 
 namespace big
@@ -15,13 +15,13 @@ namespace big
 	void logger::initialize(const std::string_view console_title, file file, bool attach_console)
 	{
 		m_console_title = console_title;
-		m_file = file;
+		m_file          = file;
 		if (is_proton())
 		{
 			LOG(VERBOSE) << "Using simple logger.";
 			m_console_logger = &logger::format_console_simple;
 		}
-		
+
 		toggle_external_console(attach_console);
 		create_backup();
 		m_file_out.open(m_file.get_path(), std::ios_base::out | std::ios_base::trunc);
