@@ -142,6 +142,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    0,
 		    [](PVOID) -> DWORD {
 			    auto handler = exception_handler();
+			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    while (!FindWindow("grcWindow", nullptr))
 				    std::this_thread::sleep_for(100ms);
@@ -150,11 +151,10 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    base_dir /= "YimMenu";
 			    g_file_manager.init(base_dir);
 
-			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
+			    g.init(g_file_manager.get_project_file("./settings.json"));
+			    LOG(INFO) << "Settings Loaded.";
 
-			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
-
-			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
+			    g_log.initialize("YimMenu", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
 
 			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
@@ -178,9 +178,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    auto thread_pool_instance = std::make_unique<thread_pool>();
 			    LOG(INFO) << "Thread pool initialized.";
-
-			    g.init(g_file_manager.get_project_file("./settings.json"));
-			    LOG(INFO) << "Settings Loaded.";
 
 			    auto pointers_instance = std::make_unique<pointers>();
 			    LOG(INFO) << "Pointers initialized.";
@@ -266,7 +263,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_running = true;
 
 			    while (g_running)
+			    {
+				    g.attempt_save();
+
 				    std::this_thread::sleep_for(500ms);
+			    }
 
 			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
@@ -340,8 +341,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Thread pool uninitialized.";
 
 			    LOG(INFO) << "Farewell!";
-			    logger_instance->destroy();
-			    logger_instance.reset();
+			    g_log.destroy();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

@@ -10,19 +10,49 @@
 
 namespace big
 {
+	/**
+	 * @brief The later an entry comes in this enum to higher up it comes in the z-index.
+	 */
+	enum eRenderPriority
+	{
+		// low priority
+		ESP,
+		CONTEXT_MENU,
+
+		// medium priority
+		MENU = 0x1000,
+		VEHICLE_CONTROL,
+
+		// high priority
+		INFO_OVERLAY = 0x2000,
+		CMD_EXECUTOR,
+
+		GTA_DATA_CACHE = 0x3000,
+		ONBOARDING,
+
+		// should remain in a league of its own
+		NOTIFICATIONS = 0x4000,
+	};
+
 	gui::gui() :
 	    m_is_open(false),
 	    m_override_mouse(false)
 	{
-		g_renderer.add_dx_callback(view::gta_data, -1);
-		g_renderer.add_dx_callback(view::notifications, -2);
-		g_renderer.add_dx_callback(view::overlay, -3);
-		g_renderer.add_dx_callback(view::cmd_executor, -4);
+		g_renderer.add_dx_callback(view::notifications, eRenderPriority::NOTIFICATIONS);
+		g_renderer.add_dx_callback(view::onboarding, eRenderPriority::ONBOARDING);
+		g_renderer.add_dx_callback(view::gta_data, eRenderPriority::GTA_DATA_CACHE);
+		g_renderer.add_dx_callback(view::cmd_executor, eRenderPriority::CMD_EXECUTOR);
+		g_renderer.add_dx_callback(view::overlay, eRenderPriority::INFO_OVERLAY);
+
+		g_renderer.add_dx_callback(view::vehicle_control, eRenderPriority::VEHICLE_CONTROL);
+		g_renderer.add_dx_callback(esp::draw, eRenderPriority::ESP); // TODO: move to ESP service
+		g_renderer.add_dx_callback(view::context_menu, eRenderPriority::CONTEXT_MENU);
+
 		g_renderer.add_dx_callback(
 		    [this] {
 			    dx_on_tick();
 		    },
-		    -5);
+		    eRenderPriority::MENU);
 
 		g_renderer.add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(hwnd, msg, wparam, lparam);
@@ -33,10 +63,6 @@ namespace big
 				g.cmd_executor.enabled = false;
 			}
 		});
-
-		g_renderer.add_dx_callback(view::vehicle_control, 3);
-		g_renderer.add_dx_callback(esp::draw, 2); // TODO: move to ESP service
-		g_renderer.add_dx_callback(view::context_menu, 1);
 
 
 		dx_init();

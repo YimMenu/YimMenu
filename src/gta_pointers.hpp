@@ -363,8 +363,8 @@ namespace big
 		functions::get_ped_seat m_get_ped_seat;
 
 		functions::received_clone_remove m_received_clone_remove;
-    
-    CWeaponInfoManager* m_weapon_info_manager;
+
+		CWeaponInfoManager* m_weapon_info_manager;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
