@@ -57,7 +57,7 @@ namespace big
 		const auto style = ImGui::GetStyle();
 		// branchless conditional calculation
 		const auto plyr_btn_width = 300.f - (style.ItemInnerSpacing.x * 2) - (has_scrollbar * style.ScrollbarSize);
-		if (ImGui::Button(plyr->get_name(), { plyr_btn_width, 0.f}))
+		if (ImGui::Button(plyr->get_name(), {plyr_btn_width, 0.f}))
 		{
 			g_player_service->set_selected(plyr);
 			g_gui_service->set_selected(tabs::PLAYER);
@@ -114,12 +114,11 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, {0.f, 0.f, 0.f, 0.f});
 
 			const auto style = ImGui::GetStyle();
-			float window_height = (
-				ImGui::CalcTextSize("A").y + style.FramePadding.y * 2.0f + style.ItemSpacing.y) // button size
-				* player_count // amount of players
-				+ (player_count > 1) * ((style.ItemSpacing.y * 2) + 1.f) // account for ImGui::Separator spacing
-				+ (player_count == 1) * 2.f; // some arbitrary height to make it fit
-			auto window_width   = ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2;
+			float window_height = (ImGui::CalcTextSize("A").y + style.FramePadding.y * 2.0f + style.ItemSpacing.y) // button size
+			        * player_count                                       // amount of players
+			    + (player_count > 1) * ((style.ItemSpacing.y * 2) + 1.f) // account for ImGui::Separator spacing
+			    + (player_count == 1) * 2.f;                             // some arbitrary height to make it fit
+			auto window_width = ImGui::GetWindowSize().x - ImGui::GetStyle().WindowPadding.x * 2;
 			// used to account for scrollbar width
 			has_scrollbar = window_height + window_pos > (float)*g_pointers->m_gta.m_resolution_y - 10.f;
 
