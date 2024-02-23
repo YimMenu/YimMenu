@@ -16,15 +16,11 @@ namespace big::entity
 		PED::CLEAR_PED_WETNESS(ped);
 		PED::CLEAR_PED_ENV_DIRT(ped);
 		PED::RESET_PED_VISIBLE_DAMAGE(ped);
-			
+
 		// https://forum.cfx.re/t/information-needed-to-clear-visible-player-damage-scars-etc/283216
 		// https://docs.fivem.net/natives/?_0x397C38AA7B4A5F83
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 0, "ALL");
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 1, "ALL");
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 2, "ALL");
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 3, "ALL");
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 4, "ALL");
-		PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, 5, "ALL");
+		for (int i = 0; i <= 5; ++i)
+			PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, i, "ALL");
 	}
 
 	void delete_entity(Entity& ent, bool force)
