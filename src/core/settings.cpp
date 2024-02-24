@@ -8,17 +8,6 @@ namespace big
 	{
 		m_save_file = save_file;
 		load();
-
-		g_thread_pool->push([this] {
-			while (!g_running)
-				std::this_thread::yield();
-
-			while (g_running)
-			{
-				std::this_thread::sleep_for(100ms);
-				attempt_save();
-			}
-		});
 	}
 
 	void menu_settings::attempt_save()

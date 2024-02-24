@@ -190,24 +190,34 @@ namespace big
 		m_state["os"] = sandbox_os;
 	}
 
+	static std::optional<std::filesystem::path> make_absolute(const std::filesystem::path& root, const std::filesystem::path& user_path)
+	{
+		auto final_path = std::filesystem::weakly_canonical(root / user_path);
+
+		auto [root_end, nothing] = std::mismatch(root.begin(), root.end(), final_path.begin());
+
+		if (root_end != root.end())
+			return std::nullopt;
+
+		return final_path;
+	};
+
 	void lua_module::sandbox_lua_io_library()
 	{
 		auto io = m_state["io"];
 		sol::table sandbox_io(m_state, sol::create);
 
-		m_io_open          = io["open"];
+		m_io_open = io["open"];
+
+		// Lua API: Table
+		// Name: io
+		// Table for file manipulation. Modified for security purposes.
+
+		// Lua API: Function
+		// Table: io
+		// Name: open
+		// Returns: file_handle: file handle or nil if can't read / write to the given path.
 		sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
-			constexpr auto make_absolute = [](const std::filesystem::path& root, const std::filesystem::path& user_path) -> std::optional<std::filesystem::path> {
-				auto final_path = std::filesystem::weakly_canonical(root / user_path);
-
-				auto [root_end, nothing] = std::mismatch(root.begin(), root.end(), final_path.begin());
-
-				if (root_end != root.end())
-					return std::nullopt;
-
-				return final_path;
-			};
-
 			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
 			if (!scripts_config_sub_path)
 			{
@@ -220,10 +230,26 @@ namespace big
 
 			if (res.get_type() == sol::type::lua_nil)
 			{
-				LOG(WARNING) << "Couldn't io.open a file called " << filename << " mode (" << mode << "). Note that io.open is restricted to the scripts_config folder.";
+				LOG(WARNING) << "Couldn't io.open a file called " << filename << " mode (" << mode << "). Note that io.open is restricted to the scripts_config folder. If you want to check if a file exists, use io.exists";
 			}
 
 			return res;
+		};
+
+		// Lua API: Function
+		// Table: io
+		// Name: exists
+		// Returns: boolean: True if the passed file path exists
+		sandbox_io["exists"] = [](const std::string& filename) -> bool {
+			const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
+			if (!scripts_config_sub_path)
+			{
+				LOG(WARNING) << "io.open is restricted to the scripts_config folder, and the filename provided (" << filename << ") is outside of it.";
+
+				return false;
+			}
+
+			return std::filesystem::exists(*scripts_config_sub_path);
 		};
 
 		m_state["io"] = sandbox_io;
