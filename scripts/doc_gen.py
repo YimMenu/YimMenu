@@ -1,7 +1,7 @@
 import os
 from enum import Enum
 
-src_folder = "../../src/"
+src_folder = "../src/"
 
 lua_api_comment_identifier = "lua api"
 lua_api_comment_separator = ":"
@@ -597,19 +597,19 @@ def is_lua_doc_comment_startswith(line_lower, starts_with_text):
 parse_lua_api_doc(src_folder)
 
 try:
-    os.makedirs("./tables/")
+    os.makedirs("../docs/lua/tables/")
 except:
     pass
 
 for table_name, table in tables.items():
-    file_name = f"./tables/{table_name}.md"
+    file_name = f"../docs/lua/tables/{table_name}.md"
     if os.path.exists(file_name):
         os.remove(file_name)
     f = open(file_name, "ba")
     f.write(bytes(str(table), "UTF8"))
     f.close()
 
-tabs_file_name = f"./tabs.md"
+tabs_file_name = f"../docs/lua/tabs.md"
 if os.path.exists(tabs_file_name):
     os.remove(tabs_file_name)
 f = open(tabs_file_name, "a")
@@ -641,7 +641,7 @@ for i in range(1, len(tabs_enum) - 1):
 
 f.close()
 
-infraction_file_name = f"../lua/infraction.md"
+infraction_file_name = f"../docs/lua/infraction.md"
 if os.path.exists(infraction_file_name):
     os.remove(infraction_file_name)
 f = open(infraction_file_name, "a")
@@ -667,12 +667,12 @@ for i in range(0, len(infraction_enum)):
 f.close()
 
 try:
-    os.makedirs("./classes/")
+    os.makedirs("../docs/lua/classes/")
 except:
     pass
 
 for class_name, class_ in classes.items():
-    file_name = f"./classes/{class_name}.md"
+    file_name = f"../docs/lua/classes/{class_name}.md"
     if os.path.exists(file_name):
         os.remove(file_name)
     f = open(file_name, "ba")
@@ -680,7 +680,7 @@ for class_name, class_ in classes.items():
     f.close()
 
 
-commands_file_name = f"./commands.md"
+commands_file_name = f"../docs/lua/commands.md"
 if os.path.exists(commands_file_name):
     os.remove(commands_file_name)
 f = open(commands_file_name, "a")
@@ -704,7 +704,7 @@ For a complete list of available command functions, please refer to the command 
 
 
 commands = []
-with open("./commands_dump.txt", "r") as file:
+with open("../docs/lua/commands_dump.txt", "r") as file:
     for line in file:
         cmd = line.split("|", 1)[1].strip().split("|")
         commands.append(cmd)
