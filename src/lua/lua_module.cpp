@@ -216,7 +216,7 @@ void lua_module::sandbox_lua_io_library()
 	// Lua API: Function
 	// Table: io
 	// Name: open
-	// Returns: file handle
+	// Returns: file_handle: file handle or nil if can't read / write to the given path.
 	sandbox_io["open"] = [this](const std::string& filename, const std::string& mode) {
 		const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
 		if (!scripts_config_sub_path)
@@ -239,7 +239,7 @@ void lua_module::sandbox_lua_io_library()
 	// Lua API: Function
 	// Table: io
 	// Name: exists
-	// Returns: True if the passed file path exists
+	// Returns: boolean: True if the passed file path exists
 	sandbox_io["exists"] = [](const std::string& filename) -> bool {
 		const auto scripts_config_sub_path = make_absolute(g_lua_manager->get_scripts_config_folder().get_path(), filename);
 		if (!scripts_config_sub_path)

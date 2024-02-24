@@ -7,21 +7,21 @@ Table for file manipulation. Modified for security purposes.
 ### `open()`
 
 - **Returns:**
-  - `file handle`: 
+  - `file_handle`: file handle or nil if can't read / write to the given path.
 
 **Example Usage:**
 ```lua
-file handle = io.open()
+file_handle = io.open()
 ```
 
 ### `exists()`
 
 - **Returns:**
-  - `True if the passed file path exists`: 
+  - `boolean`: True if the passed file path exists
 
 **Example Usage:**
 ```lua
-True if the passed file path exists = io.exists()
+boolean = io.exists()
 ```
 
 
