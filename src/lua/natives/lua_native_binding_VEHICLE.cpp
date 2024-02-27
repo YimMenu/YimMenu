@@ -3766,13 +3766,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_VEHICLE_GET_ALL_VEHICLES(Any vehsStruct)
+	static int LUA_NATIVE_VEHICLE_GET_ALL_VEHICLES(uintptr_t vehsStruct)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = VEHICLE::GET_ALL_VEHICLES(&vehsStruct);
-		std::get<1>(return_values) = vehsStruct;
-
-		return return_values;
+		auto retval = VEHICLE::GET_ALL_VEHICLES((Any*)vehsStruct);
+		return retval;
 	}
 
 	static void LUA_NATIVE_VEHICLE_SET_CARGOBOB_EXTA_PICKUP_RANGE(Any p0, Any p1)

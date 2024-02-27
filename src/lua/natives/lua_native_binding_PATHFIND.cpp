@@ -135,15 +135,13 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Vector3, Vector3, Any, Any, float> LUA_NATIVE_PATHFIND_GET_CLOSEST_ROAD(float x, float y, float z, float p3, int p4, Vector3 p5, Vector3 p6, Any p7, Any p8, float p9, bool p10)
+	static std::tuple<bool, Vector3, Vector3, float> LUA_NATIVE_PATHFIND_GET_CLOSEST_ROAD(float x, float y, float z, float p3, int p4, Vector3 p5, Vector3 p6, uintptr_t p7, uintptr_t p8, float p9, bool p10)
 	{
-		std::tuple<bool, Vector3, Vector3, Any, Any, float> return_values;
-		std::get<0>(return_values) = (bool)PATHFIND::GET_CLOSEST_ROAD(x, y, z, p3, p4, &p5, &p6, &p7, &p8, &p9, p10);
+		std::tuple<bool, Vector3, Vector3, float> return_values;
+		std::get<0>(return_values) = (bool)PATHFIND::GET_CLOSEST_ROAD(x, y, z, p3, p4, &p5, &p6, (Any*)p7, (Any*)p8, &p9, p10);
 		std::get<1>(return_values) = p5;
 		std::get<2>(return_values) = p6;
-		std::get<3>(return_values) = p7;
-		std::get<4>(return_values) = p8;
-		std::get<5>(return_values) = p9;
+		std::get<3>(return_values) = p9;
 
 		return return_values;
 	}

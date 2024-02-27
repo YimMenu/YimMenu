@@ -90,22 +90,16 @@ namespace lua::native
 		GRAPHICS::FREE_MEMORY_FOR_MISSION_CREATOR_PHOTO();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_GRAPHICS_LOAD_MISSION_CREATOR_PHOTO(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_GRAPHICS_LOAD_MISSION_CREATOR_PHOTO(uintptr_t p0, Any p1, Any p2, Any p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)GRAPHICS::LOAD_MISSION_CREATOR_PHOTO(&p0, p1, p2, p3);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)GRAPHICS::LOAD_MISSION_CREATOR_PHOTO((Any*)p0, p1, p2, p3);
+		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_GRAPHICS_GET_STATUS_OF_LOAD_MISSION_CREATOR_PHOTO(Any p0)
+	static int LUA_NATIVE_GRAPHICS_GET_STATUS_OF_LOAD_MISSION_CREATOR_PHOTO(uintptr_t p0)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = GRAPHICS::GET_STATUS_OF_LOAD_MISSION_CREATOR_PHOTO(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = GRAPHICS::GET_STATUS_OF_LOAD_MISSION_CREATOR_PHOTO((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_GRAPHICS_BEGIN_CREATE_MISSION_CREATOR_PHOTO_PREVIEW()

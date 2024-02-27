@@ -504,22 +504,16 @@ namespace lua::native
 		WEAPON::SET_WEAPON_OBJECT_CAMO_INDEX(weaponObject, p1);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_WEAPON_GET_WEAPON_HUD_STATS(Hash weaponHash, Any outData)
+	static bool LUA_NATIVE_WEAPON_GET_WEAPON_HUD_STATS(Hash weaponHash, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)WEAPON::GET_WEAPON_HUD_STATS(weaponHash, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)WEAPON::GET_WEAPON_HUD_STATS(weaponHash, (Any*)outData);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_WEAPON_GET_WEAPON_COMPONENT_HUD_STATS(Hash componentHash, Any outData)
+	static bool LUA_NATIVE_WEAPON_GET_WEAPON_COMPONENT_HUD_STATS(Hash componentHash, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(componentHash, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(componentHash, (Any*)outData);
+		return retval;
 	}
 
 	static float LUA_NATIVE_WEAPON_GET_WEAPON_DAMAGE(Hash weaponHash, Hash componentHash)

@@ -137,13 +137,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_STAT_SET_DATE(Hash statName, Any value, int numFields, bool save)
+	static bool LUA_NATIVE_STATS_STAT_SET_DATE(Hash statName, uintptr_t value, int numFields, bool save)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::STAT_SET_DATE(statName, &value, numFields, save);
-		std::get<1>(return_values) = value;
-
-		return return_values;
+		auto retval = (bool)STATS::STAT_SET_DATE(statName, (Any*)value, numFields, save);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_STATS_STAT_SET_STRING(Hash statName, sol::stack_object value, bool save)
@@ -203,13 +200,10 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_STAT_GET_DATE(Hash statHash, Any outValue, int numFields, Any p3)
+	static bool LUA_NATIVE_STATS_STAT_GET_DATE(Hash statHash, uintptr_t outValue, int numFields, Any p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::STAT_GET_DATE(statHash, &outValue, numFields, p3);
-		std::get<1>(return_values) = outValue;
-
-		return return_values;
+		auto retval = (bool)STATS::STAT_GET_DATE(statHash, (Any*)outValue, numFields, p3);
+		return retval;
 	}
 
 	static const char* LUA_NATIVE_STATS_STAT_GET_STRING(Hash statHash, int p1)
@@ -532,52 +526,24 @@ namespace lua::native
 		STATS::PLAYSTATS_CHEAT_APPLIED(cheat.is<const char*>() ? cheat.as<const char*>() : nullptr);
 	}
 
-	static std::tuple<Any, Any, Any, Any> LUA_NATIVE_STATS_PLAYSTATS_JOB_ACTIVITY_END(Any p0, Any p1, Any p2, Any p3)
+	static void LUA_NATIVE_STATS_PLAYSTATS_JOB_ACTIVITY_END(uintptr_t p0, uintptr_t p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<Any, Any, Any, Any> return_values;
-		STATS::PLAYSTATS_JOB_ACTIVITY_END(&p0, &p1, &p2, &p3);
-		std::get<0>(return_values) = p0;
-		std::get<1>(return_values) = p1;
-		std::get<2>(return_values) = p2;
-		std::get<3>(return_values) = p3;
-
-		return return_values;
+		STATS::PLAYSTATS_JOB_ACTIVITY_END((Any*)p0, (Any*)p1, (Any*)p2, (Any*)p3);
 	}
 
-	static std::tuple<Any, Any, Any, Any> LUA_NATIVE_STATS_PLAYSTATS_JOB_BEND(Any p0, Any p1, Any p2, Any p3)
+	static void LUA_NATIVE_STATS_PLAYSTATS_JOB_BEND(uintptr_t p0, uintptr_t p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<Any, Any, Any, Any> return_values;
-		STATS::PLAYSTATS_JOB_BEND(&p0, &p1, &p2, &p3);
-		std::get<0>(return_values) = p0;
-		std::get<1>(return_values) = p1;
-		std::get<2>(return_values) = p2;
-		std::get<3>(return_values) = p3;
-
-		return return_values;
+		STATS::PLAYSTATS_JOB_BEND((Any*)p0, (Any*)p1, (Any*)p2, (Any*)p3);
 	}
 
-	static std::tuple<Any, Any, Any, Any> LUA_NATIVE_STATS_PLAYSTATS_JOB_LTS_END(Any p0, Any p1, Any p2, Any p3)
+	static void LUA_NATIVE_STATS_PLAYSTATS_JOB_LTS_END(uintptr_t p0, uintptr_t p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<Any, Any, Any, Any> return_values;
-		STATS::PLAYSTATS_JOB_LTS_END(&p0, &p1, &p2, &p3);
-		std::get<0>(return_values) = p0;
-		std::get<1>(return_values) = p1;
-		std::get<2>(return_values) = p2;
-		std::get<3>(return_values) = p3;
-
-		return return_values;
+		STATS::PLAYSTATS_JOB_LTS_END((Any*)p0, (Any*)p1, (Any*)p2, (Any*)p3);
 	}
 
-	static std::tuple<Any, Any, Any, Any> LUA_NATIVE_STATS_PLAYSTATS_JOB_LTS_ROUND_END(Any p0, Any p1, Any p2, Any p3)
+	static void LUA_NATIVE_STATS_PLAYSTATS_JOB_LTS_ROUND_END(uintptr_t p0, uintptr_t p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<Any, Any, Any, Any> return_values;
-		STATS::PLAYSTATS_JOB_LTS_ROUND_END(&p0, &p1, &p2, &p3);
-		std::get<0>(return_values) = p0;
-		std::get<1>(return_values) = p1;
-		std::get<2>(return_values) = p2;
-		std::get<3>(return_values) = p3;
-
-		return return_values;
+		STATS::PLAYSTATS_JOB_LTS_ROUND_END((Any*)p0, (Any*)p1, (Any*)p2, (Any*)p3);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_QUICKFIX_TOOL(int element, sol::stack_object item)
@@ -600,10 +566,9 @@ namespace lua::native
 		STATS::PLAYSTATS_HEIST_SAVE_CHEAT(hash, p1);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_APPEND_DIRECTOR_METRIC(Any p0)
+	static void LUA_NATIVE_STATS_PLAYSTATS_APPEND_DIRECTOR_METRIC(uintptr_t p0)
 	{
-		STATS::PLAYSTATS_APPEND_DIRECTOR_METRIC(&p0);
-		return p0;
+		STATS::PLAYSTATS_APPEND_DIRECTOR_METRIC((Any*)p0);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_AWARD_BAD_SPORT(int id)
@@ -686,10 +651,9 @@ namespace lua::native
 		STATS::PLAYSTATS_FM_EVENT_HUNTBEAST(p0);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_PIMENU_HIDE_OPTIONS(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_PIMENU_HIDE_OPTIONS(uintptr_t data)
 	{
-		STATS::PLAYSTATS_PIMENU_HIDE_OPTIONS(&data);
-		return data;
+		STATS::PLAYSTATS_PIMENU_HIDE_OPTIONS((Any*)data);
 	}
 
 	static int LUA_NATIVE_STATS_LEADERBOARDS_GET_NUMBER_OF_COLUMNS(int p0, Any p1)
@@ -740,90 +704,58 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_FRIENDS_BY_ROW(Any p0, Any p1, Any p2, bool p3, Any p4, Any p5)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_FRIENDS_BY_ROW(uintptr_t p0, uintptr_t p1, Any p2, bool p3, Any p4, Any p5)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_FRIENDS_BY_ROW(&p0, &p1, p2, p3, p4, p5);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_FRIENDS_BY_ROW((Any*)p0, (Any*)p1, p2, p3, p4, p5);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_HANDLE(Any p0, Any p1)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_HANDLE(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_HANDLE(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_HANDLE((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RANK(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RANK(uintptr_t p0, Any p1, Any p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_RANK(&p0, p1, p2);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_RANK((Any*)p0, p1, p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RADIUS(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_RADIUS(uintptr_t p0, Any p1, uintptr_t p2)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_RADIUS(&p0, p1, &p2);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_RADIUS((Any*)p0, p1, (Any*)p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_INT(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_INT(uintptr_t p0, Any p1, Any p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_SCORE_INT(&p0, p1, p2);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_SCORE_INT((Any*)p0, p1, p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_FLOAT(Any p0, float p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_SCORE_FLOAT(uintptr_t p0, float p1, Any p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_SCORE_FLOAT(&p0, p1, p2);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_SCORE_FLOAT((Any*)p0, p1, p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_RANK_PREDICTION(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_RANK_PREDICTION(uintptr_t p0, uintptr_t p1, uintptr_t p2)
 	{
-		std::tuple<bool, Any, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_RANK_PREDICTION(&p0, &p1, &p2);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-		std::get<3>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_RANK_PREDICTION((Any*)p0, (Any*)p1, (Any*)p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_PLAFORM(Any p0, sol::stack_object gamerHandleCsv, sol::stack_object platformName)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_BY_PLAFORM(uintptr_t p0, sol::stack_object gamerHandleCsv, sol::stack_object platformName)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_BY_PLAFORM(&p0, gamerHandleCsv.is<const char*>() ? gamerHandleCsv.as<const char*>() : nullptr, platformName.is<const char*>() ? platformName.as<const char*>() : nullptr);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_BY_PLAFORM((Any*)p0, gamerHandleCsv.is<const char*>() ? gamerHandleCsv.as<const char*>() : nullptr, platformName.is<const char*>() ? platformName.as<const char*>() : nullptr);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_START(Any p0)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_START(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_GET_ROW_DATA_START(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_GET_ROW_DATA_START((Any*)p0);
+		return retval;
 	}
 
 	static void LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_END()
@@ -831,13 +763,10 @@ namespace lua::native
 		STATS::LEADERBOARDS2_READ_GET_ROW_DATA_END();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_INFO(Any p0, Any p1)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_INFO(Any p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_READ_GET_ROW_DATA_INFO(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_READ_GET_ROW_DATA_INFO(p0, (Any*)p1);
+		return retval;
 	}
 
 	static int LUA_NATIVE_STATS_LEADERBOARDS2_READ_GET_ROW_DATA_INT(Any p0, Any p1)
@@ -852,13 +781,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS2_WRITE_DATA(Any p0)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_WRITE_DATA(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_WRITE_DATA(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_WRITE_DATA((Any*)p0);
+		return retval;
 	}
 
 	static void LUA_NATIVE_STATS_LEADERBOARDS_WRITE_ADD_COLUMN(Any p0, Any p1, float p2)
@@ -871,13 +797,10 @@ namespace lua::native
 		STATS::LEADERBOARDS_WRITE_ADD_COLUMN_LONG(p0, p1, p2);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS_CACHE_DATA_ROW(Any p0)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS_CACHE_DATA_ROW(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS_CACHE_DATA_ROW(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS_CACHE_DATA_ROW((Any*)p0);
+		return retval;
 	}
 
 	static void LUA_NATIVE_STATS_LEADERBOARDS_CLEAR_CACHE_DATA()
@@ -908,13 +831,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_STATS_LEADERBOARDS_GET_CACHE_DATA_ROW(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS_GET_CACHE_DATA_ROW(Any p0, Any p1, uintptr_t p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS_GET_CACHE_DATA_ROW(p0, p1, &p2);
-		std::get<1>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS_GET_CACHE_DATA_ROW(p0, p1, (Any*)p2);
+		return retval;
 	}
 
 	static void LUA_NATIVE_STATS_PRESENCE_EVENT_UPDATESTAT_INT(Hash statHash, int value, int p2)
@@ -993,14 +913,10 @@ namespace lua::native
 		STATS::STAT_SET_CHEAT_IS_ACTIVE();
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_STATS_LEADERBOARDS2_WRITE_DATA_FOR_EVENT_TYPE(Any p0, Any p1)
+	static bool LUA_NATIVE_STATS_LEADERBOARDS2_WRITE_DATA_FOR_EVENT_TYPE(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)STATS::LEADERBOARDS2_WRITE_DATA_FOR_EVENT_TYPE(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)STATS::LEADERBOARDS2_WRITE_DATA_FOR_EVENT_TYPE((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
 	static void LUA_NATIVE_STATS_FORCE_CLOUD_MP_STATS_DOWNLOAD_AND_OVERWRITE_LOCAL_SAVE()
@@ -1043,22 +959,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_STATS_STAT_MIGRATE_CHECK_GET_PLATFORM_STATUS(int p0, Any p1)
+	static int LUA_NATIVE_STATS_STAT_MIGRATE_CHECK_GET_PLATFORM_STATUS(int p0, uintptr_t p1)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = STATS::STAT_MIGRATE_CHECK_GET_PLATFORM_STATUS(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = STATS::STAT_MIGRATE_CHECK_GET_PLATFORM_STATUS(p0, (Any*)p1);
+		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_STATS_STAT_GET_SAVE_MIGRATION_STATUS(Any data)
+	static int LUA_NATIVE_STATS_STAT_GET_SAVE_MIGRATION_STATUS(uintptr_t data)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = STATS::STAT_GET_SAVE_MIGRATION_STATUS(&data);
-		std::get<1>(return_values) = data;
-
-		return return_values;
+		auto retval = STATS::STAT_GET_SAVE_MIGRATION_STATUS((Any*)data);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_STATS_STAT_SAVE_MIGRATION_CANCEL_PENDING_OPERATION()
@@ -1317,28 +1227,24 @@ namespace lua::native
 		STATS::PLAYSTATS_SPENT_PI_CUSTOM_LOADOUT(amount);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_BUY_CONTRABAND_MISSION(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_BUY_CONTRABAND_MISSION(uintptr_t data)
 	{
-		STATS::PLAYSTATS_BUY_CONTRABAND_MISSION(&data);
-		return data;
+		STATS::PLAYSTATS_BUY_CONTRABAND_MISSION((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_SELL_CONTRABAND_MISSION(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_SELL_CONTRABAND_MISSION(uintptr_t data)
 	{
-		STATS::PLAYSTATS_SELL_CONTRABAND_MISSION(&data);
-		return data;
+		STATS::PLAYSTATS_SELL_CONTRABAND_MISSION((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_DEFEND_CONTRABAND_MISSION(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_DEFEND_CONTRABAND_MISSION(uintptr_t data)
 	{
-		STATS::PLAYSTATS_DEFEND_CONTRABAND_MISSION(&data);
-		return data;
+		STATS::PLAYSTATS_DEFEND_CONTRABAND_MISSION((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_RECOVER_CONTRABAND_MISSION(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_RECOVER_CONTRABAND_MISSION(uintptr_t data)
 	{
-		STATS::PLAYSTATS_RECOVER_CONTRABAND_MISSION(&data);
-		return data;
+		STATS::PLAYSTATS_RECOVER_CONTRABAND_MISSION((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_HIT_CONTRABAND_DESTROY_LIMIT(Any p0)
@@ -1476,10 +1382,9 @@ namespace lua::native
 		STATS::PLAYSTATS_COPY_RANK_INTO_NEW_SLOT(p0, p1, p2, p3, p4, p5, p6);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_DUPE_DETECTED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_DUPE_DETECTED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_DUPE_DETECTED(&data);
-		return data;
+		STATS::PLAYSTATS_DUPE_DETECTED((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_BAN_ALERT(int p0)
@@ -1487,10 +1392,9 @@ namespace lua::native
 		STATS::PLAYSTATS_BAN_ALERT(p0);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_GUNRUNNING_MISSION_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_GUNRUNNING_MISSION_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_GUNRUNNING_MISSION_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_GUNRUNNING_MISSION_ENDED((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_GUNRUNNING_RND(Any p0)
@@ -1523,40 +1427,34 @@ namespace lua::native
 		STATS::PLAYSTATS_MINIGAME_USAGE(p0, p1, p2);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_STONE_HATCHET_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_STONE_HATCHET_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_STONE_HATCHET_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_STONE_HATCHET_ENDED((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_SMUGGLER_MISSION_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_SMUGGLER_MISSION_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_SMUGGLER_MISSION_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_SMUGGLER_MISSION_ENDED((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_FM_HEIST_PREP_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_FM_HEIST_PREP_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_FM_HEIST_PREP_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_FM_HEIST_PREP_ENDED((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_INSTANCED_HEIST_ENDED(Any data, Any p1, Any p2, Any p3)
+	static void LUA_NATIVE_STATS_PLAYSTATS_INSTANCED_HEIST_ENDED(uintptr_t data, Any p1, Any p2, Any p3)
 	{
-		STATS::PLAYSTATS_INSTANCED_HEIST_ENDED(&data, p1, p2, p3);
-		return data;
+		STATS::PLAYSTATS_INSTANCED_HEIST_ENDED((Any*)data, p1, p2, p3);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_DAR_CHECKPOINT(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_DAR_CHECKPOINT(uintptr_t data)
 	{
-		STATS::PLAYSTATS_DAR_CHECKPOINT(&data);
-		return data;
+		STATS::PLAYSTATS_DAR_CHECKPOINT((Any*)data);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_ENTER_SESSION_PACK(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_ENTER_SESSION_PACK(uintptr_t data)
 	{
-		STATS::PLAYSTATS_ENTER_SESSION_PACK(&data);
-		return data;
+		STATS::PLAYSTATS_ENTER_SESSION_PACK((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_DRONE_USAGE(int p0, int p1, int p2)
@@ -1574,10 +1472,9 @@ namespace lua::native
 		STATS::PLAYSTATS_ARENA_WARS_SPECTATOR(p0, p1, p2, p3, p4);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_ARENA_WARS_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_ARENA_WARS_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_ARENA_WARS_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_ARENA_WARS_ENDED((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_SWITCH_PASSIVE_MODE(bool p0, int p1, int p2, int p3)
@@ -1665,10 +1562,9 @@ namespace lua::native
 		STATS::PLAYSTATS_ARCADE_LOVE_MATCH(p0, p1);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_FREEMODE_CASINO_MISSION_ENDED(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_FREEMODE_CASINO_MISSION_ENDED(uintptr_t data)
 	{
-		STATS::PLAYSTATS_FREEMODE_CASINO_MISSION_ENDED(&data);
-		return data;
+		STATS::PLAYSTATS_FREEMODE_CASINO_MISSION_ENDED((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_HEIST3_DRONE(Any p0)
@@ -1681,10 +1577,9 @@ namespace lua::native
 		STATS::PLAYSTATS_HEIST3_HACK(p0, p1, p2, p3, p4, p5);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_NPC_PHONE(Any p0)
+	static void LUA_NATIVE_STATS_PLAYSTATS_NPC_PHONE(uintptr_t p0)
 	{
-		STATS::PLAYSTATS_NPC_PHONE(&p0);
-		return p0;
+		STATS::PLAYSTATS_NPC_PHONE((Any*)p0);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_ARCADE_CABINET(Any p0)
@@ -1847,10 +1742,9 @@ namespace lua::native
 		STATS::_PLAYSTATS_RANDOM_EVENT(p0);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_ALERT_(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_ALERT_(uintptr_t data)
 	{
-		STATS::_PLAYSTATS_ALERT(&data);
-		return data;
+		STATS::_PLAYSTATS_ALERT((Any*)data);
 	}
 
 	static void LUA_NATIVE_STATS_PLAYSTATS_ATTRITION_STAGE_END_(Any p0)
@@ -1863,10 +1757,9 @@ namespace lua::native
 		STATS::_PLAYSTATS_SHOWROOM_NAV(p0, p1, entity);
 	}
 
-	static Any LUA_NATIVE_STATS_PLAYSTATS_SHOWROOM_OVERVIEW_(Any data)
+	static void LUA_NATIVE_STATS_PLAYSTATS_SHOWROOM_OVERVIEW_(uintptr_t data)
 	{
-		STATS::_PLAYSTATS_SHOWROOM_OVERVIEW(&data);
-		return data;
+		STATS::_PLAYSTATS_SHOWROOM_OVERVIEW((Any*)data);
 	}
 
 	void init_native_binding_STATS(sol::state& L)

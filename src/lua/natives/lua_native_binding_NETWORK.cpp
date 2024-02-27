@@ -532,13 +532,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_FOUND_GAMER(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_FOUND_GAMER(uintptr_t p0, Any p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_FOUND_GAMER(&p0, p1);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_FOUND_GAMER((Any*)p0, p1);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_CLEAR_FOUND_GAMERS()
@@ -546,13 +543,10 @@ namespace lua::native
 		NETWORK::NETWORK_CLEAR_FOUND_GAMERS();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_QUEUE_GAMER_FOR_STATUS(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_QUEUE_GAMER_FOR_STATUS(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_QUEUE_GAMER_FOR_STATUS(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_QUEUE_GAMER_FOR_STATUS((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_GET_GAMER_STATUS_FROM_QUEUE()
@@ -573,13 +567,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_GAMER_STATUS_RESULT(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_GAMER_STATUS_RESULT(uintptr_t p0, Any p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_GAMER_STATUS_RESULT(&p0, p1);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_GAMER_STATUS_RESULT((Any*)p0, p1);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_CLEAR_GET_GAMER_STATUS()
@@ -626,10 +617,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SESSION_GET_INVITER(Any gamerHandle)
+	static void LUA_NATIVE_NETWORK_NETWORK_SESSION_GET_INVITER(uintptr_t gamerHandle)
 	{
-		NETWORK::NETWORK_SESSION_GET_INVITER(&gamerHandle);
-		return gamerHandle;
+		NETWORK::NETWORK_SESSION_GET_INVITER((Any*)gamerHandle);
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_SESSION_IS_AWAITING_INVITE_RESPONSE()
@@ -787,10 +777,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SESSION_VOICE_CONNECT_TO_PLAYER(Any gamerHandle)
+	static void LUA_NATIVE_NETWORK_NETWORK_SESSION_VOICE_CONNECT_TO_PLAYER(uintptr_t gamerHandle)
 	{
-		NETWORK::NETWORK_SESSION_VOICE_CONNECT_TO_PLAYER(&gamerHandle);
-		return gamerHandle;
+		NETWORK::NETWORK_SESSION_VOICE_CONNECT_TO_PLAYER((Any*)gamerHandle);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SESSION_VOICE_RESPOND_TO_REQUEST(bool p0, int p1)
@@ -821,13 +810,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TEXT_MESSAGE(sol::stack_object message, Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SEND_TEXT_MESSAGE(sol::stack_object message, uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TEXT_MESSAGE(message.is<const char*>() ? message.as<const char*>() : nullptr, &gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SEND_TEXT_MESSAGE(message.is<const char*>() ? message.as<const char*>() : nullptr, (Any*)gamerHandle);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SET_ACTIVITY_SPECTATOR(bool toggle)
@@ -857,13 +843,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_ACTIVITY_SPECTATOR_FROM_HANDLE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_ACTIVITY_SPECTATOR_FROM_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR_FROM_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_ACTIVITY_SPECTATOR_FROM_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_HOST_TRANSITION(int p0, int p1, int p2, int p3, Any p4, bool p5, bool p6, int p7, Any p8, int p9)
@@ -884,13 +867,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_QUICKMATCH_WITH_GROUP(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5, Any p6, Any p7)
+	static bool LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_QUICKMATCH_WITH_GROUP(Any p0, Any p1, Any p2, Any p3, uintptr_t p4, Any p5, Any p6, Any p7)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_DO_TRANSITION_QUICKMATCH_WITH_GROUP(p0, p1, p2, p3, &p4, p5, p6, p7);
-		std::get<1>(return_values) = p4;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_DO_TRANSITION_QUICKMATCH_WITH_GROUP(p0, p1, p2, p3, (Any*)p4, p5, p6, p7);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_JOIN_GROUP_ACTIVITY()
@@ -954,10 +934,9 @@ namespace lua::native
 		NETWORK::NETWORK_SET_IN_PROGRESS_FINISH_TIME(p0);
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SET_TRANSITION_CREATOR_HANDLE(Any p0)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_TRANSITION_CREATOR_HANDLE(uintptr_t p0)
 	{
-		NETWORK::NETWORK_SET_TRANSITION_CREATOR_HANDLE(&p0);
-		return p0;
+		NETWORK::NETWORK_SET_TRANSITION_CREATOR_HANDLE((Any*)p0);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_CLEAR_TRANSITION_CREATOR_HANDLE()
@@ -965,19 +944,15 @@ namespace lua::native
 		NETWORK::NETWORK_CLEAR_TRANSITION_CREATOR_HANDLE();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_INVITE_GAMERS_TO_TRANSITION(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_INVITE_GAMERS_TO_TRANSITION(uintptr_t p0, Any p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_INVITE_GAMERS_TO_TRANSITION(&p0, p1);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_INVITE_GAMERS_TO_TRANSITION((Any*)p0, p1);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SET_GAMER_INVITED_TO_TRANSITION(Any gamerHandle)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_GAMER_INVITED_TO_TRANSITION(uintptr_t gamerHandle)
 	{
-		NETWORK::NETWORK_SET_GAMER_INVITED_TO_TRANSITION(&gamerHandle);
-		return gamerHandle;
+		NETWORK::NETWORK_SET_GAMER_INVITED_TO_TRANSITION((Any*)gamerHandle);
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_LEAVE_TRANSITION()
@@ -1019,22 +994,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_TO_FREEMODE(Any p0, Any p1, bool p2, int players, bool p4)
+	static bool LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_TO_FREEMODE(uintptr_t p0, Any p1, bool p2, int players, bool p4)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_DO_TRANSITION_TO_FREEMODE(&p0, p1, p2, players, p4);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_DO_TRANSITION_TO_FREEMODE((Any*)p0, p1, p2, players, p4);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_TO_NEW_FREEMODE(Any p0, Any p1, int players, bool p3, bool p4, bool p5)
+	static bool LUA_NATIVE_NETWORK_NETWORK_DO_TRANSITION_TO_NEW_FREEMODE(uintptr_t p0, Any p1, int players, bool p3, bool p4, bool p5)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_DO_TRANSITION_TO_NEW_FREEMODE(&p0, p1, players, p3, p4, p5);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_DO_TRANSITION_TO_NEW_FREEMODE((Any*)p0, p1, players, p3, p4, p5);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_TRANSITION_TO_GAME()
@@ -1043,13 +1012,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_NETWORK_GET_TRANSITION_MEMBERS(Any data, int dataCount)
+	static int LUA_NATIVE_NETWORK_NETWORK_GET_TRANSITION_MEMBERS(uintptr_t data, int dataCount)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_GET_TRANSITION_MEMBERS(&data, dataCount);
-		std::get<1>(return_values) = data;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_GET_TRANSITION_MEMBERS((Any*)data, dataCount);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_APPLY_TRANSITION_PARAMETER(int p0, int p1)
@@ -1062,22 +1028,16 @@ namespace lua::native
 		NETWORK::NETWORK_APPLY_TRANSITION_PARAMETER_STRING(p0, string.is<const char*>() ? string.as<const char*>() : nullptr, p2);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(Any gamerHandle, sol::stack_object p1, int p2, int p3, bool p4)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(uintptr_t gamerHandle, sol::stack_object p1, int p2, int p3, bool p4)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2, p3, p4);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SEND_TRANSITION_GAMER_INSTRUCTION((Any*)gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2, p3, p4);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_MARK_TRANSITION_GAMER_AS_FULLY_JOINED(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_MARK_TRANSITION_GAMER_AS_FULLY_JOINED(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_MARK_TRANSITION_GAMER_AS_FULLY_JOINED(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_MARK_TRANSITION_GAMER_AS_FULLY_JOINED((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_TRANSITION_HOST()
@@ -1086,22 +1046,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_TRANSITION_HOST_FROM_HANDLE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_TRANSITION_HOST_FROM_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_TRANSITION_HOST_FROM_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_TRANSITION_HOST_FROM_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_TRANSITION_HOST(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_TRANSITION_HOST(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_TRANSITION_HOST(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_TRANSITION_HOST((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_IN_TRANSITION()
@@ -1209,22 +1163,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_INVITED_GAMER_TO_TRANSITION(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_INVITED_GAMER_TO_TRANSITION(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_INVITED_GAMER_TO_TRANSITION(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_HAS_INVITED_GAMER_TO_TRANSITION((Any*)p0);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_TRANSITION_INVITE_BEEN_ACKED(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_TRANSITION_INVITE_BEEN_ACKED(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_TRANSITION_INVITE_BEEN_ACKED(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_HAS_TRANSITION_INVITE_BEEN_ACKED((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_ACTIVITY_SESSION()
@@ -1243,31 +1191,22 @@ namespace lua::native
 		NETWORK::NETWORK_SET_PRESENCE_SESSION_INVITES_BLOCKED(toggle);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SEND_INVITE_VIA_PRESENCE(uintptr_t gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SEND_INVITE_VIA_PRESENCE((Any*)gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(uintptr_t gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SEND_TRANSITION_INVITE_VIA_PRESENCE((Any*)gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(Any gamerHandle, sol::stack_object p1, int dataCount, int p3)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(uintptr_t gamerHandle, sol::stack_object p1, int dataCount, int p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE(&gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SEND_IMPORTANT_TRANSITION_INVITE_VIA_PRESENCE((Any*)gamerHandle, p1.is<const char*>() ? p1.as<const char*>() : nullptr, dataCount, p3);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_PRESENCE_INVITE_INDEX_BY_ID(int p0)
@@ -1306,13 +1245,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_PRESENCE_INVITE_HANDLE(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_PRESENCE_INVITE_HANDLE(Any p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_PRESENCE_INVITE_HANDLE(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_PRESENCE_INVITE_HANDLE(p0, (Any*)p1);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_PRESENCE_INVITE_SESSION_ID(Any p0)
@@ -1374,10 +1310,9 @@ namespace lua::native
 		NETWORK::NETWORK_REMOVE_AND_CANCEL_ALL_INVITES();
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_REMOVE_TRANSITION_INVITE(Any p0)
+	static void LUA_NATIVE_NETWORK_NETWORK_REMOVE_TRANSITION_INVITE(uintptr_t p0)
 	{
-		NETWORK::NETWORK_REMOVE_TRANSITION_INVITE(&p0);
-		return p0;
+		NETWORK::NETWORK_REMOVE_TRANSITION_INVITE((Any*)p0);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_REMOVE_ALL_TRANSITION_INVITE()
@@ -1390,32 +1325,22 @@ namespace lua::native
 		NETWORK::NETWORK_REMOVE_AND_CANCEL_ALL_TRANSITION_INVITES();
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_NETWORK_INVITE_GAMERS(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_NETWORK_INVITE_GAMERS(uintptr_t p0, Any p1, uintptr_t p2, Any p3)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_INVITE_GAMERS(&p0, p1, &p2, p3);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_INVITE_GAMERS((Any*)p0, p1, (Any*)p2, p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_INVITED_GAMER(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_INVITED_GAMER(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_INVITED_GAMER(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_HAS_INVITED_GAMER((Any*)p0);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_MADE_INVITE_DECISION(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_MADE_INVITE_DECISION(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_MADE_INVITE_DECISION(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_HAS_MADE_INVITE_DECISION((Any*)gamerHandle);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_INVITE_REPLY_STATUS(Any p0)
@@ -1424,75 +1349,50 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU((Any*)p0);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SET_CURRENTLY_SELECTED_GAMER_HANDLE_FROM_INVITE_MENU((Any*)p0);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SET_INVITE_ON_CALL_FOR_INVITE_MENU(Any p0)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_INVITE_ON_CALL_FOR_INVITE_MENU(uintptr_t p0)
 	{
-		NETWORK::NETWORK_SET_INVITE_ON_CALL_FOR_INVITE_MENU(&p0);
-		return p0;
+		NETWORK::NETWORK_SET_INVITE_ON_CALL_FOR_INVITE_MENU((Any*)p0);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CHECK_DATA_MANAGER_SUCCEEDED_FOR_HANDLE(int p0, Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CHECK_DATA_MANAGER_SUCCEEDED_FOR_HANDLE(int p0, uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CHECK_DATA_MANAGER_SUCCEEDED_FOR_HANDLE(p0, &gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CHECK_DATA_MANAGER_SUCCEEDED_FOR_HANDLE(p0, (Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CHECK_DATA_MANAGER_FOR_HANDLE(Any p0, Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CHECK_DATA_MANAGER_FOR_HANDLE(Any p0, uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CHECK_DATA_MANAGER_FOR_HANDLE(p0, &gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CHECK_DATA_MANAGER_FOR_HANDLE(p0, (Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_NETWORK_NETWORK_SET_INVITE_FAILED_MESSAGE_FOR_INVITE_MENU(Any p0, Any p1)
+	static void LUA_NATIVE_NETWORK_NETWORK_SET_INVITE_FAILED_MESSAGE_FOR_INVITE_MENU(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<Any, Any> return_values;
-		NETWORK::NETWORK_SET_INVITE_FAILED_MESSAGE_FOR_INVITE_MENU(&p0, &p1);
-		std::get<0>(return_values) = p0;
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		NETWORK::NETWORK_SET_INVITE_FAILED_MESSAGE_FOR_INVITE_MENU((Any*)p0, (Any*)p1);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_FILLOUT_PM_PLAYER_LIST(Any gamerHandle, Any p1, Any p2)
+	static bool LUA_NATIVE_NETWORK_FILLOUT_PM_PLAYER_LIST(uintptr_t gamerHandle, Any p1, Any p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::FILLOUT_PM_PLAYER_LIST(&gamerHandle, p1, p2);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::FILLOUT_PM_PLAYER_LIST((Any*)gamerHandle, p1, p2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_FILLOUT_PM_PLAYER_LIST_WITH_NAMES(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_FILLOUT_PM_PLAYER_LIST_WITH_NAMES(uintptr_t p0, uintptr_t p1, Any p2, Any p3)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::FILLOUT_PM_PLAYER_LIST_WITH_NAMES(&p0, &p1, p2, p3);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::FILLOUT_PM_PLAYER_LIST_WITH_NAMES((Any*)p0, (Any*)p1, p2, p3);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_REFRESH_PLAYER_LIST_STATS(int p0)
@@ -1501,13 +1401,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_SET_CURRENT_DATA_MANAGER_HANDLE(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_SET_CURRENT_DATA_MANAGER_HANDLE(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_SET_CURRENT_DATA_MANAGER_HANDLE(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_SET_CURRENT_DATA_MANAGER_HANDLE((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_IN_PLATFORM_PARTY()
@@ -1522,13 +1419,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_NETWORK_GET_PLATFORM_PARTY_MEMBERS(Any data, int dataSize)
+	static int LUA_NATIVE_NETWORK_NETWORK_GET_PLATFORM_PARTY_MEMBERS(uintptr_t data, int dataSize)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_GET_PLATFORM_PARTY_MEMBERS(&data, dataSize);
-		std::get<1>(return_values) = data;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_GET_PLATFORM_PARTY_MEMBERS((Any*)data, dataSize);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_IN_PLATFORM_PARTY_CHAT()
@@ -1537,13 +1431,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_CHATTING_IN_PLATFORM_PARTY(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_CHATTING_IN_PLATFORM_PARTY(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_CHATTING_IN_PLATFORM_PARTY(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_CHATTING_IN_PLATFORM_PARTY((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_QUEUE_FOR_PREVIOUS_SESSION_JOIN()
@@ -1620,13 +1511,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_BAD_SPORT_PLAYER_LEFT_DETECTED(Any gamerHandle, int event, int amountReceived)
+	static bool LUA_NATIVE_NETWORK_BAD_SPORT_PLAYER_LEFT_DETECTED(uintptr_t gamerHandle, int event, int amountReceived)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::BAD_SPORT_PLAYER_LEFT_DETECTED(&gamerHandle, event, amountReceived);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::BAD_SPORT_PLAYER_LEFT_DETECTED((Any*)gamerHandle, event, amountReceived);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_ADD_INVALID_OBJECT_MODEL(Hash modelHash)
@@ -2116,28 +2004,24 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_GET_LOCAL_HANDLE(Any gamerHandle, int gamerHandleSize)
+	static void LUA_NATIVE_NETWORK_NETWORK_GET_LOCAL_HANDLE(uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_GET_LOCAL_HANDLE(&gamerHandle, gamerHandleSize);
-		return gamerHandle;
+		NETWORK::NETWORK_GET_LOCAL_HANDLE((Any*)gamerHandle, gamerHandleSize);
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_USER_ID(sol::stack_object userId, Any gamerHandle, int gamerHandleSize)
+	static void LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_USER_ID(sol::stack_object userId, uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_USER_ID(userId.is<const char*>() ? userId.as<const char*>() : nullptr, &gamerHandle, gamerHandleSize);
-		return gamerHandle;
+		NETWORK::NETWORK_HANDLE_FROM_USER_ID(userId.is<const char*>() ? userId.as<const char*>() : nullptr, (Any*)gamerHandle, gamerHandleSize);
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_MEMBER_ID(sol::stack_object memberId, Any gamerHandle, int gamerHandleSize)
+	static void LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_MEMBER_ID(sol::stack_object memberId, uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID(memberId.is<const char*>() ? memberId.as<const char*>() : nullptr, &gamerHandle, gamerHandleSize);
-		return gamerHandle;
+		NETWORK::NETWORK_HANDLE_FROM_MEMBER_ID(memberId.is<const char*>() ? memberId.as<const char*>() : nullptr, (Any*)gamerHandle, gamerHandleSize);
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_PLAYER(Player player, Any gamerHandle, int gamerHandleSize)
+	static void LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_PLAYER(Player player, uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, &gamerHandle, gamerHandleSize);
-		return gamerHandle;
+		NETWORK::NETWORK_HANDLE_FROM_PLAYER(player, (Any*)gamerHandle, gamerHandleSize);
 	}
 
 	static Hash LUA_NATIVE_NETWORK_NETWORK_HASH_FROM_PLAYER_HANDLE(Player player)
@@ -2146,28 +2030,21 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<Hash, Any> LUA_NATIVE_NETWORK_NETWORK_HASH_FROM_GAMER_HANDLE(Any gamerHandle)
+	static Hash LUA_NATIVE_NETWORK_NETWORK_HASH_FROM_GAMER_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<Hash, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_HASH_FROM_GAMER_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_HASH_FROM_GAMER_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_FRIEND(int friendIndex, Any gamerHandle, int gamerHandleSize)
+	static void LUA_NATIVE_NETWORK_NETWORK_HANDLE_FROM_FRIEND(int friendIndex, uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		NETWORK::NETWORK_HANDLE_FROM_FRIEND(friendIndex, &gamerHandle, gamerHandleSize);
-		return gamerHandle;
+		NETWORK::NETWORK_HANDLE_FROM_FRIEND(friendIndex, (Any*)gamerHandle, gamerHandleSize);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GAMERTAG_FROM_HANDLE_START(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GAMERTAG_FROM_HANDLE_START(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GAMERTAG_FROM_HANDLE_START(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GAMERTAG_FROM_HANDLE_START((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_GAMERTAG_FROM_HANDLE_PENDING()
@@ -2182,22 +2059,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<const char*, Any> LUA_NATIVE_NETWORK_NETWORK_GET_GAMERTAG_FROM_HANDLE(Any gamerHandle)
+	static const char* LUA_NATIVE_NETWORK_NETWORK_GET_GAMERTAG_FROM_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<const char*, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_GET_GAMERTAG_FROM_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_GET_GAMERTAG_FROM_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_NETWORK_DISPLAYNAMES_FROM_HANDLES_START(Any p0, Any p1)
+	static int LUA_NATIVE_NETWORK_NETWORK_DISPLAYNAMES_FROM_HANDLES_START(uintptr_t p0, Any p1)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_DISPLAYNAMES_FROM_HANDLES_START(&p0, p1);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_DISPLAYNAMES_FROM_HANDLES_START((Any*)p0, p1);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_DISPLAYNAMES_FROM_HANDLES(Any p0, Any p1, Any p2)
@@ -2206,56 +2077,39 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_NETWORK_ARE_HANDLES_THE_SAME(Any gamerHandle1, Any gamerHandle2)
+	static bool LUA_NATIVE_NETWORK_NETWORK_ARE_HANDLES_THE_SAME(uintptr_t gamerHandle1, uintptr_t gamerHandle2)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ARE_HANDLES_THE_SAME(&gamerHandle1, &gamerHandle2);
-		std::get<1>(return_values) = gamerHandle1;
-		std::get<2>(return_values) = gamerHandle2;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_ARE_HANDLES_THE_SAME((Any*)gamerHandle1, (Any*)gamerHandle2);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_HANDLE_VALID(Any gamerHandle, int gamerHandleSize)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_HANDLE_VALID(uintptr_t gamerHandle, int gamerHandleSize)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_HANDLE_VALID(&gamerHandle, gamerHandleSize);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_HANDLE_VALID((Any*)gamerHandle, gamerHandleSize);
+		return retval;
 	}
 
-	static std::tuple<Player, Any> LUA_NATIVE_NETWORK_NETWORK_GET_PLAYER_FROM_GAMER_HANDLE(Any gamerHandle)
+	static Player LUA_NATIVE_NETWORK_NETWORK_GET_PLAYER_FROM_GAMER_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<Player, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_GET_PLAYER_FROM_GAMER_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_GET_PLAYER_FROM_GAMER_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<const char*, Any> LUA_NATIVE_NETWORK_NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(Any gamerHandle)
+	static const char* LUA_NATIVE_NETWORK_NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(uintptr_t gamerHandle)
 	{
-		std::tuple<const char*, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_MEMBER_ID_FROM_GAMER_HANDLE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_MEMBER_ID_FROM_GAMER_HANDLE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_IN_MY_SESSION(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_IN_MY_SESSION(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_GAMER_IN_MY_SESSION(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_GAMER_IN_MY_SESSION((Any*)gamerHandle);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_SHOW_PROFILE_UI(Any gamerHandle)
+	static void LUA_NATIVE_NETWORK_NETWORK_SHOW_PROFILE_UI(uintptr_t gamerHandle)
 	{
-		NETWORK::NETWORK_SHOW_PROFILE_UI(&gamerHandle);
-		return gamerHandle;
+		NETWORK::NETWORK_SHOW_PROFILE_UI((Any*)gamerHandle);
 	}
 
 	static const char* LUA_NATIVE_NETWORK_NETWORK_PLAYER_GET_NAME(Player player)
@@ -2297,13 +2151,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_INACTIVE_PROFILE(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_INACTIVE_PROFILE(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_INACTIVE_PROFILE(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_INACTIVE_PROFILE((Any*)p0);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_MAX_FRIENDS()
@@ -2336,13 +2187,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_HANDLE_ONLINE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_HANDLE_ONLINE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_FRIEND_HANDLE_ONLINE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND_HANDLE_ONLINE((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_IN_SAME_TITLE(sol::stack_object friendName)
@@ -2357,13 +2205,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_FRIEND(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_FRIEND((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_PENDING_FRIEND(Any p0)
@@ -2378,13 +2223,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_ADD_FRIEND(Any gamerHandle, sol::stack_object message)
+	static bool LUA_NATIVE_NETWORK_NETWORK_ADD_FRIEND(uintptr_t gamerHandle, sol::stack_object message)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_ADD_FRIEND(&gamerHandle, message.is<const char*>() ? message.as<const char*>() : nullptr);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_ADD_FRIEND((Any*)gamerHandle, message.is<const char*>() ? message.as<const char*>() : nullptr);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_FRIEND_INDEX_ONLINE(int friendIndex)
@@ -2432,13 +2274,10 @@ namespace lua::native
 		NETWORK::_NETWORK_SET_COMMUNICATION_GROUP_FLAGS(communicationType, communicationGroupFlag);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_ON_BLOCKLIST(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_ON_BLOCKLIST(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_PLAYER_ON_BLOCKLIST(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_PLAYER_ON_BLOCKLIST((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_SET_SCRIPT_AUTOMUTED(Any p0)
@@ -2470,139 +2309,94 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GAMER_HAS_HEADSET(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GAMER_HAS_HEADSET(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GAMER_HAS_HEADSET(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GAMER_HAS_HEADSET((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_TALKING(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_TALKING(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_GAMER_TALKING(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_GAMER_TALKING((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_PERMISSIONS_HAS_GAMER_RECORD(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_PERMISSIONS_HAS_GAMER_RECORD(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_PERMISSIONS_HAS_GAMER_RECORD(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_PERMISSIONS_HAS_GAMER_RECORD((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_COMMUNICATE_WITH_GAMER(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_COMMUNICATE_WITH_GAMER(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_COMMUNICATE_WITH_GAMER(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_COMMUNICATE_WITH_GAMER((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_TEXT_CHAT_WITH_GAMER(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_TEXT_CHAT_WITH_GAMER(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_TEXT_CHAT_WITH_GAMER(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_TEXT_CHAT_WITH_GAMER((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_MUTED_BY_ME(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_MUTED_BY_ME(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_GAMER_MUTED_BY_ME(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_GAMER_MUTED_BY_ME((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_AM_I_MUTED_BY_GAMER(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_AM_I_MUTED_BY_GAMER(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_AM_I_MUTED_BY_GAMER(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_AM_I_MUTED_BY_GAMER((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_BLOCKED_BY_ME(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_IS_GAMER_BLOCKED_BY_ME(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_IS_GAMER_BLOCKED_BY_ME(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_IS_GAMER_BLOCKED_BY_ME((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_AM_I_BLOCKED_BY_GAMER(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_AM_I_BLOCKED_BY_GAMER(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_AM_I_BLOCKED_BY_GAMER(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_AM_I_BLOCKED_BY_GAMER((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_VIEW_GAMER_USER_CONTENT(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_VIEW_GAMER_USER_CONTENT(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_VIEW_GAMER_USER_CONTENT(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_VIEW_GAMER_USER_CONTENT((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_VIEW_GAMER_USER_CONTENT_RESULT(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_HAS_VIEW_GAMER_USER_CONTENT_RESULT(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_VIEW_GAMER_USER_CONTENT_RESULT(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_HAS_VIEW_GAMER_USER_CONTENT_RESULT((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_PLAY_MULTIPLAYER_WITH_GAMER(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_PLAY_MULTIPLAYER_WITH_GAMER(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_PLAY_MULTIPLAYER_WITH_GAMER(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_PLAY_MULTIPLAYER_WITH_GAMER((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_GAMER_PLAY_MULTIPLAYER_WITH_ME(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_GAMER_PLAY_MULTIPLAYER_WITH_ME(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_GAMER_PLAY_MULTIPLAYER_WITH_ME(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_GAMER_PLAY_MULTIPLAYER_WITH_ME((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_SEND_LOCAL_INVITE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_SEND_LOCAL_INVITE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_SEND_LOCAL_INVITE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_SEND_LOCAL_INVITE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CAN_RECEIVE_LOCAL_INVITE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CAN_RECEIVE_LOCAL_INVITE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CAN_RECEIVE_LOCAL_INVITE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CAN_RECEIVE_LOCAL_INVITE((Any*)gamerHandle);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_IS_PLAYER_TALKING(Player player)
@@ -2859,42 +2653,28 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_PLAYER_IS_ACTIVE(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_PLAYER_IS_ACTIVE(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_PLAYER_IS_ACTIVE(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_PLAYER_IS_ACTIVE((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_PLAYER_GET_DESC(Any clanDesc, int bufferSize, Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_PLAYER_GET_DESC(uintptr_t clanDesc, int bufferSize, uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_PLAYER_GET_DESC(&clanDesc, bufferSize, &gamerHandle);
-		std::get<1>(return_values) = clanDesc;
-		std::get<2>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_PLAYER_GET_DESC((Any*)clanDesc, bufferSize, (Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_IS_ROCKSTAR_CLAN(Any clanDesc, int bufferSize)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_IS_ROCKSTAR_CLAN(uintptr_t clanDesc, int bufferSize)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_IS_ROCKSTAR_CLAN(&clanDesc, bufferSize);
-		std::get<1>(return_values) = clanDesc;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_IS_ROCKSTAR_CLAN((Any*)clanDesc, bufferSize);
+		return retval;
 	}
 
-	static std::tuple<Any, char> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_UI_FORMATTED_TAG(Any clanDesc, int bufferSize, char formattedTag)
+	static char LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_UI_FORMATTED_TAG(uintptr_t clanDesc, int bufferSize, char formattedTag)
 	{
-		std::tuple<Any, char> return_values;
-		NETWORK::NETWORK_CLAN_GET_UI_FORMATTED_TAG(&clanDesc, bufferSize, &formattedTag);
-		std::get<0>(return_values) = clanDesc;
-		std::get<1>(return_values) = formattedTag;
-
-		return return_values;
+		NETWORK::NETWORK_CLAN_GET_UI_FORMATTED_TAG((Any*)clanDesc, bufferSize, &formattedTag);
+		return formattedTag;
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_LOCAL_MEMBERSHIPS_COUNT()
@@ -2903,31 +2683,22 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_MEMBERSHIP_DESC(Any memberDesc, int p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_MEMBERSHIP_DESC(uintptr_t memberDesc, int p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_GET_MEMBERSHIP_DESC(&memberDesc, p1);
-		std::get<1>(return_values) = memberDesc;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_GET_MEMBERSHIP_DESC((Any*)memberDesc, p1);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_DOWNLOAD_MEMBERSHIP(Any gamerHandle)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_DOWNLOAD_MEMBERSHIP(uintptr_t gamerHandle)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_DOWNLOAD_MEMBERSHIP(&gamerHandle);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_DOWNLOAD_MEMBERSHIP((Any*)gamerHandle);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_DOWNLOAD_MEMBERSHIP_PENDING(Any p0)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_DOWNLOAD_MEMBERSHIP_PENDING(uintptr_t p0)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_DOWNLOAD_MEMBERSHIP_PENDING(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_DOWNLOAD_MEMBERSHIP_PENDING((Any*)p0);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_ANY_DOWNLOAD_MEMBERSHIP_PENDING()
@@ -2963,12 +2734,11 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, int, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_MEMBERSHIP(int p0, Any clanMembership, int p2)
+	static std::tuple<bool, int> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_MEMBERSHIP(int p0, uintptr_t clanMembership, int p2)
 	{
-		std::tuple<bool, int, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_GET_MEMBERSHIP(&p0, &clanMembership, p2);
+		std::tuple<bool, int> return_values;
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_GET_MEMBERSHIP(&p0, (Any*)clanMembership, p2);
 		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = clanMembership;
 
 		return return_values;
 	}
@@ -2997,12 +2767,11 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, char> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_EMBLEM_TXD_NAME(Any netHandle, char txdName)
+	static std::tuple<bool, char> LUA_NATIVE_NETWORK_NETWORK_CLAN_GET_EMBLEM_TXD_NAME(uintptr_t netHandle, char txdName)
 	{
-		std::tuple<bool, Any, char> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_GET_EMBLEM_TXD_NAME(&netHandle, &txdName);
-		std::get<1>(return_values) = netHandle;
-		std::get<2>(return_values) = txdName;
+		std::tuple<bool, char> return_values;
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_GET_EMBLEM_TXD_NAME((Any*)netHandle, &txdName);
+		std::get<1>(return_values) = txdName;
 
 		return return_values;
 	}
@@ -3013,13 +2782,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_CLAN_IS_EMBLEM_READY(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_CLAN_IS_EMBLEM_READY(Any p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_CLAN_IS_EMBLEM_READY(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_CLAN_IS_EMBLEM_READY(p0, (Any*)p1);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_CLAN_RELEASE_EMBLEM(Any p0)
@@ -3038,13 +2804,10 @@ namespace lua::native
 		NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_CANCEL();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_NETWORK_GET_PRIMARY_CLAN_DATA_START(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_PRIMARY_CLAN_DATA_START(uintptr_t p0, Any p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_START(&p0, p1);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_START((Any*)p0, p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_NETWORK_GET_PRIMARY_CLAN_DATA_PENDING()
@@ -3059,14 +2822,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_NETWORK_GET_PRIMARY_CLAN_DATA_NEW(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_NETWORK_GET_PRIMARY_CLAN_DATA_NEW(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_NEW(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::NETWORK_GET_PRIMARY_CLAN_DATA_NEW((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_SET_NETWORK_ID_CAN_MIGRATE(int netId, bool toggle)
@@ -3355,15 +3114,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<Any, Any, Any> LUA_NATIVE_NETWORK_GET_RESERVED_MISSION_ENTITIES_IN_AREA(float x, float y, float z, Any p3, Any out1, Any out2, Any out3)
+	static void LUA_NATIVE_NETWORK_GET_RESERVED_MISSION_ENTITIES_IN_AREA(float x, float y, float z, Any p3, uintptr_t out1, uintptr_t out2, uintptr_t out3)
 	{
-		std::tuple<Any, Any, Any> return_values;
-		NETWORK::GET_RESERVED_MISSION_ENTITIES_IN_AREA(x, y, z, p3, &out1, &out2, &out3);
-		std::get<0>(return_values) = out1;
-		std::get<1>(return_values) = out2;
-		std::get<2>(return_values) = out3;
-
-		return return_values;
+		NETWORK::GET_RESERVED_MISSION_ENTITIES_IN_AREA(x, y, z, p3, (Any*)out1, (Any*)out2, (Any*)out3);
 	}
 
 	static int LUA_NATIVE_NETWORK_GET_MAX_NUM_NETWORK_OBJECTS()
@@ -3471,10 +3224,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_CONVERT_POSIX_TIME(int posixTime, Any timeStructure)
+	static void LUA_NATIVE_NETWORK_CONVERT_POSIX_TIME(int posixTime, uintptr_t timeStructure)
 	{
-		NETWORK::CONVERT_POSIX_TIME(posixTime, &timeStructure);
-		return timeStructure;
+		NETWORK::CONVERT_POSIX_TIME(posixTime, (Any*)timeStructure);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SET_IN_SPECTATOR_MODE(bool toggle, Ped playerPed)
@@ -3683,13 +3435,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_NETWORK_QUERY_RESPAWN_RESULTS(Any p0)
+	static int LUA_NATIVE_NETWORK_NETWORK_QUERY_RESPAWN_RESULTS(uintptr_t p0)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_QUERY_RESPAWN_RESULTS(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_QUERY_RESPAWN_RESULTS((Any*)p0);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_CANCEL_RESPAWN_SEARCH()
@@ -4298,14 +4047,10 @@ namespace lua::native
 		NETWORK::CLEAR_SERVICE_EVENT_ARGUMENTS();
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_UGC_COPY_CONTENT(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_UGC_COPY_CONTENT(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_COPY_CONTENT(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_COPY_CONTENT((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_IS_CREATING()
@@ -4343,13 +4088,10 @@ namespace lua::native
 		NETWORK::UGC_CLEAR_CREATE_RESULT();
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_QUERY_MY_CONTENT(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5)
+	static bool LUA_NATIVE_NETWORK_UGC_QUERY_MY_CONTENT(Any p0, Any p1, uintptr_t p2, Any p3, Any p4, Any p5)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_QUERY_MY_CONTENT(p0, p1, &p2, p3, p4, p5);
-		std::get<1>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_QUERY_MY_CONTENT(p0, p1, (Any*)p2, p3, p4, p5);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CATEGORY(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4, bool p5)
@@ -4364,13 +4106,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_IDS(Any data, int count, bool latestVersion, sol::stack_object contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_QUERY_BY_CONTENT_IDS(uintptr_t data, int count, bool latestVersion, sol::stack_object contentTypeName)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_QUERY_BY_CONTENT_IDS(&data, count, latestVersion, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
-		std::get<1>(return_values) = data;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_QUERY_BY_CONTENT_IDS((Any*)data, count, latestVersion, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_QUERY_MOST_RECENTLY_CREATED_CONTENT(int offset, int count, sol::stack_object contentTypeName, int p3)
@@ -4379,49 +4118,34 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_BOOKMARKED_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_BOOKMARKED_CONTENT(Any p0, Any p1, sol::stack_object p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_BOOKMARKED_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
-		std::get<1>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_BOOKMARKED_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, (Any*)p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_MY_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_MY_CONTENT(Any p0, Any p1, sol::stack_object p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_MY_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
-		std::get<1>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_MY_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, (Any*)p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_FRIEND_CONTENT(Any p0, Any p1, sol::stack_object p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_FRIEND_CONTENT(Any p0, Any p1, sol::stack_object p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_FRIEND_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3);
-		std::get<1>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_FRIEND_CONTENT(p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr, (Any*)p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_CREW_CONTENT(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_CREW_CONTENT(Any p0, Any p1, Any p2, sol::stack_object p3, uintptr_t p4)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_CREW_CONTENT(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, &p4);
-		std::get<1>(return_values) = p4;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_CREW_CONTENT(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, (Any*)p4);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CATEGORY(Any p0, Any p1, Any p2, sol::stack_object p3, Any p4)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CATEGORY(Any p0, Any p1, Any p2, sol::stack_object p3, uintptr_t p4)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CATEGORY(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, &p4);
-		std::get<1>(return_values) = p4;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_GET_BY_CATEGORY(p0, p1, p2, p3.is<const char*>() ? p3.as<const char*>() : nullptr, (Any*)p4);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_ID(sol::stack_object contentId, sol::stack_object contentTypeName)
@@ -4430,43 +4154,28 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_IDS(Any data, int dataCount, sol::stack_object contentTypeName)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_GET_BY_CONTENT_IDS(uintptr_t data, int dataCount, sol::stack_object contentTypeName)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_IDS(&data, dataCount, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
-		std::get<1>(return_values) = data;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_GET_BY_CONTENT_IDS((Any*)data, dataCount, contentTypeName.is<const char*>() ? contentTypeName.as<const char*>() : nullptr);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_UGC_GET_MOST_RECENTLY_CREATED_CONTENT(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_MOST_RECENTLY_CREATED_CONTENT(Any p0, Any p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_MOST_RECENTLY_CREATED_CONTENT(p0, p1, &p2, &p3);
-		std::get<1>(return_values) = p2;
-		std::get<2>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_MOST_RECENTLY_CREATED_CONTENT(p0, p1, (Any*)p2, (Any*)p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_UGC_GET_MOST_RECENTLY_PLAYED_CONTENT(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_MOST_RECENTLY_PLAYED_CONTENT(Any p0, Any p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_MOST_RECENTLY_PLAYED_CONTENT(p0, p1, &p2, &p3);
-		std::get<1>(return_values) = p2;
-		std::get<2>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_MOST_RECENTLY_PLAYED_CONTENT(p0, p1, (Any*)p2, (Any*)p3);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_UGC_GET_TOP_RATED_CONTENT(Any p0, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_TOP_RATED_CONTENT(Any p0, Any p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_TOP_RATED_CONTENT(p0, p1, &p2, &p3);
-		std::get<1>(return_values) = p2;
-		std::get<2>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_TOP_RATED_CONTENT(p0, p1, (Any*)p2, (Any*)p3);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_UGC_CANCEL_QUERY()
@@ -4533,13 +4242,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_GET_CONTENT_CREATOR_GAMER_HANDLE(int p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_CONTENT_CREATOR_GAMER_HANDLE(int p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_CONTENT_CREATOR_GAMER_HANDLE(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_CONTENT_CREATOR_GAMER_HANDLE(p0, (Any*)p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_GET_CONTENT_CREATED_BY_LOCAL_PLAYER(Any p0)
@@ -4596,10 +4302,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_NETWORK_UGC_GET_CONTENT_UPDATED_DATE(Any p0, Any p1)
+	static void LUA_NATIVE_NETWORK_UGC_GET_CONTENT_UPDATED_DATE(Any p0, uintptr_t p1)
 	{
-		NETWORK::UGC_GET_CONTENT_UPDATED_DATE(p0, &p1);
-		return p1;
+		NETWORK::UGC_GET_CONTENT_UPDATED_DATE(p0, (Any*)p1);
 	}
 
 	static int LUA_NATIVE_NETWORK_UGC_GET_CONTENT_FILE_VERSION(Any p0, Any p1)
@@ -4745,13 +4450,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETWORK_UGC_SET_DELETED(Any p0, bool p1, sol::stack_object p2)
+	static bool LUA_NATIVE_NETWORK_UGC_SET_DELETED(uintptr_t p0, bool p1, sol::stack_object p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_SET_DELETED(&p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_SET_DELETED((Any*)p0, p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_IS_MODIFYING()
@@ -4783,14 +4485,10 @@ namespace lua::native
 		NETWORK::UGC_CLEAR_MODIFY_RESULT();
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_NETWORK_UGC_GET_CREATORS_BY_USER_ID(Any p0, Any p1)
+	static bool LUA_NATIVE_NETWORK_UGC_GET_CREATORS_BY_USER_ID(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::UGC_GET_CREATORS_BY_USER_ID(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETWORK::UGC_GET_CREATORS_BY_USER_ID((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETWORK_UGC_HAS_QUERY_CREATORS_FINISHED()
@@ -4874,13 +4572,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_TEXTURE_DOWNLOAD_REQUEST(Any gamerHandle, sol::stack_object filePath, sol::stack_object name, bool p3)
+	static int LUA_NATIVE_NETWORK_TEXTURE_DOWNLOAD_REQUEST(uintptr_t gamerHandle, sol::stack_object filePath, sol::stack_object name, bool p3)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::TEXTURE_DOWNLOAD_REQUEST(&gamerHandle, filePath.is<const char*>() ? filePath.as<const char*>() : nullptr, name.is<const char*>() ? name.as<const char*>() : nullptr, p3);
-		std::get<1>(return_values) = gamerHandle;
-
-		return return_values;
+		auto retval = NETWORK::TEXTURE_DOWNLOAD_REQUEST((Any*)gamerHandle, filePath.is<const char*>() ? filePath.as<const char*>() : nullptr, name.is<const char*>() ? name.as<const char*>() : nullptr, p3);
+		return retval;
 	}
 
 	static int LUA_NATIVE_NETWORK_TITLE_TEXTURE_DOWNLOAD_REQUEST(sol::stack_object filePath, sol::stack_object name, bool p2)
@@ -4978,12 +4673,11 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int, Any> LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_END_DATE(int privilege, int banType, Any timeData)
+	static std::tuple<bool, int> LUA_NATIVE_NETWORK_NETWORK_HAS_ROS_PRIVILEGE_END_DATE(int privilege, int banType, uintptr_t timeData)
 	{
-		std::tuple<bool, int, Any> return_values;
-		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_ROS_PRIVILEGE_END_DATE(privilege, &banType, &timeData);
+		std::tuple<bool, int> return_values;
+		std::get<0>(return_values) = (bool)NETWORK::NETWORK_HAS_ROS_PRIVILEGE_END_DATE(privilege, &banType, (Any*)timeData);
 		std::get<1>(return_values) = banType;
-		std::get<2>(return_values) = timeData;
 
 		return return_values;
 	}
@@ -5018,13 +4712,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_NETWORK_NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK(Any netHandle)
+	static int LUA_NATIVE_NETWORK_NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK(uintptr_t netHandle)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = NETWORK::NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK(&netHandle);
-		std::get<1>(return_values) = netHandle;
-
-		return return_values;
+		auto retval = NETWORK::NETWORK_START_USER_CONTENT_PERMISSIONS_CHECK((Any*)netHandle);
+		return retval;
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_SKIP_RADIO_RESET_NEXT_CLOSE()
@@ -5155,16 +4846,14 @@ namespace lua::native
 		NETWORK::NETWORK_DUMP_NET_IF_CONFIG();
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_GET_SIGNALLING_INFO(Any p0)
+	static void LUA_NATIVE_NETWORK_NETWORK_GET_SIGNALLING_INFO(uintptr_t p0)
 	{
-		NETWORK::NETWORK_GET_SIGNALLING_INFO(&p0);
-		return p0;
+		NETWORK::NETWORK_GET_SIGNALLING_INFO((Any*)p0);
 	}
 
-	static Any LUA_NATIVE_NETWORK_NETWORK_GET_NET_STATISTICS_INFO(Any p0)
+	static void LUA_NATIVE_NETWORK_NETWORK_GET_NET_STATISTICS_INFO(uintptr_t p0)
 	{
-		NETWORK::NETWORK_GET_NET_STATISTICS_INFO(&p0);
-		return p0;
+		NETWORK::NETWORK_GET_NET_STATISTICS_INFO((Any*)p0);
 	}
 
 	static int LUA_NATIVE_NETWORK_NETWORK_GET_PLAYER_ACCOUNT_ID(Player player)

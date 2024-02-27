@@ -61,15 +61,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any, Any> LUA_NATIVE_HUD_GET_MOUSE_EVENT(int scaleformHandle, Any p1, Any p2, Any p3)
+	static bool LUA_NATIVE_HUD_GET_MOUSE_EVENT(int scaleformHandle, uintptr_t p1, uintptr_t p2, uintptr_t p3)
 	{
-		std::tuple<bool, Any, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)HUD::GET_MOUSE_EVENT(scaleformHandle, &p1, &p2, &p3);
-		std::get<1>(return_values) = p1;
-		std::get<2>(return_values) = p2;
-		std::get<3>(return_values) = p3;
-
-		return return_values;
+		auto retval = (bool)HUD::GET_MOUSE_EVENT(scaleformHandle, (Any*)p1, (Any*)p2, (Any*)p3);
+		return retval;
 	}
 
 	static void LUA_NATIVE_HUD_THEFEED_ONLY_SHOW_TOOLTIPS(bool toggle)
@@ -2206,14 +2201,9 @@ namespace lua::native
 		HUD::SET_WARNING_MESSAGE(titleMsg.is<const char*>() ? titleMsg.as<const char*>() : nullptr, flags, promptMsg.is<const char*>() ? promptMsg.as<const char*>() : nullptr, p3, p4, p5.is<const char*>() ? p5.as<const char*>() : nullptr, p6.is<const char*>() ? p6.as<const char*>() : nullptr, showBackground, errorCode);
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER(sol::stack_object entryHeader, sol::stack_object entryLine1, int instructionalKey, sol::stack_object entryLine2, bool p4, Any p5, Any showBackground, Any p7, bool p8, Any p9)
+	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER(sol::stack_object entryHeader, sol::stack_object entryLine1, int instructionalKey, sol::stack_object entryLine2, bool p4, Any p5, uintptr_t showBackground, uintptr_t p7, bool p8, Any p9)
 	{
-		std::tuple<Any, Any> return_values;
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, instructionalKey, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, &showBackground, &p7, p8, p9);
-		std::get<0>(return_values) = showBackground;
-		std::get<1>(return_values) = p7;
-
-		return return_values;
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, instructionalKey, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, (Any*)showBackground, (Any*)p7, p8, p9);
 	}
 
 	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(sol::stack_object entryHeader, sol::stack_object entryLine1, int instructionalKey, sol::stack_object entryLine2, bool p4, Any p5, Any additionalIntInfo, sol::stack_object additionalTextInfoLine1, sol::stack_object additionalTextInfoLine2, bool showBackground, int errorCode)
@@ -2221,14 +2211,9 @@ namespace lua::native
 		HUD::SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, instructionalKey, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, additionalIntInfo, additionalTextInfoLine1.is<const char*>() ? additionalTextInfoLine1.as<const char*>() : nullptr, additionalTextInfoLine2.is<const char*>() ? additionalTextInfoLine2.as<const char*>() : nullptr, showBackground, errorCode);
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(sol::stack_object entryHeader, sol::stack_object entryLine1, int flags, sol::stack_object entryLine2, bool p4, Any p5, Any p6, Any p7, bool showBg, Any p9, Any p10)
+	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(sol::stack_object entryHeader, sol::stack_object entryLine1, int flags, sol::stack_object entryLine2, bool p4, Any p5, uintptr_t p6, uintptr_t p7, bool showBg, Any p9, Any p10)
 	{
-		std::tuple<Any, Any> return_values;
-		HUD::SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, flags, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, &p6, &p7, showBg, p9, p10);
-		std::get<0>(return_values) = p6;
-		std::get<1>(return_values) = p7;
-
-		return return_values;
+		HUD::SET_WARNING_MESSAGE_WITH_HEADER_EXTENDED(entryHeader.is<const char*>() ? entryHeader.as<const char*>() : nullptr, entryLine1.is<const char*>() ? entryLine1.as<const char*>() : nullptr, flags, entryLine2.is<const char*>() ? entryLine2.as<const char*>() : nullptr, p4, p5, (Any*)p6, (Any*)p7, showBg, p9, p10);
 	}
 
 	static void LUA_NATIVE_HUD_SET_WARNING_MESSAGE_WITH_HEADER_AND_SUBSTRING_FLAGS_EXTENDED(sol::stack_object labelTitle, sol::stack_object labelMessage, int p2, int p3, sol::stack_object labelMessage2, bool p5, int p6, int p7, sol::stack_object p8, sol::stack_object p9, bool background, int errorCode)
@@ -2449,15 +2434,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any, Any> LUA_NATIVE_HUD_PAUSE_MENU_GET_MOUSE_CLICK_EVENT(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_HUD_PAUSE_MENU_GET_MOUSE_CLICK_EVENT(uintptr_t p0, uintptr_t p1, uintptr_t p2)
 	{
-		std::tuple<bool, Any, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)HUD::PAUSE_MENU_GET_MOUSE_CLICK_EVENT(&p0, &p1, &p2);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-		std::get<3>(return_values) = p2;
-
-		return return_values;
+		auto retval = (bool)HUD::PAUSE_MENU_GET_MOUSE_CLICK_EVENT((Any*)p0, (Any*)p1, (Any*)p2);
+		return retval;
 	}
 
 	static void LUA_NATIVE_HUD_PAUSE_MENU_REDRAW_INSTRUCTIONAL_BUTTONS(int p0)
@@ -2558,22 +2538,16 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_HUD_GET_MENU_PED_INT_STAT(Any p0, Any p1)
+	static bool LUA_NATIVE_HUD_GET_MENU_PED_INT_STAT(Any p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)HUD::GET_MENU_PED_INT_STAT(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)HUD::GET_MENU_PED_INT_STAT(p0, (Any*)p1);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_HUD_GET_CHARACTER_MENU_PED_INT_STAT(Any p0, Any p1, Any p2)
+	static bool LUA_NATIVE_HUD_GET_CHARACTER_MENU_PED_INT_STAT(Any p0, uintptr_t p1, Any p2)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)HUD::GET_CHARACTER_MENU_PED_INT_STAT(p0, &p1, p2);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)HUD::GET_CHARACTER_MENU_PED_INT_STAT(p0, (Any*)p1, p2);
+		return retval;
 	}
 
 	static std::tuple<bool, int> LUA_NATIVE_HUD_GET_MENU_PED_MASKED_INT_STAT(Hash statHash, int outValue, int mask, bool p3)
@@ -2585,13 +2559,10 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_HUD_GET_CHARACTER_MENU_PED_MASKED_INT_STAT(Hash statHash, Any outValue, int p2, int mask, bool p4)
+	static bool LUA_NATIVE_HUD_GET_CHARACTER_MENU_PED_MASKED_INT_STAT(Hash statHash, uintptr_t outValue, int p2, int mask, bool p4)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)HUD::GET_CHARACTER_MENU_PED_MASKED_INT_STAT(statHash, &outValue, p2, mask, p4);
-		std::get<1>(return_values) = outValue;
-
-		return return_values;
+		auto retval = (bool)HUD::GET_CHARACTER_MENU_PED_MASKED_INT_STAT(statHash, (Any*)outValue, p2, mask, p4);
+		return retval;
 	}
 
 	static std::tuple<bool, float> LUA_NATIVE_HUD_GET_MENU_PED_FLOAT_STAT(Hash statHash, float outValue)
