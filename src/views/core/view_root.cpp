@@ -15,7 +15,7 @@ namespace big
 		if (g_lua_manager)
 			g_lua_manager->draw_independent_gui();
 
-		if (g.window.demo) // It is not the YimMenu way.
+		if (g.window.demo) // It is not the MinionMenu way.
 			ImGui::ShowDemoWindow(&g.window.demo);
 	}
 }

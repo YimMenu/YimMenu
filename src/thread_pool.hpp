@@ -26,7 +26,7 @@ namespace big
 		std::atomic<size_t> m_busy_threads;
 
 	public:
-		// YimMenu only has 2 blocking threads, 4 should be sufficient but the pool should automatically allocate more if needed
+		// MinionMenu only has 2 blocking threads, 4 should be sufficient but the pool should automatically allocate more if needed
 		thread_pool(const std::size_t preallocated_thread_count = 4);
 		~thread_pool();
 

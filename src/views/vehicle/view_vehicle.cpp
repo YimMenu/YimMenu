@@ -8,7 +8,7 @@ namespace big
 {
 	void view::vehicle()
 	{
-		components::button("MORS_FIX_ALL"_T, [] {
+		/*components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
 			g_notification_service->push_success("MOBILE"_T.data(),
 			    std::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
@@ -37,12 +37,12 @@ namespace big
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			teleport::into_vehicle(veh);
 		});
-		ImGui::SameLine();
+		ImGui::SameLine();*/
 		components::button("BRING_PV"_T, [] {
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
 			vehicle::bring(veh, self::pos, true);
 		});
-		ImGui::SameLine();
+		/*ImGui::SameLine();
 		components::button("BRING_CLOSEST_VEHICLE"_T, [] {
 			Vehicle veh = vehicle::get_closest_to_location(self::pos, 200);
 			vehicle::bring(veh, self::pos, true, -1);
@@ -61,11 +61,37 @@ namespace big
 		ImGui::SameLine();
 		ImGui::Checkbox("CHANGE_STATE_IMMEDIATELY"_T.data(), &g.vehicle.change_engine_state_immediately);
 		ImGui::SameLine();
-		components::command_checkbox<"keepengine">();
+		components::command_checkbox<"keepengine">();*/
 
 		ImGui::SeparatorText("GENERAL"_T.data());
 		{
 			ImGui::BeginGroup();
+
+			components::command_checkbox<"hornboost">();
+			components::command_checkbox<"driveunder">();
+			components::command_checkbox<"seatbelt">();
+			components::command_checkbox<"instantbrake">();
+
+			components::command_checkbox<"speedometer">();
+			components::options_modal("Speedometer", [] {
+				ImGui::Text("POS_X_Y"_T.data());
+
+				float pos[2] = {g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y};
+
+				if (ImGui::SliderFloat2("###speedo_pos", pos, .001f, .999f, "%.3f"))
+				{
+					g.vehicle.speedo_meter.x = pos[0];
+					g.vehicle.speedo_meter.y = pos[1];
+				}
+
+				components::command_checkbox<"speedometerleftside">();
+				ImGui::SameLine();
+				components::command_checkbox<"speedometergears">();
+			});
+
+			ImGui::EndGroup();
+
+			/*ImGui::BeginGroup();
 
 			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
 			components::command_checkbox<"hornboost">();
@@ -175,7 +201,7 @@ namespace big
 
 			ImGui::Checkbox("WATER"_T.data(), &g.vehicle.proof_water);
 
-			ImGui::EndGroup();
+			ImGui::EndGroup();*/
 		}
 		ImGui::SeparatorText("SPEED_UNIT"_T.data());
 		{

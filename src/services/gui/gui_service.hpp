@@ -85,7 +85,7 @@ namespace big
 
 		// clang-format off
 		std::map<tabs, navigation_struct> nav = {
-		    {
+		    /*{
 				TAB_DECL(SELF),
 		            view::self,
 		            {
@@ -119,8 +119,8 @@ namespace big
 						{TAB_DECL(FUN_VEHICLE), view::fun_vehicle}},
 		            },
 		        },
-		    },
-		    {
+		    },*/
+		    /*{
 				TAB_DECL(WORLD),
 		            view::world,
 		            {
@@ -166,6 +166,22 @@ namespace big
 		    {
 		        tabs::PLAYER,
 		        {"", view::view_player},
+		    },*/
+			{
+				TAB_DECL(SELF),
+		            view::self}
+		    },
+			{
+				TAB_DECL(WEAPONS), 
+				    view::weapons}
+		    },
+		    {
+		        TAB_DECL(VEHICLE),
+		            view::vehicle}
+		    },
+			{
+		        TAB_DECL(GTA_CACHE_SETTINGS),
+		            view::gta_cache}
 		    },
 		};
 		// clang-format on

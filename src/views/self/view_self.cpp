@@ -14,8 +14,8 @@ namespace big
 	{
 		components::command_button<"suicide">();
 		ImGui::SameLine();
-		components::command_button<"heal">();
-		ImGui::SameLine();
+		//components::command_button<"heal">();
+		//ImGui::SameLine();
 		components::command_button<"fillsnacks">();
 		ImGui::SameLine();
 		components::command_button<"skipcutscene">();
@@ -25,8 +25,16 @@ namespace big
 		components::command_button<"fillammo">();
 
 		ImGui::SeparatorText("GENERAL"_T.data());
-
 		ImGui::BeginGroup();
+
+		components::command_checkbox<"noidlekick">(); //stay
+		components::command_checkbox<"mobileradio">(); //stay
+		components::command_checkbox<"infoxy">();
+		components::command_checkbox<"walkunder">();
+
+		ImGui::EndGroup();
+
+		/*ImGui::BeginGroup();
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
@@ -52,8 +60,8 @@ namespace big
 		ImGui::EndDisabled();
 
 		ImGui::EndGroup();
-		ImGui::SameLine();
-		ImGui::BeginGroup();
+		ImGui::SameLine();*/
+		/*ImGui::BeginGroup();
 
 		components::command_checkbox<"noclip">();
 		components::options_modal("NO_CLIP"_T, [] {
@@ -377,7 +385,7 @@ namespace big
 			});
 		}
 
-		ImGui::EndGroup();
+		ImGui::EndGroup(); */
 
 		g.self.proof_mask = 0;
 		if (g.self.god_mode)

@@ -10,8 +10,8 @@ namespace big
 	public:
 		bool announce_in_chat = false;
 		bool is_team_only     = false;
-		bool notify           = true;
-		bool log              = true;
+		bool notify           = false;
+		bool log              = false;
 		bool add_to_player_db = false;
 		bool block_joins      = false;
 		bool kick             = false;

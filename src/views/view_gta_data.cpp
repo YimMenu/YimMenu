@@ -24,7 +24,8 @@ namespace big
 			{
 			case eGtaDataUpdateState::NEEDS_UPDATE:
 			{
-				ImGui::Text("GAME_CACHE_UPDATE"_T.data());
+				//ImGui::Text("GAME_CACHE_UPDATE"_T.data());
+				ImGui::Text("MinionMenu Game Cache needs rebuilding ;)");
 
 				if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 				{

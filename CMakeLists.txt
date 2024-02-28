@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(YimMenu CXX ASM_MASM)
+project(MinionMenu CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
@@ -20,8 +20,8 @@ message("\nFetching custom modules")
 include(cmake/gtav-classes.cmake)
 
 
-# YimMenu
-message(STATUS "YimMenu")
+# MinionMenu
+message(STATUS "MinionMenu")
 file(GLOB_RECURSE SRC_MAIN
     "${SRC_DIR}/**.hpp"
     "${SRC_DIR}/**.h"
@@ -39,14 +39,14 @@ else ()
   add_compile_options(-Wa,-mbig-obj)
 endif ()
 
-add_library(YimMenu MODULE "${SRC_MAIN}")
+add_library(MinionMenu MODULE "${SRC_MAIN}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
+set_property(TARGET MinionMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
 
 source_group(TREE ${SRC_DIR} PREFIX "src" FILES ${SRC_MAIN} )
 
-target_include_directories(YimMenu PRIVATE 
+target_include_directories(MinionMenu PRIVATE 
     "${SRC_DIR}"
     "${json_SOURCE_DIR}/single_include"
     "${gtav_classes_SOURCE_DIR}"
@@ -54,13 +54,13 @@ target_include_directories(YimMenu PRIVATE
     "${minhook_SOURCE_DIR}/src/hde"
 )
 
-target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static)
+target_precompile_headers(MinionMenu PRIVATE "${SRC_DIR}/common.hpp")
+target_link_libraries(MinionMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static)
 
 # Warnings as errors
-set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
+set_property(TARGET MinionMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
 
-add_compile_definitions(YimMenu 
+add_compile_definitions(MinionMenu 
     "_CRT_SECURE_NO_WARNINGS"
     "NOMINMAX"
     "WIN32_LEAN_AND_MEAN"

@@ -17,6 +17,7 @@ namespace big
 		ImGui::PushID(&reaction);
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
+			
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
 			ImGui::SameLine();
 			ImGui::Checkbox("IS_TEAM"_T.data(), &reaction.is_team_only);

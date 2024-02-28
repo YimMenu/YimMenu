@@ -108,7 +108,7 @@ namespace big
 		ImGui::SetNextWindowPos({10.f, window_pos});
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, {2.0f, 2.0f});
 
-		if (ImGui::Begin("playerlist", nullptr, window_flags))
+		/*if (ImGui::Begin("playerlist", nullptr, window_flags))
 		{
 			const auto style = ImGui::GetStyle();
 			float window_height = (
@@ -142,6 +142,6 @@ namespace big
 		}
 
 		ImGui::PopStyleVar();
-		ImGui::End();
+		ImGui::End();*/
 	}
 }

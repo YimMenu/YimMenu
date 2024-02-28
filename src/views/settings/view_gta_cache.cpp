@@ -14,7 +14,7 @@ namespace big
 		auto wep_count = g_gta_data_service->weapons().size();
 		auto wep_comp_count = g_gta_data_service->weapon_components().size();
 
-		ImGui::Text(std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "VIEW_GTA_CACHE_PEDS_CACHED"_T, ped_count, "VIEW_GTA_CACHE_VEHICLES_CACHED"_T, veh_count, "VIEW_GTA_CACHE_WEAPONS_CACHED"_T, wep_count, "VIEW_GTA_CACHE_WEAPON_COMPONENTS_CACHED"_T, wep_comp_count).c_str());
+		//ImGui::Text(std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "VIEW_GTA_CACHE_PEDS_CACHED"_T, ped_count, "VIEW_GTA_CACHE_VEHICLES_CACHED"_T, veh_count, "VIEW_GTA_CACHE_WEAPONS_CACHED"_T, wep_count, "VIEW_GTA_CACHE_WEAPON_COMPONENTS_CACHED"_T, wep_comp_count).c_str());
 
 		if (components::button("VIEW_GTA_CACHE_REBUILD_CACHE"_T))
 		{

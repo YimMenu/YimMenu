@@ -23,7 +23,9 @@ namespace big
 		}
 		if (ImGui::Begin("overlay", nullptr, window_flags))
 		{
-			ImGui::Text("YimMenu");
+			ImGui::Text("MinionMenu");
+
+			ImGui::Text("v1.2");
 
 			ImGui::Separator();
 
@@ -37,7 +39,8 @@ namespace big
 				ImGui::Text(std::format("{}: {}/{}", "PLAYERS"_T, network_player_mgr->m_player_count, network_player_mgr->m_player_limit).c_str());
 			}
 
-			if (g.window.ingame_overlay.show_indicators)
+			//if (g.window.ingame_overlay.show_indicators)
+			if (1 == 2)
 			{
 				ImGui::Separator();
 
@@ -81,7 +84,8 @@ namespace big
 				ImGui::Text(std::format("{}: {:.2f}, {:.2f}, {:.2f}", "VIEW_OVERLAY_POSITION"_T, pos.x, pos.y, pos.z).c_str());
 			}
 
-			if (g.window.ingame_overlay.show_replay_interface)
+			//if (g.window.ingame_overlay.show_replay_interface)
+			if (1 == 2)
 			{
 				if (*g_pointers->m_gta.m_ped_pool || (*g_pointers->m_gta.m_vehicle_pool && **g_pointers->m_gta.m_vehicle_pool)
 				    || *g_pointers->m_gta.m_prop_pool)
@@ -115,7 +119,8 @@ namespace big
 				}
 			}
 
-			if (g.window.ingame_overlay.show_game_versions)
+			//if (g.window.ingame_overlay.show_game_versions)
+			if (1 == 2)
 			{
 				ImGui::Separator();
 				ImGui::Text(std::format("{}: {}", "VIEW_OVERLAY_GAME_VERSION"_T, g_pointers->m_gta.m_game_version).c_str());

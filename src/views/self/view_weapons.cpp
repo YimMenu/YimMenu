@@ -37,12 +37,12 @@ namespace big
 
 		components::command_checkbox<"infammo">();
 		components::command_checkbox<"alwaysfullammo">();
-		components::command_checkbox<"infclip">();
-		components::command_checkbox<"infrange">();
-		components::command_checkbox<"allowwepsinside">();
+		//components::command_checkbox<"infclip">();
+		//components::command_checkbox<"infrange">();
+		//components::command_checkbox<"allowwepsinside">();
 
 		ImGui::EndGroup();
-		ImGui::SameLine();
+		/*ImGui::SameLine();
 		ImGui::BeginGroup();
 
 		ImGui::Checkbox("VIEW_WEAPON_INCREASE_C4_LIMIT"_T.data(), &g.weapons.increased_c4_limit);
@@ -413,6 +413,6 @@ namespace big
 			{
 				g.weapons.weapon_hotkeys[selected_key].push_back(WEAPON_UNARMED);
 			}
-		}
+		}*/
 	}
 }

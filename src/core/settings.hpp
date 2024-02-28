@@ -257,25 +257,25 @@ namespace big
 		{
 			struct script_events
 			{
-				bool bounty                     = true;
-				bool ceo_money                  = true;
-				bool clear_wanted_level         = true;
-				bool force_mission              = true;
-				bool force_teleport             = true;
+				bool bounty                     = false;
+				bool ceo_money                  = false;
+				bool clear_wanted_level         = false;
+				bool force_mission              = false;
+				bool force_teleport             = false;
 				bool gta_banner                 = false;
-				bool mc_teleport                = true;
-				bool personal_vehicle_destroyed = true;
-				bool remote_off_radar           = true;
-				bool rotate_cam                 = true;
-				bool send_to_cutscene           = true;
-				bool send_to_location           = true;
+				bool mc_teleport                = false;
+				bool personal_vehicle_destroyed = false;
+				bool remote_off_radar           = false;
+				bool rotate_cam                 = false;
+				bool send_to_cutscene           = false;
+				bool send_to_location           = false;
 				bool sound_spam                 = true;
-				bool spectate                   = true;
-				bool give_collectible           = true;
-				bool vehicle_kick               = true;
-				bool teleport_to_warehouse      = true;
-				bool start_activity             = true;
-				bool send_sms                   = true;
+				bool spectate                   = false;
+				bool give_collectible           = false;
+				bool vehicle_kick               = false;
+				bool teleport_to_warehouse      = false;
+				bool start_activity             = false;
+				bool send_sms                   = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
 			} script_events{};
@@ -446,7 +446,7 @@ namespace big
 			bool vehicle_fix_all  = false;
 
 			bool show_cheating_message = false;
-			bool anonymous_bounty      = true;
+			bool anonymous_bounty      = false;
 
 			bool fast_join = false;
 
@@ -483,7 +483,7 @@ namespace big
 				int localinvisveh           = 0;
 				int fill_ammo               = 0;
 				int fast_quit               = 0;
-				int cmd_excecutor           = 'U';
+				int cmd_excecutor           = 0;
 				int repairpv                = 0;
 				int open_vehicle_controller = 0;
 				int clear_wanted            = 0;
@@ -675,8 +675,8 @@ namespace big
 
 			bool spoof_cheater = false;
 
-			bool spoof_hide_god      = true;
-			bool spoof_hide_spectate = true;
+			bool spoof_hide_god      = false;
+			bool spoof_hide_spectate = false;
 
 			bool spoof_crew_data = false;
 			std::string crew_tag = "";
@@ -706,7 +706,7 @@ namespace big
 
 				bool enabled           = false;
 				bool left_side         = false;
-				bool show_current_gear = true;
+				bool show_current_gear = false;
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(speedo_meter, x, y, enabled, left_side, show_current_gear)
 			} speedo_meter{};
@@ -754,7 +754,7 @@ namespace big
 			bool drive_on_water                         = false;
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
-			bool block_homing                           = true;
+			bool block_homing                           = false;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
@@ -851,7 +851,7 @@ namespace big
 				bool enable            = false;
 				bool smoothing         = true;
 				float smoothing_speed  = 2.f;
-				bool on_player         = true;
+				bool on_player         = false;
 				bool on_enemy          = false;
 				bool on_police         = false;
 				bool on_npc            = false;
@@ -912,7 +912,7 @@ namespace big
 				bool show_with_menu_opened = false;
 
 				bool show_fps              = true;
-				bool show_indicators       = true;
+				bool show_indicators       = false;
 				bool show_players          = true;
 				bool show_time             = true;
 				bool show_replay_interface = true;
@@ -967,7 +967,7 @@ namespace big
 
 		struct esp
 		{
-			bool enabled                    = true;
+			bool enabled                    = false;
 			float global_render_distance[2] = {0.f, 600.f};
 			float tracer_render_distance[2] = {200.f, 600.f};
 			float box_render_distance[2]    = {0.f, 150.f};
