@@ -148,7 +148,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(100ms);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
-			    base_dir /= "MinonMenu";
+			    base_dir /= "MinionMenu";
 			    g_file_manager.init(base_dir);
 
 			    g.init(g_file_manager.get_project_file("./settings.json"));
