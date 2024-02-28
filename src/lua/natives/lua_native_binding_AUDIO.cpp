@@ -157,13 +157,10 @@ namespace lua::native
 		AUDIO::INTERRUPT_CONVERSATION_AND_PAUSE(ped, p1.is<const char*>() ? p1.as<const char*>() : nullptr, speaker.is<const char*>() ? speaker.as<const char*>() : nullptr);
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_AUDIO_GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE(Any p0)
+	static int LUA_NATIVE_AUDIO_GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE(uintptr_t p0)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = AUDIO::GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE(&p0);
-		std::get<1>(return_values) = p0;
-
-		return return_values;
+		auto retval = AUDIO::GET_VARIATION_CHOSEN_FOR_SCRIPTED_LINE((Any*)p0);
+		return retval;
 	}
 
 	static void LUA_NATIVE_AUDIO_SET_NO_DUCKING_FOR_CONVERSATION(bool p0)

@@ -24,13 +24,17 @@ def print_hpp(text):
 class Arg:
     def __init__(self, name, type_):
         self.name = name
-        self.type_ = type_.replace("BOOL", "bool")
+        self.type_ = type_.replace("BOOL", "bool").replace("Any*", "uintptr_t")
+        if self.type_ == "uintptr_t":
+            self.is_any_ptr = True
+        else:
+            self.is_any_ptr = False
         if self.type_ == "const char*":
             self.type_ = self.type_.replace("const char*", "sol::stack_object")
             self.is_string = True
         else:
             self.is_string = False
-        self.is_pointer_arg = "*" in type_ and "const char" not in type_
+        self.is_pointer_arg = "*" in self.type_ and "const char" not in self.type_
         self.type_no_star = self.type_.replace("*", "")
 
     def __str__(self) -> str:
@@ -43,7 +47,7 @@ class NativeFunc:
         self.lua_name = lua_name
         self.cpp_name = cpp_name
         self.args = args
-        self.return_type = return_type.replace("BOOL", "bool")
+        self.return_type = return_type.replace("BOOL", "bool").replace("Any*", "uintptr_t")
 
         self.out_params = []
         if self.return_type != "void":
@@ -126,10 +130,14 @@ class NativeFunc:
 
         if len(self.args) > 0:
             for arg in self.args:
+                if arg.is_any_ptr:
+                    call_native += "(Any*)"
+
                 if arg.is_pointer_arg:
                     if arg.type_ == "bool*":
                         call_native += "(BOOL*)"
                     call_native += "&"
+                    
 
                 if arg.is_string:
                     call_native += f'{arg.name}.is<const char*>() ? {arg.name}.as<const char*>() : nullptr, '
@@ -167,7 +175,10 @@ class NativeFunc:
             if returning_multiple_values:
                 return_statement = "return return_values;"
             elif self.return_type != "void":
-                return_statement = "return retval;"
+                if self.return_type == "uintptr_t":
+                    return_statement = "return (uintptr_t)retval;"
+                else:
+                    return_statement = "return retval;"
             else:
                 for arg in self.args:
                     if arg.is_pointer_arg:

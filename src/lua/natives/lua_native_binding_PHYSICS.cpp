@@ -3,13 +3,10 @@
 
 namespace lua::native
 {
-	static std::tuple<int, Any> LUA_NATIVE_PHYSICS_ADD_ROPE(float x, float y, float z, float rotX, float rotY, float rotZ, float length, int ropeType, float maxLength, float minLength, float windingSpeed, bool p11, bool p12, bool rigid, float p14, bool breakWhenShot, Any unkPtr)
+	static int LUA_NATIVE_PHYSICS_ADD_ROPE(float x, float y, float z, float rotX, float rotY, float rotZ, float length, int ropeType, float maxLength, float minLength, float windingSpeed, bool p11, bool p12, bool rigid, float p14, bool breakWhenShot, uintptr_t unkPtr)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = PHYSICS::ADD_ROPE(x, y, z, rotX, rotY, rotZ, length, ropeType, maxLength, minLength, windingSpeed, p11, p12, rigid, p14, breakWhenShot, &unkPtr);
-		std::get<1>(return_values) = unkPtr;
-
-		return return_values;
+		auto retval = PHYSICS::ADD_ROPE(x, y, z, rotX, rotY, rotZ, length, ropeType, maxLength, minLength, windingSpeed, p11, p12, rigid, p14, breakWhenShot, (Any*)unkPtr);
+		return retval;
 	}
 
 	static int LUA_NATIVE_PHYSICS_DELETE_ROPE(int ropeId)
@@ -65,14 +62,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<Any, Any> LUA_NATIVE_PHYSICS_ATTACH_ENTITIES_TO_ROPE(int ropeId, Entity ent1, Entity ent2, float ent1_x, float ent1_y, float ent1_z, float ent2_x, float ent2_y, float ent2_z, float length, bool p10, bool p11, Any p12, Any p13)
+	static void LUA_NATIVE_PHYSICS_ATTACH_ENTITIES_TO_ROPE(int ropeId, Entity ent1, Entity ent2, float ent1_x, float ent1_y, float ent1_z, float ent2_x, float ent2_y, float ent2_z, float length, bool p10, bool p11, uintptr_t p12, uintptr_t p13)
 	{
-		std::tuple<Any, Any> return_values;
-		PHYSICS::ATTACH_ENTITIES_TO_ROPE(ropeId, ent1, ent2, ent1_x, ent1_y, ent1_z, ent2_x, ent2_y, ent2_z, length, p10, p11, &p12, &p13);
-		std::get<0>(return_values) = p12;
-		std::get<1>(return_values) = p13;
-
-		return return_values;
+		PHYSICS::ATTACH_ENTITIES_TO_ROPE(ropeId, ent1, ent2, ent1_x, ent1_y, ent1_z, ent2_x, ent2_y, ent2_z, length, p10, p11, (Any*)p12, (Any*)p13);
 	}
 
 	static void LUA_NATIVE_PHYSICS_ATTACH_ROPE_TO_ENTITY(int ropeId, Entity entity, float x, float y, float z, bool p5)

@@ -172,13 +172,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_BASKET_ADD_ITEM(Any itemData, int quantity)
+	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_BASKET_ADD_ITEM(uintptr_t itemData, int quantity)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETSHOPPING::NET_GAMESERVER_BASKET_ADD_ITEM(&itemData, quantity);
-		std::get<1>(return_values) = itemData;
-
-		return return_values;
+		auto retval = (bool)NETSHOPPING::NET_GAMESERVER_BASKET_ADD_ITEM((Any*)itemData, quantity);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_BASKET_IS_FULL()
@@ -187,13 +184,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_BASKET_APPLY_SERVER_DATA(Any p0, Any p1)
+	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_BASKET_APPLY_SERVER_DATA(Any p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)NETSHOPPING::NET_GAMESERVER_BASKET_APPLY_SERVER_DATA(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)NETSHOPPING::NET_GAMESERVER_BASKET_APPLY_SERVER_DATA(p0, (Any*)p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_NETSHOPPING_NET_GAMESERVER_CHECKOUT_START(int transactionId)

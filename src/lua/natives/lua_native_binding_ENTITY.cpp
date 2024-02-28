@@ -663,14 +663,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_ENTITY_FIND_ANIM_EVENT_PHASE(sol::stack_object animDictionary, sol::stack_object animName, sol::stack_object p2, Any p3, Any p4)
+	static bool LUA_NATIVE_ENTITY_FIND_ANIM_EVENT_PHASE(sol::stack_object animDictionary, sol::stack_object animName, sol::stack_object p2, uintptr_t p3, uintptr_t p4)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)ENTITY::FIND_ANIM_EVENT_PHASE(animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, &p3, &p4);
-		std::get<1>(return_values) = p3;
-		std::get<2>(return_values) = p4;
-
-		return return_values;
+		auto retval = (bool)ENTITY::FIND_ANIM_EVENT_PHASE(animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, animName.is<const char*>() ? animName.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, (Any*)p3, (Any*)p4);
+		return retval;
 	}
 
 	static void LUA_NATIVE_ENTITY_SET_ENTITY_ANIM_CURRENT_TIME(Entity entity, sol::stack_object animDictionary, sol::stack_object animName, float time)

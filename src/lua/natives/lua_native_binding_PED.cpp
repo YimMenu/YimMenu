@@ -1030,13 +1030,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_PED_GET_POS_FROM_FIRED_EVENT(Ped ped, int eventType, Any outData)
+	static bool LUA_NATIVE_PED_GET_POS_FROM_FIRED_EVENT(Ped ped, int eventType, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)PED::GET_POS_FROM_FIRED_EVENT(ped, eventType, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)PED::GET_POS_FROM_FIRED_EVENT(ped, eventType, (Any*)outData);
+		return retval;
 	}
 
 	static void LUA_NATIVE_PED_SET_PED_FIRING_PATTERN(Ped ped, Hash patternHash)
@@ -1060,14 +1057,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<Any, int> LUA_NATIVE_PED_GET_GROUP_SIZE(int groupID, Any p1, int sizeInMembers)
+	static int LUA_NATIVE_PED_GET_GROUP_SIZE(int groupID, uintptr_t p1, int sizeInMembers)
 	{
-		std::tuple<Any, int> return_values;
-		PED::GET_GROUP_SIZE(groupID, &p1, &sizeInMembers);
-		std::get<0>(return_values) = p1;
-		std::get<1>(return_values) = sizeInMembers;
-
-		return return_values;
+		PED::GET_GROUP_SIZE(groupID, (Any*)p1, &sizeInMembers);
+		return sizeInMembers;
 	}
 
 	static bool LUA_NATIVE_PED_DOES_GROUP_EXIST(int groupId)
@@ -1504,14 +1497,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any, Any> LUA_NATIVE_PED_GET_MP_OUTFIT_DATA_FROM_METADATA(Any p0, Any p1)
+	static bool LUA_NATIVE_PED_GET_MP_OUTFIT_DATA_FROM_METADATA(uintptr_t p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any, Any> return_values;
-		std::get<0>(return_values) = (bool)PED::GET_MP_OUTFIT_DATA_FROM_METADATA(&p0, &p1);
-		std::get<1>(return_values) = p0;
-		std::get<2>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)PED::GET_MP_OUTFIT_DATA_FROM_METADATA((Any*)p0, (Any*)p1);
+		return retval;
 	}
 
 	static int LUA_NATIVE_PED_GET_FM_MALE_SHOP_PED_APPAREL_ITEM_INDEX(int p0)
@@ -1562,13 +1551,10 @@ namespace lua::native
 		PED::SET_PED_HEAD_BLEND_DATA(ped, shapeFirstID, shapeSecondID, shapeThirdID, skinFirstID, skinSecondID, skinThirdID, shapeMix, skinMix, thirdMix, isParent);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_PED_GET_PED_HEAD_BLEND_DATA(Ped ped, Any headBlendData)
+	static bool LUA_NATIVE_PED_GET_PED_HEAD_BLEND_DATA(Ped ped, uintptr_t headBlendData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)PED::GET_PED_HEAD_BLEND_DATA(ped, &headBlendData);
-		std::get<1>(return_values) = headBlendData;
-
-		return return_values;
+		auto retval = (bool)PED::GET_PED_HEAD_BLEND_DATA(ped, (Any*)headBlendData);
+		return retval;
 	}
 
 	static void LUA_NATIVE_PED_UPDATE_PED_HEAD_BLEND_DATA(Ped ped, float shapeMix, float skinMix, float thirdMix)
@@ -3067,22 +3053,16 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_PED_GET_PED_NEARBY_VEHICLES(Ped ped, Any sizeAndVehs)
+	static int LUA_NATIVE_PED_GET_PED_NEARBY_VEHICLES(Ped ped, uintptr_t sizeAndVehs)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = PED::GET_PED_NEARBY_VEHICLES(ped, &sizeAndVehs);
-		std::get<1>(return_values) = sizeAndVehs;
-
-		return return_values;
+		auto retval = PED::GET_PED_NEARBY_VEHICLES(ped, (Any*)sizeAndVehs);
+		return retval;
 	}
 
-	static std::tuple<int, Any> LUA_NATIVE_PED_GET_PED_NEARBY_PEDS(Ped ped, Any sizeAndPeds, int ignore)
+	static int LUA_NATIVE_PED_GET_PED_NEARBY_PEDS(Ped ped, uintptr_t sizeAndPeds, int ignore)
 	{
-		std::tuple<int, Any> return_values;
-		std::get<0>(return_values) = PED::GET_PED_NEARBY_PEDS(ped, &sizeAndPeds, ignore);
-		std::get<1>(return_values) = sizeAndPeds;
-
-		return return_values;
+		auto retval = PED::GET_PED_NEARBY_PEDS(ped, (Any*)sizeAndPeds, ignore);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_PED_HAVE_ALL_STREAMING_REQUESTS_COMPLETED(Ped ped)

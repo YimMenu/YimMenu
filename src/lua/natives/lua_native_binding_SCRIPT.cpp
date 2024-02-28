@@ -122,19 +122,15 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SCRIPT_GET_EVENT_DATA(int eventGroup, int eventIndex, Any eventData, int eventDataSize)
+	static bool LUA_NATIVE_SCRIPT_GET_EVENT_DATA(int eventGroup, int eventIndex, uintptr_t eventData, int eventDataSize)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SCRIPT::GET_EVENT_DATA(eventGroup, eventIndex, &eventData, eventDataSize);
-		std::get<1>(return_values) = eventData;
-
-		return return_values;
+		auto retval = (bool)SCRIPT::GET_EVENT_DATA(eventGroup, eventIndex, (Any*)eventData, eventDataSize);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_SCRIPT_TRIGGER_SCRIPT_EVENT(int eventGroup, Any eventData, int eventDataSize, int playerBits)
+	static void LUA_NATIVE_SCRIPT_TRIGGER_SCRIPT_EVENT(int eventGroup, uintptr_t eventData, int eventDataSize, int playerBits)
 	{
-		SCRIPT::TRIGGER_SCRIPT_EVENT(eventGroup, &eventData, eventDataSize, playerBits);
-		return eventData;
+		SCRIPT::TRIGGER_SCRIPT_EVENT(eventGroup, (Any*)eventData, eventDataSize, playerBits);
 	}
 
 	static void LUA_NATIVE_SCRIPT_SHUTDOWN_LOADING_SCREEN()
@@ -207,10 +203,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_(int eventGroup, Any eventData, int eventDataSize, int playerBits, Hash eventType)
+	static void LUA_NATIVE_SCRIPT_SEND_TU_SCRIPT_EVENT_NEW_(int eventGroup, uintptr_t eventData, int eventDataSize, int playerBits, Hash eventType)
 	{
-		SCRIPT::_SEND_TU_SCRIPT_EVENT_NEW(eventGroup, &eventData, eventDataSize, playerBits, eventType);
-		return eventData;
+		SCRIPT::_SEND_TU_SCRIPT_EVENT_NEW(eventGroup, (Any*)eventData, eventDataSize, playerBits, eventType);
 	}
 
 	void init_native_binding_SCRIPT(sol::state& L)
