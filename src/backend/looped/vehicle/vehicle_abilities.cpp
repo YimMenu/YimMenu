@@ -108,11 +108,14 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			reset(g_local_player->m_vehicle);
+			if (g_local_player)
+				reset(g_local_player->m_vehicle);
 		}
 
 		virtual void on_tick() override
 		{
+			if (g_local_player == nullptr)
+				return;
 			const auto curr_veh = g_local_player->m_vehicle;
 			if (curr_veh && !(g_local_player->m_ped_task_flag & (int)ePedTask::TASK_DRIVING))
 			{

@@ -15,7 +15,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (!self::veh || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
+			if (!self::veh || !g_local_player  || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
 			{
 				return;
 			}

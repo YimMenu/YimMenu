@@ -7,6 +7,9 @@ namespace big
 {
 	void looped::vehicle_boost_behavior()
 	{
+		if (g_local_player == nullptr)
+			return;
+
 		auto* const vehicle = g_local_player->m_vehicle;
 
 		bool is_rocket = VEHICLE::GET_HAS_ROCKET_BOOST(self::veh);
