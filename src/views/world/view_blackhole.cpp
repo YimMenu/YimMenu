@@ -18,11 +18,14 @@ namespace big
 		ImGui::SliderFloat("VIEW_BLACKHOLE_SCALE"_T.data(), &g.world.blackhole.scale, 2.f, 12.f, "%.0f");
 
 		components::button("VIEW_BLACKHOLE_SET"_T, [] {
-			const auto player_pos = g_local_player->get_position();
+			if (g_local_player)
+			{
+				const auto player_pos = g_local_player->get_position();
 
-			g.world.blackhole.pos.x = player_pos->x;
-			g.world.blackhole.pos.y = player_pos->y;
-			g.world.blackhole.pos.z = player_pos->z;
+				g.world.blackhole.pos.x = player_pos->x;
+				g.world.blackhole.pos.y = player_pos->y;
+				g.world.blackhole.pos.z = player_pos->z;
+			}
 		});
 
 		ImGui::SeparatorText("VIEW_BLACKHOLE_CUSTOM"_T.data());

@@ -155,7 +155,7 @@ namespace big
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			if (node->m_has_occupants[i] && node->m_occupants[i] == g_local_player->m_net_object->m_object_id)
+			if (g_local_player && node->m_has_occupants[i] && node->m_occupants[i] == g_local_player->m_net_object->m_object_id)
 				return true;
 		}
 
