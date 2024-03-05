@@ -146,11 +146,63 @@ static const std::map<int, std::string> lsc_matte_colors = {
 };
 
 static const std::map<int, std::string> lsc_metal_colors = {
+    {COLOR_METALS_PEARLESCENT_STEEL, "Pearlescent Steel"},
     {COLOR_METALS_BRUSHED_STEEL, "Brushed Steel"},
     {COLOR_METALS_BRUSHED_BLACK_STEEL, "Brushed Black Steel"},
     {COLOR_METALS_BRUSHED_ALUMINUM, "Brushed Aluminium"},
     {COLOR_METALS_PURE_GOLD, "Pure Gold"},
     {COLOR_METALS_BRUSHED_GOLD, "Brushed Gold"},
+    {COLOR_METALS_PEARLESCENT_GOLD, "Pearlescent Gold"},
+};
+
+static const std::map<int, std::string> lsc_util_colors = {
+    {COLOR_UTIL_BLACK, "Black"},
+    {COLOR_UTIL_BLACK_POLY, "Black Poly"},
+    {COLOR_UTIL_DARK_SILVER, "Dark Silver"},
+    {COLOR_UTIL_GUN_METAL, "Gun Metal"},
+    {COLOR_UTIL_SHADOW_SILVER, "Shadow Silver"},
+    {COLOR_UTIL_RED, "Red"},
+    {COLOR_UTIL_BRIGHT_RED, "Bright Red"},
+    {COLOR_UTIL_GARNET_RED, "Garnet Red"},
+    {COLOR_UTIL_MIDNIGHT_BLUE, "Midnight Blue"},
+    {COLOR_UTIL_BLUE, "Blue"},
+    {COLOR_UTIL_SEA_FOAM_BLUE, "Sea Foam Blue"},
+    {COLOR_UTIL_LIGHTNING_BLUE, "Lightning Blue"},
+    {COLOR_UTIL_MAUI_BLUE_POLY, "Maui Blue Poly"},
+    {COLOR_UTIL_BRIGHT_BLUE, "Bright Blue"},
+    {COLOR_UTIL_BROWN, "Brown"},
+    {COLOR_UTIL_MEDIUM_BROWN, "Medium Brown"},
+    {COLOR_UTIL_LIGHT_BROWN, "Light Brown"},
+    {COLOR_UTIL_OFF_WHITE, "Off White"},
+};
+
+static const std::map<int, std::string> lsc_worn_colors = {
+    {COLOR_WORN_BLACK, "Black"},
+    {COLOR_WORN_GRAPHITE, "Graphite"},
+    {COLOR_WORN_SILVER_GREY, "Silver Grey"},
+    {COLOR_WORN_SILVER, "Silver"},
+    {COLOR_WORN_BLUE_SILVER, "Blue Silver"},
+    {COLOR_WORN_SHADOW_SILVER, "Shadow Silver"},
+    {COLOR_WORN_RED, "Red"},
+    {COLOR_WORN_GOLDEN_RED, "Golden Red"},
+    {COLOR_WORN_DARK_RED, "Dark Red"},
+    {COLOR_WORN_DARK_GREEN, "Dark Green"},
+    {COLOR_WORN_GREEN, "Green"},
+    {COLOR_WORN_SEA_WASH, "Sea Wash"},
+    {COLOR_WORN_DARK_BLUE, "Dark blue"},
+    {COLOR_WORN_BLUE, "Blue"},
+    {COLOR_WORN_BABY_BLUE, "Light blue"},
+    {COLOR_WORN_HONEY_BEIGE, "Honey Beige"},
+    {COLOR_WORN_BROWN, "Brown"},
+    {COLOR_WORN_DARK_BROWN, "Dark Brown"},
+    {COLOR_WORN_STRAW_BEIGE, "straw beige"},
+    {COLOR_WORN_OFF_WHITE, "Off White"},
+    {COLOR_WORN_ORANGE, "Orange"},
+    {COLOR_WORN_LIGHT_ORANGE, "Light Orange"},
+    {COLOR_WORN_TAXI_YELLOW, "Taxi Yellow"},
+    {COLOR_WORN_PALE_ORANGE, "Pale Orange"},
+    {COLOR_WORN_WHITE, "White"},
+    {COLOR_WORN_ARMY_OLIVE_GREEN, "Olive Army Green"},
 };
 
 static const std::map<int, std::string> lsc_headlight_colors = {
