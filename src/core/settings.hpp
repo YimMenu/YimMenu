@@ -5,6 +5,8 @@
 #include "core/data/ptfx_effects.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
+#include <list>
+
 
 #include <bitset>
 #include <rage/rlSessionInfo.hpp>
@@ -878,6 +880,7 @@ namespace big
 			bool no_recoil                = false;
 			bool no_spread                = false;
 			std::string vehicle_gun_model = "bus";
+			std::string animal            = "a_c_boar";
 			bool increased_c4_limit       = false;
 			bool increased_flare_limit    = false;
 			bool rapid_fire               = false;
