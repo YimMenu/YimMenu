@@ -61,6 +61,7 @@ namespace big
 		static void weapons_do_persist_weapons();
 		static void weapons_do_weapon_hotkeys();
 		static void weapons_paint_gun();
+		static void weapons_shark_gun();
 
 		static void drive_train();
 		static void derail_train();
