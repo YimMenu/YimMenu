@@ -27,6 +27,7 @@ namespace big
 	    {big::CustomWeapon::VEHICLE_GUN, "BACKEND_LOOPED_WEAPONS_VEHICLE_GUN"},
 	    {big::CustomWeapon::TP_GUN, "VIEW_SELF_WEAPONS_TP_GUN"},
 	    {big::CustomWeapon::PAINT_GUN, "VIEW_SELF_WEAPONS_PAINT_GUN"},
+	    {big::CustomWeapon::SHARK_GUN, "BACKEND_LOOPED_WEAPONS_SHARK_GUN"},
 	});
 
 	void view::weapons()
@@ -172,6 +173,16 @@ namespace big
 			ImGui::Checkbox("RAINBOW_PAINT"_T.data(), &g.weapons.paintgun.rainbow);
 			ImGui::SliderFloat("VIEW_WEAPON_RAINBOW_SPEED"_T.data(), &g.weapons.paintgun.speed, 0.f, 10.f);
 			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("VIEW_WEAPON_PAINT_GUN_COLOR"_T.data(), g.weapons.paintgun.col); }
+			break;
+		case CustomWeapon::SHARK_GUN:
+			static char animal_gun[32];
+			std::memcpy(animal_gun, g.weapons.animal.c_str(), 32);
+			if (ImGui::InputTextWithHint("SHOOTING_MODEL"_T.data(), "NAME_ANIMAL_MODEL"_T.data(), animal_gun, sizeof(animal_gun)))
+			{
+				g.weapons.animal = animal_gun;
+			}
+			if (ImGui::IsItemActive())
+				g.self.hud.typing = TYPING_TICKS;
 		}
 
 		ImGui::SeparatorText("VIEW_WEAPON_AIM_ASSISTANCE"_T.data());
