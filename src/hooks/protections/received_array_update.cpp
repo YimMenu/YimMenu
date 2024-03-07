@@ -16,7 +16,7 @@ namespace big
 	{
 		int old_beast_index = -1;
 		int participant_id  = 0;
-		auto beast          = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+		auto beast          = gta_util::find_script_thread("am_hunt_the_beast"_J);
 
 		if (beast)
 		{

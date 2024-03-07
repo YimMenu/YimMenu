@@ -42,18 +42,18 @@ namespace big
 			if (m_initialized || m_loading)
 				return;
 
-			if (!m_script_started && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("tuneables_processing")) > 0)
+			if (!m_script_started && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("tuneables_processing"_J) > 0)
 				continue;
 
 			if (!m_script_started)
 			{
-				SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("tuneables_processing"));
+				SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("tuneables_processing"_J);
 
-				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("tuneables_processing")))
+				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("tuneables_processing"_J))
 				{
 					uint64_t args[] = {6, 27}; // TODO: check args
 
-					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
+					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS("tuneables_processing"_J, (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
 
 					if (!id)
 					{
@@ -61,17 +61,17 @@ namespace big
 						return;
 					}
 
-					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("tuneables_processing"));
+					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tuneables_processing"_J);
 					m_script_started = true;
 
-					g_script_patcher_service->add_patch({RAGE_JOAAT("tuneables_processing"), "tuneables_processing1", "2E ? ? 55 ? ? 38 06", 0, std::vector<uint8_t>(17, 0x0), &m_script_started}); // bool tunables registration hack
-					if (auto program = gta_util::find_script_program(RAGE_JOAAT("tuneables_processing")))
+					g_script_patcher_service->add_patch({"tuneables_processing"_J, "tuneables_processing1", "2E ? ? 55 ? ? 38 06", 0, std::vector<uint8_t>(17, 0x0), &m_script_started}); // bool tunables registration hack
+					if (auto program = gta_util::find_script_program("tuneables_processing"_J))
 						g_script_patcher_service->on_script_load(program);
 				}
 			}
 			else
 			{
-				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("tuneables_processing")) == 0)
+				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("tuneables_processing"_J) == 0)
 				{
 					if (m_tunables.size() == 0)
 					{

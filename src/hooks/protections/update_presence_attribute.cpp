@@ -11,7 +11,7 @@ namespace big
 	bool hooks::update_presence_attribute_int(void* presence_data, int profile_index, char* attr, uint64_t value)
 	{
 		auto hash = rage::joaat(attr);
-		if (block_session_presence() && (hash == RAGE_JOAAT("gstok") || hash == RAGE_JOAAT("gsid") || hash == RAGE_JOAAT("gstype") || hash == RAGE_JOAAT("gshost") || hash == RAGE_JOAAT("gsjoin")))
+		if (block_session_presence() && (hash == "gstok"_J || hash == "gsid"_J || hash == "gstype"_J || hash == "gshost"_J || hash == "gsjoin"_J))
 		{
 			return true;
 		}
@@ -22,13 +22,13 @@ namespace big
 	bool hooks::update_presence_attribute_string(void* presence_data, int profile_index, char* attr, char* value)
 	{
 		auto hash = rage::joaat(attr);
-		if (block_session_presence() && hash == RAGE_JOAAT("gsinfo"))
+		if (block_session_presence() && hash == "gsinfo"_J)
 		{
 			return true;
 		}
 
 		// shouldn't have any side effects
-		if (hash == RAGE_JOAAT("peeraddr"))
+		if (hash == "peeraddr"_J)
 		{
 			value = (char*)"";
 		}

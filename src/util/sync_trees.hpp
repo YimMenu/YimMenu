@@ -17,10 +17,9 @@ namespace big
 		template<size_t N>
 		constexpr sync_node_id(char const (&pp)[N])
 		{
-			id   = rage::consteval_joaat(pp);
+			id   = rage::constexpr_joaat(pp);
 			name = pp;
 		}
-
 		// implicit conversion
 		constexpr operator Hash() const
 		{

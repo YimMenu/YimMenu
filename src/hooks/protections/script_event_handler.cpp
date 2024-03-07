@@ -138,7 +138,7 @@ namespace big
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 				return true;
 			case eRemoteEvent::NotificationCrash2:
-				if (!gta_util::find_script_thread(RAGE_JOAAT("gb_salvage")))
+				if (!gta_util::find_script_thread("gb_salvage"_J))
 				{
 					// This looks like it's meant to trigger a sound crash by spamming too many notifications. We've already patched it, but the notifications are still annoying
 					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
@@ -392,7 +392,7 @@ namespace big
 			break;
 		case eRemoteEvent::TriggerCEORaid:
 		{
-			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			if (auto script = gta_util::find_script_thread("freemode"_J))
 			{
 				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
 				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
@@ -406,7 +406,7 @@ namespace big
 		case eRemoteEvent::StartScriptProceed:
 		{
 			// TODO: Breaks stuff
-			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			if (auto script = gta_util::find_script_thread("freemode"_J))
 			{
 				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
 				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)

@@ -213,7 +213,7 @@ namespace big
 			if (!m_landing && m_flying)
 			{
 				//Negative Z velocity results in gravity assuming we are falling, hence the removal of the parachute.
-				constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+				constexpr auto parachute_hash = "GADGET_PARACHUTE"_J;
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, parachute_hash);
 				detach_delete_vehicle();
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);

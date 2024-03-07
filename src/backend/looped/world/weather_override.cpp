@@ -19,7 +19,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (!turn_snow_on_off)
-				turn_snow_on_off = g_tunables_service->get_tunable<bool*>(RAGE_JOAAT("TURN_SNOW_ON_OFF"));
+				turn_snow_on_off = g_tunables_service->get_tunable<bool*>("TURN_SNOW_ON_OFF"_J);
 
 			if (current_weather_idx != g.world.local_weather)
 			{

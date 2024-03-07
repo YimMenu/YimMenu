@@ -501,7 +501,7 @@ namespace big::ped
 			if (!ptr)
 				return;
 
-			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, "weapon_explosion"_J, 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
 		}
 	}
 

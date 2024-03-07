@@ -12,7 +12,7 @@ namespace big::train
 	{
 		for (auto veh : pools::get_all_vehicles())
 		{
-			if (veh->m_model_info->m_hash == RAGE_JOAAT("freight"))
+			if (veh->m_model_info->m_hash == "freight"_J)
 				return g_pointers->m_gta.m_ptr_to_handle(veh);
 		}
 		return 0;

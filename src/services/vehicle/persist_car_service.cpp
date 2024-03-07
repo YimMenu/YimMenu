@@ -384,7 +384,7 @@ namespace big
 				continue;
 
 			// Don't save tow hook.
-			if (is_towed_vehicle && ENTITY::GET_ENTITY_MODEL(object) == RAGE_JOAAT("prop_v_hook_s"))
+			if (is_towed_vehicle && ENTITY::GET_ENTITY_MODEL(object) == "prop_v_hook_s"_J)
 				continue;
 
 			attached_objects.push_back(get_model_attachment(vehicle, object));

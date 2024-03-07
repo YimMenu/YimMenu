@@ -199,7 +199,7 @@ namespace big
 		{
 			//LOG(INFO) << "Driver didnt exist, creating one";
 			m_driver = ped::spawn(PED_TYPE_CIVMALE,
-			    RAGE_JOAAT("s_m_y_devinsec_01"),
+			    "s_m_y_devinsec_01"_J,
 			    -1,
 			    ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, 1),
 			    0,

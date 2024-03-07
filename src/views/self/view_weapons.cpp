@@ -105,14 +105,14 @@ namespace big
 				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
 			}
 
-			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+			constexpr auto parachute_hash = "GADGET_PARACHUTE"_J;
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
 		components::button("REMOVE_CUR_WEAPON"_T, [] {
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
-			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
+			if (weaponHash != "WEAPON_UNARMED"_J)
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}

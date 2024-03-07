@@ -121,11 +121,11 @@ namespace big
 					{
 						if (g_player_service->get_self()->is_host())
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get("breakup"_J))->call(plyr, {});
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get("desync"_J))->call(plyr, {});
 						}
 					}
 
@@ -139,7 +139,7 @@ namespace big
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr, {});
 							g_notification_service->push_warning("LOBBY_LOCK"_T.data(),
 							    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
 						}

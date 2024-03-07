@@ -14,7 +14,7 @@ namespace big
 			g_player_service->iterate([](auto& plyr) {
 				if (plyr.second->is_host())
 				{
-					dynamic_cast<player_command*>(command::get(RAGE_JOAAT("multikick")))->call(plyr.second, {});
+					dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr.second, {});
 				}
 			});
 		}

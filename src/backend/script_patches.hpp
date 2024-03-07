@@ -9,63 +9,63 @@ namespace big
 	void register_script_patches()
 	{
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "freemode1", "2D 01 08 00 ? 38 00 5D ? ? ? 2A 06", 5, {0x71, 0x2E, 0x01, 0x01}, &g.session.decloak_players});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "script host kick", "2D 01 04 00 ? 2C ? ? ? 5D ? ? ? 71 57 ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // script host kick
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "end session kick protection", "5D ? ? ? 76 57 ? ? 5D ? ? ? 76", 0, {0x2E, 0x00, 0x00}, nullptr}); // end session kick protection
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "disable death when undermap/spectating", "2D 01 09 00 00 5D ? ? ? 56 ? ? 3A", 5, {0x2E, 0x01, 0x00}, nullptr}); // disable death when undermap/spectating
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "load island even if stranded animal IPL choice is not set", "71 2E ? ? 55 ? ? 61 ? ? ? 47 ? ? 63", 0, {0x72}, nullptr}); // load island even if stranded animal IPL choice is not set
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"), "disable population load balancing", "2D 00 07 00 00 7B", 5, {0x2E, 0x00, 0x00}, nullptr}); // disable population load balancing
+		    {"freemode"_J, "freemode1", "2D 01 08 00 ? 38 00 5D ? ? ? 2A 06", 5, {0x71, 0x2E, 0x01, 0x01}, &g.session.decloak_players});
+		g_script_patcher_service->add_patch({"freemode"_J, "script host kick", "2D 01 04 00 ? 2C ? ? ? 5D ? ? ? 71 57 ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // script host kick
+		g_script_patcher_service->add_patch({"freemode"_J, "end session kick protection", "5D ? ? ? 76 57 ? ? 5D ? ? ? 76", 0, {0x2E, 0x00, 0x00}, nullptr}); // end session kick protection
+		g_script_patcher_service->add_patch({"freemode"_J, "disable death when undermap/spectating", "2D 01 09 00 00 5D ? ? ? 56 ? ? 3A", 5, {0x2E, 0x01, 0x00}, nullptr}); // disable death when undermap/spectating
+		g_script_patcher_service->add_patch({"freemode"_J, "load island even if stranded animal IPL choice is not set", "71 2E ? ? 55 ? ? 61 ? ? ? 47 ? ? 63", 0, {0x72}, nullptr}); // load island even if stranded animal IPL choice is not set
+		g_script_patcher_service->add_patch({"freemode"_J, "disable population load balancing", "2D 00 07 00 00 7B", 5, {0x2E, 0x00, 0x00}, nullptr}); // disable population load balancing
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "freemode7", "2D 02 08 00 00 38 01 56", 5, {0x2E, 0x02, 0x00}, &g.session.block_muggers});
+		    {"freemode"_J, "freemode7", "2D 02 08 00 00 38 01 56", 5, {0x2E, 0x02, 0x00}, &g.session.block_muggers});
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "freemode8", "2D 00 CF 00 00", 5, {0x2E, 0x00, 0x00}, &g.session.block_ceo_raids});
+		    {"freemode"_J, "freemode8", "2D 00 CF 00 00", 5, {0x2E, 0x00, 0x00}, &g.session.block_ceo_raids});
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("freemode"), "prevent normal blip update", "06 56 ? ? 38 02 2C ? ? ? 71 71", 0, {0x2B, 0x55}, &g.spoofing.spoof_blip}); // prevent normal blip update
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"),
+		    {"freemode"_J, "prevent normal blip update", "06 56 ? ? 38 02 2C ? ? ? 71 71", 0, {0x2B, 0x55}, &g.spoofing.spoof_blip}); // prevent normal blip update
+		g_script_patcher_service->add_patch({"freemode"_J,
 		    "prevent normal blip update 2",
 		    "2C ? ? ? 55 ? ? 71 2C ? ? ? 61",
 		    7,
 		    std::vector<uint8_t>(16, 0x0),
 		    &g.spoofing.spoof_blip}); // prevent normal blip update 2
-		g_script_patcher_service->add_patch({RAGE_JOAAT("shop_controller"), "despawn bypass", "2D 01 04 00 00 2C ? ? ? 56 ? ? 71", 5, {0x71, 0x2E, 0x01, 0x01}, nullptr}); // despawn bypass
-		g_script_patcher_service->add_patch({RAGE_JOAAT("shop_controller"), "godmode/invisibility detection bypass", "2D 01 03 00 00 5D ? ? ? 06 56 ? ? 2E ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // godmode/invisibility detection bypass
-		g_script_patcher_service->add_patch({RAGE_JOAAT("am_mp_nightclub"),
+		g_script_patcher_service->add_patch({"shop_controller"_J, "despawn bypass", "2D 01 04 00 00 2C ? ? ? 56 ? ? 71", 5, {0x71, 0x2E, 0x01, 0x01}, nullptr}); // despawn bypass
+		g_script_patcher_service->add_patch({"shop_controller"_J, "godmode/invisibility detection bypass", "2D 01 03 00 00 5D ? ? ? 06 56 ? ? 2E ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // godmode/invisibility detection bypass
+		g_script_patcher_service->add_patch({"am_mp_nightclub"_J,
 		    "am_mp_nightclub1",
 		    "2D 01 03 00 00 2C ? ? ? 56 ? ? 72 2E ? ? 38 00",
 		    5,
 		    {0x72, 0x2E, 0x01, 0x01},
 		    &g.self.dance_mode});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("am_mp_nightclub"),
+		g_script_patcher_service->add_patch({"am_mp_nightclub"_J,
 		    "am_mp_nightclub2",
 		    "20 56 ? ? 4F ? ? 46 ? ? 41 ? 71",
 		    0,
 		    {0x2B, 0x55},
 		    &g.self.dance_mode});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"),
+		g_script_patcher_service->add_patch({"freemode"_J,
 		    "freemode9",
 		    "5D ? ? ? 56 ? ? 72 39 05 38 04 2C ? ? ? 58",
 		    0,
 		    {0x2B, 0x2B, 0x2B, 0x00, 0x55},
 		    &g.self.invisibility});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("freemode"),
+		g_script_patcher_service->add_patch({"freemode"_J,
 		    "freemode10",
 		    "2D 01 03 00 00 38 00 71 72 5D ? ? ? 06 56 ? ? 71 2E ? ? 2C ? ? ? 71",
 		    5,
 		    {0x72, 0x2E, 0x01, 0x01},
 		    &g.session.unhide_players_from_player_list});
 
-		g_script_patcher_service->add_patch({RAGE_JOAAT("carmod_shop"),
+		g_script_patcher_service->add_patch({"carmod_shop"_J,
 		    "disable camera",
 		    "2D 01 0A 00 00 4F ? ? 40 ? 41 ? 39 03",
 		    5,
 		    {0x2E, 0x01, 0x00},
 		    &g.vehicle.ls_customs}); // disable camera
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("carmod_shop"), "carmod_shop1", "2D 02 10 00 00 2C", 5, {0x71, 0x2E, 0x02, 0x01}, &g.vehicle.ls_customs});
+		    {"carmod_shop"_J, "carmod_shop1", "2D 02 10 00 00 2C", 5, {0x71, 0x2E, 0x02, 0x01}, &g.vehicle.ls_customs});
 		g_script_patcher_service->add_patch(
-		    {RAGE_JOAAT("carmod_shop"), "carmod_shop2", "2D 00 B8 00 00", 5, {0x2E, 0x00, 0x00}, &g.vehicle.ls_customs});
-		g_script_patcher_service->add_patch({RAGE_JOAAT("carmod_shop"), "allow all vehicles", "2D 03 16 00 00 5D", 5, {0x72, 0x2E, 0x03, 0x01}, nullptr}); // allow all vehicles
-		g_script_patcher_service->add_patch({RAGE_JOAAT("carmod_shop"),
+		    {"carmod_shop"_J, "carmod_shop2", "2D 00 B8 00 00", 5, {0x2E, 0x00, 0x00}, &g.vehicle.ls_customs});
+		g_script_patcher_service->add_patch({"carmod_shop"_J, "allow all vehicles", "2D 03 16 00 00 5D", 5, {0x72, 0x2E, 0x03, 0x01}, nullptr}); // allow all vehicles
+		g_script_patcher_service->add_patch({"carmod_shop"_J,
 		    "allow all vehicles 2",
 		    "2D 03 07 00 00 71 38 02",
 		    5,

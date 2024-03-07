@@ -41,7 +41,7 @@ namespace big
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void command_button(const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static command* command = command::get(rage::consteval_joaat(cmd_str.value));
+			static command* command = command::get(rage::joaat(cmd_str.value));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
@@ -57,7 +57,7 @@ namespace big
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void player_command_button(player_ptr player = g_player_service->get_selected(), const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
+			static player_command* command = dynamic_cast<player_command*>(command::get(rage::joaat(cmd_str.value)));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
@@ -70,7 +70,7 @@ namespace big
 		template<template_str cmd_str>
 		static bool command_checkbox(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::consteval_joaat(cmd_str.value)));
+			static bool_command* command = dynamic_cast<bool_command*>(command::get(rage::joaat(cmd_str.value)));
 			if (command == nullptr)
 			{
 				ImGui::Text("INVALID COMMAND");
@@ -89,7 +89,7 @@ namespace big
 		template<template_str cmd_str>
 		static void command_int_slider(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static int_command* command = (int_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static int_command* command = (int_command*)command::get(rage::joaat(cmd_str.value));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
@@ -105,7 +105,7 @@ namespace big
 		template<template_str cmd_str>
 		static void command_float_slider(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static float_command* command = (float_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static float_command* command = (float_command*)command::get(rage::joaat(cmd_str.value));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 
@@ -121,7 +121,7 @@ namespace big
 		template<template_str cmd_str>
 		static void command_float_input(std::optional<const std::string_view> label_override = std::nullopt)
 		{
-			static float_command* command = (float_command*)command::get(rage::consteval_joaat(cmd_str.value));
+			static float_command* command = (float_command*)command::get(rage::joaat(cmd_str.value));
 			if (command == nullptr)
 				return ImGui::Text("INVALID COMMAND");
 

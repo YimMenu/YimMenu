@@ -34,7 +34,7 @@ namespace big
 
 	inline void render_hunt_the_beast_ui()
 	{
-		if (auto hunt_the_beast_script_thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast")))
+		if (auto hunt_the_beast_script_thread = gta_util::find_script_thread("am_hunt_the_beast"_J))
 		{
 			auto beast_player_index =
 			    *script_local(hunt_the_beast_script_thread, scr_locals::am_hunt_the_beast::broadcast_idx).at(1).at(6).as<uint32_t*>();
@@ -53,7 +53,7 @@ namespace big
 				static int* num_landmarks = nullptr;
 
 				if (!num_landmarks)
-					num_landmarks = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("HUNT_THE_BEAST_NUMBER_OF_ACTIVE_LANDMARKS"));
+					num_landmarks = g_tunables_service->get_tunable<int*>("HUNT_THE_BEAST_NUMBER_OF_ACTIVE_LANDMARKS"_J);
 
 				if (ImGui::BeginListBox("##beastlandmarks", ImVec2(400, 300)))
 				{

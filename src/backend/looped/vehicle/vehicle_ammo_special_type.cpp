@@ -92,7 +92,7 @@ namespace big
 			// this is to differentiate missiles from turrets, mortars and barrage
 			CAmmoRocketInfo* rocket_info = (CAmmoRocketInfo*)weapon_info->m_ammo_info;
 			uint32_t trail_hash          = rocket_info->m_m_trail_fx_hash;
-			return (trail_hash == RAGE_JOAAT("proj_rpg_trail") || trail_hash == RAGE_JOAAT("proj_xm_thruster_rpg_trail"));
+			return (trail_hash == "proj_rpg_trail"_J || trail_hash == "proj_xm_thruster_rpg_trail"_J);
 		}
 
 		void restore_mg()

@@ -46,13 +46,13 @@ namespace big
 			if (!NETWORK::NETWORK_IS_PLAYER_CONNECTED(id))
 				return;
 
-			if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
+			if (!scripts::force_host("am_hunt_the_beast"_J))
 			{
 				g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED_CONTROL"_T.data());
 				return;
 			}
 
-			auto thread        = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+			auto thread        = gta_util::find_script_thread("am_hunt_the_beast"_J);
 			auto stack         = thread->m_stack;
 			auto net_component = (CGameScriptHandlerNetComponent*)thread->m_net_component;
 			auto idx           = scr_locals::am_hunt_the_beast::broadcast_idx;
@@ -85,7 +85,7 @@ namespace big
 		{
 			scripts::start_launcher_script(47);
 
-			for (int i = 0; !scripts::is_running(RAGE_JOAAT("am_launcher")); i++)
+			for (int i = 0; !scripts::is_running("am_launcher"_J); i++)
 			{
 				if (i >= 7000)
 				{
@@ -98,7 +98,7 @@ namespace big
 
 			script::get_current()->yield(500ms);
 
-			if (!scripts::force_host(RAGE_JOAAT("am_hunt_the_beast")))
+			if (!scripts::force_host("am_hunt_the_beast"_J))
 			{
 				g_notification_service->push_error("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_FAILED_CONTROL"_T.data());
 				return;
@@ -106,7 +106,7 @@ namespace big
 
 			script::get_current()->yield(3s);
 
-			auto thread = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+			auto thread = gta_util::find_script_thread("am_hunt_the_beast"_J);
 
 			if (!thread)
 				return;

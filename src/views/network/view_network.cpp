@@ -334,12 +334,12 @@ namespace big
 		{
 			if (g.session.force_script_host)
 				g_fiber_pool->queue_job([] {
-					scripts::force_host(RAGE_JOAAT("freemode"));
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")); script && script->m_net_component)
+					scripts::force_host("freemode"_J);
+					if (auto script = gta_util::find_script_thread("freemode"_J); script && script->m_net_component)
 						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 
-					scripts::force_host(RAGE_JOAAT("fmmc_launcher"));
-					if (auto script = gta_util::find_script_thread(RAGE_JOAAT("fmmc_launcher")); script && script->m_net_component)
+					scripts::force_host("fmmc_launcher"_J);
+					if (auto script = gta_util::find_script_thread("fmmc_launcher"_J); script && script->m_net_component)
 						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
 				});
 		}

@@ -45,8 +45,8 @@ namespace big
 		// clang-format off
 		ImGui::BeginDisabled(!*g_pointers->m_gta.m_is_session_started ||
 			gpbd_fm_3->Entries[self::id].BossGoon.Boss != -1 ||
-			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) ||
-			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
+			gta_util::find_script_thread("fm_mission_controller"_J) ||
+			gta_util::find_script_thread("fm_mission_controller_2020"_J));
 		// clang-format on
 		components::command_checkbox<"passive">();
 		ImGui::EndDisabled();

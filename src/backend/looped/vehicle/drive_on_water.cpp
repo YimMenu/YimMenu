@@ -10,7 +10,7 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		const rage::joaat_t drive_on_water_surface_hash = RAGE_JOAAT("stt_prop_stunt_bblock_xl3");
+		const rage::joaat_t drive_on_water_surface_hash = "stt_prop_stunt_bblock_xl3"_J;
 		Vector3 drive_on_water_last_loc;
 		Object surface;
 

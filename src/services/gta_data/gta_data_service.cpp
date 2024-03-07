@@ -352,7 +352,7 @@ namespace big
 						const auto name = item.child("Name").text().as_string();
 						const auto hash = rage::joaat(name);
 
-						if (hash == RAGE_JOAAT("WEAPON_BIRD_CRAP"))
+						if (hash == "WEAPON_BIRD_CRAP"_J)
 							continue;
 
 						if (exists(mapped_weapons, hash))

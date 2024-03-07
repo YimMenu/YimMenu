@@ -27,17 +27,17 @@ namespace big
 
 	namespace scr_functions
 	{
-		static inline script_function join_ceo("JC", RAGE_JOAAT("freemode"), "2D 04 1D 00 00 5D", 0);
-		static inline script_function set_freemode_session_active("SFSA", RAGE_JOAAT("freemode"), "2D 00 02 00 00 75 5D ? ? ? 50", 0);
-		static inline script_function dance_loop("DL", RAGE_JOAAT("am_mp_nightclub"), "2D 00 14 00 00 4F ? ? 47 ? ? 5D ? ? ? 56", 0);
-		static inline script_function init_nightclub_script("INS", RAGE_JOAAT("am_mp_nightclub"), "2D 00 11 00 00 4F", 0);
+		static inline script_function join_ceo("JC", "freemode"_J, "2D 04 1D 00 00 5D", 0);
+		static inline script_function set_freemode_session_active("SFSA", "freemode"_J, "2D 00 02 00 00 75 5D ? ? ? 50", 0);
+		static inline script_function dance_loop("DL", "am_mp_nightclub"_J, "2D 00 14 00 00 4F ? ? 47 ? ? 5D ? ? ? 56", 0);
+		static inline script_function init_nightclub_script("INS", "am_mp_nightclub"_J, "2D 00 11 00 00 4F", 0);
 
-		static inline script_function save_to_datafile("STD", RAGE_JOAAT("fm_race_creator"), "2D 01 03 00 00 71 2C", 0);
-		static inline script_function load_from_datafile("LFD", RAGE_JOAAT("fm_race_creator"), "2D 04 0D 00 00 71 2C", 0);
+		static inline script_function save_to_datafile("STD", "fm_race_creator"_J, "2D 01 03 00 00 71 2C", 0);
+		static inline script_function load_from_datafile("LFD", "fm_race_creator"_J, "2D 04 0D 00 00 71 2C", 0);
 
-		static inline script_function modshop_loop("ML", RAGE_JOAAT("carmod_shop"), "2D 00 07 00 00 71 51", 0);
-		static inline script_function setup_modshop("SM", RAGE_JOAAT("carmod_shop"), "2D 04 12 00 00 38 00 51", 0);
+		static inline script_function modshop_loop("ML", "carmod_shop"_J, "2D 00 07 00 00 71 51", 0);
+		static inline script_function setup_modshop("SM", "carmod_shop"_J, "2D 04 12 00 00 38 00 51", 0);
 
-		static inline script_function reset_session_data("RSD", RAGE_JOAAT("pausemenu_multiplayer"), "2D 02 7D 00 00", 0);
+		static inline script_function reset_session_data("RSD", "pausemenu_multiplayer"_J, "2D 02 7D 00 00", 0);
 	}
 }

@@ -1538,7 +1538,7 @@ namespace big
 				}
 				for (int i = 0; i < game_state_node->m_num_equiped_gadgets; i++)
 				{
-					if (game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_parachute") && game_state_node->m_gadget_hash[i] != RAGE_JOAAT("gadget_nightvision"))
+					if (game_state_node->m_gadget_hash[i] != "gadget_parachute"_J && game_state_node->m_gadget_hash[i] != "gadget_nightvision"_J)
 					{
 						notify::crash_blocked(sender, "invalid gadget");
 						return true;

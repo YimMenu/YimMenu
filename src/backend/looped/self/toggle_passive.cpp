@@ -15,7 +15,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) || gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")))
+			if (scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1 || gta_util::find_script_thread("fm_mission_controller"_J) || gta_util::find_script_thread("fm_mission_controller_2020"_J))
 			{
 				on_disable();
 				g.self.passive = false;
