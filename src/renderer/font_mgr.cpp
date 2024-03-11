@@ -157,6 +157,26 @@ namespace big
 		return &full_ranges[0];
 	}
 
+	const ImWchar* font_mgr::GetGlyphRangesTurkish()
+	{
+		static const ImWchar icons_ranges_Turkish[] = {
+		    0x00c7, 0x00c7, // C-cedilla
+		    0x00e7, 0x00e7, // c-cedilla
+		    0x011e, 0x011e, // G with breve
+		    0x011f, 0x011f, // g with breve
+		    0x0130, 0x0130, // dotted I
+		    0x0131, 0x0131, // dotted i
+		    0x00d6, 0x00d6, // O with umlaut
+		    0x00f6, 0x00f6, // o with umlaut
+		    0x015e, 0x015e, // S-cedilla
+		    0x015f, 0x015f, // s-cedilla
+		    0x00dc, 0x00dc, // U with diaeresis
+		    0x00fc, 0x00fc, // u with diaeresis
+		    0,
+		};
+		return &icons_ranges_Turkish[0];
+	}
+
 	const ImWchar* font_mgr::get_imgui_alphabet_type()
 	{
 		auto& io = ImGui::GetIO();
@@ -166,6 +186,7 @@ namespace big
 		case eAlphabetType::CYRILLIC: return io.Fonts->GetGlyphRangesCyrillic();
 		case eAlphabetType::JAPANESE: return io.Fonts->GetGlyphRangesJapanese();
 		case eAlphabetType::KOREAN: return io.Fonts->GetGlyphRangesKorean();
+		case eAlphabetType::TURKISH: return GetGlyphRangesTurkish();
 
 		default:
 		case eAlphabetType::LATIN: return io.Fonts->GetGlyphRangesDefault();

@@ -35,6 +35,7 @@ namespace big
 
 		file get_available_font_file_for_alphabet_type();
 		const ImWchar* GetGlyphRangesChineseSimplifiedOfficial();
+		const ImWchar* GetGlyphRangesTurkish();
 		const ImWchar* get_imgui_alphabet_type();
 	};
 }
