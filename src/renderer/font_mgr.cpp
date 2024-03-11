@@ -157,6 +157,18 @@ namespace big
 		return &full_ranges[0];
 	}
 
+	const ImWchar* font_mgr::GetGlyphRangesTurkish()
+	{
+		static const ImWchar icons_ranges_Turkish[] = {
+		    0x0020, 0x00FF, // Basic Latin + Latin Supplement
+		    0x011E, 0x011F, // G with breve
+		    0x0130, 0x0131, // dotted I
+		    0x015E, 0x015F, // S-cedilla
+		    0,
+		};
+		return &icons_ranges_Turkish[0];
+	}
+
 	const ImWchar* font_mgr::get_imgui_alphabet_type()
 	{
 		auto& io = ImGui::GetIO();
@@ -166,6 +178,7 @@ namespace big
 		case eAlphabetType::CYRILLIC: return io.Fonts->GetGlyphRangesCyrillic();
 		case eAlphabetType::JAPANESE: return io.Fonts->GetGlyphRangesJapanese();
 		case eAlphabetType::KOREAN: return io.Fonts->GetGlyphRangesKorean();
+		case eAlphabetType::TURKISH: return GetGlyphRangesTurkish();
 
 		default:
 		case eAlphabetType::LATIN: return io.Fonts->GetGlyphRangesDefault();
