@@ -16,12 +16,12 @@ namespace big
 		{
 			CStatSerializationEntry* entry = reinterpret_cast<CStatSerializationEntry*>(&data[i]);
 
-			if (g.spoofing.spoof_rank && (entry->m_hash == RAGE_JOAAT("MP0_CHAR_RANK_FM") || entry->m_hash == RAGE_JOAAT("MP1_CHAR_RANK_FM")))
+			if (g.spoofing.spoof_rank && (entry->m_hash == "MP0_CHAR_RANK_FM"_J || entry->m_hash == "MP1_CHAR_RANK_FM"_J))
 			{
 				entry->m_int_value = g.spoofing.rank;
 			}
 
-			if (g.spoofing.spoof_bad_sport && entry->m_hash == RAGE_JOAAT("MPPLY_OVERALL_BADSPORT"))
+			if (g.spoofing.spoof_bad_sport && entry->m_hash == "MPPLY_OVERALL_BADSPORT"_J)
 			{
 				switch (g.spoofing.badsport_type)
 				{
@@ -33,13 +33,13 @@ namespace big
 
 			if (g.spoofing.spoof_kd_ratio)
 			{
-				if (entry->m_hash == RAGE_JOAAT("MPPLY_KILLS_PLAYERS"))
+				if (entry->m_hash == "MPPLY_KILLS_PLAYERS"_J)
 					entry->m_int_value = g.spoofing.kd_ratio;// TODO precision loss
 
-				if (entry->m_hash == RAGE_JOAAT("MPPLY_DEATHS_PLAYER"))
+				if (entry->m_hash == "MPPLY_DEATHS_PLAYER"_J)
 					entry->m_int_value = 1;
 
-				if (entry->m_hash == RAGE_JOAAT("MPPLY_DEATHS_PLAYER_SUICIDE"))
+				if (entry->m_hash == "MPPLY_DEATHS_PLAYER_SUICIDE"_J)
 					entry->m_int_value = 0;
 			}
 		}

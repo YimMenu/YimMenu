@@ -12,30 +12,30 @@ namespace big
 	hotkey_service::hotkey_service()
 	{
 		// ordered alphabetically to more easily see if a certain hotkey is present
-		register_hotkey("beastjump", g.settings.hotkeys.beastjump, RAGE_JOAAT("beastjump"));
-		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, RAGE_JOAAT("bringpv"));
-		register_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted, RAGE_JOAAT("clearwantedlvl"));
-		register_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor, RAGE_JOAAT("cmdexecutor"));
-		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, RAGE_JOAAT("fastquit"));
-		register_hotkey("fastrun", g.settings.hotkeys.superrun, RAGE_JOAAT("fastrun"));
-		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, RAGE_JOAAT("fillammo"));
-		register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, RAGE_JOAAT("fillsnacks"));
-		register_hotkey("freecam", g.settings.hotkeys.freecam, RAGE_JOAAT("freecam"));
-		register_hotkey("heal", g.settings.hotkeys.heal, RAGE_JOAAT("heal"));
-		register_hotkey("invis", g.settings.hotkeys.invis, RAGE_JOAAT("invis"));
-		register_hotkey("invisveh", g.settings.hotkeys.invisveh, RAGE_JOAAT("invisveh"));
-		register_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh, RAGE_JOAAT("localinvisveh"));
-		register_hotkey("noclip", g.settings.hotkeys.noclip, RAGE_JOAAT("noclip"));
-		register_hotkey("objective", g.settings.hotkeys.teleport_objective, RAGE_JOAAT("objectivetp"));
-		register_hotkey("pvtp", g.settings.hotkeys.teleport_pv, RAGE_JOAAT("pvtp"));
-		register_hotkey("passive", g.settings.hotkeys.passive, RAGE_JOAAT("passive"));
-		register_hotkey("repairpv", g.settings.hotkeys.repairpv, RAGE_JOAAT("repairpv"));
-		register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, RAGE_JOAAT("skipcutscene"));
-		register_hotkey("superjump", g.settings.hotkeys.superjump, RAGE_JOAAT("superjump"));
-		register_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller, RAGE_JOAAT("vehiclecontrol"));
-		register_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode, RAGE_JOAAT("vehiclefly"));
-		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, RAGE_JOAAT("waypointtp"));
-		register_hotkey("highlighttp", g.settings.hotkeys.teleport_selected, RAGE_JOAAT("highlighttp"));
+		register_hotkey("beastjump", g.settings.hotkeys.beastjump, "beastjump"_J);
+		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, "bringpv"_J);
+		register_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted, "clearwantedlvl"_J);
+		register_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor, "cmdexecutor"_J);
+		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, "fastquit"_J);
+		register_hotkey("fastrun", g.settings.hotkeys.superrun, "fastrun"_J);
+		register_hotkey("fillammo", g.settings.hotkeys.fill_ammo, "fillammo"_J);
+		register_hotkey("fillsnacks", g.settings.hotkeys.fill_inventory, "fillsnacks"_J);
+		register_hotkey("freecam", g.settings.hotkeys.freecam, "freecam"_J);
+		register_hotkey("heal", g.settings.hotkeys.heal, "heal"_J);
+		register_hotkey("invis", g.settings.hotkeys.invis, "invis"_J);
+		register_hotkey("invisveh", g.settings.hotkeys.invisveh, "invisveh"_J);
+		register_hotkey("localinvisveh", g.settings.hotkeys.localinvisveh, "localinvisveh"_J);
+		register_hotkey("noclip", g.settings.hotkeys.noclip, "noclip"_J);
+		register_hotkey("objective", g.settings.hotkeys.teleport_objective, "objectivetp"_J);
+		register_hotkey("pvtp", g.settings.hotkeys.teleport_pv, "pvtp"_J);
+		register_hotkey("passive", g.settings.hotkeys.passive, "passive"_J);
+		register_hotkey("repairpv", g.settings.hotkeys.repairpv, "repairpv"_J);
+		register_hotkey("skipcutscene", g.settings.hotkeys.skip_cutscene, "skipcutscene"_J);
+		register_hotkey("superjump", g.settings.hotkeys.superjump, "superjump"_J);
+		register_hotkey("vehiclecontroller", g.settings.hotkeys.open_vehicle_controller, "vehiclecontrol"_J);
+		register_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode, "vehiclefly"_J);
+		register_hotkey("waypoint", g.settings.hotkeys.teleport_waypoint, "waypointtp"_J);
+		register_hotkey("highlighttp", g.settings.hotkeys.teleport_selected, "highlighttp"_J);
 
 		g_renderer.add_wndproc_callback([this](HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			wndproc(static_cast<eKeyState>(msg), wparam);
@@ -91,7 +91,7 @@ namespace big
 		bool is_using_cellphone = false;
 		for (auto script : *g_pointers->m_gta.m_script_threads)
 		{
-			if (script && script->m_script_hash == RAGE_JOAAT("cellphone_flashhand"))
+			if (script && script->m_script_hash == "cellphone_flashhand"_J)
 			{
 				is_using_cellphone = script->m_context.m_state == rage::eThreadState::running;
 			}

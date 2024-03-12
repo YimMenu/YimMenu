@@ -10,24 +10,24 @@ namespace big
 	bool bLastDanceMode = false;
 	void looped::self_dance_mode()
 	{
-		if (g.self.dance_mode && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) > 0)
+		if (g.self.dance_mode && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) > 0)
 			g.self.dance_mode = false;
 
 		if (g.self.dance_mode && g.self.dance_mode != bLastDanceMode)
 		{
 			g_script_patcher_service->update();
-			scripts::request_script(RAGE_JOAAT("am_mp_nightclub"));
-			if (!scripts::wait_till_loaded(RAGE_JOAAT("am_mp_nightclub")))
+			scripts::request_script("am_mp_nightclub"_J);
+			if (!scripts::wait_till_loaded("am_mp_nightclub"_J))
 				return;
 
-			auto thread = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("am_mp_nightclub"), 19400 /*PROPERTY_INT*/);
-			SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("am_mp_nightclub"));
+			auto thread = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH("am_mp_nightclub"_J, 19400 /*PROPERTY_INT*/);
+			SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("am_mp_nightclub"_J);
 
 			if (!thread)
 				return;
 
 			g.m_dance_thread  = gta_util::find_script_thread_by_id(thread);
-			g.m_dance_program = gta_util::find_script_program(RAGE_JOAAT("am_mp_nightclub"));
+			g.m_dance_program = gta_util::find_script_program("am_mp_nightclub"_J);
 
 			(*g_pointers->m_gta.m_script_handler_mgr)->attach_thread(g.m_dance_thread);
 

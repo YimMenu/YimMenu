@@ -4,7 +4,7 @@ namespace big::entity
 {
 	void cage_ped(Ped ped)
 	{
-		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
+		Hash hash = "prop_gold_cont_01"_J;
 
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ped, true);
 		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);

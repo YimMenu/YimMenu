@@ -30,9 +30,9 @@ namespace big
 	{
 		std::ofstream file(check_jobs_folder().get_file(filename).get_path());
 
-		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("fm_race_creator")))
+		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("fm_race_creator"_J))
 		{
-			SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("fm_race_creator"));
+			SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("fm_race_creator"_J);
 			script::get_current()->yield();
 		}
 
@@ -40,7 +40,7 @@ namespace big
 		scr_functions::save_to_datafile.static_call({(uint64_t)storage});
 		delete[] storage;
 
-		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("fm_race_creator"));
+		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("fm_race_creator"_J);
 
 		auto buffer = g_pointers->m_gta.m_save_json_data(g_pointers->m_gta.m_main_file_object, nullptr, "to save it to a file I guess?");
 
@@ -71,15 +71,15 @@ namespace big
 		g_pointers->m_gta.m_load_cloud_file(&cloud_file, buffer.data(), buffer.length(), "to load it from a file I guess?");
 		g_pointers->m_gta.m_set_as_active_cloud_file(g_pointers->m_gta.m_main_file_object, &cloud_file);
 
-		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("fm_race_creator")))
+		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("fm_race_creator"_J))
 		{
-			SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("fm_race_creator"));
+			SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("fm_race_creator"_J);
 			script::get_current()->yield();
 		}
 
 		scr_functions::load_from_datafile.static_call({1, true, false, 0});
 
-		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("fm_race_creator"));
+		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("fm_race_creator"_J);
 		file_stream.close();
 	}
 

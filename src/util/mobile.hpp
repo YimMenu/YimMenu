@@ -164,7 +164,7 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
+			GtaThread* freemode_thread = gta_util::find_script_thread("freemode"_J);
 			if (freemode_thread)
 			{
 				// regex to find this shit easily

@@ -15,8 +15,8 @@ namespace big
 		int offset = 0;
 		switch (model)
 		{
-			case RAGE_JOAAT("mp_m_freemode_01"): break;
-			case RAGE_JOAAT("mp_f_freemode_01"):
+			case "mp_m_freemode_01"_J: break;
+			case "mp_f_freemode_01"_J:
 			{
 				offset = 1;
 				break;
@@ -31,7 +31,7 @@ namespace big
 	{
 		//Disable clothing validation
 		*scr_globals::reset_clothing.as<PBOOL>() = FALSE;
-		if (auto tunable = g_tunables_service->get_tunable<PBOOL>(RAGE_JOAAT("DISABLE_CLOTHING_SAVE_SLOT_VALIDATION")))
+		if (auto tunable = g_tunables_service->get_tunable<PBOOL>("DISABLE_CLOTHING_SAVE_SLOT_VALIDATION"_J))
 			*tunable = TRUE;
 
 		if (g.self.persist_outfit.empty())

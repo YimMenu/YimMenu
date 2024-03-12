@@ -6,14 +6,14 @@
 namespace big
 {
 	constexpr uint32_t valid_parachute_models[] = {
-	    RAGE_JOAAT("p_parachute_s"),
-	    RAGE_JOAAT("vw_p_para_bag_vine_s"),
-	    RAGE_JOAAT("reh_p_para_bag_reh_s_01a"),
-	    RAGE_JOAAT("xm_prop_x17_scuba_tank"),
-	    RAGE_JOAAT("lts_p_para_bag_pilot2_s"),
-	    RAGE_JOAAT("lts_p_para_bag_lts_s"),
-	    RAGE_JOAAT("p_para_bag_tr_s_01a"),
-	    RAGE_JOAAT("p_para_bag_xmas_s"),
+	    "p_parachute_s"_J,
+	    "vw_p_para_bag_vine_s"_J,
+	    "reh_p_para_bag_reh_s_01a"_J,
+	    "xm_prop_x17_scuba_tank"_J,
+	    "lts_p_para_bag_pilot2_s"_J,
+	    "lts_p_para_bag_lts_s"_J,
+	    "p_para_bag_tr_s_01a"_J,
+	    "p_para_bag_xmas_s"_J,
 	};
 
 	bool is_valid_parachute_model(rage::joaat_t hash)

@@ -18,8 +18,8 @@ namespace big
 		if (g.vehicle.ls_customs && g.vehicle.ls_customs != bLastLsCustoms)
 		{
 			g_fiber_pool->queue_job([] {
-				scripts::request_script(RAGE_JOAAT("carmod_shop"));
-				if (scripts::wait_till_loaded(RAGE_JOAAT("carmod_shop")))
+				scripts::request_script("carmod_shop"_J);
+				if (scripts::wait_till_loaded("carmod_shop"_J))
 				{
 					HUD::REQUEST_ADDITIONAL_TEXT("MOD_MNU", 9);
 
@@ -37,7 +37,7 @@ namespace big
 						script::get_current()->yield();
 					// clang-format on
 
-					auto id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("carmod_shop"), 5050);
+					auto id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH("carmod_shop"_J, 5050);
 					if (!id)
 						return;
 
@@ -51,7 +51,7 @@ namespace big
 
 					g_script_patcher_service->update();
 
-					scr_functions::setup_modshop.call_latent(g.m_modshop_thread, gta_util::find_script_program(RAGE_JOAAT("carmod_shop")), {45, 0, 18, 0}, bModshopReady);
+					scr_functions::setup_modshop.call_latent(g.m_modshop_thread, gta_util::find_script_program("carmod_shop"_J), {45, 0, 18, 0}, bModshopReady);
 					*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::state).as<PINT>() = 2;
 					*scr_locals::carmod_shop::input_button.set(g.m_modshop_thread->m_stack).as<ControllerInputs*>() = ControllerInputs::INPUT_FRONTEND_LT;
 				}
@@ -73,7 +73,7 @@ namespace big
 			g_script_patcher_service->update();
 		}
 
-		if (self::veh == 0 || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) > 0 || (!g.m_modshop_thread && bModshopReady))
+		if (self::veh == 0 || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) > 0 || (!g.m_modshop_thread && bModshopReady))
 		{
 			g.vehicle.ls_customs = false;
 			return;
@@ -96,7 +96,7 @@ namespace big
 			if (*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::state).as<PINT>() == 0)
 				*scr_locals::carmod_shop::maintainer.set(g.m_modshop_thread->m_stack).at(scr_locals::carmod_shop::state).as<PINT>() = 2;
 
-			scr_functions::modshop_loop.call(g.m_modshop_thread, gta_util::find_script_program(RAGE_JOAAT("carmod_shop")), {});
+			scr_functions::modshop_loop.call(g.m_modshop_thread, gta_util::find_script_program("carmod_shop"_J), {});
 		}
 	}
 }

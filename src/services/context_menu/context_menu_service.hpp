@@ -132,7 +132,7 @@ namespace big
 		            [this] {
 			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
 			            {
-				            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("vehkick")));
+				            static player_command* command = dynamic_cast<player_command*>(command::get("vehkick"_J));
 				            command->call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
 			            }
 
@@ -182,8 +182,8 @@ namespace big
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 394, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 400, true);
 			         PED::SET_PED_CONFIG_FLAG(m_handle, 134, true);
-			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_microsmg"), 9999, false, false);
-			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, RAGE_JOAAT("weapon_carbinerifle"), 9999, false, true);
+			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, "weapon_microsmg"_J, 9999, false, false);
+			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, "weapon_carbinerifle"_J, 9999, false, true);
 			         TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(self::ped, 100, 67108864);
 		        }}
 		    }};
@@ -204,17 +204,17 @@ namespace big
 		        }},
 		        {"KICK",
 		            [this] {
-				    static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("multikick")));
+				    static player_command* command = dynamic_cast<player_command*>(command::get("multikick"_J));
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            script::get_current()->yield(500ms);
 		        }},
 		        {"DISARM",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("remweaps")));
+			            static player_command* command = dynamic_cast<player_command*>(command::get("remweaps"_J));
 			            command->call(ped::get_player_from_ped(m_handle), {});
 		        }},
 		        {"RAGDOLL", [this] {
-			         static player_command* command = dynamic_cast<player_command*>(command::get(rage::consteval_joaat("ragdoll")));
+			         static player_command* command = dynamic_cast<player_command*>(command::get("ragdoll"_J));
 			         command->call(ped::get_player_from_ped(m_handle), {});
 		        }}
 		    }};

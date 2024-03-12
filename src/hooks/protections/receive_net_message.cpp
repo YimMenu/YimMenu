@@ -125,11 +125,11 @@ namespace big
 					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
 						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+							dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
+							    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
 
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+						dynamic_cast<player_command*>(command::get("endkick"_J))->call(player, {});
+						dynamic_cast<player_command*>(command::get("nfkick"_J))->call(player, {});
 					}
 					return true;
 				}
@@ -178,7 +178,7 @@ namespace big
 				CGameScriptId script;
 				script_id_deserialize(script, buffer);
 
-				if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (script.m_hash == "freemode"_J && g.session.force_script_host)
 					return true;
 
 				break;

@@ -24,7 +24,7 @@ namespace big
 
 	void script_mgr::tick()
 	{
-		gta_util::execute_as_script(RAGE_JOAAT("main_persistent"), std::mem_fn(&script_mgr::tick_internal), this);
+		gta_util::execute_as_script("main_persistent"_J, std::mem_fn(&script_mgr::tick_internal), this);
 	}
 
 	void script_mgr::ensure_main_fiber()

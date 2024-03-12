@@ -13,7 +13,7 @@ namespace big
 		{
 			const auto hash = src->get_arg<rage::joaat_t>(0);
 
-			if (hash == RAGE_JOAAT("freemode") || hash == RAGE_JOAAT("main"))
+			if (hash == "freemode"_J || hash == "main"_J)
 			{
 				src->set_return_value(0);
 				return;
@@ -29,8 +29,8 @@ namespace big
 
 			if (entity == self::ped)
 			{
-				if (model != RAGE_JOAAT("mp_m_freemode_01") && model != RAGE_JOAAT("mp_f_freemode_01"))
-					model = RAGE_JOAAT("mp_m_freemode_01");
+				if (model != "mp_m_freemode_01"_J && model != "mp_f_freemode_01"_J)
+					model = "mp_m_freemode_01"_J;
 			}
 
 			src->set_return_value<Hash>(std::move(model));

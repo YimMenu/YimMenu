@@ -52,7 +52,7 @@ namespace big
 			const auto ped  = src->get_arg<Ped>(0);
 			const auto hash = src->get_arg<rage::joaat_t>(1);
 
-			if (g.weapons.interior_weapon && ped == self::ped && hash == RAGE_JOAAT("WEAPON_UNARMED"))
+			if (g.weapons.interior_weapon && ped == self::ped && hash == "WEAPON_UNARMED"_J)
 				return;
 
 			WEAPON::SET_CURRENT_PED_WEAPON(ped, hash, src->get_arg<int>(2));

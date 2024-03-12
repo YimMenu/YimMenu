@@ -83,7 +83,7 @@ namespace big
 		}
 	}
 
-	constexpr auto ALL_SCRIPT_HASH = RAGE_JOAAT("ALL_SCRIPTS");
+	constexpr auto ALL_SCRIPT_HASH = "ALL_SCRIPTS"_J;
 
 	native_hooks::native_hooks()
 	{
@@ -101,69 +101,69 @@ namespace big
 		add_native_detour(NativeIndex::UNREGISTER_SCRIPT_VARIABLE, all_scripts::DO_NOTHING);
 		add_native_detour(NativeIndex::FORCE_CHECK_SCRIPT_VARIABLES, all_scripts::DO_NOTHING);
 
-		add_native_detour(RAGE_JOAAT("shop_controller"), NativeIndex::IS_PED_SHOOTING, all_scripts::RETURN_FALSE); // prevent exploit reports
-		add_native_detour(RAGE_JOAAT("shop_controller"), NativeIndex::SET_WARNING_MESSAGE_WITH_HEADER, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
+		add_native_detour("shop_controller"_J, NativeIndex::IS_PED_SHOOTING, all_scripts::RETURN_FALSE); // prevent exploit reports
+		add_native_detour("shop_controller"_J, NativeIndex::SET_WARNING_MESSAGE_WITH_HEADER, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
 
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::SET_ENTITY_COORDS, carmod_shop::SET_ENTITY_COORDS);
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::SET_ENTITY_HEADING, carmod_shop::SET_ENTITY_HEADING);
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::SET_VEHICLE_LIGHTS, carmod_shop::SET_VEHICLE_LIGHTS);
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::STAT_GET_INT, carmod_shop::STAT_GET_INT);
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::STAT_SET_INT, carmod_shop::STAT_SET_INT);
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::DISABLE_ALL_CONTROL_ACTIONS, carmod_shop::DISABLE_ALL_CONTROL_ACTIONS);
+		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_COORDS, carmod_shop::SET_ENTITY_COORDS);
+		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_HEADING, carmod_shop::SET_ENTITY_HEADING);
+		add_native_detour("carmod_shop"_J, NativeIndex::SET_VEHICLE_LIGHTS, carmod_shop::SET_VEHICLE_LIGHTS);
+		add_native_detour("carmod_shop"_J, NativeIndex::STAT_GET_INT, carmod_shop::STAT_GET_INT);
+		add_native_detour("carmod_shop"_J, NativeIndex::STAT_SET_INT, carmod_shop::STAT_SET_INT);
+		add_native_detour("carmod_shop"_J, NativeIndex::DISABLE_ALL_CONTROL_ACTIONS, carmod_shop::DISABLE_ALL_CONTROL_ACTIONS);
 
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, freemode::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::STAT_GET_INT, freemode::STAT_GET_INT);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::IS_PLAYER_PLAYING, freemode::IS_PLAYER_PLAYING);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::SET_ENTITY_VISIBLE, freemode::SET_ENTITY_VISIBLE);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::SET_BIGMAP_ACTIVE, freemode::SET_BIGMAP_ACTIVE);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::SET_BLIP_DISPLAY, freemode::SET_BLIP_DISPLAY);
-		add_native_detour(RAGE_JOAAT("freemode"), NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+		add_native_detour("freemode"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, freemode::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
+		add_native_detour("freemode"_J, NativeIndex::STAT_GET_INT, freemode::STAT_GET_INT);
+		add_native_detour("freemode"_J, NativeIndex::IS_PLAYER_PLAYING, freemode::IS_PLAYER_PLAYING);
+		add_native_detour("freemode"_J, NativeIndex::SET_ENTITY_VISIBLE, freemode::SET_ENTITY_VISIBLE);
+		add_native_detour("freemode"_J, NativeIndex::SET_BIGMAP_ACTIVE, freemode::SET_BIGMAP_ACTIVE);
+		add_native_detour("freemode"_J, NativeIndex::SET_BLIP_DISPLAY, freemode::SET_BLIP_DISPLAY);
+		add_native_detour("freemode"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
 
-		add_native_detour(RAGE_JOAAT("fmmc_launcher"), NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
-		add_native_detour(RAGE_JOAAT("maintransition"), NativeIndex::NETWORK_SESSION_HOST, network::NETWORK_SESSION_HOST);
+		add_native_detour("fmmc_launcher"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+		add_native_detour("maintransition"_J, NativeIndex::NETWORK_SESSION_HOST, network::NETWORK_SESSION_HOST);
 
-		add_native_detour(RAGE_JOAAT("am_launcher"), NativeIndex::START_NEW_SCRIPT_WITH_ARGS, am_launcher::START_NEW_SCRIPT_WITH_ARGS);
-		add_native_detour(RAGE_JOAAT("am_launcher"), NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+		add_native_detour("am_launcher"_J, NativeIndex::START_NEW_SCRIPT_WITH_ARGS, am_launcher::START_NEW_SCRIPT_WITH_ARGS);
+		add_native_detour("am_launcher"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
 
-		add_native_detour(RAGE_JOAAT("fm_race_creator"), NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
-		add_native_detour(RAGE_JOAAT("fm_capture_creator"), NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
-		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
-		add_native_detour(RAGE_JOAAT("fm_lts_creator"), NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
+		add_native_detour("fm_race_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
+		add_native_detour("fm_capture_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
+		add_native_detour("fm_deathmatch_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
+		add_native_detour("fm_lts_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
 
-		add_native_detour(RAGE_JOAAT("fm_race_creator"), NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
-		add_native_detour(RAGE_JOAAT("fm_capture_creator"), NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
-		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
-		add_native_detour(RAGE_JOAAT("fm_lts_creator"), NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
+		add_native_detour("fm_race_creator"_J, NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
+		add_native_detour("fm_capture_creator"_J, NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
+		add_native_detour("fm_deathmatch_creator"_J, NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
+		add_native_detour("fm_lts_creator"_J, NativeIndex::GET_ENTITY_MODEL, creator::GET_ENTITY_MODEL);
 
 		// Infinite Model Memory
-		add_native_detour(RAGE_JOAAT("fm_race_creator"), NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
-		add_native_detour(RAGE_JOAAT("fm_capture_creator"), NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
-		add_native_detour(RAGE_JOAAT("fm_deathmatch_creator"), NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
-		add_native_detour(RAGE_JOAAT("fm_lts_creator"), NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
-		add_native_detour(RAGE_JOAAT("fm_survival_creator"), NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
+		add_native_detour("fm_race_creator"_J, NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
+		add_native_detour("fm_capture_creator"_J, NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
+		add_native_detour("fm_deathmatch_creator"_J, NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
+		add_native_detour("fm_lts_creator"_J, NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
+		add_native_detour("fm_survival_creator"_J, NativeIndex::GET_USED_CREATOR_BUDGET, creator::GET_USED_CREATOR_BUDGET);
 
-		add_native_detour(RAGE_JOAAT("tuneables_processing"), NativeIndex::WAIT, tunables::WAIT);
-		add_native_detour(RAGE_JOAAT("tuneables_processing"), NativeIndex::NETWORK_ACCESS_TUNABLE_INT_HASH, tunables::NETWORK_ACCESS_TUNABLE_INT_HASH);
-		add_native_detour(RAGE_JOAAT("tuneables_processing"), NativeIndex::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH, tunables::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH);
-		add_native_detour(RAGE_JOAAT("tuneables_processing"), NativeIndex::NETWORK_ACCESS_TUNABLE_FLOAT_HASH, tunables::NETWORK_ACCESS_TUNABLE_FLOAT_HASH);
+		add_native_detour("tuneables_processing"_J, NativeIndex::WAIT, tunables::WAIT);
+		add_native_detour("tuneables_processing"_J, NativeIndex::NETWORK_ACCESS_TUNABLE_INT_HASH, tunables::NETWORK_ACCESS_TUNABLE_INT_HASH);
+		add_native_detour("tuneables_processing"_J, NativeIndex::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH, tunables::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH);
+		add_native_detour("tuneables_processing"_J, NativeIndex::NETWORK_ACCESS_TUNABLE_FLOAT_HASH, tunables::NETWORK_ACCESS_TUNABLE_FLOAT_HASH);
 
 		// TODO: is this safe?
-		add_native_detour(RAGE_JOAAT("arena_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("armory_aircraft_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("base_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("business_hub_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("car_meet_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("carmod_shop"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("fixer_hq_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("hacker_truck_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("hangar_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("juggalo_hideout_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("personal_carmod_shop"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("tuner_property_carmod"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("clothes_shop_mp"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("gunclub_shop"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("hairdo_shop_mp"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
-		add_native_detour(RAGE_JOAAT("tattoo_shop"), NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("arena_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("armory_aircraft_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("base_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("business_hub_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("car_meet_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("carmod_shop"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("fixer_hq_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("hacker_truck_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("hangar_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("juggalo_hideout_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("personal_carmod_shop"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("tuner_property_carmod"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("clothes_shop_mp"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("gunclub_shop"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("hairdo_shop_mp"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
+		add_native_detour("tattoo_shop"_J, NativeIndex::FORCE_PED_AI_AND_ANIMATION_UPDATE, all_scripts::DO_NOTHING); //Fix jittering weapons.
 
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 			if (entry.m_program)

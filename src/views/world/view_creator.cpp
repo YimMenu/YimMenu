@@ -114,19 +114,19 @@ namespace big
 		components::sub_title("CREATOR_LAUNCH"_T);
 		ImGui::BeginGroup();
 		components::button("RACE"_T, [] {
-			scripts::start_creator_script(RAGE_JOAAT("fm_race_creator"));
+			scripts::start_creator_script("fm_race_creator"_J);
 		});
 		ImGui::SameLine();
 		components::button("CAPTURE"_T, [] {
-			scripts::start_creator_script(RAGE_JOAAT("fm_capture_creator"));
+			scripts::start_creator_script("fm_capture_creator"_J);
 		});
 		ImGui::SameLine();
 		components::button("DEATHMATCH"_T, [] {
-			scripts::start_creator_script(RAGE_JOAAT("fm_deathmatch_creator"));
+			scripts::start_creator_script("fm_deathmatch_creator"_J);
 		});
 		ImGui::SameLine();
 		components::button("LTS"_T, [] {
-			scripts::start_creator_script(RAGE_JOAAT("fm_lts_creator"));
+			scripts::start_creator_script("fm_lts_creator"_J);
 		});
 		ImGui::EndGroup();
 

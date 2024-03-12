@@ -30,7 +30,7 @@ namespace big
 	{
 		for (const auto& info : g_pointers->m_gta.m_weapon_info_manager->m_item_infos)
 		{
-			if (info && info->m_name == hash && info->GetClassId() == RAGE_JOAAT("cweaponinfo"))
+			if (info && info->m_name == hash && info->GetClassId() == "cweaponinfo"_J)
 			{
 				return true;
 			}
@@ -602,7 +602,7 @@ namespace big
 			std::int16_t net_id = buffer->Read<std::int16_t>(13);
 			Hash hash           = buffer->Read<Hash>(32);
 
-			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
+			if (hash == "WEAPON_UNARMED"_J)
 			{
 				notify::crash_blocked(source_player, "remove unarmed");
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
@@ -707,7 +707,7 @@ namespace big
 
 			uint32_t sound_hash = buffer->Read<uint32_t>(32);
 
-			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
+			if (sound_hash == "Remote_Ring"_J && plyr)
 			{
 				g.reactions.sound_spam.process(plyr);
 				return;

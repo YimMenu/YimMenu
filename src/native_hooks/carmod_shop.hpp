@@ -14,38 +14,38 @@ namespace big
 
 			switch (hash)
 			{
-			case RAGE_JOAAT("MP0_RACES_WON"):
-			case RAGE_JOAAT("MP0_NUMBER_TURBO_STARTS_IN_RACE"):
-			case RAGE_JOAAT("MP0_USJS_COMPLETED"):
-			case RAGE_JOAAT("MP0_AWD_FM_RACES_FASTEST_LAP"):
-			case RAGE_JOAAT("MP1_RACES_WON"):
-			case RAGE_JOAAT("MP1_NUMBER_TURBO_STARTS_IN_RACE"):
-			case RAGE_JOAAT("MP1_USJS_COMPLETED"):
-			case RAGE_JOAAT("MP1_AWD_FM_RACES_FASTEST_LAP"): *out = 50; break;
-			case RAGE_JOAAT("MP0_NUMBER_SLIPSTREAMS_IN_RACE"):
-			case RAGE_JOAAT("MP1_NUMBER_SLIPSTREAMS_IN_RACE"): *out = 100; break;
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_1_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_2_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_3_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_4_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_5_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_6_UNLCK"):
-			case RAGE_JOAAT("MP0_CHAR_FM_CARMOD_7_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_1_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_2_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_3_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_4_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_5_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_6_UNLCK"):
-			case RAGE_JOAAT("MP1_CHAR_FM_CARMOD_7_UNLCK"): *out = -1; break;
-			case RAGE_JOAAT("MP0_AWD_FMRALLYWONDRIVE"):
-			case RAGE_JOAAT("MP0_AWD_FMRALLYWONNAV"):
-			case RAGE_JOAAT("MP0_AWD_FMWINSEARACE"):
-			case RAGE_JOAAT("MP0_AWD_FMWINAIRRACE"):
-			case RAGE_JOAAT("MP1_AWD_FMRALLYWONDRIVE"):
-			case RAGE_JOAAT("MP1_AWD_FMRALLYWONNAV"):
-			case RAGE_JOAAT("MP1_AWD_FMWINSEARACE"):
-			case RAGE_JOAAT("MP1_AWD_FMWINAIRRACE"): *out = 1; break;
+			case "MP0_RACES_WON"_J:
+			case "MP0_NUMBER_TURBO_STARTS_IN_RACE"_J:
+			case "MP0_USJS_COMPLETED"_J:
+			case "MP0_AWD_FM_RACES_FASTEST_LAP"_J:
+			case "MP1_RACES_WON"_J:
+			case "MP1_NUMBER_TURBO_STARTS_IN_RACE"_J:
+			case "MP1_USJS_COMPLETED"_J:
+			case "MP1_AWD_FM_RACES_FASTEST_LAP"_J: *out = 50; break;
+			case "MP0_NUMBER_SLIPSTREAMS_IN_RACE"_J:
+			case "MP1_NUMBER_SLIPSTREAMS_IN_RACE"_J: *out = 100; break;
+			case "MP0_CHAR_FM_CARMOD_1_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_2_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_3_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_4_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_5_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_6_UNLCK"_J:
+			case "MP0_CHAR_FM_CARMOD_7_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_1_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_2_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_3_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_4_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_5_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_6_UNLCK"_J:
+			case "MP1_CHAR_FM_CARMOD_7_UNLCK"_J: *out = -1; break;
+			case "MP0_AWD_FMRALLYWONDRIVE"_J:
+			case "MP0_AWD_FMRALLYWONNAV"_J:
+			case "MP0_AWD_FMWINSEARACE"_J:
+			case "MP0_AWD_FMWINAIRRACE"_J:
+			case "MP1_AWD_FMRALLYWONDRIVE"_J:
+			case "MP1_AWD_FMRALLYWONNAV"_J:
+			case "MP1_AWD_FMWINSEARACE"_J:
+			case "MP1_AWD_FMWINAIRRACE"_J: *out = 1; break;
 			default: src->set_return_value<BOOL>(STATS::STAT_GET_INT(hash, out, src->get_arg<int>(2))); break;
 			}
 		}
@@ -53,7 +53,7 @@ namespace big
 		inline void STAT_SET_INT(rage::scrNativeCallContext* src)
 		{
 			const auto hash = src->get_arg<Hash>(0);
-			if (hash == RAGE_JOAAT("SP0_TOTAL_CASH") || hash == RAGE_JOAAT("SP1_TOTAL_CASH") || hash == RAGE_JOAAT("SP2_TOTAL_CASH"))
+			if (hash == "SP0_TOTAL_CASH"_J || hash == "SP1_TOTAL_CASH"_J || hash == "SP2_TOTAL_CASH"_J)
 				return;
 
 			src->set_return_value<BOOL>(STATS::STAT_SET_INT(hash, src->get_arg<int>(1), src->get_arg<int>(2)));

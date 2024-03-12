@@ -23,7 +23,7 @@ namespace big
 					    entry.second->get_ped()->m_navigation->get_position(),
 					    0,
 					    true,
-					    RAGE_JOAAT("weapon_explosion"),
+					    "weapon_explosion"_J,
 					    10000.0f,
 					    2,
 					    0,

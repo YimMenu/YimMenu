@@ -14,7 +14,7 @@ namespace big
 		{
 			*scr_globals::terminate_creator.as<bool*>() = false;
 
-			if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("maintransition")) > 0)
+			if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) > 0)
 			{
 				if (g.m_mission_creator_thread)
 					g.m_mission_creator_thread->kill();

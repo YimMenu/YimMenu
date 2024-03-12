@@ -112,16 +112,16 @@ namespace big
 
 		ImGui::Separator();
 
-		if (check_script(RAGE_JOAAT("am_criminal_damage")))
+		if (check_script("am_criminal_damage"_J))
 			render_criminal_damage_ui();
 
-		if (check_script(RAGE_JOAAT("am_cp_collection")))
+		if (check_script("am_cp_collection"_J))
 			render_cp_collection_ui();
 
-		if (check_script(RAGE_JOAAT("am_king_of_the_castle")))
+		if (check_script("am_king_of_the_castle"_J))
 			render_king_of_the_castle_ui();
 
-		if (check_script(RAGE_JOAAT("am_hunt_the_beast")))
+		if (check_script("am_hunt_the_beast"_J))
 			render_hunt_the_beast_ui();
 
 		if (!mission_found)

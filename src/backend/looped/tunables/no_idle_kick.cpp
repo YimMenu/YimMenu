@@ -17,14 +17,14 @@ namespace big
 		{
 			if (!m_ready_to_use)
 			{
-				m_tunables[0] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("IDLEKICK_WARNING1"));
-				m_tunables[1] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("IDLEKICK_WARNING2"));
-				m_tunables[2] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("IDLEKICK_WARNING3"));
-				m_tunables[3] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("IDLEKICK_KICK"));
-				m_tunables[4] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("ConstrainedKick_Warning1"));
-				m_tunables[5] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("ConstrainedKick_Warning2"));
-				m_tunables[6] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("ConstrainedKick_Warning3"));
-				m_tunables[7] = g_tunables_service->get_tunable<int*>(RAGE_JOAAT("ConstrainedKick_Kick"));
+				m_tunables[0] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J);
+				m_tunables[1] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J);
+				m_tunables[2] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J);
+				m_tunables[3] = g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J);
+				m_tunables[4] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J);
+				m_tunables[5] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J);
+				m_tunables[6] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J);
+				m_tunables[7] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J);
 
 				// create backup of tunables
 				m_ready_to_use = true;
