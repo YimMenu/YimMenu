@@ -3,6 +3,7 @@
 
 #include "lua/lua_manager.hpp"
 #include "script_mgr.hpp"
+#include "gta_util.hpp"
 
 namespace lua::script
 {
@@ -156,9 +157,9 @@ namespace lua::script
 	// Name: execute_as_script
 	// Param: script_name: string: target script thread.
 	// Param: func: function: function that will be executed once in the script thread.
-	static void execute_as_script(const std::string& script_name, sol::function func)
+	static void execute_as_script(const std::string& script_name, sol::protected_function func_, sol::this_state state)
 	{
-		big::gta_util::execute_as_script(rage::joaat(script_name), func);
+		big::gta_util::execute_as_script(rage::joaat(script_name), func_);
 	}
 
 	void bind(sol::state& state)
