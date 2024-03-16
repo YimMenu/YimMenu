@@ -1824,7 +1824,7 @@ namespace big
                 g_pointers->m_sc.m_read_attribute_patch_2 = ptr.as<PVOID>();
             }
         }
-        >(2166136262);
+        >();
 
 		// clang-format on
 
