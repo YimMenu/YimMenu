@@ -18,6 +18,7 @@ namespace memory
 
 		bool loaded() const;
 		size_t size() const;
+		DWORD timestamp() const;
 
 		/**
 		 * @brief Waits till the given module is loaded.

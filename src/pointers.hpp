@@ -80,7 +80,7 @@ namespace big
 
 			cache_file.set_data(std::move(cache_data_ptr), data_size);
 
-			cache_file.set_header_version(mem_region.size());
+			cache_file.set_header_version(mem_region.timestamp());
 			cache_file.write();
 		}
 
