@@ -89,7 +89,7 @@ namespace big
 		{
 			cache_file.load();
 
-			if (cache_file.up_to_date(mem_region.size()))
+			if (cache_file.up_to_date(mem_region.timestamp()))
 			{
 				LOG(INFO) << batch_name.str << " pointers cache is up to date, using it.";
 
