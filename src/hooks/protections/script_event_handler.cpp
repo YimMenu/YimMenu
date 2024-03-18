@@ -433,7 +433,7 @@ namespace big
 		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
 		{
 			std::string script_args = "{ ";
-			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
+			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
 					script_args += ", ";
