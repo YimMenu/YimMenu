@@ -69,7 +69,7 @@ namespace big
 
 		if (g_lua_manager && g_lua_manager->get_module_count() > 0)
 		{
-			std::vector<int64_t> script_event_args;
+			std::vector<int32_t> script_event_args;
 
 			script_event_args.reserve(args_count);
 			for (int i = 0; i < args_count; i++)
