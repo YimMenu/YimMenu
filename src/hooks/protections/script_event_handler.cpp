@@ -59,7 +59,8 @@ namespace big
 
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
-		const auto args = scripted_game_event->m_args;
+		const auto args       = scripted_game_event->m_args;
+		const auto args_count = scripted_game_event->m_args_size / 8;
 
 		const auto hash        = static_cast<eRemoteEvent>(args[0]);
 		const auto player_name = player->get_name();
@@ -70,8 +71,8 @@ namespace big
 		{
 			std::vector<int32_t> script_event_args;
 
-			script_event_args.reserve(scripted_game_event->m_args_size);
-			for (int i = 0; i < scripted_game_event->m_args_size; i++)
+			script_event_args.reserve(args_count);
+			for (int i = 0; i < args_count; i++)
 				script_event_args.push_back(args[i]);
 
 			auto event_ret = g_lua_manager->trigger_event<menu_event::ScriptedGameEventReceived, bool>((int)player->m_player_id, script_event_args);
@@ -432,7 +433,7 @@ namespace big
 		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
 		{
 			std::string script_args = "{ ";
-			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
+			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
 					script_args += ", ";
