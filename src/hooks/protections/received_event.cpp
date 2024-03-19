@@ -533,9 +533,12 @@ namespace big
 				    || personal_vehicle == veh              //Or we're in our personal vehicle.
 				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
-					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
-					g.reactions.request_control_event.process(plyr);
-					return;
+					if (g_local_player->m_vehicle->m_driver != source_player->m_player_info->m_ped) //This will block hackers who are not in the car but still want control.
+					{
+						g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
+						g.reactions.request_control_event.process(plyr);
+						return;
+					}
 				}
 			}
 			buffer->Seek(0);
