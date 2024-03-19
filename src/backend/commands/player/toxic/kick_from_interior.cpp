@@ -1,13 +1,8 @@
 #include "backend/player_command.hpp"
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
-#include "gta/net_object_mgr.hpp"
-#include "gta/script_handler.hpp"
-#include "hooking.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
 #include "services/script_connection/script_connection_service.hpp"
-#include "util/scripts.hpp"
 
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
@@ -44,10 +39,11 @@ namespace big
 			}
 			else
 			{
-				const size_t arg_count = 8;
+				const size_t arg_count = 9;
 				int64_t args[arg_count]{
 				    (int64_t)eRemoteEvent::KickFromInterior,
 				    (int64_t)self::id,
+					1 << player->id(),
 				    (int64_t)scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()
 				        ->Entries[player->id()]
 				        .SimpleInteriorData.Index,
@@ -56,7 +52,7 @@ namespace big
 				        .SimpleInteriorData.InstanceId,
 				};
 
-				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id());
+				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::KickFromInterior);
 			}
 		}
 	};

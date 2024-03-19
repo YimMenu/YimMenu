@@ -2,7 +2,7 @@
 
 #include "stack_trace.hpp"
 
-#include <Zydis/Zydis.h>
+#include <hde64.h>
 
 namespace big
 {
@@ -45,11 +45,32 @@ namespace big
 			logged_exceptions.insert(trace_hash);
 		}
 
-		ZyanU64 opcode_address = exception_info->ContextRecord->Rip;
-		ZydisDisassembledInstruction instruction;
-		ZydisDisassembleIntel(ZYDIS_MACHINE_MODE_LONG_64, opcode_address, reinterpret_cast<void*>(opcode_address), 32, &instruction);
-
-		exception_info->ContextRecord->Rip += instruction.info.length;
+	
+		if (IsBadReadPtr(reinterpret_cast<void*>(exception_info->ContextRecord->Rip), 8))
+		{
+			auto return_address_ptr = (uint64_t*)exception_info->ContextRecord->Rsp;
+			if (IsBadReadPtr(reinterpret_cast<void*>(return_address_ptr), 8))
+			{
+				LOG(FATAL) << "Cannot resume execution, crashing";
+				return EXCEPTION_CONTINUE_SEARCH;
+			}
+			else
+			{
+				exception_info->ContextRecord->Rip = *return_address_ptr;
+				exception_info->ContextRecord->Rsp += 8;
+			}
+		}
+		else
+		{
+			hde64s opcode{};
+			hde64_disasm(reinterpret_cast<void*>(exception_info->ContextRecord->Rip), &opcode);
+			if (opcode.flags & F_ERROR)
+			{
+				LOG(FATAL) << "Cannot resume execution, crashing";
+				return EXCEPTION_CONTINUE_SEARCH;
+			}
+			exception_info->ContextRecord->Rip += opcode.len;
+		}
 
 		return EXCEPTION_CONTINUE_EXECUTION;
 	}

@@ -1,12 +1,13 @@
 #include "byte_patch_manager.hpp"
 
 #include "gta/net_array.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/police.hpp"
-#include "util/toxic.hpp"
 #include "util/vehicle.hpp"
+#include "util/world_model.hpp"
 
 extern "C" void sound_overload_detour();
 uint64_t g_sound_overload_ret_addr;
@@ -21,10 +22,16 @@ namespace big
 		police::m_max_wanted_level_2 =
 		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
 
+		// Patch World Model Spawn Bypass
+		std::array<uint8_t, 24> world_spawn_patch;
+		std::fill(world_spawn_patch.begin(), world_spawn_patch.end(), 0x90);
+		world_model_bypass::m_world_model_spawn_bypass =
+		    memory::byte_patch::make(g_pointers->m_gta.m_world_model_spawn_bypass, world_spawn_patch).get();
+
 		// Patch blocked explosions
-		toxic::explosion_anti_cheat_bypass::m_can_blame_others =
+		explosion_anti_cheat_bypass::m_can_blame_others =
 		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
-		toxic::explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
+		explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
 		// Skip matchmaking session validity checks

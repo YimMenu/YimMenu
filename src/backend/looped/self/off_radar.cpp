@@ -16,7 +16,7 @@ namespace big
 			if (g.self.ghost_org)
 				MISC::SET_BIT(scr_globals::freemode_global.at(4667).as<int*>(), 2);
 			scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].OffRadarActive = true;
-			*scr_globals::freemode_properties.at(57).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
+			*scr_globals::freemode_properties.at(58).as<int*>() = NETWORK::GET_NETWORK_TIME() + 1;
 		}
 
 		virtual void on_disable() override
@@ -27,6 +27,6 @@ namespace big
 		}
 	};
 
-	off_radar g_off_radar("otr", "OFF_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
+	off_radar g_off_radar("otr", "OFF_THE_RADAR", "OFF_RADAR_DESC", g.self.off_radar);
 	bool_command ghost_org("ghostorg", "GHOST_ORG", "GHOST_ORG_DESC", g.self.ghost_org);
 }

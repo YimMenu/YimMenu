@@ -18,6 +18,8 @@ namespace big
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
+			ImGui::SameLine();
+			ImGui::Checkbox("IS_TEAM"_T.data(), &reaction.is_team_only);
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
@@ -37,12 +39,15 @@ namespace big
 		if (ImGui::TreeNode(reaction.m_event_name))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
+			ImGui::SameLine();
+			ImGui::Checkbox("IS_TEAM"_T.data(), &reaction.is_team_only);
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
 			if (reaction.add_to_player_db)
 				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
 			ImGui::Checkbox("REACTION_KICK_ATTACKER"_T.data(), &reaction.kick);
+			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 
 			if (reaction.m_blockable || reaction.m_karmaable)
 				ImGui::Separator();
@@ -107,8 +112,6 @@ namespace big
 		draw_reaction(g.reactions.request_control_event);
 		draw_reaction(g.reactions.spectate);
 		draw_interloper_reaction(g.reactions.spectate_others);
-		ImGui::Separator();
-		draw_reaction(g.reactions.gamer_instruction_kick);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);

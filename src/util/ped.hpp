@@ -1,7 +1,6 @@
 #pragma once
 #include "entity.hpp"
 #include "gta/enums.hpp"
-#include "local_player.hpp"
 #include "math.hpp"
 #include "natives.hpp"
 #include "outfit.hpp"
@@ -447,24 +446,19 @@ namespace big::ped
 
 	inline bool change_player_model(const Hash hash)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (entity::request_model(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
+			self::ped = PLAYER::PLAYER_PED_ID();
+			PLAYER::SET_PLAYER_MODEL(self::id, hash);
 			script::get_current()->yield();
+			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+			for (int i = 0; i < 12; i++)
+			{
+				PED::SET_PED_COMPONENT_VARIATION(self::ped, i, PED::GET_PED_DRAWABLE_VARIATION(self::ped, i), PED::GET_PED_TEXTURE_VARIATION(self::ped, i), PED::GET_PED_PALETTE_VARIATION(self::ped, i));
+			}
+			return true;	
 		}
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return false;
-		}
-		PLAYER::SET_PLAYER_MODEL(self::id, hash);
-		self::ped = PLAYER::PLAYER_PED_ID();
-		script::get_current()->yield();
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-		for (int i = 0; i < 12; i++)
-		{
-			PED::SET_PED_COMPONENT_VARIATION(self::ped, i, PED::GET_PED_DRAWABLE_VARIATION(self::ped, i), PED::GET_PED_TEXTURE_VARIATION(self::ped, i), PED::GET_PED_PALETTE_VARIATION(self::ped, i));
-		}
-		return true;
+		return false;
 	}
 
 	inline bool steal_outfit(const Ped target)
@@ -493,57 +487,52 @@ namespace big::ped
 		script::get_current()->yield();
 		PED::CLONE_PED_TO_TARGET(target, self::ped);
 		ENTITY::SET_ENTITY_MAX_HEALTH(self::ped, max_health);
-		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0);
+		ENTITY::SET_ENTITY_HEALTH(self::ped, current_health, 0, 0);
 		PED::SET_PED_ARMOUR(self::ped, current_armor);
 	}
 
 	inline void kill_ped(const Ped ped)
 	{
 		if (entity::take_control_of(ped, 0))
-			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped);
+			ENTITY::SET_ENTITY_HEALTH(ped, 0, self::ped, 0);
 		else
 		{
 			auto ptr = g_pointers->m_gta.m_handle_to_ptr(ped);
 			if (!ptr)
 				return;
 
-			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, RAGE_JOAAT("weapon_explosion"), 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
+			g_pointers->m_gta.m_send_network_damage(g_player_service->get_self()->get_ped(), ptr, ptr->get_position(), 0, true, "weapon_explosion"_J, 10000.0f, 2, 0, (1 << 4), 0, 0, 0, false, false, true, true, nullptr);
 		}
 	}
 
 	inline Ped spawn(ePedType pedType, Hash hash, Hash clone, Vector3 location, float heading, bool is_networked = true)
 	{
-		for (uint8_t i = 0; !STREAMING::HAS_MODEL_LOADED(hash) && i < 100; i++)
+		if (entity::request_model(hash))
 		{
-			STREAMING::REQUEST_MODEL(hash);
-			script::get_current()->yield();
+			Ped ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
+
+		    script::get_current()->yield();
+
+		    if (clone)
+		    {
+		        PED::CLONE_PED_TO_TARGET(clone, ped);
+		    }
+
+		    STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
+
+		    return ped;	
 		}
-
-		if (!STREAMING::HAS_MODEL_LOADED(hash))
-		{
-			return 0;
-		}
-
-		auto ped = PED::CREATE_PED(pedType, hash, location.x, location.y, location.z, heading, is_networked, false);
-
-		script::get_current()->yield();
-
-		if (clone)
-		{
-			PED::CLONE_PED_TO_TARGET(clone, ped);
-		}
-
-		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
-
-		return ped;
+		return 0;
 	}
 
 	inline void set_ped_random_component_variation(Ped ped)
 	{
-		auto range = [](int lower_bound, int upper_bound) -> int {
+		constexpr auto range = [](int lower_bound, int upper_bound) -> int {
 			return std::rand() % (upper_bound - lower_bound + 1) + lower_bound;
 		};
+
 		outfit::components_t components;
+
 		for (auto& item : components.items)
 		{
 			int drawable_id_max = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(ped, item.id) - 1;
@@ -605,7 +594,7 @@ namespace big::ped
 			if (ENTITY::DOES_ENTITY_EXIST(veh))
 			{
 				if (math::distance_between_vectors(ENTITY::GET_ENTITY_COORDS(ped, 0), ENTITY::GET_ENTITY_COORDS(veh, 0)) < 15.f)
-					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL);
+					TASK::TASK_ENTER_VEHICLE(ped, veh, 10000, (int)seat, movespeed, 8, NULL, 0);
 				else
 					PED::SET_PED_INTO_VEHICLE(ped, veh, (int)seat);
 			}

@@ -5,24 +5,23 @@
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
 #include "util/misc.hpp"
+#include "gta/enums.hpp"
 
 namespace big
 {
-	static ImColor death_bg         = ImColor(0.117f, 0.113f, 0.172f, .75f);
-	static ImColor armor_blue_bg    = ImColor(0.36f, 0.71f, 0.89f, .75f);
-	static ImColor armor_blue       = ImColor(0.36f, 0.71f, 0.89f, 1.f);
-	static ImColor health_green_bg  = ImColor(0.29f, 0.69f, 0.34f, .75f);
-	static ImColor health_green     = ImColor(0.29f, 0.69f, 0.34f, 1.f);
-	static ImColor health_yellow_bg = ImColor(0.69f, 0.49f, 0.29f, .75f);
-	static ImColor health_yellow    = ImColor(0.69f, 0.49f, 0.29f, 1.f);
-	static ImColor health_red_bg    = ImColor(0.69f, 0.29f, 0.29f, .75f);
-	static ImColor health_red       = ImColor(0.69f, 0.29f, 0.29f, 1.f);
+	static const ImColor death_bg         = ImColor(0.117f, 0.113f, 0.172f, .75f);
+	static const ImColor armor_blue_bg    = ImColor(0.36f, 0.71f, 0.89f, .75f);
+	static const ImColor armor_blue       = ImColor(0.36f, 0.71f, 0.89f, 1.f);
+	static const ImColor health_green_bg  = ImColor(0.29f, 0.69f, 0.34f, .75f);
+	static const ImColor health_green     = ImColor(0.29f, 0.69f, 0.34f, 1.f);
+	static const ImColor health_yellow_bg = ImColor(0.69f, 0.49f, 0.29f, .75f);
+	static const ImColor health_yellow    = ImColor(0.69f, 0.49f, 0.29f, 1.f);
+	static const ImColor health_red_bg    = ImColor(0.69f, 0.29f, 0.29f, .75f);
+	static const ImColor health_red       = ImColor(0.69f, 0.29f, 0.29f, 1.f);
 
 	void esp::draw_player(const player_ptr& plyr, ImDrawList* const draw_list)
 	{
 		if (!plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
-			return;
-		if (g.esp.hide_self && plyr->is_valid() && plyr->id() == g_player_service->get_self()->id())
 			return;
 
 		auto& player_pos = *plyr->get_ped()->m_navigation->get_position();
@@ -107,7 +106,7 @@ namespace big
 				(plyr->get_ped()->m_ped_task_flag & (uint32_t)ePedTask::TASK_DRIVING) &&
 				(player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD))
 			{
-				mode_str =+ "Vehicle God";
+				mode_str =+ "VEHICLE_GOD"_T.data();
 			}
 
 			if (!mode_str.empty())
@@ -180,12 +179,9 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
-			draw_player(g_player_service->get_self(), draw_list);
-
-			for (const auto& [_, plyr] : g_player_service->players())
-			{
-				draw_player(plyr, draw_list);
-			}
+			g_player_service->iterate([draw_list](const player_entry& entry) {
+				draw_player(entry.second, draw_list);
+			});
 		}
 	}
 }

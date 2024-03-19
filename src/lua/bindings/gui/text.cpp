@@ -22,10 +22,10 @@ namespace lua::gui
 
 		switch (hash)
 		{
-		case RAGE_JOAAT("title"): m_font = big::g.window.font_title; break;
-		case RAGE_JOAAT("subtitle"): m_font = big::g.window.font_sub_title; break;
-		case RAGE_JOAAT("small"): m_font = big::g.window.font_small; break;
-		case RAGE_JOAAT("icon"): m_font = big::g.window.font_icon; break;
+		case "title"_J: m_font = big::g.window.font_title; break;
+		case "subtitle"_J: m_font = big::g.window.font_sub_title; break;
+		case "small"_J: m_font = big::g.window.font_small; break;
+		case "icon"_J: m_font = big::g.window.font_icon; break;
 		default: m_font = nullptr; break;
 		}
 	}

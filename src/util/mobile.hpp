@@ -90,7 +90,7 @@ namespace big::mobile
 	{
 		inline void request_bullshark_testosterone()
 		{
-			*scr_globals::freemode_properties.at(3690).as<int*>() = 1;
+			*scr_globals::freemode_properties.at(3694).as<int*>() = 1;
 		}
 
 		inline void request_ballistic_armor() //i think this is a ceo ability atleast?
@@ -164,14 +164,14 @@ namespace big::mobile
 
 			script::get_current()->yield(100ms);
 
-			GtaThread* freemode_thread = gta_util::find_script_thread(RAGE_JOAAT("freemode"));
+			GtaThread* freemode_thread = gta_util::find_script_thread("freemode"_J);
 			if (freemode_thread)
 			{
 				// regex to find this shit easily
 				// \(func_\d{3}\(&\(uParam0->f_\d{3}\), \d+000, 0\) \|\| func
 				// or if you prefer a string "VD_FAIL4"
 				// or if you really prefer an image https://i.imgur.com/K8vMILe.png
-				*scr_locals::fm_mobile::mobile.set(freemode_thread).at(176).as<int*>() = 0; // spawn vehicle instantly
+				*scr_locals::freemode::mobile.set(freemode_thread).at(176).as<int*>() = 0; // spawn vehicle instantly
 			}
 
 			// blocking call till vehicle is delivered
@@ -189,6 +189,29 @@ namespace big::mobile
 		inline void request_taxi()
 		{
 			*scr_globals::freemode_global.at(853).as<int*>() = 1;
+		}
+
+		inline void request_gun_van()
+		{
+			auto local_pos      = self::pos;
+			auto forward_vector = ENTITY::GET_ENTITY_FORWARD_VECTOR(self::ped);
+			Vector3 spawn_point;
+
+			if (MISC::FIND_SPAWN_POINT_IN_DIRECTION(local_pos.x,
+			        local_pos.y,
+			        local_pos.z,
+			        forward_vector.x,
+			        forward_vector.y,
+			        forward_vector.z,
+			        25.f,
+			        &spawn_point))
+			{
+				*scr_globals::gun_van.as<Vector3*>() = spawn_point;
+
+				return g_notification_service->push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
+			}
+
+			g_notification_service->push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
 		}
 	}
 }

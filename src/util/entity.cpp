@@ -4,7 +4,7 @@ namespace big::entity
 {
 	void cage_ped(Ped ped)
 	{
-		Hash hash = RAGE_JOAAT("prop_gold_cont_01");
+		Hash hash = "prop_gold_cont_01"_J;
 
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ped, true);
 		OBJECT::CREATE_OBJECT(hash, location.x, location.y, location.z - 1.f, true, false, false);
@@ -12,12 +12,15 @@ namespace big::entity
 
 	void clean_ped(Ped ped)
 	{
-		Ped player_ped = self::ped;
+		PED::CLEAR_PED_BLOOD_DAMAGE(ped);
+		PED::CLEAR_PED_WETNESS(ped);
+		PED::CLEAR_PED_ENV_DIRT(ped);
+		PED::RESET_PED_VISIBLE_DAMAGE(ped);
 
-		PED::CLEAR_PED_BLOOD_DAMAGE(player_ped);
-		PED::CLEAR_PED_WETNESS(player_ped);
-		PED::CLEAR_PED_ENV_DIRT(player_ped);
-		PED::RESET_PED_VISIBLE_DAMAGE(player_ped);
+		// https://forum.cfx.re/t/information-needed-to-clear-visible-player-damage-scars-etc/283216
+		// https://docs.fivem.net/natives/?_0x397C38AA7B4A5F83
+		for (int i = 0; i <= 5; ++i)
+			PED::CLEAR_PED_DAMAGE_DECAL_BY_ZONE(ped, i, "ALL");
 	}
 
 	void delete_entity(Entity& ent, bool force)
@@ -56,7 +59,7 @@ namespace big::entity
 				ENTITY::DELETE_ENTITY(&vehicle);
 			}
 		}
-		
+
 		ENTITY::DETACH_ENTITY(ent, 1, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, 7000.f, 7000.f, 15.f, 0, 0, 0);
 		if (!ENTITY::IS_ENTITY_A_MISSION_ENTITY(ent))
@@ -193,41 +196,69 @@ namespace big::entity
 
 	bool load_ground_at_3dcoord(Vector3& location)
 	{
-		float groundZ;
-		bool done = false;
+		constexpr float max_ground_check = 1000.f;
+		constexpr int max_attempts       = 300;
+		float ground_z                   = location.z;
+		int current_attempts             = 0;
+		bool found_ground;
+		float height;
 
-		for (int i = 0; i < 10; i++)
+		do
 		{
-			for (int z = 0; z < 1000; z += 25)
-			{
-				float ground_iteration = static_cast<float>(z);
-				// Only request a collision after the first try failed because the location might already be loaded on first attempt.
-				if (i >= 1 && (z % 100 == 0))
-				{
-					STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, ground_iteration);
-					script::get_current()->yield();
-				}
+			found_ground = MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, max_ground_check, &ground_z, FALSE, FALSE);
+			STREAMING::REQUEST_COLLISION_AT_COORD(location.x, location.y, location.z);
 
-				if (MISC::GET_GROUND_Z_FOR_3D_COORD(location.x, location.y, ground_iteration, &groundZ, false, false))
-				{
-					location.z = groundZ + 1.f;
-					done       = true;
-				}
+			if (current_attempts % 10 == 0)
+			{
+				location.z += 25.f;
 			}
 
-			float height;
-			if (done && WATER::GET_WATER_HEIGHT(location.x, location.y, location.z, &height))
-			{
-				location.z = height + 1.f;
-			}
+			++current_attempts;
 
-			if (done)
-			{
-				return true;
-			}
+			script::get_current()->yield();
+		} while (!found_ground && current_attempts < max_attempts);
+
+		if (!found_ground)
+		{
+			return false;
 		}
 
-		location.z = 1000.f;
+		if (WATER::GET_WATER_HEIGHT(location.x, location.y, location.z, &height))
+		{
+			location.z = height;
+		}
+		else
+		{
+			location.z = ground_z + 1.f;
+		}
+
+		return true;
+	}
+
+	bool request_model(rage::joaat_t hash)
+	{
+		if (STREAMING::HAS_MODEL_LOADED(hash))
+		{
+			return true;
+		}
+
+		bool has_loaded;
+
+		if (STREAMING::IS_MODEL_VALID(hash) && STREAMING::IS_MODEL_IN_CDIMAGE(hash))
+		{
+			do
+			{
+				has_loaded = STREAMING::HAS_MODEL_LOADED(hash);
+				if (has_loaded)
+					break;
+
+				STREAMING::REQUEST_MODEL(hash);
+
+				script::get_current()->yield();
+			} while (!has_loaded);
+
+			return true;
+		}
 
 		return false;
 	}

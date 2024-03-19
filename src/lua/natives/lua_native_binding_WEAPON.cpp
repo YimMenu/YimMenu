@@ -504,22 +504,16 @@ namespace lua::native
 		WEAPON::SET_WEAPON_OBJECT_CAMO_INDEX(weaponObject, p1);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_WEAPON_GET_WEAPON_HUD_STATS(Hash weaponHash, Any outData)
+	static bool LUA_NATIVE_WEAPON_GET_WEAPON_HUD_STATS(Hash weaponHash, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)WEAPON::GET_WEAPON_HUD_STATS(weaponHash, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)WEAPON::GET_WEAPON_HUD_STATS(weaponHash, (Any*)outData);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_WEAPON_GET_WEAPON_COMPONENT_HUD_STATS(Hash componentHash, Any outData)
+	static bool LUA_NATIVE_WEAPON_GET_WEAPON_COMPONENT_HUD_STATS(Hash componentHash, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(componentHash, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)WEAPON::GET_WEAPON_COMPONENT_HUD_STATS(componentHash, (Any*)outData);
+		return retval;
 	}
 
 	static float LUA_NATIVE_WEAPON_GET_WEAPON_DAMAGE(Hash weaponHash, Hash componentHash)
@@ -554,6 +548,11 @@ namespace lua::native
 	static void LUA_NATIVE_WEAPON_REQUEST_WEAPON_HIGH_DETAIL_MODEL(Entity weaponObject)
 	{
 		WEAPON::REQUEST_WEAPON_HIGH_DETAIL_MODEL(weaponObject);
+	}
+
+	static void LUA_NATIVE_WEAPON_SET_WEAPON_PED_DAMAGE_MODIFIER_(Hash weapon, float damageModifier)
+	{
+		WEAPON::_SET_WEAPON_PED_DAMAGE_MODIFIER(weapon, damageModifier);
 	}
 
 	static void LUA_NATIVE_WEAPON_SET_WEAPON_DAMAGE_MODIFIER(Hash weaponHash, float damageMultiplier)
@@ -772,6 +771,7 @@ namespace lua::native
 		WEAPON.set_function("SET_PED_CHANCE_OF_FIRING_BLANKS", LUA_NATIVE_WEAPON_SET_PED_CHANCE_OF_FIRING_BLANKS);
 		WEAPON.set_function("SET_PED_SHOOT_ORDNANCE_WEAPON", LUA_NATIVE_WEAPON_SET_PED_SHOOT_ORDNANCE_WEAPON);
 		WEAPON.set_function("REQUEST_WEAPON_HIGH_DETAIL_MODEL", LUA_NATIVE_WEAPON_REQUEST_WEAPON_HIGH_DETAIL_MODEL);
+		WEAPON.set_function("SET_WEAPON_PED_DAMAGE_MODIFIER_", LUA_NATIVE_WEAPON_SET_WEAPON_PED_DAMAGE_MODIFIER_);
 		WEAPON.set_function("SET_WEAPON_DAMAGE_MODIFIER", LUA_NATIVE_WEAPON_SET_WEAPON_DAMAGE_MODIFIER);
 		WEAPON.set_function("SET_WEAPON_AOE_MODIFIER", LUA_NATIVE_WEAPON_SET_WEAPON_AOE_MODIFIER);
 		WEAPON.set_function("SET_WEAPON_EFFECT_DURATION_MODIFIER", LUA_NATIVE_WEAPON_SET_WEAPON_EFFECT_DURATION_MODIFIER);

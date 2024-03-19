@@ -5,7 +5,7 @@ namespace big
 	void view::player_vehicle()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Vehicle");
+		components::sub_title("VEHICLE"_T);
 		if (ImGui::BeginListBox("##veh", get_listbox_dimensions()))
 		{
 			components::player_command_button<"vehkick">(g_player_service->get_selected(), {});
@@ -49,8 +49,6 @@ namespace big
 			components::player_command_button<"sshuntleft">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"sshuntright">(g_player_service->get_selected(), {});
-
-			components::player_command_button<"rcplayer">(g_player_service->get_selected());
 
 			ImGui::EndListBox();
 		}

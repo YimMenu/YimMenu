@@ -3,7 +3,6 @@
 #include "fiber_pool.hpp"
 #include "services/orbital_drone/orbital_drone.hpp"
 #include "util/entity.hpp"
-#include "util/local_player.hpp"
 #include "util/scripts.hpp"
 #include "views/view.hpp"
 
@@ -31,7 +30,8 @@ namespace big
 
 		components::command_checkbox<"godmode">();
 		components::command_checkbox<"otr">();
-		if (g.self.off_radar && scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss == self::id)
+		const auto gpbd_fm_3 = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>();
+		if (g.self.off_radar && *g_pointers->m_gta.m_is_session_started && gpbd_fm_3->Entries[self::id].BossGoon.Boss == self::id)
 			components::command_checkbox<"ghostorg">();
 		components::command_checkbox<"freecam">();
 		components::command_checkbox<"nophone">();
@@ -40,12 +40,15 @@ namespace big
 		components::command_checkbox<"invis">();
 		if (g.self.invisibility)
 			components::command_checkbox<"localvis">(); // TODO: does nothing in SP
+		components::command_checkbox<"gracefullanding">();
 
-		ImGui::BeginDisabled(scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon.Boss != -1
-			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller"))
-			|| gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
-
-			components::command_checkbox<"passive">();
+		// clang-format off
+		ImGui::BeginDisabled(!*g_pointers->m_gta.m_is_session_started ||
+			gpbd_fm_3->Entries[self::id].BossGoon.Boss != -1 ||
+			gta_util::find_script_thread("fm_mission_controller"_J) ||
+			gta_util::find_script_thread("fm_mission_controller_2020"_J));
+		// clang-format on
+		components::command_checkbox<"passive">();
 		ImGui::EndDisabled();
 
 		ImGui::EndGroup();
@@ -53,7 +56,7 @@ namespace big
 		ImGui::BeginGroup();
 
 		components::command_checkbox<"noclip">();
-		components::options_modal("Noclip", [] {
+		components::options_modal("NO_CLIP"_T, [] {
 			ImGui::Separator();
 
 			ImGui::BeginGroup();
@@ -67,6 +70,7 @@ namespace big
 		components::command_checkbox<"noragdoll">();
 		components::command_checkbox<"fastrun">();
 		components::command_checkbox<"noidlekick">();
+		components::command_checkbox<"interactionmenufreedom">();
 		components::command_checkbox<"walkunder">();
 		if (!g.self.super_jump)
 			components::command_checkbox<"beastjump">();
@@ -80,12 +84,30 @@ namespace big
 
 		components::command_checkbox<"cleanloop">();
 		components::command_checkbox<"mobileradio">();
-		components::command_checkbox<"superman">();
+		components::command_checkbox<"superherofly">();
+		components::options_modal("SUPER_HERO_FLY_OPTION_MODAL"_T, [] {
+			ImGui::Text("SUPER_HERO_FLY_OPTION_MODAL_DETAILED_DESC"_T.data());
+			ImGui::Separator();
+
+			components::command_checkbox<"superheroflygradualspeed">();
+			components::disable_unless([] { return !g.self.super_hero_fly.gradual; }, []{
+				ImGui::SetNextItemWidth(150);
+				components::command_float_input<"superheroflyspeed">();
+			});
+			components::command_checkbox<"superheroflyexplosions">();
+			components::command_checkbox<"superheroflyautoland">();
+			components::command_checkbox<"superheroflychargelaunch">();
+			components::disable_unless([] { return g.self.super_hero_fly.charge; }, []{
+				components::command_checkbox<"superheroflychargeptfx">();
+			});
+			ImGui::SetNextItemWidth(150);
+			components::command_float_input<"superheroflyinitiallaunch">();
+		});
 
 		ImGui::Checkbox("DANCE_MODE"_T.data(), &g.self.dance_mode);
 
 		components::command_checkbox<"orbitaldrone">();
-		components::options_modal("Orbital drone", [] {
+		components::options_modal("VIEW_SELF_ORBITAL_DRONE"_T.data(), [] {
 			ImGui::Separator();
 			ImGui::BeginGroup();
 			ImGui::Text("ORBITAL_DRONE_USAGE_DESCR"_T.data());
@@ -147,9 +169,9 @@ namespace big
 		});
 
 		components::command_checkbox<"ptfx">();
-		components::options_modal("PTFX", [] {
-			ImGui::SliderFloat("PTFX Size", &g.self.ptfx_effects.size, 0.1f, 2.f);
-			if (ImGui::BeginCombo("Asset", ptfx_named[g.self.ptfx_effects.select].friendly_name))
+		components::options_modal("VIEW_SELF_PTFX"_T.data(), [] {
+			ImGui::SliderFloat("VIEW_SELF_PTFX_SIZE"_T.data(), &g.self.ptfx_effects.size, 0.1f, 2.f);
+			if (ImGui::BeginCombo("VIEW_SELF_ASSET"_T.data(), ptfx_named[g.self.ptfx_effects.select].friendly_name))
 			{
 				for (int i = 0; i < IM_ARRAYSIZE(ptfx_named); i++)
 				{
@@ -167,7 +189,7 @@ namespace big
 				ImGui::EndCombo();
 			}
 
-			if (ImGui::BeginCombo("Effect", g.self.ptfx_effects.effect))
+			if (ImGui::BeginCombo("VIEW_SELF_EFFECT"_T.data(), g.self.ptfx_effects.effect))
 			{
 				for (const auto& ptfx_type : ptfx_named[g.self.ptfx_effects.select].effect_names)
 				{
@@ -183,7 +205,7 @@ namespace big
 		});
 
 		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-		components::options_modal("Police", [] {
+		components::options_modal("POLICE"_T.data(), [] {
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
 			components::command_button<"clearwantedlvl">();
 			if (!g.self.never_wanted)
@@ -313,7 +335,7 @@ namespace big
 
 		if (g.self.hud.color_override)
 		{
-			ImGui::Combo("Color Index", &color_select_index, hud_colors.data(), hud_colors.size());
+			ImGui::Combo("VIEW_SELF_COLOR_INDEX"_T.data(), &color_select_index, hud_colors.data(), hud_colors.size());
 
 			auto& ovr_color = g.self.hud.hud_color_overrides[color_select_index];
 
@@ -323,7 +345,7 @@ namespace big
 			col[2] = ovr_color.b / 255.0f;
 			col[3] = ovr_color.a / 255.0f;
 
-			if (ImGui::ColorPicker4("Override Color", col))
+			if (ImGui::ColorPicker4("VIEW_SELF_COLOR_OVERRIDE"_T.data(), col))
 			{
 				ovr_color.r = (int)(col[0] * 255);
 				ovr_color.g = (int)(col[1] * 255);
@@ -336,7 +358,7 @@ namespace big
 				});
 			}
 
-			components::button("Restore Default Color", [] {
+			components::button("VIEW_SELF_RESTORE_DEFAULT_COLOR"_T, [] {
 				g.self.hud.hud_color_overrides[color_select_index] = g.self.hud.hud_color_defaults[color_select_index];
 
 				auto& col = g.self.hud.hud_color_defaults[color_select_index];
@@ -345,7 +367,7 @@ namespace big
 
 			ImGui::SameLine();
 
-			components::button("Restore All Defaults", [] {
+			components::button("VIEW_SELF_RESTORE_ALL_DEFAULTS"_T, [] {
 				for (int i = 0; i < hud_colors.size(); i++)
 				{
 					auto& col                         = g.self.hud.hud_color_defaults[i];

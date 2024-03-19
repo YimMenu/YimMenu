@@ -5,6 +5,7 @@
 #include "gta/pickup_rewards.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
@@ -18,16 +19,9 @@
 
 namespace big::toxic
 {
-	struct explosion_anti_cheat_bypass
-	{
-		inline static memory::byte_patch* m_can_blame_others;
-		inline static memory::byte_patch* m_can_use_blocked_explosions;
-	};
-
 	inline void blame_explode_coord(player_ptr to_blame, Vector3 pos, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
 	{
-		explosion_anti_cheat_bypass::m_can_blame_others->apply();
-		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->apply();
+		explosion_anti_cheat_bypass::apply();
 
 		FIRE::ADD_OWNED_EXPLOSION(
 		    (*g_pointers->m_gta.m_is_session_started && to_blame) ? PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(to_blame->id()) : 0,
@@ -40,8 +34,7 @@ namespace big::toxic
 		    is_invisible,
 		    camera_shake);
 
-		explosion_anti_cheat_bypass::m_can_use_blocked_explosions->restore();
-		explosion_anti_cheat_bypass::m_can_blame_others->restore();
+		explosion_anti_cheat_bypass::restore();
 	}
 
 	inline void blame_explode_player(player_ptr to_blame, player_ptr target, eExplosionTag explosion_type, float damage, bool is_audible, bool is_invisible, float camera_shake)
@@ -52,10 +45,10 @@ namespace big::toxic
 
 	inline void start_activity(player_ptr target, eActivityType type)
 	{
-		const size_t arg_count = 4;
-		int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartActivity, (int64_t)self::id, (int64_t)type, (int64_t) true};
+		const size_t arg_count = 5;
+		int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartActivity, (int64_t)self::id, 1 << target->id(), (int64_t) type, (int64_t) true};
 
-		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id());
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << target->id(), (int)eRemoteEvent::StartActivity);
 	}
 
 	inline bool set_time(player_ptr target, uint32_t millis)

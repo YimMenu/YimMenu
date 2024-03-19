@@ -1,7 +1,8 @@
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
-#include "hooking.hpp"
+#include "gta/weapon_info_manager.hpp"
+#include "hooking/hooking.hpp"
 #include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
 #include "util/mobile.hpp"
@@ -25,7 +26,21 @@ namespace big
 			id.m_instance_id = buffer.Read<int32_t>(8);
 	}
 
-	void scan_weapon_damage_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	static bool is_valid_weapon(rage::joaat_t hash)
+	{
+		for (const auto& info : g_pointers->m_gta.m_weapon_info_manager->m_item_infos)
+		{
+			if (info && info->m_name == hash && info->GetClassId() == "cweaponinfo"_J)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+  
+	// Returns true if bad event
+	bool scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
 	{
 		uint8_t damageType;
 		uint32_t weaponType; // weaponHash
@@ -70,6 +85,13 @@ namespace big
 
 		damageType = buffer->Read<uint8_t>(2);
 		weaponType = buffer->Read<uint32_t>(32);
+
+		if (!is_valid_weapon(weaponType))
+		{
+			notify::crash_blocked(player, "invalid weapon type");
+			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
+			return true;
+		}
 
 		overrideDefaultDamage   = buffer->Read<uint8_t>(1);
 		hitEntityWeapon         = buffer->Read<uint8_t>(1);
@@ -214,6 +236,8 @@ namespace big
 				    player->get_ped()->m_navigation->get_position());
 			});
 		}
+
+		return false;
 	}
 
 	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
@@ -507,11 +531,14 @@ namespace big
 				Vehicle veh              = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
 				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() //If we're in Freemode.
 				    || personal_vehicle == veh              //Or we're in our personal vehicle.
-				    || DECORATOR::DECOR_GET_INT(veh, "RandomId") == g_local_player->m_net_object->m_object_id) // Or it's a vehicle we spawned.
+				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
-					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
-					g.reactions.request_control_event.process(plyr);
-					return;
+					if (g_local_player->m_vehicle->m_driver != source_player->m_player_info->m_ped) //This will block hackers who are not in the car but still want control.
+					{
+						g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
+						g.reactions.request_control_event.process(plyr);
+						return;
+					}
 				}
 			}
 			buffer->Seek(0);
@@ -564,16 +591,21 @@ namespace big
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
+			else if (type == WorldStateDataType::PopMultiplierArea && g.protections.stop_traffic && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
 
 			buffer->Seek(0);
 			break;
 		}
 		case eNetworkEvents::REMOVE_WEAPON_EVENT:
 		{
-			int net_id    = buffer->Read<int>(13);
-			uint32_t hash = buffer->Read<uint32_t>(32);
+			std::int16_t net_id = buffer->Read<std::int16_t>(13);
+			Hash hash           = buffer->Read<Hash>(32);
 
-			if (hash == RAGE_JOAAT("WEAPON_UNARMED"))
+			if (hash == "WEAPON_UNARMED"_J)
 			{
 				notify::crash_blocked(source_player, "remove unarmed");
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
@@ -582,8 +614,9 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
+				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_WEAPON_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+					std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -591,14 +624,16 @@ namespace big
 			buffer->Seek(0);
 			break;
 		}
-		case eNetworkEvents::REMOVE_ALL_WEAPONS_EVENT:
+		case eNetworkEvents::GIVE_WEAPON_EVENT:
 		{
-			int net_id = buffer->Read<int>(13);
+			std::int16_t net_id = buffer->Read<std::int16_t>(13);
+			Hash hash           = buffer->Read<Hash>(32);
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
+				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
 				g_notification_service->push_warning("PROTECTIONS"_T.data(),
-				    std::vformat("REMOVE_ALL_WEAPONS_ATTEMPT"_T, std::make_format_args(source_player->get_name())));
+				    std::format("{} {} {}.", source_player->get_name(), "GIVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -675,7 +710,7 @@ namespace big
 
 			uint32_t sound_hash = buffer->Read<uint32_t>(32);
 
-			if (sound_hash == RAGE_JOAAT("Remote_Ring") && plyr)
+			if (sound_hash == "Remote_Ring"_J && plyr)
 			{
 				g.reactions.sound_spam.process(plyr);
 				return;
@@ -697,7 +732,10 @@ namespace big
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
 		{
-			scan_weapon_damage_event(source_player, buffer);
+			if (scan_weapon_damage_event(event_manager, source_player, target_player, event_index, event_handled_bitset, buffer))
+			{
+				return;
+			}
 			break;
 		}
 		default: break;

@@ -12,9 +12,10 @@ namespace big
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
 			Vehicle veh = mobile::mechanic::get_personal_vehicle();
-			teleport::into_vehicle(veh);
+			if (self::veh != veh)
+				teleport::into_vehicle(veh);
 		}
 	};
 
-	teleport_to_personal_vehicle g_teleport_to_personal_vehicle("pvtp", "Teleport To Personal Vehicle", "Teleports you into your PV", 0);
+	teleport_to_personal_vehicle g_teleport_to_personal_vehicle("pvtp", "TP_IN_PV", "BACKEND_TELEPORT_TO_PERSONAL_VEHICLE", 0);
 }

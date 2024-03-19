@@ -3,16 +3,14 @@
 
 namespace lua::native
 {
-	static Any LUA_NATIVE_SECURITY_REGISTER_SCRIPT_VARIABLE(Any variable)
+	static void LUA_NATIVE_SECURITY_REGISTER_SCRIPT_VARIABLE(uintptr_t variable)
 	{
-		SECURITY::REGISTER_SCRIPT_VARIABLE(&variable);
-		return variable;
+		SECURITY::REGISTER_SCRIPT_VARIABLE((Any*)variable);
 	}
 
-	static Any LUA_NATIVE_SECURITY_UNREGISTER_SCRIPT_VARIABLE(Any variable)
+	static void LUA_NATIVE_SECURITY_UNREGISTER_SCRIPT_VARIABLE(uintptr_t variable)
 	{
-		SECURITY::UNREGISTER_SCRIPT_VARIABLE(&variable);
-		return variable;
+		SECURITY::UNREGISTER_SCRIPT_VARIABLE((Any*)variable);
 	}
 
 	static void LUA_NATIVE_SECURITY_FORCE_CHECK_SCRIPT_VARIABLES()

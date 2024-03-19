@@ -14,6 +14,7 @@
 #include "util/vehicle.hpp"
 #include "yim_fipackfile.hpp"
 
+#include <algorithm>
 
 namespace big
 {
@@ -28,7 +29,7 @@ namespace big
 
 	gta_data_service::gta_data_service() :
 	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 5),
+	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 6),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
 		if (!is_cache_up_to_date())
@@ -72,7 +73,7 @@ namespace big
 	const ped_item& gta_data_service::ped_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, ped] : m_peds)
-			if (rage::joaat(name) == hash)
+			if (ped.m_hash == hash)
 				return ped;
 		return gta_data_service::empty_ped;
 	}
@@ -80,7 +81,7 @@ namespace big
 	const vehicle_item& gta_data_service::vehicle_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, veh] : m_vehicles)
-			if (rage::joaat(name) == hash)
+			if (veh.m_hash == hash)
 				return veh;
 		return gta_data_service::empty_vehicle;
 	}
@@ -88,7 +89,7 @@ namespace big
 	const weapon_item& gta_data_service::weapon_by_hash(uint32_t hash)
 	{
 		for (const auto& [name, weapon] : m_weapons_cache.weapon_map)
-			if (rage::joaat(name) == hash)
+			if (weapon.m_hash == hash)
 				return weapon;
 		return gta_data_service::empty_weapon;
 	}
@@ -149,7 +150,7 @@ namespace big
 			}
 		}
 
-		const auto file_version = memory::module("GTA5.exe").size();
+		const auto file_version = memory::module("GTA5.exe").timestamp();
 
 		const auto ped_count = m_peds_cache.data_size() / sizeof(ped_item);
 		const auto vehicle_count = m_vehicles_cache.data_size() / sizeof(vehicle_item);
@@ -278,7 +279,8 @@ namespace big
 					{
 						const auto item = item_node.node();
 
-						const auto name = item.child("modelName").text().as_string();
+						std::string name = item.child("modelName").text().as_string();
+						std::transform(name.begin(), name.end(), name.begin(), ::toupper);
 						const auto hash = rage::joaat(name);
 						if (protection::is_crash_vehicle(hash))
 							continue;
@@ -288,7 +290,7 @@ namespace big
 						mapped_vehicles.emplace_back(hash);
 
 						auto veh = vehicle_item{};
-						std::strncpy(veh.m_name, name, sizeof(veh.m_name));
+						std::strncpy(veh.m_name, name.c_str(), sizeof(veh.m_name));
 
 						const auto manufacturer_display = item.child("vehicleMakeName").text().as_string();
 						std::strncpy(veh.m_display_manufacturer, manufacturer_display, sizeof(veh.m_display_manufacturer));
@@ -357,7 +359,7 @@ namespace big
 						const auto name = item.child("Name").text().as_string();
 						const auto hash = rage::joaat(name);
 
-						if (hash == RAGE_JOAAT("WEAPON_BIRD_CRAP"))
+						if (hash == "WEAPON_BIRD_CRAP"_J)
 							continue;
 
 						if (exists(mapped_weapons, hash))
@@ -527,7 +529,7 @@ namespace big
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons), weapon_components = std::move(weapon_components)] {
-			const auto file_version = memory::module("GTA5.exe").size();
+			const auto file_version = memory::module("GTA5.exe").timestamp();
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();

@@ -4,13 +4,14 @@
 #include "core/data/packet_types.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
 #include "util/spam.hpp"
+#include "gta/enums.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -107,30 +108,35 @@ namespace big
 			{
 				char message[256];
 				buffer.ReadString(message, 256);
+				bool is_team;
+				buffer.ReadBool(&is_team);
 
 				if (player->is_spammer)
 					return true;
 
-				if (spam::is_text_spam(message))
+				if (auto spam_reason = spam::is_text_spam(message, player))
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, true);
+						spam::log_chat(message, player, spam_reason, is_team);
+					g_notification_service->push("PROTECTIONS"_T.data(),
+					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
-					if (g.session.kick_chat_spammers)
+					if (g.session.kick_chat_spammers
+					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
 						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(player, {}),
-							    dynamic_cast<player_command*>(command::get(RAGE_JOAAT("hostkick")))->call(player, {});
+							dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
+							    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
 
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("endkick")))->call(player, {});
-						dynamic_cast<player_command*>(command::get(RAGE_JOAAT("nfkick")))->call(player, {});
+						dynamic_cast<player_command*>(command::get("endkick"_J))->call(player, {});
+						dynamic_cast<player_command*>(command::get("nfkick"_J))->call(player, {});
 					}
 					return true;
 				}
 				else
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, false);
+						spam::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
@@ -172,7 +178,7 @@ namespace big
 				CGameScriptId script;
 				script_id_deserialize(script, buffer);
 
-				if (script.m_hash == RAGE_JOAAT("freemode") && g.session.force_script_host)
+				if (script.m_hash == "freemode"_J && g.session.force_script_host)
 					return true;
 
 				break;
@@ -203,7 +209,7 @@ namespace big
 
 				if (reason == KickReason::VOTED_OUT)
 				{
-					g_notification_service->push_warning("Protections", "You have been kicked by the host");
+					g_notification_service->push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
 					return true;
 				}
 

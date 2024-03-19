@@ -71,11 +71,11 @@ namespace big
 				}
 			}
 
-			if (it->is_attacker && TASK::GET_SCRIPT_TASK_STATUS(it->ped_handle, RAGE_JOAAT("SCRIPT_TASK_COMBAT")) == 7)
+			if (it->is_attacker && TASK::GET_SCRIPT_TASK_STATUS(it->ped_handle, "SCRIPT_TASK_COMBAT"_J) == 7)
 			{
 				TASK::TASK_COMBAT_PED(it->ped_handle, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player), 0, 16);
 			}
-			else if (it->is_bodyguard && it->spawned_for_player != self::id && TASK::GET_SCRIPT_TASK_STATUS(it->ped_handle, RAGE_JOAAT("SCRIPT_TASK_FOLLOW_TO_OFFSET_OF_ENTITY")) == 7)
+			else if (it->is_bodyguard && it->spawned_for_player != self::id && TASK::GET_SCRIPT_TASK_STATUS(it->ped_handle, "SCRIPT_TASK_FOLLOW_TO_OFFSET_OF_ENTITY"_J) == 7)
 			{
 				TASK::TASK_FOLLOW_TO_OFFSET_OF_ENTITY(it->ped_handle, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(it->spawned_for_player), 0.0f, 0.0f, 0.0f, 4.0f, -1, 0.0f, true);
 			}

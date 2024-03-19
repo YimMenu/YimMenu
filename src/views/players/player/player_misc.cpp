@@ -9,7 +9,7 @@ namespace big
 	void view::player_misc()
 	{
 		ImGui::BeginGroup();
-		components::sub_title("Misc");
+		components::sub_title("DEBUG_TAB_MISC"_T);
 		if (ImGui::BeginListBox("##misc", get_listbox_dimensions()))
 		{
 			components::player_command_button<"joinceo">(g_player_service->get_selected());
@@ -35,7 +35,7 @@ namespace big
 
 			ImGui::SameLine();
 
-			ImGui::Checkbox("Fix Vehicle", &g_player_service->get_selected()->fix_vehicle);
+			ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g_player_service->get_selected()->fix_vehicle);
 
 			ImGui::EndListBox();
 		}

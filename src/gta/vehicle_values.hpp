@@ -663,7 +663,14 @@ enum PlateTextIndexs
 	PLATE_YELLOWONBLUE,
 	PLATE_BLUEONWHITE2,
 	PLATE_BLUEONWHITE3,
-	PLATE_YANKTON
+	PLATE_YANKTON,
+	PLATE_ECOLA,
+	PLATE_LASVENTURAS,
+	PLATE_LIBERTYCITY,
+	PLATE_LOSSANTOSCARMEET,
+	PLATE_LOSSANTOSPANIC,
+	PLATE_LOSSANTOSPOUNDERS,
+	PLATE_SPRUNK,
 };
 
 enum WindowTints//m8 do you even int tint?
@@ -3553,6 +3560,102 @@ static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::fvector3& x, rage
 		return true;
 	case VEHICLE_MONSTROCITI:
 		x     = {-1.0f, 0.0f, 0.295f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_DRIFTFR36:
+		x     = {-1.0f, 0.1f, 0.026f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.44f;
+		return true;
+	case VEHICLE_DRIFTYOSEMITE:
+		x     = {-1.0f, 0.252f, 0.201f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.3f;
+		return true;
+	case VEHICLE_DRIFTREMUS:
+		x     = {-1.0f, 0.204f, 0.357f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_DRIFTEUROS:
+		x     = {-1.0f, 0.101f, 0.187f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_DRIFTFUTO:
+		x     = {-1.0f, 0.318f, -0.013f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_DRIFTJESTER:
+		x     = {-1.0f, 0.0f, 0.181f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_DRIFTZR350:
+		x     = {0.0f, 1.632f, 1.0f};
+		y     = {0.0f, 0.0f, -1.0f};
+		z     = {-1.0f, 0.0f, 0.0f};
+		scale = 0.19f;
+		return true;
+	case VEHICLE_ALEUTIAN:
+		x     = {0.0f, 2.1f, 1.0f};
+		y     = {0.0f, 0.0f, -1.0f};
+		z     = {-1.0f, 0.0f, 0.0f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_DOMINATOR9:
+		x     = {-1.0f, 0.0f, 0.295f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_FR36:
+		x     = {-1.0f, 0.1f, 0.026f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.44f;
+		return true;
+	case VEHICLE_CAVALCADE3:
+		x     = {-1.6f, 0.585f, 0.3f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_IMPALER5:
+		x     = {-1.0f, 0.16f, 0.295f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.43f;
+		return true;
+	case VEHICLE_ASTEROPE2:
+		x     = {-1.0f, 0.15f, 0.075f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.46f;
+		return true;
+	case VEHICLE_DORADO:
+		x     = {-1.0f, 0.229f, 0.37f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.36f;
+		return true;
+	case VEHICLE_IMPALER6:
+		x     = {-1.0f, 0.216f, 0.124f};
+		y     = {1.0f, 0.0f, 0.0f};
+		z     = {0.0f, -1.0f, 0.0f};
+		scale = 0.41f;
+		return true;
+	case VEHICLE_VIVANITE:
+		x     = {-1.0f, 0.475f, 0.05f};
 		y     = {1.0f, 0.0f, 0.0f};
 		z     = {0.0f, -1.0f, 0.0f};
 		scale = 0.5f;

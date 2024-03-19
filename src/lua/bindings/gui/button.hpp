@@ -1,6 +1,5 @@
 #pragma once
 #include "base_text_element.hpp"
-#include "lua/sol.hpp"
 
 namespace lua::gui
 {
@@ -8,6 +7,7 @@ namespace lua::gui
 	// Name: button
 	// Inherit: base_text_element
 	// Class representing a gui button.
+	// Refer to the tab class documentation for more info (tab:add_button(name, callback))
 	class button : public base_text_element
 	{
 		sol::protected_function m_callback;

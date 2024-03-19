@@ -10,7 +10,7 @@ namespace big
 		{
 			const auto hash = src->get_arg<rage::joaat_t>(0);
 
-			if (hash == RAGE_JOAAT("director_mode") || hash == RAGE_JOAAT("main"))
+			if (hash == "director_mode"_J || hash == "main"_J)
 			{
 				src->set_return_value(0);
 				return;
@@ -21,7 +21,7 @@ namespace big
 
 		void STAT_GET_INT(rage::scrNativeCallContext* src)
 		{
-			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") || src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == "MP0_PERSONAL_VEHICLE_ACCESS"_J || src->get_arg<Hash>(0) == "MP1_PERSONAL_VEHICLE_ACCESS"_J))
 			{
 				src->set_return_value<int>(0);
 				return;
@@ -54,13 +54,13 @@ namespace big
 		void SET_BIGMAP_ACTIVE(rage::scrNativeCallContext* src)
 		{
 			if (!g.m_mission_creator_thread)
-				HUD::SET_BIGMAP_ACTIVE(src->get_arg<BOOL>(0), src->get_arg<BOOL>(1));
+				HUD::SET_BIGMAP_ACTIVE(src->get_arg<bool>(0), src->get_arg<bool>(1));
 		};
 
 		void SET_BLIP_DISPLAY(rage::scrNativeCallContext* src)
 		{
 			if ((!g.m_mission_creator_thread) || src->get_arg<Blip>(0) != HUD::GET_MAIN_PLAYER_BLIP_ID())
-				HUD::SET_BLIP_DISPLAY(src->get_arg<Blip>(0), src->get_arg<BOOL>(1));
+				HUD::SET_BLIP_DISPLAY(src->get_arg<Blip>(0), src->get_arg<bool>(1));
 		};
 
 		void NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA(rage::scrNativeCallContext* src)
@@ -81,7 +81,7 @@ namespace big
 					});
 				}
 
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.fast_join)
+				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == "freemode"_J && g.session.fast_join)
 				{
 					scr_functions::set_freemode_session_active({});
 					src->set_return_value<BOOL>(TRUE);

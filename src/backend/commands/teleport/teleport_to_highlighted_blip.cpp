@@ -14,5 +14,5 @@ namespace big
 		}
 	};
 
-	teleport_to_highlighted_blip g_teleport_to_highlighted_blip("highlighttp", "Teleport to Selected Blip", "Teleports you to whichever blip you have in your crosshairs on the map.", 0);
+	teleport_to_highlighted_blip g_teleport_to_highlighted_blip("highlighttp", "VIEW_HOTKEY_SETTINGS_TELEPORT_TO_SELECTED", "BACKEND_TELEPORT_TO_HIGHLIGHTED_BLIP_DESC", 0);
 }

@@ -182,6 +182,8 @@ namespace big
 		ImGui::SetNextItemWidth(300);
 
 		ImGui::InputText("##outfit_name", outfit_name, sizeof(outfit_name));
+		if (ImGui::IsItemActive())
+			g.self.hud.typing = TYPING_TICKS;
 		ImGui::SameLine();
 
 		components::button("OUTFIT_SAVE_CURRENT"_T, [] {
@@ -224,18 +226,18 @@ namespace big
 		}
 		ImGui::SameLine();
 		ImGui::BeginGroup();
-		if (ImGui::Button("Set Persist Outfit"))
+		if (ImGui::Button("VIEW_SELF_OUTFIT_SET_PERSIST_OUTFIT"_T.data()))
 		{
 			g.self.persist_outfit = saved_outfits[selected_index];
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Clear Persist Outfit"))
+		if (ImGui::Button("VIEW_SELF_OUTFIT_CLEAR_PERSIST_OUTFIT"_T.data()))
 		{
 			g.self.persist_outfit.clear();
 		}
 		ImGui::SameLine();
-		ImGui::Checkbox("Disable During Missions?", &g.self.persist_outfits_mis);
-		ImGui::Text(std::format("Current Persisted Outfit: {}", g.self.persist_outfit).c_str());
+		ImGui::Checkbox("VIEW_SELF_OUTFIT_DISABLE_DURING_MISSIONS"_T.data(), &g.self.persist_outfits_mis);
+		ImGui::Text(std::format("{}: {}", "VIEW_SELF_OUTFIT_CURRENT_PERSISTED_OUTFIT"_T.data(), g.self.persist_outfit).c_str());
 		ImGui::EndGroup();
 	}
 }

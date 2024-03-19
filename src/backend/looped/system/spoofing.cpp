@@ -37,7 +37,7 @@ namespace big
 
 		if (*g_pointers->m_gta.m_is_session_started)
 		{
-			gta_util::execute_as_script(RAGE_JOAAT("freemode"), [] {
+			gta_util::execute_as_script("freemode"_J, [] {
 				if (NETWORK::NETWORK_GET_THIS_SCRIPT_IS_NETWORK_SCRIPT() && NETWORK::NETWORK_GET_SCRIPT_STATUS() == 2)
 				{
 					if (g.spoofing.spoof_rank)

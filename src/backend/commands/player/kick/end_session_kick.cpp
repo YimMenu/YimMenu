@@ -19,9 +19,9 @@ namespace big
 		{
 			if (!player)
 				return;
-			if (!scripts::force_host(RAGE_JOAAT("freemode")))
+			if (!scripts::force_host("freemode"_J))
 			{
-				g_notification_service->push_error("Kick", "Force script host failed!");
+				g_notification_service->push_error("END_KICK"_T.data(), "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
 				return;
 			}
 

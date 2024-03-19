@@ -8,4 +8,6 @@ enum class menu_event
     PlayerMgrShutdown,
     ChatMessageReceived,
     ScriptedGameEventReceived,
+    MenuUnloaded,
+    ScriptsReloaded,
 };

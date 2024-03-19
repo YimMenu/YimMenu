@@ -80,7 +80,7 @@ namespace big
 
 			cache_file.set_data(std::move(cache_data_ptr), data_size);
 
-			cache_file.set_header_version(mem_region.size());
+			cache_file.set_header_version(mem_region.timestamp());
 			cache_file.write();
 		}
 
@@ -89,7 +89,7 @@ namespace big
 		{
 			cache_file.load();
 
-			if (cache_file.up_to_date(mem_region.size()))
+			if (cache_file.up_to_date(mem_region.timestamp()))
 			{
 				LOG(INFO) << batch_name.str << " pointers cache is up to date, using it.";
 

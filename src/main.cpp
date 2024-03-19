@@ -3,12 +3,14 @@
 #include "common.hpp"
 #include "fiber_pool.hpp"
 #include "gui.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
+#include "http_client/http_client.hpp"
 #include "logger/exception_handler.hpp"
 #include "lua/lua_manager.hpp"
 #include "native_hooks/native_hooks.hpp"
 #include "pointers.hpp"
-#include "renderer.hpp"
+#include "rage/gameSkeleton.hpp"
+#include "renderer/renderer.hpp"
 #include "script_mgr.hpp"
 #include "services/api/api_service.hpp"
 #include "services/context_menu/context_menu_service.hpp"
@@ -31,9 +33,102 @@
 #include "services/vehicle/handling_service.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
+#include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
-#include "util/migrate.hpp"
+#include "util/is_proton.hpp"
 #include "version.hpp"
+
+namespace big
+{
+	bool disable_anticheat_skeleton()
+	{
+		bool patched = false;
+		for (rage::game_skeleton_update_mode* mode = g_pointers->m_gta.m_game_skeleton->m_update_modes; mode; mode = mode->m_next)
+		{
+			for (rage::game_skeleton_update_base* update_node = mode->m_head; update_node; update_node = update_node->m_next)
+			{
+				if (update_node->m_hash != "Common Main"_J)
+					continue;
+				rage::game_skeleton_update_group* group = reinterpret_cast<rage::game_skeleton_update_group*>(update_node);
+				for (rage::game_skeleton_update_base* group_child_node = group->m_head; group_child_node;
+				     group_child_node                                  = group_child_node->m_next)
+				{
+					// TamperActions is a leftover from the old AC, but still useful to block anyway
+					if (group_child_node->m_hash != 0xA0F39FB6 && group_child_node->m_hash != "TamperActions"_J)
+						continue;
+					patched = true;
+					//LOG(INFO) << "Patching problematic skeleton update";
+					reinterpret_cast<rage::game_skeleton_update_element*>(group_child_node)->m_function =
+					    g_pointers->m_gta.m_nullsub;
+				}
+				break;
+			}
+		}
+
+		for (rage::skeleton_data& i : g_pointers->m_gta.m_game_skeleton->m_sys_data)
+		{
+			if (i.m_hash != 0xA0F39FB6 && i.m_hash != "TamperActions"_J)
+				continue;
+			i.m_init_func     = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
+			i.m_shutdown_func = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
+		}
+		return patched;
+	}
+
+	std::string ReadRegistryKeySZ(HKEY hKeyParent, std::string subkey, std::string valueName)
+	{
+		HKEY hKey;
+		char value[1024];
+		DWORD value_length = 1024;
+		LONG ret           = RegOpenKeyEx(hKeyParent, subkey.c_str(), 0, KEY_READ, &hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << subkey;
+			return "";
+		}
+		ret = RegQueryValueEx(hKey, valueName.c_str(), NULL, NULL, (LPBYTE)&value, &value_length);
+		RegCloseKey(hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << valueName;
+			return "";
+		}
+		return std::string(value);
+	}
+
+	DWORD ReadRegistryKeyDWORD(HKEY hKeyParent, std::string subkey, std::string valueName)
+	{
+		HKEY hKey;
+		DWORD value;
+		DWORD value_length = sizeof(DWORD);
+		LONG ret           = RegOpenKeyEx(hKeyParent, subkey.c_str(), 0, KEY_READ, &hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << subkey;
+			return NULL;
+		}
+		ret = RegQueryValueEx(hKey, valueName.c_str(), NULL, NULL, (LPBYTE)&value, &value_length);
+		RegCloseKey(hKey);
+		if (ret != ERROR_SUCCESS)
+		{
+			LOG(INFO) << "Unable to read registry key " << valueName;
+			return NULL;
+		}
+		return value;
+	}
+
+	std::unique_ptr<char[]> GetWindowsVersion()
+	{
+		typedef LPWSTR(WINAPI * BFS)(LPCWSTR);
+		LPWSTR UTF16   = BFS(GetProcAddress(LoadLibrary("winbrand.dll"), "BrandingFormatString"))(L"%WINDOWS_LONG%");
+		int BufferSize = WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, NULL, 0, NULL, NULL);
+		std::unique_ptr<char[]> UTF8(new char[BufferSize]);
+		WideCharToMultiByte(CP_UTF8, 0, UTF16, -1, UTF8.get(), BufferSize, NULL, NULL);
+		// BrandingFormatString requires a GlobalFree.
+		GlobalFree(UTF16);
+		return UTF8;
+	}
+}
 
 BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 {
@@ -47,42 +142,65 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 		    0,
 		    [](PVOID) -> DWORD {
 			    auto handler = exception_handler();
+			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
 
 			    while (!FindWindow("grcWindow", nullptr))
 				    std::this_thread::sleep_for(100ms);
 
 			    std::filesystem::path base_dir = std::getenv("appdata");
 			    base_dir /= "YimMenu";
-			    do_migration(base_dir);
 			    g_file_manager.init(base_dir);
-
-			    auto logger_instance = std::make_unique<logger>("YimMenu", g_file_manager.get_project_file("./cout.log"));
-
-			    EnableMenuItem(GetSystemMenu(GetConsoleWindow(), 0), SC_CLOSE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
-
-			    std::srand(std::chrono::system_clock::now().time_since_epoch().count());
-
-			    LOG(INFO) << "Yim's Menu Initializing";
-			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
-
-			    auto thread_pool_instance = std::make_unique<thread_pool>();
-			    LOG(INFO) << "Thread pool initialized.";
 
 			    g.init(g_file_manager.get_project_file("./settings.json"));
 			    LOG(INFO) << "Settings Loaded.";
 
+			    g_log.initialize("YimMenu", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
+
+			    LOG(INFO) << "Yim's Menu Initializing";
+			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
+
+			    // more tech debt, YAY!
+			    if (is_proton())
+			    {
+				    LOG(INFO) << "Running on proton!";
+			    }
+			    else
+			    {
+				    auto display_version = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "DisplayVersion");
+				    auto current_build = ReadRegistryKeySZ(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "CurrentBuild");
+				    auto UBR = ReadRegistryKeyDWORD(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", "UBR");
+				    LOG(INFO) << GetWindowsVersion() << " Version " << display_version << " (OS Build " << current_build << "." << UBR << ")";
+			    }
+
+#ifndef NDEBUG
+			    LOG(WARNING) << "Debug Build. Switch to RelWithDebInfo or Release Build for a more stable experience";
+#endif
+
+			    auto thread_pool_instance = std::make_unique<thread_pool>();
+			    LOG(INFO) << "Thread pool initialized.";
+
 			    auto pointers_instance = std::make_unique<pointers>();
 			    LOG(INFO) << "Pointers initialized.";
+
+			    while (!disable_anticheat_skeleton())
+			    {
+				    LOG(WARNING) << "Failed patching anticheat gameskeleton (injected too early?). Waiting 100ms and trying again";
+				    std::this_thread::sleep_for(100ms);
+			    }
+			    LOG(INFO) << "Disabled anticheat gameskeleton.";
 
 			    auto byte_patch_manager_instance = std::make_unique<byte_patch_manager>();
 			    LOG(INFO) << "Byte Patch Manager initialized.";
 
-			    auto renderer_instance = std::make_unique<renderer>();
+			    g_renderer.init();
 			    LOG(INFO) << "Renderer initialized.";
 			    auto gui_instance = std::make_unique<gui>();
 
 			    auto fiber_pool_instance = std::make_unique<fiber_pool>(11);
 			    LOG(INFO) << "Fiber pool initialized.";
+
+			    g_http_client.init(g_file_manager.get_project_file("./proxy_settings.json"));
+			    LOG(INFO) << "HTTP Client initialized.";
 
 			    g_translation_service.init();
 			    LOG(INFO) << "Translation Service initialized.";
@@ -108,6 +226,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto tunables_service_instance          = std::make_unique<tunables_service>();
 			    auto script_connection_service_instance = std::make_unique<script_connection_service>();
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
+			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
 			    LOG(INFO) << "Registered service instances...";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
@@ -137,18 +256,20 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto native_hooks_instance = std::make_unique<native_hooks>();
 			    LOG(INFO) << "Dynamic native hooker initialized.";
 
-			    auto lua_manager_instance = std::make_unique<lua_manager>(g_file_manager.get_project_folder("scripts"));
+			    auto lua_manager_instance =
+			        std::make_unique<lua_manager>(g_file_manager.get_project_folder("scripts"), g_file_manager.get_project_folder("scripts_config"));
 			    LOG(INFO) << "Lua manager initialized.";
 
 			    g_running = true;
 
-			    // start update loop after setting g_running to true to prevent it from exiting instantly
-			    g_player_database_service->start_update_loop();
-
 			    while (g_running)
-				    std::this_thread::sleep_for(500ms);
+			    {
+				    g.attempt_save();
 
-				g_script_mgr.remove_all_scripts();
+				    std::this_thread::sleep_for(500ms);
+			    }
+
+			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
@@ -159,9 +280,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 
 			    native_hooks_instance.reset();
 			    LOG(INFO) << "Dynamic native hooker uninitialized.";
-
-			    // cleans up the thread responsible for saving settings
-			    g.destroy();
 
 			    // Make sure that all threads created don't have any blocking loops
 			    // otherwise make sure that they have stopped executing
@@ -200,8 +318,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Custom Text Service reset.";
 			    context_menu_service_instance.reset();
 			    LOG(INFO) << "Context Service reset.";
-				xml_vehicles_service_instance.reset();
-				LOG(INFO) << "Xml Vehicles Service reset.";
+			    xml_vehicles_service_instance.reset();
+			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
 			    hooking_instance.reset();
@@ -210,7 +328,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    fiber_pool_instance.reset();
 			    LOG(INFO) << "Fiber pool uninitialized.";
 
-			    renderer_instance.reset();
+			    g_renderer.destroy();
 			    LOG(INFO) << "Renderer uninitialized.";
 
 			    byte_patch_manager_instance.reset();
@@ -223,8 +341,7 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Thread pool uninitialized.";
 
 			    LOG(INFO) << "Farewell!";
-			    logger_instance->destroy();
-			    logger_instance.reset();
+			    g_log.destroy();
 
 			    CloseHandle(g_main_thread);
 			    FreeLibraryAndExitThread(g_hmodule, 0);

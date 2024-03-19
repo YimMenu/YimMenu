@@ -25,11 +25,11 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("Toxic", "Failed to take control of player vehicle.");
+					g_notification_service->push_warning("TOXIC"_T.data(), "ERROR_FAILED_TO_TAKE_CONTROL"_T.data());
 				}
 			}
 		}
 	};
 
-	stop_vehicle g_stop_vehicle("stopveh", "Stop Vehicle", "Stops the player's vehicle", 0);
+	stop_vehicle g_stop_vehicle("stopveh", "BACKEND_STOP_VEHICLE", "BACKEND_STOP_VEHICLE_DESC", 0);
 }

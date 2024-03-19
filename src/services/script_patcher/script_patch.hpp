@@ -9,6 +9,7 @@ namespace big
 	{
 		rage::joaat_t m_script;
 		const memory::pattern m_pattern;
+		std::string m_name;
 		int32_t m_offset;
 		std::vector<uint8_t> m_patch;
 		std::vector<uint8_t> m_original;
@@ -26,7 +27,7 @@ namespace big
 			return m_script;
 		}
 
-		script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool);
+		script_patch(rage::joaat_t script, std::string name, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool);
 		void update(script_data* data);
 	};
 }

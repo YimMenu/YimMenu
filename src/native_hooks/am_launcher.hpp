@@ -4,22 +4,23 @@ namespace big
 {
 	namespace am_launcher
 	{
-		inline void START_NEW_SCRIPT_WITH_ARGS(rage::scrNativeCallContext* src)
+		static const std::unordered_set<Hash> bad_script_hashes = {"ggsm_arcade"_J, "camhedz_arcade"_J, "wizard_arcade"_J, "puzzle"_J, "fm_intro"_J, "pilot_school_mp"_J, "golf_mp"_J, "tennis_network_mp"_J, "fm_race_controler"_J, "fm_horde_controler"_J, "fm_mission_controller"_J, "fm_mission_controller_2020"_J, "fm_impromptu_dm_controler"_J, "fm_deathmatch_controler"_J, "fm_bj_race_controler"_J, "fm_survival_controller"_J, "sctv"_J, "am_pi_menu"_J, "scroll_arcade_cabinet"_J, "grid_arcade_cabinet"_J, "degenatron_games"_J, "gunslinger_arcade"_J, "road_arcade"_J, "AM_MP_DRONE"_J};
+
+		static void START_NEW_SCRIPT_WITH_ARGS(rage::scrNativeCallContext* src)
 		{
-			const char* name = src->get_arg<const char*>(0);
-			uint64_t* args   = src->get_arg<uint64_t*>(1);
-			int argc         = src->get_arg<int>(2);
-			int stackSize    = src->get_arg<int>(3);
+			const char* const name = src->get_arg<const char*>(0);
 
-			Hash name_hash = rage::joaat(name);
-
-			if (name_hash == RAGE_JOAAT("ggsm_arcade") || name_hash == RAGE_JOAAT("camhedz_arcade") || name_hash == RAGE_JOAAT("wizard_arcade") || name_hash == RAGE_JOAAT("puzzle") || name_hash == RAGE_JOAAT("fm_intro") || name_hash == RAGE_JOAAT("pilot_school_mp") || name_hash == RAGE_JOAAT("golf_mp") || name_hash == RAGE_JOAAT("tennis_network_mp") || name_hash == RAGE_JOAAT("fm_race_controler") || name_hash == RAGE_JOAAT("fm_horde_controler") || name_hash == RAGE_JOAAT("fm_mission_controller") || name_hash == RAGE_JOAAT("fm_mission_controller_2020") || name_hash == RAGE_JOAAT("fm_impromptu_dm_controler") || name_hash == RAGE_JOAAT("fm_deathmatch_controler") || name_hash == RAGE_JOAAT("fm_bj_race_controler") || name_hash == RAGE_JOAAT("fm_survival_controller") || name_hash == RAGE_JOAAT("tennis_network_mp") || name_hash == RAGE_JOAAT("sctv") || name_hash == RAGE_JOAAT("am_pi_menu"))
+			if (bad_script_hashes.contains(rage::joaat(name)))
 			{
 				src->set_return_value<int>(0);
 				return;
 			}
 
-			src->set_return_value<int>(SYSTEM::START_NEW_SCRIPT_WITH_ARGS(name, (Any*)args, argc, stackSize));
-		};
+			Any* args            = src->get_arg<Any*>(1);
+			const int argc       = src->get_arg<int>(2);
+			const int stackSize  = src->get_arg<int>(3);
+
+			src->set_return_value<int>(SYSTEM::START_NEW_SCRIPT_WITH_ARGS(name, args, argc, stackSize));
+		}
 	}
 }

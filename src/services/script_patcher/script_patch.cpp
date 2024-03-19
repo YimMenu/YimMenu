@@ -4,8 +4,9 @@
 
 namespace big
 {
-	script_patch::script_patch(rage::joaat_t script, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool) :
+	script_patch::script_patch(rage::joaat_t script, std::string name, const memory::pattern pattern, int32_t offset, std::vector<uint8_t> patch, bool* enable_bool) :
 	    m_script(script),
+	    m_name(name),
 	    m_pattern(pattern),
 	    m_offset(offset),
 	    m_patch(std::move(patch)),
@@ -53,7 +54,7 @@ namespace big
 		{
 			auto result = get_code_location_by_pattern(data, m_pattern);
 			if (!result.has_value())
-				LOG(FATAL) << "Failed to find pattern";
+				LOG(FATAL) << "Failed to find pattern: " << m_name;
 
 			m_ip = result.value() + m_offset;
 

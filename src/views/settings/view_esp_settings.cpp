@@ -8,8 +8,6 @@ namespace big
 
 		if (g.esp.enabled)
 		{
-			ImGui::Checkbox("SETTINGS_ESP_HIDE_SELF"_T.data(), &g.esp.hide_self);
-
 			ImGui::Text("SETTINGS_ESP_GLOBAL_RENDER_DISTANCE"_T.data());
 			ImGui::SliderFloat2("###Global Render Distance", g.esp.global_render_distance, 0.f, 1500.f);
 

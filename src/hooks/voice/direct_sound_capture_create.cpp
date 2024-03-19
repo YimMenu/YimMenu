@@ -1,5 +1,5 @@
 #include "gta/sound.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 
 namespace big
 {

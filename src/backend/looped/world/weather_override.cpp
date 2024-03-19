@@ -19,7 +19,7 @@ namespace big
 		virtual void on_tick() override
 		{
 			if (!turn_snow_on_off)
-				turn_snow_on_off = g_tunables_service->get_tunable<bool*>(RAGE_JOAAT("TURN_SNOW_ON_OFF"));
+				turn_snow_on_off = g_tunables_service->get_tunable<bool*>("TURN_SNOW_ON_OFF"_J);
 
 			if (current_weather_idx != g.world.local_weather)
 			{
@@ -37,6 +37,5 @@ namespace big
 		}
 	};
 
-	weather_override g_weather_override("weatheroverride", "Override Weather", "Overrides current weather. This is local and cannot be seen by other players",
-	    g.world.override_weather);
+	weather_override g_weather_override("weatheroverride", "BACKEND_LOOPED_WORLD_OVERRIDE_WEATHER", "BACKEND_LOOPED_WORLD_OVERRIDE_WEATHER_DESC", g.world.override_weather);
 }

@@ -15,10 +15,14 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (!self::veh || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
+			if (!self::veh || !g_local_player  || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
 			{
 				return;
 			}
+
+			HUD::SET_TEXT_RENDER_ID(HUD::GET_DEFAULT_SCRIPT_RENDERTARGET_RENDER_ID());
+			GRAPHICS::SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU(TRUE);
+			GRAPHICS::SET_SCRIPT_GFX_DRAW_ORDER(0);
 
 			HUD::SET_TEXT_FONT(2);
 			HUD::SET_TEXT_SCALE(.9f, .9f);
@@ -27,7 +31,7 @@ namespace big
 			HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(m_speed_types[(int)g.vehicle.speed_unit].data());
 			HUD::END_TEXT_COMMAND_DISPLAY_TEXT(g.vehicle.speedo_meter.x, g.vehicle.speedo_meter.y, 1);
 
-			const auto vehicle_speed = vehicle::mps_to_speed(g_local_player->m_vehicle->get_speed(), g.vehicle.speed_unit);
+			const auto vehicle_speed = vehicle::mps_to_speed(ENTITY::GET_ENTITY_SPEED(self::veh), g.vehicle.speed_unit);
 			auto char_width{0};
 			if (!g.vehicle.speedo_meter.left_side)
 			{
@@ -58,13 +62,12 @@ namespace big
 				    g.vehicle.speedo_meter.y + .08f,
 				    1);
 			}
+
+			GRAPHICS::RESET_SCRIPT_GFX_ALIGN();
 		}
 	};
 
-	speedo_meter
-	    g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
-	bool_command g_speedo_meter_gears("speedometergears", "Show current gear", "Adds the current gear the vehicle is in to the speedo meter.",
-	    g.vehicle.speedo_meter.show_current_gear);
-	bool_command g_speedo_meter_left_side("speedometerleftside", "Align to left", "Aligns the speedo meter text to the left instead of to the right.",
-	    g.vehicle.speedo_meter.left_side);
+	speedo_meter g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
+	bool_command g_speedo_meter_gears("speedometergears", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR_DESC", g.vehicle.speedo_meter.show_current_gear);
+	bool_command g_speedo_meter_left_side("speedometerleftside", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT_DESC", g.vehicle.speedo_meter.left_side);
 }

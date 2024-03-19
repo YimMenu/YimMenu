@@ -2,6 +2,7 @@
 #include "globals.hpp"
 #include "memory.hpp"
 #include "script_global.hpp"
+#include "vector.hpp"
 
 namespace lua::globals
 {
@@ -26,9 +27,9 @@ namespace lua::globals
 	// Param: global: integer: index of the global
 	// Returns: integer: value of the global
 	// Retrieves an uint global value.
-	static int get_uint(int global)
+	static std::uint32_t get_uint(int global)
 	{
-		return *big::script_global(global).as<unsigned int*>();
+		return *big::script_global(global).as<std::uint32_t*>();
 	}
 
 	// Lua API: Function
@@ -37,7 +38,7 @@ namespace lua::globals
 	// Param: global: integer: index of the global
 	// Returns: float: value of the global
 	// Retrieves a float global value.
-	static int get_float(int global)
+	static float get_float(int global)
 	{
 		return *big::script_global(global).as<float*>();
 	}
@@ -51,6 +52,17 @@ namespace lua::globals
 	static std::string get_string(int global)
 	{
 		return std::string(big::script_global(global).as<char*>());
+	}
+
+	// Lua API: Function
+	// Table: globals
+	// Name: get_vec3
+	// Param: global: integer: index of the global
+	// Returns: Vector3: value of the global
+	// Retrieves a Vector3 global value.
+	static Vector3 get_vec3(int global)
+	{
+		return *big::script_global(global).as<Vector3*>();
 	}
 
 	// Lua API: Function
@@ -70,9 +82,9 @@ namespace lua::globals
 	// Param: global: integer: index of the global
 	// Param: val: integer: new value for the global
 	// Sets an uint global value.
-	static void set_uint(int global, unsigned int val)
+	static void set_uint(int global, std::uint32_t val)
 	{
-		*big::script_global(global).as<unsigned int*>() = val;
+		*big::script_global(global).as<std::uint32_t*>() = val;
 	}
 
 	// Lua API: Function
@@ -99,6 +111,17 @@ namespace lua::globals
 
 	// Lua API: Function
 	// Table: globals
+	// Name: set_vec3
+	// Param: global: integer: index of the global
+	// Param: param: Vector3: new value for the global
+	// Sets a Vector3 global value.
+	static void set_vec3(int global, Vector3 param)
+	{
+		*big::script_global(global).as<Vector3*>() = param;
+	}
+
+	// Lua API: Function
+	// Table: globals
 	// Name: get_pointer
 	// Param: global: integer: index of the global
 	// Returns: pointer: value of the global
@@ -115,10 +138,12 @@ namespace lua::globals
 		ns["get_uint"]    = get_uint;
 		ns["get_float"]   = get_float;
 		ns["get_string"]  = get_string;
+		ns["get_vec3"]    = get_vec3;
 		ns["set_int"]     = set_int;
 		ns["set_uint"]    = set_uint;
 		ns["set_float"]   = set_float;
 		ns["set_string"]  = set_string;
+		ns["set_vec3"]    = set_vec3;
 		ns["get_pointer"] = get_pointer;
 	}
 }

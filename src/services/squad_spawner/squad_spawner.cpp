@@ -52,7 +52,7 @@ namespace big
 			if (s.should_override_health())
 			{
 				PED::SET_PED_MAX_HEALTH(handle, s.m_ped_health);
-				ENTITY::SET_ENTITY_HEALTH(handle, s.m_ped_health, 0);
+				ENTITY::SET_ENTITY_HEALTH(handle, s.m_ped_health, 0, 0);
 			}
 			if (s.should_override_armor())
 			{
@@ -277,7 +277,7 @@ namespace big
 			{
 				if (veh_spawned)
 					PED::SET_PED_INTO_VEHICLE(s.m_members[i].handle, s.m_veh_handle, (i - 1));
-				PED::SET_PED_RELATIONSHIP_GROUP_HASH(s.m_members[i].handle, RAGE_JOAAT("HATES_PLAYER"));
+				PED::SET_PED_RELATIONSHIP_GROUP_HASH(s.m_members[i].handle, "HATES_PLAYER"_J);
 
 				squad_spawner::build_and_perform_sequence(s, i);
 

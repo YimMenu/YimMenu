@@ -2,7 +2,7 @@
 #include "core/scr_globals.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "native_hooks.hpp"
 #include "natives.hpp"
 #include "util/notify.hpp"
@@ -52,7 +52,7 @@ namespace big
 			const auto ped  = src->get_arg<Ped>(0);
 			const auto hash = src->get_arg<rage::joaat_t>(1);
 
-			if (g.weapons.interior_weapon && ped == self::ped && hash == RAGE_JOAAT("WEAPON_UNARMED"))
+			if (g.weapons.interior_weapon && ped == self::ped && hash == "WEAPON_UNARMED"_J)
 				return;
 
 			WEAPON::SET_CURRENT_PED_WEAPON(ped, hash, src->get_arg<int>(2));
@@ -142,6 +142,33 @@ namespace big
 				return;
 
 			NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(src->get_arg<int>(0), src->get_arg<int>(1), src->get_arg<int>(2));
+		}
+
+		void SET_ENTITY_HEALTH(rage::scrNativeCallContext* src)
+		{
+			Entity entity = src->get_arg<Entity>(0);
+			int health    = src->get_arg<int>(1);
+			int p2        = src->get_arg<int>(2);
+			int p3        = src->get_arg<int>(3);
+
+			if (g.self.god_mode && entity == self::ped)
+				health = ENTITY::GET_ENTITY_MAX_HEALTH(entity);
+
+			ENTITY::SET_ENTITY_HEALTH(entity, health, p2, p3);
+		}
+
+		void APPLY_DAMAGE_TO_PED(rage::scrNativeCallContext* src)
+		{
+			Ped ped                 = src->get_arg<Ped>(0);
+			int damage              = src->get_arg<int>(1);
+			BOOL damage_armor_first = src->get_arg<BOOL>(2);
+			Any p3                  = src->get_arg<Any>(3);
+			int p4                  = src->get_arg<int>(4);
+
+			if (g.self.god_mode && ped == self::ped)
+				return;
+
+			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3, p4);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)

@@ -2,7 +2,7 @@
 #include "core/data/admin_rids.hpp"
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "packet.hpp"
 #include "services/player_database/player_database_service.hpp"
@@ -61,7 +61,7 @@ namespace big
 				if (admin_rids.contains(net_player_data->m_gamer_handle.m_rockstar_id))
 				{
 					g_notification_service->push_warning("POTENTIAL_ADMIN_FOUND"_T.data(),
-					    std::vformat("PLAYER_DETECTED_AS_ADMIN"_T, std::make_format_args(net_player_data->m_name)));
+					    std::format("{} {}", net_player_data->m_name, "PLAYER_DETECTED_AS_ADMIN"_T));
 
 					LOG(WARNING) << net_player_data->m_name << " (" << net_player_data->m_gamer_handle.m_rockstar_id << ") has been detected as an admin";
 
@@ -99,14 +99,18 @@ namespace big
 						if (auto entry = g_player_database_service->get_player_by_rockstar_id(
 						        plyr->get_net_data()->m_gamer_handle.m_rockstar_id))
 						{
-							plyr->is_modder         = entry->is_modder;
-							plyr->block_join        = entry->block_join;
-							plyr->block_join_reason = entry->block_join_reason;
+							plyr->is_trusted = entry->is_trusted;
+							if (!(plyr->is_friend() && g.session.trust_friends))
+							{
+								plyr->is_modder         = entry->is_modder;
+								plyr->block_join        = entry->block_join;
+								plyr->block_join_reason = entry->block_join_reason;
+							}
 
 							if (strcmp(plyr->get_name(), entry->name.data()))
 							{
 								g_notification_service->push("PLAYERS"_T.data(),
-								    std::vformat("PLAYER_CHANGED_NAME"_T, std::make_format_args(entry->name, plyr->get_name())));
+									std::format("{} {}: {}", entry->name, "PLAYER_CHANGED_NAME"_T, plyr->get_name()));
 								entry->name = plyr->get_name();
 								g_player_database_service->save();
 							}
@@ -117,27 +121,27 @@ namespace big
 					{
 						if (g_player_service->get_self()->is_host())
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get("breakup"_J))->call(plyr, {});
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("desync")))->call(plyr, {});
+							dynamic_cast<player_command*>(command::get("desync"_J))->call(plyr, {});
 						}
 					}
 
 					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
 					{
-						if (plyr->is_friend() && g.session.allow_friends_into_locked_session)
+						if ((plyr->is_friend() && g.session.allow_friends_into_locked_session) || plyr->is_trusted)
 						{
-							g_notification_service->push_success("Lock Session",
-							    std::format("A friend with the name of {} has been allowed to join the locked session",
-							        plyr->get_net_data()->m_name));
+							g_notification_service->push_success("LOBBY_LOCK"_T.data(),
+							    std::vformat("LOBBY_LOCK_ALLOWED"_T.data(),
+							        std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 						else
 						{
-							dynamic_cast<player_command*>(command::get(RAGE_JOAAT("breakup")))->call(plyr, {});
-							g_notification_service->push_warning("Lock Session",
-							    std::format("A player with the name of {} has been denied entry", plyr->get_net_data()->m_name));
+							dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr, {});
+							g_notification_service->push_warning("LOBBY_LOCK"_T.data(),
+							    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
 						}
 					}
 

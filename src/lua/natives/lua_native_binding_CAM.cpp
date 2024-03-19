@@ -13,15 +13,15 @@ namespace lua::native
 		CAM::STOP_RENDERING_SCRIPT_CAMS_USING_CATCH_UP(render, p1, p2, p3);
 	}
 
-	static Cam LUA_NATIVE_CAM_CREATE_CAM(const char* camName, bool p1)
+	static Cam LUA_NATIVE_CAM_CREATE_CAM(sol::stack_object camName, bool p1)
 	{
-		auto retval = CAM::CREATE_CAM(camName, p1);
+		auto retval = CAM::CREATE_CAM(camName.is<const char*>() ? camName.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
-	static Cam LUA_NATIVE_CAM_CREATE_CAM_WITH_PARAMS(const char* camName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float fov, bool p8, int p9)
+	static Cam LUA_NATIVE_CAM_CREATE_CAM_WITH_PARAMS(sol::stack_object camName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float fov, bool p8, int p9)
 	{
-		auto retval = CAM::CREATE_CAM_WITH_PARAMS(camName, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9);
+		auto retval = CAM::CREATE_CAM_WITH_PARAMS(camName.is<const char*>() ? camName.as<const char*>() : nullptr, posX, posY, posZ, rotX, rotY, rotZ, fov, p8, p9);
 		return retval;
 	}
 
@@ -314,9 +314,9 @@ namespace lua::native
 		CAM::ALLOW_MOTION_BLUR_DECAY(p0, p1);
 	}
 
-	static void LUA_NATIVE_CAM_SET_CAM_DEBUG_NAME(Cam camera, const char* name)
+	static void LUA_NATIVE_CAM_SET_CAM_DEBUG_NAME(Cam camera, sol::stack_object name)
 	{
-		CAM::SET_CAM_DEBUG_NAME(camera, name);
+		CAM::SET_CAM_DEBUG_NAME(camera, name.is<const char*>() ? name.as<const char*>() : nullptr);
 	}
 
 	static Cam LUA_NATIVE_CAM_GET_DEBUG_CAM()
@@ -420,14 +420,14 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_CAM_SHAKE_CAM(Cam cam, const char* type, float amplitude)
+	static void LUA_NATIVE_CAM_SHAKE_CAM(Cam cam, sol::stack_object type, float amplitude)
 	{
-		CAM::SHAKE_CAM(cam, type, amplitude);
+		CAM::SHAKE_CAM(cam, type.is<const char*>() ? type.as<const char*>() : nullptr, amplitude);
 	}
 
-	static void LUA_NATIVE_CAM_ANIMATED_SHAKE_CAM(Cam cam, const char* p1, const char* p2, const char* p3, float amplitude)
+	static void LUA_NATIVE_CAM_ANIMATED_SHAKE_CAM(Cam cam, sol::stack_object p1, sol::stack_object p2, sol::stack_object p3, float amplitude)
 	{
-		CAM::ANIMATED_SHAKE_CAM(cam, p1, p2, p3, amplitude);
+		CAM::ANIMATED_SHAKE_CAM(cam, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3.is<const char*>() ? p3.as<const char*>() : nullptr, amplitude);
 	}
 
 	static bool LUA_NATIVE_CAM_IS_CAM_SHAKING(Cam cam)
@@ -446,14 +446,14 @@ namespace lua::native
 		CAM::STOP_CAM_SHAKING(cam, p1);
 	}
 
-	static void LUA_NATIVE_CAM_SHAKE_SCRIPT_GLOBAL(const char* p0, float p1)
+	static void LUA_NATIVE_CAM_SHAKE_SCRIPT_GLOBAL(sol::stack_object p0, float p1)
 	{
-		CAM::SHAKE_SCRIPT_GLOBAL(p0, p1);
+		CAM::SHAKE_SCRIPT_GLOBAL(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1);
 	}
 
-	static void LUA_NATIVE_CAM_ANIMATED_SHAKE_SCRIPT_GLOBAL(const char* p0, const char* p1, const char* p2, float p3)
+	static void LUA_NATIVE_CAM_ANIMATED_SHAKE_SCRIPT_GLOBAL(sol::stack_object p0, sol::stack_object p1, sol::stack_object p2, float p3)
 	{
-		CAM::ANIMATED_SHAKE_SCRIPT_GLOBAL(p0, p1, p2, p3);
+		CAM::ANIMATED_SHAKE_SCRIPT_GLOBAL(p0.is<const char*>() ? p0.as<const char*>() : nullptr, p1.is<const char*>() ? p1.as<const char*>() : nullptr, p2.is<const char*>() ? p2.as<const char*>() : nullptr, p3);
 	}
 
 	static bool LUA_NATIVE_CAM_IS_SCRIPT_GLOBAL_SHAKING()
@@ -472,15 +472,15 @@ namespace lua::native
 		CAM::TRIGGER_VEHICLE_PART_BROKEN_CAMERA_SHAKE(vehicle, p1, p2);
 	}
 
-	static bool LUA_NATIVE_CAM_PLAY_CAM_ANIM(Cam cam, const char* animName, const char* animDictionary, float x, float y, float z, float xRot, float yRot, float zRot, bool p9, int p10)
+	static bool LUA_NATIVE_CAM_PLAY_CAM_ANIM(Cam cam, sol::stack_object animName, sol::stack_object animDictionary, float x, float y, float z, float xRot, float yRot, float zRot, bool p9, int p10)
 	{
-		auto retval = (bool)CAM::PLAY_CAM_ANIM(cam, animName, animDictionary, x, y, z, xRot, yRot, zRot, p9, p10);
+		auto retval = (bool)CAM::PLAY_CAM_ANIM(cam, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr, x, y, z, xRot, yRot, zRot, p9, p10);
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CAM_IS_CAM_PLAYING_ANIM(Cam cam, const char* animName, const char* animDictionary)
+	static bool LUA_NATIVE_CAM_IS_CAM_PLAYING_ANIM(Cam cam, sol::stack_object animName, sol::stack_object animDictionary)
 	{
-		auto retval = (bool)CAM::IS_CAM_PLAYING_ANIM(cam, animName, animDictionary);
+		auto retval = (bool)CAM::IS_CAM_PLAYING_ANIM(cam, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -495,9 +495,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CAM_PLAY_SYNCHRONIZED_CAM_ANIM(Any p0, Any p1, const char* animName, const char* animDictionary)
+	static bool LUA_NATIVE_CAM_PLAY_SYNCHRONIZED_CAM_ANIM(Any p0, Any p1, sol::stack_object animName, sol::stack_object animDictionary)
 	{
-		auto retval = (bool)CAM::PLAY_SYNCHRONIZED_CAM_ANIM(p0, p1, animName, animDictionary);
+		auto retval = (bool)CAM::PLAY_SYNCHRONIZED_CAM_ANIM(p0, p1, animName.is<const char*>() ? animName.as<const char*>() : nullptr, animDictionary.is<const char*>() ? animDictionary.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -657,9 +657,9 @@ namespace lua::native
 		CAM::SET_SCRIPTED_CAMERA_IS_FIRST_PERSON_THIS_FRAME(p0);
 	}
 
-	static void LUA_NATIVE_CAM_SHAKE_GAMEPLAY_CAM(const char* shakeName, float intensity)
+	static void LUA_NATIVE_CAM_SHAKE_GAMEPLAY_CAM(sol::stack_object shakeName, float intensity)
 	{
-		CAM::SHAKE_GAMEPLAY_CAM(shakeName, intensity);
+		CAM::SHAKE_GAMEPLAY_CAM(shakeName.is<const char*>() ? shakeName.as<const char*>() : nullptr, intensity);
 	}
 
 	static bool LUA_NATIVE_CAM_IS_GAMEPLAY_CAM_SHAKING()
@@ -759,9 +759,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_CAM_SET_FOLLOW_PED_CAM_THIS_UPDATE(const char* camName, int p1)
+	static bool LUA_NATIVE_CAM_SET_FOLLOW_PED_CAM_THIS_UPDATE(sol::stack_object camName, int p1)
 	{
-		auto retval = (bool)CAM::SET_FOLLOW_PED_CAM_THIS_UPDATE(camName, p1);
+		auto retval = (bool)CAM::SET_FOLLOW_PED_CAM_THIS_UPDATE(camName.is<const char*>() ? camName.as<const char*>() : nullptr, p1);
 		return retval;
 	}
 
@@ -788,6 +788,18 @@ namespace lua::native
 	static void LUA_NATIVE_CAM_SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE(float p0, float distance)
 	{
 		CAM::SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE(p0, distance);
+	}
+
+	static float LUA_NATIVE_CAM_GET_THIRD_PERSON_CAM_MIN_ORBIT_DISTANCE_SPRING_()
+	{
+		auto retval = CAM::_GET_THIRD_PERSON_CAM_MIN_ORBIT_DISTANCE_SPRING();
+		return retval;
+	}
+
+	static float LUA_NATIVE_CAM_GET_THIRD_PERSON_CAM_MAX_ORBIT_DISTANCE_SPRING_()
+	{
+		auto retval = CAM::_GET_THIRD_PERSON_CAM_MAX_ORBIT_DISTANCE_SPRING();
+		return retval;
 	}
 
 	static void LUA_NATIVE_CAM_SET_IN_VEHICLE_CAM_STATE_THIS_UPDATE(Vehicle p0, int p1)
@@ -893,9 +905,9 @@ namespace lua::native
 		CAM::USE_VEHICLE_CAM_STUNT_SETTINGS_THIS_UPDATE();
 	}
 
-	static void LUA_NATIVE_CAM_USE_DEDICATED_STUNT_CAMERA_THIS_UPDATE(const char* camName)
+	static void LUA_NATIVE_CAM_USE_DEDICATED_STUNT_CAMERA_THIS_UPDATE(sol::stack_object camName)
 	{
-		CAM::USE_DEDICATED_STUNT_CAMERA_THIS_UPDATE(camName);
+		CAM::USE_DEDICATED_STUNT_CAMERA_THIS_UPDATE(camName.is<const char*>() ? camName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_CAM_FORCE_VEHICLE_CAM_STUNT_SETTINGS_THIS_UPDATE()
@@ -1130,9 +1142,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_CAM_SHAKE_CINEMATIC_CAM(const char* shakeType, float amount)
+	static void LUA_NATIVE_CAM_SHAKE_CINEMATIC_CAM(sol::stack_object shakeType, float amount)
 	{
-		CAM::SHAKE_CINEMATIC_CAM(shakeType, amount);
+		CAM::SHAKE_CINEMATIC_CAM(shakeType.is<const char*>() ? shakeType.as<const char*>() : nullptr, amount);
 	}
 
 	static bool LUA_NATIVE_CAM_IS_CINEMATIC_CAM_SHAKING()
@@ -1279,9 +1291,9 @@ namespace lua::native
 		CAM::SET_FIRST_PERSON_FLASH_EFFECT_TYPE(p0);
 	}
 
-	static void LUA_NATIVE_CAM_SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME(const char* vehicleName)
+	static void LUA_NATIVE_CAM_SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME(sol::stack_object vehicleName)
 	{
-		CAM::SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME(vehicleName);
+		CAM::SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_NAME(vehicleName.is<const char*>() ? vehicleName.as<const char*>() : nullptr);
 	}
 
 	static void LUA_NATIVE_CAM_SET_FIRST_PERSON_FLASH_EFFECT_VEHICLE_MODEL_HASH(Hash vehicleModel)
@@ -1457,6 +1469,8 @@ namespace lua::native
 		CAM.set_function("SET_THIRD_PERSON_CAM_RELATIVE_HEADING_LIMITS_THIS_UPDATE", LUA_NATIVE_CAM_SET_THIRD_PERSON_CAM_RELATIVE_HEADING_LIMITS_THIS_UPDATE);
 		CAM.set_function("SET_THIRD_PERSON_CAM_RELATIVE_PITCH_LIMITS_THIS_UPDATE", LUA_NATIVE_CAM_SET_THIRD_PERSON_CAM_RELATIVE_PITCH_LIMITS_THIS_UPDATE);
 		CAM.set_function("SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE", LUA_NATIVE_CAM_SET_THIRD_PERSON_CAM_ORBIT_DISTANCE_LIMITS_THIS_UPDATE);
+		CAM.set_function("GET_THIRD_PERSON_CAM_MIN_ORBIT_DISTANCE_SPRING_", LUA_NATIVE_CAM_GET_THIRD_PERSON_CAM_MIN_ORBIT_DISTANCE_SPRING_);
+		CAM.set_function("GET_THIRD_PERSON_CAM_MAX_ORBIT_DISTANCE_SPRING_", LUA_NATIVE_CAM_GET_THIRD_PERSON_CAM_MAX_ORBIT_DISTANCE_SPRING_);
 		CAM.set_function("SET_IN_VEHICLE_CAM_STATE_THIS_UPDATE", LUA_NATIVE_CAM_SET_IN_VEHICLE_CAM_STATE_THIS_UPDATE);
 		CAM.set_function("DISABLE_ON_FOOT_FIRST_PERSON_VIEW_THIS_UPDATE", LUA_NATIVE_CAM_DISABLE_ON_FOOT_FIRST_PERSON_VIEW_THIS_UPDATE);
 		CAM.set_function("DISABLE_FIRST_PERSON_FLASH_EFFECT_THIS_UPDATE", LUA_NATIVE_CAM_DISABLE_FIRST_PERSON_FLASH_EFFECT_THIS_UPDATE);

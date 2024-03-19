@@ -80,6 +80,7 @@ namespace big
 		bool m_block_permanent_vehicles = false;
 
 		bool is_modder        = false;
+		bool is_trusted       = false;
 		bool block_join       = false;
 		int block_join_reason = 0;
 		bool is_spammer       = false;
@@ -87,6 +88,7 @@ namespace big
 		std::optional<uint32_t> player_time_value;
 		std::optional<std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>> player_time_value_received_time;
 		std::optional<uint32_t> time_difference;
+		std::optional<std::chrono::time_point<std::chrono::steady_clock>> last_message_time;
 		uint32_t num_time_syncs_sent = 9999;
 
 		bool block_explosions   = false;

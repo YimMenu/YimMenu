@@ -4,24 +4,10 @@
 
 namespace big
 {
-	void menu_settings::destroy()
-	{
-		m_running = false;
-	}
-
 	void menu_settings::init(const file& save_file)
 	{
-		m_running   = true;
 		m_save_file = save_file;
 		load();
-
-		g_thread_pool->push([this] {
-			while (m_running)
-			{
-				std::this_thread::sleep_for(100ms);
-				attempt_save();
-			}
-		});
 	}
 
 	void menu_settings::attempt_save()

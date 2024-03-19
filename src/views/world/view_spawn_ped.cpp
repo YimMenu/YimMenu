@@ -35,7 +35,7 @@ namespace big
 		{
 			if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
 			{
-				if ((selected_ped_weapon_hash == 0 || weapon.m_hash == selected_ped_weapon_hash) && weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED"))
+				if ((selected_ped_weapon_hash == 0 || weapon.m_hash == selected_ped_weapon_hash) && weapon.m_hash != "WEAPON_UNARMED"_J)
 				{
 					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}
@@ -113,7 +113,7 @@ namespace big
 
 		PED::SET_PED_ARMOUR(ped, 100);
 		ENTITY::SET_ENTITY_MAX_HEALTH(ped, 1000);
-		ENTITY::SET_ENTITY_HEALTH(ped, 1000, 0);
+		ENTITY::SET_ENTITY_HEALTH(ped, 1000, 0, 0);
 		PED::SET_PED_COMBAT_ABILITY(ped, 100);
 		PED::SET_PED_ACCURACY(ped, 100);
 		PED::SET_PED_COMBAT_ATTRIBUTES(ped, 1, 1);
@@ -132,9 +132,11 @@ namespace big
 		PED::SET_PED_SEEING_RANGE(ped, 200.0f);
 		PED::SET_PED_HEARING_RANGE(ped, 200.0f);
 		PED::SET_PED_ID_RANGE(ped, 200.0f);
-		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
+		PED::SET_PED_FIRING_PATTERN(ped, "FIRING_PATTERN_FULL_AUTO"_J);
 		PED::SET_PED_SHOOT_RATE(ped, 150);
-		ped::set_ped_random_component_variation(ped);
+
+		if (!clone)
+			ped::set_ped_random_component_variation(ped);
 
 		if (is_bodyguard)
 		{
@@ -175,7 +177,7 @@ namespace big
 			PED::SET_PED_KEEP_TASK(ped, true);
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
 			TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
-			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, RAGE_JOAAT("HATES_PLAYER"));
+			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, "HATES_PLAYER"_J);
 			PED::SET_PED_ALERTNESS(ped, 3);
 		}
 
@@ -536,12 +538,12 @@ namespace big
 		{
 			if (ImGui::BeginCombo("##ped_for",
 			        (selected_ped_for_player_id == SPAWN_PED_FOR_SELF ?
-			                "Self" :
+			                "GUI_TAB_SELF"_T.data() :
 			                (selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE ?
-			                        "Everyone" :
+			                        "VIEW_SPAWN_PED_EVERYONE"_T.data() :
 			                        g_player_service->get_by_id(selected_ped_for_player_id)->get_name()))))
 			{
-				if (ImGui::Selectable("Self", selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
+				if (ImGui::Selectable("GUI_TAB_SELF"_T.data(), selected_ped_for_player_id == SPAWN_PED_FOR_SELF))
 				{
 					selected_ped_for_player_id = SPAWN_PED_FOR_SELF;
 				}
@@ -551,7 +553,7 @@ namespace big
 					ImGui::SetItemDefaultFocus();
 				}
 
-				if (ImGui::Selectable("Everyone", selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE))
+				if (ImGui::Selectable("VIEW_SPAWN_PED_EVERYONE"_T.data(), selected_ped_for_player_id == SPAWN_PED_FOR_EVERYONE))
 				{
 					selected_ped_for_player_id = SPAWN_PED_FOR_EVERYONE;
 				}
@@ -597,9 +599,9 @@ namespace big
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("PREVIEW_DESC"_T.data());
 
-		ImGui::Checkbox("Invincible", &g.world.spawn_ped.spawn_invincible);
-		ImGui::Checkbox("Invisible", &g.world.spawn_ped.spawn_invisible);
-		ImGui::Checkbox("Attacker", &g.world.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("VIEW_SPAWN_PED_INVINCIBLE"_T.data(), &g.world.spawn_ped.spawn_invincible);
+		ImGui::Checkbox("VIEW_SPAWN_PED_INVISIBLE"_T.data(), &g.world.spawn_ped.spawn_invisible);
+		ImGui::Checkbox("VIEW_SPAWN_PED_ATTACKER"_T.data(), &g.world.spawn_ped.spawn_as_attacker);
 
 		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
@@ -657,23 +659,23 @@ namespace big
 			}
 		});
 
-		components::button("Spoof As Model", [] {
+		components::button("VIEW_SPAWN_PED_SPOOF_AS_MODEL"_T, [] {
 			g.spoofing.spoof_player_model = true;
 			g.spoofing.player_model       = ped_model_buf;
 		});
 
 		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("This WILL break freemode missions and jobs");
+			ImGui::SetTooltip("VIEW_SPAWN_PED_SPOOF_AS_MODEL_TOOLTIP"_T.data());
 
 		if (g.spoofing.spoof_player_model)
 		{
 			ImGui::SameLine();
-			components::button("Unspoof Model", [] {
+			components::button("VIEW_SPAWN_PED_UNSPOOF_MODEL"_T, [] {
 				g.spoofing.spoof_player_model = false;
 			});
 		}
 
-		components::button("Cleanup Spawned Peds", [] {
+		components::button("VIEW_SPAWN_PED_CLEANUP_SPAWNED_PEDS"_T, [] {
 			for (auto& ped : spawned_peds)
 			{
 				PED::DELETE_PED(&ped.ped_handle);

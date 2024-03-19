@@ -13,15 +13,15 @@ namespace big
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
 		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
+		static void delete_vehicle(std::string_view file_name, std::string folder_name);
 
 	private:
 		static constexpr auto model_attachment_key  = "model_attachment";
 		static constexpr auto model_attachments_key = "model_attachments";
 
 		static constexpr auto vehicle_attachments_key = "vehicle_attachments";
-		static constexpr auto is_invincible_key       = "is_invincible";
-		static constexpr auto is_visible_key          = "is_visible";
-		static constexpr auto has_collision_key       = "has_collision";
+		static constexpr auto is_visible_key    = "is_visible";
+		static constexpr auto has_collision_key = "has_collision";
 
 		static constexpr auto vehicle_model_hash_key = "vehicle_model_hash";
 
@@ -42,6 +42,8 @@ namespace big
 		static constexpr auto wheel_type_key       = "wheel_type";
 		static constexpr auto wheel_color_key      = "wheel_color";
 		static constexpr auto tire_smoke_color_key = "tire_smoke_color";
+		static constexpr auto tire_can_burst       = "tire_can_burst";
+		static constexpr auto drift_tires          = "drift_tires";
 
 		static constexpr auto convertable_state_key = "convertable_state";
 

@@ -51,15 +51,15 @@ namespace big
 
 	void pickup_service::give_armour(const int targets) const
 	{
-		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_ARMOUR"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, "REWARD_ARMOUR"_J);
 		script::get_current()->yield(20ms);
 	}
 
 	void pickup_service::give_health(const int targets) const
 	{
-		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, "REWARD_HEALTH"_J);
 		script::get_current()->yield(20ms);
-		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_HEALTH"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, "REWARD_HEALTH"_J);
 		script::get_current()->yield(20ms);
 	}
 
@@ -74,7 +74,7 @@ namespace big
 			}
 		}
 
-		g_pointers->m_gta.m_give_pickup_rewards(targets, RAGE_JOAAT("REWARD_PARACHUTE"));
+		g_pointers->m_gta.m_give_pickup_rewards(targets, "REWARD_PARACHUTE"_J);
 		script::get_current()->yield(20ms);
 	}
 }

@@ -9,9 +9,10 @@ namespace big::troll
 {
 	inline void set_bounty_on_player(player_ptr target, int value, bool anonymous)
 	{
-		const size_t arg_count  = 22;
+		const size_t arg_count  = 23;
 		int64_t args[arg_count] = {(int64_t)eRemoteEvent::Bounty,
 		    self::id,
+		    -1,
 		    target->id(),
 		    1,
 		    value,
@@ -33,7 +34,6 @@ namespace big::troll
 		    *scr_globals::gsbd_fm_events.at(9).as<int*>(),
 		    *scr_globals::gsbd_fm_events.at(10).as<int*>()};
 
-		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, -1);
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, -1, (int)eRemoteEvent::Bounty);
 	}
-
 }

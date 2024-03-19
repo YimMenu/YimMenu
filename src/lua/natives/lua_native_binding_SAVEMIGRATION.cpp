@@ -27,13 +27,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SAVEMIGRATION_SAVEMIGRATION_MP_GET_ACCOUNT(int p0, Any p1)
+	static bool LUA_NATIVE_SAVEMIGRATION_SAVEMIGRATION_MP_GET_ACCOUNT(int p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SAVEMIGRATION::SAVEMIGRATION_MP_GET_ACCOUNT(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)SAVEMIGRATION::SAVEMIGRATION_MP_GET_ACCOUNT(p0, (Any*)p1);
+		return retval;
 	}
 
 	static bool LUA_NATIVE_SAVEMIGRATION_SAVEMIGRATION_MP_REQUEST_STATUS()

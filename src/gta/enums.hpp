@@ -1105,7 +1105,7 @@ enum class eAckCode : uint32_t
 	ACKCODE_NONE
 };
 
-enum class PedBones : uint32_t
+enum class PedBones : uint16_t
 {
 	SKEL_ROOT                        = 0x0,
 	SKEL_Pelvis                      = 0x2E28,
@@ -1974,6 +1974,23 @@ enum class eTaskTypeIndex
 	CTaskAnimatedFallback                                                = 530
 };
 
+enum class eTaskFlags
+{
+	ParachuteWhenCoordThresholdIsReached = 1 << 3,
+	CamShakeOnFall = 1 << 4,
+	PlayRagdollAnim = 1 << 5,
+	PlayDiveAnim = 1 << 7,
+	NoFallAnimation = 1 << 10,
+	NoSlowFall = 1 << 11,
+	Unk12 = 1 << 12,
+	SuperJump = 1 << 15,
+	LandOnJump = 1 << 16,
+	BeastJump = 1 << 17,
+	BeastJumpWithSuper = SuperJump | BeastJump,
+	GracefulLanding = NoFallAnimation | NoSlowFall | Unk12 | LandOnJump,
+	RagdollOnFall = BeastJump | PlayRagdollAnim
+};
+
 enum class eDoorId
 {
 	VEH_EXT_DOOR_INVALID_ID = -1,
@@ -2057,4 +2074,20 @@ enum CameraMode : int
 	THIRD_PERSON_FAR    = 2,
 	CINEMATIC           = 3,
 	FIRST_PERSON        = 4,
+};
+
+enum ComponentId : int
+{
+	HEAD,
+	BEARD,
+	HAIR,
+	TORSO,
+	LEGS,
+	HANDS,
+	FOOT,
+	ACCESSORIES_NECK,
+	ACCESSORIES_1,
+	ACCESSORIES_2,
+	DECALS,
+	AUXILIARY
 };

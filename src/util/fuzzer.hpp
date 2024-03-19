@@ -50,41 +50,41 @@ namespace big::fuzzer
 	{
 		// TODO: trailer models?
 		std::vector<rage::joaat_t> models = {
-		    RAGE_JOAAT("player_zero"),           // ped
-		    RAGE_JOAAT("kosatka"),               // submarine
-		    RAGE_JOAAT("akula"),                 // heli
-		    RAGE_JOAAT("alkonost"),              // plane
-		    RAGE_JOAAT("jetmax"),                // boat
-		    RAGE_JOAAT("faggio"),                // bike
-		    RAGE_JOAAT("zentorno"),              // automobile
-		    RAGE_JOAAT("apa_heist_apart2_door"), // object, pickup, pickup placement, door (?)
-		    RAGE_JOAAT("freight"),               // train
+		    "player_zero"_J,           // ped
+		    "kosatka"_J,               // submarine
+		    "akula"_J,                 // heli
+		    "alkonost"_J,              // plane
+		    "jetmax"_J,                // boat
+		    "faggio"_J,                // bike
+		    "zentorno"_J,              // automobile
+		    "apa_heist_apart2_door"_J, // object, pickup, pickup placement, door (?)
+		    "freight"_J,               // train
 		};
 
 		auto info      = model_info::get_model(original);
 		auto veh_model = model_info::get_vehicle_model(original);
 
 		if (is_object_model(original))
-			std::erase(models, RAGE_JOAAT("apa_heist_apart2_door"));
+			std::erase(models, "apa_heist_apart2_door"_J);
 		else if (info && info->m_model_type == eModelType::Vehicle)
 		{
 			if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_BIKE)
-				std::erase(models, RAGE_JOAAT("faggio"));
+				std::erase(models, "faggio"_J);
 			else if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_SUBMARINE)
-				std::erase(models, RAGE_JOAAT("kosatka"));
+				std::erase(models, "kosatka"_J);
 			else if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_BOAT)
-				std::erase(models, RAGE_JOAAT("jetmax"));
+				std::erase(models, "jetmax"_J);
 			else if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_HELI)
-				std::erase(models, RAGE_JOAAT("akula"));
+				std::erase(models, "akula"_J);
 			else if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_PLANE)
-				std::erase(models, RAGE_JOAAT("alkonost"));
+				std::erase(models, "alkonost"_J);
 			else if (veh_model->m_vehicle_type == eVehicleType::VEHICLE_TYPE_TRAIN)
-				std::erase(models, RAGE_JOAAT("freight"));
+				std::erase(models, "freight"_J);
 			else
-				std::erase(models, RAGE_JOAAT("zentorno"));
+				std::erase(models, "zentorno"_J);
 		}
 		else if (info && (info->m_model_type == eModelType::Ped || info->m_model_type == eModelType::OnlineOnlyPed))
-			std::erase(models, RAGE_JOAAT("player_zero"));
+			std::erase(models, "player_zero"_J);
 
 		return models[rand(models.size())];
 	}
@@ -94,13 +94,13 @@ namespace big::fuzzer
 		auto info = model_info::get_model(original);
 
 		if (is_object_model(original))
-			return RAGE_JOAAT("urbanweeds01");
+			return "urbanweeds01"_J;
 		else if (info && (info->m_model_type == eModelType::Ped || info->m_model_type == eModelType::OnlineOnlyPed))
-			return RAGE_JOAAT("slod_human");
+			return "slod_human"_J;
 		else if (info && info->m_model_type == eModelType::Vehicle)
-			return RAGE_JOAAT("arbitergt");
+			return "arbitergt"_J;
 		else
-			return rand(2) ? RAGE_JOAAT("urbanweeds01") : RAGE_JOAAT("slod_human");
+			return rand(2) ? "urbanweeds01"_J : "slod_human"_J;
 	}
 
 	inline std::int16_t get_first_ped_id()

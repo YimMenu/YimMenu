@@ -27,25 +27,25 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_INT(int p0, const char* context, int out)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_INT(int p0, sol::stack_object context, int out)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_INT(p0, context, &out);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_INT(p0, context.is<const char*>() ? context.as<const char*>() : nullptr, &out);
 		std::get<1>(return_values) = out;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_BOOL(int p0, const char* p1)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_BOOL(int p0, sol::stack_object p1)
 	{
-		auto retval = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_BOOL(p0, p1);
+		auto retval = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_BOOL(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_STRING(int p0, const char* context, char out)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_DATA_STRING(int p0, sol::stack_object context, char out)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_STRING(p0, context, &out);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_DATA_STRING(p0, context.is<const char*>() ? context.as<const char*>() : nullptr, &out);
 		std::get<1>(return_values) = out;
 
 		return return_values;
@@ -63,43 +63,26 @@ namespace lua::native
 		return retval;
 	}
 
-	static Any LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST(Any gamerHandle)
+	static void LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST(uintptr_t gamerHandle)
 	{
-		SOCIALCLUB::SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST(&gamerHandle);
-		return gamerHandle;
+		SOCIALCLUB::SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST((Any*)gamerHandle);
 	}
 
-	static Any LUA_NATIVE_SOCIALCLUB_SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST(Any data)
+	static void LUA_NATIVE_SOCIALCLUB_SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST(uintptr_t data)
 	{
-		SOCIALCLUB::SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST(&data);
-		return data;
+		SOCIALCLUB::SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST((Any*)data);
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_UGCDATA(int p0, Any p1)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_UGCDATA(int p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_UGCDATA(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)SOCIALCLUB::SC_INBOX_MESSAGE_GET_UGCDATA(p0, (Any*)p1);
+		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SOCIALCLUB_SC_INBOX_SEND_BOUNTY_TO_RECIP_LIST(Any data)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_INBOX_GET_BOUNTY_DATA_AT_INDEX(int index, uintptr_t outData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_SEND_BOUNTY_TO_RECIP_LIST(&data);
-		std::get<1>(return_values) = data;
-
-		return return_values;
-	}
-
-	static std::tuple<bool, Any> LUA_NATIVE_SOCIALCLUB_SC_INBOX_GET_BOUNTY_DATA_AT_INDEX(int index, Any outData)
-	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_INBOX_GET_BOUNTY_DATA_AT_INDEX(index, &outData);
-		std::get<1>(return_values) = outData;
-
-		return return_values;
+		auto retval = (bool)SOCIALCLUB::SC_INBOX_GET_BOUNTY_DATA_AT_INDEX(index, (Any*)outData);
+		return retval;
 	}
 
 	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_RETRIEVE_EMAILS(int offset, int limit)
@@ -119,25 +102,20 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SOCIALCLUB_SC_EMAIL_GET_EMAIL_AT_INDEX(int p0, Any p1)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_EMAIL_GET_EMAIL_AT_INDEX(int p0, uintptr_t p1)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_EMAIL_GET_EMAIL_AT_INDEX(p0, &p1);
-		std::get<1>(return_values) = p1;
-
-		return return_values;
+		auto retval = (bool)SOCIALCLUB::SC_EMAIL_GET_EMAIL_AT_INDEX(p0, (Any*)p1);
+		return retval;
 	}
 
-	static Any LUA_NATIVE_SOCIALCLUB_SC_EMAIL_DELETE_EMAILS(Any p0, Any p1)
+	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_DELETE_EMAILS(uintptr_t p0, Any p1)
 	{
-		SOCIALCLUB::SC_EMAIL_DELETE_EMAILS(&p0, p1);
-		return p0;
+		SOCIALCLUB::SC_EMAIL_DELETE_EMAILS((Any*)p0, p1);
 	}
 
-	static Any LUA_NATIVE_SOCIALCLUB_SC_EMAIL_MESSAGE_PUSH_GAMER_TO_RECIP_LIST(Any gamerHandle)
+	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_MESSAGE_PUSH_GAMER_TO_RECIP_LIST(uintptr_t gamerHandle)
 	{
-		SOCIALCLUB::SC_EMAIL_MESSAGE_PUSH_GAMER_TO_RECIP_LIST(&gamerHandle);
-		return gamerHandle;
+		SOCIALCLUB::SC_EMAIL_MESSAGE_PUSH_GAMER_TO_RECIP_LIST((Any*)gamerHandle);
 	}
 
 	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_MESSAGE_CLEAR_RECIP_LIST()
@@ -145,9 +123,9 @@ namespace lua::native
 		SOCIALCLUB::SC_EMAIL_MESSAGE_CLEAR_RECIP_LIST();
 	}
 
-	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_SEND_EMAIL(const char* p0)
+	static void LUA_NATIVE_SOCIALCLUB_SC_EMAIL_SEND_EMAIL(sol::stack_object p0)
 	{
-		SOCIALCLUB::SC_EMAIL_SEND_EMAIL(p0);
+		SOCIALCLUB::SC_EMAIL_SEND_EMAIL(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 	}
 
 	static bool LUA_NATIVE_SOCIALCLUB_SC_EMAIL_SET_CURRENT_EMAIL_TAG(Any p0)
@@ -185,9 +163,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static bool LUA_NATIVE_SOCIALCLUB_SC_PRESENCE_ATTR_SET_STRING(Hash attrHash, const char* value)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_PRESENCE_ATTR_SET_STRING(Hash attrHash, sol::stack_object value)
 	{
-		auto retval = (bool)SOCIALCLUB::SC_PRESENCE_ATTR_SET_STRING(attrHash, value);
+		auto retval = (bool)SOCIALCLUB::SC_PRESENCE_ATTR_SET_STRING(attrHash, value.is<const char*>() ? value.as<const char*>() : nullptr);
 		return retval;
 	}
 
@@ -197,34 +175,34 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_INT(const char* name, int value)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_INT(sol::stack_object name, int value)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_INT(name, &value);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_INT(name.is<const char*>() ? name.as<const char*>() : nullptr, &value);
 		std::get<1>(return_values) = value;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_FLOAT(const char* name, float value)
+	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_FLOAT(sol::stack_object name, float value)
 	{
 		std::tuple<bool, float> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_FLOAT(name, &value);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_FLOAT(name.is<const char*>() ? name.as<const char*>() : nullptr, &value);
 		std::get<1>(return_values) = value;
 
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_BOOL(const char* name)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_BOOL(sol::stack_object name)
 	{
-		auto retval = (bool)SOCIALCLUB::SC_GAMERDATA_GET_BOOL(name);
+		auto retval = (bool)SOCIALCLUB::SC_GAMERDATA_GET_BOOL(name.is<const char*>() ? name.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_STRING(const char* name, char value)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_GAMERDATA_GET_STRING(sol::stack_object name, char value)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_STRING(name, &value);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_GAMERDATA_GET_STRING(name.is<const char*>() ? name.as<const char*>() : nullptr, &value);
 		std::get<1>(return_values) = value;
 
 		return return_values;
@@ -239,19 +217,19 @@ namespace lua::native
 		return return_values;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_PROFANITY_CHECK_STRING(const char* string, int token)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_PROFANITY_CHECK_STRING(sol::stack_object string, int token)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_PROFANITY_CHECK_STRING(string, &token);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_PROFANITY_CHECK_STRING(string.is<const char*>() ? string.as<const char*>() : nullptr, &token);
 		std::get<1>(return_values) = token;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_PROFANITY_CHECK_STRING_UGC(const char* string, int token)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_PROFANITY_CHECK_STRING_UGC(sol::stack_object string, int token)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_PROFANITY_CHECK_STRING_UGC(string, &token);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_PROFANITY_CHECK_STRING_UGC(string.is<const char*>() ? string.as<const char*>() : nullptr, &token);
 		std::get<1>(return_values) = token;
 
 		return return_values;
@@ -281,10 +259,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_CHECK_STRING(const char* p0, int p1)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_CHECK_STRING(sol::stack_object p0, int p1)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_CHECK_STRING(p0, &p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_CHECK_STRING(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
@@ -320,21 +298,17 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, Any> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_SET_PLATE_DATA(const char* oldPlateText, const char* newPlateText, Any plateData)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_SET_PLATE_DATA(sol::stack_object oldPlateText, sol::stack_object newPlateText, uintptr_t plateData)
 	{
-		std::tuple<bool, Any> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_SET_PLATE_DATA(oldPlateText, newPlateText, &plateData);
-		std::get<1>(return_values) = plateData;
-
-		return return_values;
+		auto retval = (bool)SOCIALCLUB::SC_LICENSEPLATE_SET_PLATE_DATA(oldPlateText.is<const char*>() ? oldPlateText.as<const char*>() : nullptr, newPlateText.is<const char*>() ? newPlateText.as<const char*>() : nullptr, (Any*)plateData);
+		return retval;
 	}
 
-	static std::tuple<bool, Any, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_ADD(const char* plateText, Any plateData, int token)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_ADD(sol::stack_object plateText, uintptr_t plateData, int token)
 	{
-		std::tuple<bool, Any, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_ADD(plateText, &plateData, &token);
-		std::get<1>(return_values) = plateData;
-		std::get<2>(return_values) = token;
+		std::tuple<bool, int> return_values;
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_ADD(plateText.is<const char*>() ? plateText.as<const char*>() : nullptr, (Any*)plateData, &token);
+		std::get<1>(return_values) = token;
 
 		return return_values;
 	}
@@ -351,10 +325,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_ISVALID(const char* plateText, int token)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_LICENSEPLATE_ISVALID(sol::stack_object plateText, int token)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_ISVALID(plateText, &token);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_LICENSEPLATE_ISVALID(plateText.is<const char*>() ? plateText.as<const char*>() : nullptr, &token);
 		std::get<1>(return_values) = token;
 
 		return return_values;
@@ -384,28 +358,28 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT(const char* p0, int p1)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT(sol::stack_object p0, int p1)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT(p0, &p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT(const char* p0, float p1)
+	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT(sol::stack_object p0, float p1)
 	{
 		std::tuple<bool, float> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT(p0, &p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING(const char* p0, char p1)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING(sol::stack_object p0, char p1)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING(p0, &p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
@@ -420,49 +394,49 @@ namespace lua::native
 		return return_values;
 	}
 
-	static bool LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE(const char* p0)
+	static bool LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE(sol::stack_object p0)
 	{
-		auto retval = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE(p0);
+		auto retval = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_IS_ACTIVE_FOR_TYPE(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static int LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE(const char* p0)
+	static int LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE(sol::stack_object p0)
 	{
-		auto retval = SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE(p0);
+		auto retval = SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EVENT_ID_FOR_TYPE(p0.is<const char*>() ? p0.as<const char*>() : nullptr);
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE(const char* p0, int p1, const char* p2)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE(sol::stack_object p0, int p1, sol::stack_object p2)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE(p0, &p1, p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_FOR_TYPE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE(const char* p0, float p1, const char* p2)
+	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE(sol::stack_object p0, float p1, sol::stack_object p2)
 	{
 		std::tuple<bool, float> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE(p0, &p1, p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_FOR_TYPE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE(const char* p0, char p1, const char* p2)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE(sol::stack_object p0, char p1, sol::stack_object p2)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE(p0, &p1, p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_FOR_TYPE(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1, p2.is<const char*>() ? p2.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE(char p0, const char* p1)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE(char p0, sol::stack_object p1)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE(&p0, p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_DISPLAY_NAME_FOR_TYPE(&p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr);
 		std::get<1>(return_values) = p0;
 
 		return return_values;
@@ -474,28 +448,28 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID(int p0, const char* p1, int p2)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID(int p0, sol::stack_object p1, int p2)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID(p0, p1, &p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_INT_BY_ID(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr, &p2);
 		std::get<1>(return_values) = p2;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID(int p0, const char* p1, float p2)
+	static std::tuple<bool, float> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID(int p0, sol::stack_object p1, float p2)
 	{
 		std::tuple<bool, float> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID(p0, p1, &p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_FLOAT_BY_ID(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr, &p2);
 		std::get<1>(return_values) = p2;
 
 		return return_values;
 	}
 
-	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID(int p0, const char* p1, char p2)
+	static std::tuple<bool, char> LUA_NATIVE_SOCIALCLUB_SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID(int p0, sol::stack_object p1, char p2)
 	{
 		std::tuple<bool, char> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID(p0, p1, &p2);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_COMMUNITY_EVENT_GET_EXTRA_DATA_STRING_BY_ID(p0, p1.is<const char*>() ? p1.as<const char*>() : nullptr, &p2);
 		std::get<1>(return_values) = p2;
 
 		return return_values;
@@ -534,10 +508,10 @@ namespace lua::native
 		return retval;
 	}
 
-	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_TRANSITION_NEWS_GET_EXTRA_DATA_INT_TU(const char* p0, int p1)
+	static std::tuple<bool, int> LUA_NATIVE_SOCIALCLUB_SC_TRANSITION_NEWS_GET_EXTRA_DATA_INT_TU(sol::stack_object p0, int p1)
 	{
 		std::tuple<bool, int> return_values;
-		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_TRANSITION_NEWS_GET_EXTRA_DATA_INT_TU(p0, &p1);
+		std::get<0>(return_values) = (bool)SOCIALCLUB::SC_TRANSITION_NEWS_GET_EXTRA_DATA_INT_TU(p0.is<const char*>() ? p0.as<const char*>() : nullptr, &p1);
 		std::get<1>(return_values) = p1;
 
 		return return_values;
@@ -601,7 +575,6 @@ namespace lua::native
 		SOCIALCLUB.set_function("SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST", LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_PUSH_GAMER_T0_RECIP_LIST);
 		SOCIALCLUB.set_function("SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST", LUA_NATIVE_SOCIALCLUB_SC_INBOX_SEND_UGCSTATUPDATE_TO_RECIP_LIST);
 		SOCIALCLUB.set_function("SC_INBOX_MESSAGE_GET_UGCDATA", LUA_NATIVE_SOCIALCLUB_SC_INBOX_MESSAGE_GET_UGCDATA);
-		SOCIALCLUB.set_function("SC_INBOX_SEND_BOUNTY_TO_RECIP_LIST", LUA_NATIVE_SOCIALCLUB_SC_INBOX_SEND_BOUNTY_TO_RECIP_LIST);
 		SOCIALCLUB.set_function("SC_INBOX_GET_BOUNTY_DATA_AT_INDEX", LUA_NATIVE_SOCIALCLUB_SC_INBOX_GET_BOUNTY_DATA_AT_INDEX);
 		SOCIALCLUB.set_function("SC_EMAIL_RETRIEVE_EMAILS", LUA_NATIVE_SOCIALCLUB_SC_EMAIL_RETRIEVE_EMAILS);
 		SOCIALCLUB.set_function("SC_EMAIL_GET_RETRIEVAL_STATUS", LUA_NATIVE_SOCIALCLUB_SC_EMAIL_GET_RETRIEVAL_STATUS);

@@ -1,5 +1,6 @@
 #pragma once
 #include <rage/rlTaskStatus.hpp>
+#include <script/scrNativeHandler.hpp>
 
 class CMsgJoinResponse;
 class NetworkGameFilterMatchmakingComponent;
@@ -9,7 +10,12 @@ class CVehicleGadgetDataNode;
 class CGameScriptHandlerNetComponent;
 class CDoorBreakEvent;
 class GenericPool;
+class CGetPedSeatReturnClass;
 enum eVehicleGadgetType : uint32_t;
+enum class PedBones : uint16_t;
+class CNetComplaintMgr;
+class Network;
+class CNetworkObjectMgr;
 
 namespace rage
 {
@@ -34,6 +40,16 @@ namespace rage
 	class fwEntity;
 	class netGameEvent;
 	class netEventMgr;
+	class fiDevice;
+	class fiPackfile;
+	class scrNativeRegistrationTable;
+	class rlSessionByGamerTaskResult;
+	struct rlScTaskStatus
+	{
+		void* pad  = 0;
+		int status = 0;
+		int unk    = 0;
+	};
 }
 
 namespace datafile_commands
@@ -49,13 +65,15 @@ namespace big::functions
 
 	using get_net_game_player = CNetGamePlayer* (*)(Player player);
 
-	using trigger_script_event = void (*)(int event_group, int64_t* args, int arg_count, int player_bits);
+	using trigger_script_event = void (*)(int event_group, int64_t* args, int arg_count, int player_bits, int event_id);
 
 
 	using increment_stat_event = bool (*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
 
 	using ptr_to_handle = Entity (*)(void*);
 	using handle_to_ptr = rage::CDynamicEntity* (*)(Entity);
+
+	using set_gravity_level = void (*)(int level);
 
 	using check_chat_profanity              = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool (*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
@@ -108,8 +126,12 @@ namespace big::functions
 	using get_gamer_online_state = bool (*)(int profile_index, rage::rlGamerHandle* handles, uint32_t count, int* online_state, rage::rlTaskStatus* status);
 	using start_get_session_by_gamer_handle = bool (*)(int profile_index, rage::rlGamerHandle* handles, int count, rage::rlSessionByGamerTaskResult* result, int unk, bool* success, rage::rlTaskStatus* state);
 	using start_matchmaking_find_sessions = bool (*)(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* m_filter, unsigned int max_sessions, rage::rlSessionInfo* result_sessions, int* result_session_count, rage::rlTaskStatus* state);
-	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlTaskStatus* state);
+	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
+
+	using invite_player_by_gamer_handle = bool (*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+	using add_friend_by_gamer_handle   = void (*)(rage::rlGamerHandle* handle, const char* unk);
+	using show_profile_by_gamer_handle = void (*)(rage::rlGamerHandle* handle);
 
 	using generate_uuid = bool (*)(uint64_t* uuid);
 
@@ -181,5 +203,11 @@ namespace big::functions
 	using delete_vehicle = bool (*)(CVehicle* veh);
 	using delete_object  = bool (*)(CObject* object, bool unk);
 
-	using decal_manager_remove = void(*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
+	using decal_manager_remove = void (*)(PVOID manager, rage::fwEntity*, DWORD a3, DWORD64 a4, DWORD ignore_bitset);
+
+	using remove_player_from_sender_list = bool (*)(void* list, uint64_t* rockstar_id);
+
+	using get_ped_seat = CGetPedSeatReturnClass*(*)(PVOID seat_info, CPed* ped);
+	
+	using received_clone_remove = void (*)(CNetworkObjectMgr*, CNetGamePlayer*, CNetGamePlayer*, int16_t, uint32_t);
 }

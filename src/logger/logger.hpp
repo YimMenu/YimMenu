@@ -25,38 +25,38 @@ namespace big
 
 	class logger final
 	{
-	public:
-		logger(std::string_view console_title, file file, bool attach_console = true);
-		virtual ~logger();
-
-		void initialize();
-		void destroy();
-
 	private:
-		void create_backup();
+		bool m_attach_console = true;
+		bool m_did_console_exist = false;
 
-		void open_outstreams();
-		void close_outstreams();
-
-		void format_console(const LogMessagePtr msg);
-		void format_console_simple(const LogMessagePtr msg);
-		void format_file(const LogMessagePtr msg);
-
-	private:
-		bool m_attach_console;
-		bool m_did_console_exist;
-
-		void (logger::*m_console_logger)(const LogMessagePtr msg);
+		void (logger::*m_console_logger)(const LogMessagePtr msg) = &logger::format_console;
 
 		std::string_view m_console_title;
-		DWORD m_original_console_mode;
+		DWORD m_original_console_mode = 0;
 		HANDLE m_console_handle;
 
 		std::ofstream m_console_out;
 		std::ofstream m_file_out;
 
 		file m_file;
+
+	public:
+		logger() = default;
+		virtual ~logger() = default;
+
+		void initialize(const std::string_view console_title, file file, bool attach_console = true);
+		void destroy();
+
+		void toggle_external_console(bool toggle);
+
+	private:
+		void create_backup();
+
+		void format_console(const LogMessagePtr msg);
+		void format_console_simple(const LogMessagePtr msg);
+		void format_file(const LogMessagePtr msg);
+
 	};
 
-	inline logger* g_log = nullptr;
+	inline logger g_log{};
 }

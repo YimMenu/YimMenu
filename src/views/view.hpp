@@ -49,12 +49,16 @@ namespace big
 		static void spawn_vehicle();
 		static void pv();
 		static void persist_car();
+		static void proxy_settings();
 		static void xml_vehicles();
 		static void fun_vehicle();
 		static void vehicle_control();
 		static void spawn_ped();
 		static void squad_spawner();
 		static void time_and_weather();
+		static void gravity();
+		static void ocean();
+		static void waypoint_and_objective();
 		static void spoofing();
 		static void teleport();
 		static void custom_teleport();
@@ -68,16 +72,20 @@ namespace big
 		static void blackhole();
 		static void model_swapper();
 		static void world();
+		static void xml_maps();
 		static void gta_cache();
 		static void lua_scripts();
 		static void vfx();
+
+		static void onboarding();
+
+		static void cmd_executor();
 
 		static void player_info();
 		static void player_teleport();
 		static void player_kick();
 		static void player_toxic();
 		static void player_misc();
-		static void cmd_executor();
 		static void player_vehicle();
 	};
 }

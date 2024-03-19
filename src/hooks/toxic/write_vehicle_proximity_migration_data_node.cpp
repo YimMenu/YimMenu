@@ -1,5 +1,5 @@
 #include "gta/net_array.hpp"
-#include "hooking.hpp"
+#include "hooking/hooking.hpp"
 #include "script_global.hpp"
 #include "script_local.hpp"
 
@@ -20,6 +20,9 @@ namespace big
 			node->m_occupants[0]      = it->second.m_player_net_id;
 			node->m_override_position = true;
 			node->m_position          = it->second.m_position;
+			node->m_velocity.x        = 1;
+			node->m_velocity.y        = 1;
+			node->m_velocity.z        = 1;
 		}
 	}
 }

@@ -8,6 +8,27 @@
 
 namespace big::teleport
 {
+	inline void to_coords(const Vector3& location, const Vector3& euler = {0, 0, 0})
+	{
+		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
+		if (euler.x != 0.f)
+		{
+			if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, true))
+			{
+				ENTITY::SET_ENTITY_HEADING(self::veh, euler.x);
+			}
+			else
+			{
+				ENTITY::SET_ENTITY_HEADING(self::ped, euler.x);
+			}
+		}
+		if (euler.y != 0.f && euler.z != 0.f)
+		{
+			CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
+			CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
+		}
+	}
+
 	inline bool teleport_player_to_coords(player_ptr player, Vector3 coords, Vector3 euler = {0, 0, 0})
 	{
 		Entity ent;
@@ -17,10 +38,13 @@ namespace big::teleport
 		else
 			ent = PLAYER::PLAYER_PED_ID();
 
-		bool is_local_player = (ent == self::ped || ent == self::veh);
+		bool is_local_player = ent == self::ped;
 
 		if (is_local_player)
-			PED::SET_PED_COORDS_KEEP_VEHICLE(ent, coords.x, coords.y, coords.z);
+		{
+			to_coords(coords, euler);
+			return true;
+		}
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
@@ -35,14 +59,9 @@ namespace big::teleport
 			if (entity::take_control_of(ent))
 			{
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(ent, coords.x, coords.y, coords.z, TRUE, TRUE, TRUE);
-				if (euler.x + euler.y + euler.z != 0.0f)
+				if (euler.x != 0.0f)
 				{
 					ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-					if (is_local_player)
-					{
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-						CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-					}
 				}
 			}
 			else
@@ -72,20 +91,13 @@ namespace big::teleport
 
 			g.m_remote_player_teleports.emplace(veh_id, remote_tp);
 
-			if (is_local_player)
-			{
-				ENTITY::SET_ENTITY_HEADING(ent, euler.x);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_PITCH(euler.y, 1.f);
-				CAM::SET_GAMEPLAY_CAM_RELATIVE_HEADING(euler.z);
-			}
-
 			if ((player->is_valid() && PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), false))
 			    || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(player->id()))
 				g_pointers->m_gta.m_clear_ped_tasks_network(player->get_ped(), true);
 
-			for (int i = 0; i < 15; i++)
+			for (int i = 0; i < 30; i++)
 			{
-				script::get_current()->yield(50ms);
+				script::get_current()->yield(25ms);
 
 				if (auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd))
 				{
@@ -94,6 +106,10 @@ namespace big::teleport
 						g_pointers->m_gta.m_migrate_object(player->get_net_game_player(), netobj, 3);
 					}
 				}
+
+				auto new_coords = ENTITY::GET_ENTITY_COORDS(hnd, true);
+				if (SYSTEM::VDIST2(coords.x, coords.y, coords.z, new_coords.x, new_coords.y, new_coords.z) < 20 * 20 && VEHICLE::GET_PED_IN_VEHICLE_SEAT(hnd, 0, true) == ent)
+					break;
 			}
 
 			entity::delete_entity(hnd);
@@ -147,11 +163,6 @@ namespace big::teleport
 		return true;
 	}
 
-	inline void to_coords(Vector3 location)
-	{
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z + 1.f);
-	}
-
 	inline bool to_blip(int sprite, int color = -1)
 	{
 		Vector3 location;
@@ -162,7 +173,7 @@ namespace big::teleport
 		if (sprite == (int)BlipIcons::Waypoint)
 			entity::load_ground_at_3dcoord(location);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return true;
 	}
@@ -171,7 +182,7 @@ namespace big::teleport
 	{
 		Vector3 location = ENTITY::GET_ENTITY_COORDS(ent, true);
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return true;
 	}
@@ -202,7 +213,7 @@ namespace big::teleport
 			return false;
 		}
 
-		PED::SET_PED_COORDS_KEEP_VEHICLE(self::ped, location.x, location.y, location.z);
+		to_coords(location);
 
 		return false;
 	}
