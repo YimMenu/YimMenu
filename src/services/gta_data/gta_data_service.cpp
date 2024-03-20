@@ -150,7 +150,7 @@ namespace big
 			}
 		}
 
-		const auto file_version = memory::module("GTA5.exe").size();
+		const auto file_version = memory::module("GTA5.exe").timestamp();
 
 		return m_peds_cache.up_to_date(file_version) && m_vehicles_cache.up_to_date(file_version) && m_weapons_cache.up_to_date(file_version);
 	}
@@ -522,7 +522,7 @@ namespace big
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons), weapon_components = std::move(weapon_components)] {
-			const auto file_version = memory::module("GTA5.exe").size();
+			const auto file_version = memory::module("GTA5.exe").timestamp();
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();

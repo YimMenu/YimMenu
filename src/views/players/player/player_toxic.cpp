@@ -112,11 +112,11 @@ namespace big
 
 			components::command_checkbox<"anonbounty">();
 			ImGui::SameLine();
-
+			ImGui::PushID("setbounty");
 			components::button("SET"_T, [] {
 				troll::set_bounty_on_player(g_player_service->get_selected(), bounty_value, g.session.anonymous_bounty);
 			});
-
+			ImGui::PopID();
 			ImGui::EndListBox();
 		}
 		ImGui::EndGroup();
