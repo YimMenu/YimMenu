@@ -28,6 +28,7 @@ namespace big
 	private:
 		bool m_attach_console = true;
 		bool m_did_console_exist = false;
+		bool m_is_console_open = false;
 
 		void (logger::*m_console_logger)(const LogMessagePtr msg) = &logger::format_console;
 
