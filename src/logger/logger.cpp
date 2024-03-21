@@ -22,7 +22,6 @@ namespace big
 			m_console_logger = &logger::format_console_simple;
 		}
 
-		toggle_external_console(attach_console);
 		create_backup();
 		m_file_out.open(m_file.get_path(), std::ios_base::out | std::ios_base::trunc);
 
@@ -33,6 +32,8 @@ namespace big
 		Logger::AddSink([this](LogMessagePtr msg) {
 			format_file(std::move(msg));
 		});
+
+		toggle_external_console(attach_console);
 	}
 
 	void logger::destroy()
@@ -44,6 +45,19 @@ namespace big
 
 	void logger::toggle_external_console(bool toggle)
 	{
+		if (m_is_console_open == toggle)
+		{
+			return;
+		}
+		m_is_console_open = toggle;
+
+		m_console_out.close();
+		if (m_did_console_exist)
+			SetConsoleMode(m_console_handle, m_original_console_mode);
+
+		if (!m_did_console_exist)
+			FreeConsole();
+
 		if (toggle)
 		{
 			if (m_did_console_exist = ::AttachConsole(GetCurrentProcessId()); !m_did_console_exist)
@@ -60,23 +74,12 @@ namespace big
 
 				// terminal like behaviour enable full color support
 				console_mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-				// prevent clicking in terminal from suspending our main thread
-				console_mode &= ~(ENABLE_QUICK_EDIT_MODE);
 
 				SetConsoleMode(m_console_handle, console_mode);
 			}
 
 			m_console_out.open("CONOUT$", std::ios_base::out | std::ios_base::app);
-
-			return;
 		}
-
-		m_console_out.close();
-		if (m_did_console_exist)
-			SetConsoleMode(m_console_handle, m_original_console_mode);
-
-		if (!m_did_console_exist)
-			FreeConsole();
 	}
 
 	void logger::create_backup()
@@ -119,6 +122,11 @@ namespace big
 
 	void logger::format_console(const LogMessagePtr msg)
 	{
+		if (!m_is_console_open)
+		{
+			return;
+		}
+
 		const auto color = get_color(msg->Level());
 
 		const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
@@ -133,6 +141,11 @@ namespace big
 
 	void logger::format_console_simple(const LogMessagePtr msg)
 	{
+		if (!m_is_console_open)
+		{
+			return;
+		}
+
 		const auto color = get_color(msg->Level());
 
 		const auto timestamp = std::format("{0:%H:%M:%S}", msg->Timestamp());
