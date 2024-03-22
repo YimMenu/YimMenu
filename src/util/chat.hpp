@@ -3,9 +3,27 @@
 #include "services/players/player_service.hpp"
 #include "core/enums.hpp"
 
+#include "packet.hpp"
+#include "natives.hpp"
+#include "script.hpp"
+#include "fiber_pool.hpp"
+
+#include <network/CNetGamePlayer.hpp>
+#include <script/HudColor.hpp>
+#include <network/ChatData.hpp>
+
 namespace
 {
-	static const char* spam_texts[] = {
+	inline void gamer_handle_serialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
+	{
+		constexpr int PC_PLATFORM = 3;
+		buf.Write<uint8_t>(PC_PLATFORM, 8);
+		buf.WriteInt64(*(int64_t*)&hnd.m_rockstar_id, 64);
+		buf.Write<uint8_t>(hnd.unk_0009, 8);
+	}
+
+	static const char* spam_texts[] = 
+	{
 	    "qq", //a chinese chat app
 	    "QQ",
 	    "WWW.",
@@ -68,7 +86,7 @@ namespace
 	};
 }
 
-namespace big::spam
+namespace big::chat
 {
 	inline SpamReason is_text_spam(const char* text, player_ptr player)
 	{
@@ -97,7 +115,9 @@ namespace big::spam
 
 	inline void log_chat(char* msg, player_ptr player, SpamReason spam_reason, bool is_team)
 	{
-		std::ofstream log(g_file_manager.get_project_file(spam_reason != SpamReason::NOT_A_SPAMMER ? "./spam.log" : "./chat.log").get_path(), std::ios::app);
+		std::ofstream log(
+		    g_file_manager.get_project_file(spam_reason != SpamReason::NOT_A_SPAMMER ? "./spam.log" : "./chat.log").get_path(),
+		    std::ios::app);
 
 		auto& data = *player->get_net_data();
 		auto ip    = player->get_ip_address();
@@ -111,8 +131,8 @@ namespace big::spam
 
 		switch (spam_reason)
 		{
-			case SpamReason::STATIC_DETECTION: spam_reason_str = "(Static Detection) "; break;
-			case SpamReason::TIMER_DETECTION: spam_reason_str = "(Timer Detection) "; break;
+		case SpamReason::STATIC_DETECTION: spam_reason_str = "(Static Detection) "; break;
+		case SpamReason::TIMER_DETECTION: spam_reason_str = "(Timer Detection) "; break;
 		}
 
 		log << spam_reason_str << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
@@ -124,5 +144,60 @@ namespace big::spam
 			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <UNKNOWN> " << ((is_team == true) ? "[TEAM]: " : "[ALL]: ") << msg << std::endl;
 
 		log.close();
+	}
+
+	inline void draw_chat(const char* msg, const char* player_name, bool is_team)
+	{
+		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
+
+		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(scaleform))
+			script::get_current()->yield();
+
+		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL(false);                               // teamOnly
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
+		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "SET_FOCUS");
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);                                    // VISIBLE_STATE_DEFAULT
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scopeType (unused)
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scope (unused)
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name);           // player
+		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
+		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+
+		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
+
+		// fix broken scaleforms, when chat alrdy opened
+		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
+			HUD::CLOSE_MP_TEXT_CHAT();
+	}
+
+	// set target to send to a specific player
+	inline void send_message(const std::string& message, CNetGamePlayer* target = nullptr, bool draw = true, bool is_team = false)
+	{
+		packet msg{};
+		msg.write_message(rage::eNetMessage::MsgTextMessage);
+		msg.m_buffer.WriteString(message.c_str(), 256);
+		gamer_handle_serialize(g_player_service->get_self()->get_net_data()->m_gamer_handle, msg.m_buffer);
+		msg.write<bool>(is_team, 1);
+
+		if (*g_pointers->m_gta.m_is_session_started)
+			for (auto& player : g_player_service->players())
+				if (player.second && player.second->is_valid() 
+					&& (!target || target == player.second->get_net_game_player()) 
+					&& (!is_team || PLAYER::GET_PLAYER_TEAM(target->m_player_id) == PLAYER::GET_PLAYER_TEAM(self::id)))
+					msg.send(player.second->get_net_game_player()->m_msg_id);
+
+		if (draw)
+			if (rage::tlsContext::get()->m_is_script_thread_active)
+				draw_chat(message.c_str(), target->get_name(), is_team);
+			else
+				g_fiber_pool->queue_job([message, target, is_team] {
+					draw_chat(message.c_str(), target->get_name(), is_team);
+				});
 	}
 }
