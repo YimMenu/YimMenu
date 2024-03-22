@@ -8,6 +8,7 @@
 #include "util/chat.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
+#include "util/troll.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
 #include "backend/bool_command.hpp"
@@ -395,6 +396,15 @@ namespace big
 			    components::button("TRIGGER_BUNKER_RAID"_T, [] {
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
+				    });
+			    });
+				ImGui::SeparatorText("Bounty");
+			    static int value = 10000;
+			    ImGui::SliderInt("##bountyvalue", &value, 0, 10000);
+			    components::command_checkbox<"anonbounty">();
+			    components::button("Bounty All", [] {
+				    g_player_service->iterate([](auto& plyr) {
+					    troll::set_bounty_on_player(plyr.second, value, g.session.anonymous_bounty);
 				    });
 			    });
 		    },
