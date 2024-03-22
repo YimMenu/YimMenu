@@ -293,8 +293,7 @@ namespace big
 		GOD       = 1 << 8,
 		EXPLOSION = 1 << 11,
 		STEAM     = 1 << 15,
-		DROWN     = 1 << 16,
-		WATER     = 1 << 24,
+		WATER     = 1 << 16,
 	};
 	enum ePedType : uint32_t
 	{
