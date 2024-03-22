@@ -36,8 +36,8 @@ namespace big
 
 		if (announce_in_chat)
 		{
-			auto chat = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
-			chat::send_message(chat);
+			auto msg = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
+			chat::send_message(msg);
 		}
 
 		if (notify)

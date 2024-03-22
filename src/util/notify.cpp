@@ -37,10 +37,10 @@ namespace big::notify
 
 			if (g.reactions.crash.announce_in_chat)
 			{
-				auto chat = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
-				chat = std::format("{} {}", g.session.chat_output_prefix, chat);
-
-				chat::send_message(chat);
+				auto msg = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
+				msg = std::format("{} {}", g.session.chat_output_prefix, msg);
+				
+				chat::send_message(msg);
 			}
 
 			g.reactions.crash.process_common(g_player_service->get_by_id(player->m_player_id));

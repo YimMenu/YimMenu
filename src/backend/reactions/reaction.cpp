@@ -62,11 +62,11 @@ namespace big
 
 		if (announce_in_chat)
 		{
-			auto chat = std::format("{} {}",
+			auto msg = std::format("{} {}",
 			    g.session.chat_output_prefix,
 			    std::vformat(g_translation_service.get_translation(m_announce_message), std::make_format_args(player->get_name())));
 
-			chat::send_message(chat);
+			chat::send_message(msg);
 		}
 
 		if (notify)
