@@ -251,7 +251,7 @@ namespace lua::gui
 	// Shows a message to the user with the given title and message.
 	static void show_message(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push(title, message);
+		big::g_notification_service.push(title, message);
 	}
 
 	// Lua API: Function
@@ -262,7 +262,7 @@ namespace lua::gui
 	// Shows a warning to the user with the given title and message.
 	static void show_warning(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push_warning(title, message);
+		big::g_notification_service.push_warning(title, message);
 	}
 
 	// Lua API: Function
@@ -273,7 +273,7 @@ namespace lua::gui
 	// Shows an error to the user with the given title and message.
 	static void show_error(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push_error(title, message);
+		big::g_notification_service.push_error(title, message);
 	}
 
 	// Lua API: Function

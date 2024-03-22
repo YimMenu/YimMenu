@@ -355,7 +355,7 @@ namespace big
 			&& player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object
 			&& ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id && !offset_object)
 		{
-			g_notification_service->push_error("WARNING"_T.data(),
+			g_notification_service.push_error("WARNING"_T.data(),
 				std::vformat("BLAMED_FOR_EXPLOSION"_T,
 					std::make_format_args(player->get_name(),
 						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
@@ -615,7 +615,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
+				g_notification_service.push_warning("PROTECTIONS"_T.data(),
 					std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
@@ -632,7 +632,7 @@ namespace big
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
 				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
-				g_notification_service->push_warning("PROTECTIONS"_T.data(),
+				g_notification_service.push_warning("PROTECTIONS"_T.data(),
 				    std::format("{} {} {}.", source_player->get_name(), "GIVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;

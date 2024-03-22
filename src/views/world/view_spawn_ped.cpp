@@ -63,7 +63,7 @@ namespace big
 				auto plyr = g_player_service->get_by_id(selected_ped_player_id);
 				if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 				{
-					g_notification_service->push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
+					g_notification_service.push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
 					return 0;
 				}
 
@@ -88,7 +88,7 @@ namespace big
 			auto plyr = g_player_service->get_by_id(selected_ped_for_player_id);
 			if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			{
-				g_notification_service->push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
+				g_notification_service.push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
 				return 0;
 			}
 
@@ -107,7 +107,7 @@ namespace big
 
 		if (ped == 0)
 		{
-			g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
+			g_notification_service.push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
 			return 0;
 		}
 
@@ -620,7 +620,7 @@ namespace big
 			{
 				if (!ped::change_player_model(rage::joaat(ped_model_buf)))
 				{
-					g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
+					g_notification_service.push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
 					return;
 				}
 

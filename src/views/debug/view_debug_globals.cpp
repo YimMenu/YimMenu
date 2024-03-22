@@ -364,7 +364,7 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("DEBUG_TAB_GLOBALS"_T.data(), "VIEW_DEBUG_GLOBAL_INVALID_TYPE"_T.data());
+					g_notification_service.push_warning("DEBUG_TAB_GLOBALS"_T.data(), "VIEW_DEBUG_GLOBAL_INVALID_TYPE"_T.data());
 				}
 			}
 			ImGui::SameLine();

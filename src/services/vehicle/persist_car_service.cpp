@@ -13,7 +13,7 @@ namespace big
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(vehicle) || !ENTITY::IS_ENTITY_A_VEHICLE(vehicle))
 		{
-			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(),
+			g_notification_service.push_warning("PERSIST_CAR_TITLE"_T.data(),
 			    "PERSIST_CAR_INVALID_VEHICLE_SAVE_ATTEMPT"_T.data());
 			return;
 		}
@@ -42,7 +42,7 @@ namespace big
 		}
 		catch (std::exception& e)
 		{
-			g_notification_service->push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
+			g_notification_service.push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
 			return NULL;
 		}
 

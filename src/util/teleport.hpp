@@ -48,7 +48,7 @@ namespace big::teleport
 
 		if (ENTITY::IS_ENTITY_DEAD(ent, true))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_PLAYER_IS_DEAD"_T.data());
 			return false;
 		}
 
@@ -66,7 +66,7 @@ namespace big::teleport
 			}
 			else
 			{
-				g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
+				g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
 			}
 
 			return true;
@@ -131,7 +131,7 @@ namespace big::teleport
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_INVALID_VEHICLE"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_INVALID_VEHICLE"_T.data());
 
 			return false;
 		}
@@ -144,7 +144,7 @@ namespace big::teleport
 
 		if (seat_index == 255)
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_SEATS_FREE"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NO_SEATS_FREE"_T.data());
 
 			return false;
 		}
@@ -196,7 +196,7 @@ namespace big::teleport
 	{
 		if (!to_blip((int)BlipIcons::Waypoint))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
 
 			return false;
 		}
@@ -209,7 +209,7 @@ namespace big::teleport
 
 		if (!blip::get_objective_location(location))
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NO_OBJECTIVE"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NO_OBJECTIVE"_T.data());
 			return false;
 		}
 
@@ -222,14 +222,14 @@ namespace big::teleport
 	{
 		if (!*g_pointers->m_gta.m_is_session_started)
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
 			return false;
 		}
 
 		auto blip = blip::get_selected_blip();
 		if (blip == nullptr)
 		{
-			g_notification_service->push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
+			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NOTHING_SELECTED"_T.data());
 			return false;
 		}
 		Entity entity = self::ped;

@@ -58,7 +58,7 @@ namespace big
 				if (g_pointers->m_gta.m_decode_session_info(&info, base64, nullptr))
 					session::join_session(info);
 				else
-					g_notification_service->push_error("RID_JOINER"_T.data(), "VIEW_NET_RIDJOINER_SESSION_INFO_INVALID"_T.data());
+					g_notification_service.push_error("RID_JOINER"_T.data(), "VIEW_NET_RIDJOINER_SESSION_INFO_INVALID"_T.data());
 			});
 
 			components::button("COPY_SESSION_INFO"_T, [] {

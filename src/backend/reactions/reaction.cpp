@@ -75,7 +75,7 @@ namespace big
 
 		if (notify)
 		{
-			g_notification_service->push_warning("PROTECTIONS"_T.data(),
+			g_notification_service.push_warning("PROTECTIONS"_T.data(),
 			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(player->get_name())));
 		}
 

@@ -120,7 +120,7 @@ namespace big::scripts
 			if (!force_host("am_launcher"_J))
 			{
 				// 2F) Failed to force host of launcher
-				g_notification_service->push_error("Script", "Cannot force script host of am_launcher");
+				g_notification_service.push_error("Script", "Cannot force script host of am_launcher");
 				return;
 			}
 
@@ -178,7 +178,7 @@ namespace big::scripts
 		else
 		{
 			// 1F) Cannot find launcher
-			g_notification_service->push_error("Script", "Cannot start script, am_launcher not running locally");
+			g_notification_service.push_error("Script", "Cannot start script, am_launcher not running locally");
 		}
 	}
 
@@ -216,13 +216,13 @@ namespace big::scripts
 
 		if (g.m_mission_creator_thread || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("creator"_J) != 0 || SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS() || CUTSCENE::IS_CUTSCENE_ACTIVE())
 		{
-			g_notification_service->push_warning("Creator", "Cannot start creator now");
+			g_notification_service.push_warning("Creator", "Cannot start creator now");
 			return;
 		}
 
 		if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(60500) == 0)
 		{
-			g_notification_service->push_warning("Creator", "No free stacks for MISSION stack size");
+			g_notification_service.push_warning("Creator", "No free stacks for MISSION stack size");
 		}
 
 
