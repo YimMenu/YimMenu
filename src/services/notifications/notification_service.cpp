@@ -35,7 +35,7 @@ namespace big
 	std::vector<notification> notification_service::get()
 	{
 		// remove old notifications
-		for (auto it = m_notifications.begin(); it != m_notifications.end(); )
+		for (auto it = m_notifications.begin(); it != m_notifications.end();)
 		{
 			if (it->second.should_be_destroyed())
 			{
@@ -57,7 +57,7 @@ namespace big
 
 	void notification_service::push(notification n)
 	{
-		const auto [pair, inserted] = m_notifications.insert({ n.identifier(), n });
+		const auto [pair, inserted] = m_notifications.insert({n.identifier(), n});
 		if (!inserted)
 		{
 			pair->second.reset();
