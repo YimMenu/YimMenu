@@ -42,11 +42,11 @@ namespace big
 				try
 				{
 					const auto j = nlohmann::json::parse(response.text);
-					g_notification_service->push_success("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_TEST_CURRENT_SUCCESS"_T.data());
+					g_notification_service.push_success("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_TEST_CURRENT_SUCCESS"_T.data());
 				}
 				catch (const std::exception& e)
 				{
-					g_notification_service->push_error("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_TEST_CURRENT_FAIL"_T.data());
+					g_notification_service.push_error("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_TEST_CURRENT_FAIL"_T.data());
 				}
 			});
 		}
@@ -66,7 +66,7 @@ namespace big
 			else
 				g_http_client.proxy_mgr().update(settings.proxy_host, settings.proxy_port, settings.protocol);
 
-			g_notification_service->push("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_UPDATE_SUCCESS"_T.data());
+			g_notification_service.push("PROXY_SETTINGS"_T.data(), "PROXY_SETTINGS_UPDATE_SUCCESS"_T.data());
 		}
 	}
 }

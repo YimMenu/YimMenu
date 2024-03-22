@@ -118,7 +118,7 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						spam::log_chat(message, player, spam_reason, is_team);
-					g_notification_service->push("PROTECTIONS"_T.data(),
+					g_notification_service.push("PROTECTIONS"_T.data(),
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
@@ -166,7 +166,7 @@ namespace big
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
+						g_notification_service.push_error("PROTECTIONS"_T.data(),
 						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 					}
 					return true;
@@ -209,7 +209,7 @@ namespace big
 
 				if (reason == KickReason::VOTED_OUT)
 				{
-					g_notification_service->push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
+					g_notification_service.push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
 					return true;
 				}
 
@@ -225,7 +225,7 @@ namespace big
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
+						g_notification_service.push_error("PROTECTIONS"_T.data(),
 						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 						player->block_radio_requests = true;
 					}

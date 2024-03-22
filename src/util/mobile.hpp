@@ -142,7 +142,7 @@ namespace big::mobile
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
 			if (*scr_globals::freemode_global.at(985).as<int*>() != -1)
-				return g_notification_service->push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
+				return g_notification_service.push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
 
 			if (g.clone_pv.spawn_inside && self::veh)
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());
@@ -208,10 +208,10 @@ namespace big::mobile
 			{
 				*scr_globals::gun_van.as<Vector3*>() = spawn_point;
 
-				return g_notification_service->push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
+				return g_notification_service.push_success("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_SUCCESS"_T.data());
 			}
 
-			g_notification_service->push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
+			g_notification_service.push_warning("GUI_TAB_MOBILE"_T.data(), "REQUEST_GUN_VAN_NOTIFY_FAILED"_T.data());
 		}
 	}
 }

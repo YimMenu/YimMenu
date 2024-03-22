@@ -15,9 +15,9 @@ namespace big
 			if (veh == 0)
 			{
 				if (g.player.spectating)
-					g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T.data());
+					g_notification_service.push_warning("REMOTE_CONTROL"_T.data(), "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T.data());
 				else
-					g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), std::format("{} {}", "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T, "BACKEND_REMOTE_CONTROL_VEHICLE_SPECTATE"_T).c_str());
+					g_notification_service.push_warning("REMOTE_CONTROL"_T.data(), std::format("{} {}", "ERROR_PLAYER_IS_NOT_IN_VEHICLE"_T, "BACKEND_REMOTE_CONTROL_VEHICLE_SPECTATE"_T).c_str());
 				return;
 			}
 

@@ -35,24 +35,24 @@ namespace big
 
 		if (g.player_db.notify_when_joinable && !is_joinable_session(player.session_type) && is_joinable_session(new_session_type))
 		{
-			g_notification_service->push_success("Player DB", std::format("{} is now in a joinable session", player.name));
+			g_notification_service.push_success("Player DB", std::format("{} is now in a joinable session", player.name));
 		}
 		else if (g.player_db.notify_when_online && (player.session_type == GSType::Invalid || player.session_type == GSType::Unknown) && new_session_type != GSType::Invalid)
 		{
-			g_notification_service->push_success("Player DB", std::format("{} is now online", player.name));
+			g_notification_service.push_success("Player DB", std::format("{} is now online", player.name));
 		}
 		else if (g.player_db.notify_when_unjoinable && is_joinable_session(player.session_type) && !is_joinable_session(new_session_type) && new_session_type != GSType::Invalid)
 		{
-			g_notification_service->push("Player DB", std::format("{} is no longer in a joinable session", player.name));
+			g_notification_service.push("Player DB", std::format("{} is no longer in a joinable session", player.name));
 		}
 		else if (g.player_db.notify_when_offline && player.session_type != GSType::Invalid && player.session_type != GSType::Unknown && new_session_type == GSType::Invalid)
 		{
-			g_notification_service->push("Player DB", std::format("{} is no longer online", player.name));
+			g_notification_service.push("Player DB", std::format("{} is no longer online", player.name));
 		}
 
 		if (g.player_db.notify_on_session_type_change && (int)new_session_type >= (int)GSType::InviteOnly && (int)new_session_type < (int)GSType::Max)
 		{
-			g_notification_service->push("Player DB", std::format("{} is now in a{} {} session", player.name, new_session_type == GSType::InviteOnly ? "n" : "", get_session_type_str(new_session_type)));
+			g_notification_service.push("Player DB", std::format("{} is now in a{} {} session", player.name, new_session_type == GSType::InviteOnly ? "n" : "", get_session_type_str(new_session_type)));
 		}
 	}
 
@@ -64,14 +64,14 @@ namespace big
 
 		if (new_game_mode == GameMode::None && old_game_mode != GameMode::None && old_game_mode_str != "None")
 		{
-			g_notification_service->push("Player DB", std::format("{} is no longer in a {}", player->name, old_game_mode_str));
+			g_notification_service.push("Player DB", std::format("{} is no longer in a {}", player->name, old_game_mode_str));
 			return;
 		}
 
 		if (!can_fetch_name(new_game_mode))
 		{
 			if (new_game_mode_str != "None")
-				g_notification_service->push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
+				g_notification_service.push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
 
 			return;
 		}
@@ -83,11 +83,11 @@ namespace big
 
 		if (mission_name.empty())
 		{
-			g_notification_service->push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
+			g_notification_service.push("Player DB", std::format("{} is now in a {}", player->name, new_game_mode_str));
 			return;
 		}
 
-		g_notification_service->push("Player DB", std::format("{} has joined the {} \"{}\"", player->name, new_game_mode_str, mission_name));
+		g_notification_service.push("Player DB", std::format("{} has joined the {} \"{}\"", player->name, new_game_mode_str, mission_name));
 		player->game_mode_name = mission_name;
 	}
 
@@ -413,7 +413,7 @@ namespace big
 							else if (it->second->notify_online && it->second->session_id != info.m_session_token
 							    && g.player_db.notify_on_session_change)
 							{
-								g_notification_service->push("Player DB",
+								g_notification_service.push("Player DB",
 								    std::format("{} has joined a new session", it->second->name));
 							}
 
@@ -424,12 +424,12 @@ namespace big
 								{
 									if (is_spectating)
 									{
-										g_notification_service->push("Player DB",
+										g_notification_service.push("Player DB",
 										    std::format("{} is now spectating", it->second->name));
 									}
 									else
 									{
-										g_notification_service->push("Player DB",
+										g_notification_service.push("Player DB",
 										    std::format("{} is no longer spectating", it->second->name));
 									}
 								}
@@ -437,7 +437,7 @@ namespace big
 								if (it->second->notify_online && is_host_of_session != it->second->is_host_of_session
 								    && g.player_db.notify_on_become_host && is_host_of_session && it->second->session_id == info.m_session_token)
 								{
-									g_notification_service->push("Player DB",
+									g_notification_service.push("Player DB",
 									    std::format("{} is now the host of their session", it->second->name));
 								}
 
@@ -446,19 +446,19 @@ namespace big
 								{
 									if (is_host_of_transition_session)
 									{
-										g_notification_service->push("Player DB",
+										g_notification_service.push("Player DB",
 										    std::format("{} has hosted a job lobby", it->second->name));
 									}
 									else
 									{
-										g_notification_service->push("Player DB",
+										g_notification_service.push("Player DB",
 										    std::format("{} has joined a job lobby", it->second->name));
 									}
 								}
 								else if (it->second->notify_online && g.player_db.notify_on_transition_change
 								    && transition_info.m_session_token == -1 && it->second->transition_session_id != -1)
 								{
-									g_notification_service->push("Player DB",
+									g_notification_service.push("Player DB",
 									    std::format("{} is no longer in a job lobby", it->second->name));
 								}
 

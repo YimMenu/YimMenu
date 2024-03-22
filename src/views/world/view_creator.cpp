@@ -91,18 +91,18 @@ namespace big
 						if (g_api_service->download_job_metadata(content_id, f1 < 0 ? 0 : f1, f0 < 0 ? 0 : f0, NETWORK::UGC_GET_CONTENT_LANGUAGE(0)))
 						{
 							cached_creator_files = false;
-							g_notification_service->push_success("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
+							g_notification_service.push_success("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
 							    "CREATOR_JOB_IMPORT_SUCCESS"_T.data());
 						}
 						else
 						{
-							g_notification_service->push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
+							g_notification_service.push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
 							    "CREATOR_JOB_FAILED_METADATA_FETCH"_T.data());
 						}
 					}
 					else
 					{
-						g_notification_service->push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
+						g_notification_service.push_error("CREATOR_JOB_IMPORT_NOTIFICATION"_T.data(),
 						    "CREATOR_JOB_UGC_QUERY_FAILED"_T.data());
 					}
 				});

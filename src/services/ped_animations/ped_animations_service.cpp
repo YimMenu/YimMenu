@@ -82,7 +82,7 @@ namespace big
 		file_out << j.dump(4);
 		file_out.close();
 
-		g_notification_service->push_success("Animations", std::format("Succesfully saved location {}", p.name));
+		g_notification_service.push_success("Animations", std::format("Succesfully saved location {}", p.name));
 
 		return true;
 	}

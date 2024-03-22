@@ -42,7 +42,7 @@ namespace big
 
 			if (veh == 0)
 			{
-				g_notification_service->push_error("GUI_TAB_SPAWN_VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+				g_notification_service.push_error("GUI_TAB_SPAWN_VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
 			}
 			else
 			{

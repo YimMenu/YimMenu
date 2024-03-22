@@ -29,7 +29,7 @@ namespace big
 		{
 			current_destination     = AutoDriveDestination::STOPPED;
 			changing_driving_styles = false;
-			g_notification_service->push_warning("AUTO_DRIVE"_T.data(), "PLAYER_INFO_NO_VEHICLE"_T.data());
+			g_notification_service.push_warning("AUTO_DRIVE"_T.data(), "PLAYER_INFO_NO_VEHICLE"_T.data());
 		}
 		else if (current_driving_flag != driving_style_flags[g.vehicle.auto_drive_style] || current_speed != g.vehicle.auto_drive_speed)
 		{
@@ -77,11 +77,11 @@ namespace big
 
 				if (to_waypoint && !does_waypoint_exist)
 				{
-					g_notification_service->push_warning("AUTO_DRIVE"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
+					g_notification_service.push_warning("AUTO_DRIVE"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
 				}
 				else
 				{
-					g_notification_service->push_warning("AUTO_DRIVE"_T.data(), "BACKEND_LOOPED_VEHICLE_AUTO_DRIVE_STOPPED"_T.data());
+					g_notification_service.push_warning("AUTO_DRIVE"_T.data(), "BACKEND_LOOPED_VEHICLE_AUTO_DRIVE_STOPPED"_T.data());
 				}
 
 				started = false;
