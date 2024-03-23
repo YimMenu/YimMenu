@@ -20,7 +20,7 @@ namespace big
 					{
 						if (ENTITY::IS_ENTITY_A_PED(entity) && PED::IS_PED_A_PLAYER(entity))
 						{
-							g_notification_service->push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_PLAYER"_T.data());
+							g_notification_service.push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_PLAYER"_T.data());
 						}
 						else
 						{
@@ -29,7 +29,7 @@ namespace big
 
 							if (dist > 500)
 							{
-								g_notification_service->push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_TOO_FAR"_T.data());
+								g_notification_service.push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_DELETE_GUN_TOO_FAR"_T.data());
 							}
 							else
 							{
@@ -38,13 +38,13 @@ namespace big
 									entity::delete_entity(entity);
 								}
 								else
-									g_notification_service->push_error("CUSTOM_WEAPONS"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
+									g_notification_service.push_error("CUSTOM_WEAPONS"_T.data(), "TELEPORT_FAILED_TO_TAKE_CONTROL"_T.data());
 							}
 						}
 					}
 					else
 					{
-						g_notification_service->push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_CAGE_GUN_NO_ENTITY_FOUND"_T.data());
+						g_notification_service.push_error("CUSTOM_WEAPONS"_T.data(), "BACKEND_LOOPED_WEAPONS_CAGE_GUN_NO_ENTITY_FOUND"_T.data());
 					}
 				}
 			}

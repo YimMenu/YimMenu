@@ -54,7 +54,7 @@ namespace big
 			g_thread_pool->push([] {
 				g_translation_service.update_n_reload_language_packs();
 
-				g_notification_service->push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
+				g_notification_service.push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
 			});
 		}
 

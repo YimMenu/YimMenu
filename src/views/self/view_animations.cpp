@@ -138,27 +138,27 @@ namespace big
 		static auto save_response = [=]() -> bool {
 			if (!STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
 			{
-				g_notification_service->push_warning("GUI_TAB_ANIMATIONS"_T.data(),
+				g_notification_service.push_warning("GUI_TAB_ANIMATIONS"_T.data(),
 				    std::vformat("VIEW_SELF_ANIMATIONS_DICT_DOES_NOT_EXIST"_T, std::make_format_args(g_ped_animation_service.current_animation.dict)));
 				return false;
 			}
 
 			if (g_ped_animation_service.get_animation_by_name(g_ped_animation_service.current_animation.name))
 			{
-				g_notification_service->push_warning("GUI_TAB_ANIMATIONS"_T.data(),
+				g_notification_service.push_warning("GUI_TAB_ANIMATIONS"_T.data(),
 					std::vformat("VIEW_SELF_ANIMATIONS_ANIM_ALREADY_EXISTS"_T, std::make_format_args(g_ped_animation_service.current_animation.name)));
 				return false;
 			}
 
 			if (category.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_ANIMATIONS"_T.data(), "VIEW_SELF_ANIMATIONS_CATEGORY_EMPTY_ERROR"_T.data());
+				g_notification_service.push_warning("GUI_TAB_ANIMATIONS"_T.data(), "VIEW_SELF_ANIMATIONS_CATEGORY_EMPTY_ERROR"_T.data());
 				return false;
 			}
 
 			if (g_ped_animation_service.current_animation.anim.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_ANIMATIONS"_T.data(), "VIEW_SELF_ANIMATIONS_ANIM_EMPTY_ERROR"_T.data());
+				g_notification_service.push_warning("GUI_TAB_ANIMATIONS"_T.data(), "VIEW_SELF_ANIMATIONS_ANIM_EMPTY_ERROR"_T.data());
 				return false;
 			}
 

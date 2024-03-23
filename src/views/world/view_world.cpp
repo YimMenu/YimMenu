@@ -127,7 +127,7 @@ namespace big
 
 				quantity  = list.size();
 				remaining = quantity;
-				g_notification_service->push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
+				g_notification_service.push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
 
@@ -167,7 +167,7 @@ namespace big
 				}
 
 				if (failed > 0)
-					g_notification_service->push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
+					g_notification_service.push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
 
 				deleting = false;
 			});

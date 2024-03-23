@@ -333,12 +333,12 @@ namespace big
 		static auto check_validity = [=](bool save) -> bool {
 			if (!victim->is_valid() && !save)
 			{
-				g_notification_service->push_error("GUI_TAB_SQUAD_SPAWNER"_T.data(), "VIEW_SQUAD_SPAWN_CHOOSE_FIRST"_T.data());
+				g_notification_service.push_error("GUI_TAB_SQUAD_SPAWNER"_T.data(), "VIEW_SQUAD_SPAWN_CHOOSE_FIRST"_T.data());
 				return false;
 			}
 			if (std::string(new_template.m_ped_model).empty())
 			{
-				g_notification_service->push_error("GUI_TAB_SQUAD_SPAWNER"_T.data(), "VIEW_SQUAD_SPAWN_MODEL_REQUIRED"_T.data());
+				g_notification_service.push_error("GUI_TAB_SQUAD_SPAWNER"_T.data(), "VIEW_SQUAD_SPAWN_MODEL_REQUIRED"_T.data());
 				return false;
 			}
 

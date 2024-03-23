@@ -26,7 +26,7 @@ namespace big
 			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder);
 			if (!vehicle)
 			{
-				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
+				g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
 			else if (g.persist_car.spawn_inside && self::veh != vehicle)
 			{
@@ -37,7 +37,7 @@ namespace big
 		}
 		else
 		{
-			g_notification_service->push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
+			g_notification_service.push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
 		}
 	}
 
@@ -188,7 +188,7 @@ namespace big
 					return;
 
 				if (!self::veh)
-					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+					return g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
 				save_vehicle(vehicle_file_name_input, save_folder);
 			});
@@ -200,7 +200,7 @@ namespace big
 					return;
 
 				if (!self::veh)
-					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+					return g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
 				save_vehicle(vehicle_file_name_input, g.persist_car.persist_vehicle_sub_folder.c_str());
 			});

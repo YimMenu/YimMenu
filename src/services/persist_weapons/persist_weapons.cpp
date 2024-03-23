@@ -115,7 +115,7 @@ namespace big
 			}
 			catch (std::exception& e)
 			{
-				g_notification_service->push_warning("Persist Weapons", "Failed to load JSON file from disk.");
+				g_notification_service.push_warning("Persist Weapons", "Failed to load JSON file from disk.");
 				LOG(WARNING) << "Persist Weapons failed to load JSON file: " << g.persist_weapons.weapon_loadout_file << " because " << e.what();
 			}
 		}

@@ -56,13 +56,13 @@ namespace big::vehicle
 	void bring(Vehicle veh, Vector3 location, bool put_in, int seatIdx)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
-			return g_notification_service->push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
+			return g_notification_service.push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		entity::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
@@ -605,7 +605,7 @@ namespace big::vehicle
 		if (current_vehicle)
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
 	void downgrade(Vehicle vehicle)
@@ -621,7 +621,7 @@ namespace big::vehicle
 	{
 		if (!entity::take_control_of(veh, 4000))
 		{
-			g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			g_notification_service.push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 			return false;
 		}
 

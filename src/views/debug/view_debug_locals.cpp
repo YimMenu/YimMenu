@@ -388,7 +388,7 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_INVALID_TYPE"_T.data());
+					g_notification_service.push_warning("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_INVALID_TYPE"_T.data());
 				}
 			}
 			ImGui::SameLine();

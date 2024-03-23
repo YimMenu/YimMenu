@@ -79,7 +79,7 @@ namespace big
 				components::button("JOIN"_T, [session] {
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{
-						g_notification_service->push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
+						g_notification_service.push_error("JOIN_SESSION"_T.data(), "PLAYER_SWITCH_IN_PROGRESS"_T.data());
 						return;
 					}
 
@@ -180,7 +180,7 @@ namespace big
 			selected_session_idx = -1;
 
 			if (!g_matchmaking_service->matchmake())
-				g_notification_service->push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
+				g_notification_service.push_error("MATCHMAKING"_T.data(), "MATCHMAKING_FAIL"_T.data());
 		});
 	}
 }

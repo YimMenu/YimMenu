@@ -231,10 +231,10 @@ namespace big
 					g_thread_pool->push([selected] {
 						if (g_api_service->send_socialclub_message(selected->rockstar_id, message))
 						{
-							g_notification_service->push_success("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
+							g_notification_service.push_success("SCAPI"_T.data(), "MSG_SENT_SUCCESS"_T.data());
 							return;
 						}
-						g_notification_service->push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
+						g_notification_service.push_error("SCAPI"_T.data(), "MSG_SENT_FAIL"_T.data());
 					});
 				};
 
@@ -351,7 +351,7 @@ namespace big
 			g_thread_pool->push([] {
 				if (!g_api_service->get_rid_from_username(new_name, *(uint64_t*)&new_rockstar_id))
 				{
-					g_notification_service->push_error("GUI_TAB_PLAYER_DATABASE"_T.data(), std::vformat("VIEW_NET_PLAYER_DB_NO_USER_CAN_BE_FOUND"_T, std::make_format_args(new_name)));
+					g_notification_service.push_error("GUI_TAB_PLAYER_DATABASE"_T.data(), std::vformat("VIEW_NET_PLAYER_DB_NO_USER_CAN_BE_FOUND"_T, std::make_format_args(new_name)));
 					new_rockstar_id = 0;
 				}
 			});
