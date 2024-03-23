@@ -197,7 +197,7 @@ namespace lua::network
 	{
 		if (auto player = big::g_player_service->get_by_id(player_idx))
 		{
-			big::chat::send_message(msg, player->get_net_game_player());
+			big::chat::send_message(msg, player);
 
 		}
 	}

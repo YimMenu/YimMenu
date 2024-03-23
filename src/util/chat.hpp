@@ -177,7 +177,7 @@ namespace big::chat
 	}
 
 	// set target to send to a specific player
-	inline void send_message(const std::string& message, CNetGamePlayer* target = nullptr, bool draw = true, bool is_team = false)
+	inline void send_message(const std::string& message, player_ptr target = nullptr, bool draw = true, bool is_team = false)
 	{
 		packet msg{};
 		msg.write_message(rage::eNetMessage::MsgTextMessage);
@@ -188,7 +188,7 @@ namespace big::chat
 		if (*g_pointers->m_gta.m_is_session_started)
 			for (auto& player : g_player_service->players())
 				if (player.second && player.second->is_valid() 
-					&& (!target || target == player.second->get_net_game_player()) 
+					&& (!target || target->get_net_game_player() == player.second->get_net_game_player()) 
 					&& (!is_team || PLAYER::GET_PLAYER_TEAM(player.second->get_net_game_player()->m_player_id) == PLAYER::GET_PLAYER_TEAM(self::id)))
 					msg.send(player.second->get_net_game_player()->m_msg_id);
 
@@ -196,7 +196,7 @@ namespace big::chat
 			if (rage::tlsContext::get()->m_is_script_thread_active)
 				draw_chat(message.c_str(), g_player_service->get_self()->get_name(), is_team);
 			else
-				g_fiber_pool->queue_job([message, target, is_team] {
+				g_fiber_pool->queue_job([message, is_team] {
 					draw_chat(message.c_str(), g_player_service->get_self()->get_name(), is_team);
 				});
 	}
