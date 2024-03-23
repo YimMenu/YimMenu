@@ -30,7 +30,7 @@ namespace big
 			std::lock_guard lock(g.world.model_swapper.m);
 			if (dst_text[0] == '\0' || src_text[0] == '\0')
 			{
-				g_notification_service->push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_WRONG_INPUT"_T.data());
+				g_notification_service.push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_WRONG_INPUT"_T.data());
 				return;
 			}
 			std::string str = dst_text;
@@ -58,7 +58,7 @@ namespace big
 			if (!g.world.model_swapper.models.size() || selected_index < 0
 			    || selected_index >= g.world.model_swapper.models.size())
 			{
-				g_notification_service->push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_INVALID_INDEX"_T.data());
+				g_notification_service.push_error("GUI_TAB_MODEL_SWAPPER"_T.data(), "VIEW_MODEL_SWAPPER_INVALID_INDEX"_T.data());
 				return;
 			}
 			g.world.model_swapper.models.erase(std::begin(g.world.model_swapper.models) + selected_index);

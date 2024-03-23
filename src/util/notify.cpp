@@ -29,7 +29,7 @@ namespace big::notify
 				return;
 
 			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
+				g_notification_service.push_error("Protections", std::format("Blocked {} crash from {}", crash, player->get_name()));
 
 			if (g.reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
@@ -48,7 +48,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.crash.notify)
-				g_notification_service->push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
+				g_notification_service.push_error("Protections", std::format("Blocked {} crash from unknown player", crash));
 		}
 	}
 

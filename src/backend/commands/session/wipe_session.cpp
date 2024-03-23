@@ -15,7 +15,7 @@ namespace big
 			{
 				player_mgr->RemovePlayer(plyr->get_net_game_player());
 			}
-			g_notification_service->push("EMPTY_SESSION"_T.data(), "BACKEND_WIPE_SESSION_COMPLETE"_T.data());
+			g_notification_service.push("EMPTY_SESSION"_T.data(), "BACKEND_WIPE_SESSION_COMPLETE"_T.data());
 		}
 	};
 	empty_session g_empty_session("emptysession", "EMPTY_SESSION", "BACKEND_WIPE_SESSION_DESC", 0);

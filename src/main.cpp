@@ -210,7 +210,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
 			    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
 			    auto mobile_service_instance            = std::make_unique<mobile_service>();
-			    auto notification_service_instance      = std::make_unique<notification_service>();
 			    auto pickup_service_instance            = std::make_unique<pickup_service>();
 			    auto player_service_instance            = std::make_unique<player_service>();
 			    auto gta_data_service_instance          = std::make_unique<gta_data_service>();
@@ -227,6 +226,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
 			    LOG(INFO) << "Registered service instances...";
+
+				g_notification_service.initialise();
+				LOG(INFO) << "Finished initialising services.";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
 

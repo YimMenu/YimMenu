@@ -364,7 +364,7 @@ namespace big
 								}
 								else
 								{
-									g_notification_service->push_error("GUI_TAB_LSC"_T.data(), "VIEW_LSC_SELECTED_MOD_IS_INVALID"_T.data());
+									g_notification_service.push_error("GUI_TAB_LSC"_T.data(), "VIEW_LSC_SELECTED_MOD_IS_INVALID"_T.data());
 								}
 							}
 							else if (selected_slot == MOD_WINDOW_TINT)
