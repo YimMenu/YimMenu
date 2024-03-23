@@ -5,11 +5,11 @@
 #include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
-#include "util/notify.hpp"
+#include "util/chat.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
-#include "util/toxic.hpp"
 #include "util/troll.hpp"
+#include "util/toxic.hpp"
 #include "views/view.hpp"
 #include "backend/bool_command.hpp"
 
@@ -199,11 +199,7 @@ namespace big
 			components::button("SEND"_T, [] {
 				if (const auto net_game_player = gta_util::get_network_player_mgr()->m_local_net_player; net_game_player)
 				{
-					if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-					        net_game_player->get_net_data(),
-					        msg,
-					        g.session.is_team))
-						notify::draw_chat(msg, net_game_player->get_name(), g.session.is_team);
+					chat::send_message(msg, nullptr, true, g.session.is_team);
 				}
 			});
 
@@ -401,16 +397,16 @@ namespace big
 				    g_player_service->iterate([](auto& plyr) {
 					    toxic::start_activity(plyr.second, eActivityType::GunrunningDefend);
 				    });
-			    });
-			    ImGui::SeparatorText("Bounty");
-			    static int value = 10000;
-			    ImGui::SliderInt("##bountyvalue", &value, 0, 10000);
-			    components::command_checkbox<"anonbounty">();
-			    components::button("Bounty All", [] {
-				    g_player_service->iterate([](auto& plyr) {
-					    troll::set_bounty_on_player(plyr.second, value, g.session.anonymous_bounty);
-				    });
-			    });
+				});
+				ImGui::SeparatorText("Bounty");
+				static int value = 10000;
+				ImGui::SliderInt("##bountyvalue", &value, 0, 10000);
+				components::command_checkbox<"anonbounty">();
+				components::button("Bounty All", [] {
+					g_player_service->iterate([](auto& plyr) {
+						troll::set_bounty_on_player(plyr.second, value, g.session.anonymous_bounty);
+					});
+				});
 		    },
 		    false,
 		    "GRIEFING"_T.data());

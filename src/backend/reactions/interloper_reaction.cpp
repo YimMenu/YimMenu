@@ -5,7 +5,7 @@
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "util/notify.hpp"
+#include "util/chat.hpp"
 
 namespace big
 {
@@ -36,15 +36,8 @@ namespace big
 
 		if (announce_in_chat)
 		{
-			g_fiber_pool->queue_job([attacker, victim, this] {
-				auto chat = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
-
-				if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-				        g_player_service->get_self()->get_net_data(),
-				        chat.data(),
-				        is_team_only))
-					notify::draw_chat(chat.c_str(), g_player_service->get_self()->get_name(), is_team_only);
-			});
+			auto msg = std::format("{} {}", g.session.chat_output_prefix, g_translation_service.get_translation(m_announce_message));
+			chat::send_message(msg);
 		}
 
 		if (notify)

@@ -2,7 +2,7 @@
 
 #include "fiber_pool.hpp"
 #include "hooking/hooking.hpp"
-#include "util/notify.hpp"
+#include "util/chat.hpp"
 
 namespace big
 {
@@ -26,18 +26,7 @@ namespace big
 
 	void chat_command_context::report_output(const std::string& output) const
 	{
-		g_fiber_pool->queue_job([this, output] {
-			char msg[265]{};
-			msg[0] = g.session.chat_output_prefix;
-			msg[1] = ' ';
-			strncpy(msg + 2, output.c_str(), sizeof(msg) - 2);
-
-			if (g_hooking->get_original<hooks::send_chat_message>()(*g_pointers->m_gta.m_send_chat_ptr,
-			        g_player_service->get_self()->get_net_data(),
-			        msg,
-			        false))
-				notify::draw_chat(msg, g_player_service->get_self()->get_name(), false);
-		});
+		chat::send_message(output);
 	}
 
 	void chat_command_context::report_error(const std::string& error) const

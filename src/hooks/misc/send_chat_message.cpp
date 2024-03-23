@@ -5,7 +5,7 @@
 #include "hooking/hooking.hpp"
 #include "packet.hpp"
 #include "services/players/player_service.hpp"
-#include "util/spam.hpp"
+#include "util/chat.hpp"
 
 namespace big
 {
@@ -22,19 +22,10 @@ namespace big
 		if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 			command::process(std::string(message + 1), std::make_shared<chat_command_context>(g_player_service->get_self()));
 
-		packet msg{};
-		msg.write_message(rage::eNetMessage::MsgTextMessage);
-		msg.m_buffer.WriteString(message ? message : "", 256);
-		gamer_handle_serialize(g_player_service->get_self()->get_net_data()->m_gamer_handle, msg.m_buffer);
-		msg.write<bool>(is_team, 1);
+		chat::send_message(message, nullptr, false, is_team);
 
 		if (g.session.log_chat_messages)
-			spam::log_chat(message, g_player_service->get_self(), SpamReason::NOT_A_SPAMMER, is_team);
-
-		if (*g_pointers->m_gta.m_is_session_started)
-			for (auto& player : g_player_service->players())
-				if (player.second && player.second->is_valid())
-					msg.send(player.second->get_net_game_player()->m_msg_id);
+			chat::log_chat(message, g_player_service->get_self(), SpamReason::NOT_A_SPAMMER, is_team);
 
 		return true;
 	}

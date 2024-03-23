@@ -10,7 +10,7 @@
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
-#include "util/spam.hpp"
+#include "util/chat.hpp"
 #include "gta/enums.hpp"
 
 #include <network/Network.hpp>
@@ -114,11 +114,12 @@ namespace big
 				if (player->is_spammer)
 					return true;
 
-				if (auto spam_reason = spam::is_text_spam(message, player))
+				if (auto spam_reason = chat::is_text_spam(message, player))
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, spam_reason, is_team);
+						chat::log_chat(message, player, spam_reason, is_team);
 					g_notification_service.push("PROTECTIONS"_T.data(),
+                                      
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
@@ -136,7 +137,7 @@ namespace big
 				else
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
+						chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
@@ -147,7 +148,6 @@ namespace big
 					{
 						rage::rlGamerHandle temp{};
 						gamer_handle_deserialize(temp, buffer);
-						bool is_team = buffer.Read<bool>(1);
 
 						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
 						    nullptr,

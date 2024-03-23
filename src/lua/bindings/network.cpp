@@ -5,6 +5,7 @@
 #include "pointers.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/notify.hpp"
+#include "util/chat.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
@@ -183,13 +184,22 @@ namespace lua::network
 	// Sends a message to the in game chat.
 	static void send_chat_message(const std::string& msg, bool team_only)
 	{
-		big::g_fiber_pool->queue_job([msg, team_only] {
-			if (big::g_hooking->get_original<big::hooks::send_chat_message>()(*big::g_pointers->m_gta.m_send_chat_ptr,
-			        big::g_player_service->get_self()->get_net_data(),
-			        (char*)msg.c_str(),
-			        team_only))
-				big::notify::draw_chat((char*)msg.data(), big::g_player_service->get_self()->get_name(), team_only);
-		});
+		big::chat::send_message(msg, nullptr, true, team_only);
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: send_chat_message_to_player
+	// Param: player_idx: integer: Index of the player.
+	// Param: msg: string: Message to be sent.
+	// Sends a chat message to the specified player. Other players would not be able to see the message
+	static void send_chat_message_to_player(int player_idx, const std::string& msg)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+		{
+			big::chat::send_message(msg, player);
+
+		}
 	}
 
 	void bind(sol::state& state)
@@ -229,5 +239,6 @@ namespace lua::network
 		ns["get_flagged_modder_reason"]                = get_flagged_modder_reason;
 		ns["force_script_host"]                        = force_script_host;
 		ns["send_chat_message"]                        = send_chat_message;
+		ns["send_chat_message_to_player"]              = send_chat_message_to_player;
 	}
 }
