@@ -147,7 +147,6 @@ namespace big
 					{
 						rage::rlGamerHandle temp{};
 						gamer_handle_deserialize(temp, buffer);
-						bool is_team = buffer.Read<bool>(1);
 
 						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
 						    nullptr,

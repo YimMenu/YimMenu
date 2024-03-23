@@ -7,10 +7,12 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "fiber_pool.hpp"
+#include "core/scr_globals.hpp"
 
 #include <network/CNetGamePlayer.hpp>
 #include <script/HudColor.hpp>
 #include <network/ChatData.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace
 {
@@ -176,6 +178,41 @@ namespace big::chat
 			HUD::CLOSE_MP_TEXT_CHAT();
 	}
 
+	inline bool is_on_same_team(CNetGamePlayer* player)
+	{
+		auto target_id = player->m_player_id;
+
+		if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+		{
+			// mission
+			return PLAYER::GET_PLAYER_TEAM(target_id) == PLAYER::GET_PLAYER_TEAM(self::id);
+		}
+		else
+		{
+			auto boss_goon = &scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[self::id].BossGoon;
+
+			if (boss_goon->Boss == target_id)
+				return true;
+
+			if (boss_goon->Boss == -1)
+				return false;
+
+			if (boss_goon->Boss != self::id)
+				boss_goon = &scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[boss_goon->Boss].BossGoon; // get their structure
+
+			// bypass some P2Cs
+			for (int i = 0; i < boss_goon->Goons.Size; i++)
+			{
+				if (boss_goon->Goons[i] == target_id)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
+
 	// set target to send to a specific player
 	inline void send_message(const std::string& message, CNetGamePlayer* target = nullptr, bool draw = true, bool is_team = false)
 	{
@@ -189,7 +226,7 @@ namespace big::chat
 			for (auto& player : g_player_service->players())
 				if (player.second && player.second->is_valid() 
 					&& (!target || target == player.second->get_net_game_player()) 
-					&& (!is_team || PLAYER::GET_PLAYER_TEAM(player.second->get_net_game_player()->m_player_id) == PLAYER::GET_PLAYER_TEAM(self::id)))
+					&& (!is_team || is_on_same_team(player.second->get_net_game_player())))
 					msg.send(player.second->get_net_game_player()->m_msg_id);
 
 		if (draw)
