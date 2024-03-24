@@ -65,7 +65,7 @@ namespace big
 
 	struct navigation_struct
 	{
-		char name[48]              = "";
+		char name[80]              = "";
 		std::function<void()> func = nullptr;
 		std::map<tabs, navigation_struct> sub_nav{};
 		rage::joaat_t hash = rage::joaat(name);
