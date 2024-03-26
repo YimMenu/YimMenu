@@ -216,18 +216,29 @@ namespace big::chat
 	// set target to send to a specific player
 	inline void send_message(const std::string& message, player_ptr target = nullptr, bool draw = true, bool is_team = false)
 	{
+		if (!*g_pointers->m_gta.m_is_session_started)
+			return;
+
 		packet msg{};
 		msg.write_message(rage::eNetMessage::MsgTextMessage);
 		msg.m_buffer.WriteString(message.c_str(), 256);
 		gamer_handle_serialize(g_player_service->get_self()->get_net_data()->m_gamer_handle, msg.m_buffer);
 		msg.write<bool>(is_team, 1);
 
-		if (*g_pointers->m_gta.m_is_session_started)
-			for (auto& player : g_player_service->players())
-				if (player.second && player.second->is_valid() 
-					&& (!target || target->get_net_game_player() == player.second->get_net_game_player()) 
-					&& (!is_team || is_on_same_team(player.second->get_net_game_player())))
-					msg.send(player.second->get_net_game_player()->m_msg_id);
+
+		for (auto& player : g_player_service->players())
+		{
+			if (player.second && player.second->is_valid())
+			{
+				if (target && player.second != target)
+					continue;
+
+				if (!target && is_team && !is_on_same_team(player.second->get_net_game_player()))
+					continue;
+
+				msg.send(player.second->get_net_game_player()->m_msg_id);
+			}
+		}
 
 		if (draw)
 			if (rage::tlsContext::get()->m_is_script_thread_active)
