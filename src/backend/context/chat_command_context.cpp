@@ -26,7 +26,7 @@ namespace big
 
 	void chat_command_context::report_output(const std::string& output) const
 	{
-		chat::send_message(output);
+		chat::send_message(output, this->get_sender(), true, true);
 	}
 
 	void chat_command_context::report_error(const std::string& error) const
