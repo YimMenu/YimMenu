@@ -18,8 +18,6 @@ namespace big::notify
 
 	void crash_blocked(CNetGamePlayer* player, const char* crash);
 
-	void cage_blocked(CNetGamePlayer* player);
-
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
 	void busy_spinner(std::string_view text, int* address, int value, int timeout = 15);
 

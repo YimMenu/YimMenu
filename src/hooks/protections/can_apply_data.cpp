@@ -1324,7 +1324,7 @@ namespace big
 					if (!plyr->cage_notification_sent)
 					{
 						plyr->cage_notification_sent = true;
-						notify::cage_blocked(sender);
+						g.reactions.cage.process(plyr);
 					}
 					return true;
 				}

@@ -52,67 +52,6 @@ namespace big::notify
 		}
 	}
 
-	void cage_blocked(CNetGamePlayer* player)
-	{
-		if (player)
-		{
-			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
-			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
-				return;
-
-			if (g.reactions.cage.notify)
-				g_notification_service.push_error("Protections", std::vformat("BLOCKED_CAGE"_T.data(), std::make_format_args(player->get_name())));
-
-			if (g.reactions.cage.log)
-				LOG(WARNING) << "Blocked cage from " << player->get_name() << " ("
-				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-
-			if (g.reactions.cage.announce_in_chat)
-			{
-				auto msg = std::vformat("NOTIFICATION_CAGE_TYPE_BLOCKED"_T.data(), std::make_format_args(g.session.chat_output_prefix, player->get_name()));
-				
-				chat::send_message(msg);
-			}
-
-			g.reactions.cage.process_common(g_player_service->get_by_id(player->m_player_id));
-		}
-		else
-		{
-			if (g.reactions.cage.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_CAGE_UNKNOWN_PLAYER"_T.data());
-		}
-	}
-
-	void ptfx_spam_blocked(CNetGamePlayer* player){
-		if (player)
-		{
-			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
-			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
-				return;
-
-			if (g.reactions.ptfx_spam.notify)
-				g_notification_service.push_error("Protections", std::vformat("BLOCKED_PTFX_SPAM"_T.data(), std::make_format_args(player->get_name())));
-
-			if (g.reactions.ptfx_spam.log)
-				LOG(WARNING) << "Blocked PTFX spam from " << player->get_name() << " ("
-				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
-
-			if (g.reactions.ptfx_spam.announce_in_chat)
-			{
-				auto msg = std::vformat("NOTIFICATION_PTFX_SPAM_TYPE_BLOCKED"_T.data(), std::make_format_args(g.session.chat_output_prefix, player->get_name()));
-				
-				chat::send_message(msg);
-			}
-
-			g.reactions.ptfx_spam.process_common(g_player_service->get_by_id(player->m_player_id));
-		}
-		else
-		{
-			if (g.reactions.ptfx_spam.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_PTFX_SPAM_UNKNOWN_PLAYER"_T.data());
-		}
-	}
-
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
 	void busy_spinner(std::string_view text, int* address, int value, int timeout)
 	{
