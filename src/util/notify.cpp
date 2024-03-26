@@ -61,7 +61,7 @@ namespace big::notify
 				return;
 
 			if (g.reactions.cage.notify)
-				g_notification_service.push_error("Protections", std::format("BLOCKED_CAGE"_T.data(), player->get_name()));
+				g_notification_service.push_error("Protections", std::vformat("BLOCKED_CAGE"_T.data(), std::make_format_args(player->get_name())));
 
 			if (g.reactions.cage.log)
 				LOG(WARNING) << "Blocked cage from " << player->get_name() << " ("
@@ -69,7 +69,7 @@ namespace big::notify
 
 			if (g.reactions.cage.announce_in_chat)
 			{
-				auto msg = std::format("NOTIFICATION_CAGE_TYPE_BLOCKED"_T.data(), g.session.chat_output_prefix, player->get_name());
+				auto msg = std::vformat("NOTIFICATION_CAGE_TYPE_BLOCKED"_T.data(), std::make_format_args(g.session.chat_output_prefix, player->get_name()));
 				
 				chat::send_message(msg);
 			}
@@ -79,7 +79,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.cage.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_CAGE_UNKNOWN_PLAYER"_T.data());
+				g_notification_service.push_error("Protections", "BLOCKED_CAGE_UNKNOWN_PLAYER"_T);
 		}
 	}
 
@@ -109,7 +109,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.ptfx.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_PTFX_SPAM_UNKNOWN_PLAYER"_T.data());
+				g_notification_service.push_error("Protections", "BLOCKED_PTFX_SPAM_UNKNOWN_PLAYER"_T);
 		}
 	}
 
