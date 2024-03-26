@@ -79,7 +79,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.cage.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_CAGE_UNKNOWN_PLAYER"_T);
+				g_notification_service.push_error("Protections", "BLOCKED_CAGE_UNKNOWN_PLAYER"_T.data());
 		}
 	}
 
@@ -90,26 +90,26 @@ namespace big::notify
 			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
 				return;
 
-			if (g.reactions.ptfx.notify)
+			if (g.reactions.ptfx_spam.notify)
 				g_notification_service.push_error("Protections", std::vformat("BLOCKED_PTFX_SPAM"_T.data(), std::make_format_args(player->get_name())));
 
-			if (g.reactions.ptfx.log)
+			if (g.reactions.ptfx_spam.log)
 				LOG(WARNING) << "Blocked PTFX spam from " << player->get_name() << " ("
 				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
 
-			if (g.reactions.ptfx.announce_in_chat)
+			if (g.reactions.ptfx_spam.announce_in_chat)
 			{
 				auto msg = std::vformat("NOTIFICATION_PTFX_SPAM_TYPE_BLOCKED"_T.data(), std::make_format_args(g.session.chat_output_prefix, player->get_name()));
 				
 				chat::send_message(msg);
 			}
 
-			g.reactions.ptfx.process_common(g_player_service->get_by_id(player->m_player_id));
+			g.reactions.ptfx_spam.process_common(g_player_service->get_by_id(player->m_player_id));
 		}
 		else
 		{
-			if (g.reactions.ptfx.notify)
-				g_notification_service.push_error("Protections", "BLOCKED_PTFX_SPAM_UNKNOWN_PLAYER"_T);
+			if (g.reactions.ptfx_spam.notify)
+				g_notification_service.push_error("Protections", "BLOCKED_PTFX_SPAM_UNKNOWN_PLAYER"_T.data());
 		}
 	}
 
