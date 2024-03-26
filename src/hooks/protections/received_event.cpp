@@ -759,7 +759,7 @@ namespace big
 				if (!plyr->ptfx_spam_notification_sent)
 				{
 					plyr->ptfx_spam_notification_sent = true;
-					g.reactions.ptfx_spam_blocked.process(sender);
+					g.reactions.ptfx_spam.process(plyr);
 				}
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
