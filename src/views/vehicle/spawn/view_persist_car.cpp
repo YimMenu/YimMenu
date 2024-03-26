@@ -141,9 +141,7 @@ namespace big
 					}
 					else if (ImGui::IsItemHovered())
 					{
-						g_fiber_pool->queue_job([pair] {
-							g_model_preview_service->show_vehicle_persisted(pair);
-						});
+						g_model_preview_service->show_vehicle_persisted(pair);
 					}
 
 					ImGui::SameLine();

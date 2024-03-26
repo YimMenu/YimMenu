@@ -292,11 +292,9 @@ namespace big
 						}
 						else if (ImGui::IsItemHovered())
 						{
-							g_fiber_pool->queue_job([] {
-								Ped ped   = self::ped;
-								Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-								g_model_preview_service->show_ped(hash, ped);
-							});
+							Ped ped   = self::ped;
+							Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+							g_model_preview_service->show_ped(hash, ped);
 						}
 
 						if (selected_ped_player_id == -1)
@@ -323,15 +321,13 @@ namespace big
 								}
 								else if (ImGui::IsItemHovered())
 								{
-									g_fiber_pool->queue_job([plyr_id] {
-										auto plyr = g_player_service->get_by_id(plyr_id);
-										if (plyr)
-										{
-											Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-											Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-											g_model_preview_service->show_ped(hash, ped);
-										}
-									});
+									auto plyr = g_player_service->get_by_id(plyr_id);
+									if (plyr)
+									{
+										Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+										Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+										g_model_preview_service->show_ped(hash, ped);
+									}
 								}
 								ImGui::PopID();
 

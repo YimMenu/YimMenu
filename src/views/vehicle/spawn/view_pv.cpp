@@ -228,11 +228,8 @@ namespace big
 						}
 						else if (ImGui::IsItemHovered())
 						{
-							g_fiber_pool->queue_job([&personal_veh] {
-								g_model_preview_service->show_vehicle(
-								    vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
-								    g.clone_pv.spawn_maxed);
-							});
+							g_model_preview_service->show_vehicle(vehicle::get_owned_mods_from_vehicle_idx(personal_veh->get_vehicle_idx()),
+							    g.clone_pv.spawn_maxed);
 						}
 					}
 				}
