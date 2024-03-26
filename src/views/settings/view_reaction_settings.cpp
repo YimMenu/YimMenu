@@ -90,6 +90,7 @@ namespace big
 		draw_reaction(g.reactions.send_to_location);
 		draw_reaction(g.reactions.send_to_interior);
 		draw_reaction(g.reactions.sound_spam);
+		draw_reaction(g.reactions.ptfx_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
 		draw_reaction(g.reactions.start_script);
