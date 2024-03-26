@@ -103,8 +103,8 @@ namespace big
 
 		time_t ptfx_sent		= time(0);
 		int ptfx_lastsend		= 0;
-		bool cageNotificationSent = false;
-		bool ptfxSpamNotificationSent = false;
+		bool cage_notification_sent = false;
+		bool ptfx_spam_notification_sent = false;
 
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;

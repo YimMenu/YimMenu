@@ -1318,14 +1318,12 @@ namespace big
 					notify::crash_blocked(sender, "invalid object model");
 					return true;
 				}
-				//auto objPos = creation_node->m_dummy_position; // With YimMenu this is odly 0,0,0 ...
-				//auto myPos  = g_local_player->get_position();
-				if (protection::is_cage_object(creation_node->m_model))
-				{ // This will trigger for any player caging any player, Due to a issue with m_dummy_position data (See above)
+				if (protection::is_cage_object(creation_node->m_model) && g.protections.cage_protection)
+				{ // This will trigger for any player caging any player, Due to a issue with m_dummy_position data
 					auto plyr = g_player_service->get_by_id(sender->m_player_id);
-					if (!plyr->cageNotificationSent)
+					if (!plyr->cage_notification_sent)
 					{
-						plyr->cageNotificationSent = true;
+						plyr->cage_notification_sent = true;
 						notify::cage_blocked(sender);
 					}
 					return true;
