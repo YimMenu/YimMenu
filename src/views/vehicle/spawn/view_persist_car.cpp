@@ -131,8 +131,8 @@ namespace big
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([] {
 							load_vehicle(selected_vehicle_file);
-							g_model_preview_service->stop_preview();
 						});
+						g_model_preview_service->stop_preview();
 					}
 
 					if (!g.persist_car.preview_vehicle || (g.persist_car.preview_vehicle && !ImGui::IsAnyItemHovered()))

@@ -204,12 +204,12 @@ namespace big
 					ENTITY::SET_ENTITY_COORDS(m_current_ent, location.x, location.y, location.z, 0, 0, 0, 0);
 				}
 
-				if (m_heading += 0.5f; m_heading > 359)
+				if (m_heading += 0.11111f; m_heading > 359)
 				{
 					m_heading = 0;
 				}
 
-				script::get_current()->yield(15ms);
+				script::get_current()->yield();
 			}
 
 			entity::delete_entity(m_current_ent, true);
