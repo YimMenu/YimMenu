@@ -103,6 +103,7 @@ namespace big
 
 		time_t ptfx_sent		= time(0);
 		int ptfx_lastsend		= 0;
+		bool cageNotificationSent = false;
 		bool ptfxSpamNotificationSent = false;
 
 	protected:

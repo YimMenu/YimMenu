@@ -71,6 +71,7 @@ namespace big
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.clear_wanted_level);
 		draw_reaction(g.reactions.crash);
+		draw_reaction(g.reactions.cage);
 		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.destroy_personal_vehicle);
 		draw_reaction(g.reactions.fake_deposit);

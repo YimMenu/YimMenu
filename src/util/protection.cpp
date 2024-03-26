@@ -39,6 +39,15 @@ namespace big::protection
 		return false;
 	}
 
+	constexpr auto cage_objects = {"stt_prop_stunt_tube_s"_J, "prop_fnclink_03e"_J, "prop_gold_cont_01"_J, "prop_gold_cont_01b"_J, "prop_rub_cage01a"_J};
+	bool is_cage_object(rage::joaat_t model)
+	{
+		for (auto iterator : cage_objects)
+			if (iterator == model)
+				return true;
+		return false;
+	}
+
 	constexpr auto valid_player_models = {
 	    "mp_m_freemode_01"_J,
 	    "mp_f_freemode_01"_J,

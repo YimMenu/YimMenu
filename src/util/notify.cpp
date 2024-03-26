@@ -52,6 +52,37 @@ namespace big::notify
 		}
 	}
 
+	void cage_blocked(CNetGamePlayer* player)
+	{
+		if (player)
+		{
+			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
+			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
+				return;
+
+			if (g.reactions.cage.notify)
+				g_notification_service.push_error("Protections", std::format("Blocked cage from {}", player->get_name()));
+
+			if (g.reactions.cage.log)
+				LOG(WARNING) << "Blocked cage from " << player->get_name() << " ("
+				             << (player->get_net_data() ? player->get_net_data()->m_gamer_handle.m_rockstar_id : 0) << ")";
+
+			if (g.reactions.cage.announce_in_chat)
+			{
+				auto msg = std::format("{} Blocked a cage from {}", g.session.chat_output_prefix, player->get_name());
+				
+				chat::send_message(msg);
+			}
+
+			g.reactions.cage.process_common(g_player_service->get_by_id(player->m_player_id));
+		}
+		else
+		{
+			if (g.reactions.cage.notify)
+				g_notification_service.push_error("Protections", std::format("Blocked cage from unknown player"));
+		}
+	}
+
 	// Shows a busy spinner till the value at the address equals the value passed or if timeout is hit
 	void busy_spinner(std::string_view text, int* address, int value, int timeout)
 	{
