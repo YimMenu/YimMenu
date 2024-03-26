@@ -741,6 +741,38 @@ namespace big
 		default: break;
 		}
 
+		if (event_id == 74) // NETWORK_PTFX (eNetworkEvents::NETWORK_PTFX is 75 so this would never trigger above)
+		{
+			if (!plyr)
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+			if (plyr->block_ptfx)
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+			auto now = time(0);
+			if (difftime(now,plyr->ptfx_lastsend)>1)
+			{
+				plyr->ptfx_sent = 0;
+				plyr->ptfxSpamNotificationSent = false; // Reset as they have stopped spamming
+			}
+			plyr->ptfx_lastsend = now;
+			plyr->ptfx_sent += 1;
+			if (plyr->ptfx_sent > 3) // Spamming ptfx
+			{
+				if (!plyr->ptfxSpamNotificationSent)
+				{
+					plyr->ptfxSpamNotificationSent = true;
+					g_notification_service.push_error("Protections", std::format("Blocked PTFX spam from {}", plyr->get_name()));
+				}
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+		}
+
 		return g_hooking->get_original<received_event>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, buffer_size, buffer);
 	}
 }

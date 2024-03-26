@@ -91,6 +91,7 @@ namespace big
 		std::optional<std::chrono::time_point<std::chrono::steady_clock>> last_message_time;
 		uint32_t num_time_syncs_sent = 9999;
 
+		bool block_ptfx         = false;
 		bool block_explosions   = false;
 		bool block_clone_create = false;
 		bool block_clone_sync   = false;
@@ -99,6 +100,10 @@ namespace big
 		bool log_network_events = false;
 
 		int spectating_player = -1;
+
+		time_t ptfx_sent		= time(0);
+		int ptfx_lastsend		= 0;
+		bool ptfxSpamNotificationSent = false;
 
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;

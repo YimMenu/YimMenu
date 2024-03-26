@@ -136,6 +136,7 @@ namespace big
 					    entry->is_trusted = g_player_service->get_selected()->is_trusted;
 					    g_player_database_service->save();
 					}
+					ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_PTFX"_T.data(), &g_player_service->get_selected()->block_ptfx);
 				    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_EXPLOSIONS"_T.data(), &g_player_service->get_selected()->block_explosions);
 				    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_CREATE"_T.data(), &g_player_service->get_selected()->block_clone_create);
 				    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_SYNC"_T.data(), &g_player_service->get_selected()->block_clone_sync);
