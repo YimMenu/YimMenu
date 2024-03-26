@@ -72,6 +72,7 @@ namespace big
 		rate_limiter m_play_sound_rate_limit{1s, 10};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
+		rate_limiter m_ptfx_ratelimit{1s, 3};
 
 		bool block_radio_requests = false;
 
@@ -101,8 +102,6 @@ namespace big
 
 		int spectating_player = -1;
 
-		time_t ptfx_sent		= time(0);
-		int ptfx_lastsend		= 0;
 		bool cage_notification_sent = false;
 		bool ptfx_spam_notification_sent = false;
 

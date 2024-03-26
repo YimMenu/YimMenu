@@ -741,7 +741,7 @@ namespace big
 		default: break;
 		}
 
-		if (event_id == 74 && g.protections.ptfx_spam_protection) // NETWORK_PTFX (eNetworkEvents::NETWORK_PTFX is 75 so this would never trigger above)
+		if (event_id == 74 && g.protections.ptfx_spam_protection)
 		{
 			if (!plyr)
 			{
@@ -753,15 +753,8 @@ namespace big
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
-			auto now = time(0);
-			if (difftime(now,plyr->ptfx_lastsend)>1)
-			{
-				plyr->ptfx_sent = 0;
-				plyr->ptfx_spam_notification_sent = false; // Reset as they have stopped spamming
-			}
-			plyr->ptfx_lastsend = now;
-			plyr->ptfx_sent += 1;
-			if (plyr->ptfx_sent > 3) // Spamming ptfx
+			plyr->m_ptfx_ratelimit.process();
+			if (plyr->m_ptfx_ratelimit.exceeded_last_process())
 			{
 				if (!plyr->ptfx_spam_notification_sent)
 				{
