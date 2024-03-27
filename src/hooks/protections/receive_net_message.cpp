@@ -19,12 +19,11 @@
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
-	constexpr int PC_PLATFORM = 3;
-	if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
+	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform))) != rage::rlPlatforms::PC)
 		return;
 
-	buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
-	hnd.unk_0009 = buf.Read<uint8_t>(8);
+	buf.ReadPeerId(&hnd.m_rockstar_id);
+	hnd.m_padding = buf.Read<uint8_t>(sizeof(hnd.m_padding));
 }
 
 inline bool is_kick_instruction(rage::datBitBuffer& buffer)
@@ -107,8 +106,10 @@ namespace big
 			case rage::eNetMessage::MsgTextMessage2:
 			{
 				char message[256];
-				buffer.ReadString(message, 256);
+				rage::rlGamerHandle handle{};
 				bool is_team;
+				buffer.ReadString(message, sizeof(message));
+				gamer_handle_deserialize(handle, buffer);
 				buffer.ReadBool(&is_team);
 
 				if (player->is_spammer)
@@ -146,15 +147,8 @@ namespace big
 
 					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
 					{
-						rage::rlGamerHandle temp{};
-						gamer_handle_deserialize(temp, buffer);
-
-						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
-						    nullptr,
-						    &player->get_net_data()->m_gamer_handle,
-						    message,
-						    is_team);
-						return true;
+						buffer.Seek(0);
+						return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame); // Call original function since we can't seem to handle it
 					}
 				}
 				break;

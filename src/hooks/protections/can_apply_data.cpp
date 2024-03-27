@@ -716,13 +716,9 @@ namespace big
 		case sync_node_id("CPlayerExtendedGameStateNode"):
 			LOG_FIELD(CPlayerExtendedGameStateNode, waypoint_x);
 			LOG_FIELD(CPlayerExtendedGameStateNode, waypoint_y);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, unk1);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, unk2);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, unk3);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, unk4);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, unk5);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, has_waypoint_data);
-			LOG_FIELD_B(CPlayerExtendedGameStateNode, is_waypoint_set);
+			LOG_FIELD(CPlayerExtendedGameStateNode, waypoint_entity);
+			LOG_FIELD(CPlayerExtendedGameStateNode, has_active_waypoint);
+			LOG_FIELD(CPlayerExtendedGameStateNode, owns_waypoint);
 			break;
 		case sync_node_id("CPlayerGameStateDataNode"):
 			LOG_FIELD(CPlayerGameStateDataNode, m_player_state);
