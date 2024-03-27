@@ -29,7 +29,7 @@ namespace big::notify
 				return;
 
 			if (g.reactions.crash.notify)
-				g_notification_service.push_error("Protections", std::vformat("BLOCKED_CRASH"_T.data(), std::make_format_args(crash,player->get_name())));
+				g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("BLOCKED_CRASH"_T.data(), std::make_format_args(crash,player->get_name())));
 
 			if (g.reactions.crash.log)
 				LOG(WARNING) << "Blocked " << crash << " crash from " << player->get_name() << " ("
@@ -48,7 +48,7 @@ namespace big::notify
 		else
 		{
 			if (g.reactions.crash.notify)
-				g_notification_service.push_error("Protections", std::vformat("BLOCKED_CRASH_UNKNOWN_PLAYER"_T.data(), std::make_format_args(crash)));
+				g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("BLOCKED_CRASH_UNKNOWN_PLAYER"_T.data(), std::make_format_args(crash)));
 		}
 	}
 
