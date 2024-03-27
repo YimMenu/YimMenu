@@ -5,9 +5,6 @@ namespace big
 {
 	class model_preview_service
 	{
-		std::condition_variable m_cond;
-		std::mutex m_mutex;
-
 		Entity m_current_ent = 0;
 
 		Hash m_veh_model_hash = 0;
@@ -24,6 +21,8 @@ namespace big
 
 		std::string m_current_persisted_vehicle_name;
 
+		std::chrono::time_point<std::chrono::steady_clock> start_time;
+
 	public:
 		model_preview_service();
 		~model_preview_service();
@@ -36,7 +35,10 @@ namespace big
 		void show_vehicle_persisted(std::string vehicle_name);
 		void show_vehicle(Vehicle veh);
 
+	private:
 		void preview_loop();
+
+	public:
 		void stop_preview();
 	};
 
