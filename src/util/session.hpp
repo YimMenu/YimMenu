@@ -24,16 +24,6 @@
 
 namespace big::session
 {
-	static void gamer_handle_serialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
-	{
-		buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(&hnd.m_platform), 8);
-		if (*reinterpret_cast<uint8_t*>(&hnd.m_platform) == 3)
-		{
-			buf.WriteInt64(*(int64_t*)&hnd.m_rockstar_id, 64);
-			buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(reinterpret_cast<__int64>(&hnd) + 9), 8);
-		}
-	}
-
 	inline bool join_type(eSessionType session)
 	{
 		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("pausemenu_multiplayer"_J);
