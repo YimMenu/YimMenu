@@ -371,12 +371,12 @@ namespace big::vehicle
 		}
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, owned_mods[MOD_PLATE_STYLE]);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, owned_mods[MOD_WINDOW_TINT]);
 		VEHICLE::SET_VEHICLE_WHEEL_TYPE(vehicle, owned_mods[MOD_WHEEL_TYPE]);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
