@@ -131,6 +131,8 @@ namespace big
 
 		g_fiber_pool->queue_job([this] {
 			m_loop_running = true;
+			m_heading      = 0;
+			start_time	   = std::chrono::steady_clock::now();
 
 			while (g_running && m_running && g_gui->is_open() && (m_ped_model_hash || m_veh_model_hash || !m_current_persisted_vehicle_name.empty()))
 			{
@@ -204,10 +206,11 @@ namespace big
 					ENTITY::SET_ENTITY_COORDS(m_current_ent, location.x, location.y, location.z, 0, 0, 0, 0);
 				}
 
-				if (m_heading += 0.11111f; m_heading > 359)
-				{
-					m_heading = 0;
-				}
+				auto now = std::chrono::steady_clock::now();
+				auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count() / 1000.0; // Convert to seconds
+
+				m_heading = (elapsed_time / 10.0) * 360.0; // Rotate 360 degrees every 10 seconds
+				m_heading = fmod(m_heading, 360.0);        // Ensure rotation is always between 0 and 360
 
 				script::get_current()->yield();
 			}
