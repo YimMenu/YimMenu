@@ -738,32 +738,35 @@ namespace big
 			}
 			break;
 		}
-		default: break;
-		}
-
-		if (event_id == 74 && g.protections.ptfx_spam_protection)
+		case eNetworkEvents::NETWORK_PTFX_EVENT:
 		{
 			if (!plyr)
-			{
+			{ // If there is no player its likely a modded event so just ack it
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
-			if (plyr->block_ptfx)
+			if (g.protections.ptfx_spam_protection)
 			{
-				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				return;
-			}
-			plyr->m_ptfx_ratelimit.process();
-			if (plyr->m_ptfx_ratelimit.exceeded_last_process())
-			{
-				if (!plyr->ptfx_spam_notification_sent)
+				if (plyr->block_ptfx)
 				{
-					plyr->ptfx_spam_notification_sent = true;
-					g.reactions.ptfx_spam.process(plyr);
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
 				}
-				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				return;
+				plyr->m_ptfx_ratelimit.process();
+				if (plyr->m_ptfx_ratelimit.exceeded_last_process())
+				{
+					if (!plyr->ptfx_spam_notification_sent)
+					{
+						plyr->ptfx_spam_notification_sent = true;
+						g.reactions.ptfx_spam.process(plyr);
+					}
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
 			}
+			break;
+		}
+		default: break;
 		}
 
 		return g_hooking->get_original<received_event>()(event_manager, source_player, target_player, event_id, event_index, event_handled_bitset, buffer_size, buffer);
