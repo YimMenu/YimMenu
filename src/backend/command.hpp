@@ -55,6 +55,11 @@ namespace big
 			return m_num_args;
 		}
 
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg)
+		{
+			return std::nullopt;
+		};
+
 		void call(command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		void call(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());
 		static std::vector<command*> get_suggestions(std::string, int limit = 7);
