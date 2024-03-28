@@ -34,9 +34,6 @@ namespace big
 		player& operator=(const player&)     = default;
 		player& operator=(player&&) noexcept = default;
 
-		float screen_position_x = -1.f;
-		float screen_position_y = -1.f;
-
 		[[nodiscard]] CVehicle* get_current_vehicle() const;
 		[[nodiscard]] const char* get_name() const;
 		[[nodiscard]] rage::rlGamerInfo* get_net_data() const;
@@ -64,7 +61,6 @@ namespace big
 
 		bool kill_loop       = false;
 		bool explosion_loop  = false;
-		bool freeze_loop     = false;
 		bool ragdoll_loop    = false;
 		bool rotate_cam_loop = false;
 

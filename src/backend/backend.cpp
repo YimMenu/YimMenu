@@ -36,7 +36,7 @@ namespace big
 		{
 			looped::system_self_globals();
 			looped::system_update_pointers();
-			looped::system_desync_kick_protection();
+			looped::system_update_desync_kick();
 			looped::system_spoofing();
 			looped::system_mission_creator();
 

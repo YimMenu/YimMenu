@@ -9,7 +9,7 @@
 
 namespace big
 {
-	void looped::system_desync_kick_protection()
+	void looped::system_update_desync_kick()
 	{
 		memset(&gta_util::get_network()->m_game_complaint_mgr.m_host_tokens_complained, 0, 64 * sizeof(uint64_t));
 
