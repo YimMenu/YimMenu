@@ -20,18 +20,7 @@ namespace big
 
 	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::u8string& path)
 	{
-		bool success = false;
-
-		__try
-		{
-			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
-		}
-		__except (EXCEPTION_EXECUTE_HANDLER)
-		{
-			return false;
-		}
-
-		return success;
+		return packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
 	}
 
 	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
