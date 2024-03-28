@@ -12,6 +12,7 @@ namespace big
 {
 	model_preview_service::model_preview_service()
 	{
+		m_last_preview          = std::chrono::steady_clock::now();
 		g_model_preview_service = this;
 	}
 
@@ -115,6 +116,17 @@ namespace big
 			return;
 		}
 
+		if ((**g_pointers->m_gta.m_vehicle_pool)->m_item_count >= (**g_pointers->m_gta.m_vehicle_pool)->m_size)
+			return;
+
+		auto now                = std::chrono::steady_clock::now();
+		auto last_preview_delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_last_preview);
+
+		if (last_preview_delta < 300ms)
+			return;
+
+		m_last_preview = now;
+
 		m_running = true;
 
 		g_fiber_pool->queue_job([this] {
@@ -190,15 +202,12 @@ namespace big
 
 			entity::delete_entity(m_current_ent, true);
 
+			script::get_current()->yield();
+
 			if (m_current_ent != NULL)
 			{
 				LOG(WARNING) << "FAILED TO DELETE PREVIEW CAR! " << m_current_ent;
 			}
-
-			m_current_ent = NULL;
-
-			m_running = false;
-			m_shutdown_preview = false;
 
 			clear_data();
 		});
@@ -206,10 +215,13 @@ namespace big
 
 	void model_preview_service::clear_data()
 	{
-		m_ped_model_hash = {};
-		m_veh_model_hash = {};
-		m_ped_clone      = {};
+		m_ped_model_hash				 = {};
+		m_veh_model_hash				 = {};
+		m_ped_clone						 = {};
 		m_current_persisted_vehicle_name = {};
+		m_shutdown_preview               = false;
+		m_running                        = false;
+		m_current_ent                    = NULL;
 	}
 
 	void model_preview_service::stop_preview()

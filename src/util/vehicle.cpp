@@ -154,7 +154,7 @@ namespace big::vehicle
 	{
 		if (entity::request_model(hash))
 		{
-			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
+			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, TRUE);
 
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
