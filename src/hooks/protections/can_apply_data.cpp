@@ -1314,6 +1314,16 @@ namespace big
 					notify::crash_blocked(sender, "invalid object model");
 					return true;
 				}
+				if (protection::is_cage_object(creation_node->m_model) && g.protections.cage_protection)
+				{ // This will trigger for any player caging any player, Due to a issue with m_dummy_position data
+					auto plyr = g_player_service->get_by_id(sender->m_player_id);
+					if (!plyr->cage_notification_sent)
+					{
+						plyr->cage_notification_sent = true;
+						g.reactions.cage.process(plyr);
+					}
+					return true;
+				}
 				break;
 			}
 			case sync_node_id("CPlayerAppearanceDataNode"):

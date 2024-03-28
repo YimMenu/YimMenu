@@ -72,6 +72,7 @@ namespace big
 		rate_limiter m_play_sound_rate_limit{1s, 10};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
+		rate_limiter m_ptfx_ratelimit{1s, 3};
 
 		bool block_radio_requests = false;
 
@@ -91,6 +92,7 @@ namespace big
 		std::optional<std::chrono::time_point<std::chrono::steady_clock>> last_message_time;
 		uint32_t num_time_syncs_sent = 9999;
 
+		bool block_ptfx         = false;
 		bool block_explosions   = false;
 		bool block_clone_create = false;
 		bool block_clone_sync   = false;
@@ -99,6 +101,9 @@ namespace big
 		bool log_network_events = false;
 
 		int spectating_player = -1;
+
+		bool cage_notification_sent = false;
+		bool ptfx_spam_notification_sent = false;
 
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;

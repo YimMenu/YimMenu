@@ -181,6 +181,7 @@ namespace big
 			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
 			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
 			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
+			reaction cage{"Cage", "REACTION_CAGE_NOTIFY", "REACTION_CAGE_ANNOUNCE"};
 			reaction crash{"Crash", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
 			reaction end_session_kick{"End Session Kick", "REACTION_END_SESSION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
 			reaction fake_deposit{"Fake Deposit", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
@@ -197,6 +198,7 @@ namespace big
 			reaction send_to_location{"Send To Location", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
 			reaction send_to_interior{"Send To Interior", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
 			reaction sound_spam{"Sound Spam", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
+			reaction ptfx_spam{"PTFX Spam", "REACTION_PTFX_SPAM_NOTIFY", "REACTION_PTFX_SPAM_ANNOUNCE"};
 			reaction spectate_notification{"Spectate Notification", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
 			reaction give_collectible{"Give Collectible", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
 			reaction transaction_error{"Transaction Error", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
@@ -286,8 +288,10 @@ namespace big
 			bool kick_rejoin             = true;
 			bool force_relay_connections = false;
 			bool stop_traffic            = true;
+			bool cage_protection		 = false;
+			bool ptfx_spam_protection	 = true;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, cage_protection, ptfx_spam_protection, kick_rejoin, force_relay_connections, stop_traffic)
 		} protections{};
 
 		struct self

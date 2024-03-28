@@ -71,6 +71,7 @@ namespace big
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.clear_wanted_level);
 		draw_reaction(g.reactions.crash);
+		draw_reaction(g.reactions.cage);
 		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.destroy_personal_vehicle);
 		draw_reaction(g.reactions.fake_deposit);
@@ -89,6 +90,7 @@ namespace big
 		draw_reaction(g.reactions.send_to_location);
 		draw_reaction(g.reactions.send_to_interior);
 		draw_reaction(g.reactions.sound_spam);
+		draw_reaction(g.reactions.ptfx_spam);
 		draw_reaction(g.reactions.spectate_notification);
 		draw_reaction(g.reactions.start_activity);
 		draw_reaction(g.reactions.start_script);
