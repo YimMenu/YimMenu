@@ -287,7 +287,6 @@ namespace big
 				}
 			}
 
-			// TODO Add support for multiple commands at once (i.e with ; separation)
 			if (current_index(command_buffer) == 1)
 			{
 				if (!g.cmd.command_history.empty())
@@ -296,7 +295,6 @@ namespace big
 				}
 			}
 			// If we are at any index above the first word, suggest arguments
-			// TODO Add support for multiple commands at once (i.e with ; separation)
 			else if (current_index(command_buffer) > 1)
 			{
 				auto current_buffer_index = current_index(command_buffer);
