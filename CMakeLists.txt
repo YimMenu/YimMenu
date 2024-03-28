@@ -43,7 +43,7 @@ else ()
   add_compile_options(-Wa,-mbig-obj)
 endif ()
 
-add_library(YimMenu MODULE "${SRC_MAIN}")
+add_library(YimMenu MODULE "${SRC_MAIN}" "src/backend/commands/player/misc/tp_to_player.cpp"  "src/backend/commands/spawn/spawn_personal_vehicle.cpp" "src/backend/commands/teleport/teleport_to_location.cpp")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(TARGET YimMenu PROPERTY CXX_STANDARD 23) # 23 Because std::format is not avalible in std:c++20 for some reason. Maybe it's because i use v142 toolset.
