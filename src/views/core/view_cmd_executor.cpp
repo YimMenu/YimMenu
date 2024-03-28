@@ -54,11 +54,11 @@ namespace big
 	{
 		std::vector<std::string> suggestions_filtered;
 		std::string filter_lowercase = filter;
-		std::transform(filter_lowercase.begin(), filter_lowercase.end(), filter_lowercase.begin(), ::tolower);
+		string::operations::to_lower(filter_lowercase);
 		for (auto suggestion : suggestions)
 		{
 			std::string suggestion_lowercase = suggestion;
-			std::transform(suggestion_lowercase.begin(), suggestion_lowercase.end(), suggestion_lowercase.begin(), ::tolower);
+			string::operations::to_lower(suggestion_lowercase);
 			auto words = string::operations::split(command_buffer, ' ');
 			if (suggestion_lowercase.find(filter_lowercase) != std::string::npos || does_string_exist_in_list(words.back(), current_suggestion_list) /*Need this to maintain suggestion list while navigating it*/)
 				suggestions_filtered.push_back(suggestion);
@@ -91,7 +91,7 @@ namespace big
 			for (auto suggestion : suggestion_list_filtered(suggestions.value(), words.back()))
 			{
 				std::string guess_lowercase = words.back();
-				std::string suggestion_lowercase;
+				std::string suggestion_lowercase = suggestion;
 				string::operations::to_lower(suggestion_lowercase);
 				string::operations::to_lower(guess_lowercase);
 
