@@ -46,7 +46,8 @@ namespace big
 	// What word in the sentence are we currently at
 	int current_index(std::string current_buffer)
 	{
-		auto words = string::operations::split(current_buffer, ' ');
+		auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
+		auto words = string::operations::split(separate_commands.back(), ' ');
 		return words.size();
 	}
 
@@ -77,7 +78,8 @@ namespace big
 		}
 		else
 		{
-			auto words           = string::operations::split(current_buffer, ' ');
+			auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
+			auto words           = string::operations::split(separate_commands.back(), ' ');
 			auto current_command = command::get(rage::joaat(words.front()));
 
 			if (!current_command)
@@ -90,7 +92,7 @@ namespace big
 
 			for (auto suggestion : suggestion_list_filtered(suggestions.value(), words.back()))
 			{
-				std::string guess_lowercase = words.back();
+				std::string guess_lowercase      = words.back();
 				std::string suggestion_lowercase = suggestion;
 				string::operations::to_lower(suggestion_lowercase);
 				string::operations::to_lower(guess_lowercase);
@@ -154,7 +156,8 @@ namespace big
 
 	void rebuild_buffer_with_suggestion(ImGuiInputTextCallbackData* data, std::string suggestion)
 	{
-		auto words = string::operations::split(data->Buf, ' ');
+		auto separate_commands = string::operations::split(data->Buf, ';'); // Split by semicolon to support multiple commands
+		auto words = string::operations::split(separate_commands.back(), ' ');
 		std::string new_text;
 
 		// Replace the last word with the suggestion
@@ -162,6 +165,19 @@ namespace big
 		words.push_back(suggestion);
 
 		// Rebuild the command with its arguments from scratch
+
+		if (separate_commands.size() > 1)
+		{
+			for (auto command : separate_commands)
+			{
+				if (command != separate_commands.back())
+				{
+					new_text += command;
+					new_text += ";";
+				}
+			}
+		}
+
 		for (auto word : words)
 		{
 			new_text += word;
@@ -289,9 +305,10 @@ namespace big
 			else if (current_index(command_buffer) > 1)
 			{
 				auto current_buffer_index = current_index(command_buffer);
-				auto buffer_words         = string::operations::split(command_buffer, ' ');
+				auto separate_commands     = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
+				auto buffer_words = string::operations::split(separate_commands.back(), ' ');
 
-				if (auto current_command = command::get(rage::joaat(string::operations::split(command_buffer, ' ').front())))
+				if (auto current_command = command::get(rage::joaat(buffer_words.front())))
 				{
 					auto argument_suggestions = current_command->get_argument_suggestions(current_buffer_index - 1);
 					if (argument_suggestions != std::nullopt)
@@ -299,7 +316,8 @@ namespace big
 						auto filtered_suggestions = suggestion_list_filtered(argument_suggestions.value(), buffer_words.back());
 						if (filtered_suggestions.size() > 10)
 						{
-							current_suggestion_list = std::vector<std::string>(filtered_suggestions.begin(), filtered_suggestions.begin() + 10);
+							current_suggestion_list =
+							    std::vector<std::string>(filtered_suggestions.begin(), filtered_suggestions.begin() + 10);
 						}
 						else
 						{
