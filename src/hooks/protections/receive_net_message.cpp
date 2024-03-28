@@ -19,11 +19,11 @@
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
-	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform))) != rage::rlPlatforms::PC)
+	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform) * 8)) != rage::rlPlatforms::PC)
 		return;
 
 	buf.ReadPeerId(&hnd.m_rockstar_id);
-	hnd.m_padding = buf.Read<uint8_t>(sizeof(hnd.m_padding));
+	hnd.m_padding = buf.Read<uint8_t>(sizeof(hnd.m_padding) * 8);
 }
 
 inline bool is_kick_instruction(rage::datBitBuffer& buffer)
