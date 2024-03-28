@@ -36,11 +36,19 @@ namespace big
 
 	std::string auto_fill_command(std::string current_buffer)
 	{
-		auto possible_commands = command::get_suggestions(current_buffer);
-		if (possible_commands.size() == 0)
+		if (command::get(rage::joaat(current_buffer)) != nullptr)
 			return current_buffer;
 
-		return possible_commands[0]->get_name();
+		for (auto [_, cmd] : g_commands)
+		{
+			if (cmd && cmd->get(_) && &cmd->get_name())
+			{
+				if (cmd->get_name().find(current_buffer) != std::string::npos)
+					return cmd->get_name();
+			}
+		}
+
+		return std::string();
 	}
 
 	// What word in the sentence are we currently at
@@ -70,18 +78,18 @@ namespace big
 
 	void get_appropriate_suggestion(std::string current_buffer, std::string& suggestion_)
 	{
+		auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
+		auto words           = string::operations::split(separate_commands.back(), ' ');
+		auto current_command = command::get(rage::joaat(words.front()));
 		auto argument_index = current_index(current_buffer);
+
 		if (argument_index == 1)
 		{
-			suggestion_ = auto_fill_command(current_buffer);
+			suggestion_ = auto_fill_command(words.back());
 			return;
 		}
 		else
 		{
-			auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
-			auto words           = string::operations::split(separate_commands.back(), ' ');
-			auto current_command = command::get(rage::joaat(words.front()));
-
 			if (!current_command)
 				return;
 
@@ -164,26 +172,11 @@ namespace big
 		words.pop_back();
 		words.push_back(suggestion);
 
-		// Rebuild the command with its arguments from scratch
+		// Replace the last command with the new suggestion
+		separate_commands.pop_back();
+		separate_commands.push_back(string::operations::join(words, ' '));
 
-		if (separate_commands.size() > 1)
-		{
-			for (auto command : separate_commands)
-			{
-				if (command != separate_commands.back())
-				{
-					new_text += command;
-					new_text += ";";
-				}
-			}
-		}
-
-		for (auto word : words)
-		{
-			new_text += word;
-			if (word != words.back())
-				new_text += " ";
-		}
+		new_text = string::operations::join(separate_commands, ';');
 
 		data->DeleteChars(0, data->BufTextLen);
 		data->InsertChars(0, new_text.c_str());
@@ -275,7 +268,8 @@ namespace big
 
 			if (!command_buffer.empty())
 			{
-				get_appropriate_suggestion(command_buffer, auto_fill_suggestion);
+				auto separate_commands = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
+				get_appropriate_suggestion(separate_commands.back(), auto_fill_suggestion);
 
 				if (auto_fill_suggestion != command_buffer)
 					ImGui::Text("Suggestion: %s", auto_fill_suggestion.data());
