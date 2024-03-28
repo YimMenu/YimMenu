@@ -50,7 +50,6 @@ namespace big
 		return words.size();
 	}
 
-	// TODO currently breaks the command if argument had to be uppercase
 	std::vector<std::string> suggestion_list_filtered(std::vector<std::string> suggestions, std::string filter)
 	{
 		std::vector<std::string> suggestions_filtered;
@@ -92,9 +91,11 @@ namespace big
 			for (auto suggestion : suggestion_list_filtered(suggestions.value(), words.back()))
 			{
 				std::string guess_lowercase = words.back();
-				std::transform(guess_lowercase.begin(), guess_lowercase.end(), guess_lowercase.begin(), ::tolower);
+				std::string suggestion_lowercase;
+				string::operations::to_lower(suggestion_lowercase);
+				string::operations::to_lower(guess_lowercase);
 
-				if (suggestion.find(guess_lowercase) != std::string::npos)
+				if (suggestion_lowercase.find(guess_lowercase) != std::string::npos)
 				{
 					suggestion_ = suggestion;
 					break;
@@ -117,7 +118,7 @@ namespace big
 			return;
 		}
 
-		if (found == list.begin())
+		if (*found == list.front())
 		{
 			current = list.back();
 			return;
@@ -141,7 +142,7 @@ namespace big
 			return;
 		}
 
-		if (found == list.end() - 1)
+		if (*found == list.back())
 		{
 			current = list.front();
 			return;
@@ -269,12 +270,9 @@ namespace big
 
 			if (current_suggestion_list.size() > 0)
 			{
-				int suggestions = 0;
 				for (auto suggestion : current_suggestion_list)
 				{
-					if (suggestions < 10 /*Hard limit to 10 for now*/)
-						components::selectable(suggestion, suggestion == selected_suggestion);
-					suggestions++;
+					components::selectable(suggestion, suggestion == selected_suggestion);
 				}
 			}
 
@@ -299,7 +297,14 @@ namespace big
 					if (argument_suggestions != std::nullopt)
 					{
 						auto filtered_suggestions = suggestion_list_filtered(argument_suggestions.value(), buffer_words.back());
-						current_suggestion_list = filtered_suggestions;
+						if (filtered_suggestions.size() > 10)
+						{
+							current_suggestion_list = std::vector<std::string>(filtered_suggestions.begin(), filtered_suggestions.begin() + 10);
+						}
+						else
+						{
+							current_suggestion_list = filtered_suggestions;
+						}
 					}
 				}
 			}
