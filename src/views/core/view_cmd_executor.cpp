@@ -26,6 +26,7 @@ namespace big
 		{
 			return;
 		}
+
 		if (g.cmd.command_history.size() >= 10)
 		{
 			g.cmd.command_history.erase(g.cmd.command_history.begin());
@@ -257,7 +258,7 @@ namespace big
 
 			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory, nullptr, apply_suggestion))
 			{
-				if (command::process(command_buffer, std::make_shared<default_command_context>(), true))
+				if (command::process(command_buffer, std::make_shared<default_command_context>(), false))
 				{
 					g.cmd_executor.enabled = false;
 					add_to_last_used_commands(command_buffer);
