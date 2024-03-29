@@ -135,12 +135,13 @@ namespace big
 
 			while (!m_shutdown_preview && g_running && g_gui->is_open() )
 			{
-				Vector3 location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
+				Vector3 location{};
 
 				if (m_current_ent == 0)
 				{
-					location.z  = -10.f;
-
+					auto current_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
+					auto closest_car      = vehicle::get_closest_to_location(current_location, 100.f);
+					location              = ENTITY::GET_ENTITY_COORDS(closest_car, TRUE);
 					if (m_ped_model_hash)
 					{
 						m_current_ent = ped::spawn(ePedType::PED_TYPE_ARMY, m_ped_model_hash, m_ped_clone, location, 0.f, false);
@@ -154,16 +155,16 @@ namespace big
 					{
 						if (m_veh_owned_mods.empty())
 						{
-							m_current_ent = vehicle::spawn(m_veh_model_hash, location, 0.f, false);
+							m_current_ent = vehicle::spawn(m_veh_model_hash, location, 0.f, false, true);
 						}
 						else
 						{
-							m_current_ent = vehicle::clone_from_owned_mods(m_veh_owned_mods, location, 0.f, false);
+							m_current_ent = vehicle::clone_from_owned_mods(m_veh_owned_mods, location, 0.f, false, true);
 						}
 					}
 					else if (!m_current_persisted_vehicle_name.empty())
 					{
-						m_current_ent = persist_car_service::load_vehicle(m_current_persisted_vehicle_name, g.persist_car.persist_vehicle_sub_folder, Vector3());
+						m_current_ent = persist_car_service::load_vehicle(m_current_persisted_vehicle_name, g.persist_car.persist_vehicle_sub_folder, location);
 					}
 
 					if (m_current_ent)
@@ -180,16 +181,23 @@ namespace big
 						OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_ent, false);
 					}
 				}
+
+				if (m_ped_model_hash)
+				{
+					location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, -.5f);
+				}
 				else
 				{
-					if (const int alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 255)
-					{
-						ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(255, alpha + 20), false);
-					}
-
-					ENTITY::SET_ENTITY_HEADING(m_current_ent, m_heading);
-					ENTITY::SET_ENTITY_COORDS(m_current_ent, location.x, location.y, location.z, 0, 0, 0, 0);
+					location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
 				}
+
+				if (auto alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 255)
+				{
+					ENTITY::SET_ENTITY_ALPHA(m_current_ent, std::min<int>(255, alpha + 20), false);
+				}
+
+				ENTITY::SET_ENTITY_HEADING(m_current_ent, m_heading);
+				ENTITY::SET_ENTITY_COORDS(m_current_ent, location.x, location.y, location.z, 0, 0, 0, 0);
 
 				auto now = std::chrono::steady_clock::now();
 				auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_rotation_start_time).count() / 1000.0; // Convert to seconds
@@ -201,13 +209,6 @@ namespace big
 			}
 
 			entity::delete_entity(m_current_ent, true);
-
-			script::get_current()->yield();
-
-			if (m_current_ent != NULL)
-			{
-				LOG(WARNING) << "FAILED TO DELETE PREVIEW CAR! " << m_current_ent;
-			}
 
 			clear_data();
 		});

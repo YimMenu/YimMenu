@@ -154,7 +154,7 @@ namespace big::vehicle
 	{
 		if (entity::request_model(hash))
 		{
-			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, TRUE);
+			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
 
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
@@ -354,9 +354,9 @@ namespace big::vehicle
 	}
 
 
-	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked)
+	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked, bool is_script_vehicle)
 	{
-		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked);
+		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked, is_script_vehicle);
 		if (vehicle == 0)
 		{
 			return 0;
