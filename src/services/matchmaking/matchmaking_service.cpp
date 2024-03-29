@@ -60,7 +60,7 @@ namespace big
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.language_filter_enabled
-					    && m_found_sessions[i].attributes.language != g.session_browser.language_filter)
+					    && (eGameLanguage)m_found_sessions[i].attributes.language != g.session_browser.language_filter)
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.player_count_filter_enabled

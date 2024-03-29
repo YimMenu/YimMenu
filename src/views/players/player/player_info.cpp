@@ -78,7 +78,7 @@ namespace big
 					    const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
 
 					    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
-						    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
+						    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages.at((eGameLanguage)boss_goon.Language).data());
 
 					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_CEO_NAME"_T, boss_goon.GangName.Data).c_str());
 					    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MC_NAME"_T, boss_goon.ClubhouseName.Data).c_str());

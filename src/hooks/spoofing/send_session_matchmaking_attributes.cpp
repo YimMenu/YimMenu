@@ -9,7 +9,7 @@ namespace big
 			attributes->m_param_values[4] = g.spoofing.session_region_type;
 
 		if (g.spoofing.spoof_session_language)
-			attributes->m_param_values[3] = g.spoofing.session_language;
+			attributes->m_param_values[3] = (uint32_t)g.spoofing.session_language;
 
 		if (g.spoofing.spoof_session_player_count)
 			attributes->m_param_values[7] = g.spoofing.session_player_count;
