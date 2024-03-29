@@ -27,6 +27,28 @@ namespace big
 		file_stream.close();
 	}
 
+	Vehicle persist_car_service::preview_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
+	{
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
+
+		std::ifstream file_stream(file.get_path());
+
+		nlohmann::json vehicle_json;
+
+		try
+		{
+			file_stream >> vehicle_json;
+			file_stream.close();
+		}
+		catch (std::exception& e)
+		{
+			g_notification_service.push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
+			return NULL;
+		}
+
+		return spawn_vehicle_json(vehicle_json, self::ped, spawn_coords);
+	}
+
 	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
 	{
 		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
@@ -198,7 +220,7 @@ namespace big
 		Vehicle vehicle = self::veh;
 		if (is_preview_spawn || (!is_preview_spawn && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
 		{
-			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading, !is_preview_spawn, is_preview_spawn);
+			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading, !is_preview_spawn);
 
 			if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
 				script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.

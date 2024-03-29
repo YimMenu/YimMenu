@@ -20,7 +20,6 @@ namespace big
 		bool m_shutdown_preview = false;
 
 		std::chrono::time_point<std::chrono::steady_clock> m_rotation_start_time;
-		std::chrono::time_point<std::chrono::steady_clock> m_last_preview;
 	public:
 		model_preview_service();
 		~model_preview_service();

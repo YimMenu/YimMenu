@@ -12,7 +12,6 @@ namespace big
 {
 	model_preview_service::model_preview_service()
 	{
-		m_last_preview          = std::chrono::steady_clock::now();
 		g_model_preview_service = this;
 	}
 
@@ -116,17 +115,6 @@ namespace big
 			return;
 		}
 
-		if ((**g_pointers->m_gta.m_vehicle_pool)->m_item_count >= (**g_pointers->m_gta.m_vehicle_pool)->m_size)
-			return;
-
-		auto now                = std::chrono::steady_clock::now();
-		auto last_preview_delta = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_last_preview);
-
-		if (last_preview_delta < 300ms)
-			return;
-
-		m_last_preview = now;
-
 		m_running = true;
 
 		g_fiber_pool->queue_job([this] {
@@ -139,9 +127,6 @@ namespace big
 
 				if (m_current_ent == 0)
 				{
-					auto current_location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
-					auto closest_car      = vehicle::get_closest_to_location(current_location, 100.f);
-					location              = ENTITY::GET_ENTITY_COORDS(closest_car, TRUE);
 					if (m_ped_model_hash)
 					{
 						m_current_ent = ped::spawn(ePedType::PED_TYPE_ARMY, m_ped_model_hash, m_ped_clone, location, 0.f, false);
@@ -155,16 +140,16 @@ namespace big
 					{
 						if (m_veh_owned_mods.empty())
 						{
-							m_current_ent = vehicle::spawn(m_veh_model_hash, location, 0.f, false, true);
+							m_current_ent = vehicle::spawn(m_veh_model_hash, location, 0.f, false);
 						}
 						else
 						{
-							m_current_ent = vehicle::clone_from_owned_mods(m_veh_owned_mods, location, 0.f, false, true);
+							m_current_ent = vehicle::clone_from_owned_mods(m_veh_owned_mods, location, 0.f, false);
 						}
 					}
 					else if (!m_current_persisted_vehicle_name.empty())
 					{
-						m_current_ent = persist_car_service::load_vehicle(m_current_persisted_vehicle_name, g.persist_car.persist_vehicle_sub_folder, location);
+						m_current_ent = persist_car_service::preview_vehicle(m_current_persisted_vehicle_name, g.persist_car.persist_vehicle_sub_folder, location);
 					}
 
 					if (m_current_ent)
@@ -181,14 +166,16 @@ namespace big
 						OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_ent, false);
 					}
 				}
-
-				if (m_ped_model_hash)
-				{
-					location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, -.5f);
-				}
 				else
 				{
-					location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
+					if (m_ped_model_hash)
+					{
+						location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 5.f, -.5f);
+					}
+					else
+					{
+						location = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(self::ped, 0.f, 10.f, .5f);
+					}
 				}
 
 				if (auto alpha = ENTITY::GET_ENTITY_ALPHA(m_current_ent); alpha < 255)
@@ -208,7 +195,7 @@ namespace big
 				script::get_current()->yield();
 			}
 
-			entity::delete_entity(m_current_ent, true);
+			ENTITY::DELETE_ENTITY(&m_current_ent);
 
 			clear_data();
 		});
