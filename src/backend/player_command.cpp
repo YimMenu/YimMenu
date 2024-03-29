@@ -2,6 +2,7 @@
 
 #include "fiber_pool.hpp"
 #include "util/math.hpp"
+#include "util/string_operations.hpp"
 
 namespace big
 {
@@ -61,7 +62,9 @@ namespace big
 		std::vector<std::string> new_args;
 		command_arguments result(m_num_args.value());
 
-		if (args[0] == "me" || args[0] == "self")
+		auto player_name = args[0];
+		auto local_player_name = (std::string) g_player_service->get_self()->get_name();
+		if (args[0] == "me" || args[0] == "self" || string::operations::to_lower(player_name).find(string::operations::to_lower(local_player_name)) != std::string::npos)
 		{
 			result.push(ctx->get_sender()->id());
 		}
