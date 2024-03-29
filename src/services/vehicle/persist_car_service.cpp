@@ -46,7 +46,7 @@ namespace big
 			return NULL;
 		}
 
-		return spawn_vehicle_json(vehicle_json, self::ped, spawn_coords);
+		return spawn_vehicle_json(vehicle_json, self::ped, spawn_coords, true);
 	}
 
 	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
@@ -210,17 +210,16 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
+	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords, bool is_preview)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
-		auto is_preview_spawn   = spawn_coords.has_value();
-		const Vector3& spawn_location = is_preview_spawn ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
+		const Vector3& spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
 		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 		Vehicle vehicle = self::veh;
-		if (is_preview_spawn || (!is_preview_spawn && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
+		if (is_preview || (!is_preview && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
 		{
-			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading, !is_preview_spawn);
+			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading, !is_preview);
 
 			if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
 				script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.

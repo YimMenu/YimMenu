@@ -69,7 +69,7 @@ namespace big
 
 		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
 		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords);
-		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
+		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt, bool is_preview = false);
 
 		static nlohmann::json get_full_vehicle_json(Vehicle vehicle);
 
