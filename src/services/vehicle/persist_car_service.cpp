@@ -27,6 +27,28 @@ namespace big
 		file_stream.close();
 	}
 
+	Vehicle persist_car_service::preview_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
+	{
+		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
+
+		std::ifstream file_stream(file.get_path());
+
+		nlohmann::json vehicle_json;
+
+		try
+		{
+			file_stream >> vehicle_json;
+			file_stream.close();
+		}
+		catch (std::exception& e)
+		{
+			g_notification_service.push_warning("PERSIST_CAR_TITLE"_T.data(), "Failed to load JSON file");
+			return NULL;
+		}
+
+		return spawn_vehicle_json(vehicle_json, self::ped, spawn_coords, true);
+	}
+
 	Vehicle persist_car_service::load_vehicle(std::string_view file_name, std::string folder_name, const std::optional<Vector3>& spawn_coords)
 	{
 		const auto file = check_vehicle_folder(folder_name).get_file(file_name);
@@ -188,16 +210,16 @@ namespace big
 		return vehicle;
 	}
 
-	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords)
+	Vehicle persist_car_service::spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords, bool is_preview)
 	{
 		const Hash vehicle_hash = vehicle_json[vehicle_model_hash_key];
 		const Vector3& spawn_location = spawn_coords.has_value() ? spawn_coords.value() : vehicle::get_spawn_location(g.persist_car.spawn_inside, vehicle_hash);
 		const float spawn_heading = ENTITY::GET_ENTITY_HEADING(self::ped);
 
 		Vehicle vehicle = self::veh;
-		if (spawn_coords.has_value() || (!spawn_coords.has_value() && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
+		if (is_preview || (!is_preview && ENTITY::GET_ENTITY_MODEL(vehicle) != vehicle_hash))
 		{
-			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading);
+			vehicle = big::vehicle::spawn(vehicle_hash, spawn_location, spawn_heading, !is_preview);
 
 			if (spawn_location.x + spawn_location.y + spawn_location.z != 0)
 				script::get_current()->yield(); //This is needed to wait for the engine to instantiate things like the radio station so it won't overwrite it on the next frame.

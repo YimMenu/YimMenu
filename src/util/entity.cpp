@@ -26,7 +26,10 @@ namespace big::entity
 	void delete_entity(Entity& ent, bool force)
 	{
 		if (!ENTITY::DOES_ENTITY_EXIST(ent))
+		{
+			ent = NULL;
 			return;
+		}
 		if (!force && !take_control_of(ent))
 		{
 			LOG(VERBOSE) << "Failed to take control of entity before deleting";
