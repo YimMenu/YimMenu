@@ -1101,7 +1101,7 @@ namespace big
 
 		struct cmd
 		{
-			std::vector<std::string> command_history;
+			std::deque<std::string> command_history;
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(cmd, command_history)
 		} cmd{};
 

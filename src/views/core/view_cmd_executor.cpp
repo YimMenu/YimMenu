@@ -20,19 +20,29 @@ namespace big
 		return found != list.end();
 	}
 
+	std::vector<std::string> deque_to_vector(std::deque<std::string> deque)
+	{
+		std::vector<std::string> vector;
+		for (auto& element : deque)
+		{
+			vector.push_back(element);
+		}
+		return vector;
+	}
+
 	static void add_to_last_used_commands(const std::string& command)
 	{
-		if (does_string_exist_in_list(command, g.cmd.command_history))
+		if (does_string_exist_in_list(command, deque_to_vector(g.cmd.command_history)))
 		{
 			return;
 		}
 
 		if (g.cmd.command_history.size() >= 10)
 		{
-			g.cmd.command_history.erase(g.cmd.command_history.begin());
+			g.cmd.command_history.pop_back();
 		}
 
-		g.cmd.command_history.push_back(command);
+		g.cmd.command_history.push_front(command);
 	}
 
 	std::string auto_fill_command(std::string current_buffer)
@@ -82,7 +92,7 @@ namespace big
 		auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
 		auto words           = string::operations::split(separate_commands.back(), ' ');
 		auto current_command = command::get(rage::joaat(words.front()));
-		auto argument_index = current_index(current_buffer);
+		auto argument_index  = current_index(current_buffer);
 
 		if (argument_index == 1)
 		{
@@ -291,14 +301,14 @@ namespace big
 			{
 				if (!g.cmd.command_history.empty())
 				{
-					current_suggestion_list = g.cmd.command_history;
+					current_suggestion_list = deque_to_vector(g.cmd.command_history);
 				}
 			}
 			// If we are at any index above the first word, suggest arguments
 			else if (current_index(command_buffer) > 1)
 			{
 				auto current_buffer_index = current_index(command_buffer);
-				auto separate_commands     = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
+				auto separate_commands = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
 				auto buffer_words = string::operations::split(separate_commands.back(), ' ');
 
 				if (auto current_command = command::get(rage::joaat(buffer_words.front())))
