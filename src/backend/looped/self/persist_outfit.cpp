@@ -1,11 +1,11 @@
 #include "backend/looped/looped.hpp"
+#include "core/scr_globals.hpp"
 #include "file_manager.hpp"
+#include "gta/enums.hpp"
 #include "logger/logger.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/outfit/outfit_service.hpp"
-#include "gta/enums.hpp"
-#include "core/scr_globals.hpp"
 #include "services/tunables/tunables_service.hpp"
 
 namespace big
@@ -15,13 +15,13 @@ namespace big
 		int offset = 0;
 		switch (model)
 		{
-			case "mp_m_freemode_01"_J: break;
-			case "mp_f_freemode_01"_J:
-			{
-				offset = 1;
-				break;
-			}
-			default: return false; //For non-normal models
+		case "mp_m_freemode_01"_J: break;
+		case "mp_f_freemode_01"_J:
+		{
+			offset = 1;
+			break;
+		}
+		default: return false; //For non-normal models
 		}
 
 		return PED::GET_PED_DRAWABLE_VARIATION(self::ped, ComponentId::AUXILIARY) == 15 && PED::GET_PED_DRAWABLE_VARIATION(self::ped, ComponentId::TORSO) == 15 && PED::GET_PED_DRAWABLE_VARIATION(self::ped, ComponentId::LEGS) == (14 + offset);
@@ -58,7 +58,7 @@ namespace big
 			outfit.clear();
 			try
 			{
-			i >> outfit;
+				i >> outfit;
 			}
 			catch (const std::exception& e)
 			{
