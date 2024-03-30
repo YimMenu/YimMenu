@@ -34,7 +34,7 @@ namespace big
 
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
-			this->m_num_args = 6; // This is retarded but it works
+			m_num_args = 6; // This is retarded but it works
 			command_arguments result(6);
 			const std::string location_name = args[0];
 
@@ -74,7 +74,7 @@ namespace big
 			const float roll = args.get<float>(5);
 
 			teleport::teleport_player_to_coords(g_player_service->get_self(), Vector3(x, y, z), Vector3(yaw, pitch, roll));
-			this->m_num_args = 1; // This is retarded but it works
+			m_num_args = 1; // This is retarded but it works
 		}
 	};
 

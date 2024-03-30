@@ -55,7 +55,7 @@ namespace big
 			if (arg == 1)
 			{
 				std::vector<std::string> suggestions;
-				for (const auto& [_, session_type_string] : m_session_types)
+				for (const auto& session_type_string : m_session_types | std::ranges::views::values)
 				{
 					suggestions.push_back(session_type_string);
 				}

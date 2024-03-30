@@ -50,9 +50,9 @@ namespace big
 		if (command::get(rage::joaat(current_buffer)) != nullptr)
 			return current_buffer;
 
-		for (auto [_, cmd] : g_commands)
+		for (auto [key, cmd] : g_commands)
 		{
-			if (cmd && cmd->get(_) && &cmd->get_name())
+			if (cmd && cmd->get(key) && &cmd->get_name())
 			{
 				if (cmd->get_name().find(current_buffer) != std::string::npos)
 					return cmd->get_name();

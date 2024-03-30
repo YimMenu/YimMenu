@@ -103,7 +103,7 @@ namespace big
 	{
 		float closest_distance    = std::numeric_limits<float>::max();
 		player_ptr closest_player = nullptr;
-		for (auto [_, player] : m_players)
+		for (auto player : m_players | std::ranges::views::values)
 		{
 			if (exclude_friends && player->is_friend())
 				continue;

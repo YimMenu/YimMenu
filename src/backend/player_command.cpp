@@ -87,7 +87,10 @@ namespace big
 					auto distance_ = math::distance_between_vectors(*g_player_service->get_self()->get_ped()->get_position(),
 					    *p.second->get_ped()->get_position());
 					if (distance_ < distance)
-						closest = p.second, distance = distance_;
+					{
+						closest  = p.second;
+						distance = distance_;
+					}
 				}
 			}
 
