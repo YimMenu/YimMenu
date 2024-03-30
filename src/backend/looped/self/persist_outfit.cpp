@@ -50,9 +50,9 @@ namespace big
 		static nlohmann::json outfit{};
 		static std::string persisting_outfit = "";
 
-		if (persisting_outfit != g_self_persist_outfit.value())
+		if (persisting_outfit != g.self.persist_outfit)
 		{
-			persisting_outfit                   = g_self_persist_outfit;
+			persisting_outfit                   = g.self.persist_outfit;
 			folder saved_outfit_path            = g_file_manager.get_project_folder("saved_outfits");
 			const auto persist_outfit_file_path = saved_outfit_path.get_file(persisting_outfit).get_path();
 			if (std::filesystem::exists(persist_outfit_file_path))
@@ -70,7 +70,7 @@ namespace big
 						LOG(INFO) << e.what();
 
 						outfit                = {};
-						g_self_persist_outfit = "";
+						g.self.persist_outfit = "";
 					}
 				}
 			}
