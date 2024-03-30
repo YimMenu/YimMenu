@@ -50,19 +50,29 @@ namespace big
 		static nlohmann::json outfit{};
 		static std::string persisting_outfit = "";
 
-		if (persisting_outfit != g.self.persist_outfit)
+		if (persisting_outfit != g_self_persist_outfit.value())
 		{
-			persisting_outfit        = g.self.persist_outfit;
-			folder saved_outfit_path = g_file_manager.get_project_folder("saved_outfits");
-			std::ifstream i(saved_outfit_path.get_file(persisting_outfit).get_path());
-			outfit.clear();
-			try
+			persisting_outfit                   = g_self_persist_outfit;
+			folder saved_outfit_path            = g_file_manager.get_project_folder("saved_outfits");
+			const auto persist_outfit_file_path = saved_outfit_path.get_file(persisting_outfit).get_path();
+			if (std::filesystem::exists(persist_outfit_file_path))
 			{
-				i >> outfit;
-			}
-			catch (const std::exception& e)
-			{
-				outfit = {};
+				std::ifstream i(persist_outfit_file_path);
+				if (i.is_open())
+				{
+					outfit.clear();
+					try
+					{
+						i >> outfit;
+					}
+					catch (const std::exception& e)
+					{
+						LOG(INFO) << e.what();
+
+						outfit                = {};
+						g_self_persist_outfit = "";
+					}
+				}
 			}
 		}
 
