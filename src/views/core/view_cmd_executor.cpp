@@ -287,6 +287,8 @@ namespace big
 			}
 
 			components::small_text("CMD_EXECUTOR_MULTIPLE_CMDS"_T);
+			components::small_text("CMD_EXECUTOR_INSTRUCTIONS"_T);
+			ImGui::Separator();
 			ImGui::Spacing();
 
 			if (current_suggestion_list.size() > 0)
