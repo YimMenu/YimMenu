@@ -82,10 +82,7 @@ namespace big
 			auto hash_item = owned_mods.find(MOD_MODEL_HASH);
 
 			m_veh_model_hash = hash_item->second;
-
-			m_veh_owned_mods.clear();
 			m_veh_owned_mods.insert(owned_mods.begin(), owned_mods.end());
-
 			m_veh_spawn_max = spawn_max;
 		}
 
@@ -203,6 +200,7 @@ namespace big
 
 	void model_preview_service::clear_data()
 	{
+		m_veh_owned_mods.clear();
 		m_ped_model_hash				 = {};
 		m_veh_model_hash				 = {};
 		m_ped_clone						 = {};
