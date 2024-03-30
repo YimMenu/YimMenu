@@ -56,7 +56,14 @@ namespace big
 			folder saved_outfit_path = g_file_manager.get_project_folder("saved_outfits");
 			std::ifstream i(saved_outfit_path.get_file(persisting_outfit).get_path());
 			outfit.clear();
+			try
+			{
 			i >> outfit;
+			}
+			catch (const std::exception& e)
+			{
+				outfit = {};
+			}
 		}
 
 		if (outfit.contains("model") && outfit["model"].get<uint32_t>() == model)
