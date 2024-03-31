@@ -22,7 +22,7 @@ inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffe
 	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform) * 8)) != rage::rlPlatforms::PC)
 		return;
 
-	buf.ReadPeerId(&hnd.m_rockstar_id);
+	buf.ReadRockstarId(&hnd.m_rockstar_id);
 	hnd.m_padding = buf.Read<uint8_t>(sizeof(hnd.m_padding) * 8);
 }
 

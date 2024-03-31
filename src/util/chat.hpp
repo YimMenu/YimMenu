@@ -21,7 +21,7 @@ namespace
 		buf.Write<uint8_t>(hnd.m_platform, sizeof(hnd.m_platform) * 8);
 		if (hnd.m_platform == rage::rlPlatforms::PC)
 		{
-			buf.WriteInt64(hnd.m_rockstar_id, sizeof(hnd.m_rockstar_id) * 8);
+			buf.WriteRockstarId(hnd.m_rockstar_id);
 			buf.Write<uint8_t>(hnd.m_padding, sizeof(hnd.m_padding) * 8);
 		}
 	}
