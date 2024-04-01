@@ -71,7 +71,7 @@ namespace big
 
 	void model_preview_service::show_vehicle(const std::map<int, int32_t>& owned_mods, bool spawn_max)
 	{
-		if (m_running && m_veh_model_hash != owned_mods.find(MOD_MODEL_HASH)->second)
+		if (m_running && m_veh_owned_mods != owned_mods)
 		{
 			stop_preview();
 			return;
