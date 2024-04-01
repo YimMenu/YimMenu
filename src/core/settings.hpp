@@ -7,6 +7,7 @@
 #include "file_manager.hpp"
 
 #include <bitset>
+#include <ped/CPedBoneInfo.hpp>
 #include <rage/rlSessionInfo.hpp>
 #include <weapon/CAmmoInfo.hpp>
 #include <weapon/CAmmoRocketInfo.hpp>
@@ -857,7 +858,6 @@ namespace big
 				float distance                                  = 25.f;
 				int32_t selected_bone                           = (int32_t)ePedBoneType::HEAD;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, adjust_position_scalar_for_velocity, adjust_position_scalar_for_velocity_value, only_on_ped_type, only_on_player, only_on_enemy, fov, distance)
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, on_player, on_enemy, on_police, on_npc, fov, distance)
 			} aimbot{};
 
 			struct flying_axe
