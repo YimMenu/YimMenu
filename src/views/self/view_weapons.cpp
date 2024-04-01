@@ -189,14 +189,40 @@ namespace big
 			ImGui::SameLine();
 			components::command_checkbox<"aimatenemy">();
 
-			components::command_checkbox<"smoothing">();
-			if (g.weapons.aimbot.smoothing)
-			{
-				ImGui::SameLine();
-				ImGui::PushItemWidth(220);
-				ImGui::SliderFloat("VIEW_WEAPON_AIM_SPEED"_T.data(), &g.weapons.aimbot.smoothing_speed, 1.f, 8.f, "%.1f");
-				ImGui::PopItemWidth();
-			}
+#define ImGui_CheckboxFlags_ped_type(ped_type) \
+	ImGui::CheckboxFlags(#ped_type, &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::ped_type)
+
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_0);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_1);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_NETWORK_PLAYER);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_2);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_CIVMALE);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_CIVFEMALE);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_COP);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_ALBANIAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_BIKER_1);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_BIKER_2);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_ITALIAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_RUSSIAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_RUSSIAN_2);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_IRISH);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_JAMAICAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_AFRICAN_AMERICAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_KOREAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_CHINESE_JAPANESE);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_PUERTO_RICAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_DEALER);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_MEDIC);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_FIREMAN);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_CRIMINAL);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_BUM);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_PROSTITUTE);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_SPECIAL);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_MISSION);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_SWAT);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_ANIMAL);
+			ImGui_CheckboxFlags_ped_type(PED_TYPE_ARMY);
+
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
 			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");

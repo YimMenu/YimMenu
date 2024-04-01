@@ -847,16 +847,16 @@ namespace big
 
 			struct aimbot
 			{
-				bool enable            = false;
-				bool smoothing         = true;
-				float smoothing_speed  = 2.f;
-				bool on_player         = true;
-				bool on_enemy          = false;
-				bool on_police         = false;
-				bool on_npc            = false;
-				float fov              = 90.f;
-				float distance         = 200.f;
-				uint32_t selected_bone = 0x796E; // Default to head
+				bool enable                                     = false;
+				bool adjust_position_scalar_for_velocity        = true;
+				float adjust_position_scalar_for_velocity_value = 1.15f;
+				int64_t only_on_ped_type                        = -1;
+				bool only_on_player                             = false;
+				bool only_on_enemy                              = false;
+				float fov                                       = 90.f;
+				float distance                                  = 25.f;
+				int32_t selected_bone                           = (int32_t)ePedBoneType::HEAD;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, adjust_position_scalar_for_velocity, adjust_position_scalar_for_velocity_value, only_on_ped_type, only_on_player, only_on_enemy, fov, distance)
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, on_player, on_enemy, on_police, on_npc, fov, distance)
 			} aimbot{};
 
