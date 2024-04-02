@@ -159,6 +159,8 @@ namespace big
 						ENTITY::FREEZE_ENTITY_POSITION(m_current_ent, true);
 						ENTITY::SET_ENTITY_ALPHA(m_current_ent, 0, false);
 						ENTITY::SET_ENTITY_COLLISION(m_current_ent, false, false);
+						ENTITY::SET_ENTITY_CAN_BE_DAMAGED(m_current_ent, false);
+						ENTITY::SET_ENTITY_PROOFS(m_current_ent, true, true, true, true, true, true, true, true);
 						ENTITY::SET_CAN_CLIMB_ON_ENTITY(m_current_ent, false);
 						OBJECT::SET_OBJECT_ALLOW_LOW_LOD_BUOYANCY(m_current_ent, false);
 					}
