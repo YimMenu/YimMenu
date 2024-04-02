@@ -183,13 +183,9 @@ namespace big
 
 		if (g.weapons.aimbot.enable)
 		{
-			components::command_checkbox<"aimatplayer">();
+			components::command_checkbox<"aimonlyatplayer">();
 			ImGui::SameLine();
-			components::command_checkbox<"aimatnpc">();
-			ImGui::SameLine();
-			components::command_checkbox<"aimatpolice">();
-			ImGui::SameLine();
-			components::command_checkbox<"aimatenemy">();
+			components::command_checkbox<"aimonlyatenemy">();
 
 #define ImGui_CheckboxFlags_ped_type(ped_type) \
 	ImGui::CheckboxFlags(#ped_type, &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::ped_type)
@@ -227,7 +223,7 @@ namespace big
 
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
-			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 100.f, "%.0f");
 			ImGui::PopItemWidth();
 		}
 
