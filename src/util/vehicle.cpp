@@ -158,7 +158,7 @@ namespace big::vehicle
 
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
-			if (*g_pointers->m_gta.m_is_session_started)
+			if (is_networked && *g_pointers->m_gta.m_is_session_started)
 			{
 				set_mp_bitset(veh);
 			}
