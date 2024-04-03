@@ -157,7 +157,7 @@ namespace big
 		static uintptr_t get_cam_follow_ped_camera()
 		{
 			uintptr_t cam_gameplay_director = *g_pointers->m_gta.m_cam_gameplay_director;
-			return *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x3'C0);
+			return *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x3C0);
 		}
 
 		static rage::fvector3 get_camera_position()
@@ -178,7 +178,7 @@ namespace big
 			}
 			else
 			{
-				return reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3'D0)->normalize();
+				return reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3D0)->normalize();
 			}
 		}
 
@@ -199,10 +199,8 @@ namespace big
 		{
 			m_target = nullptr;
 
-			float fov          = std::numeric_limits<float>::max();
-			float max_fov      = math::deg_to_rad(g.weapons.aimbot.fov);
-			float distance     = std::numeric_limits<float>::max();
-			float max_distance = g.weapons.aimbot.distance;
+			float best_fov      = math::deg_to_rad(g.weapons.aimbot.fov);
+			float best_distance = g.weapons.aimbot.distance;
 
 			for (rage::CEntity* ped_ : pools::get_all_peds())
 			{
@@ -250,12 +248,12 @@ namespace big
 
 				const auto fov = get_fov(head_position);
 
-				auto distance_to_ped = self_pos.distance(head_position);
-				if (fov < max_fov && distance_to_ped < max_distance)
+				const auto distance_to_ped = self_pos.distance(head_position);
+				if (fov < best_fov && distance_to_ped < best_distance)
 				{
-					max_fov      = fov;
-					max_distance = distance_to_ped;
-					m_target     = ped;
+					best_fov      = fov;
+					best_distance = distance_to_ped;
+					m_target      = ped;
 				}
 			}
 		}
@@ -267,28 +265,28 @@ namespace big
 			{
 				if (g_local_player->m_vehicle)
 				{
-					if (*(float*)(camera_params + 0x2'AC) == -2.0f)
+					if (*(float*)(camera_params + 0x2AC) == -2.0f)
 					{
-						*(float*)(camera_params + 0x2'AC) = 0.0f;
-						*(float*)(camera_params + 0x2'C0) = 111.0f;
-						*(float*)(camera_params + 0x2'C4) = 111.0f;
+						*(float*)(camera_params + 0x2AC) = 0.0f;
+						*(float*)(camera_params + 0x2C0) = 111.0f;
+						*(float*)(camera_params + 0x2C4) = 111.0f;
 					}
 				}
 				else
 				{
-					if (*(float*)(camera_params + 0x1'30) == 8.0f)
+					if (*(float*)(camera_params + 0x130) == 8.0f)
 					{
-						*(float*)(camera_params + 0x1'30) = 111.0f; // def 8.0f
-						*(float*)(camera_params + 0x1'34) = 111.0f; // def 10.0f
-						*(float*)(camera_params + 0x4'CC) = 0.0f;   // def 4.0f
+						*(float*)(camera_params + 0x130) = 111.0f; // def 8.0f
+						*(float*)(camera_params + 0x134) = 111.0f; // def 10.0f
+						*(float*)(camera_params + 0x4CC) = 0.0f;   // def 4.0f
 
-						if (*(float*)(camera_params + 0x4'9C) == 1.0f)
+						if (*(float*)(camera_params + 0x49C) == 1.0f)
 						{
-							*(float*)(camera_params + 0x4'9C) = 0.0f; // def 1.0f
+							*(float*)(camera_params + 0x49C) = 0.0f; // def 1.0f
 						}
 
-						*(float*)(camera_params + 0x2'AC) = 0.0f; // def -3.0f
-						*(float*)(camera_params + 0x2'B0) = 0.0f; // def -8.0f
+						*(float*)(camera_params + 0x2AC) = 0.0f; // def -3.0f
+						*(float*)(camera_params + 0x2B0) = 0.0f; // def -8.0f
 					}
 				}
 			}
@@ -302,8 +300,8 @@ namespace big
 
 			reset_aim_vectors(cam_follow_ped_camera);
 
-			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x40)   = aim_direction;
-			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3'D0) = aim_direction;
+			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x40)  = aim_direction;
+			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3D0) = aim_direction;
 		}
 
 		static inline CPed* last_target_pos_target{};

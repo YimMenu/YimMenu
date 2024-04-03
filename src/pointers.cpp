@@ -1797,7 +1797,7 @@ namespace big
             "E9 CD 09 00 00",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_cam_gameplay_director_update = ptr.sub(0x32).as<bool(uintptr_t this_)>();
+                g_pointers->m_gta.m_cam_gameplay_director_update = ptr.sub(0x32).as<functions::cam_gameplay_directory_update>();
             }
         }
         >(); // don't leave a trailing comma at the end
