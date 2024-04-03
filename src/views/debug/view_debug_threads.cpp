@@ -190,7 +190,7 @@ namespace big
 
 				if (MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(selected_stack_size) == 0)
 				{
-					g_notification_service->push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_NO_FREE_STACKS"_T.data());
+					g_notification_service.push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_NO_FREE_STACKS"_T.data());
 				}
 
 				while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(hash))
@@ -214,7 +214,7 @@ namespace big
 
 				if (idx == -1)
 				{
-					g_notification_service->push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_FAILED_WITH_LAUNCHER"_T.data());
+					g_notification_service.push_warning("VIEW_DEBUG_THREADS"_T.data(), "VIEW_DEBUG_THREADS_FAILED_WITH_LAUNCHER"_T.data());
 					return;
 				}
 

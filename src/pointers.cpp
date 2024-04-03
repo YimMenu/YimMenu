@@ -1772,6 +1772,15 @@ namespace big
             {
                 g_pointers->m_gta.m_weapon_info_manager = ptr.add(3).rip().sub(72).as<CWeaponInfoManager*>();
             }
+        },
+        // Can Create Vehicle
+        {
+            "CCV",
+            "8B 0D ? ? ? ? 39 0D ? ? ? ? 0F 9C C0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

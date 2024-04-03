@@ -33,7 +33,7 @@ namespace big
 		ImGui::SeparatorText("ONBOARDING_SET_MENU_OPEN_KEY"_T.data());
 		if (ImGui::Hotkey("VIEW_HOTKEY_SETTINGS_MENU_TOGGLE"_T.data(), &g.settings.hotkeys.menu_toggle))
 		{
-			g_notification_service->push("ONBOARDING_NOTIFICATION_TITLE"_T.data(), "ONBOARDING_NOTIFICATION_OPEN_KEY"_T.data());
+			g_notification_service.push("ONBOARDING_NOTIFICATION_TITLE"_T.data(), "ONBOARDING_NOTIFICATION_OPEN_KEY"_T.data());
 		}
 	}
 

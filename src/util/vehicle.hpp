@@ -29,7 +29,7 @@ namespace big::vehicle
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false);
 	Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading);
 	std::map<int, int32_t> get_owned_mods_from_vehicle_idx(script_global vehicle_idx);
-	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked = true);
+	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked = true, bool is_script_vehicle = false);
 	std::map<int, int32_t> get_owned_mods_from_vehicle(Vehicle vehicle);
 	void teleport_into_vehicle(Vehicle veh);
 	void max_vehicle(Vehicle veh);

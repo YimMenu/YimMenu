@@ -3,6 +3,7 @@
 
 #include "lua/lua_manager.hpp"
 #include "script_mgr.hpp"
+#include "gta_util.hpp"
 
 namespace lua::script
 {
@@ -151,11 +152,22 @@ namespace lua::script
 		module->m_registered_scripts.push_back(std::move(lua_script));
 	}
 
+	// Lua API: function
+	// Table: script
+	// Name: execute_as_script
+	// Param: script_name: string: target script thread.
+	// Param: func: function: function that will be executed once in the script thread.
+	static void execute_as_script(const std::string& script_name, sol::protected_function func)
+	{
+		big::gta_util::execute_as_script(rage::joaat(script_name), func);
+	}
+
 	void bind(sol::state& state)
 	{
 		auto ns               = state["script"].get_or_create<sol::table>();
 		ns["register_looped"] = register_looped;
 		ns["run_in_fiber"]    = run_in_fiber;
+		ns["execute_as_script"] = execute_as_script;
 
 		auto usertype = state.new_usertype<script_util>("script_util");
 

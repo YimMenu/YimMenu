@@ -126,7 +126,7 @@ namespace big
 
 							if (veh == 0)
 							{
-								g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+								g_notification_service.push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
 							}
 							else
 							{
@@ -153,10 +153,8 @@ namespace big
 					}
 					else if (ImGui::IsItemHovered())
 					{
-						g_fiber_pool->queue_job([] {
-							g_model_preview_service->show_vehicle(vehicle::get_owned_mods_from_vehicle(self::veh),
-							    g.spawn_vehicle.spawn_maxed);
-						});
+						g_model_preview_service->show_vehicle(vehicle::get_owned_mods_from_vehicle(self::veh),
+						    g.spawn_vehicle.spawn_maxed);
 					}
 				}
 			}
@@ -176,7 +174,7 @@ namespace big
 
 						if (veh == 0)
 						{
-							g_notification_service->push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
+							g_notification_service.push_error("VEHICLE"_T.data(), "UNABLE_TO_SPAWN_VEHICLE"_T.data());
 						}
 						else
 						{

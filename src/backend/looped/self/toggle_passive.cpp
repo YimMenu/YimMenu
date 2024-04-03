@@ -19,7 +19,7 @@ namespace big
 			{
 				on_disable();
 				g.self.passive = false;
-				g_notification_service->push_warning("PASSIVE"_T.data(), "BACKEND_LOOPED_SELF_TOGGLE_PASSIVE_DISABLED_PASSIVE_MODE_MESSAGE"_T.data());
+				g_notification_service.push_warning("PASSIVE"_T.data(), "BACKEND_LOOPED_SELF_TOGGLE_PASSIVE_DISABLED_PASSIVE_MODE_MESSAGE"_T.data());
 				return;
 			}
 			*g_tunables_service->get_tunable<int*>(-29732167) = 0; // End Passive Time = 0s

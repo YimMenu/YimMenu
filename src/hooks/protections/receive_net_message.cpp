@@ -10,7 +10,7 @@
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
 #include "util/session.hpp"
-#include "util/spam.hpp"
+#include "util/chat.hpp"
 #include "gta/enums.hpp"
 
 #include <network/Network.hpp>
@@ -19,12 +19,11 @@
 
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
-	constexpr int PC_PLATFORM = 3;
-	if ((hnd.m_platform = buf.Read<uint8_t>(8)) != PC_PLATFORM)
+	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform) * 8)) != rage::rlPlatforms::PC)
 		return;
 
-	buf.ReadInt64((int64_t*)&hnd.m_rockstar_id, 64);
-	hnd.unk_0009 = buf.Read<uint8_t>(8);
+	buf.ReadRockstarId(&hnd.m_rockstar_id);
+	hnd.m_padding = buf.Read<uint8_t>(sizeof(hnd.m_padding) * 8);
 }
 
 inline bool is_kick_instruction(rage::datBitBuffer& buffer)
@@ -107,18 +106,21 @@ namespace big
 			case rage::eNetMessage::MsgTextMessage2:
 			{
 				char message[256];
-				buffer.ReadString(message, 256);
+				rage::rlGamerHandle handle{};
 				bool is_team;
+				buffer.ReadString(message, sizeof(message));
+				gamer_handle_deserialize(handle, buffer);
 				buffer.ReadBool(&is_team);
 
 				if (player->is_spammer)
 					return true;
 
-				if (auto spam_reason = spam::is_text_spam(message, player))
+				if (auto spam_reason = chat::is_text_spam(message, player))
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, spam_reason, is_team);
-					g_notification_service->push("PROTECTIONS"_T.data(),
+						chat::log_chat(message, player, spam_reason, is_team);
+					g_notification_service.push("PROTECTIONS"_T.data(),
+                                      
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
@@ -136,7 +138,7 @@ namespace big
 				else
 				{
 					if (g.session.log_chat_messages)
-						spam::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
+						chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
@@ -145,16 +147,8 @@ namespace big
 
 					if (msgType == rage::eNetMessage::MsgTextMessage && g_pointers->m_gta.m_chat_data && player->get_net_data())
 					{
-						rage::rlGamerHandle temp{};
-						gamer_handle_deserialize(temp, buffer);
-						bool is_team = buffer.Read<bool>(1);
-
-						g_pointers->m_gta.m_handle_chat_message(*g_pointers->m_gta.m_chat_data,
-						    nullptr,
-						    &player->get_net_data()->m_gamer_handle,
-						    message,
-						    is_team);
-						return true;
+						buffer.Seek(0);
+						return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame); // Call original function since we can't seem to handle it
 					}
 				}
 				break;
@@ -166,7 +160,7 @@ namespace big
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
+						g_notification_service.push_error("PROTECTIONS"_T.data(),
 						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 					}
 					return true;
@@ -209,7 +203,7 @@ namespace big
 
 				if (reason == KickReason::VOTED_OUT)
 				{
-					g_notification_service->push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
+					g_notification_service.push_warning("PROTECTIONS"_T.data(), "YOU_HAVE_BEEN_KICKED"_T.data());
 					return true;
 				}
 
@@ -225,7 +219,7 @@ namespace big
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service->push_error("PROTECTIONS"_T.data(),
+						g_notification_service.push_error("PROTECTIONS"_T.data(),
 						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
 						player->block_radio_requests = true;
 					}

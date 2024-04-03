@@ -2,7 +2,7 @@
 
 Table containing helper functions related to gta scripts.
 
-## Functions (2)
+## Functions (3)
 
 ### `register_looped(name, func)`
 
@@ -73,6 +73,17 @@ end)
 **Example Usage:**
 ```lua
 script.run_in_fiber(func)
+```
+
+### `execute_as_script(script_name, func)`
+
+- **Parameters:**
+  - `script_name` (string): target script thread.
+  - `func` (function): function that will be executed once in the script thread.
+
+**Example Usage:**
+```lua
+script.execute_as_script(script_name, func)
 ```
 
 

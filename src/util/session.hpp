@@ -24,16 +24,6 @@
 
 namespace big::session
 {
-	static void gamer_handle_serialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
-	{
-		buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(&hnd.m_platform), 8);
-		if (*reinterpret_cast<uint8_t*>(&hnd.m_platform) == 3)
-		{
-			buf.WriteInt64(*(int64_t*)&hnd.m_rockstar_id, 64);
-			buf.Write<uint8_t>(*reinterpret_cast<uint8_t*>(reinterpret_cast<__int64>(&hnd) + 9), 8);
-		}
-	}
-
 	inline bool join_type(eSessionType session)
 	{
 		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("pausemenu_multiplayer"_J);
@@ -100,7 +90,7 @@ namespace big::session
 	{
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
-			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+			g_notification_service.push_error("RID Joiner", "Player switch in progress, wait a bit.");
 			return;
 		}
 
@@ -110,7 +100,7 @@ namespace big::session
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) == 0)
 		{
 			g.session.join_queued = false;
-			g_notification_service->push_error("RID Joiner", "Unable to launch maintransition");
+			g_notification_service.push_error("RID Joiner", "Unable to launch maintransition");
 		}
 		return;
 	}
@@ -119,7 +109,7 @@ namespace big::session
 	{
 		if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 		{
-			g_notification_service->push_error("RID Joiner", "Player switch in progress, wait a bit.");
+			g_notification_service.push_error("RID Joiner", "Player switch in progress, wait a bit.");
 			return;
 		}
 
@@ -140,7 +130,7 @@ namespace big::session
 			}
 		}
 
-		g_notification_service->push_error("RID Joiner", "Target player is offline?");
+		g_notification_service.push_error("RID Joiner", "Target player is offline?");
 	}
 
 	inline void join_by_username(std::string username)
@@ -154,7 +144,7 @@ namespace big::session
 				});
 				return;
 			}
-			g_notification_service->push_error("RID Joiner", "Target player is offline?");
+			g_notification_service.push_error("RID Joiner", "Target player is offline?");
 		});
 	}
 
@@ -165,9 +155,9 @@ namespace big::session
 		bool success = g_pointers->m_gta.m_invite_player_by_gamer_handle(g_pointers->m_gta.m_network_config, &player_handle, 1, 0, 0, 0);
 
 		if (!success)
-			return g_notification_service->push_error("Network", "Target player could not be invited, they might be offline?");
+			return g_notification_service.push_error("Network", "Target player could not be invited, they might be offline?");
 
-		g_notification_service->push_success("Network", "Target player has been invited to your session!");
+		g_notification_service.push_success("Network", "Target player has been invited to your session!");
 	}
 
 	inline void show_profile_by_rockstar_id(uint64_t rid)

@@ -56,13 +56,13 @@ namespace big::vehicle
 	void bring(Vehicle veh, Vector3 location, bool put_in, int seatIdx)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
-			return g_notification_service->push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
+			return g_notification_service.push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		entity::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
@@ -354,9 +354,9 @@ namespace big::vehicle
 	}
 
 
-	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked)
+	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked, bool is_script_vehicle)
 	{
-		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked);
+		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked, is_script_vehicle);
 		if (vehicle == 0)
 		{
 			return 0;
@@ -371,12 +371,12 @@ namespace big::vehicle
 		}
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, owned_mods[MOD_PLATE_STYLE]);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, owned_mods[MOD_WINDOW_TINT]);
 		VEHICLE::SET_VEHICLE_WHEEL_TYPE(vehicle, owned_mods[MOD_WHEEL_TYPE]);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
@@ -605,7 +605,7 @@ namespace big::vehicle
 		if (current_vehicle)
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
 	void downgrade(Vehicle vehicle)
@@ -621,7 +621,7 @@ namespace big::vehicle
 	{
 		if (!entity::take_control_of(veh, 4000))
 		{
-			g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			g_notification_service.push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 			return false;
 		}
 

@@ -91,9 +91,9 @@ namespace rage
 		{
 			return big::g_pointers->m_gta.m_read_bitbuf_bool(this, boolean, 1);
 		}
-		bool ReadPeerId(uint64_t* peer_id)
+		bool ReadRockstarId(int64_t* rockstar_id)
 		{
-			return this->ReadQWord(peer_id, 0x40);
+			return this->ReadInt64(rockstar_id, sizeof(rockstar_id) * 8);
 		}
 		uint64_t ReadBits(size_t numBits)
 		{
@@ -206,6 +206,10 @@ namespace rage
 		bool WriteInt64(int64_t integer, int bits)
 		{
 			return big::g_pointers->m_gta.m_write_bitbuf_int64(this, integer, bits);
+		}
+		bool WriteRockstarId(int64_t rockstar_id)
+		{
+			return big::g_pointers->m_gta.m_write_bitbuf_int64(this, rockstar_id, sizeof(rockstar_id) * 8);
 		}
 		bool ReadInt64(int64_t* integer, int bits)
 		{
