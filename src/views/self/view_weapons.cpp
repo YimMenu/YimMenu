@@ -135,7 +135,8 @@ namespace big
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("WEAPON"_T.data(), g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
+		if (ImGui::BeginCombo("WEAPON"_T.data(),
+		        g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
@@ -173,7 +174,10 @@ namespace big
 		case CustomWeapon::PAINT_GUN:
 			ImGui::Checkbox("RAINBOW_PAINT"_T.data(), &g.weapons.paintgun.rainbow);
 			ImGui::SliderFloat("VIEW_WEAPON_RAINBOW_SPEED"_T.data(), &g.weapons.paintgun.speed, 0.f, 10.f);
-			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("VIEW_WEAPON_PAINT_GUN_COLOR"_T.data(), g.weapons.paintgun.col); }
+			if (!g.weapons.paintgun.rainbow)
+			{
+				ImGui::ColorEdit4("VIEW_WEAPON_PAINT_GUN_COLOR"_T.data(), g.weapons.paintgun.col);
+			}
 		}
 
 		ImGui::SeparatorText("VIEW_WEAPON_AIM_ASSISTANCE"_T.data());
@@ -223,7 +227,7 @@ namespace big
 
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
-			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 100.f, "%.0f");
+			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
 			ImGui::PopItemWidth();
 		}
 
@@ -274,7 +278,7 @@ namespace big
 				{
 					for (std::string attachment : weapon.m_attachments)
 					{
-						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
+						weapon_component attachment_component = g_gta_data_service->weapon_component_by_name(attachment);
 						std::string attachment_name = attachment_component.m_display_name;
 						Hash attachment_hash        = attachment_component.m_hash;
 						if (attachment_hash == NULL)
@@ -360,7 +364,8 @@ namespace big
 			components::button("VIEW_WEAPON_PERSIST_WEAPONS_SET_LOADOUT"_T, [] {
 				persist_weapons::set_weapon_loadout(selected_loadout);
 			});
-			ImGui::Text(std::format("{}: {}:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T, g.persist_weapons.weapon_loadout_file).data());
+			ImGui::Text(std::format("{}: {}:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T, g.persist_weapons.weapon_loadout_file)
+			                .data());
 			ImGui::EndGroup();
 			ImGui::PopItemWidth();
 		}

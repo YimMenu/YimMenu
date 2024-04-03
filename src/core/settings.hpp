@@ -125,7 +125,7 @@ namespace big
 			} fuzzer{};
 
 			bool external_console = true;
-			bool window_hook = false;
+			bool window_hook      = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook)
 		} debug{};
@@ -344,7 +344,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
-			bool graceful_landing			  = false;	
+			bool graceful_landing             = false;
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
@@ -456,7 +456,7 @@ namespace big
 		struct settings
 		{
 			bool onboarding_complete = false;
-			bool dev_dlc = false;
+			bool dev_dlc             = false;
 
 			struct hotkeys
 			{
@@ -848,21 +848,19 @@ namespace big
 
 			struct aimbot
 			{
-				bool enable                                     = false;
-				bool adjust_position_scalar_for_velocity        = true;
-				float adjust_position_scalar_for_velocity_value = 1.15f;
-				int64_t only_on_ped_type                        = -1;
-				bool only_on_player                             = false;
-				bool only_on_enemy                              = false;
-				float fov                                       = 90.f;
-				float distance                                  = 25.f;
-				int32_t selected_bone                           = (int32_t)ePedBoneType::HEAD;
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, adjust_position_scalar_for_velocity, adjust_position_scalar_for_velocity_value, only_on_ped_type, only_on_player, only_on_enemy, fov, distance)
+				bool enable              = false;
+				int64_t only_on_ped_type = -1;
+				bool only_on_player      = false;
+				bool only_on_enemy       = false;
+				float fov                = 20.f;
+				float distance           = 210.f;
+				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, only_on_ped_type, only_on_player, only_on_enemy, fov, distance, selected_bone)
 			} aimbot{};
 
 			struct flying_axe
 			{
-				bool enable            = false;
+				bool enable = false;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
 			} flying_axe{};
 
