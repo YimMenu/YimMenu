@@ -193,6 +193,8 @@ namespace big
 		static bool sync_reader_serialize_array(void* _this, void* array, int size);
 
 		static bool can_create_vehicle();
+
+		static bool aimbot_cam_gameplay_director_update(uintptr_t this_);
 	};
 
 	class minhook_keepalive

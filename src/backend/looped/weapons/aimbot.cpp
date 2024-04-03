@@ -1,6 +1,7 @@
 #include "backend/int_command.hpp"
 #include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
+#include "hooking/hooking.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/misc.hpp"
@@ -18,7 +19,10 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		CPed* m_target{};
+	public:
+		static inline CPed* m_target{};
+
+		static inline bool should_aimbot = false;
 
 		static bool is_a_ped_type_we_dont_care_about(const Ped ped_handle)
 		{
@@ -150,17 +154,21 @@ namespace big
 			return false;
 		}
 
-		static rage::fvector3 get_camera_position()
+		static uintptr_t get_cam_follow_ped_camera()
 		{
 			uintptr_t cam_gameplay_director = *g_pointers->m_gta.m_cam_gameplay_director;
-			uintptr_t cam_follow_ped_camera = *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x2'C8);
-			return *reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x60);
+			return *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x3'C0);
+		}
+
+		static rage::fvector3 get_camera_position()
+		{
+			return *reinterpret_cast<rage::fvector3*>(get_cam_follow_ped_camera() + 0x60);
 		}
 
 		static rage::fvector3 get_camera_aim_direction()
 		{
 			uintptr_t cam_gameplay_director = *g_pointers->m_gta.m_cam_gameplay_director;
-			uintptr_t cam_follow_ped_camera = *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x2'C8);
+			uintptr_t cam_follow_ped_camera = get_cam_follow_ped_camera();
 
 			uintptr_t cam_follow_ped_camera_metadata = *reinterpret_cast<uintptr_t*>(cam_follow_ped_camera + 0x10);
 			bool is_first_person = *reinterpret_cast<float*>(cam_follow_ped_camera_metadata + 0x30) == 0.0f;
@@ -174,28 +182,27 @@ namespace big
 			}
 		}
 
-		static bool is_in_fov(const rage::fvector3& object_position)
+		static float get_fov(const rage::fvector3& object_position)
 		{
 			const auto camera_position = get_camera_position();
 			auto camera_aim_direction  = get_camera_aim_direction();
 
 			const auto direction_to_object = object_position - camera_position;
 
-			const float dot_product = camera_aim_direction.dot_product(direction_to_object);
+			const float angle =
+			    std::atan2(camera_aim_direction.cross_product(direction_to_object).magnitude(), camera_aim_direction.dot_product(direction_to_object));
 
-			const float camera_aim_magnitude          = camera_aim_direction.magnitude();
-			const float direction_to_object_magnitude = direction_to_object.magnitude();
-
-			const float angle = std::acos(dot_product / (camera_aim_magnitude * direction_to_object_magnitude));
-
-			return angle <= math::deg_to_rad(g.weapons.aimbot.fov);
+			return angle;
 		}
 
-		void find_best_target(CPed* self_ped, const rage::fvector3& self_pos)
+		static void find_best_target(CPed* self_ped, const rage::fvector3& self_pos)
 		{
 			m_target = nullptr;
 
-			float current_best_distance = g.weapons.aimbot.distance * g.weapons.aimbot.distance;
+			float fov          = std::numeric_limits<float>::max();
+			float max_fov      = math::deg_to_rad(g.weapons.aimbot.fov);
+			float distance     = std::numeric_limits<float>::max();
+			float max_distance = g.weapons.aimbot.distance;
 
 			for (rage::CEntity* ped_ : pools::get_all_peds())
 			{
@@ -206,9 +213,7 @@ namespace big
 					continue;
 				}
 
-				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
-
-				if (ENTITY::IS_ENTITY_DEAD(ped_handle, 0))
+				if (ped->m_health <= 0)
 				{
 					continue;
 				}
@@ -218,6 +223,8 @@ namespace big
 				{
 					continue;
 				}
+
+				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 
 				const auto relation             = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped);
 				constexpr auto dislike_relation = 4;
@@ -233,29 +240,27 @@ namespace big
 					continue;
 				}
 
-				constexpr int trace_flags = eTraceFlags::IntersectWorld | eTraceFlags::IntersectVehicle | eTraceFlags::IntersectObject;
-				if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(g_pointers->m_gta.m_ptr_to_handle(self_ped), ped_handle, trace_flags))
+				constexpr int trace_flags = eTraceFlags::IntersectWorld | eTraceFlags::IntersectObject;
+				if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, ped_handle, trace_flags))
 				{
 					continue;
 				}
 
-				const auto ped_position = *ped->get_position();
+				const auto head_position = ped->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
 
-				if (!is_in_fov(ped_position))
-				{
-					continue;
-				}
+				const auto fov = get_fov(head_position);
 
-				float distance_to_ped = self_pos.distance(ped_position);
-				if (current_best_distance > distance_to_ped)
+				auto distance_to_ped = self_pos.distance(head_position);
+				if (fov < max_fov && distance_to_ped < max_distance)
 				{
-					current_best_distance = distance_to_ped;
-					m_target              = ped;
+					max_fov      = fov;
+					max_distance = distance_to_ped;
+					m_target     = ped;
 				}
 			}
 		}
 
-		// Not sure at this point what this even do
+		// Make aimbot works when driving a vehicle.
 		static void reset_aim_vectors(uintptr_t camera)
 		{
 			uintptr_t camera_params = *(uintptr_t*)(camera + 0x10);
@@ -289,109 +294,109 @@ namespace big
 			}
 		}
 
-		void compute_aim_direction_and_set_gameplay_cam(const rage::fvector3& target_bone_position)
+		static void compute_aim_direction_and_set_gameplay_cam(const rage::fvector3& target_bone_position)
 		{
-			uintptr_t cam_gameplay_director = *g_pointers->m_gta.m_cam_gameplay_director;
-
-
-			uintptr_t cam_follow_ped_camera = *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x2'C8);
+			uintptr_t cam_follow_ped_camera = get_cam_follow_ped_camera();
 
 			const auto aim_direction = (target_bone_position - get_camera_position()).normalize();
 
-			if (!g_local_player->m_vehicle)
-			{
-				reset_aim_vectors(cam_follow_ped_camera);
+			reset_aim_vectors(cam_follow_ped_camera);
 
-				uintptr_t cam_follow_ped_camera_metadata = *reinterpret_cast<uintptr_t*>(cam_follow_ped_camera + 0x10);
-				bool is_first_person = *reinterpret_cast<float*>(cam_follow_ped_camera_metadata + 0x30) == 0.0f;
-				if (is_first_person)
-				{
-					*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x40) = aim_direction;
-				}
-				else
-				{
-					*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3'D0) = aim_direction;
-				}
+			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x40)   = aim_direction;
+			*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3'D0) = aim_direction;
+		}
+
+		static inline CPed* last_target_pos_target{};
+		static inline rage::fvector3 last_target_pos{};
+
+		static inline rage::fvector3 last_my_pos{};
+
+		static rage::fvector3 get_velocity(CPed* ped)
+		{
+			if (ped == g_local_player)
+			{
+				const auto velocity = *ped->get_position() - last_my_pos;
+				last_my_pos         = *ped->get_position();
+
+				return velocity;
+			}
+
+			if (ped == last_target_pos_target)
+			{
+				const auto velocity = *ped->get_position() - last_target_pos;
+				last_target_pos     = *ped->get_position();
+
+				return velocity;
 			}
 			else
 			{
-				uintptr_t cam_follow_ped_camera2 = *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x2'C0);
-				uintptr_t cam_follow_ped_camera3 = *reinterpret_cast<uintptr_t*>(cam_gameplay_director + 0x3'C0);
+				last_target_pos_target = ped;
+				last_target_pos        = *ped->get_position();
 
-				reset_aim_vectors(cam_follow_ped_camera);
-				reset_aim_vectors(cam_follow_ped_camera2);
-				reset_aim_vectors(cam_follow_ped_camera3);
-
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x40)   = aim_direction;
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera + 0x3'D0) = aim_direction;
-
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera2 + 0x40)   = aim_direction;
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera2 + 0x3'D0) = aim_direction;
-
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera3 + 0x40)   = aim_direction;
-				*reinterpret_cast<rage::fvector3*>(cam_follow_ped_camera3 + 0x3'D0) = aim_direction;
+				return {};
 			}
 		}
 
-		void adjust_position_for_target_velocity(rage::fvector3& target_position)
+		static void adjust_position_for_target_velocity(rage::fvector3& target_position)
 		{
-			const auto delta_time = ImGui::GetIO().DeltaTime;
+			const auto target_velocity = get_velocity(m_target);
+			const auto my_velocity     = get_velocity(g_local_player);
 
-			rage::fvector3 velocity;
-			if (m_target->m_vehicle)
-			{
-				const auto scr_velocity = ENTITY::GET_ENTITY_VELOCITY(g_pointers->m_gta.m_ptr_to_handle(m_target->m_vehicle));
-				velocity = rage::fvector3(scr_velocity.x, scr_velocity.y, scr_velocity.z);
-			}
-			else
-			{
-				velocity = m_target->m_velocity;
-			}
-
-			target_position += velocity * delta_time * g.weapons.aimbot.adjust_position_scalar_for_velocity_value;
-
-			// Unsure if that's even "physically" correct to do this? But it seems to works very well when we drive at high speed.
-			if (g_local_player->m_vehicle)
-			{
-				const auto scr_velocity = ENTITY::GET_ENTITY_VELOCITY(g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle));
-				const auto my_velocity = rage::fvector3(scr_velocity.x, scr_velocity.y, scr_velocity.z);
-
-				target_position -= my_velocity * delta_time * g.weapons.aimbot.adjust_position_scalar_for_velocity_value;
-			}
+			target_position += (target_velocity - my_velocity);
 		}
 
 		virtual void on_tick() override
 		{
-			if (!PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM))
+			should_aimbot = PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_AIM);
+
+			if (!should_aimbot)
 			{
 				return;
 			}
 
-			CPed* self_ped = g_local_player;
-			if (!self_ped)
-			{
-				return;
-			}
-
-			rage::fvector3 self_pos = *self_ped->get_position();
-
-			find_best_target(self_ped, self_pos);
-
-			if (!m_target)
-			{
-				return;
-			}
-
-			rage::fvector3 target_bone_position = m_target->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
-
-			// Take into account the target velocity.
-			adjust_position_for_target_velocity(target_bone_position);
-
-			compute_aim_direction_and_set_gameplay_cam(target_bone_position);
+			CAM::STOP_SCRIPT_GLOBAL_SHAKING(true);
+			CAM::SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE(0);
 		}
 	};
 
 	aimbot g_aimbot("aimbot", "VIEW_OVERLAY_AIMBOT", "BACKEND_LOOPED_WEAPONS_AIMBOT_DESC", g.weapons.aimbot.enable);
 
+	bool hooks::aimbot_cam_gameplay_director_update(uintptr_t this_)
+	{
+		const auto res = big::hooking::get_original<hooks::aimbot_cam_gameplay_director_update>()(this_);
 
+		CPed* self_ped;
+		rage::fvector3 self_pos;
+
+		rage::fvector3 target_bone_position;
+
+		if (!aimbot::should_aimbot)
+		{
+			goto exit;
+		}
+
+		self_ped = g_local_player;
+		if (!self_ped)
+		{
+			goto exit;
+		}
+
+		self_pos = *self_ped->get_position();
+
+		aimbot::find_best_target(self_ped, self_pos);
+		if (!aimbot::m_target)
+		{
+			goto exit;
+		}
+
+		target_bone_position = aimbot::m_target->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
+
+		// Take into account the target velocity.
+		aimbot::adjust_position_for_target_velocity(target_bone_position);
+
+		aimbot::compute_aim_direction_and_set_gameplay_cam(target_bone_position);
+
+	exit:
+		return res;
+	}
 }

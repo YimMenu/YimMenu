@@ -1790,6 +1790,15 @@ namespace big
             {
                 g_pointers->m_gta.m_cam_gameplay_director = ptr.add(3).rip().as<uintptr_t*>();
             }
+        },
+        // Cam Gameplay Director Update
+        {
+            "CGDU",
+            "E9 CD 09 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director_update = ptr.sub(0x32).as<bool(uintptr_t this_)>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

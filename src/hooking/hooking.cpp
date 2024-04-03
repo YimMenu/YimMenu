@@ -142,6 +142,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::can_create_vehicle>("CCV", g_pointers->m_gta.m_can_create_vehicle);
 
+		detour_hook_helper::add<hooks::aimbot_cam_gameplay_director_update>("CGDU", g_pointers->m_gta.m_cam_gameplay_director_update);
+
 		g_hooking = this;
 	}
 
