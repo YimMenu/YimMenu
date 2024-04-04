@@ -139,7 +139,7 @@ namespace big
 
 			const auto rel_path = std::filesystem::relative(utf8_path);
 
-			const auto utf8_rel_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().wstring());
+			const auto utf8_rel_path = string_conversions::utf_16_to_code_page(CP_UTF8, rel_path.wstring());
 			LOG(VERBOSE) << "Game file path relative: " << utf8_rel_path;
 
 			if (rel_path.empty())
