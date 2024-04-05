@@ -7,7 +7,7 @@ namespace big
 {
 	void view::gta_data()
 	{
-		if (!g_gta_data_service)
+		if (!g_gta_data_service || !g.settings.onboarding_complete)
 			return;
 
 		if (g_gta_data_service->cache_needs_update())
