@@ -102,9 +102,8 @@ namespace big
 				if (closest)
 					return closest->id();
 			}
-			else if (proxy_lower == "me" || proxy_lower == "self" || proxy_lower.find(local_player_name_lower) != std::string::npos)
+			else if (proxy_lower == "me" || proxy_lower == "self" || local_player_name_lower.find(proxy_lower) != std::string::npos)
 			{
-				LOG(INFO) << "Self proxy detected";
 				return g_player_service->get_self()->id();
 			}
 

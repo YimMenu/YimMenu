@@ -30,6 +30,13 @@ namespace big
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
 			command_arguments result(1);
+
+			if (g_gta_data_service->vehicle_by_hash(rage::joaat(args[0])).m_hash != NULL)
+			{
+				result.push(rage::joaat(args[0]));
+				return result;
+			}
+
 			for (auto& item : g_gta_data_service->vehicles())
 			{
 				std::string item_name_lower, args_lower;
