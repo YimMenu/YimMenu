@@ -1,3 +1,5 @@
+#pragma once
+
 namespace big::string::operations
 {
 	inline std::string to_lower(std::string& str)

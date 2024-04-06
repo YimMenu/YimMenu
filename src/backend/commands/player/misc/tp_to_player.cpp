@@ -25,10 +25,28 @@ namespace big
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
 			command_arguments result(2);
-			player_ptr sender = g_player_service->get_by_name_closest(args[0]);
-			player_ptr target = g_player_service->get_by_name_closest(args[1]);
 
-			if (!sender || !target)
+			auto first_possible_proxy  = this->get_argument_proxy_value(args[0]);
+			auto second_possible_proxy = this->get_argument_proxy_value(args[1]);
+
+			if (first_possible_proxy.has_value())
+				result.push(first_possible_proxy.value());
+
+			if (second_possible_proxy.has_value())
+				result.push(second_possible_proxy.value());
+
+			if (first_possible_proxy.has_value() && second_possible_proxy.has_value())
+				return result;
+
+			player_ptr sender, target;
+
+			if (!first_possible_proxy.has_value())
+				sender = g_player_service->get_by_name_closest(args[0]);
+
+			if (!second_possible_proxy.has_value())
+				target = g_player_service->get_by_name_closest(args[1]);
+
+			if ((!first_possible_proxy.has_value() && !sender) || (!second_possible_proxy.has_value() && !target))
 			{
 				g_notification_service.push_error("Teleport", "Invalid player name(s).");
 				return std::nullopt;
@@ -47,11 +65,12 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			auto sender = g_player_service->get_by_id(_args.get<uint8_t>(0));
-			auto target = g_player_service->get_by_id(_args.get<uint8_t>(1));
+			auto sender =
+			    _args.get<uint8_t>(0) == self::id ? g_player_service->get_self() : g_player_service->get_by_id(_args.get<uint8_t>(0));
+			auto target =
+			    _args.get<uint8_t>(1) == self::id ? g_player_service->get_self() : g_player_service->get_by_id(_args.get<uint8_t>(1));
 
-			if (target && target->get_ped()
-			    && target->get_ped()->get_position())
+			if (target && target->get_ped() && target->get_ped()->get_position())
 			{
 				auto coords     = target->get_ped()->get_position();
 				Vector3 coords_ = {coords->x, coords->y, coords->z};

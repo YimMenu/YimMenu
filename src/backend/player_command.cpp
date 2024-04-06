@@ -62,42 +62,11 @@ namespace big
 		std::vector<std::string> new_args;
 		command_arguments result(m_num_args.value());
 
-		auto player_name = args[0];
-		auto local_player_name = (std::string) g_player_service->get_self()->get_name();
-		if (args[0] == "me" || args[0] == "self" || string::operations::to_lower(player_name).find(string::operations::to_lower(local_player_name)) != std::string::npos)
-		{
-			result.push(ctx->get_sender()->id());
-		}
-		else if (args[0] == "@")
-		{
-			result.push(g_player_service->get_selected()->id());
-		}
-		else if (args[0] == "!")
-		{
-			result.push(g_player_service->get_closest(true)->id());
-		}
-		else if (args[0] == "#")
-		{
-			float distance     = std::numeric_limits<float>::max();
-			player_ptr closest = nullptr;
-			for (auto p : g_player_service->players())
-			{
-				if (p.second->is_friend() && p.second->get_ped() && p.second->get_ped()->get_position())
-				{
-					auto distance_ = math::distance_between_vectors(*g_player_service->get_self()->get_ped()->get_position(),
-					    *p.second->get_ped()->get_position());
-					if (distance_ < distance)
-					{
-						closest  = p.second;
-						distance = distance_;
-					}
-				}
-			}
+		auto proxy_result = this->get_argument_proxy_value(args[0]);
 
-			if (closest)
-				result.push(closest->id());
-			else
-				ctx->report_error("No friends found");
+		if (proxy_result.has_value())
+		{
+			result.push(proxy_result.value());
 		}
 		else
 		{
