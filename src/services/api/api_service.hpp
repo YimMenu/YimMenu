@@ -12,6 +12,8 @@ namespace big
 		api_service();
 		~api_service();
 
+		std::string get_translation_from_Deeplx(std::string message, std::string tar_lang);
+
 		// Returns true if an valid profile matching his username has been found
 		bool get_rid_from_username(std::string_view username, uint64_t& result);
 

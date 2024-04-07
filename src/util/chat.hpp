@@ -16,6 +16,8 @@
 
 namespace
 {
+
+
 	static void gamer_handle_serialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 	{
 		buf.Write<uint8_t>(hnd.m_platform, sizeof(hnd.m_platform) * 8);
@@ -250,4 +252,15 @@ namespace big::chat
 					draw_chat(message.c_str(), g_player_service->get_self()->get_name(), is_team);
 				});
 	}
+}
+
+namespace big
+{
+	struct ChatMessage
+	{
+		std::string sender;
+		std::string content;
+	};
+
+	extern std::queue<ChatMessage> MsgQueue;
 }

@@ -18,6 +18,31 @@ namespace big
 		g_api_service = nullptr;
 	}
 
+	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
+	{
+		const auto response = g_http_client.post("http://127.0.0.1:1188/translate", {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, tar_lang));
+		if (response.status_code == 200)
+		{
+			try
+			{
+				nlohmann::json obj = nlohmann::json::parse(response.text);
+				auto& result       = obj["data"];
+				return result;
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING)<< "[ChatTranslation]Error while reading json: " << e.what();
+				return "Error";
+			}
+		}
+		else
+		{
+			LOG(WARNING)<< "[ChatTranslation]http code eror: " << response.status_code;
+			return "Error";
+		}
+
+		return "Error";
+	}
 	bool api_service::get_rid_from_username(std::string_view username, uint64_t& result)
 	{
 		const auto response = g_http_client.post("https://scui.rockstargames.com/api/friend/accountsearch", {{"Authorization", AUTHORIZATION_TICKET}, {"X-Requested-With", "XMLHttpRequest"}}, {std::format("searchNickname={}", username)});

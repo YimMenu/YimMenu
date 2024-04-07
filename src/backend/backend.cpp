@@ -16,6 +16,8 @@
 #include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
 
+#include "util/chat.hpp"
+#include "services/api/api_service.hpp"
 
 namespace big
 {
@@ -111,13 +113,41 @@ namespace big
 			script::get_current()->yield();
 		}
 	}
-
+	std::mutex apiMutex;
+	
 	void backend::misc_loop()
 	{
 		LOG(INFO) << "Starting script: Miscellaneous";
 
 		while (g_running)
 		{
+			while (!MsgQueue.empty() and !translate_lock and g.session.translatechat)
+			{
+				if (MsgQueue.size() >= 3)
+				{
+					LOG(WARNING) << "Message queue is too large, clearing it. Try using keyword blacklist to block spam.";
+					while (!MsgQueue.empty())
+						MsgQueue.pop();
+					continue;
+				}
+
+				try
+				{				
+				auto& fmsg = MsgQueue.front();
+				translate_lock = true;
+				g_thread_pool->push([fmsg] {
+					auto translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, "ZH");
+					translate_lock   = false;
+					if (translatedt != "Error")
+						chat::send_message(translatedt, nullptr, true, true);
+				});
+				MsgQueue.pop();
+				}
+				catch (std::exception& e)
+				{
+					LOG(WARNING) << "Error: " << e.what();
+				}
+			}
 			looped::hud_transition_state();
 			looped::hud_disable_input();
 			looped::session_pop_multiplier_areas();

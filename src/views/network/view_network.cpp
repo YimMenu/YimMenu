@@ -120,6 +120,7 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
+	bool_command chat_translate("translatechat", "translate chat to chinese", "translate chat to chinese", g.session.translatechat);
 
 	void render_misc()
 	{
@@ -141,6 +142,7 @@ namespace big
 
 			components::command_checkbox<"trustfriends">();
 			components::command_checkbox<"trustsession">();
+			
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
