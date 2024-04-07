@@ -137,7 +137,7 @@ namespace big
 				g_thread_pool->push([fmsg] {
 					auto translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, "ZH");
 					translate_lock   = false;
-					if (translatedt != "Error")
+					if (translatedt != "Error" && translatedt != "None")
 						chat::send_message(translatedt, nullptr, true, true);
 				});
 				MsgQueue.pop();

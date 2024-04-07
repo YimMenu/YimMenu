@@ -20,15 +20,20 @@ namespace big
 
 	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
 	{
-		const auto response = g_http_client.post("http://127.0.0.1:1188/translate", {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, tar_lang));
+		const auto response = g_http_client.post("http://127.0.0.1:1188/translate", {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, g.session.target_lang));
 		if (response.status_code == 200)
 		{
 			try
 			{
 				nlohmann::json obj = nlohmann::json::parse(response.text);
-				auto& result       = obj["data"];
+
+				std::string result = obj["data"];
+				std::string sourcelang = obj["source_lang"];
+				if (sourcelang == g.session.target_lang)
+					return "None";
 				return result;
 			}
+
 			catch (std::exception& e)
 			{
 				LOG(WARNING)<< "[ChatTranslation]Error while reading json: " << e.what();
