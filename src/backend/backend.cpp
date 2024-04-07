@@ -113,7 +113,6 @@ namespace big
 			script::get_current()->yield();
 		}
 	}
-	std::mutex apiMutex;
 	
 	void backend::misc_loop()
 	{
