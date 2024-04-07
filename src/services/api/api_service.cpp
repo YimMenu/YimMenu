@@ -29,7 +29,7 @@ namespace big
 
 				std::string result = obj["data"];
 				std::string sourcelang = obj["source_lang"];
-				if (sourcelang == g.session.target_lang)
+				if (sourcelang == g.session.target_lang && g.session.hideduplicate)
 					return "None";
 				return result;
 			}

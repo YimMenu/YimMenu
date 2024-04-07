@@ -125,7 +125,8 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
-	bool_command chat_translate("translatechat", "translate chat to chinese", "translate chat to chinese", g.session.translatechat);
+	bool_command chat_translate("translatechat", "translate chat message", "translate chat message", g.session.translatechat);
+	bool_command chat_translate_hide_d("hideduplicate", "bypass same language", "Do not translate when source and target languages ​​are the same", g.session.hideduplicate);
 
 	void render_chat_translation()
 	{
@@ -143,6 +144,7 @@ namespace big
 
 			});
 			components::command_checkbox<"translatechat">();
+			components::command_checkbox<"hideduplicate">();
 
 			static const auto TargetLang = std::to_array<DeeplTargetLanguage>({//This has to be here because if it's generated at compile time, the translations break for some reason.
 			    {"AR", "Arabic"},
@@ -218,7 +220,7 @@ namespace big
 			}
 
 			components::command_checkbox<"trustfriends">();
-			components::command_checkbox<"trustsession">();			
+			components::command_checkbox<"trustsession">();
 
 			ImGui::BeginDisabled(!g_player_service->get_self()->is_host());
 
