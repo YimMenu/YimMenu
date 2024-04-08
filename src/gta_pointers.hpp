@@ -367,6 +367,8 @@ namespace big
 		CWeaponInfoManager* m_weapon_info_manager;
 
 		functions::can_create_vehicle m_can_create_vehicle;
+
+		uintptr_t* m_cam_gameplay_director;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

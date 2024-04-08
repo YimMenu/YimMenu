@@ -77,7 +77,6 @@ namespace big
 				ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_ALWAYS_FULL_AMMO"_T.data(), &g.window.ingame_overlay_indicators.show_always_full_ammo);
 				ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_INFINITE_MAGAZINE"_T.data(), &g.window.ingame_overlay_indicators.show_infinite_mag);
 				ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_AIMBOT"_T.data(), &g.window.ingame_overlay_indicators.show_aimbot);
-				ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_TRIGGERBOT"_T.data(), &g.window.ingame_overlay_indicators.show_triggerbot);
 				ImGui::Checkbox("VIEW_GUI_SETTINGS_SHOW_INVISIBILITY"_T.data(), &g.window.ingame_overlay_indicators.show_invisibility);
 				ImGui::EndGroup();
 

@@ -65,9 +65,6 @@ namespace big
 				if (g.window.ingame_overlay_indicators.show_aimbot)
 					components::overlay_indicator("VIEW_OVERLAY_AIMBOT"_T, g.weapons.aimbot.enable);
 
-				if (g.window.ingame_overlay_indicators.show_triggerbot)
-					components::overlay_indicator("VIEW_OVERLAY_TRIGGERBOT"_T, g.weapons.triggerbot);
-
 				if (g.window.ingame_overlay_indicators.show_invisibility)
 					components::overlay_indicator("INVISIBILITY"_T, g.self.invisibility);
 			}

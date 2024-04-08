@@ -1781,6 +1781,15 @@ namespace big
             {
                 g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
             }
+        },
+        // Cam Gameplay Director
+        {
+            "CGD",
+            "4C 8B 35 ? ? ? ? 33 FF 32 DB",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director = ptr.add(3).rip().as<uintptr_t*>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
