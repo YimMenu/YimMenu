@@ -348,9 +348,10 @@ namespace big
 
 		const auto player_ped = g_pointers->m_gta.m_ptr_to_handle(plyr->get_ped());
 
-		const auto boneData = ENTITY::GET_ENTITY_BONE_POSTION(player_ped, PED::GET_PED_BONE_INDEX(player_ped, boneID));
+		const auto bone_data = ENTITY::GET_WORLD_POSITION_OF_ENTITY_BONE(player_ped, PED::GET_PED_BONE_INDEX(player_ped, boneID));
 
-		isSuccess = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(boneData.x, boneData.y, boneData.z, &bone_x, &bone_y);
+		float f_vec[3] = { bone_data.x, bone_data.y, bone_data.z };
+		isSuccess = g_pointers->m_gta.m_get_screen_coords_for_world_coords(f_vec, &bone_x, &bone_y);
 
 		boneVec.x = screenX * bone_x;
 		boneVec.y = screenY * bone_y;
@@ -365,6 +366,8 @@ namespace big
 
 		if (const auto draw_list = ImGui::GetBackgroundDrawList(); draw_list)
 		{
+			// draw_player(g_player_service->get_self(), draw_list); // Draw ESP on self, useful for debugging
+
 			g_player_service->iterate([draw_list](const player_entry& entry) {
 				draw_player(entry.second, draw_list);
 			});
