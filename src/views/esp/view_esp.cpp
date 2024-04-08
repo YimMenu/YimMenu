@@ -87,6 +87,7 @@ namespace big
 				
 				ImVec2 neck_pos;
 				bool neck_valid = bone_to_screen(plyr, (int)PedBones::SKEL_Neck_1, neck_pos);
+
 				if (head_valid && neck_valid)
 				{
 					// Head to neck
