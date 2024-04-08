@@ -24,6 +24,7 @@ namespace big
 		static void player_toxic_options();
 		static void player_spectate();
 		static void player_remote_control_vehicle();
+		static void player_cage_maintenance();
 
 		static void self_police();
 		static void self_hud();

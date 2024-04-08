@@ -21,6 +21,12 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"ragdoll">(g_player_service->get_selected(), {});
 
+			components::player_command_button<"smallcage">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"bigcage">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
+			components::player_command_button<"barrier">(g_player_service->get_selected(), {});
+
 			components::player_command_button<"beast">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"mission">(g_player_service->get_selected(), {});
