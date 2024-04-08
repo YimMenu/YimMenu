@@ -95,7 +95,9 @@ namespace big
 		if (ImGui::CollapsingHeader("DeepL Settings"_T.data()))
 		{
 			static const auto DeepLTargetLang = std::to_array<DeeplTargetLanguage>({{"AR", "Arabic"}, {"BG", "Bulgarian"}, {"CS", "Czech"}, {"DA", "Danish"}, {"DE", "German"}, {"EL", "Greek"}, {"EN", "English"}, {"EN-GB", "English(British)"}, {"EN-US", "English(American)"}, {"ES", "Spanish"}, {"ET", "Estonian"}, {"FI", "Finnish"}, {"FR", "French"}, {"HU", "Hungarian"}, {"ID", "Indonesian"}, {"IT", "Italian"}, {"JA", "Japanese"}, {"KO", "Korean"}, {"LT", "Lithuanian"}, {"LV", "Latvian"}, {"NB", "Norwegian(Bokmål)"}, {"NL", "Dutch"}, {"PL", "Polish"}, {"PT", "Portuguese"}, {"PT-BR", "Portuguese(Brazilian)"}, {"PT-PT", "Portuguese(Others)"}, {"RO", "Romanian"}, {"RU", "Russian"}, {"SK", "Slovak"}, {"SL", "Slovenian"}, {"SV", "Swedish"}, {"TR", "Turkish"}, {"UK", "Ukrainian"}, {"ZH", "Chinese(simplified)"}});
-
+			
+			components::input_text_with_hint("DeepLx URL", "http://127.0.0.1:1188/translate", g.session.DeepLx_url);
+			
 			if (ImGui::BeginCombo("TargetLanguage##DeepLTargetLangSwitcher", g.session.DeepL_target_lang.c_str()))
 			{
 				for (const auto& [type, name] : DeepLTargetLang)

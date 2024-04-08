@@ -20,7 +20,8 @@ namespace big
 
 	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
 	{
-		const auto response = g_http_client.post("http://127.0.0.1:1188/translate",
+		std::string url = g.session.DeepLx_url;
+		const auto response = g_http_client.post(url,
 		    {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, tar_lang));
 		if (response.status_code == 200)
 		{
@@ -95,24 +96,6 @@ namespace big
 			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
 			return "Error";
 		}
-	}
-
-	std::string url_encode(const std::string& str)
-	{
-		std::string encoded_str;
-		for (char c : str)
-		{
-
-			if (c == ' ')
-			{
-				encoded_str += '+';
-			}
-			else
-			{
-				encoded_str += c ;
-			}
-		}
-		return encoded_str;
 	}
 
 	std::string api_service::get_translation_from_Google(std::string message, std::string tar_lang)
