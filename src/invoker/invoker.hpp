@@ -37,7 +37,8 @@ namespace big
 		constexpr void end_call()
 		{
 			// TODO: try to get rid of this
-			if (!m_are_handlers_cached)
+			[[assume((cache_handlers(), m_are_handlers_cached == true))]];
+			if (!m_are_handlers_cached) [[unlikely]]
 				cache_handlers();
 
 			m_handlers[index](&m_call_context);
@@ -64,7 +65,8 @@ namespace big
 
 		static rage::scrNativeHandler* get_handlers()
 		{
-			if (!m_are_handlers_cached)
+			[[assume((cache_handlers(), m_are_handlers_cached == true))]];
+			if (!m_are_handlers_cached) [[unlikely]]
 				cache_handlers();
 
 			return m_handlers;
