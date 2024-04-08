@@ -133,7 +133,8 @@ namespace big
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("WEAPON"_T.data(), g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
+		if (ImGui::BeginCombo("WEAPON"_T.data(),
+		        g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
@@ -175,8 +176,6 @@ namespace big
 		}
 
 		ImGui::SeparatorText("VIEW_WEAPON_AIM_ASSISTANCE"_T.data());
-		components::command_checkbox<"triggerbot">();
-		ImGui::SameLine();
 		components::command_checkbox<"aimbot">();
 
 		if (g.weapons.aimbot.enable)
@@ -189,17 +188,8 @@ namespace big
 			ImGui::SameLine();
 			components::command_checkbox<"aimatenemy">();
 
-			components::command_checkbox<"smoothing">();
-			if (g.weapons.aimbot.smoothing)
-			{
-				ImGui::SameLine();
-				ImGui::PushItemWidth(220);
-				ImGui::SliderFloat("VIEW_WEAPON_AIM_SPEED"_T.data(), &g.weapons.aimbot.smoothing_speed, 1.f, 8.f, "%.1f");
-				ImGui::PopItemWidth();
-			}
 			ImGui::PushItemWidth(350);
-			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
-			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 0.0f, (float)*g_pointers->m_gta.m_resolution_x, "%.0f");
 			ImGui::PopItemWidth();
 		}
 
