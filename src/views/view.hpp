@@ -65,6 +65,7 @@ namespace big
 		static void view_player();
 		static void players();
 		static void weapons();
+		static void translator();
 		static void context_menu();
 		static void gta_data();
 		static void creator();

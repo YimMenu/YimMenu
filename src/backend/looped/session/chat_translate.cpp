@@ -25,13 +25,24 @@ namespace big
 				auto& fmsg     = MsgQueue.front();
 				translate_lock = true;
 				g_thread_pool->push([fmsg] {
-					auto translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, "ZH");
+					std::string translatedt;
+					switch (g.session.t_service_provider)
+					{
+						case 0:
+							translatedt = g_api_service->get_translation_from_Bing(fmsg.content, g.session.Bing_target_lang);
+							break;
+						case 1:
+						    translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, g.session.DeepL_target_lang);
+							break;
+					}
+					
 					translate_lock   = false;
 					if (translatedt != "Error" && translatedt != "None")
 						chat::send_message(translatedt, nullptr, true, true);
 				});
 				MsgQueue.pop();
 			}
+
 			catch (std::exception& e)
 			{
 				LOG(WARNING) << "Error: " << e.what();

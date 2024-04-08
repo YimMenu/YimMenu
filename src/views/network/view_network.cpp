@@ -25,11 +25,7 @@ namespace big
 		eSessionType id;
 		const char* name;
 	};
-	struct DeeplTargetLanguage
-	{
-		const char* TargetLanguageType;
-		const char* TargetLanguageName;
-	};
+
 
 	void render_rid_joiner()
 	{
@@ -125,82 +121,6 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
-	bool_command chat_translate("translatechat", "translate chat message", "translate chat message", g.session.translatechat);
-	bool_command chat_translate_hide_d("hideduplicate", "bypass same language", "Do not translate when source and target languages ​​are the same", g.session.hideduplicate);
-
-	void render_chat_translation()
-	{
-		static char target_lg[10];
-		ImGui::BeginGroup();
-		components::sub_title("Chat Translation");
-
-		if (ImGui::BeginListBox("##translatechat", get_listbox_dimensions()))
-		{
-			ImGui::PushItemWidth(ImGui::GetWindowWidth() * 0.5);
-
-			components::button("testmsg", [] {
-				ChatMessage messagetoadd{"testsender", "This is a test message"};
-				MsgQueue.push(messagetoadd);
-
-			});
-			components::command_checkbox<"translatechat">();
-			components::command_checkbox<"hideduplicate">();
-
-			static const auto TargetLang = std::to_array<DeeplTargetLanguage>({//This has to be here because if it's generated at compile time, the translations break for some reason.
-			    {"AR", "Arabic"},
-			    {"BG", "Bulgarian"},
-			    {"CS", "Czech"},
-			    {"DA", "Danish"},
-			    {"DE", "German"},
-			    {"EL", "Greek"},
-			    {"EN", "English"},
-			    {"EN-GB", "English(British)"},
-			    {"EN-US", "English(American)"},
-			    {"ES", "Spanish"},
-			    {"ET", "Estonian"},
-			    {"FI", "Finnish"},
-			    {"FR", "French"},
-			    {"HU", "Hungarian"},
-			    {"ID", "Indonesian"},
-			    {"IT", "Italian"},
-			    {"JA", "Japanese"},
-			    {"KO", "Korean"},
-			    {"LT", "Lithuanian"},
-			    {"LV", "Latvian"},
-			    {"NB", "Norwegian(Bokmål)"},
-			    {"NL", "Dutch"},
-			    {"PL", "Polish"},
-			    {"PT", "Portuguese"},
-			    {"PT-BR", "Portuguese(Brazilian)"},
-			    {"PT-PT", "Portuguese(Others)"},
-			    {"RO", "Romanian"},
-			    {"RU", "Russian"},
-			    {"SK", "Slovak"},
-			    {"SL", "Slovenian"},
-			    {"SV", "Swedish"},
-			    {"TR", "Turkish"},
-			    {"UK", "Ukrainian"},
-			    {"ZH", "Chinese(simplified)"}});
-
-
-			if (ImGui::BeginCombo("##TargetLangSwitcher", "Target Language"_T.data()))
-			{
-				for (const auto& [type, name] : TargetLang)
-				{
-					components::selectable(name, false, [&type] {
-						g.session.target_lang = type;
-					});
-				}
-				ImGui::EndCombo();
-			}
-
-			ImGui::PopItemWidth();
-			ImGui::EndListBox();
-		}
-
-		ImGui::EndGroup();
-	}
-
 	void render_misc()
 	{
 		ImGui::BeginGroup();
@@ -394,7 +314,6 @@ namespace big
 		render_session_globals();
 
 		ImGui::SameLine();
-		render_chat_translation();
 
 		ImGui::BeginGroup();
 		components::sub_title("FORCE_HOST"_T);

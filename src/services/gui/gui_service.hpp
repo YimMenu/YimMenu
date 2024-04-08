@@ -43,6 +43,7 @@ namespace big
 		PLAYER_DATABASE,
 		SESSION_BROWSER,
 		STAT_EDITOR,
+		CHAT_TRANSLATOR,
 
 		SETTINGS,
 		LUA_SCRIPTS,
@@ -144,6 +145,7 @@ namespace big
 						{TAB_DECL(PLAYER_DATABASE), view::player_database}},
 						{TAB_DECL(SESSION_BROWSER), view::session_browser}},
 						{TAB_DECL(STAT_EDITOR), view::stat_editor}},
+						{TAB_DECL(CHAT_TRANSLATOR), view::translator}},
 		            },
 		        },
 		    },

@@ -7,7 +7,7 @@
 
 namespace big
 {
-
+	std::string ms_token_str = "";
 	api_service::api_service()
 	{
 		g_api_service = this;
@@ -20,7 +20,9 @@ namespace big
 
 	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
 	{
-		const auto response = g_http_client.post("http://127.0.0.1:1188/translate", {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, g.session.target_lang));
+		const auto response = g_http_client.post("http://127.0.0.1:1188/translate",
+		    {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}},
+		    std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, g.session.DeepL_target_lang));
 		if (response.status_code == 200)
 		{
 			try
@@ -29,7 +31,7 @@ namespace big
 
 				std::string result = obj["data"];
 				std::string sourcelang = obj["source_lang"];
-				if (sourcelang == g.session.target_lang && g.session.hideduplicate)
+				if (sourcelang == g.session.DeepL_target_lang && g.session.hideduplicate)
 					return "None";
 				return result;
 			}
@@ -48,6 +50,56 @@ namespace big
 
 		return "Error";
 	}
+
+	std::string api_service::get_translation_from_Bing(std::string message, std::string tar_lang)
+	{
+		const std::string bing_auth_url = "https://edge.microsoft.com/translate/auth";
+		cpr::Response auth_response;
+		if (ms_token_str == "")
+		{
+			auth_response = g_http_client.get(bing_auth_url, {{"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0"}});
+			ms_token_str = auth_response.text;
+		}
+
+		const std::string url = std::format("https://api-edge.cognitive.microsofttranslator.com/translate?to={}&api-version=3.0&includeSentenceLength=true",
+		    g.session.Bing_target_lang);
+
+		auto response = g_http_client.post(url,
+		    {
+		        {"accept", "*/*"},
+		        {"accept-language", "zh-TW,zh;q=0.9,ja;q=0.8,zh-CN;q=0.7,en-US;q=0.6,en;q=0.5"},
+		        {"authorization", "Bearer " + ms_token_str},
+		        {"content-type", "application/json"},
+		        {"Referer", "https://www.7-zip.org/"},
+		        {"Referrer-Policy", "strict-origin-when-cross-origin"},
+		        {"User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0"},
+		    },
+		    {std::format(R"([{{"Text":"{}"}}])", message)});
+		if (response.status_code == 200)
+		{
+			nlohmann::json result = nlohmann::json::parse(response.text);
+			if (result[0]["translations"].is_array())
+			{
+				std::string source_lang = result[0]["detectedLanguage"]["language"].get<std::string>();
+				if (source_lang == g.session.Bing_target_lang && g.session.hideduplicate)
+					return "None";
+				return result[0]["translations"][0]["text"].get<std::string>();
+			}
+			else
+			{
+				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << response.text;
+				return "Error";
+			}
+		}
+		else
+		{
+			LOG(WARNING) << "json data"<< response.text;
+			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
+			return "Error";
+		}
+	}
+
+
 	bool api_service::get_rid_from_username(std::string_view username, uint64_t& result)
 	{
 		const auto response = g_http_client.post("https://scui.rockstargames.com/api/friend/accountsearch", {{"Authorization", AUTHORIZATION_TICKET}, {"X-Requested-With", "XMLHttpRequest"}}, {std::format("searchNickname={}", username)});
