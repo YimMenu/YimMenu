@@ -69,6 +69,84 @@ namespace big
 			if (distance < g.esp.box_render_distance[1] && distance > g.esp.box_render_distance[0] && g.esp.box)
 				draw_list->AddRect({esp_x - (62.5f * multplr), esp_y - (175.f * multplr)}, {esp_x - (62.5f * multplr) + (125.f * multplr), esp_y - (175.f * multplr) + (350.f * multplr)}, esp_color);
 
+			if (distance < g.esp.bone_render_distance[1] && distance > g.esp.bone_render_distance[0] && g.esp.bone)
+			{
+				// Map bone locations to x/y on screen
+				ImVec2 head_pos;
+				bool head_valid = bone_to_screen(plyr, ePedBoneType::HEAD, head_pos);
+				
+				if (head_valid)
+				{
+					// Draw circle around head
+					draw_list->AddCircle(head_pos, 20.f * multplr, esp_color, 0, 2.0f);
+				}
+
+				// Make sure to validate both bones before drawing a line between them, otherwise off-screen bones will cause long lines across your screen
+				ImVec2 neck_pos;
+				bool neck_valid = bone_to_screen(plyr, ePedBoneType::NECK, neck_pos);
+				if (head_valid && neck_valid)
+				{
+					// Head to neck
+					draw_list->AddLine(head_pos, neck_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 r_hand_pos;
+				bool r_hand_valid = bone_to_screen(plyr, ePedBoneType::R_HAND, r_hand_pos);
+				if (neck_valid && r_hand_valid)
+				{
+					// Neck to right hand
+					draw_list->AddLine(neck_pos, r_hand_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 l_hand_pos;
+				bool l_hand_valid = bone_to_screen(plyr, ePedBoneType::L_HAND, l_hand_pos);
+				if (neck_valid && l_hand_valid)
+				{
+					// Neck to left hand
+					draw_list->AddLine(neck_pos, l_hand_pos, esp_color, 2.0f);
+				}		
+
+				ImVec2 abdomen_pos;
+				bool abdomen_valid = bone_to_screen(plyr, ePedBoneType::ABDOMEN, abdomen_pos);
+				if (neck_valid && abdomen_valid)
+				{
+					// Neck to abdomen
+					draw_list->AddLine(neck_pos, abdomen_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 r_ankle_pos;
+				bool r_ankle_valid = bone_to_screen(plyr, ePedBoneType::R_ANKLE, r_ankle_pos);
+				if (abdomen_valid && r_ankle_valid)
+				{
+					// Abdomen to right ankle
+					draw_list->AddLine(abdomen_pos, r_ankle_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 l_ankle_pos;
+				bool l_ankle_valid = bone_to_screen(plyr, ePedBoneType::L_ANKLE, l_ankle_pos);
+				if (abdomen_valid && l_ankle_valid)
+				{
+					// Abdomen to left ankle
+					draw_list->AddLine(abdomen_pos, l_ankle_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 r_foot_pos;
+				bool r_foot_valid = bone_to_screen(plyr, ePedBoneType::R_FOOT, r_foot_pos);
+				if (r_foot_valid && r_ankle_valid)
+				{
+					// Right foot to right ankle
+					draw_list->AddLine(r_ankle_pos, r_foot_pos, esp_color, 2.0f);
+				}
+
+				ImVec2 l_foot_pos;
+				bool l_foot_valid = bone_to_screen(plyr, ePedBoneType::L_FOOT, l_foot_pos);
+				if (l_foot_valid && l_ankle_valid)
+				{
+					// Left foot to left ankle
+					draw_list->AddLine(l_ankle_pos, l_foot_pos, esp_color, 2.0f);
+				}
+			}
+
 			if (g.esp.name)
 				name_str = plyr->get_name();
 
@@ -170,6 +248,32 @@ namespace big
 				}
 			}
 		}
+	}
+
+	bool esp::bone_to_screen(const player_ptr& plyr, ePedBoneType pedBone, ImVec2& boneVec)
+	{
+		bool isSuccess = false;
+
+		if (plyr == nullptr)
+			return false;
+
+		float bone_x = 0;
+		float bone_y = 0;
+
+		float screenX = (float)*g_pointers->m_gta.m_resolution_x;
+		float screenY = (float)*g_pointers->m_gta.m_resolution_y;
+
+		const auto boneData = plyr->get_ped()->get_bone_coords(pedBone);
+
+		isSuccess = GRAPHICS::GET_SCREEN_COORD_FROM_WORLD_COORD(boneData.x, boneData.y, boneData.z, &bone_x, &bone_y);
+
+		// The native is much more stable for repeated calls caompred to m_get_screen_coords_for_world_coords
+		//g_pointers->m_gta.m_get_screen_coords_for_world_coords(plyr->get_ped()->get_bone_coords(pedBone).data, &bone_x, &bone_y);
+
+		boneVec.x = screenX * bone_x;
+		boneVec.y = screenY * bone_y;
+
+		return isSuccess;
 	}
 
 	void esp::draw()
