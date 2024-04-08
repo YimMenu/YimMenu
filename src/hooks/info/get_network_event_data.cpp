@@ -64,7 +64,7 @@ namespace big
 				g_fiber_pool->queue_job([] {
 					session::join_session(gta_util::get_network()->m_last_joined_session.m_session_info);
 				});
-				g_notification_service.push_warning("KICKED"_T.data(), "You have been desync kicked. Rejoining previous session...");
+				g_notification_service.push_warning("KICKED"_T.data(), "You have been desync kicked. Rejoining previous session..."); // TODO: add to translations
 			}
 			else
 			{
