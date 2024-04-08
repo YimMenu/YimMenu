@@ -21,8 +21,7 @@ namespace big
 	std::string api_service::get_translation_from_Deeplx(std::string message, std::string tar_lang)
 	{
 		const auto response = g_http_client.post("http://127.0.0.1:1188/translate",
-		    {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}},
-		    std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, g.session.DeepL_target_lang));
+		    {{"Authorization", ""}, {"X-Requested-With", "XMLHttpRequest"}, {"Content-Type", "application/json"}}, std::format(R"({{"text":"{}", "source_lang":"", "target_lang": "{}"}})", message, tar_lang));
 		if (response.status_code == 200)
 		{
 			try
@@ -61,8 +60,7 @@ namespace big
 			ms_token_str = auth_response.text;
 		}
 
-		const std::string url = std::format("https://api-edge.cognitive.microsofttranslator.com/translate?to={}&api-version=3.0&includeSentenceLength=true",
-		    g.session.Bing_target_lang);
+		const std::string url = std::format("https://api-edge.cognitive.microsofttranslator.com/translate?to={}&api-version=3.0&includeSentenceLength=true", tar_lang);
 
 		auto response = g_http_client.post(url,
 		    {
@@ -99,7 +97,70 @@ namespace big
 		}
 	}
 
+	std::string url_encode(const std::string& str)
+	{
+		std::string encoded_str;
+		for (char c : str)
+		{
 
+			if (c == ' ')
+			{
+				encoded_str += '+';
+			}
+			else
+			{
+				encoded_str += c ;
+			}
+		}
+		return encoded_str;
+	}
+
+	std::string api_service::get_translation_from_Google(std::string message, std::string tar_lang)
+	{
+		const std::string url = std::format("https://translate.google.com/translate_a/single?dt=t&client=gtx&sl=auto&q={}&tl={}",
+		    message,tar_lang);
+		std::string encoded_url;
+		for (char c : url)
+		{
+			if (c == ' ')
+			{
+				encoded_url += '+';
+			}
+			else
+			{
+				encoded_url += c;
+			}
+		}
+		const auto response = g_http_client.get(encoded_url, {{"content-type", "application/json"}}, {});
+		if (response.status_code == 200)
+		{
+			try
+			{
+				nlohmann::json obj = nlohmann::json::parse(response.text);
+
+				std::string result = obj[0][0][0];
+				auto& array = obj.back().back();
+				if (array[0] == g.session.Google_target_lang && g.session.hideduplicate)
+					return "None";
+				return result;
+
+			}
+
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "[ChatTranslation]Error while reading json: " << e.what();
+				return "Error";
+			}
+		}
+		else
+		{
+			LOG(WARNING)<< "json data"<< response.text;
+			LOG(WARNING) << "[ChatTranslation]http code eror: " << response.status_code;
+			return "Error";
+		}
+
+
+	}
 	bool api_service::get_rid_from_username(std::string_view username, uint64_t& result)
 	{
 		const auto response = g_http_client.post("https://scui.rockstargames.com/api/friend/accountsearch", {{"Authorization", AUTHORIZATION_TICKET}, {"X-Requested-With", "XMLHttpRequest"}}, {std::format("searchNickname={}", username)});

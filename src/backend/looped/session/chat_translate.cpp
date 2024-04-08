@@ -31,9 +31,12 @@ namespace big
 						case 0:
 							translatedt = g_api_service->get_translation_from_Bing(fmsg.content, g.session.Bing_target_lang);
 							break;
-						case 1:
-						    translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, g.session.DeepL_target_lang);
+						case 1: 
+							translatedt = g_api_service->get_translation_from_Google(fmsg.content, g.session.Google_target_lang);
 							break;
+					    case 2:
+						    translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, g.session.DeepL_target_lang);
+						    break;
 					}
 					
 					translate_lock   = false;

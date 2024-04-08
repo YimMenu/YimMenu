@@ -18,6 +18,11 @@ namespace big
 		const char* TargetLanguageType;
 		const char* TargetLanguageName;
 	};
+	struct GoogleTargetLanguage
+	{
+		const char* TargetLanguageType;
+		const char* TargetLanguageName;
+	};
 	struct ServiceProvider
 	{
 		int ProviderID;
@@ -32,7 +37,7 @@ namespace big
 	{
 		components::sub_title("Chat Translation");
 
-		static const auto Provider = std::to_array<ServiceProvider>({{0, "Microsoft"}, {1, "DeepLx"}});
+		static const auto Provider = std::to_array<ServiceProvider>({{0, "Microsoft"}, {1, "Google"}, {2, "DeepLx"}});
 
 		if (ImGui::BeginCombo("Service Provider##ServiceProvider", Provider[g.session.t_service_provider].ProviderName))
 		{
@@ -54,11 +59,11 @@ namespace big
 
 		if (ImGui::CollapsingHeader("Bing Settings"_T.data()))
 		{
-			static const auto BingLTargetLang = std::to_array<BingTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bangla"}, {"bg", "Bulgarian"}, {"zh-Hans", "Chinese Simplified"}, {"zh-Hant", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"nb", "Norwegian(Bokmål)"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"pt-br", "Portuguese(Brazilian)"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
+			static const auto BingTargetLang = std::to_array<BingTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bangla"}, {"bg", "Bulgarian"}, {"zh-Hans", "Chinese Simplified"}, {"zh-Hant", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"nb", "Norwegian(Bokmål)"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"pt-br", "Portuguese(Brazilian)"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
 
 			if (ImGui::BeginCombo("TargetLanguage##BingTargetLanguage", g.session.Bing_target_lang.c_str()))
 			{
-				for (const auto& [type, name] : BingLTargetLang)
+				for (const auto& [type, name] : BingTargetLang)
 				{
 					components::selectable(name, false, [&type] {
 						g.session.Bing_target_lang = type;
@@ -70,6 +75,21 @@ namespace big
 				ms_token_str = "";
 			});
 
+		}
+		if (ImGui::CollapsingHeader("Google Settings"_T.data()))
+		{
+			static const auto GoogleTargetLang = std::to_array<GoogleTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bg", "Bulgarian"}, {"zh-CN", "Chinese Simplified"}, {"zh-TW", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"n0", "Norwegian"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
+
+			if (ImGui::BeginCombo("TargetLanguage##GoogleTargetLangSwitcher", g.session.Google_target_lang.c_str()))
+			{
+				for (const auto& [type, name] : GoogleTargetLang)
+				{
+					components::selectable(name, false, [&type] {
+						g.session.Google_target_lang = type;
+					});
+				}
+				ImGui::EndCombo();
+			}
 		}
 
 		if (ImGui::CollapsingHeader("DeepL Settings"_T.data()))
