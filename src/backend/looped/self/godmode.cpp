@@ -12,7 +12,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player == nullptr)
+			if (g_local_player == nullptr) [[unlikely]]
 			{
 				return;
 			}
@@ -21,7 +21,7 @@ namespace big
 			uint32_t changed_bits            = bits ^ last_bits;
 			uint32_t changed_or_enabled_bits = bits | changed_bits;
 
-			if (changed_or_enabled_bits)
+			if (changed_or_enabled_bits) [[unlikely]]
 			{
 				uint32_t unchanged_bits       = g_local_player->m_damage_bits & ~changed_or_enabled_bits;
 				g_local_player->m_damage_bits = unchanged_bits | bits;

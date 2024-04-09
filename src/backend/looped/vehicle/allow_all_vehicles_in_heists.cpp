@@ -16,7 +16,7 @@ namespace big
 		{
 			for (Hash tunable_hash : list_of_hashes)
 			{
-				if (auto tunable_ptr = g_tunables_service->get_tunable<PBOOL>(tunable_hash))
+				if (auto tunable_ptr = g_tunables_service->get_tunable<PBOOL>(tunable_hash)) [[likely]]
 				{
 					if (*tunable_ptr != FALSE)
 					{
