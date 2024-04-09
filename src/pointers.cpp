@@ -384,6 +384,15 @@ namespace big
                 g_pointers->m_gta.m_get_gameplay_cam_coords = ptr.sub(0xE).as<functions::get_gameplay_cam_coords>();
             }
         },
+        // Get Viewport
+        {
+			"GV",
+			"48 8B 15 ? ? ? ? 48 8D 2D ? ? ? ? 48 8B CD",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_viewport = ptr.add(3).as<rage::CViewPort*>();
+			}
+		},
         // Give Pickup Reward
         {
             "GPR",

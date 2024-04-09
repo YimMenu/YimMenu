@@ -23,7 +23,7 @@ namespace rage
 	class CViewPort
 	{
 	public:
-		char _0x0000[0x24C];
+		char _0x0000[0x27C];
 		float m_matrix[0x10];
 	};
 

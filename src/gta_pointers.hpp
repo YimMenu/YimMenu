@@ -17,6 +17,7 @@ class CBlipList;
 class TimecycleKeyframeData;
 class CTrainConfig;
 class CWeaponInfoManager;
+class CViewPort;
 
 namespace rage
 {
@@ -124,6 +125,8 @@ namespace big
 		PVOID m_network_player_mgr_shutdown;
 
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
+		
+		rage::CViewPort* m_viewport;
 
 		PVOID m_write_player_gamer_data_node;
 
