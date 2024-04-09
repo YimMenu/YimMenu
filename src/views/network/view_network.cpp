@@ -26,7 +26,6 @@ namespace big
 		const char* name;
 	};
 
-
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
@@ -121,6 +120,7 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
+
 	void render_misc()
 	{
 		ImGui::BeginGroup();

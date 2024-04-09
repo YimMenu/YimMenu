@@ -145,7 +145,6 @@ namespace big
 
 	std::string api_service::get_translation_from_OpenAI(std::string message, std::string tar_lang)
 	{
-		std::string url         = g.session.OpenAI_endpoint + "v1/chat/completions";
 		std::string body        = std::format(R"(
         {{
             "model": "{}",
@@ -156,8 +155,7 @@ namespace big
         }}
     )",g.session.OpenAI_model,g.session.OpenAI_target_lang,
             message);
-		LOG(INFO) << "url " << url;
-		const auto response = g_http_client.post(url, {{"Authorization", "Bearer " + g.session.OpenAI_key}, {"Content-Type", "application/json"}}, {body});
+		const auto response = g_http_client.post(g.session.OpenAI_endpoint, {{"Authorization", "Bearer " + g.session.OpenAI_key}, {"Content-Type", "application/json"}}, {body});
 		if (response.status_code == 200)
 		{
 			try

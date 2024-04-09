@@ -7,6 +7,7 @@
 
 namespace big
 {
+	inline std::atomic_bool translate_lock{false};
 
 	void looped::chat_translate()
 	{
@@ -14,7 +15,7 @@ namespace big
 		{
 			if (MsgQueue.size() >= 3)
 			{
-				LOG(WARNING) << "Message queue is too large, clearing it. Try using keyword blacklist to block spam.";
+				LOG(WARNING) << "Message queue is too large, cleaning it...";
 				while (!MsgQueue.empty())
 					MsgQueue.pop();
 				continue;
@@ -44,7 +45,14 @@ namespace big
 					
 					translate_lock   = false;
 					if (translatedt != "Error" && translatedt != "None")
-						chat::send_message(translatedt, nullptr, true, true);
+					{
+						if (g.session.translatechat_send)
+							chat::send_message(translatedt, nullptr, true, g.session.translatechat_send_team);
+						if (g.session.translatechat_print)
+							LOG(INFO) << "Translated chat message: " << translatedt;
+						if (g.session.translatechat_show)
+							big::chat::draw_chat(translatedt.c_str(), g_player_service->get_self()->get_name(), true);
+					}
 				});
 				MsgQueue.pop();
 			}

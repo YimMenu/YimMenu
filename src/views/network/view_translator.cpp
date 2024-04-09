@@ -57,6 +57,13 @@ namespace big
 		components::command_checkbox<"translatechat">();
 		components::command_checkbox<"hideduplicate">();
 
+		components::sub_title("Output");
+		ImGui::Checkbox("Show on Chat"_T.data(), &g.session.translatechat_show);
+		ImGui::Checkbox("Send to Chat"_T.data(), &g.session.translatechat_send);
+		ImGui::SameLine();
+		ImGui::Checkbox("Team Chat"_T.data(), &g.session.translatechat_send_team);
+		ImGui::Checkbox("Print to Console"_T.data(), &g.session.translatechat_print);
+
 		if (ImGui::CollapsingHeader("Bing Settings"_T.data()))
 		{
 			static const auto BingTargetLang = std::to_array<BingTargetLanguage>({{"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bangla"}, {"bg", "Bulgarian"}, {"zh-Hans", "Chinese Simplified"}, {"zh-Hant", "Chinese Traditional"}, {"hr", "Croatian"}, {"cs", "Czech"}, {"da", "Danish"}, {"de", "German"}, {"el", "Greek"}, {"en", "English"}, {"es", "Spanish"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lt", "Lithuanian"}, {"lv", "Latvian"}, {"nb", "Norwegian(Bokmål)"}, {"nl", "Dutch"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"pt-br", "Portuguese(Brazilian)"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"sv", "Swedish"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"vi", "Vietnamese"}});
