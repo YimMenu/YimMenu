@@ -58,7 +58,7 @@ namespace big
 
 	int hooks::queue_dependency(void* a1, int a2, int64_t dependency)
 	{
-		if (is_unwanted_dependency(dependency))
+		if (is_unwanted_dependency(dependency)) [[unlikely]]
 		{
 			LOG(INFO) << "Blocking AC Verifier " << std::hex << *reinterpret_cast<int64_t*>(dependency + 0x60) - reinterpret_cast<int64_t>(GetModuleHandleA(0));
 			ac_verifier* verifier = reinterpret_cast<ac_verifier*>(dependency - 0x30);

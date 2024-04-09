@@ -378,14 +378,14 @@ namespace big
 
 	void hooks::received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int buffer_size, rage::datBitBuffer* buffer)
 	{
-		if (event_id > 91u)
+		if (event_id > 91u) [[unlikely]]
 		{
 			g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 			return;
 		}
 
 		const auto event_name = *(char**)((DWORD64)event_manager + 8i64 * event_id + 243376);
-		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32)
+		if (event_name == nullptr || source_player == nullptr || source_player->m_player_id < 0 || source_player->m_player_id >= 32) [[unlikely]]
 		{
 			g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 			return;
@@ -393,7 +393,7 @@ namespace big
 
 		auto plyr = g_player_service->get_by_id(source_player->m_player_id);
 
-		if (plyr && plyr->block_net_events)
+		if (plyr && plyr->block_net_events) [[unlikely]]
 		{
 			g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 			return;
