@@ -50,8 +50,6 @@ namespace big
 							chat::send_message(translatedt, nullptr, true, g.session.translatechat_send_team);
 						if (g.session.translatechat_print)
 							LOG(INFO) << "Translated chat message: " << translatedt;
-						if (g.session.translatechat_show)
-							big::chat::draw_chat(translatedt.c_str(), g_player_service->get_self()->get_name(), true);
 					}
 				});
 				MsgQueue.pop();

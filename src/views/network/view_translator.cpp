@@ -58,7 +58,6 @@ namespace big
 		components::command_checkbox<"hideduplicate">();
 
 		components::sub_title("Output");
-		ImGui::Checkbox("Show on Chat"_T.data(), &g.session.translatechat_show);
 		ImGui::Checkbox("Send to Chat"_T.data(), &g.session.translatechat_send);
 		ImGui::SameLine();
 		ImGui::Checkbox("Team Chat"_T.data(), &g.session.translatechat_send_team);

@@ -407,9 +407,8 @@ namespace big
 			bool trust_friends                     = false;
 			bool trust_session                     = false;
 			bool translatechat                     = false;
-			bool translatechat_send                = false;
+			bool translatechat_send                = true;
 			bool translatechat_send_team           = true;
-			bool translatechat_show                = true;
 			bool translatechat_print               = false;
 			bool hideduplicate                     = true;
 			bool use_spam_timer                    = true;
@@ -464,7 +463,7 @@ namespace big
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, translatechat, hideduplicate, DeepL_target_lang, t_service_provider, Bing_target_lang, Google_target_lang, DeepLx_url, OpenAI_model, OpenAI_key, OpenAI_endpoint, OpenAI_target_lang, translatechat_send, translatechat_print, translatechat_send_team, translatechat_show)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, translatechat, hideduplicate, DeepL_target_lang, t_service_provider, Bing_target_lang, Google_target_lang, DeepLx_url, OpenAI_model, OpenAI_key, OpenAI_endpoint, OpenAI_target_lang, translatechat_send, translatechat_print, translatechat_send_team)
 		} session{};
 
 		struct settings
