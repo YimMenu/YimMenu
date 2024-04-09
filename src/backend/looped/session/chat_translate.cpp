@@ -37,6 +37,9 @@ namespace big
 					    case 2:
 						    translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, g.session.DeepL_target_lang);
 						    break;
+					    case 3:
+							translatedt = g_api_service->get_translation_from_OpenAI(fmsg.content, g.session.OpenAI_target_lang);
+						    break;
 					}
 					
 					translate_lock   = false;

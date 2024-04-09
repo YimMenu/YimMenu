@@ -37,7 +37,7 @@ namespace big
 	{
 		components::sub_title("Chat Translation");
 
-		static const auto Provider = std::to_array<ServiceProvider>({{0, "Microsoft"}, {1, "Google"}, {2, "DeepLx"}});
+		static const auto Provider = std::to_array<ServiceProvider>({{0, "Microsoft"}, {1, "Google"}, {2, "DeepLx"}, {3, "OpenAI"}});
 
 		if (ImGui::BeginCombo("Service Provider##ServiceProvider", Provider[g.session.t_service_provider].ProviderName))
 		{
@@ -110,5 +110,16 @@ namespace big
 			}
 
 		}
+
+		if (ImGui::CollapsingHeader("OpenAI Settings"_T.data()))
+		{
+
+			components::input_text_with_hint("OpenAI Endpoint", "https://api.openai.com/", g.session.OpenAI_endpoint);
+			components::input_text_with_hint("OpenAI key", "sk-*", g.session.OpenAI_key);
+			components::input_text_with_hint("model", "gpt-3.5-turbo", g.session.OpenAI_model);
+			components::input_text_with_hint("Target Language##OpenAI", "English", g.session.OpenAI_target_lang);
+
+		}
+
 	}
 }
