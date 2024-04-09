@@ -60,7 +60,7 @@ namespace big
 	{
 		if (is_unwanted_dependency(dependency)) [[unlikely]]
 		{
-			LOG(INFO) << "Blocking AC Verifier " << std::hex << *reinterpret_cast<int64_t*>(dependency + 0x60) - reinterpret_cast<int64_t>(GetModuleHandleA(0));
+			LOG(INFO) << "Blocking AC Verifier " << HEX_TO_UPPER(*reinterpret_cast<int64_t*>(dependency + 0x60) - reinterpret_cast<int64_t>(GetModuleHandle(NULL)));
 			ac_verifier* verifier = reinterpret_cast<ac_verifier*>(dependency - 0x30);
 			verifier->m_delay = INT_MAX; // makes it so these won't queue in the future
 			*reinterpret_cast<void**>(dependency + 0x60) = nullsub;
