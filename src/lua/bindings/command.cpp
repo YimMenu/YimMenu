@@ -1,5 +1,6 @@
 #pragma once
 #include "command.hpp"
+
 #include "backend/command.hpp"
 #include "backend/player_command.hpp"
 #include "network.hpp" // for convert_sequence
@@ -37,7 +38,7 @@ namespace lua::command
 	{
 		const auto args = convert_sequence<uint64_t>(_args.value_or(sol::table()));
 
-		const auto command = (big::player_command*)big::command::get(rage::joaat(command_name));
+		const auto command = big::player_command::get(rage::joaat(command_name));
 
 		if (command)
 		{
@@ -48,12 +49,33 @@ namespace lua::command
 				command->call(player, args);
 			}
 		}
+		else
+		{
+			LOG(FATAL) << "No player command called " << command_name;
+		}
+	}
+
+	// Lua API: Function
+	// Table: command
+	// Name: get_all_player_command_names
+	// Returns: table<integer, string>: Table that contains the names of all the player commands.
+	static std::vector<std::string> get_all_player_command_names()
+	{
+		std::vector<std::string> res;
+
+		for (const auto& cmd : big::g_player_commands | std::ranges::views::values)
+		{
+			res.push_back(cmd->get_name());
+		}
+
+		return res;
 	}
 
 	void bind(sol::state& state)
 	{
-		auto ns           = state["command"].get_or_create<sol::table>();
-		ns["call"]        = call;
-		ns["call_player"] = call_player;
+		auto ns                            = state["command"].get_or_create<sol::table>();
+		ns["call"]                         = call;
+		ns["call_player"]                  = call_player;
+		ns["get_all_player_command_names"] = get_all_player_command_names;
 	}
 }
