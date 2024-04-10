@@ -27,21 +27,8 @@ namespace big
 				translate_lock = true;
 				g_thread_pool->push([fmsg] {
 					std::string translatedt;
-					switch (g.session.t_service_provider)
-					{
-						case 0:
-							translatedt = g_api_service->get_translation_from_Bing(fmsg.content, g.session.Bing_target_lang);
-							break;
-						case 1: 
-							translatedt = g_api_service->get_translation_from_Google(fmsg.content, g.session.Google_target_lang);
-							break;
-					    case 2:
-						    translatedt = g_api_service->get_translation_from_Deeplx(fmsg.content, g.session.DeepL_target_lang);
-						    break;
-					    case 3:
-							translatedt = g_api_service->get_translation_from_OpenAI(fmsg.content, g.session.OpenAI_target_lang);
-						    break;
-					}
+
+					translatedt = g_api_service->get_translation_from_LibreT(fmsg.content, g.session.LibreT_target_lang);
 					
 					translate_lock   = false;
 					if (translatedt != "Error" && translatedt != "None")

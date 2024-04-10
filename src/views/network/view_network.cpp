@@ -175,6 +175,15 @@ namespace big
 		ImGui::EndGroup();
 	}
 
+	struct LibreTLanguage
+	{
+		const char* TargetLanguageType;
+		const char* TargetLanguageName;
+	};
+	bool_command chat_translate("translatechat", "translate chat message", "translate chat message", g.session.translatechat);
+	bool_command chat_translate_hide_d("hideduplicate", "bypass same language", "Do not translate when source and target languages ​​are the same",
+	    g.session.hideduplicate);
+
 	void render_chat()
 	{
 		ImGui::BeginGroup();
@@ -227,6 +236,38 @@ namespace big
 					ImGui::EndCombo();
 				}
 			}
+
+			components::command_checkbox<"translatechat">();
+			if (g.session.translatechat)
+			{
+				components::button("testmsg", [] {
+					ChatMessage messagetoadd{"testsender", "This is a test message"};
+					MsgQueue.push(messagetoadd);
+				});
+				ImGui::Checkbox("HIDE_SAME_LANGUAGE"_T.data(), &g.session.hideduplicate);
+
+				components::sub_title("Output");
+				ImGui::Checkbox("Send to Chat"_T.data(), &g.session.translatechat_send);
+				ImGui::SameLine();
+				ImGui::Checkbox("Team Chat"_T.data(), &g.session.translatechat_send_team);
+				ImGui::Checkbox("Print to Console"_T.data(), &g.session.translatechat_print);
+
+				static const auto LibreTLang = std::to_array<LibreTLanguage>({{"sq", "Albanian"}, {"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bengali"}, {"bg", "Bulgarian"}, {"ca", "Catalan"}, {"zh", "Chinese"}, {"zt", "Chinese(traditional)"}, {"cs", "Czech"}, {"da", "Danish"}, {"nl", "Dutch"}, {"en", "English"}, {"eo", "Esperanto"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"de", "German"}, {"el", "Greek"}, {"he", "Hebrew"}, {"hi", "Hindi"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"ga", "Irish"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lv", "Latvian"}, {"lt", "Lithuanian"}, {"ms", "Malay"}, {"nb", "Norwegian"}, {"fa", "Persian"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sr", "Serbian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"es", "Spanish"}, {"sv", "Swedish"}, {"tl", "Tagalog"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"ur", "Urdu"}, {"vi", "Vietnamese"}});
+
+				components::input_text_with_hint("LibreTranslate URL", "http://localhost:5000/translate", g.session.LibreT_url);
+
+				if (ImGui::BeginCombo("TargetLanguage", g.session.LibreT_target_lang.c_str()))
+				{
+					for (const auto& [type, name] : LibreTLang)
+					{
+						components::selectable(name, false, [&type] {
+							g.session.LibreT_target_lang = type;
+						});
+					}
+					ImGui::EndCombo();
+				}
+			}	
+
 
 			ImGui::EndListBox();
 		}
