@@ -1,6 +1,4 @@
 #include "backend/looped/looped.hpp"
-#include "gta_util.hpp"
-#include "script_local.hpp"
 #include "util/chat.hpp"
 #include "services/api/api_service.hpp"
 #include "thread_pool.hpp"
