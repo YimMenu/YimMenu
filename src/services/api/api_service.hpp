@@ -6,15 +6,13 @@
 
 namespace big
 {
-	extern std::string ms_token_str;
-
 	class api_service
 	{
 	public:
 		api_service();
 		~api_service();
 
-		std::string get_translation_from_LibreT(std::string message, std::string tar_lang);
+		std::string get_translation_from_LibreTranslate(std::string message, std::string target_language);
 
 		// Returns true if an valid profile matching his username has been found
 		bool get_rid_from_username(std::string_view username, uint64_t& result);

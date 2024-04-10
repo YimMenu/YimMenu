@@ -254,11 +254,11 @@ namespace big::chat
 
 namespace big
 {
-	struct ChatMessage
+	struct chat_message
 	{
 		std::string sender;
 		std::string content;
 	};
 
-	extern std::queue<ChatMessage> MsgQueue;
+	extern std::queue<chat_message> translate_Queue;
 }

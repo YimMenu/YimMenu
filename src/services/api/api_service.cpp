@@ -17,29 +17,32 @@ namespace big
 		g_api_service = nullptr;
 	}
 
-	std::string api_service::get_translation_from_LibreT(std::string message, std::string tar_lang)
+	std::string api_service::get_translation_from_LibreTranslate(std::string message, std::string target_language)
 	{
-		std::string url = g.session.LibreT_url;
+		std::string url = g.session.chat_translator_endpoint;
 		const auto response = g_http_client.post(url,
-		    {{"Content-Type", "application/json"}}, std::format(R"({{"q":"{}", "source":"auto", "target": "{}"}})", message, tar_lang));
+		    {{"Content-Type", "application/json"}}, std::format(R"({{"q":"{}", "source":"auto", "target": "{}"}})", message, target_language));
 		if (response.status_code == 200)
 		{
 			try
 			{
 				nlohmann::json obj = nlohmann::json::parse(response.text);
-				std::string source_lang = obj["detectedLanguage"]["language"];
+				std::string source_language = obj["detectedLanguage"]["language"];
 				std::string result = obj["translatedText"];
 				
-				if (source_lang == g.session.LibreT_target_lang && g.session.hideduplicate)
-					return "None";
+				if (source_language == g.session.chat_translator_target && g.session.chat_translator_bypass)
+					return "";
 				return result;
 			}
 			catch (std::exception& e)
 			{
-				return "Error";
+				LOG(WARNING) << "[Chat Translator]Error when parse JSON data: " << e.what();
 			}
 		}
-		return "Error";
+		else {
+			LOG(WARNING) << "[Chat Translator]Error when sending request: " << response.status_code;
+		}
+		return "";
 	}
 
 	bool api_service::get_rid_from_username(std::string_view username, uint64_t& result)

@@ -26,6 +26,12 @@ namespace big
 		const char* name;
 	};
 
+	struct target_language_type
+	{
+		const char* type;
+		const char* name;
+	};
+
 	void render_rid_joiner()
 	{
 		ImGui::BeginGroup();
@@ -120,6 +126,7 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
+	bool_command chat_translate("translatechat", "TRANSLATOR_TOGGLE", "TRANSLATOR_TOGGLE_DESC", g.session.chat_translator);
 
 	void render_misc()
 	{
@@ -175,15 +182,6 @@ namespace big
 		ImGui::EndGroup();
 	}
 
-	struct LibreTLanguage
-	{
-		const char* TargetLanguageType;
-		const char* TargetLanguageName;
-	};
-	bool_command chat_translate("translatechat", "translate chat message", "translate chat message", g.session.translatechat);
-	bool_command chat_translate_hide_d("hideduplicate", "bypass same language", "Do not translate when source and target languages ​​are the same",
-	    g.session.hideduplicate);
-
 	void render_chat()
 	{
 		ImGui::BeginGroup();
@@ -238,36 +236,39 @@ namespace big
 			}
 
 			components::command_checkbox<"translatechat">();
-			if (g.session.translatechat)
+			if (g.session.chat_translator)
 			{
-				components::button("testmsg", [] {
-					ChatMessage messagetoadd{"testsender", "This is a test message"};
-					MsgQueue.push(messagetoadd);
-				});
-				ImGui::Checkbox("HIDE_SAME_LANGUAGE"_T.data(), &g.session.hideduplicate);
 
-				components::sub_title("Output");
-				ImGui::Checkbox("Send to Chat"_T.data(), &g.session.translatechat_send);
+				ImGui::Checkbox("TRANSLATOR_HIDE_SAME_LANGUAGE"_T.data(), &g.session.chat_translator_bypass);
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("HIDE_SAME_LANGUAGE"_T.data());
+
+				components::small_text("TRANSLATOR_OUTPUT"_T.data());
+				ImGui::Checkbox("TRANSLATOR_SHOW_ON_CHAT"_T.data(), &g.session.chat_translator_draw);
+				ImGui::Checkbox("TRANSLATOR_SEND_TO_CHAT"_T.data(), &g.session.chat_translator_send);
 				ImGui::SameLine();
-				ImGui::Checkbox("Team Chat"_T.data(), &g.session.translatechat_send_team);
-				ImGui::Checkbox("Print to Console"_T.data(), &g.session.translatechat_print);
+				ImGui::Checkbox("TRANSLATOR_TEAM_ONLY"_T.data(), &g.session.chat_translator_send_team);
+				ImGui::Checkbox("TRANSLATOR_PRINT_TO_CONSOLE"_T.data(), &g.session.chat_translator_print);
 
-				static const auto LibreTLang = std::to_array<LibreTLanguage>({{"sq", "Albanian"}, {"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bengali"}, {"bg", "Bulgarian"}, {"ca", "Catalan"}, {"zh", "Chinese"}, {"zt", "Chinese(traditional)"}, {"cs", "Czech"}, {"da", "Danish"}, {"nl", "Dutch"}, {"en", "English"}, {"eo", "Esperanto"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"de", "German"}, {"el", "Greek"}, {"he", "Hebrew"}, {"hi", "Hindi"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"ga", "Irish"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lv", "Latvian"}, {"lt", "Lithuanian"}, {"ms", "Malay"}, {"nb", "Norwegian"}, {"fa", "Persian"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sr", "Serbian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"es", "Spanish"}, {"sv", "Swedish"}, {"tl", "Tagalog"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"ur", "Urdu"}, {"vi", "Vietnamese"}});
+				static const auto target_language = std::to_array<target_language_type>({{"sq", "Albanian"}, {"ar", "Arabic"}, {"az", "Azerbaijani"}, {"bn", "Bengali"}, {"bg", "Bulgarian"}, {"ca", "Catalan"}, {"zh", "Chinese"}, {"zt", "Chinese(traditional)"}, {"cs", "Czech"}, {"da", "Danish"}, {"nl", "Dutch"}, {"en", "English"}, {"eo", "Esperanto"}, {"et", "Estonian"}, {"fi", "Finnish"}, {"fr", "French"}, {"de", "German"}, {"el", "Greek"}, {"he", "Hebrew"}, {"hi", "Hindi"}, {"hu", "Hungarian"}, {"id", "Indonesian"}, {"ga", "Irish"}, {"it", "Italian"}, {"ja", "Japanese"}, {"ko", "Korean"}, {"lv", "Latvian"}, {"lt", "Lithuanian"}, {"ms", "Malay"}, {"nb", "Norwegian"}, {"fa", "Persian"}, {"pl", "Polish"}, {"pt", "Portuguese"}, {"ro", "Romanian"}, {"ru", "Russian"}, {"sr", "Serbian"}, {"sk", "Slovak"}, {"sl", "Slovenian"}, {"es", "Spanish"}, {"sv", "Swedish"}, {"tl", "Tagalog"}, {"th", "Thai"}, {"tr", "Turkish"}, {"uk", "Ukrainian"}, {"ur", "Urdu"}, {"vi", "Vietnamese"}});
 
-				components::input_text_with_hint("LibreTranslate URL", "http://localhost:5000/translate", g.session.LibreT_url);
+				components::input_text_with_hint("TRANSLATOR_ENDPOINT"_T.data(), "http://localhost:5000/translate", g.session.chat_translator_endpoint);
 
-				if (ImGui::BeginCombo("TargetLanguage", g.session.LibreT_target_lang.c_str()))
+				if (ImGui::BeginCombo("TRANSLATOR_TARGET_LANGUAGE"_T.data(), g.session.chat_translator_target.c_str()))
 				{
-					for (const auto& [type, name] : LibreTLang)
+					for (const auto& [type, name] : target_language)
 					{
 						components::selectable(name, false, [&type] {
-							g.session.LibreT_target_lang = type;
+							g.session.chat_translator_target = type;
 						});
 					}
 					ImGui::EndCombo();
 				}
+				components::button("TRANSLATOR_TEST_CONFIG"_T.data(), [] {
+					chat_message test_message{"test", "This is a test message."};
+					translate_Queue.push(test_message);
+				});
 			}	
-
 
 			ImGui::EndListBox();
 		}
