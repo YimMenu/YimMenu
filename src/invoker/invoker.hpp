@@ -33,7 +33,7 @@ namespace big
 			m_call_context.reset();
 		}
 
-		template<int index, bool fix_vectors>
+		template<int index, bool should_fix_vectors>
 		constexpr void end_call()
 		{
 			// TODO: try to get rid of this
@@ -42,8 +42,8 @@ namespace big
 				cache_handlers();
 
 			m_handlers[index](&m_call_context);
-			if constexpr (fix_vectors)
-				this->fix_vectors();
+			if constexpr (should_fix_vectors)
+				fix_vectors();
 		}
 
 		template<typename T>
