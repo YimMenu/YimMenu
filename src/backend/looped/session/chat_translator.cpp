@@ -33,9 +33,7 @@ namespace big
 					if (g.session.chat_translator_draw)
 					{
 						if (rage::tlsContext::get()->m_is_script_thread_active)
-						{
 							chat::draw_chat(translate_result.c_str(), sender.c_str(), false);
-						}
 						else
 							g_fiber_pool->queue_job([translate_result, sender] {
 								chat::draw_chat(translate_result.c_str(), sender.c_str(), false);
