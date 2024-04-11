@@ -408,8 +408,6 @@ namespace big
 			bool trust_session                     = false;
 			bool use_spam_timer                    = true;
 			bool chat_translator                   = false;
-			bool chat_translator_send              = false;
-			bool chat_translator_send_team         = false;
 			bool chat_translator_print             = false;
 			bool chat_translator_draw              = true;
 			bool chat_translator_bypass            = true;
@@ -457,7 +455,7 @@ namespace big
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator, chat_translator_bypass, chat_translator_target, chat_translator_endpoint, chat_translator_send, chat_translator_send_team, chat_translator_draw, chat_translator_print)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator, chat_translator_bypass, chat_translator_target, chat_translator_endpoint, chat_translator_draw, chat_translator_print)
 		} session{};
 
 		struct settings

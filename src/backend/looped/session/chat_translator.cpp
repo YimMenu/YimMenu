@@ -28,8 +28,6 @@ namespace big
 				translate_lock = false;
 				if (translate_result != "")
 				{
-					if (g.session.chat_translator_send)
-						chat::send_message(std::format("[{}]", first_message.sender) + translate_result, nullptr, true, g.session.chat_translator_send_team);
 					if (g.session.chat_translator_draw)
 					{
 						if (rage::tlsContext::get()->m_is_script_thread_active)
