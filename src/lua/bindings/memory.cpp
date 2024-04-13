@@ -107,7 +107,7 @@ namespace lua::memory
 	// Returns: pointer: A pointer to the newly allocated memory.
 	static pointer allocate(int size, sol::this_state state)
 	{
-		void* mem = new uint8_t[](size);
+		void* mem = new uint8_t[size]();
 
 		big::lua_module* module = sol::state_view(state)["!this"];
 		module->m_allocated_memory.push_back(mem);
