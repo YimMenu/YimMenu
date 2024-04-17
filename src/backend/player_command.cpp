@@ -29,6 +29,8 @@ namespace big
 	{
 		if (make_all_version)
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
+
+		g_player_commands[rage::joaat(name)] = this;
 	}
 
 	void player_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
@@ -111,12 +113,11 @@ namespace big
 
 	void player_command::call(player_ptr player, const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
-		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))
 		{
 			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
 			    m_name,
-			    m_num_args.value(),
+			    m_num_args.value() - 1,
 			    args.size()));
 			return;
 		}

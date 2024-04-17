@@ -841,15 +841,6 @@ namespace big
                 g_pointers->m_gta.m_broadcast_net_array = ptr.as<PVOID>();
             }
         },
-        // Rage Security
-        {
-            "RS",
-            "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
-            }
-        },
         // Send Session Matchmaking Attributes
         {
             "SSMA",
