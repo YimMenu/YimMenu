@@ -1772,6 +1772,15 @@ namespace big
             {
                 g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
             }
+        },
+        // Format Integer
+        {
+            "FI",
+            "48 83 EC ? 44 88 4C 24",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_format_int = ptr.as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
