@@ -8,12 +8,7 @@ namespace big
 		ss.imbue(std::locale(""));
 		ss << "$" << std::put_money(static_cast<long double>(amount) * 100, false);
 		std::string money = ss.str();
-		size_t pos        = money.find('.');
-		if (pos != std::string::npos)
-		{
-			money = money.substr(0, pos);
-		}
-		return money;
+		return money.substr(0, money.size() - 3);
 	}
 
 	void hooks::format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas)
