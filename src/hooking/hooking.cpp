@@ -142,6 +142,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::can_create_vehicle>("CCV", g_pointers->m_gta.m_can_create_vehicle);
 
+		detour_hook_helper::add<hooks::format_int>("FI", g_pointers->m_gta.m_format_int);
+
 		g_hooking = this;
 	}
 
