@@ -1667,7 +1667,7 @@ namespace big
 		static bool init = ([] { sync_node_finder::init(); }(), true);
 
 		veh_creation_model = std::nullopt;
-		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object))
+		if (tree->m_child_node_count && tree->m_next_sync_node && check_node(tree->m_next_sync_node, g.m_syncing_player, object)) [[unlikely]]
 		{
 			return false;
 		}

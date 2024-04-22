@@ -6,7 +6,7 @@ namespace big
 {
 	void looped::self_police()
 	{
-		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr)
+		if (g_local_player == nullptr || g_local_player->m_player_info == nullptr) [[unlikely]]
 			return;
 
 		static bool bLast = false;

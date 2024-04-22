@@ -14,7 +14,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				((rage::phBoundComposite*)g_local_player->m_navigation->m_damp->m_bound)
 				    ->m_bounds[0]
 				    ->m_bounding_box_max_xyz_margin_w.w = -1;
@@ -22,7 +22,7 @@ namespace big
 
 		virtual void on_disable() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				((rage::phBoundComposite*)g_local_player->m_navigation->m_damp->m_bound)
 				    ->m_bounds[0]
 				    ->m_bounding_box_max_xyz_margin_w.w = 0.25;
