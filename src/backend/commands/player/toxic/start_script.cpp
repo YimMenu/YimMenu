@@ -20,23 +20,23 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			const size_t arg_count  = 26;
+			const int arg_count     = 26;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id, 1 << player->id()};
 
-			args[2] = scriptId;
+			args[3] = scriptId;
 			strcpy((char*)&args[2 + 3], "0");
-			args[2 + 16] = -1;
-			args[2 + 17] = 1337;
-			args[2 + 19] = arg19;
-			args[24] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter;
+			args[3 + 16] = -1;
+			args[3 + 17] = 1337;
+			args[3 + 19] = arg19;
+			args[25] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter;
 
 			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::StartScriptBegin);
 
 			for (int i = 0; i < 2; i++)
 			{
-				const size_t arg_count_2    = 26;
+				const int arg_count_2 = 26;
 				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id, 1 << player->id()};
-				args_2[2 + 17]              = 1337;
+				args_2[3 + 17]              = 1337;
 				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id(), (int)eRemoteEvent::StartScriptProceed);
 
 				script::get_current()->yield(20ms);
