@@ -436,7 +436,7 @@ namespace big
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
-		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
+		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1) [[unlikely]]
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
 			LOG(INFO) << "Sender = " << args[1];
@@ -445,24 +445,30 @@ namespace big
 		}
 
 		if (g.debug.logs.script_event.logs
-		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
+		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id)) [[unlikely]]
 		{
-			std::string script_args = "{ ";
+			std::stringstream output;
+			output << "Script Event From: " << player->get_name() << " Args: { ";
 			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
-					script_args += ", ";
+					output << ", ";
 
-				script_args += std::to_string((int)args[i]);
+				output << (int)args[i];
 			}
-			script_args += " };";
+			output << " }; ";
 
-			LOG(VERBOSE) << "Script Event:\n"
-			             << "\tPlayer: " << player->get_name() << "\n"
-			             << "\tArgs: " << script_args;
+			auto now        = std::chrono::system_clock::now();
+			auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+			auto timer      = std::chrono::system_clock::to_time_t(now);
+			auto local_time = *std::localtime(&timer);
+
+			static std::ofstream log(g_file_manager.get_project_file("./script_events.log").get_path(), std::ios::app);
+			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << output.str() << std::endl;
+			log.flush();
 		}
 
-		if (g.debug.logs.script_event.block_all)
+		if (g.debug.logs.script_event.block_all) [[unlikely]]
 			return true;
 
 		return false;
