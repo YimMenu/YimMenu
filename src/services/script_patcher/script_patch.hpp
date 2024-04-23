@@ -15,6 +15,7 @@ namespace big
 		std::vector<uint8_t> m_original;
 		bool* m_bool;
 		int32_t m_ip;
+		script_data* m_data{};
 
 		static uint8_t* get_code_address(script_data* data, uint32_t index);
 		static const std::optional<uint32_t> get_code_location_by_pattern(script_data* data, const memory::pattern& pattern);
@@ -22,6 +23,7 @@ namespace big
 		void disable(script_data* data);
 
 	public:
+		void eject();
 		inline rage::joaat_t get_script()
 		{
 			return m_script;
