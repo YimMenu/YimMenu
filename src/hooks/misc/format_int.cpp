@@ -15,7 +15,7 @@ namespace big
 	{
 		auto return_address         = _ReturnAddress();
 		auto return_bytes           = static_cast<unsigned char*>(return_address);
-		if (return_bytes[0] == 0x48 && return_bytes[1] == 0x8D && return_bytes[2] == 0x15) //lea     rdx, aHcGreenlightFo ; "~HC_GREENLIGHT~ <font size='20'>"
+		if (g.window.gui.format_money && return_bytes[0] == 0x48 && return_bytes[1] == 0x8D && return_bytes[2] == 0x15) //lea     rdx, aHcGreenlightFo ; "~HC_GREENLIGHT~ <font size='20'>"
 		{
 			auto money_format = format_money(integer_to_format);
 			std::strncpy(format_string, money_format.c_str(), size_always_64);
