@@ -68,6 +68,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
+			components::command_checkbox<"infinitevehammo">();
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
 			components::command_checkbox<"invisveh">();
