@@ -33,6 +33,11 @@ if(Git_FOUND)
         OUTPUT_VARIABLE GIT_BRANCH
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+    # Check if branch name is not present
+    if(NOT GIT_BRANCH)
+        set(GIT_BRANCH "no-branch")
+    endif()
+
     # generate version.cpp
     configure_file("${SRC_DIR}/version.cpp.in" "${SRC_DIR}/version.cpp" @ONLY)
 endif()
