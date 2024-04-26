@@ -33,7 +33,7 @@ body:
       For a bug report to be valid, you need to include the logs for YimMenu.
       They can be found under `%appdata%/YimMenu/cout.log`, even if you think the log file is useless we'd still like for you to include it here.
 
-      Tip: To easily upload your log file rename the cout.log file to cout.txt, alternatively zip the cout.log file. You can drag and drop the file here.
+      Tip: To easily upload your log file rename the cout.log file to cout.txt, alternatively zip the cout.log file. You can then drag and drop the file here.
   validations:
     required: true
 - type: textarea
@@ -44,7 +44,7 @@ body:
 
       Tip: You can attach images by clicking this area to highlight it and then dragging files in.
     value: |
-      <!-- drag and drop you images or video here -->
+      <!-- drag and drop your images or video(s) here -->
   validations:
     required: false
 - type: dropdown
