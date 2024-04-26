@@ -17,7 +17,6 @@
 #include <network/netTime.hpp>
 
 
-
 inline void gamer_handle_deserialize(rage::rlGamerHandle& hnd, rage::datBitBuffer& buf)
 {
 	if ((hnd.m_platform = buf.Read<uint8_t>(sizeof(hnd.m_platform) * 8)) != rage::rlPlatforms::PC)
@@ -85,6 +84,7 @@ namespace big
 
 		rage::eNetMessage msgType;
 		player_ptr player;
+		rate_limiter unk_player_radio_requests{5s, 2};
 
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
@@ -236,7 +236,19 @@ namespace big
 			switch (msgType)
 			{
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
-			case rage::eNetMessage::MsgRadioStationSyncRequest: return false;
+			case rage::eNetMessage::MsgRadioStationSyncRequest:
+			{
+				if (unk_player_radio_requests.process())
+				{
+					if (unk_player_radio_requests.exceeded_last_process())
+					{
+						// Make a translation for this new OOM kick protection
+						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK"_T.data());
+						return true;
+					}
+				}
+				return false;
+			}
 			}
 		}
 
