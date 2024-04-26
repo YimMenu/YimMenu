@@ -127,7 +127,7 @@ namespace big
 
 	uint8_t player::id() const
 	{
-		return m_net_game_player == nullptr ? -1 : m_net_game_player->m_player_id;
+		return m_net_game_player == nullptr ? self::id : m_net_game_player->m_player_id;
 	}
 
 	bool player::is_host() const
