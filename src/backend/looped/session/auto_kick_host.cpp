@@ -12,7 +12,7 @@ namespace big
 		if (kick_host && !bLastKickHost)
 		{
 			g_player_service->iterate([](auto& plyr) {
-				if (plyr.second->is_host())
+				if (plyr.second->is_host() && !plyr.second->is_friend() && !plyr.second->is_trusted)
 				{
 					dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr.second, {});
 				}
