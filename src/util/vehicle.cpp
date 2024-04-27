@@ -152,13 +152,16 @@ namespace big::vehicle
 
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked, bool script_veh)
 	{
+		if (is_networked && !*g_pointers->m_gta.m_is_session_started)
+			is_networked = false;
+
 		if (entity::request_model(hash))
 		{
 			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
 
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
-			if (is_networked && *g_pointers->m_gta.m_is_session_started)
+			if (is_networked)
 			{
 				set_mp_bitset(veh);
 			}
