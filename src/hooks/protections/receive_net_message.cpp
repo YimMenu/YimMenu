@@ -84,7 +84,6 @@ namespace big
 
 		rage::eNetMessage msgType;
 		player_ptr player;
-		rate_limiter unk_player_radio_requests{5s, 2};
 
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
@@ -238,6 +237,8 @@ namespace big
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
 			case rage::eNetMessage::MsgRadioStationSyncRequest:
 			{
+				static rate_limiter unk_player_radio_requests{2s, 2};
+
 				if (unk_player_radio_requests.process())
 				{
 					if (unk_player_radio_requests.exceeded_last_process())
