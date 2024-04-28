@@ -59,6 +59,8 @@ namespace big
 
 		ImGui::EndGroup();
 
+		ImGui::Checkbox("VIEW_GUI_FORMAT_MONEY"_T.data(), &g.window.gui.format_money);
+
 		if (g.window.ingame_overlay.show_indicators)
 		{
 			if (ImGui::TreeNode("VIEW_GUI_SETTINGS_OVERLAY_INDICATORS"_T.data()))

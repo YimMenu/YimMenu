@@ -841,15 +841,6 @@ namespace big
                 g_pointers->m_gta.m_broadcast_net_array = ptr.as<PVOID>();
             }
         },
-        // Rage Security
-        {
-            "RS",
-            "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
-            }
-        },
         // Send Session Matchmaking Attributes
         {
             "SSMA",
@@ -1780,6 +1771,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
+            }
+        },
+        // Format Integer
+        {
+            "FI",
+            "48 83 EC ? 44 88 4C 24",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_format_int = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

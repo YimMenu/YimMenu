@@ -418,10 +418,25 @@ namespace big
 			}
 			break;
 		}
+		case eRemoteEvent::StartScriptBegin:
+		{
+			static const std::unordered_set<int> bad_script_ids = {
+			    17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/,
+			    215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/,
+			    221 /*FM_Race_Controler*/, 222 /*FM_Horde_Controler*/, 226 /*grid_arcade_cabinet*/, 227 /*scroll_arcade_cabinet*/,
+			    229 /*road_arcade*/, 231 /*wizard_arcade*/, 235 /*ggsm_arcade*/, 236 /*puzzle*/, 238 /*SCTV*/ };
+			auto script_id = args[3];
+			if (bad_script_ids.contains(script_id))
+			{
+				g.reactions.start_script.process(plyr);
+				return true;
+			}
+			break;
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
-		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
+		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1) [[unlikely]]
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
 			LOG(INFO) << "Sender = " << args[1];
@@ -430,24 +445,30 @@ namespace big
 		}
 
 		if (g.debug.logs.script_event.logs
-		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
+		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id)) [[unlikely]]
 		{
-			std::string script_args = "{ ";
+			std::stringstream output;
+			output << "Script Event From: " << player->get_name() << " (" << player->get_net_data()->m_gamer_handle.m_rockstar_id << ") Args: { ";
 			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
-					script_args += ", ";
+					output << ", ";
 
-				script_args += std::to_string((int)args[i]);
+				output << (int)args[i];
 			}
-			script_args += " };";
+			output << " }; ";
 
-			LOG(VERBOSE) << "Script Event:\n"
-			             << "\tPlayer: " << player->get_name() << "\n"
-			             << "\tArgs: " << script_args;
+			auto now        = std::chrono::system_clock::now();
+			auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+			auto timer      = std::chrono::system_clock::to_time_t(now);
+			auto local_time = *std::localtime(&timer);
+
+			static std::ofstream log(g_file_manager.get_project_file("./script_events.log").get_path(), std::ios::app);
+			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << output.str() << std::endl;
+			log.flush();
 		}
 
-		if (g.debug.logs.script_event.block_all)
+		if (g.debug.logs.script_event.block_all) [[unlikely]]
 			return true;
 
 		return false;

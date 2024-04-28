@@ -225,7 +225,6 @@ namespace big
 
 		PVOID m_broadcast_net_array;
 
-		rage::atSingleton<rage::RageSecurity>* m_security;
 		PVOID m_prepare_metric_for_sending;
 
 		PVOID m_queue_dependency;
@@ -367,6 +366,8 @@ namespace big
 		CWeaponInfoManager* m_weapon_info_manager;
 
 		functions::can_create_vehicle m_can_create_vehicle;
+
+		PVOID m_format_int;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

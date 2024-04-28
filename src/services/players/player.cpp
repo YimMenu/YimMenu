@@ -127,7 +127,10 @@ namespace big
 
 	uint8_t player::id() const
 	{
-		return m_net_game_player == nullptr ? -1 : m_net_game_player->m_player_id;
+		if (*g_pointers->m_gta.m_is_session_started)
+			return m_net_game_player == nullptr ? -1 : m_net_game_player->m_player_id;
+		else
+			return self::id;
 	}
 
 	bool player::is_host() const

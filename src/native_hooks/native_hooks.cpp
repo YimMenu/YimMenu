@@ -103,6 +103,7 @@ namespace big
 
 		add_native_detour("shop_controller"_J, NativeIndex::IS_PED_SHOOTING, all_scripts::RETURN_FALSE); // prevent exploit reports
 		add_native_detour("shop_controller"_J, NativeIndex::SET_WARNING_MESSAGE_WITH_HEADER, shop_controller::SET_WARNING_MESSAGE_WITH_HEADER);
+		add_native_detour("shop_controller"_J, NativeIndex::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT, shop_controller::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT);
 
 		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_COORDS, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_HEADING, carmod_shop::SET_ENTITY_HEADING);
