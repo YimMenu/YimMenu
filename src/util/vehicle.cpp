@@ -146,7 +146,7 @@ namespace big::vehicle
 
 		auto cvehicle = (uint8_t*)g_pointers->m_gta.m_handle_to_ptr(veh);
 		// fix vehicle being completly fucked after going into water.
-		cvehicle[0xD8] = 0x20;
+		cvehicle[0xD8] &= ~(1 << 0);
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
