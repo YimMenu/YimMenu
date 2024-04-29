@@ -144,9 +144,28 @@ namespace big::vehicle
 			return false;
 		}
 
-		VEHICLE::SET_VEHICLE_ENGINE_HEALTH(veh, 1000);
-		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+		auto cvehicle = (uint8_t*)g_pointers->m_gta.m_handle_to_ptr(veh);
+		// fix vehicle being completly fucked after going into water.
+		cvehicle[0xD8] = 0x20;
+
 		VEHICLE::SET_VEHICLE_FIXED(veh);
+		VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(veh);
+		VEHICLE::SET_VEHICLE_NEEDS_TO_BE_HOTWIRED(veh, false);
+
+		if (FIRE::IS_ENTITY_ON_FIRE(veh))
+		{
+			FIRE::STOP_ENTITY_FIRE(veh);
+		}
+
+		VEHICLE::SET_VEHICLE_ENGINE_HEALTH(veh, 1000.0f);
+		VEHICLE::SET_VEHICLE_PETROL_TANK_HEALTH(veh, 1000.0f);
+		VEHICLE::SET_VEHICLE_BODY_HEALTH(veh, 1000.f);
+
+		VEHICLE::SET_VEHICLE_UNDRIVEABLE(veh, false);
+		VEHICLE::SET_VEHICLE_ENGINE_CAN_DEGRADE(veh, false);
+
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
+
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
 
 		return true;
