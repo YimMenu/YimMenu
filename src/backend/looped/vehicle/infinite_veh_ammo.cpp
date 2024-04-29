@@ -9,33 +9,29 @@ namespace big
 
 		virtual void on_tick() override
         {
-            Vehicle player_veh = self::veh;
-
-            if (player_veh != 0 && VEHICLE::DOES_VEHICLE_HAVE_WEAPONS(player_veh))
+			if (self::veh && VEHICLE::DOES_VEHICLE_HAVE_WEAPONS(self::veh))
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    VEHICLE::SET_VEHICLE_WEAPON_RESTRICTED_AMMO(player_veh, i, -1);
+					VEHICLE::SET_VEHICLE_WEAPON_RESTRICTED_AMMO(self::veh, i, -1);
                 }
 
-                VEHICLE::SET_VEHICLE_BOMB_AMMO(player_veh, -1);
-                VEHICLE::SET_VEHICLE_COUNTERMEASURE_AMMO(player_veh, -1);
+                VEHICLE::SET_VEHICLE_BOMB_AMMO(self::veh, -1);
+				VEHICLE::SET_VEHICLE_COUNTERMEASURE_AMMO(self::veh, -1);
             }
         }
 
 		virtual void on_disable() override
 		{
-			Vehicle player_veh = self::veh;
-
-			if (player_veh != 0 && VEHICLE::DOES_VEHICLE_HAVE_WEAPONS(player_veh))
+			if (self::veh && VEHICLE::DOES_VEHICLE_HAVE_WEAPONS(self::veh))
 			{
 				for (int i = 0; i < 3; i++)
 				{
-					VEHICLE::SET_VEHICLE_WEAPON_RESTRICTED_AMMO(player_veh, i, 20);
+					VEHICLE::SET_VEHICLE_WEAPON_RESTRICTED_AMMO(self::veh, i, 20);
 				}
 
-				VEHICLE::SET_VEHICLE_BOMB_AMMO(player_veh, 20);
-				VEHICLE::SET_VEHICLE_COUNTERMEASURE_AMMO(player_veh, 20);
+				VEHICLE::SET_VEHICLE_BOMB_AMMO(self::veh, 20);
+				VEHICLE::SET_VEHICLE_COUNTERMEASURE_AMMO(self::veh, 20);
 			}
 		}
 	};
