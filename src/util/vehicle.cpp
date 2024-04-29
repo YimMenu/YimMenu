@@ -144,6 +144,8 @@ namespace big::vehicle
 			return false;
 		}
 
+		VEHICLE::SET_VEHICLE_ENGINE_HEALTH(veh, 1000);
+		VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true, false);
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
 
