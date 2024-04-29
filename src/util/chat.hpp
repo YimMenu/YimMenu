@@ -113,6 +113,9 @@ namespace
 	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // AV
 	    "\xE8\x90\x9D",                         // AV
 	    "\xE7\xBD\x91\xE7\xBA\xA2",             // AV
+	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
+	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
+	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
 	};
 }
 
