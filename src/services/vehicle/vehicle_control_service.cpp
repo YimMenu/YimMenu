@@ -34,7 +34,7 @@ namespace big
 		}
 	};
 
-	vehicle_control_command g_vehicle_control("vehiclecontrol", "Vehicle controller", "Enables/Disables the vehicle controller.",
+	vehicle_control_command g_vehicle_control("vehiclecontrol", "VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_DESC"_T.data(),
 	    g.window.vehicle_control.opened);
 
 	void update_controlled_vehicle_doors(controlled_vehicle& veh)
