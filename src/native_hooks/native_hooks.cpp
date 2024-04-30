@@ -11,6 +11,7 @@
 #include "network_session_host.hpp"
 #include "shop_controller.hpp"
 #include "tunables.hpp"
+#include "am_pi_menu.hpp"
 
 #include <script/scrProgram.hpp>
 #include <script/scrProgramTable.hpp>
@@ -127,6 +128,8 @@ namespace big
 
 		add_native_detour("am_launcher"_J, NativeIndex::START_NEW_SCRIPT_WITH_ARGS, am_launcher::START_NEW_SCRIPT_WITH_ARGS);
 		add_native_detour("am_launcher"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+
+		add_native_detour("am_pi_menu"_J, NativeIndex::DISPLAY_ONSCREEN_KEYBOARD, am_pi_menu::DISPLAY_ONSCREEN_KEYBOARD);
 
 		add_native_detour("fm_race_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
 		add_native_detour("fm_capture_creator"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, creator::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
