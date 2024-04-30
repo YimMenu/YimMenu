@@ -52,8 +52,6 @@ namespace
 	    "<b>",
 	    "P888",
 	    "gtacash",
-	    "\xE6\x89\xA3\xE6\x89\xA3", // no clue what this is
-	    "\xE5\xBE\xAE\xE4\xBF\xA1", // "wechat" in Chinese
 	    ".cc",
 	    "<font s",
 	    "sellix.io",
@@ -62,18 +60,6 @@ namespace
 	    "REP +",
 	    "20R$", // Brazil currency?
 	    "l55.me",
-	    "\xE5\xBA\x97",                         //"shop" in Chinese
-	    "\xE9\x92\xB1",                         //"money" in Chinese
-	    "\xE5\x88\xB7",                         //"make(money)" in Chinese
-	    "\xE8\x90\x9D\xE8\x8E\x89",             // "cute girl" in Chinese
-	    "\xE5\xA6\x88",                         // "mother" in Chinese
-	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // "sexy girl" in Chinese
-	    "\xE5\xBC\xBA\xE5\xA5\xB8",             // "rape" in Chinese
-	    "\xE8\x90\x9D",                         // "loli" in Chinese
-	    "\xE6\x8C\x82",                         // "hack" in Chinese
-	    "\xE5\x85\x83",                         // chinese dollar
-	    "\xE9\x98\xB4\xE4\xBC\xA0\xE5\xAA\x92", // "Yin Media" in Chinese
-	    "\xE7\xBD\x91\xE7\xBA\xA2",             // "internet celebrities" in Chinese
 	    "TRUSTPILOT",
 	    "cashlounge",
 	    "Fast Delivery",
@@ -87,6 +73,49 @@ namespace
 	    "Discord For Cheap Money",
 	    "10-30m",
 	    "Discord todo",
+	    "\xE6\x89\xA3\xE6\x89\xA3",             // QQ
+	    "\xE4\xBC\xA0\xE5\xAA\x92",             // AV
+	    "\xE8\x96\x87\xE4\xBF\xA1",             // Wechat
+	    "\xE7\xBB\xB4\xE4\xBF\xA1",             // Wechat2
+	    "\xE9\xA6\x96\xE5\x8D\x95",             // Shop promotion
+	    "\xE5\x8C\x85\xE8\xB5\x94",             // Shop promotion
+	    "\xE9\x9B\xB6\xE5\xB0\x81",             // Menu promotion
+	    "\xE4\xB8\x8D\xE5\xB0\x81",             // Menu promotion
+	    "\xE7\x94\xB5\xE7\x8E\xA9",             // Shop
+	    "\xE4\xB8\x9A\xE5\x8A\xA1",             // Shop promotion
+	    "\xE5\x88\xB7\xE9\x87\x91",             // Shop AD
+	    "\xE5\x88\xB7\xE9\x92\xB1",             // Shop AD
+	    "\xE9\x87\x91\xE5\xB8\x81",             // Shop AD
+	    "\xE9\x87\x91\xE6\x9D\xA1",             // Shop AD
+	    "\xE5\x85\x83\xE8\xB5\xB7",             // Shop AD
+	    "\xE4\xB8\x8B\xE5\x8D\x95",             // Shop AD
+	    "\xE6\x89\x93\xE9\x87\x91",             // Shop AD
+	    "\xE5\xA6\xB9\xE5\xAD\x90",             // AV
+	    "\xE4\xBD\x8E\xE4\xBB\xB7",             // Menu promotion
+	    "\xE9\xAB\x98\xE7\xAB\xAF",             // Menu promotion
+	    "\xE8\xA7\x86\xE5\xB1\x8F",             // AV
+	    "\xE6\x88\x90\xE5\x85\xA5",             // AV
+	    "\xE5\x85\xA8\xE7\xBD\xB1",             // Shop AD
+	    "\xE5\x94\xAE\xE5\x90\x8E",             // Shop AD
+	    "Q\xE7\xBE\xA4",                        // QQ group
+	    "\xE7\xA6\x8F\xE5\x88\xA9",             // AV
+	    "\xE6\x8A\x96\xE9\x9F\xB3",             // AV
+	    "\xE5\x8A\xA0\xE5\xBE\xAE",             // Wechat
+	    "\xE7\xBE\x8E\xE4\xBA\xBA",             // AV
+	    "\xE5\xBC\xBA\xE5\xA5\xB8",             // AV
+	    "\xE6\xAD\xAA\xE6\xAD\xAA",             // Chat app
+	    "\xE5\xB0\x8F\xE7\xA8\x8B\xE5\xBA\x8F", // Wechat miniapp
+	    "\xE6\xB7\x98\xE5\xAE\x9D",             // Shop
+	    "\xE5\xBA\x97\xE9\x93\xBA",             // Shop
+	    "\xE6\x8E\x8F\xE5\xAE\x9D",             // Shop
+	    "\xE8\x80\x81\xE5\x93\x88",             // Mod shop
+	    "\xE5\xBE\xAE\xE4\xBF\xA1\xE6\x90\x9C", // Wechat search
+	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // AV
+	    "\xE8\x90\x9D",                         // AV
+	    "\xE7\xBD\x91\xE7\xBA\xA2",             // AV
+	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
+	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
+	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
 	};
 }
 
