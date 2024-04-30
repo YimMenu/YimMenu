@@ -24,7 +24,7 @@ namespace big
 		return m_callbacks.insert({hash, cb}).second;
 	}
 
-	bool custom_text_service::add_callback_for_labels(std::list<rage::joaat_t> hashes, custom_label_callback&& cb)
+	bool custom_text_service::add_callback_for_labels(std::initializer_list<rage::joaat_t> hashes, custom_label_callback&& cb)
 	{
 		bool result = true;
 		for (const auto& hash : hashes)
