@@ -151,7 +151,7 @@ namespace big::vehicle
 			return false;
 		}
 
-		repair_vehicle_from_water(veh);
+		repair_engine_from_water(veh);
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);

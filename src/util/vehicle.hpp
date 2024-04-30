@@ -25,7 +25,7 @@ namespace big::vehicle
 	void bring(Vehicle veh, Vector3 location, bool put_in = true, int seatIdx = -1);
 	Vehicle get_closest_to_location(Vector3 location, float range);
 	bool set_plate(Vehicle veh, const char* plate);
-	void repair_vehicle_from_water(Vehicle veh);
+	void repair_engine_from_water(Vehicle veh);
 	bool repair(Vehicle veh);
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked = true, bool script_veh = false);
 	Vehicle clone_from_vehicle_data(std::map<int, int32_t>& data, Vector3 location, float heading);
