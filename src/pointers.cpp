@@ -496,15 +496,6 @@ namespace big
                 g_pointers->m_gta.m_get_label_text = ptr.add(8).rip().as<PVOID>();
             }
         },
-        // Multiplayer chat filter
-        {
-            "MCF",
-            "E8 ? ? ? ? 83 F8 FF 75 B9",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_check_chat_profanity = ptr.add(1).rip().as<decltype(gta_pointers::m_check_chat_profanity)>();
-            }
-        },
         // Network
         {
             "N",
