@@ -94,6 +94,7 @@ namespace big
 		add_native_detour(NativeIndex::DISABLE_CONTROL_ACTION, all_scripts::DISABLE_CONTROL_ACTION);
 		add_native_detour(NativeIndex::HUD_FORCE_WEAPON_WHEEL, all_scripts::HUD_FORCE_WEAPON_WHEEL);
 		add_native_detour(NativeIndex::NETWORK_CASINO_CAN_BET, all_scripts::RETURN_TRUE); // bypass casino country restrictions
+		add_native_detour(NativeIndex::SC_PROFANITY_GET_STRING_STATUS, all_scripts::RETURN_FALSE); // bypass SC profanity checks
 		add_native_detour(NativeIndex::NETWORK_OVERRIDE_CLOCK_TIME, all_scripts::NETWORK_OVERRIDE_CLOCK_TIME);
 		add_native_detour(NativeIndex::SET_ENTITY_HEALTH, all_scripts::SET_ENTITY_HEALTH);
 		add_native_detour(NativeIndex::APPLY_DAMAGE_TO_PED, all_scripts::APPLY_DAMAGE_TO_PED);
