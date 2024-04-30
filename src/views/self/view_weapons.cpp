@@ -91,9 +91,7 @@ namespace big
 			}
 		});
 
-		ImGui::Checkbox("ENABLE_BOTH_MK1_AND_MK2_VARIANTS"_T.data(), &g.weapons.enable_mk1_variants);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("ENABLE_BOTH_MK1_AND_MK2_VARIANTS_DESC"_T.data());
+		components::command_checkbox<"enablemk1variants">();
 
 		ImGui::EndGroup();
 
