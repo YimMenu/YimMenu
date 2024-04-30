@@ -92,5 +92,27 @@ namespace big
 				}
 			}
 		}
+
+		void REMOVE_WEAPON_FROM_PED(rage::scrNativeCallContext* src)
+		{
+			auto ped         = src->get_arg<Ped>(0);
+			auto weapon_hash = src->get_arg<Hash>(1);
+			if (g.weapons.enable_mk1_variants)
+			{
+				static const std::unordered_set<Hash> weapon_variants = {
+					"WEAPON_PISTOL"_J, "WEAPON_SMG"_J, "WEAPON_ASSAULTRIFLE"_J, "WEAPON_CARBINERIFLE"_J,
+					"WEAPON_COMBATMG"_J, "WEAPON_HEAVYSNIPER"_J, "WEAPON_BULLPUPRIFLE"_J, "WEAPON_MARKSMANRIFLE"_J,
+					"WEAPON_PUMPSHOTGUN"_J, "WEAPON_REVOLVER"_J, "WEAPON_SNSPISTOL"_J, "WEAPON_SPECIALCARBINE"_J,
+					//MK2 variants
+					"WEAPON_PISTOL_MK2"_J, "WEAPON_SMG_MK2"_J, "WEAPON_ASSAULTRIFLE_MK2"_J, "WEAPON_CARBINERIFLE_MK2"_J,
+					"WEAPON_COMBATMG_MK2"_J, "WEAPON_HEAVYSNIPER_MK2"_J, "WEAPON_BULLPUPRIFLE_MK2"_J, "WEAPON_MARKSMANRIFLE_MK2"_J,
+					"WEAPON_PUMPSHOTGUN_MK2"_J, "WEAPON_REVOLVER_MK2"_J, "WEAPON_SNSPISTOL_MK2"_J, "WEAPON_SPECIALCARBINE_MK2"_J };
+				if (ped == self::ped && weapon_variants.contains(weapon_hash))
+				{
+					return;
+				}
+			}
+			WEAPON::REMOVE_WEAPON_FROM_PED(ped, weapon_hash);
+		}
 	}
 }

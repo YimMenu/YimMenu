@@ -119,6 +119,7 @@ namespace big
 		add_native_detour("freemode"_J, NativeIndex::SET_BIGMAP_ACTIVE, freemode::SET_BIGMAP_ACTIVE);
 		add_native_detour("freemode"_J, NativeIndex::SET_BLIP_DISPLAY, freemode::SET_BLIP_DISPLAY);
 		add_native_detour("freemode"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
+		add_native_detour("freemode"_J, NativeIndex::REMOVE_WEAPON_FROM_PED, freemode::REMOVE_WEAPON_FROM_PED);
 
 		add_native_detour("fmmc_launcher"_J, NativeIndex::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA, freemode::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA);
 		add_native_detour("maintransition"_J, NativeIndex::NETWORK_SESSION_HOST, network::NETWORK_SESSION_HOST);
