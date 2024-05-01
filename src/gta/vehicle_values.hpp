@@ -430,7 +430,6 @@ enum CustomVehicleModType
 	MOD_PRIMARY_CUSTOM   = -131,
 	MOD_SECONDARY_CUSTOM = -132,
 
-	MOD_EXTRA_0  = -200,
 	MOD_EXTRA_1  = -201,
 	MOD_EXTRA_2  = -202,
 	MOD_EXTRA_3  = -203,

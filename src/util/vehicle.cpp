@@ -345,9 +345,9 @@ namespace big::vehicle
 		}
 
 		// EXTRA
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id  = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id  = (extra - MOD_EXTRA_1) * -1;
 			owned_mods[extra] = val_77 >> (gta_extra_id - 1) & 1;
 		}
 
@@ -438,9 +438,9 @@ namespace big::vehicle
 			}
 		}
 
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id = (extra - MOD_EXTRA_1) * -1;
 			if (owned_mods.count(extra) && VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
 			{
 				VEHICLE::SET_VEHICLE_EXTRA(vehicle, gta_extra_id, owned_mods[extra] == 0);
@@ -526,9 +526,9 @@ namespace big::vehicle
 			}
 		}
 
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id = (extra - MOD_EXTRA_1) * -1;
 			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
 			{
 				owned_mods[extra] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, gta_extra_id);
