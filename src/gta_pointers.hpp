@@ -104,8 +104,8 @@ namespace big
 		functions::set_gravity_level m_set_gravity_level;
 
 		PVOID m_native_return;
+		PVOID m_ctext_file_ptr;
 		PVOID m_get_label_text;
-		functions::check_chat_profanity* m_check_chat_profanity;
 		functions::write_player_game_state_data_node m_write_player_game_state_data_node;
 
 		ChatData** m_chat_data;
