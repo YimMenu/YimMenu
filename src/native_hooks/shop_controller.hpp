@@ -6,19 +6,14 @@ namespace big
 {
 	namespace shop_controller
 	{
-		static inline std::string format_chips(int64_t value)
+		inline std::string format_chips(int value)
 		{
-			std::string result{};
-			std::string integerPart = std::to_string(value);
-
-			// Add commas as thousands separators
-			for (int i = static_cast<int>(integerPart.size()) - 3; i > 0; i -= 3)
+			std::string formatted = std::to_string(value);
+			for (int i = formatted.size() - 3; i > 0; i -= 3)
 			{
-				integerPart.insert(i, ",");
+				formatted.insert(i, ",");
 			}
-
-			result += integerPart;
-			return result;
+			return formatted;
 		}
 
 		void SET_WARNING_MESSAGE_WITH_HEADER(rage::scrNativeCallContext* src)
