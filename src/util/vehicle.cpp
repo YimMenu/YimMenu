@@ -137,12 +137,21 @@ namespace big::vehicle
 		return true;
 	}
 
+	void repair_engine_from_water(Vehicle veh)
+	{
+		auto cvehicle = (uint8_t*)g_pointers->m_gta.m_handle_to_ptr(veh);
+		// fix vehicle being completly fucked after going into water.
+		cvehicle[0xD8] &= ~(1 << 0);
+	}
+
 	bool repair(Vehicle veh)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
 		{
 			return false;
 		}
+
+		repair_engine_from_water(veh);
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
