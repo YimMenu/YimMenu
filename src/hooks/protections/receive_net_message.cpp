@@ -2,6 +2,7 @@
 #include "backend/context/chat_command_context.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
+#include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
@@ -9,9 +10,8 @@
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
-#include "util/session.hpp"
 #include "util/chat.hpp"
-#include "gta/enums.hpp"
+#include "util/session.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -120,7 +120,7 @@ namespace big
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
 					g_notification_service.push("PROTECTIONS"_T.data(),
-                                      
+
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
@@ -235,7 +235,21 @@ namespace big
 			switch (msgType)
 			{
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
-			case rage::eNetMessage::MsgRadioStationSyncRequest: return true;
+			case rage::eNetMessage::MsgRadioStationSyncRequest:
+			{
+				static rate_limiter unk_player_radio_requests{2s, 2};
+
+				if (unk_player_radio_requests.process())
+				{
+					if (unk_player_radio_requests.exceeded_last_process())
+					{
+						// Make a translation for this new OOM kick protection
+						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK"_T.data());
+						return true;
+					}
+				}
+				return false;
+			}
 			}
 		}
 
