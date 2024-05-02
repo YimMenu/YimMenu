@@ -41,5 +41,5 @@ namespace big
 		}
 	};
 
-	hudcolor g_hudcolor_looped("hudcolor", "Override HUD Color", "Override HUD colors", g.self.hud.color_override);
+	hudcolor g_hudcolor_looped("hudcolor", "OVERRIDE_HUD_COLOR", "Override HUD colors", g.self.hud.color_override);
 }
