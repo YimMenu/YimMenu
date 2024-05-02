@@ -40,10 +40,13 @@ jobs:
         run: |
           del YimMenu-dev-*.dll
           ren YimMenu.dll YimMenu-dev-${{github.sha}}.dll
+          ren YimMenu.pdb YimMenu-dev-${{github.sha}}.pdb
         working-directory: build/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: binary
-          path: build/YimMenu-dev-*.dll
+          path: |
+            build/YimMenu-dev-*.dll
+            build/YimMenu-dev-*.pdb
