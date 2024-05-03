@@ -47,6 +47,7 @@ namespace big
 		int block_join_reason = 1;
 		bool is_modder        = false;
 		bool is_trusted       = false;
+		bool is_stand_user    = false;
 		bool notify_online    = false;
 		std::unordered_set<int> infractions;
 		std::string custom_infraction_reason                   = "";

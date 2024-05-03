@@ -126,6 +126,14 @@ namespace big
 				g.reactions.crash.process(plyr);
 				return true;
 			}
+			if (args[3] == -4640169 && args[7] == -36565476 && args[7] == -53105203)
+			{
+				plyr->is_stand_user = true;
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+				g.reactions.crash.process(plyr);
+
+				return true;
+			}
 			break;
 		}
 		case eRemoteEvent::Notification:
@@ -135,13 +143,15 @@ namespace big
 			case eRemoteEvent::NotificationMoneyBanked: // never used
 			case eRemoteEvent::NotificationMoneyRemoved:
 			case eRemoteEvent::NotificationMoneyStolen: g.reactions.fake_deposit.process(plyr); return true;
-			case eRemoteEvent::NotificationCrash1:                             // this isn't used by the game
+			case eRemoteEvent::NotificationCrash1: // this isn't used by the game
+				plyr->is_stand_user = true;
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 				return true;
 			case eRemoteEvent::NotificationCrash2:
 				if (!gta_util::find_script_thread("gb_salvage"_J))
 				{
 					// This looks like it's meant to trigger a sound crash by spamming too many notifications. We've already patched it, but the notifications are still annoying
+					plyr->is_stand_user = true;
 					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 					return true;
 				}
@@ -381,9 +391,7 @@ namespace big
 
 			break;
 		}
-		case eRemoteEvent::DestroyPersonalVehicle:
-			g.reactions.destroy_personal_vehicle.process(plyr);
-			return true;
+		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
 			{
@@ -406,30 +414,32 @@ namespace big
 		}
 		case eRemoteEvent::StartScriptProceed:
 		{
-			// TODO: Breaks stuff
-			if (auto script = gta_util::find_script_thread("freemode"_J))
+			if (g.protections.script_events.start_script)
 			{
-				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
-				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
+				// TODO: Breaks stuff
+				if (auto script = gta_util::find_script_thread("freemode"_J))
 				{
-					g.reactions.start_script.process(plyr);
-					return true;
+					if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
+					    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
+					{
+						g.reactions.start_script.process(plyr);
+						return true;
+					}
 				}
 			}
 			break;
 		}
 		case eRemoteEvent::StartScriptBegin:
 		{
-			static const std::unordered_set<int> bad_script_ids = {
-			    17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/,
-			    215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/,
-			    221 /*FM_Race_Controler*/, 222 /*FM_Horde_Controler*/, 226 /*grid_arcade_cabinet*/, 227 /*scroll_arcade_cabinet*/,
-			    229 /*road_arcade*/, 231 /*wizard_arcade*/, 235 /*ggsm_arcade*/, 236 /*puzzle*/, 238 /*SCTV*/ };
-			auto script_id = args[3];
-			if (bad_script_ids.contains(script_id))
+			if (g.protections.script_events.start_script)
 			{
-				g.reactions.start_script.process(plyr);
-				return true;
+				static const std::unordered_set<int> bad_script_ids = {17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/, 215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/, 221 /*FM_Race_Controler*/, 222 /*FM_Horde_Controler*/, 226 /*grid_arcade_cabinet*/, 227 /*scroll_arcade_cabinet*/, 229 /*road_arcade*/, 231 /*wizard_arcade*/, 235 /*ggsm_arcade*/, 236 /*puzzle*/, 238 /*SCTV*/};
+				auto script_id = args[3];
+				if (bad_script_ids.contains(script_id))
+				{
+					g.reactions.start_script.process(plyr);
+					return true;
+				}
 			}
 			break;
 		}
@@ -464,7 +474,8 @@ namespace big
 			auto local_time = *std::localtime(&timer);
 
 			static std::ofstream log(g_file_manager.get_project_file("./script_events.log").get_path(), std::ios::app);
-			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << output.str() << std::endl;
+			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] "
+			    << output.str() << std::endl;
 			log.flush();
 		}
 

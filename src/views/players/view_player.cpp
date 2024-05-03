@@ -37,6 +37,14 @@ namespace big
 			{
 				name_appendage += std::format(" [{}]", "TRUST"_T);
 			}
+			if (current_player->is_stand_user)
+			{
+				name_appendage += std::format(" [{}]", "Stand User");
+			}
+			if (current_plauer->is_admin)
+			{
+				name_appendage += std::format(" [{}]", "R* Admin");
+			}
 			strcpy(player_tab.name,
 			    std::format("{} ({}){}", current_player->get_name(), current_player->id(), name_appendage).c_str());
 

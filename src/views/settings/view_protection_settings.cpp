@@ -35,6 +35,7 @@ namespace big
 		ImGui::Checkbox("ROTATE_CAM"_T.data(), &g.protections.script_events.rotate_cam);
 		ImGui::Checkbox("TELEPORT_TO_WAREHOUSE"_T.data(), &g.protections.script_events.teleport_to_warehouse);
 		ImGui::Checkbox("START_ACTIVITY"_T.data(), &g.protections.script_events.start_activity);
+		ImGui::Checkbox("START_SCRIPT"_T.data(), &g.protections.script_events.start_script);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();

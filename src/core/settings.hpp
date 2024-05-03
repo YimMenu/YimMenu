@@ -124,7 +124,7 @@ namespace big
 			} fuzzer{};
 
 			bool external_console = true;
-			bool window_hook = false;
+			bool window_hook      = false;
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook)
 		} debug{};
@@ -276,8 +276,9 @@ namespace big
 				bool teleport_to_warehouse      = true;
 				bool start_activity             = true;
 				bool send_sms                   = true;
+				bool start_script               = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms, start_script)
 			} script_events{};
 
 			bool rid_join                = false;
@@ -343,7 +344,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
-			bool graceful_landing			  = false;	
+			bool graceful_landing             = false;
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
@@ -455,7 +456,7 @@ namespace big
 		struct settings
 		{
 			bool onboarding_complete = false;
-			bool dev_dlc = false;
+			bool dev_dlc             = false;
 
 			struct hotkeys
 			{
@@ -753,7 +754,7 @@ namespace big
 			bool drive_on_water                         = false;
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
-			bool infinite_veh_ammo					    = false;
+			bool infinite_veh_ammo                      = false;
 			bool block_homing                           = true;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
@@ -863,7 +864,7 @@ namespace big
 
 			struct flying_axe
 			{
-				bool enable            = false;
+				bool enable = false;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
 			} flying_axe{};
 
