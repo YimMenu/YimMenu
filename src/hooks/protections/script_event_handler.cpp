@@ -420,6 +420,10 @@ namespace big
 		}
 		case eRemoteEvent::StartScriptBegin:
 		{
+			// Don't block scripts if we're in an activity session
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION)
+				break;
+
 			static const std::unordered_set<int> bad_script_ids = {
 			    17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/,
 			    215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/,
