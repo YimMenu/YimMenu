@@ -17,8 +17,8 @@ namespace big
 		auto original = g_hooking->get_original<hooks::get_label_text>()(g_pointers->m_gta.m_ctext_file_ptr, label);
 		if (auto pos = strstr((char*)original, "15"))
 		{
-			pos[0] = '6';
-			pos[1] = '4';
+			pos[0] = '4';
+			pos[1] = '1';
 		}
 		return original;
 	}
