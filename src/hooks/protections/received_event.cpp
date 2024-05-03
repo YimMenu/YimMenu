@@ -535,7 +535,7 @@ namespace big
 				{
 					auto plyr = g_player_service->get_by_id(source_player->m_player_id);
 					// Let trusted friends and players request control (e.g., they want to hook us to their tow-truck or something)
-					if (plyr && ((g.session.trust_friends && plyr->is_friend()) || plyr->is_trusted))
+					if (plyr && (plyr->is_trusted || (g.session.trust_friends && plyr->is_friend())))
 					{
 						return;
 					}
