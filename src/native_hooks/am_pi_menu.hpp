@@ -17,7 +17,7 @@ namespace big
 			auto max_input_length = src->get_arg<int>(7);
 
 			if (max_input_length == 15)
-				max_input_length = 64;
+				max_input_length = 41;
 
 			MISC::DISPLAY_ONSCREEN_KEYBOARD(input_type, window_title, unk1, input_default, unk2, unk3, unk4, max_input_length);
 		}
