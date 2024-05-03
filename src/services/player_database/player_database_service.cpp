@@ -9,7 +9,7 @@
 
 namespace big
 {
-	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Tracked Player States", "Toggling this feature will automatically update the tracked players' online states every minute. You must enable this for join redirect to work",
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "AUTO_UPDATE_STATES", "AUTO_UPDATE_STATES_DESC",
 	    g.player_db.update_player_online_states);
 
 	const char* player_database_service::get_name_by_content_id(const std::string& content_id)

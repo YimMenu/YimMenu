@@ -142,7 +142,7 @@ namespace big::mobile
 		inline void summon_vehicle_by_index(int veh_idx)
 		{
 			if (*scr_globals::freemode_global.at(985).as<int*>() != -1)
-				return g_notification_service.push_warning("Vehicle", "Mechanic is not ready to deliver a vehicle right now.");
+				return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_MECHANIC_BUSY"_T.data());
 
 			if (g.clone_pv.spawn_inside && self::veh)
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(PLAYER::PLAYER_PED_ID());

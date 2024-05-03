@@ -6,7 +6,7 @@ namespace big
 	{
 		if (g.protections.receive_pickup)
 		{
-			g_notification_service.push_error("PROTECTIONS"_T.data(), "Blocked pickup");
+			g_notification_service.push_error("PROTECTIONS"_T.data(), "BLOCKED_PICKUP"_T.data());
 			return false;
 		}
 
