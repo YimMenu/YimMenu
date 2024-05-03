@@ -30,6 +30,9 @@ Mac: [Install Docker on Mac](https://docs.docker.com/desktop/install/mac-install
 
 For Windows users, after running the Docker Desktop installer, simply click OK, and the installer will automatically complete all steps. If you haven't enabled WSL in control panel, restart Windows as prompted after installation to use Docker.
 
+![docker_setup](https://github.com/sch-lda/YimMenu/assets/54973190/96b42f4e-dedc-4ba8-96af-496490325f0a)
+![docker_setup_restart](https://github.com/sch-lda/YimMenu/assets/54973190/728842f0-b364-4ad6-ab24-302967fbc4db)
+
 ### 2. Run Docker Desktop
 
 You must run Docker Desktop and complete the initialization configuration before proceeding.
@@ -39,6 +42,8 @@ Click `Accept` to agree to Docker Desktop's Terms of Service \
 Click `Continue without signing in` and then `skip survey`
 
 You can proceed to the next step when you see the green "Engine Running" indicator at the bottom left of the Docker Desktop main window.
+
+![docker_running](https://github.com/sch-lda/YimMenu/assets/54973190/eb7f7e7e-2e05-431d-9bfa-5f7048cff588)
 
 ### 3. Download LibreTranslate Setup Script
 
@@ -105,6 +110,9 @@ If you wish to uninstall LibreTranslate while keeping other containers, please f
 #### Using Docker Desktop
 
 You can easily remove all images and volumes of LibreTranslate using the GUI of Docker Desktop. Please ensure that LibreTranslate is not running.
+
+![docker_uninstall_volumes](https://github.com/sch-lda/YimMenu/assets/54973190/bb1201dc-1fb9-4208-bda7-2dc61ac59355)
+![docker_uninstall_images](https://github.com/sch-lda/YimMenu/assets/54973190/0ca02c98-a008-49db-9cf1-f36dec88c9fc)
 
 #### Using Docker Command
 
