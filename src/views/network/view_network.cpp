@@ -241,7 +241,7 @@ namespace big
 
 				ImGui::Checkbox("TRANSLATOR_HIDE_SAME_LANGUAGE"_T.data(), &g.session.chat_translator_bypass);
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("HIDE_SAME_LANGUAGE"_T.data());
+					ImGui::SetTooltip("TRANSLATOR_HIDE_SAME_LANGUAGE_DESC"_T.data());
 
 				components::small_text("TRANSLATOR_OUTPUT"_T.data());
 				ImGui::Checkbox("TRANSLATOR_SHOW_ON_CHAT"_T.data(), &g.session.chat_translator_draw);
