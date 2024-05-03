@@ -83,15 +83,18 @@ namespace big
 		buffer.m_flagBits = 1;
 
 		rage::eNetMessage msgType;
-		player_ptr player;
+		player_ptr player = nullptr;
 
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
+			if (auto player_iter = gta_util::get_network()->m_game_session_ptr->m_players[i])
 			{
-				player = g_player_service->get_by_host_token(
-				    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
-				break;
+				if (frame && player_iter->m_player_data.m_peer_id_2 == frame->m_peer_id)
+				{
+					player = g_player_service->get_by_host_token(
+					    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
+					break;
+				}
 			}
 		}
 
