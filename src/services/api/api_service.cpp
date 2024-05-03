@@ -36,12 +36,23 @@ namespace big
 			}
 			catch (std::exception& e)
 			{
+				g_notification_service.push_error("END_KICK"_T.data(),
+				    "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
+
 				LOG(WARNING) << "[Chat Translator]Error when parse JSON data: " << e.what();
 			}
 		}
-		else {
-			LOG(WARNING) << "[Chat Translator]Error when sending request: " << response.status_code;
+		else if (response.status_code == 0)
+		{
+			g.session.chat_translator = false;
+			g_notification_service.push_error("Chat Translator", "Cannot reach LibreTranslate server.\nRead cout.log for details");
+			LOG(WARNING) << "[Chat Translator]Cannot reach LibreTranslate server. Follow the guide in Yimmenu Wiki to setup LibreTranslate server on your computer.";
 		}
+		else
+		{
+			LOG(WARNING) << "[Chat Translator]Error when sending request. Status code: " << response.status_code << " Response: " << response.text;
+		}
+		
 		return "";
 	}
 
