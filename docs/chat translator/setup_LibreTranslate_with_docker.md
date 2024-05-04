@@ -1,6 +1,6 @@
 # Setup LibreTranslate Translation on Local Computer using Docker
 
-Yimmenu's chat translation feature relies on LibreTranslate. This tutorial will guide you on how to setup LibreTranslate translation service on your computer.
+Yimmenu's chat translation feature relies on LibreTranslate. This guide will help you setup LibreTranslate translation service on your computer.
 
 ## Table of Contents
  - [Quick Start](#quick-start)
@@ -56,7 +56,7 @@ Running the script will automatically download LibreTranslate images and all sup
 
 When the console outputs `Running on http://*:5000`, it means LibreTranslate has successfully run on port 5000. You can now turn on the chat translation switch in Yimmenu and configure the target language.
 
-To stop LibreTranslate, close the command prompt window or press Ctrl+C in the command prompt window.
+To stop LibreTranslate, press Ctrl+C in the command prompt window.
 
 After completing the initial installation, to start LibreTranslate, you only need to open Docker Desktop and then run the LibreTranslate setup script.
 

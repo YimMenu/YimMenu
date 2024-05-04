@@ -7,6 +7,7 @@
 
 namespace big
 {
+
 	api_service::api_service()
 	{
 		g_api_service = this;
@@ -29,7 +30,7 @@ namespace big
 				nlohmann::json obj = nlohmann::json::parse(response.text);
 				std::string source_language = obj["detectedLanguage"]["language"];
 				std::string result = obj["translatedText"];
-				
+
 				if (source_language == g.session.chat_translator_target && g.session.chat_translator_bypass)
 					return "";
 				return result;
@@ -38,8 +39,9 @@ namespace big
 			{
 				g_notification_service.push_error("END_KICK"_T.data(),
 				    "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
-
 				LOG(WARNING) << "[Chat Translator]Error when parse JSON data: " << e.what();
+
+				return "";
 			}
 		}
 		else if (response.status_code == 0)
