@@ -420,22 +420,52 @@ namespace big
 		}
 		case eRemoteEvent::StartScriptBegin:
 		{
-			// Don't block scripts if we're in an activity session
-			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
-				break;
-
-			static const std::unordered_set<int> bad_script_ids = {
-			    17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/,
-			    215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/,
-			    221 /*FM_Race_Controler*/, 222 /*FM_Horde_Controler*/, 226 /*grid_arcade_cabinet*/, 227 /*scroll_arcade_cabinet*/,
-			    229 /*road_arcade*/, 231 /*wizard_arcade*/, 235 /*ggsm_arcade*/, 236 /*puzzle*/, 238 /*SCTV*/ };
 			auto script_id = args[3];
-			if (bad_script_ids.contains(script_id))
+
+			// IDs to always block
+			static const std::unordered_set<int> always_block_ids = {
+			    17 /*AM_PI_MENU*/,
+			    20 /*fm_intro*/,
+			    215 /*Pilot_School_MP*/,
+			    238 /*SCTV*/
+			};
+
+			if (always_block_ids.contains(script_id))
 			{
 				g.reactions.start_script.process(plyr);
 				return true;
 			}
-			break;
+
+			// IDs to be blocked inside an activity session (basically anything FM)
+			static const std::unordered_set<int> block_in_activity_ids = {
+			    216 /*FM_Impromptu_DM_Controler*/,
+			    218 /*fm_deathmatch_controler*/,
+			    221 /*FM_Race_Controler*/,
+			    222 /*FM_Horde_Controler*/,
+			    };
+
+			if (block_in_activity_ids.contains(script_id) && NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			{
+				g.reactions.start_script.process(plyr);
+				return true;
+			}
+
+            // IDs which may or may not cause problems, maybe only notify?
+            static const std::unordered_set<int> only_notify_ids = {
+                212 /*golf_mp*/,
+                214 /*tennis_network_mp*/,
+                226 /*grid_arcade_cabinet*/,
+                227 /*scroll_arcade_cabinet*/,
+                229 /*road_arcade*/,
+                231 /*wizard_arcade*/,
+                235 /*ggsm_arcade*/,
+                236 /*puzzle*/, 
+            };
+
+            if (only_notify_ids.contains(script_id))
+            {
+				g.reactions.start_script.only_notify(plyr);
+            }
 		}
 		}
 
