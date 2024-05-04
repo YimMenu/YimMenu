@@ -465,7 +465,6 @@ namespace big
             if (only_notify_ids.contains(script_id))
             {
 				g.reactions.start_script.only_notify(plyr);
-				return true;
             }
 		}
 		}
