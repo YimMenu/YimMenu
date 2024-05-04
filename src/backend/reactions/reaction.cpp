@@ -71,6 +71,7 @@ namespace big
 
 		if (notify)
 		{
+
 			g_notification_service.push_warning("PROTECTIONS"_T.data(),
 			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(player->get_name())));
 		}
@@ -95,8 +96,9 @@ namespace big
 
 		if (notify)
 		{
+			// Use a different notification since the default start_script reaction is "Blocked Start Script"
 			g_notification_service.push_warning("PROTECTIONS"_T.data(),
-			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(player->get_name())));
+			    std::vformat("REACTION_START_SCRIPT_ALLOWED"_T.data(), std::make_format_args(player->get_name())));
 		}
 	}
 }

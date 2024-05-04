@@ -440,7 +440,6 @@ namespace big
 			static const std::unordered_set<int> block_in_activity_ids = {
 			    216 /*FM_Impromptu_DM_Controler*/,
 			    218 /*fm_deathmatch_controler*/,
-			    221 /*FM_Race_Controler*/,
 			    222 /*FM_Horde_Controler*/,
 			    };
 
@@ -454,6 +453,7 @@ namespace big
             static const std::unordered_set<int> only_notify_ids = {
                 212 /*golf_mp*/,
                 214 /*tennis_network_mp*/,
+			    221 /*FM_Race_Controler*/,
                 226 /*grid_arcade_cabinet*/,
                 227 /*scroll_arcade_cabinet*/,
                 229 /*road_arcade*/,
@@ -465,6 +465,7 @@ namespace big
             if (only_notify_ids.contains(script_id))
             {
 				g.reactions.start_script.only_notify(plyr);
+				return true;
             }
 		}
 		}
