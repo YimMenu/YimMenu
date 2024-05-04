@@ -594,11 +594,13 @@ namespace lua::imgui
 	{
 		return ImGui::ArrowButton(stringID.c_str(), static_cast<ImGuiDir>(dir));
 	}
-	inline void Image()
-	{ /* TODO: Image(...) ==> UNSUPPORTED */
+	inline void Image(const std::string& textureId, const ImVec2& size, const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1), const ImVec4& tintCol = ImVec4(1, 1, 1, 1), const ImVec4& borderCol = ImVec4(0, 0, 0, 0))
+	{
+    	ImGui::Image(textureId.c_str(), size, uv0, uv1, tintCol, borderCol);
 	}
-	inline void ImageButton()
-	{ /* TODO: ImageButton(...) ==> UNSUPPORTED */
+	inline void ImageButton(const std::string& textureId, const ImVec2& size, const ImVec2& uv0 = ImVec2(0, 0), const ImVec2& uv1 = ImVec2(1, 1), const ImVec4& bgCol = ImVec4(0, 0, 0, 0), const ImVec4& tintCol = ImVec4(1, 1, 1, 1))
+	{
+    	ImGui::ImageButton(textureId.c_str(), size, uv0, uv1, bgCol, tintCol);
 	}
 	inline std::tuple<bool, bool> Checkbox(const std::string& label, bool v)
 	{
@@ -607,9 +609,9 @@ namespace lua::imgui
 
 		return std::make_tuple(value, pressed);
 	}
-	inline bool CheckboxFlags()
+	inline bool CheckboxFlags(const std::string& label, unsigned int* flags, unsigned int flags_value)
 	{
-		return false; /* TODO: CheckboxFlags(...) ==> UNSUPPORTED */
+   	 return ImGui::CheckboxFlags(label.c_str(), flags, flags_value);
 	}
 	inline bool RadioButton(const std::string& label, bool active)
 	{
