@@ -421,7 +421,7 @@ namespace big
 		case eRemoteEvent::StartScriptBegin:
 		{
 			// Don't block scripts if we're in an activity session
-			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION)
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 				break;
 
 			static const std::unordered_set<int> bad_script_ids = {
