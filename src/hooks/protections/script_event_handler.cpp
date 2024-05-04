@@ -441,7 +441,7 @@ namespace big
 			    216 /*FM_Impromptu_DM_Controler*/,
 			    218 /*fm_deathmatch_controler*/,
 			    222 /*FM_Horde_Controler*/,
-			    };
+			};
 
 			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() && block_in_activity_ids.contains(script_id))
 			{
@@ -449,23 +449,23 @@ namespace big
 				return true;
 			}
 
-            // IDs which may or may not cause problems, maybe only notify?
-            static const std::unordered_set<int> only_notify_ids = {
-                212 /*golf_mp*/,
-                214 /*tennis_network_mp*/,
+			// IDs which may or may not cause problems, maybe only notify?
+			static const std::unordered_set<int> only_notify_ids = {
+			    212 /*golf_mp*/,
+			    214 /*tennis_network_mp*/,
 			    221 /*FM_Race_Controler*/,
-                226 /*grid_arcade_cabinet*/,
-                227 /*scroll_arcade_cabinet*/,
-                229 /*road_arcade*/,
-                231 /*wizard_arcade*/,
-                235 /*ggsm_arcade*/,
-                236 /*puzzle*/, 
-            };
+			    226 /*grid_arcade_cabinet*/,
+			    227 /*scroll_arcade_cabinet*/,
+			    229 /*road_arcade*/,
+			    231 /*wizard_arcade*/,
+			    235 /*ggsm_arcade*/,
+			    236 /*puzzle*/,
+			};
 
-            if (only_notify_ids.contains(script_id))
-            {
+			if (only_notify_ids.contains(script_id))
+			{
 				g.reactions.start_script.only_notify(plyr);
-            }
+			}
 		}
 		}
 
