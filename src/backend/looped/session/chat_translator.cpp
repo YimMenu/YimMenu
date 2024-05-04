@@ -9,13 +9,13 @@ namespace big
 
 	void looped::session_chat_translator()
 	{
-		while (!translate_Queue.empty() and !translate_lock and g.session.chat_translator)
+		if (!translate_Queue.empty() and !translate_lock and g.session.chat_translator)
 		{
 			if (translate_Queue.size() >= 3)
 			{
-				LOG(WARNING) << "Message queue is too large, cleaning it. Try enabling spam timer.";
+				LOG(WARNING) << "[Chat Translator]Message queue is too large, cleaning it. Try enabling spam timer.";
 				translate_Queue.pop();
-				continue;
+				return;
 			}
 
 			auto& first_message     = translate_Queue.front();

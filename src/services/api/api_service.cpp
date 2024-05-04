@@ -47,8 +47,8 @@ namespace big
 		else if (response.status_code == 0)
 		{
 			g.session.chat_translator = false;
-			g_notification_service.push_error("Chat Translator", "Cannot reach LibreTranslate server.\nRead cout.log for details");
-			LOG(WARNING) << "[Chat Translator]Cannot reach LibreTranslate server. Follow the guide in Yimmenu Wiki to setup LibreTranslate server on your computer.";
+			g_notification_service.push_error("TRANSLATOR_TOGGLE"_T.data(), "TRANSLATOR_FAILED_TO_CONNECT"_T.data());
+			LOG(WARNING) << "[Chat Translator]Unable to connect to LibreTranslate server. Follow the guide in Yimmenu Wiki to setup LibreTranslate server on your computer.";
 		}
 		else
 		{
