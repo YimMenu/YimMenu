@@ -32,7 +32,7 @@ namespace big::train
 		}
 		else
 		{
-			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
+			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_NOTFOUND_TRAIN"_T.data());
 		}
 	}
 
@@ -44,7 +44,7 @@ namespace big::train
 		}
 		else
 		{
-			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
+			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_NOTFOUND_TRAIN"_T.data());
 		}
 	}
 

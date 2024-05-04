@@ -11,7 +11,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			g_notification_service.push("Auto disarm", "Nearby hostile peds will be disarmed");
+			g_notification_service.push("VIEW_WORLD_AUTO_DISARM"_T.data(), "VIEW_WORLD_AUTO_DISARM_NOTIFY"_T.data());
 		}
 
 		virtual void on_tick() override
