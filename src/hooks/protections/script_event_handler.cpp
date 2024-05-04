@@ -444,7 +444,7 @@ namespace big
 			    222 /*FM_Horde_Controler*/,
 			    };
 
-			if (block_in_activity_ids.contains(script_id) && NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION() && block_in_activity_ids.contains(script_id))
 			{
 				g.reactions.start_script.process(plyr);
 				return true;
