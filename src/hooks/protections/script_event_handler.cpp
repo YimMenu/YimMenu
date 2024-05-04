@@ -436,7 +436,7 @@ namespace big
 				return true;
 			}
 
-			// IDs to be blocked inside an activity session (basically anything FM)
+			// IDs to be blocked inside a freemode session (don't get tricked by the fm_ prefix)
 			static const std::unordered_set<int> block_in_freemode_ids = {
 			    216 /*FM_Impromptu_DM_Controler*/,
 			    218 /*fm_deathmatch_controler*/,
