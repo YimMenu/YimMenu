@@ -330,7 +330,7 @@ namespace big
 					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
-						updating    = false;
+						updating = false;
 						last_update = std::chrono::high_resolution_clock::now();
 					});
 				}
