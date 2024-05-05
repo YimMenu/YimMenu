@@ -126,7 +126,7 @@ namespace big
 				g.reactions.crash.process(plyr);
 				return true;
 			}
-			if (args[3] == -4640169 && args[7] == -36565476 && args[7] == -53105203)
+			if (args[3] == -4640169 && args[7] == -36565476 && args[8] == -53105203)
 			{
 				plyr->is_stand_user = true;
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
