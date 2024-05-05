@@ -6,6 +6,7 @@
 #include "lua/lua_manager.hpp"
 #include "util/math.hpp"
 #include "util/session.hpp"
+#include "util/script_database.hpp"
 
 #include <network/CNetGamePlayer.hpp>
 #include <network/Network.hpp>
@@ -14,6 +15,8 @@
 
 namespace big
 {
+	static const ScriptProtectionDB script_database;
+
 	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
 	{
 		if (should_log)
@@ -422,50 +425,25 @@ namespace big
 		{
 			auto script_id = args[3];
 
-			// IDs to always block
-			static const std::unordered_set<int> always_block_ids = {
-			    17 /*AM_PI_MENU*/,
-			    20 /*fm_intro*/,
-			    215 /*Pilot_School_MP*/,
-			    238 /*SCTV*/
-			};
+			ProtectionStatus protection_status = script_database.get_protection_status(script_id);
 
-			if (always_block_ids.contains(script_id))
+			if (protection_status == ProtectionStatus::BLOCK_ALWAYS)
 			{
 				g.reactions.start_script.process(plyr);
 				return true;
 			}
 
-			// IDs to be blocked inside a freemode session (don't get tricked by the fm_ prefix)
-			static const std::unordered_set<int> block_in_freemode_ids = {
-			    216 /*FM_Impromptu_DM_Controler*/,
-			    218 /*fm_deathmatch_controler*/,
-			    221 /*FM_Race_Controler*/,
-			    222 /*FM_Horde_Controler*/,
-			};
-
-			if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() && block_in_freemode_ids.contains(script_id))
+			if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() && protection_status == ProtectionStatus::BLOCK_IN_FREEMODE)
 			{
 				g.reactions.start_script.process(plyr);
 				return true;
 			}
 
-			// IDs which may or may not cause problems, maybe only notify?
-			static const std::unordered_set<int> only_notify_ids = {
-			    212 /*golf_mp*/,
-			    214 /*tennis_network_mp*/,
-			    226 /*grid_arcade_cabinet*/,
-			    227 /*scroll_arcade_cabinet*/,
-			    229 /*road_arcade*/,
-			    231 /*wizard_arcade*/,
-			    235 /*ggsm_arcade*/,
-			    236 /*puzzle*/,
-			};
-
-			if (only_notify_ids.contains(script_id))
+			if (protection_status == ProtectionStatus::ALLOWED)
 			{
 				g.reactions.start_script.only_notify(plyr);
 			}
+
 		}
 		}
 
