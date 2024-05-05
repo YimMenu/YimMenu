@@ -281,6 +281,33 @@ namespace big
 			ImGui::EndChild();
 		}
 
+		if (ImGui::Button("REMOVE_UNTRUSTED"_T.data()))
+		{
+			ImGui::OpenPopup("##removeuntrusted");
+		}
+
+		if (ImGui::BeginPopupModal("##removeuntrusted"))
+		{
+			ImGui::Text("VIEW_NET_PLAYER_DB_ARE_YOU_SURE"_T.data());
+
+			if (ImGui::Button("YES"_T.data()))
+			{
+				g_player_database_service->set_selected(nullptr);
+				g_player_database_service->remove_untrusted_players();
+				g_player_database_service->save();
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("NO"_T.data()))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+
+		ImGui::SameLine();
+
 		if (ImGui::Button("REMOVE_ALL"_T.data()))
 		{
 			ImGui::OpenPopup("##removeall");
@@ -306,8 +333,6 @@ namespace big
 
 			ImGui::EndPopup();
 		}
-
-		ImGui::SameLine();
 
 		components::button("RELOAD_PLYR_ONLINE_STATES"_T, [] {
 			g_player_database_service->update_player_states();
