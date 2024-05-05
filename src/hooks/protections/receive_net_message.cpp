@@ -251,7 +251,7 @@ namespace big
 						return true;
 					}
 				}
-				return false;
+				break;
 			}
 			}
 		}
