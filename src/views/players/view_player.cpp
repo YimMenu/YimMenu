@@ -41,7 +41,7 @@ namespace big
 			{
 				name_appendage += std::format(" [{}]", "Stand User");
 			}
-			if (current_plauer->is_admin)
+			if (current_player->is_admin)
 			{
 				name_appendage += std::format(" [{}]", "R* Admin");
 			}
