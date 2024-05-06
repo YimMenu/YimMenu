@@ -52,8 +52,7 @@ namespace big
 		{
 			// Please try to keep this in numerical order for code readability
 			// Last script ID update 5/5/2024
-			m_script_map = 
-				{{9, {"AM_Darts", protection_status::BLOCK_ALWAYS}},
+			m_script_map = {{9, {"AM_Darts", protection_status::BLOCK_ALWAYS}},
 			    {17, {"AM_PI_MENU", protection_status::BLOCK_ALWAYS}},
 			    {20, {"fm_intro", protection_status::BLOCK_ALWAYS}},
 			    {212, {"golf_mp", protection_status::BLOCK_IN_FREEMODE}},
