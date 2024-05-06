@@ -533,6 +533,13 @@ namespace big
 				    || personal_vehicle == veh              //Or we're in our personal vehicle.
 				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
+					auto plyr = g_player_service->get_by_id(source_player->m_player_id);
+					// Let trusted friends and players request control (e.g., they want to hook us to their tow-truck or something)
+					if (plyr && (plyr->is_trusted || (g.session.trust_friends && plyr->is_friend())))
+					{
+						return;
+					}
+
 					if (g_local_player->m_vehicle->m_driver != source_player->m_player_info->m_ped) //This will block hackers who are not in the car but still want control.
 					{
 						g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset); // Tell them to get bent.
