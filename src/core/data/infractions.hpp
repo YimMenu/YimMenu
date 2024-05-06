@@ -18,7 +18,6 @@ namespace big
 		ATTACKING_WITH_GODMODE,
 		ATTACKING_WITH_INVISIBILITY,
 		ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST,
-		CHAT_SPAM,
 		SPOOFED_DATA,
 		SPOOFED_HOST_TOKEN,
 		INVALID_PLAYER_MODEL,
@@ -26,5 +25,6 @@ namespace big
 		UNDEAD_OTR,
 		// So that lua scripts can add a custom runtime reason.
 		CUSTOM_REASON,
+		CHAT_SPAM,
 	};
 }
