@@ -192,9 +192,6 @@ namespace big
 			});
 		}
 
-		components::button("START_LS_CUSTOMS"_T, [] {
-			g.vehicle.ls_customs = true;
-		});
 		ImGui::SameLine();
 		if (components::button("MAX_VEHICLE"_T))
 		{
