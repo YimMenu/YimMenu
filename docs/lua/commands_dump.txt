@@ -4,8 +4,6 @@
 [20:46:19.2954565][INFO/command.cpp:48] Command | desyncall | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 0
 [20:46:19.2954673][INFO/command.cpp:48] Command | endkick | END_KICK | END_KICK_DESC | 1
 [20:46:19.2954710][INFO/command.cpp:48] Command | hostkick | Host Kick | Host kick that only works when host | 1
-[20:46:19.2954760][INFO/command.cpp:48] Command | nfkick | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 1
-[20:46:19.2954789][INFO/command.cpp:48] Command | nfkickall | NULL_FUNCTION_KICK | NULL_FUNCTION_KICK_DESC | 0
 [20:46:19.2954887][INFO/command.cpp:48] Command | oomkick | OOM_KICK_CMD | OOM_KICK_CMD_DESC | 1
 [20:46:19.2955047][INFO/command.cpp:48] Command | shkick | SCRIPT_HOST_KICK | SCRIPT_HOST_KICK_DESC | 1
 [20:46:19.2955089][INFO/command.cpp:48] Command | clearwanted | CLEAR_WANTED_LEVEL | CLEAR_WANTED_LEVEL_DESC | 1
