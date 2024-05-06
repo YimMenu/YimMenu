@@ -1,5 +1,3 @@
-[20:46:19.2951571][INFO/command.cpp:48] Command | bailkick | BAIL_KICK | BAIL_KICK_DESC | 1
-[20:46:19.2954010][INFO/command.cpp:48] Command | bailkickall | BAIL_KICK | BAIL_KICK_DESC | 0
 [20:46:19.2954096][INFO/command.cpp:48] Command | breakup | BREAKUP_KICK | BREAKUP_KICK_DESC | 1
 [20:46:19.2954208][INFO/command.cpp:48] Command | breakupcheating | BREAKUP_KICK_SHOW_CHEATING | BREAKUP_KICK_SHOW_CHEATING_DESC | 0
 [20:46:19.2954534][INFO/command.cpp:48] Command | desync | COMPLAINT_KICK | COMPLAINT_KICK_DESC | 1
