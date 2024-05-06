@@ -13,14 +13,6 @@ For a complete list of available command functions, please refer to the command 
 
 ## Command Count: 213
 
-### bailkick 
- BAIL_KICK_DESC 
-Arg Count:  1
-
-### bailkickall 
- BAIL_KICK_DESC 
-Arg Count:  0
-
 ### breakup 
  BREAKUP_KICK_DESC 
 Arg Count:  1
