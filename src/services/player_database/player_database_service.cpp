@@ -219,6 +219,33 @@ namespace big
 		return player;
 	}
 
+	void player_database_service::remove_untrusted_players()
+	{
+		for (auto it = m_players.begin(); it != m_players.end();)
+		{
+			if (!it->second->is_trusted)
+			{
+				it = m_players.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		for (auto it = m_sorted_players.begin(); it != m_sorted_players.end();)
+		{
+			if (!it->second->is_trusted)
+			{
+				it = m_sorted_players.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
 	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_players.contains(rockstar_id))

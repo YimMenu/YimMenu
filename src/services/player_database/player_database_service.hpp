@@ -47,6 +47,7 @@ namespace big
 		std::map<std::string, std::shared_ptr<persistent_player>>& get_sorted_players();
 		std::shared_ptr<persistent_player> get_player_by_rockstar_id(uint64_t rockstar_id);
 		std::shared_ptr<persistent_player> get_or_create_player(player_ptr player);
+		void remove_untrusted_players();
 		void update_rockstar_id(uint64_t old, uint64_t _new);
 		void remove_rockstar_id(uint64_t rockstar_id);
 
