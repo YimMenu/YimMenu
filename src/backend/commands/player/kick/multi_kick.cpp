@@ -22,7 +22,6 @@ namespace big
 				    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
 
 			dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
-			dynamic_cast<player_command*>(command::get("endkick"_J))->call(player, {});
 			script::get_current()->yield(700ms);
 
 
