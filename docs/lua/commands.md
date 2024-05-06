@@ -37,14 +37,6 @@ Arg Count:  1
  Host kick that only works when host 
 Arg Count:  1
 
-### nfkick 
- NULL_FUNCTION_KICK_DESC 
-Arg Count:  1
-
-### nfkickall 
- NULL_FUNCTION_KICK_DESC 
-Arg Count:  0
-
 ### oomkick 
  OOM_KICK_CMD_DESC 
 Arg Count:  1
