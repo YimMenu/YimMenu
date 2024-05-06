@@ -192,7 +192,15 @@ namespace big
 			});
 		}
 
+		// LSC script is broken, release builds should hide the button from users but we will keep it for debugging
+		#ifndef NDEBUG
+		components::button("START_LS_CUSTOMS"_T, [] {
+			g.vehicle.ls_customs = true;
+		});
+
 		ImGui::SameLine();
+		#endif
+
 		if (components::button("MAX_VEHICLE"_T))
 		{
 			g_fiber_pool->queue_job([] {
