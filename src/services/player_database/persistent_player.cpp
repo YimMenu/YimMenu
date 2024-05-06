@@ -17,6 +17,7 @@ namespace big
 	    {Infraction::ATTACKING_WITH_GODMODE, "Attacked someone while using godmode"},
 	    {Infraction::ATTACKING_WITH_INVISIBILITY, "Attacked someone while being invisible"},
 	    {Infraction::ATTACKING_WHEN_HIDDEN_FROM_PLAYER_LIST, "Attacked someone while being hidden from the player list"},
+	    {Infraction::CHAT_SPAM, "Spammed in chat"},
 	    {Infraction::SPOOFED_DATA, "Had spoofed data"},
 	    {Infraction::SPOOFED_HOST_TOKEN, "Had spoofed their host token"},
 	    {Infraction::INVALID_PLAYER_MODEL, "Had used an invalid player model"},

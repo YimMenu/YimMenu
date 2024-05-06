@@ -211,6 +211,7 @@ namespace lua::network
 		        {"ATTACKING_WITH_INVISIBILITY", big::Infraction::ATTACKING_WITH_INVISIBILITY},
 		        {"BLAME_EXPLOSION_DETECTED", big::Infraction::BLAME_EXPLOSION_DETECTED},
 		        {"BREAKUP_KICK_DETECTED", big::Infraction::BREAKUP_KICK_DETECTED},
+		        {"CHAT_SPAM",big::Infraction::CHAT_SPAM},
 		        {"CUSTOM_REASON", big::Infraction::CUSTOM_REASON},
 		        {"DESYNC_PROTECTION", big::Infraction::DESYNC_PROTECTION},
 		        {"INVALID_PLAYER_MODEL", big::Infraction::INVALID_PLAYER_MODEL},

@@ -129,6 +129,7 @@ namespace big
 					if (g.session.kick_chat_spammers
 					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
+						session::add_infraction(player, Infraction::CHAT_SPAM);
 						if (g_player_service->get_self()->is_host())
 							dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
 							    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
