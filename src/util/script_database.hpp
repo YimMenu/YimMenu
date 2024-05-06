@@ -5,7 +5,7 @@ namespace big
 {
     enum class ProtectionStatus
     {
-        ALLOWED,
+        ALLOWED_NOTIFY,
         BLOCK_ALWAYS,
         BLOCK_IN_FREEMODE // Renamed from BLOCK_IN_FM
     };
@@ -31,7 +31,7 @@ namespace big
             {
                 return it->second.status;
             }
-            return ProtectionStatus::ALLOWED;
+            return ProtectionStatus::ALLOWED_NOTIFY;
         }
 
         // Could be useful for debugging someday...
