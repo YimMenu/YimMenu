@@ -25,6 +25,7 @@ namespace big
 
 		reaction(const char* event_name, const char* notify_message, const char* announce_message);
 		virtual void process(player_ptr player);
+		virtual void only_notify(player_ptr player);
 		virtual void process_common(player_ptr player);
 	};
 }
