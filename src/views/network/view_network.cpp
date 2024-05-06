@@ -261,10 +261,6 @@ namespace big
 					}
 					ImGui::EndCombo();
 				}
-				components::button("TRANSLATOR_TEST_CONFIG"_T.data(), [] {
-					chat_message test_message{"test", "This is a test message."};
-					translate_Queue.push(test_message);
-				});
 			}	
 
 			ImGui::EndListBox();
