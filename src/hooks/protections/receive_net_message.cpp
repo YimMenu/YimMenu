@@ -248,8 +248,8 @@ namespace big
 					{
 						// Make a translation for this new OOM kick protection
 						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK"_T.data());
-						return true;
 					}
+     return true;
 				}
 				break;
 			}
