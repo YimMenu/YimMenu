@@ -18,7 +18,9 @@ namespace big
 
 				if (plyr.second->is_host())
 				{
-					dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr.second, {});
+					dynamic_cast<player_command*>(command::get("nfkick"_J))->call(player.second, {});
+			                dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player.second, {});
+			                dynamic_cast<player_command*>(command::get("endkick"_J))->call(player.second, {});
 				}
 			});
 		}
