@@ -2,6 +2,7 @@
 #include "backend/context/chat_command_context.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
+#include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
@@ -9,9 +10,8 @@
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
-#include "util/session.hpp"
 #include "util/chat.hpp"
-#include "gta/enums.hpp"
+#include "util/session.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -83,15 +83,18 @@ namespace big
 		buffer.m_flagBits = 1;
 
 		rage::eNetMessage msgType;
-		player_ptr player;
+		player_ptr player = nullptr;
 
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
+			if (auto player_iter = gta_util::get_network()->m_game_session_ptr->m_players[i])
 			{
-				player = g_player_service->get_by_host_token(
-				    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
-				break;
+				if (frame && player_iter->m_player_data.m_peer_id_2 == frame->m_peer_id)
+				{
+					player = g_player_service->get_by_host_token(
+					    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
+					break;
+				}
 			}
 		}
 
@@ -120,18 +123,13 @@ namespace big
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
 					g_notification_service.push("PROTECTIONS"_T.data(),
-                                      
+
 					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 					player->is_spammer = true;
 					if (g.session.kick_chat_spammers
 					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
-						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
-							    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
-
-						dynamic_cast<player_command*>(command::get("endkick"_J))->call(player, {});
-						dynamic_cast<player_command*>(command::get("nfkick"_J))->call(player, {});
+						dynamic_cast<player_command*>(command::get("multikick"_J))->call(player, {});
 					}
 					return true;
 				}
@@ -235,7 +233,21 @@ namespace big
 			switch (msgType)
 			{
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
-			case rage::eNetMessage::MsgRadioStationSyncRequest: return true;
+			case rage::eNetMessage::MsgRadioStationSyncRequest:
+			{
+				static rate_limiter unk_player_radio_requests{2s, 2};
+
+				if (unk_player_radio_requests.process())
+				{
+					if (unk_player_radio_requests.exceeded_last_process())
+					{
+						// Make a translation for this new OOM kick protection
+						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK"_T.data());
+						return true;
+					}
+				}
+				return false;
+			}
 			}
 		}
 
