@@ -30,7 +30,12 @@ namespace big
 
 	rage::rlGamerInfo* player::get_net_data() const
 	{
-		return m_net_game_player == nullptr ? nullptr : m_net_game_player->get_net_data();
+		if (m_net_game_player == nullptr)
+			return nullptr;
+
+		auto net_data = m_net_game_player->get_net_data();
+
+		return (DWORD64)net_data < UINT16_MAX ? nullptr : net_data;
 	}
 
 	CNetGamePlayer* player::get_net_game_player() const
