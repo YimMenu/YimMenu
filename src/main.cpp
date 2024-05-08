@@ -270,17 +270,23 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    std::this_thread::sleep_for(500ms);
 			    }
 
+				g_hooking->disable();
+			    LOG(INFO) << "Hooking disabled.";
+
+				script_patcher_service_instance.reset();
+			    LOG(INFO) << "Script Patcher Service reset.";
+			    byte_patch_manager_instance.reset();
+			    LOG(INFO) << "Byte Patch Manager uninitialized.";
+			    hooking_instance.reset();
+			    LOG(INFO) << "Hooking uninitialized.";
+			    native_hooks_instance.reset();
+			    LOG(INFO) << "Dynamic native hooker uninitialized.";
+
 			    g_script_mgr.remove_all_scripts();
 			    LOG(INFO) << "Scripts unregistered.";
 
 			    lua_manager_instance.reset();
 			    LOG(INFO) << "Lua manager uninitialized.";
-
-			    g_hooking->disable();
-			    LOG(INFO) << "Hooking disabled.";
-
-			    native_hooks_instance.reset();
-			    LOG(INFO) << "Dynamic native hooker uninitialized.";
 
 			    // Make sure that all threads created don't have any blocking loops
 			    // otherwise make sure that they have stopped executing
@@ -299,8 +305,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Player Database Service reset.";
 			    api_service_instance.reset();
 			    LOG(INFO) << "API Service reset.";
-			    script_patcher_service_instance.reset();
-			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();
 			    LOG(INFO) << "Gui Service reset.";
 			    gta_data_service_instance.reset();
@@ -323,17 +327,11 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Xml Vehicles Service reset.";
 			    LOG(INFO) << "Services uninitialized.";
 
-			    hooking_instance.reset();
-			    LOG(INFO) << "Hooking uninitialized.";
-
 			    fiber_pool_instance.reset();
 			    LOG(INFO) << "Fiber pool uninitialized.";
 
 			    g_renderer.destroy();
 			    LOG(INFO) << "Renderer uninitialized.";
-
-			    byte_patch_manager_instance.reset();
-			    LOG(INFO) << "Byte Patch Manager uninitialized.";
 
 			    pointers_instance.reset();
 			    LOG(INFO) << "Pointers uninitialized.";

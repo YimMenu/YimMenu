@@ -14,6 +14,9 @@ namespace big
 
 	script_patcher_service::~script_patcher_service()
 	{
+		for (auto& patch : m_script_patches)
+			patch.eject();
+
 		m_script_data.clear();
 		m_script_patches.clear();
 		g_script_patcher_service = nullptr;
