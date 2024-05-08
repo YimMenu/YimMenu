@@ -10,6 +10,8 @@
 
 namespace big
 {
+	extern bool user_updated_wanted_level;
+
 	void view::self()
 	{
 		components::command_button<"suicide">();
@@ -204,24 +206,31 @@ namespace big
 			}
 		});
 
-		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-		components::options_modal("POLICE"_T.data(), [] {
-			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-			components::command_button<"clearwantedlvl">();
-			if (!g.self.never_wanted)
-			{
-				ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
-				ImGui::Text("WANTED_LVL"_T.data());
-				if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level && g_local_player != nullptr)
-				{
-					g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
-				}
-			}
-		});
-
 		ImGui::EndGroup();
+
+		ImGui::SeparatorText("WANTED_LEVEL"_T.data());
+
+		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("NEVER_WANTED_DESC"_T.data());
+
+		// Only show all the other stuff like clear wanted, force wanted, and the slider if we don't have never_wanted enabled, since never_wanted overrides all of that
+		if (!g.self.never_wanted)
+		{
+			ImGui::SameLine();
+			components::command_button<"clearwanted">();
+
+			// Most ImGui widgets return true when they've been changed, so this is useful to prevent us from overwriting the wanted level's natural decay/progression if we're not keeping it locked
+			ImGui::SetNextItemWidth(200);
+			user_updated_wanted_level = ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("WANTED_LEVEL_SLIDER_DESC"_T.data());
+			ImGui::SameLine();
+			ImGui::Checkbox("FORCE_WANTED_LEVEL"_T.data(), &g.self.force_wanted_level);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("FORCE_WANTED_LEVEL_DESC"_T.data());
+		}
 
 		ImGui::SeparatorText("PROOFS"_T.data());
 
