@@ -5,7 +5,6 @@
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 #include "util/explosion_anti_cheat_bypass.hpp"
-#include "util/police.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
 
@@ -16,12 +15,6 @@ namespace big
 {
 	static void init()
 	{
-		// Restore max wanted level after menu unload
-		police::m_max_wanted_level =
-		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(5).rip().as<uint32_t*>(), 0).get();
-		police::m_max_wanted_level_2 =
-		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
-
 		// Patch World Model Spawn Bypass
 		std::array<uint8_t, 24> world_spawn_patch;
 		std::fill(world_spawn_patch.begin(), world_spawn_patch.end(), 0x90);
