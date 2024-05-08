@@ -18,8 +18,7 @@ namespace big
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			if (g_player_service->get_self()->is_host())
-				dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
-				    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
+				dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {});
 
 			if (player->is_host()) {
 				dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
