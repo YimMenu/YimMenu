@@ -23,7 +23,7 @@ namespace big
 			if (!g_player_service->get_self()->is_host() && player && player->is_valid() && player->is_host())
 				dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
 
-			if (player && !g_player_service->get_self()->is_host() && player->is_valid() && !player->is_host())
+			if (!g_player_service->get_self()->is_host() && player && player->is_valid() && !player->is_host())
 				dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
 		}
 	};
