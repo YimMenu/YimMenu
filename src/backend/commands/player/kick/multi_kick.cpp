@@ -18,13 +18,16 @@ namespace big
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			if (g_player_service->get_self()->is_host())
+			{
 				dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {});
-
-			if (!g_player_service->get_self()->is_host() && player && player->is_valid() && player->is_host())
-				dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
-
-			if (!g_player_service->get_self()->is_host() && player && player->is_valid() && !player->is_host())
-				dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
+			}
+			else if (player && player->is_valid())
+			{
+				if (player->is_host())
+					dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
+				else
+					dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
+			}
 		}
 	};
 
