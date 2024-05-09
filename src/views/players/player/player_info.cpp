@@ -103,10 +103,7 @@ namespace big
 
 				    ImGui::BeginGroup();
 
-					if (auto net_data = g_player_service->get_selected()->get_net_data())
-					{
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NAT_TYPE"_T, get_nat_type_str(net_data->m_nat_type)).c_str());
-					}
+					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NAT_TYPE"_T, get_nat_type_str(g_player_service->get_selected()->get_net_data()->m_nat_type)).c_str());
 
 				    if (auto peer = g_player_service->get_selected()->get_connection_peer())
 				    {
