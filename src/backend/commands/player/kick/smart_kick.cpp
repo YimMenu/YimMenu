@@ -6,7 +6,7 @@
 
 namespace big
 {
-	class multi_kick : player_command
+	class smart_kick : player_command
 	{
 		using player_command::player_command;
 
@@ -21,7 +21,7 @@ namespace big
 			{
 				dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {});
 			}
-			else if (player && player->is_valid())
+			else
 			{
 				if (player->is_host())
 					dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
@@ -31,5 +31,5 @@ namespace big
 		}
 	};
 
-	multi_kick g_multi_kick("multikick", "MULTI_KICK", "MULTI_KICK_DESC", 0, false);
+	smart_kick g_smart_kick("smartkick", "SMART_KICK", "SMART_KICK_DESC", 0, false);
 }

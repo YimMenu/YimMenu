@@ -129,7 +129,7 @@ namespace big
 					if (g.session.kick_chat_spammers
 					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
-						dynamic_cast<player_command*>(command::get("multikick"_J))->call(player, {});
+						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(player, {});
 					}
 					return true;
 				}
