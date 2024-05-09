@@ -83,6 +83,13 @@ namespace big
 
 			components::button("REMOVE_BLACKSCREEN"_T, [] {
 				CAM::DO_SCREEN_FADE_IN(0);
+				PLAYER::SET_PLAYER_CONTROL(self::id, true, 0);
+				ENTITY::FREEZE_ENTITY_POSITION(self::ped, false);
+				MISC::FORCE_GAME_STATE_PLAYING();
+				if (self::veh == 0)
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+				HUD::DISPLAY_RADAR(true);
+				HUD::DISPLAY_HUD(true);
 			});
 
 			components::button("TP_TO_SAFE_POS"_T, [] {
