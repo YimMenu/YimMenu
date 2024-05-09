@@ -42,7 +42,7 @@ namespace big
 	{
 		if (auto net_data = get_net_data())
 			return net_data->m_gamer_handle.m_rockstar_id;
-		return NULL;
+		return 0;
 	}
 
 	CPed* player::get_ped() const
