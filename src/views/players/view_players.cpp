@@ -63,12 +63,9 @@ namespace big
 			g_gui_service->set_selected(tabs::PLAYER);
 			g.window.switched_view = true;
 		}
-		if (ImGui::IsItemHovered()
-		    && g_player_database_service->get_player_by_rockstar_id(plyr->get_rockstar_id()) != nullptr)
+		if (auto rockstar_id = plyr->get_rockstar_id(); ImGui::IsItemHovered() && g_player_database_service->get_player_by_rockstar_id(rockstar_id) != nullptr)
 		{
-			auto sorted_player =
-			    g_player_database_service->get_player_by_rockstar_id(plyr->get_rockstar_id());
-
+			auto sorted_player = g_player_database_service->get_player_by_rockstar_id(rockstar_id);
 			if (!sorted_player->infractions.empty())
 			{
 				ImGui::BeginTooltip();

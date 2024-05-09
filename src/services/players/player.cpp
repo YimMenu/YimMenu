@@ -28,11 +28,6 @@ namespace big
 		return get_net_game_player() == nullptr ? "" : m_net_game_player->get_name();
 	}
 
-	uint64_t player::get_rockstar_id() const
-	{
-		return get_net_data() == nullptr ? 0 : m_net_game_player->get_net_data()->m_gamer_handle.m_rockstar_id;
-	}
-
 	rage::rlGamerInfo* player::get_net_data() const
 	{
 		return get_net_game_player() == nullptr ? nullptr : m_net_game_player->get_net_data();
@@ -41,6 +36,13 @@ namespace big
 	CNetGamePlayer* player::get_net_game_player() const
 	{
 		return (m_net_game_player == nullptr || m_net_game_player->m_player_info == nullptr) ? nullptr : m_net_game_player;
+	}
+
+	int64_t player::get_rockstar_id() const
+	{
+		if (auto net_data = get_net_data())
+			return net_data->m_gamer_handle.m_rockstar_id;
+		return NULL;
 	}
 
 	CPed* player::get_ped() const
@@ -78,8 +80,7 @@ namespace big
 	{
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_peer_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id
-			    == get_rockstar_id())
+			if (gta_util::get_network()->m_game_session_ptr->m_peers[i]->m_peer_data.m_gamer_handle.m_rockstar_id == get_rockstar_id())
 			{
 				return gta_util::get_network()->m_game_session_ptr->m_peers[i];
 			}
