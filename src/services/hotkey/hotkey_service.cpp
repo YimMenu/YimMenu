@@ -14,7 +14,7 @@ namespace big
 		// ordered alphabetically to more easily see if a certain hotkey is present
 		register_hotkey("beastjump", g.settings.hotkeys.beastjump, "beastjump"_J);
 		register_hotkey("bringpv", g.settings.hotkeys.bringvehicle, "bringpv"_J);
-		register_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted, "clearwantedlvl"_J);
+		register_hotkey("clearwantedself", g.settings.hotkeys.clear_wanted, "clearwantedself"_J);
 		register_hotkey("cmdexecutor", g.settings.hotkeys.cmd_excecutor, "cmdexecutor"_J);
 		register_hotkey("fastquit", g.settings.hotkeys.fast_quit, "fastquit"_J);
 		register_hotkey("fastrun", g.settings.hotkeys.superrun, "fastrun"_J);

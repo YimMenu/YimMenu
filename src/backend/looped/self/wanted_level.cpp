@@ -26,7 +26,7 @@ namespace big
 		}
 	};
 
-	clear_wanted g_clear_wanted("clearwanted", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC_SELF", 0);
+	clear_wanted g_clear_wanted("clearwantedself", "CLEAR_WANTED_LEVEL", "CLEAR_WANTED_LEVEL_DESC_SELF", 0);
 
 	class never_wanted : looped_command
 	{
@@ -39,10 +39,7 @@ namespace big
 			g_local_player->m_player_info->m_is_wanted    = false;
 
 			// Since we're hiding the force wanted checkbox and wanted slider, we don't need to do anything else
-		}
-		virtual void on_disable() override
-		{
-			// If we turn off never wanted, be sure to disable force wanted to restore to a "default" setting
+			g.self.wanted_level       = 0;
 			g.self.force_wanted_level = false;
 		}
 	};
