@@ -123,7 +123,7 @@ namespace big::chat
 {
 	inline SpamReason is_text_spam(const char* text, player_ptr player)
 	{
-		if (player->is_friend())
+		if ((player->is_trusted || (g.session.trust_friends && player->is_friend())))
 			return SpamReason::NOT_A_SPAMMER; // don't filter messages from friends
 
 		if (g.session.use_spam_timer)
