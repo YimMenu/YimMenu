@@ -17,8 +17,10 @@ namespace big
 		Player orig_player;
 		int orig_participant;
 
-		bool need_to_use_end_session_kick = g_player_service->m_player_to_use_end_session_kick
-		    && target->m_player_id == g_player_service->m_player_to_use_end_session_kick->get()->id()
+		auto plyr = g_player_service->get_by_id(target->m_player_id);
+
+		bool need_to_use_end_session_kick = plyr && plyr->is_valid()
+		    && plyr->trigger_end_session_kick
 		    && _this->m_array == scr_globals::gsbd.as<void*>();
 
 		bool need_to_modify_wanted_level = g.session.wanted_level_all

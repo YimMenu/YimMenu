@@ -18,10 +18,11 @@ namespace big
 
 		static uint8_t* get_code_address(script_data* data, uint32_t index);
 		static const std::optional<uint32_t> get_code_location_by_pattern(script_data* data, const memory::pattern& pattern);
+
+	public:
 		void enable(script_data* data);
 		void disable(script_data* data);
 
-	public:
 		inline rage::joaat_t get_script()
 		{
 			return m_script;

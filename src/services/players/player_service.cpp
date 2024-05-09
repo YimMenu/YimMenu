@@ -29,8 +29,6 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
-		m_player_to_use_end_session_kick.reset();
-		m_player_to_use_complaint_kick.reset();
 		m_selected_player = m_dummy;
 		m_players.clear();
 	}
@@ -117,12 +115,6 @@ namespace big
 		        });
 		    it != m_players.end())
 		{
-			if (m_player_to_use_end_session_kick == it->second)
-				m_player_to_use_end_session_kick = std::nullopt;
-
-			if (m_player_to_use_complaint_kick == it->second)
-				m_player_to_use_complaint_kick = std::nullopt;
-
 			m_players.erase(it);
 		}
 	}

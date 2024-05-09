@@ -218,7 +218,7 @@ namespace big
 		if (!g.self.never_wanted)
 		{
 			ImGui::SameLine();
-			components::command_button<"clearwanted">();
+			components::command_button<"clearwantedself">();
 
 			// Most ImGui widgets return true when they've been changed, so this is useful to prevent us from overwriting the wanted level's natural decay/progression if we're not keeping it locked
 			ImGui::SetNextItemWidth(200);
