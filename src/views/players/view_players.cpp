@@ -16,7 +16,7 @@ namespace big
 	bool has_scrollbar = false;
 	static void player_button(const player_ptr& plyr)
 	{
-		if (plyr == nullptr)
+		if (plyr == nullptr || !plyr->is_valid())
 			return;
 
 		bool selected_player = plyr == g_player_service->get_selected();
