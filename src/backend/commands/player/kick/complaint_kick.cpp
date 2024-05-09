@@ -27,7 +27,7 @@ namespace big
 				return;
 			}
 
-			g_player_service->m_player_to_use_complaint_kick = player;
+			player->trigger_desync_kick = true;
 		}
 	};
 

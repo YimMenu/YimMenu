@@ -20,7 +20,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			const int arg_count     = 26;
+			const size_t arg_count  = 27;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id, 1 << player->id()};
 
 			args[3] = scriptId;
@@ -34,7 +34,7 @@ namespace big
 
 			for (int i = 0; i < 2; i++)
 			{
-				const int arg_count_2 = 26;
+				const size_t arg_count_2    = 27;
 				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id, 1 << player->id()};
 				args_2[3 + 17]              = 1337;
 				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id(), (int)eRemoteEvent::StartScriptProceed);
@@ -52,6 +52,6 @@ namespace big
 	start_script<230> g_start_badlands("badlands", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II", "BACKEND_START_SCRIPT_START_BADLANDS_REVENGE_II_DESC", 0);
 	start_script<235> g_start_space_monkey("spacemonkey", "BACKEND_START_SCRIPT_START_SPACE_MONKEY", "BACKEND_START_SCRIPT_START_SPACE_MONKEY_DESC", 0);
 	start_script<231> g_start_wizards_ruin("wizard", "BACKEND_START_SCRIPT_START_WIZARD", "BACKEND_START_SCRIPT_START_WIZARD_DESC", 0);
-	start_script<236> g_start_qub3d("qub3d", "BACKEND_START_SCRIPT_START_QUB3D", "BACKEND_START_SCRIPT_START_QUB3D_DESC", 0); // puzzle?
+	start_script<236> g_start_qub3d("qub3d", "BACKEND_START_SCRIPT_START_QUB3D", "BACKEND_START_SCRIPT_START_QUB3D_DESC", 0); // puzzle
 	start_script<237> g_start_camhedz("camhedz", "BACKEND_START_SCRIPT_START_CAMHEDZ", "BACKEND_START_SCRIPT_START_CAMHEDZ_DESC", 0);
 }
