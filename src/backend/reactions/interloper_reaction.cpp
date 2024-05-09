@@ -25,12 +25,11 @@ namespace big
 
 		if (log)
 		{
-			uint64_t rockstar_id = attacker->get_net_data() == nullptr ? 0 : attacker->get_net_data()->m_gamer_handle.m_rockstar_id;
 			LOGF(WARNING,
 			    "Received {} from {} ({}), victim is {}",
 			    m_event_name,
 			    attacker->get_name(),
-			    rockstar_id,
+			    attacker->get_rockstar_id(),
 			    victim->get_name());
 		}
 

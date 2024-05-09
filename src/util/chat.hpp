@@ -155,8 +155,8 @@ namespace big::chat
 		    g_file_manager.get_project_file(spam_reason != SpamReason::NOT_A_SPAMMER ? "./spam.log" : "./chat.log").get_path(),
 		    std::ios::app);
 
-		auto& data = *player->get_net_data();
-		auto ip    = player->get_ip_address();
+		auto rockstar_id = player->get_rockstar_id();
+		auto ip          = player->get_ip_address();
 
 		auto now        = std::chrono::system_clock::now();
 		auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
@@ -174,10 +174,10 @@ namespace big::chat
 		log << spam_reason_str << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] ";
 
 		if (ip)
-			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <" << (int)ip.value().m_field1 << "."
+			log << player->get_name() << " (" << rockstar_id << ") <" << (int)ip.value().m_field1 << "."
 			    << (int)ip.value().m_field2 << "." << (int)ip.value().m_field3 << "." << (int)ip.value().m_field4 << "> " << ((is_team == true) ? "[TEAM]: " : "[ALL]: ") << msg << std::endl;
 		else
-			log << player->get_name() << " (" << data.m_gamer_handle.m_rockstar_id << ") <UNKNOWN> " << ((is_team == true) ? "[TEAM]: " : "[ALL]: ") << msg << std::endl;
+			log << player->get_name() << " (" << rockstar_id << ") <UNKNOWN> " << ((is_team == true) ? "[TEAM]: " : "[ALL]: ") << msg << std::endl;
 
 		log.close();
 	}
