@@ -255,11 +255,11 @@ namespace big
 
 	std::shared_ptr<persistent_player> player_database_service::get_or_create_player(player_ptr player)
 	{
-		if (m_players.contains(player->get_net_data()->m_gamer_handle.m_rockstar_id))
-			return m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
+		if (m_players.contains(player->get_rockstar_id()))
+			return m_players[player->get_rockstar_id()];
 		else
 		{
-			auto player_ptr = add_player(player->get_net_data()->m_gamer_handle.m_rockstar_id, player->get_name());
+			auto player_ptr = add_player(player->get_rockstar_id(), player->get_name());
 			save();
 			return player_ptr;
 		}

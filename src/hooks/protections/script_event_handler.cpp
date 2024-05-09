@@ -459,10 +459,8 @@ namespace big
 		if (g.debug.logs.script_event.logs
 		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id)) [[unlikely]]
 		{
-			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
-
 			std::stringstream output;
-			output << "Script Event From: " << player->get_name() << " (" << rockstar_id << ") Args: { ";
+			output << "Script Event From: " << player->get_name() << " (" << plyr->get_rockstar_id() << ") Args: { ";
 			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
