@@ -15,7 +15,7 @@ jobs:
     - name: Autolock PRs that got merged or closed
       uses: actions/github-script@v6
       with:
-        script: |     
+        script: |
             github.rest.issues.lock({
               issue_number: context.issue.number,
               owner: context.repo.owner,
