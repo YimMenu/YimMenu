@@ -22,7 +22,7 @@ namespace big::notify
 
 	void crash_blocked(CNetGamePlayer* player, const char* crash)
 	{
-		if (player)
+		if (player && g_player_service->get_by_id(player->m_player_id))
 		{
 			if ((g_player_service->get_by_id(player->m_player_id)->is_friend() && g.session.trust_friends)
 			    || g_player_service->get_by_id(player->m_player_id)->is_trusted || g.session.trust_session)
