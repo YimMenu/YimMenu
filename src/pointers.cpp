@@ -752,15 +752,6 @@ namespace big
                 g_pointers->m_gta.m_process_matchmaking_find_response = ptr.as<PVOID>();
             }
         },
-        // Serialize Player Data Message
-        {
-            "SPDM",
-            "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 20 BF 01 00 00 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_player_data_msg = ptr.as<PVOID>();
-            }
-        },
         // Serialize Join Request Message
         {
             "SJRM",
@@ -768,6 +759,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Serialize Join Request Message 2
+        {
+            "SJRM2",
+            "E8 ? ? ? ? 48 8D 8D 08 01 00 00 8A D8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_join_request_message_2 = ptr.add(1).rip().as<PVOID>();
             }
         },
         // Send Network Damage

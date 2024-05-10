@@ -426,8 +426,8 @@ namespace big
 			break;
 		case sync_node_id("CDynamicEntityGameStateDataNode"):
 			LOG_FIELD(CDynamicEntityGameStateDataNode, m_interior_index);
-			LOG_FIELD_B(CDynamicEntityGameStateDataNode, unk_00C4);
-			LOG_FIELD_B(CDynamicEntityGameStateDataNode, unk_00C5);
+			LOG_FIELD_B(CDynamicEntityGameStateDataNode, m_loads_collisions);
+			LOG_FIELD_B(CDynamicEntityGameStateDataNode, m_retained);
 			LOG_FIELD(CDynamicEntityGameStateDataNode, m_decor_count);
 			for (int i = 0; i < ((CDynamicEntityGameStateDataNode*)node)->m_decor_count; i++)
 			{
@@ -635,13 +635,13 @@ namespace big
 			LOG_FIELD_B(CPhysicalAttachDataNode, m_is_cargo_vehicle);
 			break;
 		case sync_node_id("CPhysicalHealthDataNode"):
-			LOG_FIELD_B(CPhysicalHealthDataNode, unk_00C0);
+			LOG_FIELD_B(CPhysicalHealthDataNode, m_has_max_health);
 			LOG_FIELD_B(CPhysicalHealthDataNode, m_has_max_health_changed);
 			LOG_FIELD(CPhysicalHealthDataNode, m_max_health);
 			LOG_FIELD(CPhysicalHealthDataNode, m_current_health);
 			LOG_FIELD_NI(CPhysicalHealthDataNode, m_weapon_damage_entity);
 			LOG_FIELD_H(CPhysicalHealthDataNode, m_weapon_damage_hash);
-			LOG_FIELD(CPhysicalHealthDataNode, unk_00D8);
+			LOG_FIELD(CPhysicalHealthDataNode, m_last_damaged_material_id);
 			break;
 		case sync_node_id("CPhysicalMigrationDataNode"):
 			LOG_FIELD_B(CPhysicalMigrationDataNode, m_unk);
@@ -933,8 +933,8 @@ namespace big
 			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag2);
 			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag3);
 			LOG_FIELD_B(CPhysicalGameStateDataNode, m_flag4);
-			LOG_FIELD(CPhysicalGameStateDataNode, m_val1);
-			LOG_FIELD(CPhysicalGameStateDataNode, m_unk204);
+			LOG_FIELD(CPhysicalGameStateDataNode, m_alpha_type);
+			LOG_FIELD(CPhysicalGameStateDataNode, m_custom_fade_duration);
 			LOG_FIELD_B(CPhysicalGameStateDataNode, m_unk5);
 			break;
 		case sync_node_id("CPhysicalScriptGameStateDataNode"):
