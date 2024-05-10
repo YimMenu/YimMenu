@@ -14,7 +14,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			if (!player)
+			if (!player || !player->is_valid())
 				return;
 			if (!g_player_service->get_self()->is_host())
 			{

@@ -33,7 +33,7 @@ namespace big
 		if (kick)
 		{
 			g_fiber_pool->queue_job([player] {
-				dynamic_cast<player_command*>(command::get("multikick"_J))->call(player, {});
+				dynamic_cast<player_command*>(command::get("smartkick"_J))->call(player, {});
 			});
 		}
 

@@ -20,7 +20,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			if (!player || !g_player_service->get_self()->is_host() || !player->get_net_data())
+			if (!player || !g_player_service->get_self()->is_host() || !player->get_net_data() || !player->is_valid())
 				return;
 
 			rage::snMsgRemoveGamersFromSessionCmd cmd{};
