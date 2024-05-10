@@ -18,9 +18,9 @@ namespace big
 		g_api_service = nullptr;
 	}
 
-	std::string api_service::get_translation_from_LibreTranslate(std::string message, std::string target_language)
+	std::string api_service::get_translation(std::string message, std::string target_language)
 	{
-		std::string url = g.session.chat_translator_endpoint;
+		std::string url = g.session.chat_translator.endpoint;
 		const auto response = g_http_client.post(url,
 		    {{"Content-Type", "application/json"}}, std::format(R"({{"q":"{}", "source":"auto", "target": "{}"}})", message, target_language));
 		if (response.status_code == 200)
@@ -31,7 +31,7 @@ namespace big
 				std::string source_language = obj["detectedLanguage"]["language"];
 				std::string result = obj["translatedText"];
 
-				if (source_language == g.session.chat_translator_target && g.session.chat_translator_bypass)
+				if (source_language == g.session.chat_translator.target_language && g.session.chat_translator.bypass_same_language)
 					return "";
 				return result;
 			}
@@ -44,7 +44,7 @@ namespace big
 		}
 		else if (response.status_code == 0)
 		{
-			g.session.chat_translator = false;
+			g.session.chat_translator.enabled = false;
 			g_notification_service.push_error("TRANSLATOR_TOGGLE"_T.data(), "TRANSLATOR_FAILED_TO_CONNECT"_T.data());
 			LOG(WARNING) << "[Chat Translator]Unable to connect to LibreTranslate server. Follow the guide in Yimmenu Wiki to setup LibreTranslate server on your computer.";
 		}

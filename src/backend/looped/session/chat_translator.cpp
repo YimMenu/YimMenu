@@ -9,39 +9,32 @@ namespace big
 
 	void looped::session_chat_translator()
 	{
-		if (!translate_Queue.empty() and !translate_lock and g.session.chat_translator)
+		if (!translate_queue.empty() and !translate_lock and g.session.chat_translator.enabled)
 		{
-			if (translate_Queue.size() >= 3)
+			if (translate_queue.size() >= 3)
 			{
 				LOG(WARNING) << "[Chat Translator]Message queue is too large, cleaning it. Try enabling spam timer.";
-				translate_Queue.pop();
+				translate_queue.pop();
 				return;
 			}
 
-			auto& first_message     = translate_Queue.front();
+			auto& first_message     = translate_queue.front();
 			translate_lock = true;
 			g_thread_pool->push([first_message] {
 				std::string translate_result;
 				std::string sender = "[T]" + first_message.sender;
-				translate_result = g_api_service->get_translation_from_LibreTranslate(first_message.content, g.session.chat_translator_target);
+				translate_result   = g_api_service->get_translation(first_message.content, g.session.chat_translator.target_language);
 
 				translate_lock = false;
 				if (translate_result != "")
 				{
-					if (g.session.chat_translator_draw)
-					{
-						if (rage::tlsContext::get()->m_is_script_thread_active)
-							chat::draw_chat(translate_result.c_str(), sender.c_str(), false);
-						else
-							g_fiber_pool->queue_job([translate_result, sender] {
-								chat::draw_chat(translate_result.c_str(), sender.c_str(), false);
-							});
-					}
-					if (g.session.chat_translator_print)
+					if (g.session.chat_translator.draw_result)
+						chat::draw_chat(translate_result, sender, false);
+					if (g.session.chat_translator.print_result)
 						LOG(INFO) << "[" << first_message.sender << "]" << first_message.content << " --> " << translate_result;
 				}
 			});
-			translate_Queue.pop();
+			translate_queue.pop();
 		}
 	}
 }

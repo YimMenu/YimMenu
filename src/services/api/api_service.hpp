@@ -12,7 +12,8 @@ namespace big
 		api_service();
 		~api_service();
 
-		std::string get_translation_from_LibreTranslate(std::string message, std::string target_language);
+		// Makes an API call to a LibreTranslate endpoint.
+		std::string get_translation(std::string message, std::string target_language);
 
 		// Returns true if an valid profile matching his username has been found
 		bool get_rid_from_username(std::string_view username, uint64_t& result);
