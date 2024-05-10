@@ -94,7 +94,7 @@ namespace big
 		ImGui::SeparatorText("GUI_TAB_IPL"_T.data());
 
 		static int current_select = 0;
-		static int last_select    = current_select;
+		static int last_select    = -1;
 
 		ImGui::SetNextItemWidth(400);
 		if (ImGui::BeginCombo("##Ipllocation", ipls[current_select].friendly_name))
@@ -120,18 +120,22 @@ namespace big
 			if (current_select != last_select)
 			{
 				// Unload previously loaded IPL of the last selection
-				for (auto& ipl_name_unload : ipls[last_select].ipl_names)
+				// If this is our first time loading an IPL (especially the first one in the list, then don't unload anything)
+				if (last_select != -1)
 				{
-					if (STREAMING::IS_IPL_ACTIVE(ipl_name_unload))
+					for (auto& ipl_name_unload : ipls[last_select].ipl_names)
 					{
-						STREAMING::REMOVE_IPL(ipl_name_unload);
+						if (STREAMING::IS_IPL_ACTIVE(ipl_name_unload))
+						{
+							STREAMING::REMOVE_IPL(ipl_name_unload);
+						}
 					}
-				}
 
-				// Load previously deleted IPLs of the last selection
-				for (auto& ipl_name_load : ipls[last_select].ipl_names_remove)
-				{
-					STREAMING::REQUEST_IPL(ipl_name_load);
+					// Load previously deleted IPLs of the last selection
+					for (auto& ipl_name_load : ipls[last_select].ipl_names_remove)
+					{
+						STREAMING::REQUEST_IPL(ipl_name_load);
+					}
 				}
 
 				// Load new IPLs of the current selection
