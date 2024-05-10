@@ -125,6 +125,7 @@ namespace big
 			looped::session_randomize_ceo_colors();
 			looped::session_auto_kick_host();
 			looped::session_block_jobs();
+			looped::session_chat_translator();
 
 			if (g_script_connection_service)
 				g_script_connection_service->on_tick();

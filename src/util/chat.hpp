@@ -182,7 +182,7 @@ namespace big::chat
 		log.close();
 	}
 
-	inline void draw_chat(const char* msg, const char* player_name, bool is_team)
+	inline void render_chat(const char* msg, const char* player_name, bool is_team)
 	{
 		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
 
@@ -210,6 +210,16 @@ namespace big::chat
 		// fix broken scaleforms, when chat alrdy opened
 		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
 			HUD::CLOSE_MP_TEXT_CHAT();
+	}
+
+	inline void draw_chat(const std::string& message, const std::string& sender, bool is_team)
+	{
+		if (rage::tlsContext::get()->m_is_script_thread_active)
+			render_chat(message.c_str(), sender.c_str(), is_team);
+		else
+			g_fiber_pool->queue_job([message, sender, is_team] {
+				render_chat(message.c_str(), sender.c_str(), is_team);
+			});
 	}
 
 	inline bool is_on_same_team(CNetGamePlayer* player)
@@ -275,11 +285,17 @@ namespace big::chat
 		}
 
 		if (draw)
-			if (rage::tlsContext::get()->m_is_script_thread_active)
-				draw_chat(message.c_str(), g_player_service->get_self()->get_name(), is_team);
-			else
-				g_fiber_pool->queue_job([message, target, is_team] {
-					draw_chat(message.c_str(), g_player_service->get_self()->get_name(), is_team);
-				});
+			draw_chat(message, g_player_service->get_self()->get_name(), is_team);
 	}
+}
+
+namespace big
+{
+	struct chat_message
+	{
+		std::string sender;
+		std::string content;
+	};
+
+	inline std::queue<chat_message> translate_queue;
 }

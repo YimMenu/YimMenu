@@ -137,6 +137,11 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
+					if (g.session.chat_translator.enabled)
+					{
+						chat_message new_message{player->get_name(), message};
+						translate_queue.push(new_message);
+					}
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
