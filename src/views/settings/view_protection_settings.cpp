@@ -60,6 +60,7 @@ namespace big
 		ImGui::Checkbox("VIEW_PROTECTION_SETTINGS_KICK_REJOIN"_T.data(), &g.protections.kick_rejoin);
 		ImGui::Checkbox("BLOCK_TRAFFIC_MANIPULATION"_T.data(), &g.protections.stop_traffic);
 		components::command_checkbox<"forcerelays">();
+		ImGui::Checkbox("DESYNC_KICK"_T.data(), &g.protections.desync_kick);
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("VIEW_PROTECTION_SETTINGS_OPTIONS"_T.data());

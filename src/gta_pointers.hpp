@@ -209,9 +209,9 @@ namespace big
 		PVOID m_sort_session_details;
 
 		PVOID m_process_matchmaking_find_response;
-		PVOID m_serialize_player_data_msg;
 
 		PVOID m_serialize_join_request_message;
+		PVOID m_serialize_join_request_message_2;
 
 		functions::give_pickup_rewards m_give_pickup_rewards;
 		functions::send_network_damage m_send_network_damage;
