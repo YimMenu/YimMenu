@@ -368,6 +368,11 @@ namespace big
 		functions::can_create_vehicle m_can_create_vehicle;
 
 		PVOID m_format_int;
+
+		PVOID m_searchlight_crash;
+		functions::get_unk_weapon m_get_unk_weapon;
+
+		GenericPool** m_clone_create_pool; // this is not a normal pool
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

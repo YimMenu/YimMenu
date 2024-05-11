@@ -1,6 +1,7 @@
 #include "hooking/hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
+#include "gta/pools.hpp"
 
 namespace big
 {
@@ -9,6 +10,13 @@ namespace big
 		if (object_type < eNetObjType::NET_OBJ_TYPE_AUTOMOBILE || object_type > eNetObjType::NET_OBJ_TYPE_TRAIN) [[unlikely]]
 		{
 			notify::crash_blocked(src, "out of bounds object type");
+			return;
+		}
+
+		if (*g_pointers->m_gta.m_clone_create_pool && (*g_pointers->m_gta.m_clone_create_pool)->m_size < 2)
+		{
+			// We don't have enough memory to handle this
+			g_notification_service.push_warning("Protections", "Low net object pool size");
 			return;
 		}
 

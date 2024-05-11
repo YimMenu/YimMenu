@@ -9,7 +9,7 @@ namespace big
 
 	void looped::session_chat_translator()
 	{
-		if (!translate_queue.empty() and !translate_lock and g.session.chat_translator.enabled)
+		if (!translate_queue.empty() && !translate_lock && g.session.chat_translator.enabled)
 		{
 			if (translate_queue.size() >= 3)
 			{

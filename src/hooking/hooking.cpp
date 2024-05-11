@@ -144,6 +144,8 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_int>("FI", g_pointers->m_gta.m_format_int);
 
+		detour_hook_helper::add<hooks::searchlight_crash>("SLC", g_pointers->m_gta.m_searchlight_crash);
+
 		g_hooking = this;
 	}
 
