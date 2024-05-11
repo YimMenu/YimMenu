@@ -186,7 +186,7 @@ namespace big
 
 		TSECommand          = 800157557, // CnCTG_IN_BF
 		TSECommandRotateCam = 225624744, // != 29) && f
-
+                TSECommandSoundSpam            = 385726943,   // GB_HTB_HELP8
 		Notification             = -642704387,
 		NotificationMoneyBanked  = 94410750,   // TICK_TC_BANK
 		NotificationMoneyRemoved = -242911964, // TICK_TC_REMO
