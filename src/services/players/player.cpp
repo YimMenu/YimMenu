@@ -133,7 +133,7 @@ namespace big
 
 	uint8_t player::id() const
 	{
-		if (*g_pointers->m_gta.m_is_session_started)
+		if (gta_util::get_network_player_mgr()->m_player_count > 0)
 			return get_net_game_player() == nullptr ? -1 : m_net_game_player->m_player_id;
 		else
 			return self::id;
