@@ -47,8 +47,8 @@ namespace big
 
 	CPed* player::get_ped() const
 	{
-		if (const auto player_info = this->get_player_info(); player_info != nullptr)
-			if (const auto ped = player_info->m_ped; ped != nullptr)
+		if (auto player_info = this->get_player_info())
+			if (auto ped = player_info->m_ped)
 				return ped;
 		return nullptr;
 	}
