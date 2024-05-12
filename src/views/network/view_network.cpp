@@ -97,11 +97,10 @@ namespace big
 			{
 				for (const auto& region_type : regions)
 				{
-                    components::selectable(region_type.name, *g_pointers->m_gta.m_region_code == region_type.id, [&region_type] 
-                    {
-                        *g_pointers->m_gta.m_region_code = region_type.id;
-                        region_updated = true;
-                    });
+					components::selectable(region_type.name, *g_pointers->m_gta.m_region_code == region_type.id, [&region_type] {
+						*g_pointers->m_gta.m_region_code = region_type.id;
+						region_updated                   = true;
+					});
 				}
 				ImGui::EndCombo();
 			}
