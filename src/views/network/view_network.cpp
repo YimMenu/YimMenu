@@ -81,11 +81,14 @@ namespace big
 
 	void render_session_switcher()
 	{
+		static int selected_region_index     = -1;
+        std::string region_str = (selected_region_index == -1) ? "REGIONS"_T.data() : regions[*g_pointers->m_gta.m_region_code].name;
+
 		ImGui::BeginGroup();
 		components::sub_title("SESSION_SWITCHER"_T);
 		if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
 		{
-			if (ImGui::BeginCombo("##regionswitcher", "REGIONS"_T.data()))
+			if (ImGui::BeginCombo("##regionswitcher", region_str.c_str()))
 			{
 				for (const auto& region_type : regions)
 				{
@@ -93,6 +96,9 @@ namespace big
 						*g_pointers->m_gta.m_region_code = region_type.id;
 					});
 				}
+
+				selected_region_index = *g_pointers->m_gta.m_region_code;
+
 				ImGui::EndCombo();
 			}
 
