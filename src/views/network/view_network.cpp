@@ -138,7 +138,7 @@ namespace big
 				if (id == eSessionType::LEAVE_ONLINE && gta_util::get_network_player_mgr()->m_player_count == 0) // Don't show a Leave Online option in single player (it actually sends us INTO online)
 					continue;
 
-				ImGui::BeginDisabled(selected_region_index == -1 && id != eSessionType::LEAVE_ONLINE); // Leave online is always enabled
+				ImGui::BeginDisabled(selected_region_index == -1 && id != eSessionType::LEAVE_ONLINE); // Leave Online is always enabled in online sessions since we don't care about the selected region
 				components::selectable(g_translation_service.get_translation(name), false, [&id] {
 					session::join_type(id);
 				});
