@@ -453,18 +453,24 @@ namespace big
 		case eNetworkEvents::SCRIPTED_GAME_EVENT:
 		{
 			const auto scripted_game_event = std::make_unique<CScriptedGameEvent>();
+
 			buffer->ReadDword(&scripted_game_event->m_args_size, 32);
-			if (scripted_game_event->m_args_size - 1 <= 0x1AF)
-				buffer->ReadArray(&scripted_game_event->m_args, 8 * scripted_game_event->m_args_size);
+			if (scripted_game_event->m_args_size > sizeof(scripted_game_event->m_args))
+			{
+				notify::crash_blocked(source_player, "out of bounds tse args size");
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
+			buffer->ReadArray(&scripted_game_event->m_args, 8 * scripted_game_event->m_args_size);
 
 			if (hooks::scripted_game_event(scripted_game_event.get(), source_player))
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-
 				return;
 			}
-			buffer->Seek(0);
 
+			buffer->Seek(0);
 			break;
 		}
 		case eNetworkEvents::NETWORK_CLEAR_PED_TASKS_EVENT:
