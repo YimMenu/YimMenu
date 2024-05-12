@@ -84,10 +84,11 @@ namespace big
 		if (g_pointers->m_gta.m_region_code == nullptr)
 			return;
 
-		static int selected_region_index     = -1;
-		static bool region_updated = false;
+		static int selected_region_index = -1;
+		static bool region_updated       = false;
 
-        std::string region_str = (selected_region_index == -1) ? "SESSION_SELECT_COMBO"_T.data() : regions[*g_pointers->m_gta.m_region_code].name;
+		std::string region_str =
+		    (selected_region_index == -1) ? "SESSION_SELECT_COMBO"_T.data() : regions[*g_pointers->m_gta.m_region_code].name;
 
 		ImGui::BeginGroup();
 		components::sub_title("SESSION_SELECT"_T);
