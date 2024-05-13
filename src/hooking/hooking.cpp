@@ -144,6 +144,7 @@ namespace big
 
 		detour_hook_helper::add<hooks::format_int>("FI", g_pointers->m_gta.m_format_int);
 
+		detour_hook_helper::add<hooks::write_physical_script_game_state_data_node>("WPSGSDN", g_pointers->m_gta.m_write_physical_script_game_state_data_node);
 		g_hooking = this;
 	}
 

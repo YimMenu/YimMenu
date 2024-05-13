@@ -17,6 +17,9 @@ class CBlipList;
 class TimecycleKeyframeData;
 class CTrainConfig;
 class CWeaponInfoManager;
+class CGameScriptHandlerMgr;
+class CPedFactory;
+class GtaThread;
 
 namespace rage
 {
@@ -30,6 +33,7 @@ namespace rage
 	class netTime;
 	class rlGamerInfo;
 	struct game_skeleton;
+	class scrProgramTable;
 }
 
 template<typename T>
@@ -368,6 +372,8 @@ namespace big
 		functions::can_create_vehicle m_can_create_vehicle;
 
 		PVOID m_format_int;
+		
+		PVOID m_write_physical_script_game_state_data_node;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

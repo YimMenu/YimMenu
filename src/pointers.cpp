@@ -1773,6 +1773,15 @@ namespace big
             {
                 g_pointers->m_gta.m_format_int = ptr.as<PVOID>();
             }
+        },
+        // Write Physical Script Game State Data Node
+        {
+            "WPSGSDN",
+            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 20 4C 8D B1 D0 FE",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_physical_script_game_state_data_node = ptr.as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

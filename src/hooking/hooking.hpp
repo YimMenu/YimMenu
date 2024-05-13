@@ -38,6 +38,7 @@ class Network;
 class GtaThread;
 class CNetworkPlayerMgr;
 class CNetworkObjectMgr;
+class CPhysicalScriptGameStateDataNode;
 
 enum class eAckCode : uint32_t;
 
@@ -195,6 +196,8 @@ namespace big
 		static bool can_create_vehicle();
 
 		static void format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas);
+
+		static void write_physical_script_game_state_data_node(rage::CPhysical* this_ptr, CPhysicalScriptGameStateDataNode* node);
 	};
 
 	class minhook_keepalive
