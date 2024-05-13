@@ -197,7 +197,7 @@ namespace big
 
 		static void format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas);
 
-		static void write_physical_script_game_state_data_node(__int64 iface, CPhysicalScriptGameStateDataNode* node);
+		static void write_physical_script_game_state_data_node(rage::CPhysical* this_ptr, CPhysicalScriptGameStateDataNode* node);
 	};
 
 	class minhook_keepalive
