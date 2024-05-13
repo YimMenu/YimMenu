@@ -689,6 +689,7 @@ namespace big
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god      = true;
+			bool spoof_hide_veh_god  = true;
 			bool spoof_hide_spectate = true;
 
 			bool spoof_crew_data = false;
@@ -707,7 +708,7 @@ namespace big
 
 			bool voice_chat_audio = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, session_bad_sport, voice_chat_audio)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, session_bad_sport, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle

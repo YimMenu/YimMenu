@@ -81,22 +81,43 @@ namespace big
 
 	void render_session_switcher()
 	{
+		if (g_pointers->m_gta.m_region_code == nullptr)
+			return;
+
+		static int selected_region_index = -1;
+		static bool region_updated       = false;
+
+		std::string region_str =
+		    (selected_region_index == -1) ? "SESSION_SELECT_COMBO"_T.data() : regions[*g_pointers->m_gta.m_region_code].name;
+
 		ImGui::BeginGroup();
-		components::sub_title("SESSION_SWITCHER"_T);
+		components::sub_title("SESSION_SELECT"_T);
 		if (ImGui::BeginListBox("###session_switch", get_listbox_dimensions()))
 		{
-			if (ImGui::BeginCombo("##regionswitcher", "REGIONS"_T.data()))
+			if (ImGui::BeginCombo("##regionswitcher", region_str.c_str()))
 			{
 				for (const auto& region_type : regions)
 				{
 					components::selectable(region_type.name, *g_pointers->m_gta.m_region_code == region_type.id, [&region_type] {
 						*g_pointers->m_gta.m_region_code = region_type.id;
+						region_updated                   = true;
 					});
 				}
 				ImGui::EndCombo();
 			}
 
-			ImGui::Spacing();
+			if (region_updated)
+			{
+				selected_region_index = *g_pointers->m_gta.m_region_code;
+				region_updated        = false;
+			}
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip("SESSION_SELECT_COMBO_DESC"_T.data());
+			}
+
+			ImGui::Separator();
 
 			static const auto sessions = std::to_array<SessionType>({ //This has to be here because if it's generated at compile time, the translations break for some reason.
 				{eSessionType::JOIN_PUBLIC, "BACKEND_SESSION_TYPE_JOIN_PUBLIC"},
@@ -114,9 +135,14 @@ namespace big
 
 			for (const auto& [id, name] : sessions)
 			{
+				if (id == eSessionType::LEAVE_ONLINE && gta_util::get_network_player_mgr()->m_player_count == 0) // Don't show a Leave Online option in single player (it actually sends us INTO online)
+					continue;
+
+				ImGui::BeginDisabled(selected_region_index == -1 && id != eSessionType::LEAVE_ONLINE); // Leave Online is always enabled in online sessions since we don't care about the selected region
 				components::selectable(g_translation_service.get_translation(name), false, [&id] {
 					session::join_type(id);
 				});
+				ImGui::EndDisabled();
 			}
 			ImGui::EndListBox();
 		}

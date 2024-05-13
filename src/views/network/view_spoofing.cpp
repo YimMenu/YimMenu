@@ -85,6 +85,7 @@ namespace big
 
 		ImGui::SeparatorText("SPOOFING_HIDE_FEATURES"_T.data());
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
+		ImGui::Checkbox("SPOOFING_HIDE_VEH_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_veh_god);
 		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
 		ImGui::SeparatorText("CREW"_T.data());
