@@ -130,7 +130,7 @@ namespace big
 				g.reactions.crash.process(plyr);
 				return true;
 			}
-			if (args[3] == -4640169 && args[7] == -36565476 && args[8] == -53105203)
+			if (args[3] == -4640169 && (args[7] == -36565476 || args[7] == -36567476) && args[8] == -53105203)
 			{
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 				g.reactions.crash.process(plyr);
@@ -215,12 +215,28 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+		{
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam)
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
+
+			if (g.protections.script_events.sound_spam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandSound)
+			{
+				if (!plyr || plyr->m_invites_rate_limit.process())
+				{
+					if (plyr->m_invites_rate_limit.exceeded_last_process())
+						g.reactions.sound_spam.process(plyr);
+					return true;
+				}
+			}
+
 			break;
+		}
 		case eRemoteEvent::SendToCayoPerico:
 			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{
