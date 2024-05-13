@@ -67,7 +67,7 @@ namespace big
 
 		rate_limiter m_host_migration_rate_limit{2s, 15};
 		rate_limiter m_play_sound_rate_limit{1s, 10};
-		rate_limiter m_play_sound_rate_limit_tse{1s, 5}; // todo: confirm the correct values
+		rate_limiter m_play_sound_rate_limit_tse{10s, 2};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
 
