@@ -197,6 +197,8 @@ namespace big
 
 		static void format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas);
 
+		static void searchlight_crash(void* a1, CPed* ped);
+
 		static void write_physical_script_game_state_data_node(rage::CPhysical* this_ptr, CPhysicalScriptGameStateDataNode* node);
 	};
 

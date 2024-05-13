@@ -126,6 +126,7 @@ namespace big
 			looped::session_auto_kick_host();
 			looped::session_block_jobs();
 			looped::session_chat_translator();
+			looped::session_modder_detection();
 
 			if (g_script_connection_service)
 				g_script_connection_service->on_tick();

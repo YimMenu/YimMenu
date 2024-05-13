@@ -7,7 +7,7 @@ namespace big
 	{
 		// Add new values to the bottom (for serialization)
 
-		DESYNC_PROTECTION,             // do not use
+		DESYNC_PROTECTION,
 		BREAKUP_KICK_DETECTED,         // do not use
 		LOST_CONNECTION_KICK_DETECTED, // do not use
 		SPOOFED_ROCKSTAR_ID,           // do not use

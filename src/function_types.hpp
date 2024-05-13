@@ -211,4 +211,6 @@ namespace big::functions
 	using received_clone_remove = void (*)(CNetworkObjectMgr*, CNetGamePlayer*, CNetGamePlayer*, int16_t, uint32_t);
 
 	using can_create_vehicle = bool (*)();
+
+	using get_unk_weapon = void* (*) (CPed*);
 }

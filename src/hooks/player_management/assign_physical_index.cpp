@@ -146,6 +146,16 @@ namespace big
 					{
 						session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
 					}
+
+					if (g_player_service->get_self()->is_host() && plyr->get_net_data()->m_nat_type == 0)
+					{
+						session::add_infraction(plyr, Infraction::DESYNC_PROTECTION);
+					}
+					
+					if (plyr->is_host() && plyr->get_net_data()->m_nat_type == 0)
+					{
+						session::add_infraction(plyr, Infraction::DESYNC_PROTECTION); // some broken menus may do this
+					}
 				}
 			});
 		}

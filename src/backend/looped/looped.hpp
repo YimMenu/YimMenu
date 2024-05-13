@@ -36,6 +36,7 @@ namespace big
 		static void session_randomize_ceo_colors();
 		static void session_auto_kick_host();
 		static void session_chat_translator();
+		static void session_modder_detection();
 
 		static void system_self_globals();
 		static void system_update_pointers();
