@@ -227,9 +227,9 @@ namespace big
 
 			if (g.protections.script_events.sound_spam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandSound)
 			{
-				if (!plyr || plyr->m_invites_rate_limit.process())
+				if (!plyr || plyr->m_play_sound_rate_limit_tse.process())
 				{
-					if (plyr->m_invites_rate_limit.exceeded_last_process())
+					if (plyr->m_play_sound_rate_limit_tse.exceeded_last_process())
 						g.reactions.sound_spam.process(plyr);
 					return true;
 				}
