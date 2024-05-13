@@ -38,7 +38,7 @@ namespace big::train
 
 	inline void delete_train()
 	{
-		if (!self::veh && get_closest_train() != 0)
+		if (get_closest_train() != 0)
 		{
 			VEHICLE::DELETE_ALL_TRAINS();
 		}
