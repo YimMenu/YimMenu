@@ -15,11 +15,11 @@ namespace big
 		{
 			if (g_local_player->m_vehicle && g_local_player->m_vehicle == this_vehicle)
 			{
-				node->m_godmode = false;
-				node->m_bullet_proof = false;
-				node->m_fire_proof   = false;
-				node->m_smoke_proof  = false;
-				node->m_steam_proof  = false;
+				node->m_godmode         = false;
+				node->m_bullet_proof    = false;
+				node->m_fire_proof      = false;
+				node->m_smoke_proof     = false;
+				node->m_steam_proof     = false;
 				node->m_collision_proof = false;
 				node->m_explosion_proof = false;
 				node->m_melee_proof     = false;
