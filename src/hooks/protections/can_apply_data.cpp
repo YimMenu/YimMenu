@@ -396,7 +396,6 @@ namespace big
 			LOG_FIELD_B(CObjectCreationDataNode, m_player_wants_control);
 			LOG_FIELD_B(CObjectCreationDataNode, m_has_init_physics);
 			LOG_FIELD_B(CObjectCreationDataNode, m_script_grabbed_from_world);
-			LOG_FIELD_B(CObjectCreationDataNode, m_has_frag_group);
 			LOG_FIELD_B(CObjectCreationDataNode, m_is_broken);
 			LOG_FIELD_B(CObjectCreationDataNode, m_has_exploded);
 			LOG_FIELD_B(CObjectCreationDataNode, m_keep_registered);
@@ -802,8 +801,8 @@ namespace big
 			LOG_FIELD(CPlayerGameStateDataNode, m_voice_channel);
 			LOG_FIELD_B(CPlayerGameStateDataNode, m_is_overriding_voice_proximity);
 			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_x);
-			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_x);
-			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_x);
+			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_y);
+			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_z);
 			LOG_FIELD(CPlayerGameStateDataNode, m_voice_proximity_radius_maybe);
 			LOG_FIELD(CPlayerGameStateDataNode, unk_0150);
 			LOG_FIELD(CPlayerGameStateDataNode, m_vehicle_weapon_index);
@@ -960,7 +959,6 @@ namespace big
 			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_visible_in_cutscene);
 			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_visible_in_cutscene_remain_hack);
 			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_pickup_by_cargobob_disabled);
-			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_godmode);
 			LOG_FIELD(CPhysicalScriptGameStateDataNode, m_relationship_group);
 			LOG_FIELD(CPhysicalScriptGameStateDataNode, m_always_cloned_for_players);
 			LOG_FIELD_B(CPhysicalScriptGameStateDataNode, m_trigger_damage_event_for_zero_damage);
