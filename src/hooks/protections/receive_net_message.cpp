@@ -256,26 +256,38 @@ namespace big
 			}
 		}
 
-		if (g.debug.logs.packet_logs && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents && msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate && msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck && msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck && msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)
+		if (g.debug.logs.packet_logs) [[unlikely]]
 		{
-			const char* packet_type = "<UNKNOWN>";
-			for (const auto& p : packet_types)
+			if (g.debug.logs.packet_logs == 1 || //ALL
+			   (g.debug.logs.packet_logs == 2 && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents && msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate && msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck && msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck && msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)) //FILTERED
 			{
-				if (p.second == (int)msgType)
+				const char* packet_type = "<UNKNOWN>";
+				for (const auto& p : packet_types)
 				{
-					packet_type = p.first;
-					break;
+					if (p.second == (int)msgType)
+					{
+						packet_type = p.first;
+						break;
+					}
 				}
-			}
 
-			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
-			             << (player ? player->get_name() :
-			                          std::format("<M:{}>, <C:{:X}>, <P:{}>",
-			                              (int)frame->m_msg_id,
-			                              frame->m_connection_identifier,
-			                              frame->m_peer_id)
-			                              .c_str())
-			             << " | " << HEX_TO_UPPER((int)msgType);
+				auto now        = std::chrono::system_clock::now();
+				auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+				auto timer      = std::chrono::system_clock::to_time_t(now);
+				auto local_time = *std::localtime(&timer);
+
+				static std::ofstream log(g_file_manager.get_project_file("./packets.log").get_path(), std::ios::app);
+				log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] "
+				    << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
+				    << (player ? player->get_name() :
+				                 std::format("<M:{}>, <C:{:X}>, <P:{}>",
+				                     (int)frame->m_msg_id,
+				                     frame->m_connection_identifier,
+				                     frame->m_peer_id)
+				                     .c_str())
+				    << " | " << HEX_TO_UPPER((int)msgType) << std::endl;
+				log.flush();
+			}
 		}
 
 		return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
