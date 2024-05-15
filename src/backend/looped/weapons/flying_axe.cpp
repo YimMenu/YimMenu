@@ -20,9 +20,6 @@ namespace big
 
 	class flying_axe : looped_command
 	{
-		std::vector<Entity> entity_list;
-		std::chrono::steady_clock::time_point last_call_time;
-
 		int get_around_position_iterator = 0;
 		Vector3 get_around_position(int ent, float far_distance, float up_down_distance)
 		{
@@ -153,19 +150,7 @@ namespace big
 					play_bone_looped_ptfx(entity_axe, 0, "scr_powerplay", "scr_powerplay", "sp_powerplay_beast_appear_trails", 0.5f, false, 0.f, 0.f, 0.f);
 					play_non_loop_ptfx(entity_axe, "scr_paletoscore", "scr_paletoscore", "scr_paleto_box_sparks", 0.1f, false, 0.f, 0.f, 0.f);
 				}
-
-				auto current_time = std::chrono::steady_clock::now();
-				auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_call_time).count();
-
-				if (elapsed_time >= 100)
-				{
-					// Mitigate thread-unsafe behavior of get_entities by not calling it every tick (should be minimal impact to in-game ped behavior)
-					entity_list    = entity::get_entities(true, true);
-					last_call_time = current_time;
-				}
-
-				for (auto entity : entity_list)
-				{
+				for (auto entity : entity::get_entities(true, true)) {
 					function_axe_reaction(entity);
 				}
 

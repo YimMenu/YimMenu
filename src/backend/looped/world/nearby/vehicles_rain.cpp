@@ -10,22 +10,9 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		std::vector<Entity> entity_list;
-		std::chrono::steady_clock::time_point last_call_time;
-
 		virtual void on_tick() override
 		{
-			auto current_time = std::chrono::steady_clock::now();
-			auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_call_time).count();
-
-			if (elapsed_time >= 100)
-			{
-				// Mitigate thread-unsafe behavior of get_entities by not calling it every tick (should be minimal impact to in-game vehicle behavior)
-				entity_list    = entity::get_entities(true, false);
-				last_call_time = current_time;
-			}
-
-			for (auto vehicles : entity_list)
+			for (auto vehicles : entity::get_entities(true, false))
 			{
 				if (!ENTITY::IS_ENTITY_IN_AIR(vehicles) && vehicles != self::veh)
 				{
