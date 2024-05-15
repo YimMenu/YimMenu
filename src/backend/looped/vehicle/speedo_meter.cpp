@@ -9,13 +9,13 @@ namespace big
 {
 	class speedo_meter : looped_command
 	{
-		std::array<std::string_view, 3> m_speed_types = {"kmph", "miph", "mps"};
+		std::array<std::string_view, 3> m_speed_types = {"kmph", "mph", "mps"};
 
 		using looped_command::looped_command;
 
 		virtual void on_tick() override
 		{
-			if (!self::veh || !g_local_player  || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
+			if (!self::veh || !g_local_player || !g_local_player->m_vehicle || HUD::IS_PAUSE_MENU_ACTIVE() || HUD::IS_WARNING_MESSAGE_ACTIVE() || CAM::IS_SCREEN_FADED_OUT() || CAM::IS_SCREEN_FADING_OUT() || CAM::IS_SCREEN_FADING_IN())
 			{
 				return;
 			}
@@ -68,6 +68,8 @@ namespace big
 	};
 
 	speedo_meter g_speedo_meter("speedometer", "SPEEDO_METER", "SPEEDO_METER_DESC", g.vehicle.speedo_meter.enabled);
-	bool_command g_speedo_meter_gears("speedometergears", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR_DESC", g.vehicle.speedo_meter.show_current_gear);
-	bool_command g_speedo_meter_left_side("speedometerleftside", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT_DESC", g.vehicle.speedo_meter.left_side);
+	bool_command g_speedo_meter_gears("speedometergears", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_SHOW_CURRENT_GEAR_DESC",
+	    g.vehicle.speedo_meter.show_current_gear);
+	bool_command g_speedo_meter_left_side("speedometerleftside", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT", "BACKEND_LOOPED_VEHICLE_SPEEDO_METER_ALIGN_TO_LEFT_DESC",
+	    g.vehicle.speedo_meter.left_side);
 }
