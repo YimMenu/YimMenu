@@ -215,12 +215,28 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+		{
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam)
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
+
+			if (g.protections.script_events.sound_spam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandSound)
+			{
+				if (!plyr || plyr->m_play_sound_rate_limit_tse.process())
+				{
+					if (plyr->m_play_sound_rate_limit_tse.exceeded_last_process())
+						g.reactions.sound_spam.process(plyr);
+					return true;
+				}
+			}
+
 			break;
+		}
 		case eRemoteEvent::SendToCayoPerico:
 			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{

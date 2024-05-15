@@ -214,6 +214,7 @@ namespace big
 				if (data.m_hash == model)
 				{
 					model_str = name.data();
+					break;
 				}
 			}
 		}
@@ -224,6 +225,7 @@ namespace big
 				if (data.m_hash == model)
 				{
 					model_str = name.data();
+					break;
 				}
 			}
 		}
