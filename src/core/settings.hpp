@@ -94,7 +94,7 @@ namespace big
 		{
 			struct logs
 			{
-				bool metric_logs{};
+				int metric_logs{};
 				int packet_logs{};
 
 				bool script_hook_logs{};

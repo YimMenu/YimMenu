@@ -4,49 +4,51 @@
 
 namespace big
 {
-	const auto bad_metrics = std::unordered_set<std::string_view>({
-	    "REPORTER",
-	    "REPORT_INVALIDMODEL",
-	    "MEM_NEW",
-	    "DEBUGGER_ATTACH",
+	const auto warn_bad_metrics = std::unordered_set<std::string_view>({
+        "REPORTER",
+        "REPORT_INVALIDMODEL",
+        "MEM_NEW",
+        "DEBUGGER_ATTACH",
+        "XP_LOSS",
+        "CF",
+        "CC",
+        "CNR",
+        "SCRIPT",
+        "CHEAT",
+        "AUX_DEUX",
+        "HARDWARE_OS",
+        "HARDWARE_GPU",
+        "HARDWARE_MOBO",
+        "HARDWARE_MEM",
+        "HARDWARE_CPU",
+        "PCSETTINGS",
+        "CASH_CREATED",
+        "DR_PS",
+        "IDLEKICK",
+        "GSCB",
+        "GSINV",
+        "GSCW",
+        "GSINT",
+        "GARAGE_TAMPER",
+        "DUPE_DETECT",
+        "LAST_VEH",
+        "FAIL_SERV",
+        "CCF_UPDATE",
+        "CODE_CRC",
+        "MM",
+        "RDEV",
+        "RQA",
+    });
+	const auto filtered_bad_metrics = std::unordered_set<std::string_view>({
 	    "DIG",
-	    "XP_LOSS",
 	    "AWARD_XP",
-	    "CF",
-	    "CC",
-	    "CNR",
-	    "SCRIPT",
-	    "CHEAT",
-	    "AUX_DEUX",
 	    "WEATHER",
-	    "HARDWARE_OS",
-	    "HARDWARE_GPU",
-	    "HARDWARE_MOBO",
-	    "HARDWARE_MEM",
-	    "HARDWARE_CPU",
-	    "PCSETTINGS",
-	    "CASH_CREATED",
-	    "DR_PS",
 	    "UVC",
 	    "W_L",
 	    "ESVCS",
-	    "IDLEKICK",
-	    "GSCB",
-	    "GSINV",
-	    "GSCW",
-	    "GSINT",
 	    "EARN",
-	    "GARAGE_TAMPER",
-	    "DUPE_DETECT",
-	    "LAST_VEH",
-	    "FAIL_SERV",
-	    "CCF_UPDATE",
-	    "CODE_CRC",
 	    "COLLECTIBLE",
 	    "FIRST_VEH",
-	    "MM",
-	    "RDEV",
-	    "RQA",
 	    "RANK_UP",
 	});
 
@@ -85,30 +87,44 @@ namespace big
 	bool hooks::prepare_metric_for_sending(rage::json_serializer* serializer, int unk, int time, rage::rlMetric* metric)
 	{
 		char metric_json_buffer [256] {};
-		rage::json_serializer yim_serializer(metric_json_buffer, sizeof(metric_json_buffer));
+		rage::json_serializer yim_serializer(metric_json_buffer, sizeof(metric_json_buffer)); //I serialized your mom's JSON buffer.
 		metric->serialize(&yim_serializer);
-		const bool is_bad_metric = bad_metrics.contains(metric->get_name());
+		auto metric_name             = metric->get_name();
+		auto is_warn_bad_metrics     = warn_bad_metrics.contains(metric_name);
+		auto is_filtered_bad_metrics = filtered_bad_metrics.contains(metric_name);
+		auto is_bad_metric           = is_warn_bad_metrics || is_filtered_bad_metrics;
+
 		if (is_bad_metric)
 		{
-			LOG(WARNING) << "BAD METRIC: " << metric->get_name() << "; DATA: " << yim_serializer.get_string();
-			if(strcmp(metric->get_name(), "MM") == 0)
+			if ((is_filtered_bad_metrics && g.debug.logs.metric_logs) || is_warn_bad_metrics)
+			{
+				LOG(WARNING) << "BAD METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
+			}
+			if (is_warn_bad_metrics)
+			{
+				g_notification_service.push_warning("METRIC"_T.data(),
+				    std::format("{} {}", "METRIC_WARNING_MESSAGE"_T, metric_name).c_str());
+			}
+			if (!strcmp(metric_name, "MM"))
 			{
 				std::string data = std::string(reinterpret_cast<char*>(metric) + 0x18);
 				char module_name[MAX_PATH];
 				GetModuleFileNameA(g_hmodule, module_name, sizeof(module_name));
 				std::string encoded_module_name = hex_encode(std::filesystem::path(module_name).filename().string());
-				std::string result = remove_module_from_mmlist(data, encoded_module_name + "00");
-				if(result.size() != data.size())
+				std::string result              = remove_module_from_mmlist(data, encoded_module_name + "00");
+				if (result.size() != data.size())
 					LOG(INFO) << "Removed YimMenu DLL from MM metric";
 				strncpy(reinterpret_cast<char*>(metric) + 0x18, result.c_str(), 0x900);
 				return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
 			}
 			return false;
 		}
-
-		if (!is_bad_metric && g.debug.logs.metric_logs)
+		else
 		{
-			LOG(INFO) << "METRIC: " << metric->get_name() << "; DATA: " << yim_serializer.get_string();
+			if (g.debug.logs.metric_logs == 1)
+			{
+				LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
+			}
 		}
 
 		return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
