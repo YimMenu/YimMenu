@@ -150,11 +150,11 @@ namespace big
 			ImGui::InputInt("###player_count", &g.spoofing.session_player_count);
 		}
 
-		ImGui::Checkbox("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T.data(), &g.spoofing.spoof_session_bad_sport_status);
-		if (g.spoofing.spoof_session_bad_sport_status)
-		{
-			ImGui::SameLine();
-			ImGui::Checkbox("VIEW_SPOOFING_BADSPORT"_T.data(), &g.spoofing.session_bad_sport);
-		}
+		components::small_text("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T);
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_DEFAULT"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_GOOD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_BAD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 2);
 	}
 }
