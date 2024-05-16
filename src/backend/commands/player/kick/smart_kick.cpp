@@ -1,8 +1,10 @@
 #include "backend/player_command.hpp"
+#include "core/data/infractions.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 namespace big
 {
@@ -26,7 +28,20 @@ namespace big
 				if (player->is_host())
 					dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
 				else
-					dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
+				{
+					if (auto rockstar_id = player->get_rockstar_id())
+					{
+						if (auto db_player = g_player_database_service->get_player_by_rockstar_id(rockstar_id);
+						    db_player && db_player->infractions.contains((int)Infraction::ATTACKING_WITH_GODMODE))
+						{
+							dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
+							return;
+						}
+					}
+
+					if (g.protections.desync_kick)
+						dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
+				}
 			}
 		}
 	};
