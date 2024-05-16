@@ -87,7 +87,7 @@ namespace big
 	bool hooks::prepare_metric_for_sending(rage::json_serializer* serializer, int unk, int time, rage::rlMetric* metric)
 	{
 		char metric_json_buffer [256] {};
-		rage::json_serializer yim_serializer(metric_json_buffer, sizeof(metric_json_buffer)); //I serialized your mom's JSON buffer.
+		rage::json_serializer yim_serializer(metric_json_buffer, sizeof(metric_json_buffer));
 		metric->serialize(&yim_serializer);
 		auto metric_name             = metric->get_name();
 		auto is_warn_bad_metrics     = warn_bad_metrics.contains(metric_name);
