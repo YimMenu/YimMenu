@@ -115,16 +115,7 @@ namespace big
 					}
 
 					if (plyr->block_join && *g_pointers->m_gta.m_is_session_started)
-					{
-						if (g_player_service->get_self()->is_host())
-						{
-							dynamic_cast<player_command*>(command::get("breakup"_J))->call(plyr, {});
-						}
-						else if (g.protections.desync_kick)
-						{
-							dynamic_cast<player_command*>(command::get("desync"_J))->call(plyr, {});
-						}
-					}
+						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr, {});
 
 					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
 					{
