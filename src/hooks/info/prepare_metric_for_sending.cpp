@@ -96,11 +96,11 @@ namespace big
 
 		if (is_bad_metric)
 		{
-			if ((is_filtered_bad_metrics && g.debug.logs.metric_logs) || is_warn_bad_metrics)
+			if (g.debug.logs.metric_logs || is_warn_bad_metrics)
 			{
 				LOG(WARNING) << "BAD METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
 			}
-			if (is_warn_bad_metrics)
+			if (g.notifications.warn_metric && is_warn_bad_metrics)
 			{
 				g_notification_service.push_warning("METRIC"_T.data(),
 				    std::format("{} {}", "METRIC_WARNING_MESSAGE"_T, metric_name).c_str());
@@ -119,12 +119,9 @@ namespace big
 			}
 			return false;
 		}
-		else
+		else if (g.debug.logs.metric_logs == 1)
 		{
-			if (g.debug.logs.metric_logs == 1)
-			{
-				LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
-			}
+			LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
 		}
 
 		return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
