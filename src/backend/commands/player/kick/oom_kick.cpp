@@ -14,7 +14,7 @@ namespace big
 		using player_command::player_command;
 
 		virtual CommandAccessLevel get_access_level() override
-		{ 
+		{
 			return CommandAccessLevel::TOXIC;
 		}
 
@@ -27,7 +27,7 @@ namespace big
 			msg.write_message(rage::eNetMessage::MsgRadioStationSyncRequest);
 			auto msg_id = player->get_session_player()->m_msg_id;
 
-			for (int j = 0; j < 2000; j++)
+			for (int j = 0; j < 200; j++)
 			{
 				msg.send(msg_id);
 			}
