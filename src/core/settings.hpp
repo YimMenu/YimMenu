@@ -703,12 +703,11 @@ namespace big
 			int session_language                = 0;
 			bool spoof_session_player_count     = false;
 			int session_player_count            = 25;
-			bool spoof_session_bad_sport_status = false;
-			bool session_bad_sport              = false;
+			int spoof_session_bad_sport_status  = 0;
 
 			bool voice_chat_audio = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, session_bad_sport, voice_chat_audio)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle
@@ -1036,6 +1035,13 @@ namespace big
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter)
 		} session_browser{};
+
+		struct session_protection
+		{
+			int block_join_reason = 0;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_protection, block_join_reason)
+		} session_protection{};
 
 		struct ugc
 		{
