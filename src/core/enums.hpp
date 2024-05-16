@@ -240,7 +240,7 @@ namespace big
 	NLOHMANN_JSON_SERIALIZE_ENUM(SpeedUnit,
 	    {
 	        {SpeedUnit::KMPH, "kmph"},
-	        {SpeedUnit::MIPH, "miph"},
+	        {SpeedUnit::MIPH, "mph"},
 	        {SpeedUnit::MPS, "mps"},
 	    })
 
