@@ -23,14 +23,14 @@ namespace big
 			g_pointers->m_gta.m_write_join_response_data(&response, ctx->m_join_response_data, 512, &ctx->m_join_response_size);
 		};
 
-		if (block_join) [[unlikely]]
+		if (block_join)
 		{
 			send_response(db_player->block_join_reason);
 			g_notification_service.push("BLOCK_JOIN"_T.data(),
 			    std::vformat("BLOCK_JOIN_INFO"_T, std::make_format_args(player_info->m_name)));
 			return false;
 		}
-		else if (g.session.lock_session) [[unlikely]]
+		else if (g.session.lock_session)
 		{
 			if ((is_friend && g.session.allow_friends_into_locked_session) || is_trusted)
 			{
