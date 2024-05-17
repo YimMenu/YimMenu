@@ -1,6 +1,9 @@
 #include "friends_service.hpp"
 
+#include "pointers.hpp"
+
 #include <network/CNetGamePlayer.hpp>
+#include <socialclub/FriendRegistry.hpp>
 
 namespace big
 {
@@ -12,6 +15,15 @@ namespace big
 	friends_service::~friends_service()
 	{
 		g_friends_service = nullptr;
+	}
+
+	bool friends_service::is_friend(int64_t rockstar_id)
+	{
+		for (uint32_t i = 0; i < g_pointers->m_gta.m_friend_registry->m_friend_count; i++)
+			if (rockstar_id == g_pointers->m_gta.m_friend_registry->get(i)->m_rockstar_id)
+				return true;
+
+		return false;
 	}
 
 	bool friends_service::is_friend(CNetGamePlayer* net_player)
