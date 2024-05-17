@@ -31,6 +31,9 @@ namespace big
 
 		m_exception_info = exception_info;
 
+		m_dump.str("");
+		m_dump.clear();
+
 		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
 
 		if (g.in_script_vm)
