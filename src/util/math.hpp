@@ -69,8 +69,8 @@ namespace big::math
 	// [0, max_value)
 	inline int rand(int max_value)
 	{
-		std::random_device seed;
-		std::mt19937 gen{seed()};
+		static std::random_device seed;
+		static std::mt19937 gen{seed()};
 		std::uniform_int_distribution<int> dist{0, max_value - 1};
 
 		return dist(gen);
@@ -79,8 +79,8 @@ namespace big::math
 	// [min_value, max_value]
 	inline int rand(int min_value, int max_value)
 	{
-		std::random_device seed;
-		std::mt19937 gen{seed()};
+		static std::random_device seed;
+		static std::mt19937 gen{seed()};
 		std::uniform_int_distribution<int> dist{min_value, max_value};
 
 		return dist(gen);
