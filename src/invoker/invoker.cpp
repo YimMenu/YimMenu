@@ -19,6 +19,12 @@ namespace big
 
 	void native_invoker::fix_vectors()
 	{
-		g_pointers->m_gta.m_fix_vectors(&m_call_context);
+		for (; m_call_context.m_data_count; m_call_context.m_orig[m_call_context.m_data_count][2].Int = m_call_context.m_buffer[m_call_context.m_data_count].z)
+		{
+			--m_call_context.m_data_count;
+			m_call_context.m_orig[m_call_context.m_data_count]->Int   = m_call_context.m_buffer[m_call_context.m_data_count].x;
+			m_call_context.m_orig[m_call_context.m_data_count][1].Int = m_call_context.m_buffer[m_call_context.m_data_count].y;
+		}
+		--m_call_context.m_data_count;
 	}
 }
