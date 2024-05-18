@@ -9,6 +9,16 @@ namespace big
 {
 	class send_fake_ban_message : player_command
 	{
+		union send_fake_ban_message_args {
+			struct
+			{
+				int64_t event;
+				int64_t id;
+				int64_t playerId;
+			};
+			char message[15]; // if (HUD::GET_LENGTH_OF_LITERAL_STRING_IN_BYTES(sParam1) > 15) return;
+		};
+
 		using player_command::player_command;
 
 		virtual CommandAccessLevel get_access_level() override
@@ -18,12 +28,12 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			const size_t arg_count  = 9;
-			int64_t args[arg_count] = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id, 1 << player->id()};
+			const int arg_count             = 9;
+			const char* const str           = "HUD_ROSBANPERM";
+			send_fake_ban_message_args args = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id, 1 << player->id()};
+			std::memcpy(args.message, str, std::strlen(str) + 1);
 
-			strcpy((char*)&args[2], "HUD_ROSBANPERM");
-
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::SendTextLabelSMS);
+			g_pointers->m_gta.m_trigger_script_event(1, (int64_t*)&args, arg_count, 1 << player->id(), (int)eRemoteEvent::SendTextLabelSMS);
 		}
 	};
 
