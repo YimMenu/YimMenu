@@ -38,6 +38,21 @@ namespace big
 
 		return false;
 	}
+
+	inline bool is_local_vehicle(int16_t net_id)
+	{
+		return g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
+		    && g_local_player->m_vehicle->m_driver == g_local_player && g_local_player->m_vehicle->m_net_object->m_object_id == net_id;
+	}
+
+	inline bool is_in_vehicle(CPed* ped)
+	{
+		for (int i = 0; i < 15; i++)
+			if (g_local_player->m_vehicle->m_passengers[i] == ped)
+				return true;
+
+		return false;
+	}
   
 	// Returns true if bad event
 	bool scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
@@ -879,8 +894,7 @@ namespace big
 		{
 			int16_t net_id = buffer->Read<int16_t>(13);
 
-			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-			    && g_local_player->m_vehicle->m_driver == g_local_player && g_local_player->m_vehicle->m_net_object->m_object_id == net_id)
+			if (is_local_vehicle(net_id))
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
@@ -893,8 +907,34 @@ namespace big
 		{
 			int16_t net_id = buffer->Read<int16_t>(13);
 
-			if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-			    && g_local_player->m_vehicle->m_driver == g_local_player && g_local_player->m_vehicle->m_net_object->m_object_id == net_id)
+			if (is_local_vehicle(net_id))
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+
+			buffer->Seek(0);
+			break;
+		}
+		case eNetworkEvents::CHANGE_RADIO_STATION_EVENT:
+		{
+			int16_t net_id = buffer->Read<int16_t>(13);
+
+			if (is_local_vehicle(net_id))
+			{
+				if (!is_in_vehicle(plyr->get_ped()))
+				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
+
+				if (plyr->m_radio_station_change_rate_limit.process())
+				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					return;
+				}
+			}
+			else
 			{
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
