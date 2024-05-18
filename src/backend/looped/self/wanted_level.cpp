@@ -1,13 +1,13 @@
 #include "backend/command.hpp"
-#include "backend/looped_command.hpp"
 #include "backend/looped/looped.hpp"
-#include "pointers.hpp"
+#include "backend/looped_command.hpp"
 #include "natives.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
-	bool user_updated_wanted_level = false;
-	static int prev_max_wanted_level   = 5;
+	bool user_updated_wanted_level   = false;
+	static int prev_max_wanted_level = 5;
 
 	class clear_wanted : command
 	{
@@ -21,7 +21,7 @@ namespace big
 
 			// Clear current wanted level
 			g_local_player->m_player_info->m_wanted_level = 0;
-			g_local_player->m_player_info->m_is_wanted = false;
+			g_local_player->m_player_info->m_is_wanted    = false;
 
 			// Keep the lock if it's on, but reset the wanted level
 			g.self.wanted_level = 0;
@@ -50,7 +50,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			// Save the previous wanted level so we can restore it on disable, but don't soft lock us into a 0 since that wouldn't really make sense 
+			// Save the previous wanted level so we can restore it on disable, but don't soft lock us into a 0 since that wouldn't really make sense
 			if (PLAYER::GET_MAX_WANTED_LEVEL() != 0)
 				prev_max_wanted_level = PLAYER::GET_MAX_WANTED_LEVEL();
 
