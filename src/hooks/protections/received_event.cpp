@@ -416,15 +416,13 @@ namespace big
 		bool has_script_hash = buffer.Read<bool>(1);
 		uint32_t script_hash = has_script_hash ? buffer.Read<uint32_t>(32) : 0;
 
+		static const std::unordered_set<uint32_t> blocked_ref_hashes = {"Arena_Vehicle_Mod_Shop_Sounds"_J, "CELEBRATION_SOUNDSET"_J, "DLC_AW_Arena_Office_Planning_Wall_Sounds"_J, "DLC_AW_Arena_Spin_Wheel_Game_Frontend_Sounds"_J, "DLC_Biker_SYG_Sounds"_J, "DLC_BTL_SECURITY_VANS_RADAR_PING_SOUNDS"_J, "DLC_BTL_Target_Pursuit_Sounds"_J, "DLC_GR_Bunker_Door_Sounds"_J, "DLC_GR_CS2_Sounds"_J, "DLC_IO_Warehouse_Mod_Garage_Sounds"_J, "DLC_MPSUM2_HSW_Up_Sounds"_J, "DLC_sum20_Business_Battle_AC_Sounds"_J, "DLC_TG_Running_Back_Sounds"_J, "dlc_vw_table_games_frontend_sounds"_J, "dlc_xm_facility_entry_exit_sounds"_J, "Frontend"_J, "GTAO_Boss_Goons_FM_Soundset"_J, "GTAO_Exec_SecuroServ_Computer_Sounds"_J, "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"_J, "GTAO_Script_Doors_Faded_Screen_Sounds"_J, "GTAO_SMG_Hangar_Computer_Sounds"_J, "HUD_AMMO_SHOP_SOUNDSET"_J, "HUD_FRONTEND_CUSTOM_SOUNDSET"_J, "HUD_FRONTEND_DEFAULT_SOUNDSET"_J, "HUD_FRONTEND_MP_SOUNDSET"_J, "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"_J, "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"_J, "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"_J, "HUD_FRONTEND_STANDARD_PICKUPS_NPC_SOUNDSET"_J, "HUD_FRONTEND_VEHICLE_PICKUPS_NPC_SOUNDSET"_J, "HUD_FRONTEND_WEAPONS_PICKUPS_NPC_SOUNDSET"_J, "HUD_FREEMODE_SOUNDSET"_J, "HUD_MINI_GAME_SOUNDSET"_J, "HUD_AWARDS"_J, "JA16_Super_Mod_Garage_Sounds"_J, "Low2_Super_Mod_Garage_Sounds"_J, "MissionFailedSounds"_J, "MP_CCTV_SOUNDSET"_J, "MP_LOBBY_SOUNDS"_J, "MP_MISSION_COUNTDOWN_SOUNDSET"_J, "Phone_SoundSet_Default"_J, "Phone_SoundSet_Glasses_Cam"_J, "Phone_SoundSet_Prologue"_J, "Phone_SoundSet_Franklin"_J, "Phone_SoundSet_Michael"_J, "Phone_SoundSet_Trevor"_J, "PLAYER_SWITCH_CUSTOM_SOUNDSET"_J, "RESPAWN_ONLINE_SOUNDSET"_J, "TATTOOIST_SOUNDS"_J, "WastedSounds"_J, "WEB_NAVIGATION_SOUNDS_PHONE"_J};
+		static const std::unordered_set<uint32_t> blocked_sound_hashes = {"Remote_Ring"_J, "COP_HELI_CAM_ZOOM"_J, "Object_Dropped_Remote"_J};
+		if (blocked_ref_hashes.contains(ref_hash) || blocked_sound_hashes.contains(sound_hash))
+			return true;
 
 		switch (sound_hash)
 		{
-		case "Remote_Ring"_J:
-		case "COP_HELI_CAM_ZOOM"_J:
-		case "Object_Dropped_Remote"_J:
-		{
-			return true;
-		}
 		case "DLC_XM_Explosions_Orbital_Cannon"_J:
 		{
 			if (is_entity)
@@ -433,7 +431,8 @@ namespace big
 			if (!scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[plyr->id()].OrbitalBitset.IsSet(eOrbitalBitset::kOrbitalCannonActive))
 				return true;
 
-			if (script_hash != "am_mp_defunct_base"_J && script_hash != "am_mp_orbital_cannon"_J && script_hash != "fm_mission_controller_2020"_J && script_hash != "fm_mission_controller"_J)
+			static const std::unordered_set<uint32_t> valid_script_hashes = {"am_mp_defunct_base"_J, "am_mp_orbital_cannon"_J, "fm_mission_controller_2020"_J, "fm_mission_controller"_J};
+			if (!valid_script_hashes.contains(script_hash))
 				return true;
 
 			break;
@@ -442,60 +441,6 @@ namespace big
 
 		switch (ref_hash)
 		{
-		case "Arena_Vehicle_Mod_Shop_Sounds"_J:
-		case "CELEBRATION_SOUNDSET"_J:
-		case "DLC_AW_Arena_Office_Planning_Wall_Sounds"_J:
-		case "DLC_AW_Arena_Spin_Wheel_Game_Frontend_Sounds"_J:
-		case "DLC_Biker_SYG_Sounds"_J:
-		case "DLC_BTL_SECURITY_VANS_RADAR_PING_SOUNDS"_J:
-		case "DLC_BTL_Target_Pursuit_Sounds"_J:
-		case "DLC_GR_Bunker_Door_Sounds"_J:
-		case "DLC_GR_CS2_Sounds"_J:
-		case "DLC_IO_Warehouse_Mod_Garage_Sounds"_J:
-		case "DLC_MPSUM2_HSW_Up_Sounds"_J:
-		case "DLC_sum20_Business_Battle_AC_Sounds"_J:
-		case "DLC_TG_Running_Back_Sounds"_J:
-		case "dlc_vw_table_games_frontend_sounds"_J:
-		case "dlc_xm_facility_entry_exit_sounds"_J:
-		case "Frontend"_J:
-		case "GTAO_Boss_Goons_FM_Soundset"_J:
-		case "GTAO_Exec_SecuroServ_Computer_Sounds"_J:
-		case "GTAO_Exec_SecuroServ_Warehouse_PC_Sounds"_J:
-		case "GTAO_Script_Doors_Faded_Screen_Sounds"_J:
-		case "GTAO_SMG_Hangar_Computer_Sounds"_J:
-		case "HUD_AMMO_SHOP_SOUNDSET"_J:
-		case "HUD_FRONTEND_CUSTOM_SOUNDSET"_J:
-		case "HUD_FRONTEND_DEFAULT_SOUNDSET"_J:
-		case "HUD_FRONTEND_MP_SOUNDSET"_J:
-		case "HUD_FRONTEND_MP_COLLECTABLE_SOUNDS"_J:
-		case "HUD_FRONTEND_TATTOO_SHOP_SOUNDSET"_J:
-		case "HUD_FRONTEND_CLOTHESSHOP_SOUNDSET"_J:
-		case "HUD_FRONTEND_STANDARD_PICKUPS_NPC_SOUNDSET"_J:
-		case "HUD_FRONTEND_VEHICLE_PICKUPS_NPC_SOUNDSET"_J:
-		case "HUD_FRONTEND_WEAPONS_PICKUPS_NPC_SOUNDSET"_J:
-		case "HUD_FREEMODE_SOUNDSET"_J:
-		case "HUD_MINI_GAME_SOUNDSET"_J:
-		case "HUD_AWARDS"_J:
-		case "JA16_Super_Mod_Garage_Sounds"_J:
-		case "Low2_Super_Mod_Garage_Sounds"_J:
-		case "MissionFailedSounds"_J:
-		case "MP_CCTV_SOUNDSET"_J:
-		case "MP_LOBBY_SOUNDS"_J:
-		case "MP_MISSION_COUNTDOWN_SOUNDSET"_J:
-		case "Phone_SoundSet_Default"_J:
-		case "Phone_SoundSet_Glasses_Cam"_J:
-		case "Phone_SoundSet_Prologue"_J:
-		case "Phone_SoundSet_Franklin"_J:
-		case "Phone_SoundSet_Michael"_J:
-		case "Phone_SoundSet_Trevor"_J:
-		case "PLAYER_SWITCH_CUSTOM_SOUNDSET"_J:
-		case "RESPAWN_ONLINE_SOUNDSET"_J:
-		case "TATTOOIST_SOUNDS"_J:
-		case "WastedSounds"_J:
-		case "WEB_NAVIGATION_SOUNDS_PHONE"_J:
-		{
-			return true;
-		}
 		case "GTAO_Biker_Modes_Soundset"_J:
 		case "DLC_Biker_Sell_Postman_Sounds"_J:
 		{

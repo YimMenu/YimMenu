@@ -75,21 +75,6 @@
 
 namespace big
 {
-	constexpr uint32_t vehicle_parachutes[] = {
-	    "imp_prop_impexp_para_s"_J,
-	    "sr_prop_specraces_para_s_01"_J,
-	    "gr_prop_gr_para_s_01"_J,
-	};
-
-	inline bool is_valid_vehicle_parachute(rage::joaat_t hash)
-	{
-		for (auto& model : vehicle_parachutes)
-			if (model == hash)
-				return true;
-
-		return false;
-	}
-
 	inline void check_player_model(player_ptr player, uint32_t model)
 	{
 		if (!player)
@@ -1712,7 +1697,8 @@ namespace big
 				if (!parachute || !parachute->m_model_info)
 					break;
 
-				if (!is_valid_vehicle_parachute(parachute->m_model_info->m_hash))
+				static const std::unordered_set<uint32_t> vehicle_parachutes = {"imp_prop_impexp_para_s"_J, "sr_prop_specraces_para_s_01"_J, "gr_prop_gr_para_s_01"_J};
+				if (!vehicle_parachutes.contains(parachute->m_model_info->m_hash))
 				{
 					notify::crash_blocked(sender, "invalid vehicle parachute");
 					return true;
