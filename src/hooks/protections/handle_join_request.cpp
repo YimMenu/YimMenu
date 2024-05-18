@@ -1,6 +1,7 @@
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
-#include "services/friends/friends_service.cpp"
+#include "services/friends/friends_service.hpp"
+#include "services/notifications/notification.hpp"
 #include "services/player_database/player_database_service.hpp"
 
 #include <network/CJoinRequestContext.hpp>
@@ -16,6 +17,7 @@ namespace big
 		auto db_player   = g_player_database_service->get_player_by_rockstar_id(rockstar_id);
 		auto block_join  = db_player && db_player->block_join;
 		auto is_trusted  = db_player && db_player->is_trusted;
+		auto player_name = player_info->m_name;
 
 		auto send_response = [ctx](int block_join_reason = 1) {
 			CMsgJoinResponse response{};
@@ -26,22 +28,19 @@ namespace big
 		if (block_join)
 		{
 			send_response(db_player->block_join_reason);
-			g_notification_service.push("BLOCK_JOIN"_T.data(),
-			    std::vformat("BLOCK_JOIN_INFO"_T, std::make_format_args(player_info->m_name)));
+			g_notification_service.push("BLOCK_JOIN"_T.data(), std::vformat("BLOCK_JOIN_INFO"_T, std::make_format_args(player_name)));
 			return false;
 		}
 		else if (g.session.lock_session)
 		{
 			if ((is_friend && g.session.allow_friends_into_locked_session) || is_trusted)
 			{
-				g_notification_service.push_success("LOBBY_LOCK"_T.data(),
-				    std::vformat("LOBBY_LOCK_ALLOWED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
+				g_notification_service.push_success("LOBBY_LOCK"_T.data(), std::vformat("LOBBY_LOCK_ALLOWED"_T.data(), std::make_format_args(player_name)));
 			}
 			else
 			{
 				send_response();
-				g_notification_service.push_warning("LOBBY_LOCK"_T.data(),
-				    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
+				g_notification_service.push_warning("LOBBY_LOCK"_T.data(), std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(player_name)));
 				return false;
 			}
 		}
