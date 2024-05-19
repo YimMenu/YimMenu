@@ -18,7 +18,7 @@ namespace big
 			uint64_t host_token;
 			g_pointers->m_gta.m_generate_uuid(&host_token);
 
-			host_token = g.session.force_session_host ? (rand() % 10000) : host_token;
+			host_token = (g.session.force_session_host && !g_player_service->get_self()->is_host()) ? (rand() % 10000) : host_token;
 
 			*g_pointers->m_gta.m_host_token = host_token;
 
@@ -51,7 +51,7 @@ namespace big
 
 					if (g.spoofing.spoof_blip)
 					{
-						if (g.spoofing.blip_type == 0)// random
+						if (g.spoofing.blip_type == 0) // random
 							scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType = (eBlipType)(rand() % 90);
 						else
 							scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].PlayerBlip.PlayerVehicleBlipType =
