@@ -211,5 +211,5 @@ namespace big::functions
 
 	using can_create_vehicle = bool (*)();
 
-	using get_unk_weapon = void* (*) (CPed*);
+	using get_searchlight = void* (*) (CPed*);
 }

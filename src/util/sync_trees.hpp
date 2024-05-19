@@ -534,9 +534,6 @@ namespace big
 		{
 			for (int i = (int)eNetObjType::NET_OBJ_TYPE_AUTOMOBILE; i <= (int)eNetObjType::NET_OBJ_TYPE_TRAIN; i++)
 			{
-				if (i == (int)eNetObjType::NET_OBJ_TYPE_TRAILER)
-					continue;
-
 				rage::netSyncTree* tree = g_pointers->m_gta.m_get_sync_tree_for_type(*g_pointers->m_gta.m_network_object_mgr, i);
 
 				if (tree->m_child_node_count != finder.sync_trees_node_array_index_to_node_id[i].size())

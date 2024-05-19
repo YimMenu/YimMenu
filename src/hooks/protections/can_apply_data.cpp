@@ -22,6 +22,7 @@
 #include "netsync/nodes/ped/CPedGameStateDataNode.hpp"
 #include "netsync/nodes/ped/CPedHealthDataNode.hpp"
 #include "netsync/nodes/ped/CPedInventoryDataNode.hpp"
+#include "netsync/nodes/ped/CPedMovementGroupDataNode.hpp"
 #include "netsync/nodes/ped/CPedMovementDataNode.hpp"
 #include "netsync/nodes/ped/CPedOrientationDataNode.hpp"
 #include "netsync/nodes/ped/CPedScriptCreationDataNode.hpp"
@@ -112,9 +113,6 @@ namespace big
 
 	inline bool is_attachment_infinite(rage::netObject* object, uint16_t attached_to_net_id, int from_bone, int to_bone)
 	{
-		if (object == nullptr)
-			return false;
-
 		auto target = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attached_to_net_id, false);
 
 		while (target)
@@ -344,10 +342,7 @@ namespace big
 
 	void log_node(const sync_node_id& node_id, player_ptr sender, CProjectBaseSyncDataNode* node, rage::netObject* object)
 	{
-		if (object)
-			LOG(INFO) << sender->get_name() << ": " << node_id.name << ", " << object->m_object_id;
-		else
-			LOG(INFO) << sender->get_name() << ": " << node_id.name;
+		LOG(INFO) << sender->get_name() << ": " << node_id.name << ", " << object->m_object_id;
 
 		switch (node_id)
 		{
@@ -1097,10 +1092,22 @@ namespace big
 		return eNetObjType::NET_OBJ_TYPE_AUTOMOBILE;
 	}
 
-	bool is_crash_ped_task(eTaskTypeIndex type)
+	bool is_crash_ped_task(eTaskTypeIndex type, rage::netObject* object)
 	{
-		if (type == eTaskTypeIndex::CTaskUnalerted && g.m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER)
-			return true;
+		switch (type)
+		{
+		case eTaskTypeIndex::CTaskUnalerted: return g.m_syncing_object_type == eNetObjType::NET_OBJ_TYPE_PLAYER;
+		case eTaskTypeIndex::CTaskJump:
+		case eTaskTypeIndex::CTaskGun:
+		case eTaskTypeIndex::CTaskAimGunOnFoot:
+		case eTaskTypeIndex::CTaskAimAndThrowProjectile:
+		case eTaskTypeIndex::CTaskAimGun:
+		case eTaskTypeIndex::CTaskAimGunVehicleDriveBy:
+			if (auto ped = (CPed*)object->GetGameObject())
+				return ped->get_ped_type() == ePedType::PED_TYPE_ANIMAL;
+
+			break;
+		}
 
 		return false;
 	}
@@ -1254,7 +1261,7 @@ namespace big
 					return true;
 				}
 
-				if (attach_node->m_attached && object && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
+				if (attach_node->m_attached && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				{
 					if (auto net_obj =
 					        g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attach_node->m_attached_to, false))
@@ -1481,7 +1488,7 @@ namespace big
 			}
 			case sync_node_id("CVehicleProximityMigrationDataNode"):
 			{
-				if (object && g_local_player && g_local_player->m_net_object)
+				if (g_local_player && g_local_player->m_net_object)
 				{
 					const auto migration_node = (CVehicleProximityMigrationDataNode*)(node);
 
@@ -1611,7 +1618,7 @@ namespace big
 				{
 					if (task_node->m_task_bitset & (1 << i))
 					{
-						if (is_crash_ped_task((eTaskTypeIndex)task_node->m_tasks[i].m_task_type))
+						if (is_crash_ped_task((eTaskTypeIndex)task_node->m_tasks[i].m_task_type, object))
 						{
 							notify::crash_blocked(sender, "invalid ped task");
 							return true;
@@ -1656,6 +1663,48 @@ namespace big
 					notify::crash_blocked(sender, "invalid interior");
 					return true;
 				}
+			}
+			case sync_node_id("CPedMovementGroupDataNode"):
+			{
+				const auto movement_node = (CPedMovementGroupDataNode*)(node);
+
+				if ((eTaskTypeIndex)movement_node->m_movement_task_index == eTaskTypeIndex::CTaskMotionPed
+				    && movement_node->m_movement_task_stage == 13) // aiming
+				{
+					auto ped = (CPed*)object->GetGameObject();
+
+					if (ped && ped->get_ped_type() == ePedType::PED_TYPE_ANIMAL)
+					{
+						notify::crash_blocked(sender, "invalid ped task");
+						return true;
+					}
+				}
+
+				break;
+			}
+			case sync_node_id("CVehicleScriptGameStateDataNode"):
+			{
+				if (!*reinterpret_cast<bool*>(addr + 0x14A))
+					break;
+
+				int16_t parachute_net_id = *reinterpret_cast<int16_t*>(addr + 0x148);
+
+				auto parachute_obj = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, parachute_net_id, true);
+				if (!parachute_obj)
+					break;
+
+				auto parachute = parachute_obj->GetGameObject();
+				if (!parachute || !parachute->m_model_info)
+					break;
+
+				static const std::unordered_set<uint32_t> vehicle_parachutes = {"imp_prop_impexp_para_s"_J, "sr_prop_specraces_para_s_01"_J, "gr_prop_gr_para_s_01"_J};
+				if (!vehicle_parachutes.contains(parachute->m_model_info->m_hash))
+				{
+					notify::crash_blocked(sender, "invalid vehicle parachute");
+					return true;
+				}
+
+				break;
 			}
 			}
 		}

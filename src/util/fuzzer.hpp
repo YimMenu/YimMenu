@@ -1,36 +1,14 @@
 #pragma once
 #include "pointers.hpp"
 #include "sync_trees.hpp"
+#include "util/math.hpp"
 #include "util/model_info.hpp"
 #include "util/pools.hpp"
 
 #include <entities/CDynamicEntity.hpp>
-#include <random>
 
 namespace big::fuzzer
 {
-	// helpers
-
-	// [0, max_value)
-	inline int rand(int max_value)
-	{
-		std::random_device seed;
-		std::mt19937 gen{seed()};
-		std::uniform_int_distribution<int> dist{0, max_value - 1};
-
-		return dist(gen);
-	}
-
-	// [min_value, max_value]
-	inline int rand(int min_value, int max_value)
-	{
-		std::random_device seed;
-		std::mt19937 gen{seed()};
-		std::uniform_int_distribution<int> dist{min_value, max_value};
-
-		return dist(gen);
-	}
-
 	inline bool is_fuzzer_enabled()
 	{
 		return g.debug.fuzzer.active && g.debug.fuzzer.enabled && g.debug.fuzzer.thread_id == GetCurrentThreadId();
@@ -86,7 +64,7 @@ namespace big::fuzzer
 		else if (info && (info->m_model_type == eModelType::Ped || info->m_model_type == eModelType::OnlineOnlyPed))
 			std::erase(models, "player_zero"_J);
 
-		return models[rand(models.size())];
+		return models[math::rand(models.size())];
 	}
 
 	inline rage::joaat_t get_crash_model(rage::joaat_t original)
@@ -100,7 +78,7 @@ namespace big::fuzzer
 		else if (info && info->m_model_type == eModelType::Vehicle)
 			return "arbitergt"_J;
 		else
-			return rand(2) ? "urbanweeds01"_J : "slod_human"_J;
+			return math::rand(2) ? "urbanweeds01"_J : "slod_human"_J;
 	}
 
 	inline std::int16_t get_first_ped_id()
@@ -147,18 +125,18 @@ namespace big::fuzzer
 			return -1;
 
 		if (is_object_model(entity->m_model_info->m_hash))
-			return rand(2) ? get_first_ped_id() : get_first_veh_id();
+			return math::rand(2) ? get_first_ped_id() : get_first_veh_id();
 		else if (entity->m_model_info->m_model_type == eModelType::Ped || entity->m_model_info->m_model_type == eModelType::OnlineOnlyPed)
-			return rand(2) ? get_first_obj_id() : get_first_veh_id();
+			return math::rand(2) ? get_first_obj_id() : get_first_veh_id();
 		else if (entity->m_model_info->m_model_type == eModelType::Vehicle)
-			return rand(2) ? get_first_obj_id() : get_first_ped_id();
+			return math::rand(2) ? get_first_obj_id() : get_first_ped_id();
 
-		return rand(2) ? get_first_ped_id() : get_first_veh_id();
+		return math::rand(2) ? get_first_ped_id() : get_first_veh_id();
 	}
 
 	inline rage::fvector3 get_fuzz_vector()
 	{
-		if (rand(2) == 0)
+		if (math::rand(2) == 0)
 		{
 			return {10800.0f, 10800.0f, 10.0f}; // host crash coords
 		}
@@ -233,7 +211,7 @@ namespace big::fuzzer
 		if (!is_fuzzer_enabled())
 			return net_id;
 
-		int option = rand(0, 3);
+		int option = math::rand(0, 3);
 
 		switch (option)
 		{
@@ -269,7 +247,7 @@ namespace big::fuzzer
 
 		if (hash == 0 || is_model_hash(hash))
 		{
-			int option = rand(0, 4);
+			int option = math::rand(0, 4);
 
 			switch (option)
 			{
@@ -282,8 +260,8 @@ namespace big::fuzzer
 		}
 		else
 		{
-			if (rand(4))
-				hash = rand(0, UINT_MAX); // not much we can do here
+			if (math::rand(4))
+				hash = math::rand(0, UINT_MAX); // not much we can do here
 		}
 
 		return hash;
@@ -294,7 +272,7 @@ namespace big::fuzzer
 		if (!is_fuzzer_enabled())
 			return value;
 
-		if (rand(4) == 0)
+		if (math::rand(4) == 0)
 			return value; // flip bools
 		else
 			return true; // set to true
@@ -311,7 +289,7 @@ namespace big::fuzzer
 			return fuzz_potential_hash(bits);
 		else
 		{
-			if (rand(5 - (count == 1)) == 0)
+			if (math::rand(5 - (count == 1)) == 0)
 			{
 				if (count == 1)
 				{
@@ -319,8 +297,8 @@ namespace big::fuzzer
 				}
 				else
 				{
-					if (rand(2) == 0)
-						return rand(((int)pow(2, count))); // random
+					if (math::rand(2) == 0)
+						return math::rand(((int)pow(2, count))); // random
 					else
 						return ((int)pow(2, count)) - 1; // max possible value
 				}
@@ -334,7 +312,7 @@ namespace big::fuzzer
 	{
 		auto n = fuzz_bits(bits, count - 1);
 
-		if (rand(5) == 0)
+		if (math::rand(5) == 0)
 			n = -n;
 
 		return n;
@@ -348,7 +326,7 @@ namespace big::fuzzer
 		// well not much to do here I suppose
 
 		for (int i = 0; i < size; i++)
-			*(char*)((__int64)data + i) = rand(0, 255);
+			*(char*)((__int64)data + i) = math::rand(0, 255);
 	}
 
 	inline float fuzz_float(float orig, int size, float divisor, bool _signed)
@@ -358,9 +336,9 @@ namespace big::fuzzer
 		if (!is_fuzzer_enabled())
 			return orig;
 
-		if (rand(3) == 0)
+		if (math::rand(3) == 0)
 		{
-			int option = rand(0, 2);
+			int option = math::rand(0, 2);
 			switch (option)
 			{
 			case 0: return truncate_func(9999.9f, size, divisor);
@@ -376,7 +354,7 @@ namespace big::fuzzer
 	{
 		auto truncate_func = _signed_z ? &truncate_vector_signed_z : &truncate_vector;
 
-		if (rand(3) == 0)
+		if (math::rand(3) == 0)
 		{
 			return truncate_func(get_fuzz_vector(), size, divisor);
 		}
