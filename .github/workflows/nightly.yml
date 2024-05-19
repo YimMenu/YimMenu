@@ -50,9 +50,9 @@ jobs:
           echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
-  check_date:
+  check_recent_commit:
     runs-on: ubuntu-latest
-    name: Check latest commit
+    name: Check Recent Commit
     needs: build_nightly
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
@@ -60,18 +60,45 @@ jobs:
       - uses: actions/checkout@v3
 
       - id: should_run
-        continue-on-error: true
         name: Check if latest commit date is within the previous 24 hours
-        if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
+        run: |
+          if [ -z "$(git rev-list --after="24 hours" ${{ github.sha }})" ]; then
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
 
-  create_release:
+  recreate_release:
     runs-on: ubuntu-latest
-    name: Create Release
-    needs: [ check_date, build_nightly ]
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
+    name: Recreate Release
+    needs: [check_recent_commit, build_nightly]
+    if: ${{ needs.check_recent_commit.outputs.should_run != 'false' }}
     steps:
       - uses: actions/checkout@v3
+
+      - name: Delete Existing Release
+        id: delete_release
+        run: |
+          set -e
+          GITHUB_API_URL="https://api.github.com"
+          REPO=${{ github.repository }}
+          TAG="nightly"
+          AUTH_HEADER="Authorization: token ${{ secrets.GITHUB_TOKEN }}"
+
+          # Fetch the release ID by tag name
+          RELEASE_ID=$(curl -s -H "$AUTH_HEADER" "$GITHUB_API_URL/repos/$REPO/releases/tags/$TAG" | jq -r '.id')
+
+          # Check if release exists and delete it
+          if [ "$RELEASE_ID" != "null" ]; then
+            curl -s -X DELETE -H "$AUTH_HEADER" "$GITHUB_API_URL/repos/$REPO/releases/$RELEASE_ID"
+            echo "Deleted release with ID $RELEASE_ID"
+          else
+            echo "No existing release to delete"
+          fi
+
+          # Delete the tag
+          curl -s -X DELETE -H "$AUTH_HEADER" "$GITHUB_API_URL/repos/$REPO/git/refs/tags/$TAG" || true
+
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
@@ -83,11 +110,6 @@ jobs:
           sha256sum YimMenu.dll > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
-
-      - name: Run latest-tag
-        uses: EndBug/latest-tag@84c87607fcb948bcef069c9a27445e653113979f
-        with:
-          ref: nightly
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1
