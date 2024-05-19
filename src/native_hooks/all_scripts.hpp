@@ -64,65 +64,9 @@ namespace big
 
 			if (g.weapons.interior_weapon) // Filtering from the inside of Kosatka
 			{
-				switch (action)
-				{
-				// case ControllerInputs::INPUT_JUMP: TODO: add as separate feature
-				case ControllerInputs::INPUT_ATTACK:
-				case ControllerInputs::INPUT_AIM:
-				case ControllerInputs::INPUT_DUCK:
-				case ControllerInputs::INPUT_SELECT_WEAPON:
-				case ControllerInputs::INPUT_COVER:
-				case ControllerInputs::INPUT_TALK:
-				case ControllerInputs::INPUT_DETONATE:
-				case ControllerInputs::INPUT_WEAPON_SPECIAL:
-				case ControllerInputs::INPUT_WEAPON_SPECIAL_TWO:
-				case ControllerInputs::INPUT_VEH_AIM:
-				case ControllerInputs::INPUT_VEH_ATTACK:
-				case ControllerInputs::INPUT_VEH_ATTACK2:
-				case ControllerInputs::INPUT_VEH_HEADLIGHT:
-				case ControllerInputs::INPUT_VEH_NEXT_RADIO:
-				case ControllerInputs::INPUT_VEH_PREV_RADIO:
-				case ControllerInputs::INPUT_VEH_NEXT_RADIO_TRACK:
-				case ControllerInputs::INPUT_VEH_PREV_RADIO_TRACK:
-				case ControllerInputs::INPUT_VEH_RADIO_WHEEL:
-				case ControllerInputs::INPUT_VEH_PASSENGER_AIM:
-				case ControllerInputs::INPUT_VEH_PASSENGER_ATTACK:
-				case ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON:
-				case ControllerInputs::INPUT_VEH_SELECT_PREV_WEAPON:
-				case ControllerInputs::INPUT_VEH_ROOF:
-				case ControllerInputs::INPUT_VEH_JUMP:
-				case ControllerInputs::INPUT_VEH_FLY_ATTACK:
-				case ControllerInputs::INPUT_MELEE_ATTACK_LIGHT:
-				case ControllerInputs::INPUT_MELEE_ATTACK_HEAVY:
-				case ControllerInputs::INPUT_MELEE_ATTACK_ALTERNATE:
-				case ControllerInputs::INPUT_MELEE_BLOCK:
-				case ControllerInputs::INPUT_SELECT_WEAPON_UNARMED:
-				case ControllerInputs::INPUT_SELECT_WEAPON_MELEE:
-				case ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN:
-				case ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN:
-				case ControllerInputs::INPUT_SELECT_WEAPON_SMG:
-				case ControllerInputs::INPUT_SELECT_WEAPON_AUTO_RIFLE:
-				case ControllerInputs::INPUT_SELECT_WEAPON_SNIPER:
-				case ControllerInputs::INPUT_SELECT_WEAPON_HEAVY:
-				case ControllerInputs::INPUT_SELECT_WEAPON_SPECIAL:
-				case ControllerInputs::INPUT_ATTACK2:
-				case ControllerInputs::INPUT_MELEE_ATTACK1:
-				case ControllerInputs::INPUT_MELEE_ATTACK2:
-				case ControllerInputs::INPUT_VEH_GUN_LEFT:
-				case ControllerInputs::INPUT_VEH_GUN_RIGHT:
-				case ControllerInputs::INPUT_VEH_GUN_UP:
-				case ControllerInputs::INPUT_VEH_GUN_DOWN:
-				case ControllerInputs::INPUT_VEH_HYDRAULICS_CONTROL_TOGGLE:
-				case ControllerInputs::INPUT_VEH_MELEE_HOLD:
-				case ControllerInputs::INPUT_VEH_MELEE_LEFT:
-				case ControllerInputs::INPUT_VEH_MELEE_RIGHT:
-				case ControllerInputs::INPUT_VEH_CAR_JUMP:
-				case ControllerInputs::INPUT_VEH_ROCKET_BOOST:
-				case ControllerInputs::INPUT_VEH_FLY_BOOST:
-				case ControllerInputs::INPUT_VEH_PARACHUTE:
-				case ControllerInputs::INPUT_VEH_BIKE_WINGS:
-				case ControllerInputs::INPUT_VEH_TRANSFORM: return;
-				}
+				static const std::unordered_set<ControllerInputs> input_set = {ControllerInputs::INPUT_ATTACK, ControllerInputs::INPUT_AIM, ControllerInputs::INPUT_DUCK, ControllerInputs::INPUT_SELECT_WEAPON, ControllerInputs::INPUT_COVER, ControllerInputs::INPUT_TALK, ControllerInputs::INPUT_DETONATE, ControllerInputs::INPUT_WEAPON_SPECIAL, ControllerInputs::INPUT_WEAPON_SPECIAL_TWO, ControllerInputs::INPUT_VEH_AIM, ControllerInputs::INPUT_VEH_ATTACK, ControllerInputs::INPUT_VEH_ATTACK2, ControllerInputs::INPUT_VEH_HEADLIGHT, ControllerInputs::INPUT_VEH_NEXT_RADIO, ControllerInputs::INPUT_VEH_PREV_RADIO, ControllerInputs::INPUT_VEH_NEXT_RADIO_TRACK, ControllerInputs::INPUT_VEH_PREV_RADIO_TRACK, ControllerInputs::INPUT_VEH_RADIO_WHEEL, ControllerInputs::INPUT_VEH_PASSENGER_AIM, ControllerInputs::INPUT_VEH_PASSENGER_ATTACK, ControllerInputs::INPUT_VEH_SELECT_NEXT_WEAPON, ControllerInputs::INPUT_VEH_SELECT_PREV_WEAPON, ControllerInputs::INPUT_VEH_ROOF, ControllerInputs::INPUT_VEH_JUMP, ControllerInputs::INPUT_VEH_FLY_ATTACK, ControllerInputs::INPUT_MELEE_ATTACK_LIGHT, ControllerInputs::INPUT_MELEE_ATTACK_HEAVY, ControllerInputs::INPUT_MELEE_ATTACK_ALTERNATE, ControllerInputs::INPUT_MELEE_BLOCK, ControllerInputs::INPUT_SELECT_WEAPON_UNARMED, ControllerInputs::INPUT_SELECT_WEAPON_MELEE, ControllerInputs::INPUT_SELECT_WEAPON_HANDGUN, ControllerInputs::INPUT_SELECT_WEAPON_SHOTGUN, ControllerInputs::INPUT_SELECT_WEAPON_SMG, ControllerInputs::INPUT_SELECT_WEAPON_AUTO_RIFLE, ControllerInputs::INPUT_SELECT_WEAPON_SNIPER, ControllerInputs::INPUT_SELECT_WEAPON_HEAVY, ControllerInputs::INPUT_SELECT_WEAPON_SPECIAL, ControllerInputs::INPUT_ATTACK2, ControllerInputs::INPUT_MELEE_ATTACK1, ControllerInputs::INPUT_MELEE_ATTACK2, ControllerInputs::INPUT_VEH_GUN_LEFT, ControllerInputs::INPUT_VEH_GUN_RIGHT, ControllerInputs::INPUT_VEH_GUN_UP, ControllerInputs::INPUT_VEH_GUN_DOWN, ControllerInputs::INPUT_VEH_HYDRAULICS_CONTROL_TOGGLE, ControllerInputs::INPUT_VEH_MELEE_HOLD, ControllerInputs::INPUT_VEH_MELEE_LEFT, ControllerInputs::INPUT_VEH_MELEE_RIGHT, ControllerInputs::INPUT_VEH_CAR_JUMP, ControllerInputs::INPUT_VEH_ROCKET_BOOST, ControllerInputs::INPUT_VEH_FLY_BOOST, ControllerInputs::INPUT_VEH_PARACHUTE, ControllerInputs::INPUT_VEH_BIKE_WINGS, ControllerInputs::INPUT_VEH_TRANSFORM};
+				if (input_set.contains(action))
+					return;
 			}
 
 			PAD::DISABLE_CONTROL_ACTION(src->get_arg<int>(0), (int)action, src->get_arg<int>(2));
