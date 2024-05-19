@@ -81,7 +81,7 @@ namespace big
 			}
 
 			draw_list->AddText(name_pos, esp_color, name_str.c_str());
-			const bool inGod = ped_damage_bits & (uint32_t)eEntityProofs::GOD;
+			const bool in_god = ped_damage_bits & (uint32_t)eEntityProofs::GOD;
 			std::string mode_str = "";
 			if (g.esp.god)
 			{
