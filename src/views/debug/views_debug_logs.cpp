@@ -8,8 +8,8 @@ namespace big
 	{
 		if (ImGui::BeginTabItem("DEBUG_TABS_LOGS"_T.data()))
 		{
-			ImGui::Checkbox("DEBUG_LOG_METRICS"_T.data(), &g.debug.logs.metric_logs);
 			static const char* options[]{"OFF"_T.data(), "ALL"_T.data(), "FILTERS"_T.data()};
+			ImGui::Combo("DEBUG_LOG_METRICS"_T.data(), (int*)&g.debug.logs.metric_logs, options, IM_ARRAYSIZE(options));
 			ImGui::Combo("VIEW_DEBUG_LOGS_LOG_PACKETS"_T.data(), (int*)&g.debug.logs.packet_logs, options, IM_ARRAYSIZE(options));
 			ImGui::Checkbox("DEBUG_LOG_NATIVE_SCRIPT_HOOKS"_T.data(), &g.debug.logs.script_hook_logs);
 
