@@ -88,6 +88,7 @@ namespace big
 
 	native_hooks::native_hooks()
 	{
+		add_native_detour(NativeIndex::REPORT_CRIME, all_scripts::REPORT_CRIME);
 		add_native_detour(NativeIndex::IS_DLC_PRESENT, all_scripts::IS_DLC_PRESENT);
 		add_native_detour(NativeIndex::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT, all_scripts::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
 		add_native_detour(NativeIndex::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT, all_scripts::NETWORK_TRY_TO_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT);
