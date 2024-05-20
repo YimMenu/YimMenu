@@ -215,11 +215,13 @@ namespace big
 			{
 				auto plyr = g_player_service->get_by_id(g.m_sync_target_player);
 				if (plyr)
+				{
 					if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
 					{
 						g_pointers->m_gta.m_get_sector_data(ped->get_position(), &node->m_pos_x, &node->m_pos_y, &node->m_pos_z, nullptr);
-						node_updated       = true;
+						node_updated = true;
 					}
+				}
 			}
 			break;
 		}
@@ -232,12 +234,14 @@ namespace big
 			{
 				auto plyr = g_player_service->get_by_id(g.m_sync_target_player);
 				if (plyr)
-				if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
 				{
-					std::uint16_t _;
-					g_pointers->m_gta.m_get_sector_data(ped->get_position(), &_, &_, &_, &node->m_sector_pos);
-					node->m_is_standing_on_entity = false;
-					node_updated = true;
+					if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
+					{
+						std::uint16_t _;
+						g_pointers->m_gta.m_get_sector_data(ped->get_position(), &_, &_, &_, &node->m_sector_pos);
+						node->m_is_standing_on_entity = false;
+						node_updated                  = true;
+					}
 				}
 			}
 			break;
@@ -251,32 +255,34 @@ namespace big
 			{
 				auto plyr = g_player_service->get_by_id(g.m_sync_target_player);
 				if (plyr && (plyr->spam_killfeed || g.session.spam_killfeed))
-				if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
 				{
-					if (math::rand(2) != 0)
+					if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
 					{
-						// dead
-						auto rand_plyr = get_random_player();
-
-						if (rand_plyr)
+						if (math::rand(2) != 0)
 						{
-							node->m_weapon_damage_entity = rand_plyr->get_ped()->m_net_object->m_object_id;
+							// dead
+							auto rand_plyr = get_random_player();
+
+							if (rand_plyr)
+							{
+								node->m_weapon_damage_entity = rand_plyr->get_ped()->m_net_object->m_object_id;
+							}
+
+							node->m_weapon_damage_hash      = "WEAPON_EXPLOSION"_J;
+							node->m_has_max_health          = false;
+							node->m_hurt_started            = true;
+							node->m_health                  = 0;
+							node->m_weapon_damage_component = 5;
+						}
+						else
+						{
+							// alive
+							node->m_has_max_health = true;
+							node->m_health         = 100;
 						}
 
-						node->m_weapon_damage_hash = "WEAPON_EXPLOSION"_J;
-						node->m_has_max_health = false;
-						node->m_hurt_started = true;
-						node->m_health = 0;
-						node->m_weapon_damage_component = 5;
+						node_updated = true;
 					}
-					else
-					{
-						// alive
-						node->m_has_max_health = true;
-						node->m_health = 100;
-					}
-
-					node_updated = true;
 				}
 			}
 			break;
