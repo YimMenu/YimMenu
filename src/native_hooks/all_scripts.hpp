@@ -19,9 +19,7 @@ namespace big
 			const int wanted    = src->get_arg<int>(2);
 
 			if (player == self::id && g.self.never_wanted)
-			{
 				return;
-			}
 
 
 			PLAYER::REPORT_CRIME(player, crime, wanted);

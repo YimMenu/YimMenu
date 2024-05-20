@@ -45,8 +45,6 @@ namespace big
 #pragma pack(push, 1)
 	struct gta_pointers
 	{
-		memory::handle m_max_wanted_level;
-
 		PVOID m_world_model_spawn_bypass;
 
 		memory::handle m_blame_explode;
