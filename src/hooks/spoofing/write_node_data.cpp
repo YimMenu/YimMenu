@@ -3,6 +3,7 @@
 #include "util/sync_trees.hpp"
 #include "util/model_info.hpp"
 #include "util/globals.hpp"
+#include "util/math.hpp"
 
 #include "services/players/player_service.hpp"
 
@@ -40,7 +41,7 @@ namespace
 
 	static player_ptr get_random_player()
 	{
-		int players = rand() % (g_player_service->players().size() + 1);
+		int players = math::rand(g_player_service->players().size() + 1);
 
 		for (auto& player : g_player_service->players())
 			if (player.second->get_ped() && !players--)
@@ -252,7 +253,7 @@ namespace big
 				if (plyr && (plyr->spam_killfeed || g.session.spam_killfeed))
 				if (auto ped = plyr->get_ped(); ped && plyr->is_valid())
 				{
-					if (rand() % 2)
+					if (math::rand(2) != 0)
 					{
 						// dead
 						auto rand_plyr = get_random_player();
