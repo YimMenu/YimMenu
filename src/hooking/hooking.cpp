@@ -137,8 +137,6 @@ namespace big
 		detour_hook_helper::add<hooks::format_int>("FI", g_pointers->m_gta.m_format_int);
 
 		detour_hook_helper::add<hooks::searchlight_crash>("SLC", g_pointers->m_gta.m_searchlight_crash);
-
-		detour_hook_helper::add<hooks::write_physical_script_game_state_data_node>("WPSGSDN", g_pointers->m_gta.m_write_physical_script_game_state_data_node);
   
 		detour_hook_helper::add<hooks::write_node_data>("WND", g_pointers->m_gta.m_write_node_data);
 		detour_hook_helper::add<hooks::can_send_node_to_player>("CSNTP", g_pointers->m_gta.m_can_send_node_to_player);

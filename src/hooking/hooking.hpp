@@ -191,7 +191,10 @@ namespace big
 
 		static void format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas);
 
-		static void write_physical_script_game_state_data_node(__int64 iface, CPhysicalScriptGameStateDataNode* node);
+		static void write_node_data(void* data_node, rage::netObject* net_object, rage::datBitBuffer* buffer, void* log, bool update);
+		static bool can_send_node_to_player(void* node, rage::netObject* object, std::uint8_t player, int sync_type, int a5, int a6);
+		static bool write_node(rage::netSyncDataNode* node, int sync_type, int a3, rage::netObject* object, rage::datBitBuffer* buffer, int a6, void* log, std::uint8_t player, int* a9, int* a10);
+		static void searchlight_crash(void* a1, CPed* ped);
 	};
 
 	class minhook_keepalive
