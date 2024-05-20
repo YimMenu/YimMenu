@@ -11,9 +11,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check_recent_commit:
+    runs-on: ubuntu-latest
+    name: Check Recent Commit
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: should_run
+        name: Check if latest commit date is within the previous 24 hours
+        run: |
+          if [ -z "$(git rev-list --since="24 hours ago" --all)" ]; then
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
   build_nightly:
-    runs-on: [self-hosted, Windows]
+    runs-on: windows-latest
     name: Build Nightly
+    needs: check_recent_commit
+    if: needs.check_recent_commit.outputs.should_run == 'true'
     outputs:
       full_sha: ${{ steps.var.outputs.full_sha }}
       short_sha: ${{ steps.var.outputs.short_sha }}
@@ -50,29 +69,11 @@ jobs:
           echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
-  check_recent_commit:
-    runs-on: ubuntu-latest
-    name: Check Recent Commit
-    needs: build_nightly
-    outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - id: should_run
-        name: Check if latest commit date is within the previous 24 hours
-        run: |
-          if [ -z "$(git rev-list --after="24 hours" ${{ github.sha }})" ]; then
-            echo "should_run=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_run=true" >> $GITHUB_OUTPUT
-          fi
-
   recreate_release:
     runs-on: ubuntu-latest
     name: Recreate Release
-    needs: [check_recent_commit, build_nightly]
-    if: ${{ needs.check_recent_commit.outputs.should_run != 'false' }}
+    needs: build_nightly
+    if: needs.check_recent_commit.outputs.should_run == 'true'
     steps:
       - uses: actions/checkout@v3
 
