@@ -94,7 +94,7 @@ namespace big
 		{
 			struct logs
 			{
-				bool metric_logs{};
+				int metric_logs{};
 				int packet_logs{};
 
 				bool script_hook_logs{};
@@ -170,7 +170,9 @@ namespace big
 			pair out_of_allowed_range_sync_type{};
 			pair invalid_sync{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications, gta_thread_kill, gta_thread_start, network_player_mgr_init, network_player_mgr_shutdown, player_join, player_leave, send_net_info_to_lobby, transaction_rate_limit, mismatch_sync_type, out_of_allowed_range_sync_type, invalid_sync)
+			bool warn_metric = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications, gta_thread_kill, gta_thread_start, network_player_mgr_init, network_player_mgr_shutdown, player_join, player_leave, send_net_info_to_lobby, transaction_rate_limit, mismatch_sync_type, out_of_allowed_range_sync_type, invalid_sync, warn_metric)
 		} notifications{};
 
 		struct reactions
