@@ -212,4 +212,6 @@ namespace big::functions
 	using can_create_vehicle = bool (*)();
 
 	using get_searchlight = void* (*) (CPed*);
+
+	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
 }

@@ -378,6 +378,11 @@ namespace big
 		GenericPool** m_vehicle_allocator; // this is not a normal pool
 		
 		PVOID m_write_physical_script_game_state_data_node;
+
+		PVOID m_write_node_data;
+		PVOID m_can_send_node_to_player;
+		PVOID m_write_node;
+		functions::get_sector_data m_get_sector_data;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

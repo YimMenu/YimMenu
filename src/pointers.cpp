@@ -1785,6 +1785,42 @@ namespace big
             {
                 g_pointers->m_gta.m_write_physical_script_game_state_data_node = ptr.as<PVOID>();
             }
+        },
+        // Write Node Data
+        {
+            "WND",
+            "48 8B 89 A8 00 00 00 4C 8B 11 49 FF 62 10",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_node_data = ptr.as<PVOID>();
+            }
+        },
+        // Can Send Node To Player
+        {
+            "CSNTP",
+            "44 8B C3 FF 90 B0 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_send_node_to_player = ptr.sub(0x2E).as<PVOID>();
+            }
+        },
+        // Write Node
+        {
+            "WN",
+            "49 89 43 C8 E8 E2 FB 50 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_node = ptr.sub(0x49).as<PVOID>();
+            }
+        },
+        // Get Sector Data
+        {
+            "GSD",
+            "40 53 48 83 EC 20 F3 0F 10 59 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_sector_data = ptr.as<functions::get_sector_data>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
