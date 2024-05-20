@@ -104,7 +104,6 @@ namespace big
 		static void write_player_gamer_data_node(rage::netObject* player, CPlayerGamerDataNode* node);
 		static void write_player_game_state_data_node(rage::netObject* player, CPlayerGameStateDataNode* node);
 
-		static void invalid_mods_crash_detour(int64_t a1, int64_t a2, int a3, char a4);
 		static void invalid_decal(uintptr_t a1, int a2);
 		static int task_parachute_object(uint64_t _this, int a2, int a3);
 		static int task_ambient_clips(uint64_t _this, int a2, int a3);
@@ -164,6 +163,7 @@ namespace big
 		static int netfilter_handle_message(__int64 filter, char* message, int flags);
 
 		static void log_error_message_box(rage::joaat_t joaated_error_code, bool a2);
+		static void log_error_message_box_2(rage::joaat_t joaated_error_code);
 
 		static bool send_non_physical_player_data(CNetGamePlayer* player, __int64 message, int flags, void* a4, CNetGamePlayer* a5);
 

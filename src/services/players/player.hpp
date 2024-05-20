@@ -70,6 +70,7 @@ namespace big
 		rate_limiter m_play_sound_rate_limit_tse{5s, 2};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
+		rate_limiter m_radio_station_change_rate_limit{1s, 3};
 
 		bool block_radio_requests = false;
 

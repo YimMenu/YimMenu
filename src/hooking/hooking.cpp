@@ -65,7 +65,6 @@ namespace big
 		detour_hook_helper::add<hooks::get_network_event_data>("GNED", g_pointers->m_gta.m_get_network_event_data);
 		detour_hook_helper::add<hooks::write_player_gamer_data_node>("WPGDN", g_pointers->m_gta.m_write_player_gamer_data_node);
 
-		detour_hook_helper::add<hooks::invalid_mods_crash_detour>("IMCD", g_pointers->m_gta.m_invalid_mods_crash_detour);
 		detour_hook_helper::add<hooks::invalid_decal>("IDC", g_pointers->m_gta.m_invalid_decal_crash);
 		detour_hook_helper::add<hooks::task_parachute_object>("TPO", g_pointers->m_gta.m_task_parachute_object);
 		detour_hook_helper::add<hooks::task_ambient_clips>("TAC", g_pointers->m_gta.m_task_ambient_clips);
@@ -125,6 +124,7 @@ namespace big
 		detour_hook_helper::add<hooks::netfilter_handle_message>("NHM", g_pointers->m_gta.m_netfilter_handle_message);
 
 		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
+		detour_hook_helper::add<hooks::log_error_message_box_2>("E0MBH2", g_pointers->m_gta.m_error_message_box_2);
 
 		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
 
