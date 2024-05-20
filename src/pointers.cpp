@@ -294,15 +294,6 @@ namespace big
                 g_pointers->m_gta.m_write_bitbuf_array = ptr.add(1).rip().as<decltype(gta_pointers::m_write_bitbuf_array)>();
             }
         },
-        // Write Player Game State Data Node
-        {
-            "WPGSDN",
-            "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -382,15 +373,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_give_pickup_rewards = ptr.sub(0x28).as<decltype(gta_pointers::m_give_pickup_rewards)>();
-            }
-        },
-        // Write Player Gamer Data Node
-        {
-            "WPGDN",
-            "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_gamer_data_node = ptr.as<PVOID>();
             }
         },
         // Receive Net Message
@@ -1067,15 +1049,6 @@ namespace big
                 g_pointers->m_gta.m_receive_pickup = ptr.as<PVOID>();
             }
         },
-        // Write Player Camera Data Node
-        {
-            "WPCDN",
-            "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_camera_data_node = ptr.as<PVOID>();
-            }
-        },
         // Send Player Card Stats
         {
             "SPCS",
@@ -1101,24 +1074,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_stats = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Creation Data Node
-        {
-            "WPCDN",
-            "48 83 EC 38 48 8B 81 F0",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_creation_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Appearance Data Node
-        {
-            "WPADN",
-            "48 8B C4 48 89 50 10 48 89 48 08 53",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_appearance_data_node = ptr.as<PVOID>();
             }
         },
         // Enumerate Audio Devices
@@ -1775,15 +1730,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_vehicle_allocator = ptr.add(3).rip().as<GenericPool**>();
-            }
-        },
-        // Write Physical Script Game State Data Node
-        {
-            "WPSGSDN",
-            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 20 4C 8D B1 D0 FE",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_physical_script_game_state_data_node = ptr.as<PVOID>();
             }
         },
         // Write Node Data
