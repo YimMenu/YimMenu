@@ -62,6 +62,7 @@ namespace big
 			int i = 0;
 			for (auto result = node->get_child_node("Results")->m_child; result; result = result->m_sibling)
 			{
+				LOG(INFO) << result->get_child_node("Attributes")->m_value;
 				const auto& values = split(result->get_child_node("Attributes")->m_value, ',');
 				g_matchmaking_service->get_found_sessions()[i].attributes.discriminator = std::stoi(values[2]);
 				g_matchmaking_service->get_found_sessions()[i].attributes.player_count  = std::stoi(values[4]);

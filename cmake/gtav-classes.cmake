@@ -2,8 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     gtav_classes
-    GIT_REPOSITORY https://github.com/Yimura/GTAV-Classes.git
-    GIT_TAG        46c1c63396cf40b206b9f5dd612f293809eefcd1
+    GIT_REPOSITORY https://github.com/maybegreat48/GTAV-Classes.git
+    GIT_TAG        7620f104072a8c13a54587c0bbadedc22d9c870b
     GIT_PROGRESS TRUE
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""

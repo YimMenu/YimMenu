@@ -234,8 +234,6 @@ namespace big
 
 		PVOID m_http_start_request;
 
-		PVOID m_send_session_matchmaking_attributes;
-
 		PVOID m_serialize_take_off_ped_variation_task;
 		PVOID m_serialize_parachute_task;
 
@@ -376,6 +374,18 @@ namespace big
 		functions::get_searchlight m_get_searchlight;
 
 		GenericPool** m_vehicle_allocator; // this is not a normal pool
+
+		PVOID m_write_node_data;
+		PVOID m_can_send_node_to_player;
+		PVOID m_write_node;
+		functions::get_sector_data m_get_sector_data;
+
+		PVOID m_advertise_session;
+		PVOID m_update_session_advertisement;
+		PVOID m_unadvertise_session;
+		PVOID m_send_session_detail_msg;
+
+		PVOID m_session_request_patch;
 		
 		PVOID m_write_physical_script_game_state_data_node;
 	};
