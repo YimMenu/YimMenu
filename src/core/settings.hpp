@@ -68,6 +68,7 @@ namespace big
 		int player_count = 0;
 
 		CNetGamePlayer* m_syncing_player  = nullptr;
+		std::uint8_t m_sync_target_player  = -1;
 		eNetObjType m_syncing_object_type = (eNetObjType)-1;
 
 		int m_remote_controller_vehicle = -1;
@@ -447,6 +448,8 @@ namespace big
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
 			bool vehicle_fix_all  = false;
+			bool harass_players   = false;
+			bool spam_killfeed    = false;
 
 			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;

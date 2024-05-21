@@ -115,6 +115,12 @@ namespace big
 			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3, p4);
 		}
 
+		void NETWORK_CONCEAL_PLAYER(rage::scrNativeCallContext* ctx)
+		{
+			if (!g.session.harass_players)
+				NETWORK::NETWORK_CONCEAL_PLAYER(ctx->get_arg<Player>(0), ctx->get_arg<int>(1), ctx->get_arg<int>(2));
+		}
+
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);
