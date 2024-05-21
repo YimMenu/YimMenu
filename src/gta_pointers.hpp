@@ -375,11 +375,6 @@ namespace big
 
 		GenericPool** m_vehicle_allocator; // this is not a normal pool
 
-		PVOID m_write_node_data;
-		PVOID m_can_send_node_to_player;
-		PVOID m_write_node;
-		functions::get_sector_data m_get_sector_data;
-
 		PVOID m_advertise_session;
 		PVOID m_update_session_advertisement;
 		PVOID m_unadvertise_session;
