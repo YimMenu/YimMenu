@@ -268,10 +268,18 @@ namespace big
 		else
 		{
 			if (g.spoofing.multiplex_session)
+			{
 				for (auto& [_, children] : m_multiplexed_sessions)
+				{
 					for (auto& session : children)
+					{
 						if (session.m_data2 == id->m_data2 && session.m_data3 == id->m_data3)
+						{
 							return true; // prevent auto cleanup
+						}
+					}
+				}
+			}
 		}
 
 		return false;
