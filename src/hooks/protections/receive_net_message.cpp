@@ -247,7 +247,7 @@ namespace big
 					if (unk_player_radio_requests.exceeded_last_process())
 					{
 						// Make a translation for this new OOM kick protection
-						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK"_T.data());
+						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK_UNK"_T.data());
 					}
 					return true;
 				}
