@@ -87,6 +87,7 @@ namespace big
 		functions::handle_to_ptr m_handle_to_ptr;
 		rage::scrNativeRegistrationTable* m_native_registration_table;
 		functions::get_native_handler m_get_native_handler;
+		functions::fix_vectors m_fix_vectors;
 
 		rage::atArray<GtaThread*>* m_script_threads;
 		rage::scrProgramTable* m_script_program_table;

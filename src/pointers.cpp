@@ -104,6 +104,15 @@ namespace big
                 g_pointers->m_gta.m_get_native_handler        = ptr.add(12).rip().as<functions::get_native_handler>();
             }
         },
+        // Fix Vectors
+        {
+            "FV",
+            "83 79 18 00 48 8B D1 74 4A FF 4A 18 48 63 4A 18 48 8D 41 04 48 8B 4C CA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_fix_vectors = ptr.as<functions::fix_vectors>();
+            }
+        },
         // Script Threads
         {
             "ST",
