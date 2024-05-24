@@ -436,6 +436,7 @@ namespace big
 			bool block_jobs           = false;
 			bool block_muggers        = false;
 			bool block_ceo_raids      = false;
+			bool block_ceo_creation   = false;
 
 			int send_to_apartment_idx = 1;
 			int send_to_warehouse_idx = 1;
@@ -468,7 +469,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
 			} chat_translator{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator)
 		} session{};
 
 		struct settings
@@ -709,10 +710,13 @@ namespace big
 			bool spoof_session_player_count     = false;
 			int session_player_count            = 25;
 			int spoof_session_bad_sport_status  = 0;
+			bool multiplex_session              = false;
+			int multiplex_count                 = 2;
+			bool increase_player_limit          = false;
 
 			bool voice_chat_audio = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, voice_chat_audio)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, multiplex_session, multiplex_count, increase_player_limit, voice_chat_audio)
 		} spoofing{};
 
 		struct vehicle

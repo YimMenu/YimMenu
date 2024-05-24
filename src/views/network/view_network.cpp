@@ -603,6 +603,8 @@ namespace big
 		components::script_patch_checkbox("BLOCK_MUGGERS"_T, &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 
 		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T, &g.session.block_ceo_raids, "BLOCK_CEO_RAIDS_DESC"_T);
+		ImGui::SameLine();
+		components::command_checkbox<"blockceos">();
 
 		ImGui::EndGroup();
 	}

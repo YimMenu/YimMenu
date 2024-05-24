@@ -39,6 +39,7 @@ class GtaThread;
 class CNetworkPlayerMgr;
 class CNetworkObjectMgr;
 class CPhysicalScriptGameStateDataNode;
+class MatchmakingId;
 
 enum class eAckCode : uint32_t;
 
@@ -58,6 +59,7 @@ namespace rage
 	class json_serializer;
 	class netGameEvent;
 	class netSyncDataNode;
+	class rlSessionDetailMsg;
 }
 
 namespace big
@@ -124,8 +126,6 @@ namespace big
 		static bool start_matchmaking_find_sessions(int profile_index, int available_slots, NetworkGameFilterMatchmakingComponent* filter, unsigned int max_sessions, rage::rlSessionInfo* results, int* num_sessions_found, rage::rlTaskStatus* status);
 
 		static unsigned int broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent);
-
-		static bool send_session_matchmaking_attributes(void* a1, rage::rlSessionInfo* info, uint64_t session_id, bool use_session_id, MatchmakingAttributes* attributes);
 
 		static void serialize_take_off_ped_variation_task(ClonedTakeOffPedVariationInfo* info, rage::CSyncDataBase* serializer);
 		static void serialize_parachute_task(__int64 info, rage::CSyncDataBase* serializer);
@@ -195,6 +195,11 @@ namespace big
 		static bool can_send_node_to_player(void* node, rage::netObject* object, std::uint8_t player, int sync_type, int a5, int a6);
 		static bool write_node(rage::netSyncDataNode* node, int sync_type, int a3, rage::netObject* object, rage::datBitBuffer* buffer, int a6, void* log, std::uint8_t player, int* a9, int* a10);
 		static void searchlight_crash(void* a1, CPed* ped);
+
+		static bool advertise_session(int profile_index, int num_slots, int available_slots, MatchmakingAttributes* data, std::uint64_t session_id, rage::rlSessionInfo* info, MatchmakingId* out_id, rage::rlTaskStatus* status);
+		static bool update_session_advertisement(int profile_index, MatchmakingId* id, int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* data, rage::rlTaskStatus* status);
+		static bool unadvertise_session(int profile_index, MatchmakingId* id, rage::rlTaskStatus* status);
+		static void send_session_detail_msg(rage::netConnectionManager* mgr, rage::netConnection::InFrame* request_frame, rage::rlSessionDetailMsg* msg);
 	};
 
 	class minhook_keepalive

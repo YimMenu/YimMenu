@@ -27,7 +27,7 @@ namespace big
             "48 83 EC 28 83 3D ? ? ? ? ? 75 10",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
+                g_pointers->m_gta.m_region_code = ptr.add(16).rip().as<uint32_t*>();
             }
         },
         // Ocean Quads
@@ -804,15 +804,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_broadcast_net_array = ptr.as<PVOID>();
-            }
-        },
-        // Send Session Matchmaking Attributes
-        {
-            "SSMA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC D0 00 00 00 49 8B",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_send_session_matchmaking_attributes = ptr.as<PVOID>();
             }
         },
         // Serialize Take Off Ped Variation Task
@@ -1775,6 +1766,51 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_get_sector_data = ptr.as<functions::get_sector_data>();
+            }
+        },
+        // Advertise Session
+        {
+            "AS",
+            "F6 D8 1B C9 83 C1 05 EB 43",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_advertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Update Session Advertisement
+        {
+            "USA",
+            "84 C0 74 0A 44 89 43 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_session_advertisement = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Unadvertise Session
+        {
+            "US",
+            "EB 21 B9 01 00 00 00 87 4B 28",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_unadvertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Send Session Detail Msg
+        {
+            "SSDM",
+            "4C 8D 85 F0 01 00 00 49 8B D5", // unstable
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_session_detail_msg = ptr.add(0xE).rip().as<PVOID>();
+            }
+        },
+        // Session Request Patch
+        {
+            "SRP",
+            "48 8B 9D 60 01 00 00 E9 FF 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end
