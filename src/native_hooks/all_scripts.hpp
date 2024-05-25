@@ -12,18 +12,6 @@ namespace big
 {
 	namespace all_scripts
 	{
-		void REPORT_CRIME(rage::scrNativeCallContext* src)
-		{
-			const Player player = src->get_arg<Player>(0);
-			const int crime     = src->get_arg<int>(1);
-			const int wanted    = src->get_arg<int>(2);
-
-			if (player == self::id && g.self.never_wanted)
-				return;
-
-			PLAYER::REPORT_CRIME(player, crime, wanted);
-		}
-
 		void IS_DLC_PRESENT(rage::scrNativeCallContext* src)
 		{
 			const auto hash = src->get_arg<rage::joaat_t>(0);
@@ -125,6 +113,18 @@ namespace big
 				return;
 
 			PED::APPLY_DAMAGE_TO_PED(ped, damage, damage_armor_first, p3, p4);
+		}
+
+		void REPORT_CRIME(rage::scrNativeCallContext* src)
+		{
+			Player player = src->get_arg<Player>(0);
+			int crime     = src->get_arg<int>(1);
+			int points    = src->get_arg<int>(2);
+
+			if (g.self.never_wanted && player == self::id)
+				return;
+
+			PLAYER::REPORT_CRIME(player, crime, points);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)

@@ -39,7 +39,7 @@ namespace big
 			// Disable never wanted if the script needs to force-modify the wanted level in heists
 			if (auto script = gta_util::find_script_thread("fm_mission_controller"_J))
 			{
-				if (!misc::has_bit_set(script_local(script, scr_locals::fm_mission_controller::mission_controller_wanted_state_flags).as<PINT>(), 6))
+				if (!misc::has_bit_set(script_local(script, scr_locals::fm_mission_controller::mission_controller_wanted_state_flags).as<PINT>(), 7))
 					return;
 			}
 

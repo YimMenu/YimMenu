@@ -210,7 +210,6 @@ namespace big
 
 		ImGui::SeparatorText("WANTED_LEVEL"_T.data());
 
-
 		components::command_checkbox<"neverwanted">();
 
 		// Only show all the other stuff like clear wanted, force wanted, and the slider if we don't have never_wanted enabled, since never_wanted overrides all of that
