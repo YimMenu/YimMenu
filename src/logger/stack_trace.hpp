@@ -20,7 +20,7 @@ namespace big
 		struct module_info
 		{
 			module_info(std::filesystem::path path, void* base) :
-			    m_path(path),
+			    m_name(path.filename().string()),
 			    m_base(reinterpret_cast<uintptr_t>(base))
 			{
 				const auto dos_header = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
@@ -29,7 +29,7 @@ namespace big
 				m_size = nt_header->OptionalHeader.SizeOfCode;
 			}
 
-			std::filesystem::path m_path;
+			std::string m_name;
 			uintptr_t m_base;
 			size_t m_size;
 		};

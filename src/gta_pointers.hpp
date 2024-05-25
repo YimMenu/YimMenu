@@ -110,7 +110,6 @@ namespace big
 		PVOID m_native_return;
 		PVOID m_ctext_file_ptr;
 		PVOID m_get_label_text;
-		functions::write_player_game_state_data_node m_write_player_game_state_data_node;
 
 		ChatData** m_chat_data;
 		ScInfo* m_sc_info;
@@ -128,8 +127,6 @@ namespace big
 		PVOID m_network_player_mgr_shutdown;
 
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
-
-		PVOID m_write_player_gamer_data_node;
 
 		functions::trigger_script_event m_trigger_script_event;
 
@@ -188,7 +185,6 @@ namespace big
 		functions::fipackfile_unmount m_fipackfile_unmount;
 		functions::fipackfile_close_archive m_fipackfile_close_archive;
 
-		PVOID m_invalid_mods_crash_detour;
 		PVOID m_invalid_decal_crash;
 		PVOID m_task_parachute_object;
 		PVOID m_task_ambient_clips;
@@ -236,8 +232,6 @@ namespace big
 
 		PVOID m_http_start_request;
 
-		PVOID m_send_session_matchmaking_attributes;
-
 		PVOID m_serialize_take_off_ped_variation_task;
 		PVOID m_serialize_parachute_task;
 
@@ -264,15 +258,10 @@ namespace big
 
 		PVOID m_receive_pickup;
 
-		PVOID m_write_player_camera_data_node;
-
 		PVOID m_send_player_card_stats;
 		bool* m_force_player_card_refresh;
 
 		PVOID m_serialize_stats;
-
-		PVOID m_write_player_creation_data_node;
-		PVOID m_write_player_appearance_data_node;
 
 		PVOID m_enumerate_audio_devices;
 		PVOID m_direct_sound_capture_create;
@@ -306,6 +295,7 @@ namespace big
 		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
 
 		PVOID m_error_message_box;
+		PVOID m_error_message_box_2;
 
 		functions::get_title_caption_error_message_box m_get_title_caption_error_message_box;
 
@@ -374,11 +364,21 @@ namespace big
 		PVOID m_format_int;
     
 		PVOID m_searchlight_crash;
-		functions::get_unk_weapon m_get_unk_weapon;
+		functions::get_searchlight m_get_searchlight;
 
-		GenericPool** m_clone_create_pool; // this is not a normal pool
-		
-		PVOID m_write_physical_script_game_state_data_node;
+		GenericPool** m_vehicle_allocator; // this is not a normal pool
+
+		PVOID m_write_node_data;
+		PVOID m_can_send_node_to_player;
+		PVOID m_write_node;
+		functions::get_sector_data m_get_sector_data;
+
+		PVOID m_advertise_session;
+		PVOID m_update_session_advertisement;
+		PVOID m_unadvertise_session;
+		PVOID m_send_session_detail_msg;
+
+		PVOID m_session_request_patch;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

@@ -35,9 +35,9 @@ namespace big
 
 		void SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(rage::scrNativeCallContext* src)
 		{
+			auto arg0 = src->get_arg<int>(0);
 			if (g.window.gui.format_money)
 			{
-				auto arg0         = src->get_arg<int>(0);
 				Hash casino_chips = self::char_index ? "MP1_CASINO_CHIPS"_J : "MP0_CASINO_CHIPS"_J;
 				int player_chips;
 
@@ -49,7 +49,7 @@ namespace big
 				}
 			}
 
-			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(src->get_arg<int>(0));
+			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(arg0);
 		}
 	}
 }

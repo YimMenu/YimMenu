@@ -156,5 +156,15 @@ namespace big
 		ImGui::RadioButton("VIEW_SPOOFING_SPORT_GOOD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 1);
 		ImGui::SameLine();
 		ImGui::RadioButton("VIEW_SPOOFING_SPORT_BAD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 2);
+
+		ImGui::Checkbox("MULTIPLEX_SESSION"_T.data(), &g.spoofing.multiplex_session);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("MULTIPLEX_SESSION_DESC"_T.data());
+		if (g.spoofing.multiplex_session)
+		{
+			ImGui::SameLine();
+			ImGui::SliderInt("###multiplex_cnt", &g.spoofing.multiplex_count, 2, 5);
+		}
+		components::command_checkbox<"32players">();
 	}
 }
