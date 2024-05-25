@@ -85,7 +85,7 @@ namespace big
 			std::string mode_str = "";
 			if (g.esp.god)
 			{
-				if (inGod)
+				if (in_god)
 				{
 					mode_str = "ESP_GOD"_T.data();
 				}
@@ -119,7 +119,7 @@ namespace big
 					mode_str.c_str());
 			}
 
-			if (!inGod)
+			if (!in_god)
 			{
 				if (g.esp.health)
 				{
