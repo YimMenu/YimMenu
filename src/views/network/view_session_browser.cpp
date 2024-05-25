@@ -41,10 +41,11 @@ namespace big
 
 					if (ImGui::IsItemHovered())
 					{
-						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
+						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {:X}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
 							"REGION"_T, regions[session.attributes.region].name,
 						    "LANGUAGE"_T, languages[session.attributes.language].name,
-						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id);
+						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id,
+						    "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator);
 						ImGui::SetTooltip(tool_tip.c_str());
 					}
 				}

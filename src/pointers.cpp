@@ -27,7 +27,7 @@ namespace big
             "48 83 EC 28 83 3D ? ? ? ? ? 75 10",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
+                g_pointers->m_gta.m_region_code = ptr.add(16).rip().as<uint32_t*>();
             }
         },
         // Ocean Quads
@@ -102,6 +102,15 @@ namespace big
                 g_pointers->m_gta.m_init_native_tables        = ptr.sub(37).as<PVOID>();
                 g_pointers->m_gta.m_native_registration_table = ptr.add(3).rip().as<rage::scrNativeRegistrationTable*>();
                 g_pointers->m_gta.m_get_native_handler        = ptr.add(12).rip().as<functions::get_native_handler>();
+            }
+        },
+        // Fix Vectors
+        {
+            "FV",
+            "83 79 18 00 48 8B D1 74 4A FF 4A 18 48 63 4A 18 48 8D 41 04 48 8B 4C CA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_fix_vectors = ptr.as<functions::fix_vectors>();
             }
         },
         // Script Threads
@@ -294,15 +303,6 @@ namespace big
                 g_pointers->m_gta.m_write_bitbuf_array = ptr.add(1).rip().as<decltype(gta_pointers::m_write_bitbuf_array)>();
             }
         },
-        // Write Player Game State Data Node
-        {
-            "WPGSDN",
-            "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -382,15 +382,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_give_pickup_rewards = ptr.sub(0x28).as<decltype(gta_pointers::m_give_pickup_rewards)>();
-            }
-        },
-        // Write Player Gamer Data Node
-        {
-            "WPGDN",
-            "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_gamer_data_node = ptr.as<PVOID>();
             }
         },
         // Receive Net Message
@@ -815,15 +806,6 @@ namespace big
                 g_pointers->m_gta.m_broadcast_net_array = ptr.as<PVOID>();
             }
         },
-        // Send Session Matchmaking Attributes
-        {
-            "SSMA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC D0 00 00 00 49 8B",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_send_session_matchmaking_attributes = ptr.as<PVOID>();
-            }
-        },
         // Serialize Take Off Ped Variation Task
         {
             "STOPVT",
@@ -1067,15 +1049,6 @@ namespace big
                 g_pointers->m_gta.m_receive_pickup = ptr.as<PVOID>();
             }
         },
-        // Write Player Camera Data Node
-        {
-            "WPCDN",
-            "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_camera_data_node = ptr.as<PVOID>();
-            }
-        },
         // Send Player Card Stats
         {
             "SPCS",
@@ -1101,24 +1074,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_stats = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Creation Data Node
-        {
-            "WPCDN",
-            "48 83 EC 38 48 8B 81 F0",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_creation_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Appearance Data Node
-        {
-            "WPADN",
-            "48 8B C4 48 89 50 10 48 89 48 08 53",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_appearance_data_node = ptr.as<PVOID>();
             }
         },
         // Enumerate Audio Devices
@@ -1768,13 +1723,85 @@ namespace big
                 g_pointers->m_gta.m_vehicle_allocator = ptr.add(3).rip().as<GenericPool**>();
             }
         },
-        // Write Physical Script Game State Data Node
+        // Write Node Data
         {
-            "WPSGSDN",
-            "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 20 4C 8D B1 D0 FE",
+            "WND",
+            "48 8B 89 A8 00 00 00 4C 8B 11 49 FF 62 10",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_write_physical_script_game_state_data_node = ptr.as<PVOID>();
+                g_pointers->m_gta.m_write_node_data = ptr.as<PVOID>();
+            }
+        },
+        // Can Send Node To Player
+        {
+            "CSNTP",
+            "44 8B C3 FF 90 B0 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_send_node_to_player = ptr.sub(0x2E).as<PVOID>();
+            }
+        },
+        // Write Node
+        {
+            "WN",
+            "49 89 43 C8 E8 E2 FB 50 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_node = ptr.sub(0x49).as<PVOID>();
+            }
+        },
+        // Get Sector Data
+        {
+            "GSD",
+            "40 53 48 83 EC 20 F3 0F 10 59 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_sector_data = ptr.as<functions::get_sector_data>();
+            }
+        },
+        // Advertise Session
+        {
+            "AS",
+            "F6 D8 1B C9 83 C1 05 EB 43",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_advertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Update Session Advertisement
+        {
+            "USA",
+            "84 C0 74 0A 44 89 43 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_session_advertisement = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Unadvertise Session
+        {
+            "US",
+            "EB 21 B9 01 00 00 00 87 4B 28",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_unadvertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Send Session Detail Msg
+        {
+            "SSDM",
+            "4C 8D 85 F0 01 00 00 49 8B D5", // unstable
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_session_detail_msg = ptr.add(0xE).rip().as<PVOID>();
+            }
+        },
+        // Session Request Patch
+        {
+            "SRP",
+            "48 8B 9D 60 01 00 00 E9 FF 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

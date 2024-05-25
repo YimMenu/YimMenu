@@ -308,6 +308,8 @@ namespace big
 			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.session.never_wanted_all);
 			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g.session.semi_godmode_all);
 			ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g.session.vehicle_fix_all);
+			components::command_checkbox<"harass">();
+			ImGui::Checkbox("SPAM_KILLFEED"_T.data(), &g.session.spam_killfeed);
 			ImGui::Checkbox("EXPLOSION_KARMA"_T.data(), &g.session.explosion_karma);
 			ImGui::Checkbox("DAMAGE_KARMA"_T.data(), &g.session.damage_karma);
 			ImGui::Checkbox("DISABLE_PEDS"_T.data(), &g.session.disable_peds);
@@ -601,6 +603,8 @@ namespace big
 		components::script_patch_checkbox("BLOCK_MUGGERS"_T, &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 
 		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T, &g.session.block_ceo_raids, "BLOCK_CEO_RAIDS_DESC"_T);
+		ImGui::SameLine();
+		components::command_checkbox<"blockceos">();
 
 		ImGui::EndGroup();
 	}

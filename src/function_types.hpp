@@ -61,6 +61,7 @@ namespace big::functions
 {
 	using run_script_threads = bool (*)(uint32_t ops_to_execute);
 	using get_native_handler = rage::scrNativeHandler (*)(rage::scrNativeRegistrationTable* registration_table, rage::scrNativeHash hash);
+	using fix_vectors = void (*)(rage::scrNativeCallContext* call_ctx);
 
 	using get_net_game_player = CNetGamePlayer* (*)(Player player);
 
@@ -212,4 +213,6 @@ namespace big::functions
 	using can_create_vehicle = bool (*)();
 
 	using get_searchlight = void* (*) (CPed*);
+
+	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
 }

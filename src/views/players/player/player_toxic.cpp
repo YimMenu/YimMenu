@@ -104,6 +104,8 @@ namespace big
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("PLAYER_TOXIC_BRING_PLAYER_OUT_GOD"_T.data());
 
+			ImGui::Checkbox("SPAM_KILLFEED"_T.data(), &g_player_service->get_selected()->spam_killfeed);
+
 			static int bounty_value = 0;
 			ImGui::SetNextItemWidth(300);
 			ImGui::SliderInt("BOUNTY"_T.data(), &bounty_value, 0, 10000);

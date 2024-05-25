@@ -125,8 +125,9 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
+			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
 			{
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 				g.reactions.crash.process(plyr);
 				return true;
 			}

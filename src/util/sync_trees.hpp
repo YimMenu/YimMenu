@@ -1,5 +1,6 @@
 #pragma once
 #include "gta/enums.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -38,6 +39,7 @@ namespace big
 		static constexpr size_t sync_tree_count = size_t(eNetObjType::NET_OBJ_TYPE_TRAIN) + 1;
 
 		std::array<sync_node_vft_to_ids, sync_tree_count> sync_trees_sync_node_addr_to_ids;
+		sync_node_vft_to_ids global_node_identifier;
 
 		std::array<sync_tree_node_array_index_to_node_id_t, sync_tree_count> sync_trees_node_array_index_to_node_id = {
 		    {
@@ -517,7 +519,18 @@ namespace big
 	public:
 		static const sync_node_id& find(eNetObjType obj_type, uintptr_t addr)
 		{
+			if (!is_initialized()) [[unlikely]]
+				init();
+
 			return finder.sync_trees_sync_node_addr_to_ids[(int)obj_type][addr];
+		}
+
+		static const sync_node_id& find(uintptr_t addr)
+		{
+			if (!is_initialized()) [[unlikely]]
+				init();
+
+			return finder.global_node_identifier[addr];
 		}
 
 		static sync_node_vft_to_ids& get_object_nodes(eNetObjType obj_type)
@@ -551,6 +564,7 @@ namespace big
 					const sync_node_id node_id = finder.sync_trees_node_array_index_to_node_id[i][j];
 
 					finder.sync_trees_sync_node_addr_to_ids[i][addr] = node_id;
+					finder.global_node_identifier.emplace(addr, node_id);
 				}
 			}
 

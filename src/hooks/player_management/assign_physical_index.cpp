@@ -115,32 +115,7 @@ namespace big
 					}
 
 					if (plyr->block_join && *g_pointers->m_gta.m_is_session_started)
-					{
-						if (g_player_service->get_self()->is_host())
-						{
-							dynamic_cast<player_command*>(command::get("breakup"_J))->call(plyr, {});
-						}
-						else
-						{
-							dynamic_cast<player_command*>(command::get("desync"_J))->call(plyr, {});
-						}
-					}
-
-					if (g.session.lock_session && g_player_service->get_self()->is_host() && *g_pointers->m_gta.m_is_session_started)
-					{
-						if ((plyr->is_friend() && g.session.allow_friends_into_locked_session) || plyr->is_trusted)
-						{
-							g_notification_service.push_success("LOBBY_LOCK"_T.data(),
-							    std::vformat("LOBBY_LOCK_ALLOWED"_T.data(),
-							        std::make_format_args(plyr->get_net_data()->m_name)));
-						}
-						else
-						{
-							dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr, {});
-							g_notification_service.push_warning("LOBBY_LOCK"_T.data(),
-							    std::vformat("LOBBY_LOCK_DENIED"_T.data(), std::make_format_args(plyr->get_net_data()->m_name)));
-						}
-					}
+						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr, {});
 
 					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
 					{
