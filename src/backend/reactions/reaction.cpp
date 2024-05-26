@@ -26,6 +26,7 @@ namespace big
 			if (block_joins)
 			{
 				entry->block_join = true;
+				entry->block_join_reason = block_join_reason;
 				g_player_database_service->save();
 			}
 		}
