@@ -1,11 +1,11 @@
 #include "view_esp.hpp"
 
+#include "gta/enums.hpp"
 #include "gta_util.hpp"
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
 #include "util/math.hpp"
 #include "util/misc.hpp"
-#include "gta/enums.hpp"
 
 namespace big
 {
@@ -81,7 +81,7 @@ namespace big
 			}
 
 			draw_list->AddText(name_pos, esp_color, name_str.c_str());
-			const bool in_god = ped_damage_bits & (uint32_t)eEntityProofs::GOD;
+			const bool in_god    = ped_damage_bits & (uint32_t)eEntityProofs::GOD;
 			std::string mode_str = "";
 			if (g.esp.god)
 			{
@@ -97,17 +97,17 @@ namespace big
 					}
 					if (ped_damage_bits & (uint32_t)eEntityProofs::EXPLOSION)
 					{
-						if (!mode_str.empty()) mode_str += ", ";
+						if (!mode_str.empty())
+							mode_str += ", ";
 						mode_str += "ESP_EXPLOSION"_T.data();
 					}
 				}
 
-				if (auto player_vehicle = plyr->get_current_vehicle();
-					player_vehicle &&
-					(plyr->get_ped()->m_ped_task_flag & (uint32_t)ePedTask::TASK_DRIVING) &&
-					(player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD))
+				if (auto player_vehicle = plyr->get_current_vehicle(); player_vehicle && (plyr->get_ped()->m_ped_task_flag & (uint32_t)ePedTask::TASK_DRIVING)
+				    && (player_vehicle->m_damage_bits & (uint32_t)eEntityProofs::GOD))
 				{
-				if (!mode_str.empty()) mode_str += ", ";
+					if (!mode_str.empty())
+						mode_str += ", ";
 					mode_str += "VEHICLE_GOD"_T.data();
 				}
 			}
@@ -115,8 +115,8 @@ namespace big
 			if (!mode_str.empty())
 			{
 				draw_list->AddText({esp_x - (62.5f * multplr), esp_y - (175.f * multplr) - 40.f},
-					ImColor(1.f, 0.f, 0.f, 1.f),
-					mode_str.c_str());
+				    ImColor(1.f, 0.f, 0.f, 1.f),
+				    mode_str.c_str());
 			}
 
 			if (!in_god)
