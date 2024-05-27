@@ -121,18 +121,6 @@ namespace big
 				NETWORK::NETWORK_CONCEAL_PLAYER(ctx->get_arg<Player>(0), ctx->get_arg<int>(1), ctx->get_arg<int>(2));
 		}
 
-		void REPORT_CRIME(rage::scrNativeCallContext* src)
-		{
-			Player player = src->get_arg<Player>(0);
-			int crime     = src->get_arg<int>(1);
-			int points    = src->get_arg<int>(2);
-
-			if (g.self.never_wanted && player == self::id)
-				return;
-
-			PLAYER::REPORT_CRIME(player, crime, points);
-		}
-
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);

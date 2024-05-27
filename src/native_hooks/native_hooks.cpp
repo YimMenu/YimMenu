@@ -99,7 +99,6 @@ namespace big
 		add_native_detour(NativeIndex::NETWORK_OVERRIDE_CLOCK_TIME, all_scripts::NETWORK_OVERRIDE_CLOCK_TIME);
 		add_native_detour(NativeIndex::SET_ENTITY_HEALTH, all_scripts::SET_ENTITY_HEALTH);
 		add_native_detour(NativeIndex::APPLY_DAMAGE_TO_PED, all_scripts::APPLY_DAMAGE_TO_PED);
-		add_native_detour(NativeIndex::REPORT_CRIME, all_scripts::REPORT_CRIME);
 		add_native_detour(NativeIndex::REGISTER_SCRIPT_VARIABLE, all_scripts::DO_NOTHING);
 		add_native_detour(NativeIndex::UNREGISTER_SCRIPT_VARIABLE, all_scripts::DO_NOTHING);
 		add_native_detour(NativeIndex::FORCE_CHECK_SCRIPT_VARIABLES, all_scripts::DO_NOTHING);
