@@ -112,7 +112,6 @@ namespace big
 		draw_reaction(g.reactions.tse_sender_mismatch);
 		draw_reaction(g.reactions.turn_into_beast);
 		draw_reaction(g.reactions.vehicle_kick);
-		ImGui::Separator();
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);
