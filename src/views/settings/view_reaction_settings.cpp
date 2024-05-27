@@ -111,6 +111,7 @@ namespace big
 		draw_reaction(g.reactions.report_cash_spawn);
 		draw_reaction(g.reactions.request_control_event);
 		draw_reaction(g.reactions.spectate);
+		draw_reaction(g.reactions.chat_spam);
 		draw_interloper_reaction(g.reactions.spectate_others);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
