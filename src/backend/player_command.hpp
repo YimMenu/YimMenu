@@ -34,6 +34,21 @@ namespace big
 			return {0};
 		};
 
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg) override
+		{
+			if (arg == 1) // First argument of all player commands is the player name
+			{
+				std::vector<std::string> suggestions;
+				for (auto& player : g_player_service->players() | std::ranges::views::values)
+				{
+					suggestions.push_back(player->get_name());
+				}
+				return suggestions;
+			}
+
+			return std::nullopt;
+		};
+
 	public:
 		static player_command* get(rage::joaat_t command)
 		{

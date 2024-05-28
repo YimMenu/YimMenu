@@ -119,7 +119,7 @@ namespace big
 		std::vector<command*> result_cmds{};
 		for (auto& [hash, command] : g_commands)
 		{
-			if (command->get_label().length() == 0)
+			if (command && &command->get_name() && command->get_label().length() == 0)
 				continue;
 
 			std::string cmd_name  = command->get_name();

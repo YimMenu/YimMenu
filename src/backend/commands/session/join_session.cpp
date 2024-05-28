@@ -50,6 +50,21 @@ namespace big
 			return valid_args;
 		}
 
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg) override
+		{
+			if (arg == 1)
+			{
+				std::vector<std::string> suggestions;
+				for (const auto& session_type_string : m_session_types | std::ranges::views::values)
+				{
+					suggestions.push_back(session_type_string);
+				}
+				return suggestions;
+			}
+
+			return std::nullopt;
+		}
+
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
 			command_arguments result(1);
