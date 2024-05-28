@@ -163,8 +163,9 @@ namespace big
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service.push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						auto p_name = player->get_name();
+
+						g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("OOM_KICK"_T, std::make_format_args(p_name)));
 					}
 					return true;
 				}
@@ -222,8 +223,9 @@ namespace big
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service.push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						auto p_name = player->get_name();
+
+						g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("OOM_KICK"_T, std::make_format_args(p_name)));
 						player->block_radio_requests = true;
 					}
 					return true;
