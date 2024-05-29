@@ -1,7 +1,10 @@
 #include "backend/command.hpp"
-#include "backend/looped_command.hpp"
 #include "backend/looped/looped.hpp"
-#include "pointers.hpp"
+#include "backend/looped_command.hpp"
+#include "core/scr_globals.hpp"
+#include "util/misc.hpp"
+#include "gta_util.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -19,7 +22,7 @@ namespace big
 
 			// Clear current wanted level
 			g_local_player->m_player_info->m_wanted_level = 0;
-			g_local_player->m_player_info->m_is_wanted = false;
+			g_local_player->m_player_info->m_is_wanted    = false;
 
 			// Keep the lock if it's on, but reset the wanted level
 			g.self.wanted_level = 0;
@@ -34,7 +37,15 @@ namespace big
 
 		virtual void on_tick() override
 		{
+			// Disable never wanted if the script needs to force-modify the wanted level in heists
+			if (auto script = gta_util::find_script_thread("fm_mission_controller"_J))
+			{
+				if (!misc::has_bit_set(script_local(script, scr_locals::fm_mission_controller::mission_controller_wanted_state_flags).as<PINT>(), 7))
+					return;
+			}
+
 			// Clear current wanted level
+			PLAYER::SET_MAX_WANTED_LEVEL(0);
 			g_local_player->m_player_info->m_wanted_level = 0;
 			g_local_player->m_player_info->m_is_wanted    = false;
 
@@ -42,9 +53,15 @@ namespace big
 			g.self.wanted_level       = 0;
 			g.self.force_wanted_level = false;
 		}
+
+		virtual void on_disable() override
+		{
+			// There are cases where it is set to 6 in the scripts, but the native automatically reverts it back to 5 anyway
+			PLAYER::SET_MAX_WANTED_LEVEL(5);
+		}
 	};
 
-	never_wanted g_never_wanted("neverwanted", "NEVER_WANTED", "NEVER_WANTED", g.self.never_wanted);
+	never_wanted g_never_wanted("neverwanted", "NEVER_WANTED", "NEVER_WANTED_DESC", g.self.never_wanted);
 
 	void looped::self_wanted()
 	{

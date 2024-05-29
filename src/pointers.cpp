@@ -1418,15 +1418,6 @@ namespace big
                 g_pointers->m_gta.m_delete_object = ptr.as<functions::delete_object>();
             }
         },
-        // Max Wanted Level
-        {
-            "MWL",
-            "8B 43 6C 89 05",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_max_wanted_level = ptr;
-            }
-        },
         // World Model Spawn Bypass
         {
             "WMSB",
