@@ -49,12 +49,12 @@ namespace big
 			{
 				for (auto cmd : possible_commands)
 				{
-					ImGui::Text(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T,
-					    std::make_format_args(cmd->get_name(),
-					        cmd->get_label(),
-					        cmd->get_description(),
-					        cmd->get_num_args() ? cmd->get_num_args().value() : 0))
-					                .data());
+					auto cmd_name = cmd->get_name();
+					auto cmd_label = cmd->get_label();
+					auto cmd_description = cmd->get_description();
+					auto cmd_num_args    = cmd->get_num_args() ? cmd->get_num_args().value() : 0;
+
+					ImGui::Text(std::vformat("CMD_EXECUTOR_CMD_TEMPLATE"_T, std::make_format_args(cmd_name, cmd_label, cmd_description, cmd_num_args)).data());
 
 					// check if we aren't on the last iteration
 					if (cmd != possible_commands.back())

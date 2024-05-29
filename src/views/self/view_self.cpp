@@ -210,9 +210,7 @@ namespace big
 
 		ImGui::SeparatorText("WANTED_LEVEL"_T.data());
 
-		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip("NEVER_WANTED_DESC"_T.data());
+		components::command_checkbox<"neverwanted">();
 
 		// Only show all the other stuff like clear wanted, force wanted, and the slider if we don't have never_wanted enabled, since never_wanted overrides all of that
 		if (!g.self.never_wanted)

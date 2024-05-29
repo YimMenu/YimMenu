@@ -96,6 +96,11 @@ namespace big::scr_locals
 		constexpr static auto broadcast_idx = 12327;
 	}
 
+	namespace fm_mission_controller
+	{
+		constexpr static auto mission_controller_wanted_state_flags = 60051;
+	}
+
 	namespace freemode
 	{
 		// first uLocal_ in this function call
