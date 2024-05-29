@@ -1,21 +1,53 @@
 #include "network.hpp"
 
 #include "../../script.hpp"
+#include "core/scr_globals.hpp"
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "services/player_database/player_database_service.hpp"
-#include "util/notify.hpp"
 #include "util/chat.hpp"
+#include "util/notify.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
 #include "util/system.hpp"
 #include "util/teleport.hpp"
+#include <script/globals/GPBD_FM.hpp>
 
 namespace lua::network
 {
 	// Lua API: Table
 	// Name: network
 	// Table containing helper functions for network related features.
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rank
+	// Param: pid: int
+	// Call get_player_rank(playerID)
+	static int get_player_rank(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Rank;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rp
+	// Param: pid: int
+	// Call get_player_rp(playerID)
+	static int get_player_rp(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.RP;
+		}
+		return -1;
+	}
 
 	// Lua API: Function
 	// Table: network
@@ -227,6 +259,8 @@ namespace lua::network
 
 		auto ns = state["network"].get_or_create<sol::table>();
 
+		ns["get_player_rank"]                          = get_player_rank;
+		ns["get_player_rp"]                            = get_player_rp;
 		ns["trigger_script_event"]                     = trigger_script_event;
 		ns["give_pickup_rewards"]                      = give_pickup_rewards;
 		ns["set_player_coords"]                        = set_player_coords;
