@@ -44,6 +44,7 @@ namespace
 	    "Money\\\\",
 	    "Money\\",
 	    ".gg",
+	    ".GG",
 	    "--->",
 	    "shopgta5",
 	    "doit#",
