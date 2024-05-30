@@ -445,7 +445,7 @@ namespace big
 			    components::command_button<"intkickall">({}, "KICK_ALL_FROM_INTERIORS"_T);
 
 			    components::command_button<"breakgameall">({});
-				ImGui::SameLine();
+			    ImGui::SameLine();
 			    components::command_button<"missionall">({});
 			    ImGui::SameLine();
 			    components::command_button<"errorall">({});
