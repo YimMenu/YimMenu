@@ -1,3 +1,5 @@
+#include "core/data/block_join_reasons.hpp"
+#include "backend/reactions/reaction.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -23,8 +25,21 @@ namespace big
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			if (reaction.block_joins)
+				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
+				{
+					for (const auto& [key, value] : block_join_reasons)
+					{
+						bool is_selected = (reaction.block_join_reason == key);
+
+						if (ImGui::Selectable(value, is_selected))
+							reaction.block_join_reason = key;
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
 			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 			ImGui::TreePop();
@@ -44,8 +59,21 @@ namespace big
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			if (reaction.block_joins)
+				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
+				{	
+					for (const auto& [key, value] : block_join_reasons)
+					{
+						bool is_selected = (reaction.block_join_reason == key);
+
+						if (ImGui::Selectable(value, is_selected))
+							reaction.block_join_reason = key;
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
 			ImGui::Checkbox("REACTION_KICK_ATTACKER"_T.data(), &reaction.kick);
 			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 

@@ -19,13 +19,14 @@ namespace big
 
 	void reaction::process_common(player_ptr player)
 	{
-		if (add_to_player_db)
+		if (add_to_player_db || block_joins)
 		{
 			auto entry = g_player_database_service->get_or_create_player(player);
 
 			if (block_joins)
 			{
 				entry->block_join = true;
+				entry->block_join_reason = block_join_reason;
 				g_player_database_service->save();
 			}
 		}
