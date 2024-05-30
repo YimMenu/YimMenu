@@ -101,6 +101,10 @@ namespace big
 		if (!get_msg_type(msgType, buffer))
 			return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
 
+
+		if (msgType == rage::eNetMessage::MsgRoamingJoinBubbleAck)
+			return true;
+
 		if (player)
 		{
 			switch (msgType)
@@ -233,6 +237,11 @@ namespace big
 
 				break;
 			}
+			case rage::eNetMessage::MsgRoamingInitialBubble:
+			{
+				LOG(WARNING) << "Shouldn't get this again";
+				return true;
+			}
 			}
 		}
 		else
@@ -252,6 +261,25 @@ namespace big
 						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK_UNK"_T.data());
 					}
 					return true;
+				}
+				break;
+			}
+			case rage::eNetMessage::MsgNonPhysicalData:
+			{
+				buffer.Read<int>(7); // size
+				int bubble = buffer.Read<int>(4);
+				int player = buffer.Read<int>(6);
+
+
+				if (g_player_service->get_self() && g_player_service->get_self()->id() == player)
+				{
+					LOG(WARNING) << "We're being replaced";
+					return true;
+				}
+
+				if (bubble != 0)
+				{
+					LOG(WARNING) << "Wrong bubble: " << bubble;
 				}
 				break;
 			}
