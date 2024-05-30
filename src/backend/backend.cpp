@@ -36,7 +36,7 @@ namespace big
 		{
 			looped::system_self_globals();
 			looped::system_update_pointers();
-			looped::system_desync_kick_protection();
+			looped::system_update_desync_kick();
 			looped::system_spoofing();
 			looped::system_mission_creator();
 
@@ -54,7 +54,7 @@ namespace big
 
 		while (g_running)
 		{
-			looped::self_police();
+			looped::self_wanted();
 			looped::self_hud();
 			looped::self_dance_mode();
 			looped::self_persist_outfit();
@@ -125,6 +125,8 @@ namespace big
 			looped::session_randomize_ceo_colors();
 			looped::session_auto_kick_host();
 			looped::session_block_jobs();
+			looped::session_chat_translator();
+			looped::session_modder_detection();
 
 			if (g_script_connection_service)
 				g_script_connection_service->on_tick();

@@ -5,6 +5,7 @@
 #include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "util/math.hpp"
+#include "util/script_database.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -12,8 +13,11 @@
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
 
+
 namespace big
 {
+	static const script_protection_DB script_database;
+
 	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
 	{
 		if (should_log)
@@ -121,9 +125,17 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
+			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
 			{
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 				g.reactions.crash.process(plyr);
+				return true;
+			}
+			if (args[3] == -4640169 && args[7] == -36565476 && args[8] == -53105203)
+			{
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+				g.reactions.crash.process(plyr);
+
 				return true;
 			}
 			break;
@@ -204,12 +216,28 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+		{
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam)
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
+
+			if (g.protections.script_events.sound_spam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandSound)
+			{
+				if (!plyr || plyr->m_play_sound_rate_limit_tse.process())
+				{
+					if (plyr->m_play_sound_rate_limit_tse.exceeded_last_process())
+						g.reactions.sound_spam.process(plyr);
+					return true;
+				}
+			}
+
 			break;
+		}
 		case eRemoteEvent::SendToCayoPerico:
 			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{
@@ -381,9 +409,7 @@ namespace big
 
 			break;
 		}
-		case eRemoteEvent::DestroyPersonalVehicle:
-			g.reactions.destroy_personal_vehicle.process(plyr);
-			return true;
+		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
 			{
@@ -420,18 +446,26 @@ namespace big
 		}
 		case eRemoteEvent::StartScriptBegin:
 		{
-			static const std::unordered_set<int> bad_script_ids = {
-			    17 /*AM_PI_MENU*/, 20 /*fm_intro*/, 212 /*golf_mp*/, 214 /*tennis_network_mp*/,
-			    215 /*Pilot_School_MP*/, 216 /*FM_Impromptu_DM_Controler*/, 217 /*fm_Bj_race_controler*/, 218 /*fm_deathmatch_controler*/,
-			    221 /*FM_Race_Controler*/, 222 /*FM_Horde_Controler*/, 226 /*grid_arcade_cabinet*/, 227 /*scroll_arcade_cabinet*/,
-			    229 /*road_arcade*/, 231 /*wizard_arcade*/, 235 /*ggsm_arcade*/, 236 /*puzzle*/, 238 /*SCTV*/ };
 			auto script_id = args[3];
-			if (bad_script_ids.contains(script_id))
+
+			protection_status protection_status = script_database.get_protection_status(script_id);
+
+			if (protection_status == protection_status::BLOCK_ALWAYS)
 			{
 				g.reactions.start_script.process(plyr);
 				return true;
 			}
-			break;
+
+			if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() && protection_status == protection_status::BLOCK_IN_FREEMODE)
+			{
+				g.reactions.start_script.process(plyr);
+				return true;
+			}
+
+			if (protection_status == protection_status::ALLOWED_NOTIFY)
+			{
+				g.reactions.start_script.only_notify(plyr);
+			}
 		}
 		}
 
@@ -448,7 +482,7 @@ namespace big
 		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id)) [[unlikely]]
 		{
 			std::stringstream output;
-			output << "Script Event From: " << player->get_name() << " (" << player->get_net_data()->m_gamer_handle.m_rockstar_id << ") Args: { ";
+			output << "Script Event From: " << player->get_name() << " (" << plyr->get_rockstar_id() << ") Args: { ";
 			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
@@ -464,7 +498,8 @@ namespace big
 			auto local_time = *std::localtime(&timer);
 
 			static std::ofstream log(g_file_manager.get_project_file("./script_events.log").get_path(), std::ios::app);
-			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << output.str() << std::endl;
+			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] "
+			    << output.str() << std::endl;
 			log.flush();
 		}
 

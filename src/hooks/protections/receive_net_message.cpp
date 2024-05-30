@@ -2,6 +2,7 @@
 #include "backend/context/chat_command_context.hpp"
 #include "backend/player_command.hpp"
 #include "core/data/packet_types.hpp"
+#include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
@@ -9,9 +10,8 @@
 #include "natives.hpp"
 #include "script/scriptIdBase.hpp"
 #include "services/players/player_service.hpp"
-#include "util/session.hpp"
 #include "util/chat.hpp"
-#include "gta/enums.hpp"
+#include "util/session.hpp"
 
 #include <network/Network.hpp>
 #include <network/netTime.hpp>
@@ -83,20 +83,27 @@ namespace big
 		buffer.m_flagBits = 1;
 
 		rage::eNetMessage msgType;
-		player_ptr player;
+		player_ptr player = nullptr;
 
 		for (uint32_t i = 0; i < gta_util::get_network()->m_game_session_ptr->m_player_count; i++)
 		{
-			if (gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_peer_id_2 == frame->m_peer_id)
+			if (auto player_iter = gta_util::get_network()->m_game_session_ptr->m_players[i])
 			{
-				player = g_player_service->get_by_host_token(
-				    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
-				break;
+				if (frame && player_iter->m_player_data.m_peer_id_2 == frame->m_peer_id)
+				{
+					player = g_player_service->get_by_host_token(
+					    gta_util::get_network()->m_game_session_ptr->m_players[i]->m_player_data.m_host_token);
+					break;
+				}
 			}
 		}
 
 		if (!get_msg_type(msgType, buffer))
 			return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);
+
+
+		if (msgType == rage::eNetMessage::MsgRoamingJoinBubbleAck)
+			return true;
 
 		if (player)
 		{
@@ -119,19 +126,12 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
-					g_notification_service.push("PROTECTIONS"_T.data(),
-                                      
-					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
+					
 					player->is_spammer = true;
-					if (g.session.kick_chat_spammers
-					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
+					if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
-						if (g_player_service->get_self()->is_host())
-							dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {}),
-							    dynamic_cast<player_command*>(command::get("hostkick"_J))->call(player, {});
-
-						dynamic_cast<player_command*>(command::get("endkick"_J))->call(player, {});
-						dynamic_cast<player_command*>(command::get("nfkick"_J))->call(player, {});
+						session::add_infraction(player, Infraction::CHAT_SPAM);
+						g.reactions.chat_spam.process(player);
 					}
 					return true;
 				}
@@ -139,6 +139,11 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, SpamReason::NOT_A_SPAMMER, is_team);
+					if (g.session.chat_translator.enabled)
+					{
+						chat_message new_message{player->get_name(), message};
+						translate_queue.push(new_message);
+					}
 
 					if (g.session.chat_commands && message[0] == g.session.chat_command_prefix)
 						command::process(std::string(message + 1), std::make_shared<chat_command_context>(player));
@@ -160,8 +165,9 @@ namespace big
 					if (player->m_host_migration_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service.push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						auto p_name = player->get_name();
+
+						g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("OOM_KICK"_T, std::make_format_args(p_name)));
 					}
 					return true;
 				}
@@ -219,14 +225,20 @@ namespace big
 					if (player->m_radio_request_rate_limit.exceeded_last_process())
 					{
 						session::add_infraction(player, Infraction::TRIED_KICK_PLAYER);
-						g_notification_service.push_error("PROTECTIONS"_T.data(),
-						    std::vformat("OOM_KICK"_T, std::make_format_args(player->get_name())));
+						auto p_name = player->get_name();
+
+						g_notification_service.push_error("PROTECTIONS"_T.data(), std::vformat("OOM_KICK"_T, std::make_format_args(p_name)));
 						player->block_radio_requests = true;
 					}
 					return true;
 				}
 
 				break;
+			}
+			case rage::eNetMessage::MsgRoamingInitialBubble:
+			{
+				LOG(WARNING) << "Shouldn't get this again";
+				return true;
 			}
 			}
 		}
@@ -235,30 +247,75 @@ namespace big
 			switch (msgType)
 			{
 			case rage::eNetMessage::MsgScriptMigrateHost: return true;
-			case rage::eNetMessage::MsgRadioStationSyncRequest: return true;
+			case rage::eNetMessage::MsgRadioStationSyncRequest:
+			{
+				static rate_limiter unk_player_radio_requests{1s, 6};
+
+				if (unk_player_radio_requests.process())
+				{
+					if (unk_player_radio_requests.exceeded_last_process())
+					{
+						// Make a translation for this new OOM kick protection
+						g_notification_service.push_error("PROTECTIONS"_T.data(), "OOM_KICK_UNK"_T.data());
+					}
+					return true;
+				}
+				break;
+			}
+			case rage::eNetMessage::MsgNonPhysicalData:
+			{
+				buffer.Read<int>(7); // size
+				int bubble = buffer.Read<int>(4);
+				int player = buffer.Read<int>(6);
+
+
+				if (g_player_service->get_self() && g_player_service->get_self()->id() == player)
+				{
+					LOG(WARNING) << "We're being replaced";
+					return true;
+				}
+
+				if (bubble != 0)
+				{
+					LOG(WARNING) << "Wrong bubble: " << bubble;
+				}
+				break;
+			}
 			}
 		}
 
-		if (g.debug.logs.packet_logs && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents && msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate && msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck && msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck && msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)
+		if (g.debug.logs.packet_logs) [[unlikely]]
 		{
-			const char* packet_type = "<UNKNOWN>";
-			for (const auto& p : packet_types)
+			if (g.debug.logs.packet_logs == 1 || //ALL
+			    (g.debug.logs.packet_logs == 2 && msgType != rage::eNetMessage::MsgCloneSync && msgType != rage::eNetMessage::MsgPackedCloneSyncACKs && msgType != rage::eNetMessage::MsgPackedEvents && msgType != rage::eNetMessage::MsgPackedReliables && msgType != rage::eNetMessage::MsgPackedEventReliablesMsgs && msgType != rage::eNetMessage::MsgNetArrayMgrUpdate && msgType != rage::eNetMessage::MsgNetArrayMgrSplitUpdateAck && msgType != rage::eNetMessage::MsgNetArrayMgrUpdateAck && msgType != rage::eNetMessage::MsgScriptHandshakeAck && msgType != rage::eNetMessage::MsgScriptHandshake && msgType != rage::eNetMessage::MsgScriptJoin && msgType != rage::eNetMessage::MsgScriptJoinAck && msgType != rage::eNetMessage::MsgScriptJoinHostAck && msgType != rage::eNetMessage::MsgRequestObjectIds && msgType != rage::eNetMessage::MsgInformObjectIds && msgType != rage::eNetMessage::MsgNetTimeSync)) //FILTERED
 			{
-				if (p.second == (int)msgType)
+				const char* packet_type = "<UNKNOWN>";
+				for (const auto& p : packet_types)
 				{
-					packet_type = p.first;
-					break;
+					if (p.second == (int)msgType)
+					{
+						packet_type = p.first;
+						break;
+					}
 				}
-			}
 
-			LOG(VERBOSE) << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
-			             << (player ? player->get_name() :
-			                          std::format("<M:{}>, <C:{:X}>, <P:{}>",
-			                              (int)frame->m_msg_id,
-			                              frame->m_connection_identifier,
-			                              frame->m_peer_id)
-			                              .c_str())
-			             << " | " << HEX_TO_UPPER((int)msgType);
+				auto now        = std::chrono::system_clock::now();
+				auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+				auto timer      = std::chrono::system_clock::to_time_t(now);
+				auto local_time = *std::localtime(&timer);
+
+				static std::ofstream log(g_file_manager.get_project_file("./packets.log").get_path(), std::ios::app);
+				log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] "
+				    << "RECEIVED PACKET | Type: " << packet_type << " | Length: " << frame->m_length << " | Sender: "
+				    << (player ? player->get_name() :
+				                 std::format("<M:{}>, <C:{:X}>, <P:{}>",
+				                     (int)frame->m_msg_id,
+				                     frame->m_connection_identifier,
+				                     frame->m_peer_id)
+				                     .c_str())
+				    << " | " << HEX_TO_UPPER((int)msgType) << std::endl;
+				log.flush();
+			}
 		}
 
 		return g_hooking->get_original<hooks::receive_net_message>()(netConnectionManager, a2, frame);

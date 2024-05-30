@@ -7,7 +7,7 @@ namespace big
 	{
 		// Add new values to the bottom (for serialization)
 
-		DESYNC_PROTECTION,             // do not use
+		DESYNC_PROTECTION,
 		BREAKUP_KICK_DETECTED,         // do not use
 		LOST_CONNECTION_KICK_DETECTED, // do not use
 		SPOOFED_ROCKSTAR_ID,           // do not use
@@ -25,5 +25,6 @@ namespace big
 		UNDEAD_OTR,
 		// So that lua scripts can add a custom runtime reason.
 		CUSTOM_REASON,
+		CHAT_SPAM,
 	};
 }

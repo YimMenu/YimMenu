@@ -9,7 +9,7 @@
 
 namespace big
 {
-	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "Auto Update Tracked Player States", "Toggling this feature will automatically update the tracked players' online states every minute. You must enable this for join redirect to work",
+	bool_command g_player_db_auto_update_online_states("player_db_auto_update_states", "AUTO_UPDATE_STATES", "AUTO_UPDATE_STATES_DESC",
 	    g.player_db.update_player_online_states);
 
 	const char* player_database_service::get_name_by_content_id(const std::string& content_id)
@@ -219,6 +219,33 @@ namespace big
 		return player;
 	}
 
+	void player_database_service::remove_untrusted_players()
+	{
+		for (auto it = m_players.begin(); it != m_players.end();)
+		{
+			if (!it->second->is_trusted)
+			{
+				it = m_players.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		for (auto it = m_sorted_players.begin(); it != m_sorted_players.end();)
+		{
+			if (!it->second->is_trusted)
+			{
+				it = m_sorted_players.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
 	std::shared_ptr<persistent_player> player_database_service::get_player_by_rockstar_id(uint64_t rockstar_id)
 	{
 		if (m_players.contains(rockstar_id))
@@ -228,11 +255,11 @@ namespace big
 
 	std::shared_ptr<persistent_player> player_database_service::get_or_create_player(player_ptr player)
 	{
-		if (m_players.contains(player->get_net_data()->m_gamer_handle.m_rockstar_id))
-			return m_players[player->get_net_data()->m_gamer_handle.m_rockstar_id];
+		if (m_players.contains(player->get_rockstar_id()))
+			return m_players[player->get_rockstar_id()];
 		else
 		{
-			auto player_ptr = add_player(player->get_net_data()->m_gamer_handle.m_rockstar_id, player->get_name());
+			auto player_ptr = add_player(player->get_rockstar_id(), player->get_name());
 			save();
 			return player_ptr;
 		}

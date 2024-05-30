@@ -1,6 +1,7 @@
 #include "hooking/hooking.hpp"
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
+#include "gta/pools.hpp"
 
 namespace big
 {
@@ -10,6 +11,24 @@ namespace big
 		{
 			notify::crash_blocked(src, "out of bounds object type");
 			return;
+		}
+
+		switch (object_type)
+		{
+		case eNetObjType::NET_OBJ_TYPE_AUTOMOBILE:
+		case eNetObjType::NET_OBJ_TYPE_BIKE:
+		case eNetObjType::NET_OBJ_TYPE_BOAT:
+		case eNetObjType::NET_OBJ_TYPE_HELI:
+		case eNetObjType::NET_OBJ_TYPE_PLANE:
+		case eNetObjType::NET_OBJ_TYPE_SUBMARINE:
+		case eNetObjType::NET_OBJ_TYPE_TRAILER:
+		case eNetObjType::NET_OBJ_TYPE_TRAIN:
+			if ((*g_pointers->m_gta.m_vehicle_allocator)->m_size < 10) [[unlikely]]
+			{
+				// We don't have enough memory to handle this
+				g_notification_service.push_warning("Protections", "Low vehicle allocator size");
+				return;
+			}
 		}
 
 		auto plyr = g_player_service->get_by_id(src->m_player_id);

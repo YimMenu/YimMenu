@@ -34,12 +34,10 @@ namespace big
 		player& operator=(const player&)     = default;
 		player& operator=(player&&) noexcept = default;
 
-		float screen_position_x = -1.f;
-		float screen_position_y = -1.f;
-
 		[[nodiscard]] CVehicle* get_current_vehicle() const;
 		[[nodiscard]] const char* get_name() const;
 		[[nodiscard]] rage::rlGamerInfo* get_net_data() const;
+		[[nodiscard]] int64_t get_rockstar_id() const;
 		[[nodiscard]] CNetGamePlayer* get_net_game_player() const;
 		[[nodiscard]] CPed* get_ped() const;
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
@@ -64,14 +62,15 @@ namespace big
 
 		bool kill_loop       = false;
 		bool explosion_loop  = false;
-		bool freeze_loop     = false;
 		bool ragdoll_loop    = false;
 		bool rotate_cam_loop = false;
 
 		rate_limiter m_host_migration_rate_limit{2s, 15};
 		rate_limiter m_play_sound_rate_limit{1s, 10};
+		rate_limiter m_play_sound_rate_limit_tse{5s, 2};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
+		rate_limiter m_radio_station_change_rate_limit{1s, 3};
 
 		bool block_radio_requests = false;
 
@@ -97,6 +96,11 @@ namespace big
 		bool block_net_events   = false;
 		bool log_clones         = false;
 		bool log_network_events = false;
+
+		bool trigger_desync_kick = false;
+		bool trigger_end_session_kick = false;
+
+		bool spam_killfeed = false;
 
 		int spectating_player = -1;
 

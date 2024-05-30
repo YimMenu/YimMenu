@@ -85,6 +85,7 @@ namespace big
 
 		ImGui::SeparatorText("SPOOFING_HIDE_FEATURES"_T.data());
 		ImGui::Checkbox("SPOOFING_HIDE_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_god);
+		ImGui::Checkbox("SPOOFING_HIDE_VEH_GOD_MODE"_T.data(), &g.spoofing.spoof_hide_veh_god);
 		ImGui::Checkbox("SPOOFING_HIDE_SPECTATE"_T.data(), &g.spoofing.spoof_hide_spectate);
 
 		ImGui::SeparatorText("CREW"_T.data());
@@ -149,11 +150,21 @@ namespace big
 			ImGui::InputInt("###player_count", &g.spoofing.session_player_count);
 		}
 
-		ImGui::Checkbox("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T.data(), &g.spoofing.spoof_session_bad_sport_status);
-		if (g.spoofing.spoof_session_bad_sport_status)
+		components::small_text("VIEW_SPOOFING_SPOOF_SESSION_BAD_SPORT_STATUS"_T);
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_DEFAULT"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_GOOD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("VIEW_SPOOFING_SPORT_BAD"_T.data(), &g.spoofing.spoof_session_bad_sport_status, 2);
+
+		ImGui::Checkbox("MULTIPLEX_SESSION"_T.data(), &g.spoofing.multiplex_session);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("MULTIPLEX_SESSION_DESC"_T.data());
+		if (g.spoofing.multiplex_session)
 		{
 			ImGui::SameLine();
-			ImGui::Checkbox("VIEW_SPOOFING_BADSPORT"_T.data(), &g.spoofing.session_bad_sport);
+			ImGui::SliderInt("###multiplex_cnt", &g.spoofing.multiplex_count, 2, 5);
 		}
+		components::command_checkbox<"32players">();
 	}
 }

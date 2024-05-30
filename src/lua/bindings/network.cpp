@@ -223,6 +223,7 @@ namespace lua::network
 		        {"TRIED_KICK_PLAYER", big::Infraction::TRIED_KICK_PLAYER},
 		        {"TRIGGERED_ANTICHEAT", big::Infraction::TRIGGERED_ANTICHEAT},
 		        {"UNDEAD_OTR", big::Infraction::UNDEAD_OTR},
+		        {"CHAT_SPAM", big::Infraction::CHAT_SPAM},
 		    });
 
 		auto ns = state["network"].get_or_create<sol::table>();

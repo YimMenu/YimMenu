@@ -25,7 +25,7 @@ namespace big
 		static void player_spectate();
 		static void player_remote_control_vehicle();
 
-		static void self_police();
+		static void self_wanted();
 		static void self_hud();
 		static void self_dance_mode();
 		static void self_persist_outfit();
@@ -35,10 +35,12 @@ namespace big
 		static void session_block_jobs();
 		static void session_randomize_ceo_colors();
 		static void session_auto_kick_host();
+		static void session_chat_translator();
+		static void session_modder_detection();
 
 		static void system_self_globals();
 		static void system_update_pointers();
-		static void system_desync_kick_protection();
+		static void system_update_desync_kick();
 		static void system_spoofing();
 		static void system_mission_creator();
 

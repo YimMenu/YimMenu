@@ -6,13 +6,14 @@ namespace big
 {
 	namespace shop_controller
 	{
-		static inline std::string format_money(int64_t amount)
+		inline std::string format_chips(int value)
 		{
-			std::stringstream ss;
-			ss.imbue(std::locale("en_US.UTF-8"));
-			ss << std::put_money(static_cast<long double>(amount) * 100, false);
-			std::string money = ss.str();
-			return money.substr(0, money.size() - 3);
+			std::string formatted = std::to_string(value);
+			for (int i = formatted.size() - 3; i > 0; i -= 3)
+			{
+				formatted.insert(i, ",");
+			}
+			return formatted;
 		}
 
 		void SET_WARNING_MESSAGE_WITH_HEADER(rage::scrNativeCallContext* src)
@@ -34,21 +35,21 @@ namespace big
 
 		void SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(rage::scrNativeCallContext* src)
 		{
+			auto arg0 = src->get_arg<int>(0);
 			if (g.window.gui.format_money)
 			{
-				auto arg0          = src->get_arg<int>(0);
 				Hash casino_chips = self::char_index ? "MP1_CASINO_CHIPS"_J : "MP0_CASINO_CHIPS"_J;
 				int player_chips;
 
 				STATS::STAT_GET_INT(casino_chips, &player_chips, -1);
 				if (arg0 == player_chips && player_chips >= 1000)
 				{
-					auto chips_format = format_money(player_chips);
+					auto chips_format = format_chips(player_chips);
 					return GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(chips_format.c_str());
 				}
 			}
 
-			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(src->get_arg<int>(0));
+			GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(arg0);
 		}
 	}
 }

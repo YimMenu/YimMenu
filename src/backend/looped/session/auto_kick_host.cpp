@@ -12,9 +12,13 @@ namespace big
 		if (kick_host && !bLastKickHost)
 		{
 			g_player_service->iterate([](auto& plyr) {
+				// Don't kick trusted players
+				if (plyr.second->is_trusted || (g.session.trust_friends && plyr.second->is_friend()))
+					return;
+
 				if (plyr.second->is_host())
 				{
-					dynamic_cast<player_command*>(command::get("multikick"_J))->call(plyr.second, {});
+					dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr.second, {});
 				}
 			});
 		}

@@ -25,6 +25,8 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"mission">(g_player_service->get_selected(), {});
 
+			components::player_command_button<"breakgame">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
 			components::player_command_button<"error">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
@@ -97,14 +99,14 @@ namespace big
 			ImGui::Checkbox("KILL_LOOP"_T.data(), &g_player_service->get_selected()->kill_loop);
 			ImGui::SameLine();
 			ImGui::Checkbox("EXPLOSION_LOOP"_T.data(), &g_player_service->get_selected()->explosion_loop);
-			ImGui::SameLine();
-			ImGui::Checkbox("FREEZE_LOOP"_T.data(), &g_player_service->get_selected()->freeze_loop);
 
 			ImGui::Checkbox("RAGDOLL_LOOP"_T.data(), &g_player_service->get_selected()->ragdoll_loop);
 			ImGui::SameLine();
 			ImGui::Checkbox("ROT_CAM_LOOP"_T.data(), &g_player_service->get_selected()->rotate_cam_loop);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("PLAYER_TOXIC_BRING_PLAYER_OUT_GOD"_T.data());
+
+			ImGui::Checkbox("SPAM_KILLFEED"_T.data(), &g_player_service->get_selected()->spam_killfeed);
 
 			static int bounty_value = 0;
 			ImGui::SetNextItemWidth(300);
