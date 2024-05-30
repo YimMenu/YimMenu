@@ -281,6 +281,7 @@ namespace big
 				{
 					LOG(WARNING) << "Wrong bubble: " << bubble;
 				}
+				break;
 			}
 			}
 		}
