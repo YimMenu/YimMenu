@@ -95,6 +95,7 @@ namespace big
 	{
 		components::title("SETTINGS_REACTIONS"_T);
 		draw_reaction(g.reactions.bounty);
+		draw_reaction(g.reactions.break_game);
 		draw_reaction(g.reactions.ceo_kick);
 		draw_reaction(g.reactions.ceo_money);
 		draw_reaction(g.reactions.chat_spam);

@@ -3,6 +3,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "script.hpp"
 
 namespace big
 {

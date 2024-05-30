@@ -437,12 +437,15 @@ namespace big
 			    components::command_button<"ceokickall">({});
 			    ImGui::SameLine();
 			    components::command_button<"vehkickall">({});
-
+			    ImGui::SameLine();
+			    components::command_button<"deletevehall">({});
 
 			    components::command_button<"ragdollall">({}, "RAGDOLL_PLAYERS"_T);
 			    ImGui::SameLine();
 			    components::command_button<"intkickall">({}, "KICK_ALL_FROM_INTERIORS"_T);
 
+			    components::command_button<"breakgameall">({});
+			    ImGui::SameLine();
 			    components::command_button<"missionall">({});
 			    ImGui::SameLine();
 			    components::command_button<"errorall">({});

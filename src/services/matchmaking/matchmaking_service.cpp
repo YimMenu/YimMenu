@@ -43,7 +43,7 @@ namespace big
 			attributes->m_param_values[0] &= ~(1 << 14); // Good Sport
 	}
 
-	bool matchmaking_service::matchmake(std::optional<int> constraint)
+	bool matchmaking_service::matchmake(std::optional<int> constraint, std::optional<bool> enforce_player_limit)
 	{
 		for (auto& session : m_found_sessions)
 		{
@@ -81,7 +81,8 @@ namespace big
 				{
 					m_found_sessions[i].info = result_sessions[i];
 
-					if (constraint && m_found_sessions[i].attributes.player_count >= 30)
+					if (enforce_player_limit.has_value() && enforce_player_limit.value()
+					    && m_found_sessions[i].attributes.player_count >= 30)
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.language_filter_enabled

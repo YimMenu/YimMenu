@@ -126,8 +126,9 @@ namespace big
 
 			bool external_console = true;
 			bool window_hook = false;
+			bool block_all_metrics = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook, block_all_metrics)
 		} debug{};
 
 		struct tunables
@@ -181,6 +182,7 @@ namespace big
 			// first constructor param is an internal identifier for the event
 			// it's never shown in the UI
 			reaction bounty{"Bounty", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
+			reaction break_game{"Bounty", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
 			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
 			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
 			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
@@ -716,7 +718,16 @@ namespace big
 
 			bool voice_chat_audio = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, multiplex_session, multiplex_count, increase_player_limit, voice_chat_audio)
+			bool spoof_game_data_hash = false;
+			std::array<std::uint32_t, 15> game_data_hash{};
+			bool spoof_dlc_hash = false;
+			std::uint32_t dlc_hash;
+
+			// do not save
+
+			bool game_data_hash_dirty = true;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, multiplex_session, multiplex_count, increase_player_limit, voice_chat_audio, spoof_game_data_hash, game_data_hash, spoof_dlc_hash, dlc_hash)
 		} spoofing{};
 
 		struct vehicle

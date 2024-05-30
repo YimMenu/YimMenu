@@ -44,7 +44,7 @@ namespace big
 	public:
 		matchmaking_service();
 		~matchmaking_service();
-		bool matchmake(std::optional<int> constraint = std::nullopt);
+		bool matchmake(std::optional<int> constraint = std::nullopt, std::optional<bool> enforce_player_limit = std::nullopt);
 
 		bool handle_advertise(int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* attributes, MatchmakingId* out_id, rage::rlTaskStatus* status);
 		void handle_update(int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* attributes, MatchmakingId* id);

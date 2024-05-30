@@ -7,6 +7,8 @@
 #include "renderer/renderer.hpp"
 #include "util/teleport.hpp"
 
+#include <script/GtaThread.hpp>
+
 namespace big
 {
 	hotkey_service::hotkey_service()

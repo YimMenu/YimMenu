@@ -49,7 +49,8 @@ namespace big
 	    "EARN",
 	    "COLLECTIBLE",
 	    "FIRST_VEH",
-	    "RANK_UP",
+	    "RANK_UP", 
+		"COMMS_TEXT",
 	});
 
 	std::string hex_encode(std::string_view input) {
@@ -105,7 +106,7 @@ namespace big
 				g_notification_service.push_warning("METRIC"_T.data(),
 				    std::format("{} {}", "METRIC_WARNING_MESSAGE"_T, metric_name).c_str());
 			}
-			if (!strcmp(metric_name, "MM"))
+			if (!strcmp(metric_name, "MM") && !g.debug.block_all_metrics)
 			{
 				std::string data = std::string(reinterpret_cast<char*>(metric) + 0x18);
 				char module_name[MAX_PATH];
@@ -117,13 +118,16 @@ namespace big
 				strncpy(reinterpret_cast<char*>(metric) + 0x18, result.c_str(), 0x900);
 				return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
 			}
-			return false;
+			return true;
 		}
 		else if (g.debug.logs.metric_logs == 1)
 		{
 			LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
 		}
 
-		return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
+		if (g.debug.block_all_metrics)
+			return true;
+		else
+			return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
 	}
 }

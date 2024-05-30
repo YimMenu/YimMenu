@@ -2,6 +2,23 @@
 
 #include "pointers.hpp"
 
+#include <player/CNonPhysicalPlayerData.hpp>
+#include <network/CNetGamePlayer.hpp>
+
+bool send_np_data(CNetGamePlayer* plyr, __int64 data, int sz, void* a4, void* a5)
+{
+	auto np         = *(CNonPhysicalPlayerData**)(data + 0x10);
+	np->m_bubble_id = 1; // allocate new bubble (for everyone except the host)
+	if (plyr->m_non_physical_player)
+	{
+		np->m_position = plyr->m_non_physical_player->m_position;
+		LOG(INFO) << "cloned their pos";
+	}
+	big::g_hooking->get_original<send_np_data>()(plyr, data, sz, a4, a5);
+	np->m_bubble_id = 0;
+	return true;
+}
+
 namespace big
 {
 	hooking::hooking() :
@@ -116,7 +133,7 @@ namespace big
 		detour_hook_helper::add<hooks::log_error_message_box>("E0MBH", g_pointers->m_gta.m_error_message_box);
 		detour_hook_helper::add<hooks::log_error_message_box_2>("E0MBH2", g_pointers->m_gta.m_error_message_box_2);
 
-		detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
+	//	detour_hook_helper::add<hooks::send_non_physical_player_data>("SNPPD", g_pointers->m_gta.m_send_non_physical_player_data);
 
 		detour_hook_helper::add<hooks::update_timecycle_keyframe_data>("UTCKD", g_pointers->m_gta.m_timecycle_keyframe_override);
 
@@ -140,11 +157,15 @@ namespace big
 		detour_hook_helper::add<hooks::update_session_advertisement>("USA", g_pointers->m_gta.m_update_session_advertisement);
 		detour_hook_helper::add<hooks::unadvertise_session>("US", g_pointers->m_gta.m_unadvertise_session);
 		detour_hook_helper::add<hooks::send_session_detail_msg>("SSDM", g_pointers->m_gta.m_send_session_detail_msg);
-
   
 		detour_hook_helper::add<hooks::write_node_data>("WND", g_pointers->m_gta.m_write_node_data);
 		detour_hook_helper::add<hooks::can_send_node_to_player>("CSNTP", g_pointers->m_gta.m_can_send_node_to_player);
 		detour_hook_helper::add<hooks::write_node>("WN", g_pointers->m_gta.m_write_node);
+
+		detour_hook_helper::add<hooks::get_dlc_hash>("GDLCH", g_pointers->m_gta.m_get_dlc_hash);
+
+		// detour_hook_helper::add<send_np_data>("HK0", (PVOID)(((__int64)GetModuleHandleA(0)) + 0x16bfd24));
+
 		g_hooking = this;
 	}
 

@@ -1135,6 +1135,8 @@ namespace big
 			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
 		case eTaskTypeIndex::CTaskVehicleFleeAirborne:
 			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eTaskTypeIndex::CTaskVehicleGoToPointWithAvoidanceAutomobile:
+			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_AUTOMOBILE;
 		}
 
 		return false;

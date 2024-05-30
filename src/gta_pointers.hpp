@@ -20,6 +20,7 @@ class CWeaponInfoManager;
 class CGameScriptHandlerMgr;
 class CPedFactory;
 class GtaThread;
+class GameDataHash;
 
 namespace rage
 {
@@ -377,6 +378,11 @@ namespace big
 		PVOID m_send_session_detail_msg;
 
 		PVOID m_session_request_patch;
+
+		functions::get_peer_by_security_id m_get_peer_by_security_id;
+
+		GameDataHash** m_game_data_hash;
+		PVOID m_get_dlc_hash;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

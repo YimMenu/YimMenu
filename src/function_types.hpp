@@ -44,6 +44,7 @@ namespace rage
 	class fiPackfile;
 	class scrNativeRegistrationTable;
 	class rlSessionByGamerTaskResult;
+	class SecurityPeer;
 	struct rlScTaskStatus
 	{
 		void* pad  = 0;
@@ -215,4 +216,6 @@ namespace big::functions
 	using get_searchlight = void* (*) (CPed*);
 
 	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
+
+	using get_peer_by_security_id = rage::SecurityPeer*(*)(int id);
 }

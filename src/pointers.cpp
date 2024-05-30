@@ -1803,6 +1803,33 @@ namespace big
             {
                 g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
             }
+        },
+        // Get Peer By Security Id
+        {
+            "GPBSI",
+            "76 E0 8B 4C 24 30 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_peer_by_security_id = ptr.add(7).rip().as<functions::get_peer_by_security_id>();
+            }
+        },
+        // Game Data Hash
+        {
+            "GDH",
+            "BA 05 AC 17 D9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_data_hash = ptr.add(0x18).rip().as<GameDataHash**>();
+            }
+        },
+        // Get DLC Hash
+        {
+            "GDLCH",
+            "74 0B 41 BC 10",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_dlc_hash = ptr.sub(0xA).rip().as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

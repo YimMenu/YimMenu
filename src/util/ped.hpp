@@ -6,6 +6,7 @@
 #include "outfit.hpp"
 #include "pointers.hpp"
 #include "services/players/player_service.hpp"
+#include "script.hpp"
 
 namespace big::ped
 {
