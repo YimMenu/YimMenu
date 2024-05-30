@@ -23,6 +23,10 @@ namespace big
 		virtual void on_tick() override
 		{
 			Vehicle vehicle = self::veh;
+			static bool player_fpv_warned = false;
+
+			if (!vehicle)
+				return;
 
 			if (last_vehicle != vehicle)
 			{
@@ -32,12 +36,30 @@ namespace big
 				last_vehicle = vehicle;
 			}
 
-			if (vehicle && CAM::GET_FOLLOW_PED_CAM_VIEW_MODE() != CameraMode::FIRST_PERSON)
+			if (CAM::GET_FOLLOW_VEHICLE_CAM_VIEW_MODE() == CameraMode::FIRST_PERSON)
 			{
-				Vector3 cam_rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
+				if (!player_fpv_warned)
+				{
+					g_notification_service.push_warning("BACKEND_FLYING_VEHICLE"_T.data(),
+					    "BACKEND_FLYING_VEHICLE_FPV_DISABLED"_T.data());
+					player_fpv_warned = true;
+				}
 
-				/*
-				* Leaving this for experimentation in the future, but vehicle flying in first person is very unpleasant either way
+				// Kick us out of FPV when in fly mode
+				CAM::SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(CameraMode::THIRD_PERSON_NEAR);
+
+				return;
+			}
+			else
+			{
+				// Reset the warning, so it only shows up once each time the player enters FPV mode
+				player_fpv_warned = false;
+			}
+
+			Vector3 cam_rot = CAM::GET_GAMEPLAY_CAM_ROT(0);
+
+			/*
+			* Leaving this for experimentation in the future, but vehicle flying in first person needs fixing
 				
 				Vector3 car_rot;
 				Vector3 rotation_delta;
