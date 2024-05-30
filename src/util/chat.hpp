@@ -1,18 +1,18 @@
 #pragma once
-#include "file_manager/file.hpp"
-#include "services/players/player_service.hpp"
 #include "core/enums.hpp"
-
-#include "packet.hpp"
-#include "natives.hpp"
-#include "script.hpp"
-#include "fiber_pool.hpp"
 #include "core/scr_globals.hpp"
+#include "fiber_pool.hpp"
+#include "file_manager/file.hpp"
+#include "natives.hpp"
+#include "packet.hpp"
+#include "script.hpp"
+#include "services/players/player_service.hpp"
 
 #include <network/CNetGamePlayer.hpp>
-#include <script/HudColor.hpp>
 #include <network/ChatData.hpp>
+#include <script/HudColor.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
+
 
 namespace
 {
@@ -26,8 +26,7 @@ namespace
 		}
 	}
 
-	static const char* spam_texts[] = 
-	{
+	static const char* spam_texts[] = {
 	    "qq", //a chinese chat app
 	    "QQ",
 	    "WWW.",
@@ -72,6 +71,8 @@ namespace
 	    "0 Ban Risk",
 	    "Discord For Cheap Money",
 	    "10-30m",
+	    "Hey Guys! Tired of being poor?",
+	    "GTA CASH",
 	    "Discord todo",
 	    "\xE6\x89\xA3\xE6\x89\xA3",             // QQ
 	    "\xE4\xBC\xA0\xE5\xAA\x92",             // AV
