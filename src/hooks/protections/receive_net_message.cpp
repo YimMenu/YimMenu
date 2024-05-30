@@ -126,14 +126,12 @@ namespace big
 				{
 					if (g.session.log_chat_messages)
 						chat::log_chat(message, player, spam_reason, is_team);
-					g_notification_service.push("PROTECTIONS"_T.data(),
-
-					    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
+					
 					player->is_spammer = true;
-					if (g.session.kick_chat_spammers
-					    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
+					if (!(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
 					{
-						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(player, {});
+						session::add_infraction(player, Infraction::CHAT_SPAM);
+						g.reactions.chat_spam.process(player);
 					}
 					return true;
 				}

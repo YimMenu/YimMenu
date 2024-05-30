@@ -222,7 +222,6 @@ namespace big
 				ImGui::SliderFloat("SPAM_TIMER"_T.data(), &g.session.spam_timer, 0.5f, 5.0f);
 				ImGui::SliderInt("SPAM_LENGTH"_T.data(), &g.session.spam_length, 1, 256);
 			}
-			ImGui::Checkbox("AUTO_KICK_CHAT_SPAMMERS"_T.data(), &g.session.kick_chat_spammers);
 			ImGui::Checkbox("LOG_CHAT_MSG"_T.data(), &g.session.log_chat_messages);
 			ImGui::Checkbox("LOG_TXT_MSG"_T.data(), &g.session.log_text_messages);
 			components::input_text_with_hint("##message", "VIEW_NET_CHAT_MESSAGE"_T, msg, sizeof(msg));
