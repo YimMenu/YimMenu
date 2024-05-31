@@ -21,36 +21,6 @@ namespace lua::network
 
 	// Lua API: Function
 	// Table: network
-	// Name: get_player_rank
-	// Param: pid: int
-	// Call get_player_rank(playerID)
-	static int get_player_rank(int pid)
-	{
-		if (big::g_player_service->get_by_id(pid))
-		{
-			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
-			return stats.Rank;
-		}
-		return -1;
-	}
-
-	// Lua API: Function
-	// Table: network
-	// Name: get_player_rp
-	// Param: pid: int
-	// Call get_player_rp(playerID)
-	static int get_player_rp(int pid)
-	{
-		if (big::g_player_service->get_by_id(pid))
-		{
-			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
-			return stats.RP;
-		}
-		return -1;
-	}
-
-	// Lua API: Function
-	// Table: network
 	// Name: trigger_script_event
 	// Param: bitset: integer
 	// Param: _args: table
@@ -234,6 +204,36 @@ namespace lua::network
 		}
 	}
 
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rank
+	// Param: pid: int
+	// Call get_player_rank(playerID)
+	static int get_player_rank(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Rank;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rp
+	// Param: pid: int
+	// Call get_player_rp(playerID)
+	static int get_player_rp(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.RP;
+		}
+		return -1;
+	}
+
 	void bind(sol::state& state)
 	{
 		state.new_enum<big::Infraction>("infraction",
@@ -259,8 +259,6 @@ namespace lua::network
 
 		auto ns = state["network"].get_or_create<sol::table>();
 
-		ns["get_player_rank"]                          = get_player_rank;
-		ns["get_player_rp"]                            = get_player_rp;
 		ns["trigger_script_event"]                     = trigger_script_event;
 		ns["give_pickup_rewards"]                      = give_pickup_rewards;
 		ns["set_player_coords"]                        = set_player_coords;
@@ -274,5 +272,7 @@ namespace lua::network
 		ns["force_script_host"]                        = force_script_host;
 		ns["send_chat_message"]                        = send_chat_message;
 		ns["send_chat_message_to_player"]              = send_chat_message_to_player;
+		ns["get_player_rank"]                          = get_player_rank;
+		ns["get_player_rp"]                            = get_player_rp;
 	}
 }
