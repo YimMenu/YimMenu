@@ -91,11 +91,6 @@ namespace big
 						{
 							components::button("VIEW_DEBUG_THREADS_TAKE_CONTROL"_T, [net_handler] {
 								net_handler->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
-								script::get_current()->yield(10ms);
-								if (selected_thread->m_stack && selected_thread->m_net_component)
-								{
-									net_handler->block_host_migration(true);
-								}
 							});
 						}
 					}

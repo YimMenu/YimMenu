@@ -118,7 +118,6 @@ namespace big
 			if (!stack || !net_component)
 				return;
 
-			((CGameScriptHandlerNetComponent*)thread->m_net_component)->block_host_migration(true);
 			thread->m_context.m_state = rage::eThreadState::unk_3;
 			g.m_hunt_the_beast_thread = thread;
 

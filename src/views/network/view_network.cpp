@@ -389,19 +389,7 @@ namespace big
 			ImGui::Checkbox("KICK_HOST_ON_JOIN"_T.data(), &g.session.kick_host_when_forcing_host);
 		}
 
-		if (ImGui::Checkbox("FORCE_SCRIPT_HOST"_T.data(), &g.session.force_script_host))
-		{
-			if (g.session.force_script_host)
-				g_fiber_pool->queue_job([] {
-					scripts::force_host("freemode"_J);
-					if (auto script = gta_util::find_script_thread("freemode"_J); script && script->m_net_component)
-						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
-
-					scripts::force_host("fmmc_launcher"_J);
-					if (auto script = gta_util::find_script_thread("fmmc_launcher"_J); script && script->m_net_component)
-						((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
-				});
-		}
+		ImGui::Checkbox("FORCE_SCRIPT_HOST"_T.data(), &g.session.force_script_host);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("FORCE_SCRIPT_HOST_DESC"_T.data());
 

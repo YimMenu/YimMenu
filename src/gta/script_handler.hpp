@@ -15,7 +15,7 @@ namespace rage
 	{
 	public:
 		scriptResource* m_data;     // 0x00
-		uint32_t m_unk;        // 0x04
+		uint32_t m_unk;             // 0x04
 		char m_padding[0x0C];       // 0x0C
 		scriptResourceEntry* m_next;// 0x18
 	};
@@ -93,16 +93,17 @@ public:
 	uint8_t m_0xAF;       // 0xAF
 };
 
-class CScriptParticipant
+#pragma pack(push, 8)
+struct CScriptParticipant
 {
-public:
-	char pad_0000[16];                      //0x0000
-	class CNetGamePlayer* m_net_game_player;//0x0010
-	char pad_0018[2];                       //0x0018
-	int16_t m_participant_index;            //0x001A
-	char pad_001C[12];                      //0x001C
-};                                          //Size: 0x0028
-static_assert(sizeof(CScriptParticipant) == 0x28);
+	CScriptParticipant* m_next;
+	CScriptParticipant* m_prev;
+	CNetGamePlayer* m_net_game_player;
+	uint16_t m_participant_id;
+	uint16_t m_participant_index; // or "slot number"
+	int m_join_time;
+	char gap20[8];
+};
 
 class CGameScriptHandlerNetComponent
 {
@@ -117,11 +118,11 @@ public:
 
 	virtual void* send_host_migration_event(CNetGamePlayer* player) = 0;
 
-	virtual void* player_joined(void**, void* msg_ctx) = 0;
+	virtual void player_joined(void**, void* msg_ctx) = 0;
 
-	virtual void* player_joined_ack(void**, void* msg_ctx) = 0;
+	virtual void player_joined_ack(void**, void* msg_ctx) = 0;
 
-	virtual bool _0x38(void*, void*) = 0;// join_script?
+	virtual void player_joined_host_ack(void*, void*) = 0;
 
 	virtual void* _0x40(void*, void*) = 0;
 
@@ -143,7 +144,7 @@ public:
 
 	virtual void* _0x88(void*, void*) = 0;
 
-	virtual void* _0x90(void*, void*) = 0;// HOST_MIGRATION_FAILED
+	virtual void* _0x90(void*, void*) = 0;
 
 	virtual bool _0x98(void*, void*) = 0;
 
@@ -157,21 +158,21 @@ public:
 
 	virtual bool register_player_broadcast_data(int a1, int size, bool a3) = 0;
 
-	virtual bool _0xC8() = 0;// something to do to joining session
+	virtual bool _0xC8() = 0;
 
 	virtual bool _0xD0() = 0;
 
-	virtual bool add_player_to_script(CNetGamePlayer* player, short* outParticipantID, short* outSlot, int* outFailReason) = 0;
+	virtual bool add_player_to_script(CNetGamePlayer* player, short* out_participant_id, short* out_slot_number, int* out_fail_reason) = 0;
 
-	virtual bool add_player_to_script_internal(CNetGamePlayer* player, short participantID, short slot) = 0;// player aka participant
+	virtual bool add_player_to_script_internal(CNetGamePlayer* player, short participant_id, short slot_number) = 0;
 
 	virtual bool remove_player_from_script(CNetGamePlayer* player) = 0;
 
 	virtual void* player_left_impl(CNetGamePlayer*, bool) = 0;
 
-	virtual bool do_host_migration(CNetGamePlayer* player, short host_token, bool unk) = 0;// aka _0xF8
+	virtual bool do_host_migration(CNetGamePlayer* player, short host_token, bool unk) = 0;
 
-	virtual void* leave_from_script() = 0;// calls above function with player = nullptr
+	virtual void* leave_from_script() = 0;
 
 	virtual bool _0x108() = 0;
 
@@ -179,19 +180,34 @@ public:
 
 	virtual bool _0x118() = 0;// related to above function
 
-	CGameScriptHandler* m_script_handler;        //0x0008
-	char pad_0010[32];                           //0x0010
-	class CScriptParticipant* m_host;            //0x0030
-	int16_t m_local_participant_index;           //0x0038
-	char pad_003A[6];                            //0x003A
-	uint32_t m_participant_bitset;               //0x0040
-	char pad_0044[36];                           //0x0044
-	class CScriptParticipant* m_participants[32];//0x0068
-	char pad_0168[12];                           //0x0168
-	int16_t m_num_participants;                  //0x0174
-	char pad_0176[28];                           //0x0176
-	uint8_t m_host_migration_flags;              //0x0192
-	char pad_0193[29];                           //0x0193
+	CGameScriptHandler* m_script_handler;
+	int m_state;
+	int m_join_msg_ack_pending_players;
+	CScriptParticipant* m_first_participant;
+	char gap20[16];
+	CScriptParticipant* m_host;
+	__int16 m_local_participant_index;
+	char pad_003A[6];
+	unsigned int m_participant_bitset;
+	uint16_t m_host_token;
+	CNetGamePlayer* m_last_host;
+	CNetGamePlayer* m_host_migration_target;
+	CNetGamePlayer* m_apparent_host_player;
+	char gap60[8];
+	CScriptParticipant* m_participants[32];
+	char pad_0168[8];
+	int m_next_host_verify_time;
+	char m_max_participants;
+	char pad_0175[23];
+	uint8_t m_num_participants;
+	uint8_t m_num_candidates;
+	uint8_t m_host_ack_error;
+	uint8_t m_host_array_count;
+	uint8_t m_player_array_count;
+	uint8_t m_host_migration_state;
+	unsigned __int8 m_flags;
+	char pad_0193[13];
+	char m_script_status_queried;
 
 	int get_participant_index(CNetGamePlayer* player);
 	bool is_player_a_participant(CNetGamePlayer* player);
@@ -211,18 +227,9 @@ public:
 
 		return m_host->m_net_game_player;
 	}
-
-	// not 100% foolproof
-	inline void block_host_migration(bool toggle)
-	{
-		if (toggle)
-			m_host_migration_flags |= (1 << 7);
-		else
-			m_host_migration_flags &= ~(1 << 7);
-	}
-
 };//Size: 0x01B0
-static_assert(sizeof(CGameScriptHandlerNetComponent) == 0x1B0);
+static_assert(sizeof(CGameScriptHandlerNetComponent) == 0x1A8);
+#pragma pack(pop)
 
 class CRemoteScriptInfo : public CGameScriptId
 {

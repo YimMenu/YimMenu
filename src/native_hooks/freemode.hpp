@@ -71,16 +71,6 @@ namespace big
 			}
 			else
 			{
-				if (g.session.force_script_host && (g.session.fast_join || NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA()))
-				{
-					auto hash = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
-					g_fiber_pool->queue_job([hash] {
-						scripts::force_host(hash);
-						if (auto script = gta_util::find_script_thread(hash); script && script->m_net_component)
-							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
-					});
-				}
-
 				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == "freemode"_J && g.session.fast_join)
 				{
 					scr_functions::set_freemode_session_active({});

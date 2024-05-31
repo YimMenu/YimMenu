@@ -57,8 +57,38 @@ namespace big
 
 			components::button("Remp", [] {
 				if (auto a = gta_util::find_script_thread("freemode"_J))
-					reinterpret_cast<CGameScriptHandlerNetComponent*>(a->m_net_component)
-					    ->remove_player_from_script(g_player_service->get_selected()->get_net_game_player());
+				{
+					auto c = reinterpret_cast<CGameScriptHandlerNetComponent*>(a->m_net_component);
+					bool h = c->is_local_player_host();
+
+					{
+						packet pack;
+						pack.write_message(rage::eNetMessage::MsgScriptLeave);
+						a->m_handler->get_id()->serialize(&pack.m_buffer);
+						pack.send(g_player_service->get_selected()->get_net_game_player()->m_msg_id);
+					}
+
+					script::get_current()->yield(100ms);
+
+					{
+						packet pack;
+						pack.write_message(rage::eNetMessage::MsgScriptHandshakeAck);
+						a->m_handler->get_id()->serialize(&pack.m_buffer);
+						pack.write<int>(1, 3);
+						pack.write<std::uint16_t>(c->m_participants[c->m_local_participant_index]->m_participant_id, 16);
+						pack.write<std::uint16_t>(c->m_local_participant_index, 16);
+						if (h)
+						{
+							pack.write<bool>(true, 1);
+							pack.write<std::uint16_t>(c->m_host_token, 16);
+						}
+						else
+						{
+							pack.write<bool>(false, 1);
+						}
+						pack.send(g_player_service->get_selected()->get_net_game_player()->m_msg_id);
+					}
+				}
 			});
 
 			ImGui::BeginGroup();

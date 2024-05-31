@@ -121,6 +121,20 @@ namespace big
 				NETWORK::NETWORK_CONCEAL_PLAYER(ctx->get_arg<Player>(0), ctx->get_arg<int>(1), ctx->get_arg<int>(2));
 		}
 
+		void NETWORK_GET_SCRIPT_STATUS(rage::scrNativeCallContext* ctx)
+		{
+			if (g.self.fast_respawn)
+			{
+				ctx->set_return_value<int>(4);
+				return;
+			}
+			else
+			{
+				ctx->set_return_value<int>(NETWORK::NETWORK_GET_SCRIPT_STATUS());
+				return;
+			}
+		}
+
 		void RETURN_TRUE(rage::scrNativeCallContext* src)
 		{
 			src->set_return_value<BOOL>(TRUE);
