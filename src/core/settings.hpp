@@ -225,9 +225,10 @@ namespace big
 			reaction request_control_event{"Request Control Event", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
 			reaction report{"Report", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
 			reaction spectate{"Spectate", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
+			reaction chat_spam{"Chat Spam", "REACTION_CHAT_SPAM_NOTIFY", "REACTION_CHAT_SPAM_ANNOUNCE"};
 			interloper_reaction spectate_others{"Spectate Others", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, spectate_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, chat_spam, spectate_others)
 		} reactions{};
 
 		struct player
@@ -421,7 +422,6 @@ namespace big
 			bool chat_commands                                   = false;
 			CommandAccessLevel chat_command_default_access_level = CommandAccessLevel::FRIENDLY;
 
-			bool kick_chat_spammers          = false;
 			bool kick_host_when_forcing_host = false;
 
 			bool explosion_karma = false;
@@ -469,7 +469,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
 			} chat_translator{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator)
 		} session{};
 
 		struct settings

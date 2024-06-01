@@ -37,7 +37,9 @@ namespace big::notify
 
 			if (g.reactions.crash.announce_in_chat)
 			{
-				auto msg = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(player->get_name(), crash));
+				auto p_name = player->get_name();
+
+				auto msg = std::vformat("NOTIFICATION_CRASH_TYPE_BLOCKED"_T, std::make_format_args(p_name, crash));
 				msg = std::format("{} {}", g.session.chat_output_prefix, msg);
 				
 				chat::send_message(msg);

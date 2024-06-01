@@ -1,3 +1,5 @@
+#include "core/data/block_join_reasons.hpp"
+#include "backend/reactions/reaction.hpp"
 #include "views/view.hpp"
 
 namespace big
@@ -23,8 +25,21 @@ namespace big
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			if (reaction.block_joins)
+				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
+				{
+					for (const auto& [key, value] : block_join_reasons)
+					{
+						bool is_selected = (reaction.block_join_reason == key);
+
+						if (ImGui::Selectable(value, is_selected))
+							reaction.block_join_reason = key;
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
 			ImGui::Checkbox("REACTION_KICK_PLAYER"_T.data(), &reaction.kick);
 			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 			ImGui::TreePop();
@@ -44,8 +59,21 @@ namespace big
 			ImGui::Checkbox("NOTIFY"_T.data(), &reaction.notify);
 			ImGui::Checkbox("LOG"_T.data(), &reaction.log);
 			ImGui::Checkbox("REACTION_ADD_TO_DATABASE"_T.data(), &reaction.add_to_player_db);
-			if (reaction.add_to_player_db)
-				ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			ImGui::Checkbox("REACTION_BLOCK_JOINS"_T.data(), &reaction.block_joins);
+			if (reaction.block_joins)
+				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
+				{	
+					for (const auto& [key, value] : block_join_reasons)
+					{
+						bool is_selected = (reaction.block_join_reason == key);
+
+						if (ImGui::Selectable(value, is_selected))
+							reaction.block_join_reason = key;
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
 			ImGui::Checkbox("REACTION_KICK_ATTACKER"_T.data(), &reaction.kick);
 			ImGui::Checkbox("TIMEOUT"_T.data(), &reaction.timeout);
 
@@ -69,27 +97,40 @@ namespace big
 		draw_reaction(g.reactions.bounty);
 		draw_reaction(g.reactions.ceo_kick);
 		draw_reaction(g.reactions.ceo_money);
+		draw_reaction(g.reactions.chat_spam);
+		draw_reaction(g.reactions.clear_ped_tasks);
 		draw_reaction(g.reactions.clear_wanted_level);
 		draw_reaction(g.reactions.crash);
-		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.destroy_personal_vehicle);
+		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.fake_deposit);
 		draw_reaction(g.reactions.force_mission);
 		draw_reaction(g.reactions.force_teleport);
+		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
 		draw_reaction(g.reactions.give_collectible);
 		draw_reaction(g.reactions.gta_banner);
 		draw_reaction(g.reactions.kick_from_interior);
+		draw_reaction(g.reactions.kick_vote);
 		draw_reaction(g.reactions.mc_teleport);
+		draw_reaction(g.reactions.modder_detection);
 		draw_reaction(g.reactions.network_bail);
 		draw_reaction(g.reactions.null_function_kick);
 		draw_reaction(g.reactions.personal_vehicle_destroyed);
 		draw_reaction(g.reactions.remote_off_radar);
+		draw_reaction(g.reactions.remote_ragdoll);
+		draw_reaction(g.reactions.remote_wanted_level);
+		draw_interloper_reaction(g.reactions.remote_wanted_level_others);
+		draw_reaction(g.reactions.report);
+		draw_reaction(g.reactions.report_cash_spawn);
+		draw_reaction(g.reactions.request_control_event);
 		draw_reaction(g.reactions.rotate_cam);
 		draw_reaction(g.reactions.send_to_cutscene);
-		draw_reaction(g.reactions.send_to_location);
 		draw_reaction(g.reactions.send_to_interior);
+		draw_reaction(g.reactions.send_to_location);
 		draw_reaction(g.reactions.sound_spam);
+		draw_reaction(g.reactions.spectate);
 		draw_reaction(g.reactions.spectate_notification);
+		draw_interloper_reaction(g.reactions.spectate_others);
 		draw_reaction(g.reactions.start_activity);
 		draw_reaction(g.reactions.start_script);
 		draw_reaction(g.reactions.teleport_to_warehouse);
@@ -97,21 +138,8 @@ namespace big
 		draw_reaction(g.reactions.trigger_business_raid);
 		draw_reaction(g.reactions.tse_freeze);
 		draw_reaction(g.reactions.tse_sender_mismatch);
-		draw_reaction(g.reactions.vehicle_kick);
 		draw_reaction(g.reactions.turn_into_beast);
-		draw_reaction(g.reactions.remote_wanted_level);
-		draw_interloper_reaction(g.reactions.remote_wanted_level_others);
-		ImGui::Separator();
-		draw_reaction(g.reactions.clear_ped_tasks);
-		draw_reaction(g.reactions.remote_ragdoll);
-		draw_reaction(g.reactions.kick_vote);
-		draw_reaction(g.reactions.modder_detection);
-		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
-		draw_reaction(g.reactions.report);
-		draw_reaction(g.reactions.report_cash_spawn);
-		draw_reaction(g.reactions.request_control_event);
-		draw_reaction(g.reactions.spectate);
-		draw_interloper_reaction(g.reactions.spectate_others);
+		draw_reaction(g.reactions.vehicle_kick);
 
 		components::title("SETTINGS_NOTIFICATIONS"_T);
 		components::sub_title("SETTINGS_NOTIFY_GTA_THREADS"_T);

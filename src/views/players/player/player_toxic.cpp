@@ -25,6 +25,8 @@ namespace big
 			ImGui::SameLine();
 			components::player_command_button<"mission">(g_player_service->get_selected(), {});
 
+			components::player_command_button<"breakgame">(g_player_service->get_selected(), {});
+			ImGui::SameLine();
 			components::player_command_button<"error">(g_player_service->get_selected(), {});
 			ImGui::SameLine();
 			components::player_command_button<"ceoraid">(g_player_service->get_selected(), {});
