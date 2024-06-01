@@ -28,23 +28,17 @@ namespace
 
 	static const char* spam_texts[] = {
 	    "qq", //a chinese chat app
-	    "QQ",
-	    "WWW.",
 	    "www.",
 	    ".cn",
-	    ".CN",
 	    ".cc",
-	    ".CC",
-	    ".TOP",
-	    ".COM",
+	    ".com",
 	    ".top",
 	    "\xE3\x80\x90", //left bracket in Chinese input method
-	    "/Menu",
-	    "Money/",
-	    "Money\\\\",
-	    "Money\\",
+	    "/menu",
+	    "money/",
+	    "money\\\\",
+	    "money\\",
 	    ".gg",
-	    ".GG",
 	    "--->",
 	    "shopgta5",
 	    "doit#",
@@ -56,25 +50,25 @@ namespace
 	    "<font s",
 	    "sellix.io",
 	    "ezcars",
-	    "PLANO INICIAL", // "initial plan"
-	    "REP +",
-	    "20R$", // Brazil currency?
+	    "plano inicial", // "initial plan"
+	    "rep +",
+	    "20r$", // Brazil currency?
 	    "l55.me",
-	    "TRUSTPILOT",
+	    "trustpilot",
 	    "cashlounge",
-	    "Fast Delivery",
+	    "fast delivery",
 	    "yosativa",
 	    "rich2day",
-	    "LevelLifters",
+	    "levellifters",
 	    ". com",
 	    "$1,000,000,000",
-	    "Instant Delivery",
-	    "0 Ban Risk",
-	    "Discord For Cheap Money",
+	    "instant delivery",
+	    "0 ban risk",
+	    "discord for cheap money",
 	    "10-30m",
-	    "Hey Guys! Tired of being poor?",
-	    "GTA CASH",
-	    "Discord todo",
+	    "hey guys! tired of being poor?",
+	    "gta cash",
+	    "discord todo",
 	    "\xE6\x89\xA3\xE6\x89\xA3",             // QQ
 	    "\xE4\xBC\xA0\xE5\xAA\x92",             // AV
 	    "\xE8\x96\x87\xE4\xBF\xA1",             // Wechat
@@ -118,6 +112,7 @@ namespace
 	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
 	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
 	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
+	    "情色影院：сб54.сo | >",                // 6 is cyrillic letter for B
 	};
 }
 
@@ -145,9 +140,12 @@ namespace big::chat
 			}
 		}
 		for (auto e : spam_texts)
-			if (strstr(text, e) != 0)
+		{
+			std::string e_str(e);
+			std::transform(e_str.begin(), e_str.end(), e_str.begin(), ::tolower);
+			if (strstr(text, e_str.c_str()) != 0)
 				return SpamReason::STATIC_DETECTION;
-
+		}
 		return SpamReason::NOT_A_SPAMMER;
 	}
 
