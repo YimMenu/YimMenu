@@ -112,7 +112,7 @@ namespace
 	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
 	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
 	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
-	    "情色影院：сб54.сo | >",                // 6 is cyrillic letter for B
+	    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic
 	};
 }
 
