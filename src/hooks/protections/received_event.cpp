@@ -671,20 +671,21 @@ namespace big
 
 			if (type == WorldStateDataType::Rope)
 			{
-				buffer->Read<int>(9);    // network rope id
-				buffer->Read<float>(19); // pos x
-				buffer->Read<float>(19); // pos y
-				buffer->Read<float>(19); // pos z
-				buffer->Read<float>(19); // rot x
-				buffer->Read<float>(19); // rot y
-				buffer->Read<float>(19); // rot z
-				buffer->Read<float>(16); // length
+				buffer->Read<int>(9);        // network rope id
+				buffer->ReadSigned<int>(19); // pos x
+				buffer->ReadSigned<int>(19); // pos y
+				buffer->Read<int>(19);       // pos z
+				buffer->ReadSigned<int>(19); // rot x
+				buffer->ReadSigned<int>(19); // rot y
+				buffer->Read<int>(19);       // rot z
+				float max_length     = buffer->ReadSignedFloat(16, 100.0f);
 				int type             = buffer->Read<int>(4);
-				float initial_length = buffer->Read<float>(16);
-				float min_length     = buffer->Read<float>(16);
+				float initial_length = buffer->ReadSignedFloat(16, 100.0f);
+				float min_length     = buffer->ReadSignedFloat(16, 100.0f);
 
-				if (type == 0 || initial_length < min_length) // https://docs.fivem.net/natives/?_0xE832D760399EB220
+				if (type == 0 || initial_length < min_length || max_length < min_length || max_length < 0.0f)
 				{
+					LOGF(stream::net_events, WARNING, "{} sent a SCRIPT_WORLD_STATE_EVENT of type Rope that would crash the game. Script Hash: {:X}, Type: {}, Initial Length: {}, Min Length: {}, Max Length: {}", plyr->get_name(), id.m_hash, type, initial_length, min_length, max_length);
 					notify::crash_blocked(source_player, "rope");
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
@@ -699,6 +700,7 @@ namespace big
 				if (pop_group == 0 && (percentage == 0 || percentage == 103))
 				{
 					notify::crash_blocked(source_player, "pop group override");
+					LOGF(stream::net_events, WARNING, "{} sent a SCRIPT_WORLD_STATE_EVENT of type PopGroupOverride that would crash the game. Pop schedule: {}, Pop group: {}, Percentage: {}, Script Hash: {:X}", plyr->get_name(), pop_schedule, pop_group, percentage, id.m_hash);
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					return;
 				}

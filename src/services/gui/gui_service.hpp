@@ -38,6 +38,7 @@ namespace big
 		XML_MAPS,
 
 		NETWORK,
+		CHAT,
 		MISSIONS,
 		SPOOFING,
 		PLAYER_DATABASE,
@@ -139,8 +140,9 @@ namespace big
 		        TAB_DECL(NETWORK),
 		            view::network,
 		            {
-						{TAB_DECL(SPOOFING), view::spoofing}},
+						{TAB_DECL(CHAT), view::chat}},
 						{TAB_DECL(MISSIONS), view::missions}},
+						{TAB_DECL(SPOOFING), view::spoofing}},
 						{TAB_DECL(PLAYER_DATABASE), view::player_database}},
 						{TAB_DECL(SESSION_BROWSER), view::session_browser}},
 						{TAB_DECL(STAT_EDITOR), view::stat_editor}},

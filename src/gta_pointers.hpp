@@ -196,6 +196,7 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid;
 		uint64_t* m_host_token;
+		uint64_t* m_peer_id;
 		rage::rlGamerInfo* m_profile_gamer_info;     // per profile gamer info
 		rage::rlGamerInfo* m_player_info_gamer_info; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications;
@@ -383,6 +384,10 @@ namespace big
 
 		GameDataHash** m_game_data_hash;
 		PVOID m_get_dlc_hash;
+
+		PVOID m_add_gamer_to_session;
+
+		functions::set_head_blend_data m_set_head_blend_data;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

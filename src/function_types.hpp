@@ -16,6 +16,7 @@ enum class PedBones : uint16_t;
 class CNetComplaintMgr;
 class Network;
 class CNetworkObjectMgr;
+class CHeadBlendData;
 
 namespace rage
 {
@@ -218,4 +219,6 @@ namespace big::functions
 	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
 
 	using get_peer_by_security_id = rage::SecurityPeer*(*)(int id);
+
+	using set_head_blend_data = void(*)(CPed* ped, CHeadBlendData* data);
 }

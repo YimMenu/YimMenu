@@ -16,6 +16,8 @@ namespace big
 		if (g.protections.desync_kick)
 			info->m_gamer_info.m_nat_type = 0;
 
+		// info->m_gamer_info.m_host_token = 640860E98FA88A89;
+
 		info->m_num_handles = 0;
 		return g_hooking->get_original<hooks::serialize_join_request_message>()(info, data, size, bits_serialized);
 	}

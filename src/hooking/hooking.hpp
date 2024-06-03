@@ -202,6 +202,7 @@ namespace big
 		static void send_session_detail_msg(rage::netConnectionManager* mgr, rage::netConnection::InFrame* request_frame, rage::rlSessionDetailMsg* msg);
 
 		static std::uint32_t get_dlc_hash(void* mgr, std::uint32_t seed);
+		static bool add_gamer_to_session(rage::netConnectionManager* mgr, std::uint32_t msg_id, int* req_id, RemoteGamerInfoMsg* info, int flags, void* a6);
 	};
 
 	class minhook_keepalive

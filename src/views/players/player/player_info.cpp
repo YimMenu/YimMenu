@@ -123,8 +123,14 @@ namespace big
 						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_MESSAGES_SENT"_T, peer->m_num_messages_batched).c_str());
 						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_SENT"_T, peer->m_num_reliable_messages_batched).c_str());
 						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_RESENT"_T, peer->m_num_resent_reliable_messages_batched).c_str());
-						ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_ENCRYPTION_ATTEMPTS"_T, peer->m_num_encryption_attempts).c_str());
 				    }
+
+					ImGui::Text(std::format("{}: {:X}", "VIEW_PLAYER_INFO_HOST_TOKEN"_T, g_player_service->get_selected()->get_net_data()->m_host_token).c_str());
+					ImGui::SameLine();
+					if (ImGui::Button("Copy"))
+					{
+						ImGui::SetClipboardText(std::format("{:X}", g_player_service->get_selected()->get_net_data()->m_host_token).data());
+					}
 
 				    ImGui::EndGroup();
 

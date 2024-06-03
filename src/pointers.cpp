@@ -653,6 +653,15 @@ namespace big
                 g_pointers->m_gta.m_host_token = ptr.add(3).rip().as<uint64_t*>();
             }
         },
+        // Peer ID
+        {
+            "PI",
+            "48 83 F8 FF 74 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_peer_id = ptr.add(9).rip().as<uint64_t*>();
+            }
+        },
         // Profile Gamer Info
         {
             "PGI",
@@ -1829,6 +1838,24 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_get_dlc_hash = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Add Gamer To Session
+        {
+            "AGTS",
+            "7C E8 EB 23",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_add_gamer_to_session = ptr.add(0x23).rip().as<PVOID>();
+            }
+        },
+        // Set Head Blend Data
+        {
+            "SHBD",
+            "44 88 B2 3A 01",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_head_blend_data = ptr.sub(0x21).as<functions::set_head_blend_data>();
             }
         }
         >(); // don't leave a trailing comma at the end

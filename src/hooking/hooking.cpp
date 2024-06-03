@@ -5,20 +5,6 @@
 #include <player/CNonPhysicalPlayerData.hpp>
 #include <network/CNetGamePlayer.hpp>
 
-bool send_np_data(CNetGamePlayer* plyr, __int64 data, int sz, void* a4, void* a5)
-{
-	auto np         = *(CNonPhysicalPlayerData**)(data + 0x10);
-	np->m_bubble_id = 1; // allocate new bubble (for everyone except the host)
-	if (plyr->m_non_physical_player)
-	{
-		np->m_position = plyr->m_non_physical_player->m_position;
-		LOG(INFO) << "cloned their pos";
-	}
-	big::g_hooking->get_original<send_np_data>()(plyr, data, sz, a4, a5);
-	np->m_bubble_id = 0;
-	return true;
-}
-
 namespace big
 {
 	hooking::hooking() :
@@ -165,6 +151,8 @@ namespace big
 		detour_hook_helper::add<hooks::get_dlc_hash>("GDLCH", g_pointers->m_gta.m_get_dlc_hash);
 
 		// detour_hook_helper::add<send_np_data>("HK0", (PVOID)(((__int64)GetModuleHandleA(0)) + 0x16bfd24));
+
+		detour_hook_helper::add<hooks::add_gamer_to_session>("AGTS", g_pointers->m_gta.m_add_gamer_to_session);
 
 		g_hooking = this;
 	}

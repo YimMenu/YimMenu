@@ -10,6 +10,7 @@ namespace big
 		~fiber_pool();
 
 		void queue_job(std::function<void()> func);
+		void execute_on_game_thread(std::function<void()> func);
 
 		void fiber_tick();
 		static void fiber_func();
