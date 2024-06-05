@@ -143,7 +143,9 @@ namespace big::chat
 		{
 			std::string e_str(e);
 			std::transform(e_str.begin(), e_str.end(), e_str.begin(), ::tolower);
-			if (strstr(text, e_str.c_str()) != 0)
+			std::string text_str(text);
+			std::transform(text_str.begin(), text_str.end(), text_str.begin(), ::tolower);
+			if (strstr(text_str.c_str(), e_str.c_str()) != 0)
 				return SpamReason::STATIC_DETECTION;
 		}
 		return SpamReason::NOT_A_SPAMMER;
