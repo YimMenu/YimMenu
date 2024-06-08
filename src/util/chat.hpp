@@ -27,13 +27,18 @@ namespace
 	}
 
 	static const char* spam_texts[] = {
-	    "qq", //a chinese chat app
+	    // "qq", //a chinese chat app (Maybe not an advertisement)
 	    "www.",
 	    ".cn",
 	    ".cc",
 	    ".com",
 	    ".top",
-	    "\xE3\x80\x90", //left bracket in Chinese input method
+	    "\xE7\x82\xB9cn",  // \xE7\x82\xB9 is chinese(.)
+	    "\xE7\x82\xB9cc",
+	    "\xE7\x82\xB9com",
+	    "\xE7\x82\xB9top",
+	    "\xE3\x80\x90", //left bracket in Chinese input method  
+	    "\xE3\x80\x91", //right bracket in Chinese input method
 	    "/menu",
 	    "money/",
 	    "money\\\\",
@@ -71,6 +76,8 @@ namespace
 	    "discord todo",
 	    "\xE6\x89\xA3\xE6\x89\xA3",             // QQ
 	    "\xE4\xBC\xA0\xE5\xAA\x92",             // AV
+	    "\xE4\xBC\xA0\xE8\xB0\x8B",             // AV
+	    "\xE5\xBE\xAE\xE4\xBF\xA1",             // Wechat
 	    "\xE8\x96\x87\xE4\xBF\xA1",             // Wechat
 	    "\xE7\xBB\xB4\xE4\xBF\xA1",             // Wechat2
 	    "\xE9\xA6\x96\xE5\x8D\x95",             // Shop promotion
@@ -90,10 +97,11 @@ namespace
 	    "\xE4\xBD\x8E\xE4\xBB\xB7",             // Menu promotion
 	    "\xE9\xAB\x98\xE7\xAB\xAF",             // Menu promotion
 	    "\xE8\xA7\x86\xE5\xB1\x8F",             // AV
+	    "\xE6\x88\x90\xE4\xBA\xBA",             // AV
 	    "\xE6\x88\x90\xE5\x85\xA5",             // AV
-	    "\xE5\x85\xA8\xE7\xBD\xB1",             // Shop AD
+	    // "\xE5\x85\xA8\xE7\xBD\xB1",             // Shop AD (It's useless)
 	    "\xE5\x94\xAE\xE5\x90\x8E",             // Shop AD
-	    "Q\xE7\xBE\xA4",                        // QQ group
+	    "q\xE7\xBE\xA4",                        // QQ group
 	    "\xE7\xA6\x8F\xE5\x88\xA9",             // AV
 	    "\xE6\x8A\x96\xE9\x9F\xB3",             // AV
 	    "\xE5\x8A\xA0\xE5\xBE\xAE",             // Wechat
@@ -104,7 +112,8 @@ namespace
 	    "\xE6\xB7\x98\xE5\xAE\x9D",             // Shop
 	    "\xE5\xBA\x97\xE9\x93\xBA",             // Shop
 	    "\xE6\x8E\x8F\xE5\xAE\x9D",             // Shop
-	    "\xE8\x80\x81\xE5\x93\x88",             // Mod shop
+	    "\xE9\x99\xB6\xE5\xAE\x9D",             // Shop
+	    //  "\xE8\x80\x81\xE5\x93\x88",             // Mod shop (Overfitting, unnecessary)
 	    "\xE5\xBE\xAE\xE4\xBF\xA1\xE6\x90\x9C", // Wechat search
 	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // AV
 	    "\xE8\x90\x9D",                         // AV
@@ -112,7 +121,10 @@ namespace
 	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
 	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
 	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
-	    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic
+	    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic  
+	    "\xE8\x89\xB2\xE6\x83\x85",             // Erotic
+	    "\xE7\xBD\x91\xE7\xAB\x99",             // web site in chinese
+	    "\xE7\xBD\x91\xE5\x9D\x80",             // web site in chinese
 	};
 }
 
