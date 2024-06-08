@@ -35,7 +35,7 @@ namespace
 	    ". cn",
 	    ". cc",
 	    ". top",
-	    "\xE7\x82\xB9cn",  // \xE7\x82\xB9 is chinese(.)
+	    "\xE7\x82\xB9cn", //chinese .
 	    "\xE7\x82\xB9cc",
 	    "\xE7\x82\xB9com",
 	    "\xE7\x82\xB9top",
