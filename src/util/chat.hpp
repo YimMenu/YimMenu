@@ -125,6 +125,7 @@ namespace
 	    "\xE8\x89\xB2\xE6\x83\x85",             // Erotic
 	    "\xE7\xBD\x91\xE7\xAB\x99",             // web site in chinese
 	    "\xE7\xBD\x91\xE5\x9D\x80",             // web site in chinese
+	    "\xE8\xA7\x86\xE9\xA2\x91",             // video in chinese
 	};
 }
 
