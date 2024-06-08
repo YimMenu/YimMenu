@@ -121,8 +121,9 @@ namespace
 	    "\xE5\x81\xB7\xE6\x8B\x8D",             // AV
 	    "\xE4\xBC\xA0\xE7\x85\xA4",             // AV
 	    "\xE4\xB9\xB1\xE8\xAE\xBA",             // AV
-	    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic  
+	    "\xE6\x83\x85\xE8\x89\xB2",             // Erotic
 	    "\xE8\x89\xB2\xE6\x83\x85",             // Erotic
+	    "\xE4\xB9\xB1\xE4\xBC\xA6",             // Erotic
 	    "\xE7\xBD\x91\xE7\xAB\x99",             // web site in chinese
 	    "\xE7\xBD\x91\xE5\x9D\x80",             // web site in chinese
 	    "\xE8\xA7\x86\xE9\xA2\x91",             // video in chinese
