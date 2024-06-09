@@ -25,7 +25,7 @@ namespace
 			buf.Write<uint8_t>(hnd.m_padding, sizeof(hnd.m_padding) * 8);
 		}
 	}
-
+	//
 	static const char* spam_texts[] = {
 	    "www.",
 	    ".cn",
@@ -34,17 +34,42 @@ namespace
 	    ".top",
 	    ".co",
 	    ".gg",
+	    ".io",
+	    ".net",
+	    ".vip",
+	    ".club",
+	    ".store",
+	    ".xyz",
+	    ".win",
+	    ".me",
 	    ". cn",
 	    ". cc",
 	    ". top",
 	    ". co",
 	    ". com",
 	    ". gg",
-	    "\xE7\x82\xB9\x63\x6E", //chinese .cn
-	    "\xE7\x82\xB9\x63\x63", //chinese .cc
-	    "\xE7\x82\xB9\x63\x6F\x6D", //chinese .com
-	    "\xE7\x82\xB9\x74\x6F\x70", //chinese .top
-	    "\xE7\x82\xB9\x63\x6f", //chinese .co
+	    ". io",
+	    ". net",
+	    ". vip",
+	    ". club",
+	    ". store",
+	    ". xyz",
+	    ". win",
+	    ". me",
+	    "\xE7\x82\xB9\x63\x6E", // ----- chinese .Domain extension ------ start
+	    "\xE7\x82\xB9\x63\x63", 
+	    "\xE7\x82\xB9\x63\x6F\x6D", 
+	    "\xE7\x82\xB9\x74\x6F\x70", 
+	    "\xE7\x82\xB9\x63\x6f", 
+	    "\x2E\x67\x67",
+	    "\x2E\x69\x6F",
+	    "\x2E\x6E\x65\x74",
+	    "\x2E\x76\x69\x70",
+	    "\x2E\x63\x6C\x75\x62",
+	    "\x2E\x73\x74\x6F\x72\x65",
+	    "\x2E\x78\x79\x7A",
+	    "\x2E\x77\x69\x6E",
+	    "\x2E\x6D\x65",  // ----- chinese .Domain extension ------ end
 	    "\xE3\x80\x90", //left bracket in Chinese input method
 	    "\xE3\x80\x91", //right bracket in Chinese input method
 	    "/menu",
@@ -59,12 +84,10 @@ namespace
 	    "P888",
 	    "gtacash",
 	    "<font s",
-	    "sellix.io",
 	    "ezcars",
 	    "plano inicial", // "initial plan"
 	    "rep +",
 	    "20r$", // Brazil currency?
-	    "l55.me",
 	    "trustpilot",
 	    "cashlounge",
 	    "fast delivery",
