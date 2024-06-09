@@ -32,20 +32,25 @@ namespace
 	    ".cc",
 	    ".com",
 	    ".top",
+	    ".co",
+	    ".gg",
 	    ". cn",
 	    ". cc",
 	    ". top",
-	    "\xE7\x82\xB9cn", //chinese .
-	    "\xE7\x82\xB9cc",
-	    "\xE7\x82\xB9com",
-	    "\xE7\x82\xB9top",
+	    ". co",
+	    ". com",
+	    ". gg",
+	    "\xE7\x82\xB9\x63\x6E", //chinese .cn
+	    "\xE7\x82\xB9\x63\x63", //chinese .cc
+	    "\xE7\x82\xB9\x63\x6F\x6D", //chinese .com
+	    "\xE7\x82\xB9\x74\x6F\x70", //chinese .top
+	    "\xE7\x82\xB9\x63\x6f", //chinese .co
 	    "\xE3\x80\x90", //left bracket in Chinese input method
 	    "\xE3\x80\x91", //right bracket in Chinese input method
 	    "/menu",
 	    "money/",
 	    "money\\\\",
 	    "money\\",
-	    ".gg",
 	    "--->",
 	    "shopgta5",
 	    "doit#",
@@ -66,7 +71,6 @@ namespace
 	    "yosativa",
 	    "rich2day",
 	    "levellifters",
-	    ". com",
 	    "$1,000,000,000",
 	    "instant delivery",
 	    "0 ban risk",
@@ -80,7 +84,8 @@ namespace
 	    "\xE4\xBC\xA0\xE8\xB0\x8B",             // AV
 	    "\xE5\xBE\xAE\xE4\xBF\xA1",             // Wechat
 	    "\xE8\x96\x87\xE4\xBF\xA1",             // Wechat
-	    "\xE7\xBB\xB4\xE4\xBF\xA1",             // Wechat2
+	    "\xE5\xBE\xBD\xE4\xBF\xA1",             // Wechat
+	    "\xE7\xBB\xB4\xE4\xBF\xA1",             // Wechat
 	    "\xE9\xA6\x96\xE5\x8D\x95",             // Shop promotion
 	    "\xE5\x8C\x85\xE8\xB5\x94",             // Shop promotion
 	    "\xE9\x9B\xB6\xE5\xB0\x81",             // Menu promotion
@@ -113,7 +118,6 @@ namespace
 	    "\xE5\xBA\x97\xE9\x93\xBA",             // Shop
 	    "\xE6\x8E\x8F\xE5\xAE\x9D",             // Shop
 	    "\xE9\x99\xB6\xE5\xAE\x9D",             // Shop
-	    "\xE5\xBE\xAE\xE4\xBF\xA1\xE6\x90\x9C", // Wechat search
 	    "\xE7\xBE\x8E\xE5\xA5\xB3",             // AV
 	    "\xE8\x90\x9D",                         // AV
 	    "\xE7\xBD\x91\xE7\xBA\xA2",             // AV
