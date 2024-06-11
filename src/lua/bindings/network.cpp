@@ -211,7 +211,7 @@ namespace lua::network
 	// Call get_player_rank(playerID)
 	static int get_player_rank(int pid)
 	{
-		if (big::g_player_service->get_by_id(pid)->id())
+		if (big::g_player_service->get_by_id(pid))
 		{
 			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
 			return stats.Rank;
@@ -226,7 +226,7 @@ namespace lua::network
 	// Call get_player_rp(playerID)
 	static int get_player_rp(int pid)
 	{
-		if (big::g_player_service->get_by_id(pid)->id())
+		if (big::g_player_service->get_by_id(pid))
 		{
 			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
 			return stats.RP;
