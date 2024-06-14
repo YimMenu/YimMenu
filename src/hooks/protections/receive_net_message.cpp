@@ -262,6 +262,7 @@ namespace big
 				}
 				break;
 			}
+			case rage::eNetMessage::MsgTextMessage: return true;
 			case rage::eNetMessage::MsgNonPhysicalData:
 			{
 				buffer.Read<int>(7); // size
