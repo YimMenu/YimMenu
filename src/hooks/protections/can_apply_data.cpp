@@ -1663,6 +1663,7 @@ namespace big
 					notify::crash_blocked(sender, "invalid interior");
 					return true;
 				}
+				break;
 			}
 			case sync_node_id("CPedMovementGroupDataNode"):
 			{
