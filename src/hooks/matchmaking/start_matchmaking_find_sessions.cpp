@@ -31,9 +31,9 @@ namespace big
 						{
 							auto host_rid =
 							    g_matchmaking_service->get_found_sessions()[i].info.m_net_player_data.m_gamer_handle.m_rockstar_id;
-
-							if (g.session_browser.without_host_modders && g_player_database_service->get_player_by_rockstar_id(host_rid)
-							    && g_player_database_service->get_player_by_rockstar_id(host_rid)->block_join)
+							auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
+							
+							if (g.session_browser.exclude_modder_sessions && player && player->block_join)
 								continue;
 
 							results[*num_sessions_found] = g_matchmaking_service->get_found_sessions()[i].info;

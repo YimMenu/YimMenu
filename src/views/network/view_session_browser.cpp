@@ -35,9 +35,9 @@ namespace big
 						continue;
 
 					auto host_rid = session.info.m_net_player_data.m_gamer_handle.m_rockstar_id;
+					auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
 
-					if (g.session_browser.without_host_modders && g_player_database_service->get_player_by_rockstar_id(host_rid)
-					    && g_player_database_service->get_player_by_rockstar_id(host_rid)->block_join)
+					if (g.session_browser.exclude_modder_sessions && player && player->block_join)
 						continue;
 
 					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
@@ -165,7 +165,10 @@ namespace big
 				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
 			}
 
-			ImGui::Checkbox("WITHOUT_HOST_MODDERS"_T.data(), &g.session_browser.without_host_modders);
+			ImGui::Checkbox("EXCLUDE_MODDER_SESSIONS"_T.data(), &g.session_browser.exclude_modder_sessions);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
 
 			ImGui::TreePop();
 		}
