@@ -2,7 +2,7 @@
 
 Table containing functions for modifying the menu GUI.
 
-## Functions (7)
+## Functions (8)
 
 ### `get_tab(tab_name)`
 
@@ -28,6 +28,19 @@ tab = gui.get_tab(tab_name)
 **Example Usage:**
 ```lua
 tab = gui.add_tab(tab_name)
+```
+
+### `show_success(title, message)`
+
+Shows a success to the user with the given title and message.
+
+- **Parameters:**
+  - `title` (string)
+  - `message` (string)
+
+**Example Usage:**
+```lua
+gui.show_success(title, message)
 ```
 
 ### `show_message(title, message)`
