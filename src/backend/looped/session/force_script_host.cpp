@@ -46,7 +46,7 @@ namespace big
 						net_component->m_script_handler->get_id()->serialize(&pack.m_buffer);
 						pack.write<bool>(true, 1);
 						pack.write<bool>(true, 1);
-						pack.write<std::uint16_t>(0xFFFF, 1);
+						pack.write<std::uint16_t>(0xFFFF, 16);
 
 						for (auto& player : g_player_service->players())
 						{

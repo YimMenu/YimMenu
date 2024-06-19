@@ -5,7 +5,7 @@ add_compile_definitions(CXX_FORMAT_SUPPORT)
 FetchContent_Declare(
     gtav_classes
     GIT_REPOSITORY https://github.com/maybegreat48/GTAV-Classes.git
-    GIT_TAG        642cac51ddd518f4b4b7d00771abc417e3aed64a
+    GIT_TAG        aa973216cc5215ff9ff70f467b96637f417c9bdd
     GIT_PROGRESS TRUE
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""

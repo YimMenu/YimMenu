@@ -73,7 +73,7 @@ namespace rage
 		{
 			return m_bitsRead;
 		}
-		bool Seek(uint32_t bits)
+		void Seek(uint32_t bits)
 		{
 			if (bits >= 0)
 			{
@@ -81,7 +81,12 @@ namespace rage
 				if (bits <= length)
 					m_bitsRead = bits;
 			}
-			return false;
+		}
+		void SeekForward(uint32_t bits)
+		{
+			m_bitsRead += static_cast<uint32_t>(bits);
+			if (m_bitsRead > m_highestBitsRead)
+				m_highestBitsRead = m_bitsRead;
 		}
 		bool WriteBool(bool boolean)
 		{

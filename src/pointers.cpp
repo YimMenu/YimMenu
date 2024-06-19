@@ -1837,6 +1837,7 @@ namespace big
             "74 0B 41 BC 10",
             [](memory::handle ptr)
             {
+                g_pointers->m_gta.m_dlc_manager = ptr.sub(0x11).rip().as<void**>();
                 g_pointers->m_gta.m_get_dlc_hash = ptr.sub(0xA).rip().as<PVOID>();
             }
         },
@@ -1856,6 +1857,33 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_set_head_blend_data = ptr.sub(0x21).as<functions::set_head_blend_data>();
+            }
+        },
+        // Object Ids Offset
+        {
+            "OIO",
+            "FF 50 50 48 83 C7 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_object_ids_offset = ptr.add(0xF).as<std::uint32_t*>();
+            }
+        },
+        // Error Packet Memmove
+        {
+            "EPM",
+            "49 8D 4C 24 60 44 8B C0 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_packet_memmove = ptr.add(0x8).as<PVOID>();
+            }
+        },
+        // Create Pool Item
+        {
+            "CPI",
+            "18 83 F9 FF 75",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_create_pool_item = ptr.sub(0x6).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

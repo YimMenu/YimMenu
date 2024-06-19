@@ -50,7 +50,8 @@ namespace big
 	    "COLLECTIBLE",
 	    "FIRST_VEH",
 	    "RANK_UP", 
-		"COMMS_TEXT",
+		"COMMS_TEXT", 
+		"BLAST",
 	});
 
 	std::string hex_encode(std::string_view input) {

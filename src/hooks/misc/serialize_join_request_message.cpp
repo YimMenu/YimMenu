@@ -5,6 +5,7 @@
 #include <network/CNetGamePlayerDataMsg.hpp>
 #include <network/Network.hpp>
 #include <network/RemoteGamerInfoMsg.hpp>
+#include <network/CMsgJoinRequest.hpp>
 
 namespace big
 {
@@ -16,15 +17,14 @@ namespace big
 		if (g.protections.desync_kick)
 			info->m_gamer_info.m_nat_type = 0;
 
-		// info->m_gamer_info.m_host_token = 640860E98FA88A89;
-
 		info->m_num_handles = 0;
+
 		return g_hooking->get_original<hooks::serialize_join_request_message>()(info, data, size, bits_serialized);
 	}
 
-	bool hooks::serialize_join_request_message_2(__int64 msg, void* buf, int size, int* bits_serialized)
+	bool hooks::serialize_join_request_message_2(CMsgJoinRequest* msg, void* buf, int size, int* bits_serialized)
 	{
-		auto& data = *(CNetGamePlayerDataMsg*)(msg + 0x128);
+		auto& data = msg->m_player_data_msg;
 
 		if (g.session.join_in_sctv_slots)
 			data.m_matchmaking_group = 4;

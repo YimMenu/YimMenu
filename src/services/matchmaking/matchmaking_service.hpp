@@ -24,6 +24,7 @@ namespace big
 			int player_count;
 			int region;
 			int language;
+			int multiplex_count = 1;
 		};
 
 		struct session
@@ -35,6 +36,7 @@ namespace big
 
 	private:
 		int m_num_sessions_found = 0;
+		int m_num_valid_sessions = 0;
 		bool m_active            = false;
 		session m_found_sessions[MAX_SESSIONS_TO_FIND];
 		std::unordered_map<std::uint32_t, std::vector<MatchmakingId>> m_multiplexed_sessions;
@@ -54,6 +56,11 @@ namespace big
 		inline int get_num_found_sessions()
 		{
 			return m_num_sessions_found;
+		}
+
+		inline int get_num_valid_sessions()
+		{
+			return m_num_valid_sessions;
 		}
 
 		inline session* get_found_sessions()

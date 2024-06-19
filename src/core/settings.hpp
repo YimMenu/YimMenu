@@ -83,6 +83,30 @@ namespace big
 
 		rage::scrThread* m_mission_creator_thread = nullptr;
 
+		struct script_block_opts
+		{
+			bool lsc = false;
+			bool atms = false;
+			bool interiors = false;
+			bool drones    = false;
+			bool strip_club = false;
+			bool ammunation = false;
+			bool stores     = false;
+			bool sitting    = false;
+			bool sleeping    = false;
+			bool casino_games = false;
+			bool arcade_games = false;
+			bool prostitutes  = false;
+			bool movies       = false;
+			bool street_dealer = false;
+			bool impromptu_dm   = false;
+			bool impromptu_race = false;
+			bool gang_attacks   = false;
+			bool vending_machines = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_block_opts, lsc, atms, interiors, drones, strip_club, ammunation, stores, sitting, sleeping, casino_games, arcade_games, prostitutes, movies, street_dealer, impromptu_dm, impromptu_race, gang_attacks, vending_machines);
+		};
+
 		struct cmd_executor
 		{
 			bool enabled = false;
@@ -180,13 +204,13 @@ namespace big
 		struct reactions
 		{
 			// first constructor param is an internal identifier for the event
-			// it's never shown in the UI
 			reaction bounty{"Bounty", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
-			reaction break_game{"Bounty", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
+			reaction break_game{"Break Game", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
 			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
 			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
 			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
 			reaction crash{"Crash", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
+			reaction delete_vehicle{"Delete Vehicle", "REACTION_DELETE_VEHICLE_NOTIFY", "REACTION_DELETE_VEHICLE_ANNOUNCE"};
 			reaction end_session_kick{"End Session Kick", "REACTION_END_SESSION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
 			reaction fake_deposit{"Fake Deposit", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
 			reaction force_mission{"Force Mission", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
@@ -229,7 +253,7 @@ namespace big
 			reaction spectate{"Spectate", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
 			interloper_reaction spectate_others{"Spectate Others", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, spectate_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, delete_vehicle, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, spectate_others)
 		} reactions{};
 
 		struct player
@@ -445,6 +469,8 @@ namespace big
 			int send_to_apartment_idx = 1;
 			int send_to_warehouse_idx = 1;
 
+			script_block_opts script_block_opts;
+
 			// not to be saved
 			std::atomic_bool spoof_host_token_dirty = true;
 			std::uint64_t original_host_token = 0;
@@ -475,7 +501,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
 			} chat_translator{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, spoof_host_token_type, custom_host_token, hide_token_spoofing_when_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, spoof_host_token_type, custom_host_token, hide_token_spoofing_when_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator, script_block_opts)
 		} session{};
 
 		struct settings
@@ -1053,12 +1079,14 @@ namespace big
 			int player_count_filter_minimum  = 0;
 			int player_count_filter_maximum  = 32;
 
+			bool filter_multiplexed_sessions = false;
+
 			int sort_method    = 0;
 			int sort_direction = 0;
 
 			bool replace_game_matchmaking = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, filter_multiplexed_sessions, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter)
 		} session_browser{};
 
 		struct session_protection

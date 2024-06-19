@@ -2,6 +2,9 @@
 #include "services/players/player_service.hpp"
 #include "util/notify.hpp"
 #include "gta/pools.hpp"
+#include "gta_util.hpp"
+
+#include <network/netObjectIds.hpp>
 
 namespace big
 {
@@ -11,6 +14,38 @@ namespace big
 		{
 			notify::crash_blocked(src, "out of bounds object type");
 			return;
+		}
+
+		// can delete objects here too
+		if (dst && dst->m_player_info && dst->m_player_info->m_ped && dst->m_player_info->m_ped->m_net_object
+		    && object_id == dst->m_player_info->m_ped->m_net_object->m_object_id) [[unlikely]]
+		{
+			notify::crash_blocked(src, "player create");
+			return;
+		}
+
+		if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
+		    && object_id == g_local_player->m_vehicle->m_net_object->m_object_id) [[unlikely]]
+		{
+			if (auto plyr = g_player_service->get_by_id(src->m_player_id))
+			{
+				g.reactions.delete_vehicle.process(plyr);
+			}
+			return;
+		}
+
+		if (auto object = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, object_id, true)) [[likely]]
+		{
+			if (object->m_object_type == (int)eNetObjType::NET_OBJ_TYPE_PLAYER && object->m_owner_id != src->m_player_id) [[unlikely]]
+			{
+				std::string target = "<UNKNOWN>";
+
+				if (auto tgt = g_player_service->get_by_id(object->m_owner_id))
+					target = tgt->get_name();
+
+				LOGF(stream::net_sync, WARNING, "Rejecting clone create from {}, who is trying to delete {}'s player ped", src->get_name(), target);
+				return;
+			}
 		}
 
 		switch (object_type)
@@ -29,6 +64,12 @@ namespace big
 				g_notification_service.push_warning("Protections", "Low vehicle allocator size");
 				return;
 			}
+		}
+
+		if (gta_util::get_net_object_ids()->is_object_id_usable(object_id))
+		{
+			LOGF(stream::net_sync, WARNING, "{} sent us an object create request with an object ID that is in our usable object ID list. Somebody lied to us...", src->get_name());
+			gta_util::get_net_object_ids()->remove_object_id(object_id);
 		}
 
 		auto plyr = g_player_service->get_by_id(src->m_player_id);

@@ -406,6 +406,39 @@ namespace big
 	{
 		ImGui::SeparatorText("SESSION_CONTROL"_T.data());
 
+		ImGui::BeginGroup();
+		ImGui::Checkbox("SCRIPT_BLOCK_AMMUNATION"_T.data(), &g.session.script_block_opts.ammunation);
+		ImGui::Checkbox("SCRIPT_BLOCK_ATMS"_T.data(), &g.session.script_block_opts.atms);
+		ImGui::Checkbox("SCRIPT_BLOCK_ARCADE_GAMES"_T.data(), &g.session.script_block_opts.arcade_games);
+		ImGui::Checkbox("SCRIPT_BLOCK_CASINO_GAMES"_T.data(), &g.session.script_block_opts.casino_games);
+		ImGui::Checkbox("SCRIPT_BLOCK_DRONES"_T.data(), &g.session.script_block_opts.drones);
+		ImGui::Checkbox("SCRIPT_BLOCK_GANG_ATTACKS"_T.data(), &g.session.script_block_opts.gang_attacks);
+		ImGui::Checkbox("SCRIPT_BLOCK_IMPROMPTU_DEATHMATCHES"_T.data(), &g.session.script_block_opts.impromptu_dm);
+		ImGui::Checkbox("SCRIPT_BLOCK_IMPROMPTU_RACES"_T.data(), &g.session.script_block_opts.impromptu_race);
+		ImGui::Checkbox("SCRIPT_BLOCK_INTERIORS"_T.data(), &g.session.script_block_opts.interiors);
+		if (ImGui::IsItemHovered()) 
+			ImGui::SetTooltip("SCRIPT_BLOCK_INTERIORS_DESC"_T.data());
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
+		ImGui::Checkbox("SCRIPT_BLOCK_LSC"_T.data(), &g.session.script_block_opts.lsc);
+		ImGui::Checkbox("SCRIPT_BLOCK_MOVIES"_T.data(), &g.session.script_block_opts.movies);
+		ImGui::Checkbox("SCRIPT_BLOCK_PROSTITUTES"_T.data(), &g.session.script_block_opts.prostitutes);
+		ImGui::Checkbox("SCRIPT_BLOCK_SITTING"_T.data(), &g.session.script_block_opts.sitting);
+		ImGui::Checkbox("SCRIPT_BLOCK_SLEEPING"_T.data(), &g.session.script_block_opts.sleeping);
+		ImGui::Checkbox("SCRIPT_BLOCK_STORES"_T.data(), &g.session.script_block_opts.stores);
+		ImGui::Checkbox("SCRIPT_BLOCK_STREET_DEALER"_T.data(), &g.session.script_block_opts.street_dealer);
+		ImGui::Checkbox("SCRIPT_BLOCK_STRIP_CLUB"_T.data(), &g.session.script_block_opts.strip_club);
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("SCRIPT_BLOCK_STRIP_CLUB_DESC"_T.data());
+		ImGui::Checkbox("SCRIPT_BLOCK_STRIP_CLUB"_T.data(), &g.session.script_block_opts.vending_machines);
+		ImGui::EndGroup();
+
+		ImGui::SameLine();
+
+		ImGui::BeginGroup();
 		components::sub_title("REQUIRES_SCRIPT_HOST"_T);
 		ImGui::Checkbox("DISABLE_CEO_MONEY"_T.data(), &g.session.block_ceo_money);
 		if (ImGui::IsItemHovered())
@@ -417,6 +450,7 @@ namespace big
 		components::script_patch_checkbox("BLOCK_MUGGERS"_T, &g.session.block_muggers, "BLOCK_MUGGERS_DESC"_T.data());
 		components::script_patch_checkbox("BLOCK_CEO_RAIDS"_T, &g.session.block_ceo_raids, "BLOCK_CEO_RAIDS_DESC"_T);
 		components::command_checkbox<"blockceos">();
+		ImGui::EndGroup();
 	}
 
 	void render_session_globals()

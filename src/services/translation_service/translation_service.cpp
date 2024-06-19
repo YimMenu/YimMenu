@@ -308,6 +308,11 @@ namespace big
 				case 12: preferred_lang = "zh_CN"; break;
 				}
 
+				if (game_lang == 12 || game_lang == 9)
+				{
+					g.session_browser.filter_multiplexed_sessions = true;
+				}
+
 				if (does_language_exist(preferred_lang))
 				{
 					m_local_index.selected_language = preferred_lang;

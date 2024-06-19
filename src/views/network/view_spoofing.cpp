@@ -180,13 +180,14 @@ namespace big
 				for (int i = 0; i < 15; i++)
 				{
 					ImGui::PushID(i);
+					ImGui::SetNextItemWidth(200);
 					if (ImGui::InputScalar("##data_hash_value", ImGuiDataType_U32, &g.spoofing.game_data_hash[i], nullptr, nullptr, "%08X", ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase))
 					{
 						g.spoofing.game_data_hash_dirty = true;
 					}
 					ImGui::PopID();
 
-					if (i % 3 == 0 && i != 15)
+					if (((i - 1) % 3) != 0 && i != 14)
 					{
 						ImGui::SameLine();
 					}
@@ -195,11 +196,12 @@ namespace big
 			}
 		}
 
-		ImGui::Checkbox("SPOOF_DLC_HASH"_T.data(), &g.spoofing.spoof_dlc_hash);
+		components::command_checkbox<"spoofdlchash">();
 		if (g.spoofing.spoof_dlc_hash)
 		{
 			ImGui::SameLine();
-			ImGui::InputScalar("##dlc_hash_value", ImGuiDataType_U32, &g.spoofing.dlc_hash, nullptr, nullptr, "%08X", ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase);
+			components::command_button<"storedlchash">();
+			ImGui::InputScalar("Value", ImGuiDataType_U32, &g.spoofing.dlc_hash, nullptr, nullptr, "%08X", ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase);
 		}
 	}
 }
