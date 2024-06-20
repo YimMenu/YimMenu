@@ -10,10 +10,8 @@ namespace big
 {
 	void set_peer_id_upper(std::uint64_t upper)
 	{
-		LOG(INFO) << HEX_TO_UPPER(*g_pointers->m_gta.m_peer_id) << " OLD";
 		*g_pointers->m_gta.m_peer_id &= 0xFFFFFFFF;
 		*g_pointers->m_gta.m_peer_id |= (upper << 32);
-		LOG(INFO) << HEX_TO_UPPER(*g_pointers->m_gta.m_peer_id) << " NEW";
 
 		if (gta_util::get_network()->m_game_session_ptr)
 			gta_util::get_network()->m_game_session_ptr->m_local_player.m_player_data.m_peer_id = *g_pointers->m_gta.m_peer_id;
@@ -54,7 +52,6 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			LOG(INFO) << *g_pointers->m_gta.m_host_token;
 			g.session.original_host_token = *g_pointers->m_gta.m_host_token;
 		}
 
