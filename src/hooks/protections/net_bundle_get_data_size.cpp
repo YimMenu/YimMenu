@@ -9,7 +9,7 @@ namespace big
 
 		auto return_address = static_cast<uint8_t*>(_ReturnAddress());
 
-		if (return_address[0] == 0x33 && ret > 128) [[unlikely]]
+		if (return_address[0] == 0x33 && ret > 128)
 		{
 			notify::crash_blocked(nullptr, "out of bounds error packet data size");
 			return 0;
