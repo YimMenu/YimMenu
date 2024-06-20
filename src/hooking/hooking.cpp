@@ -141,6 +141,8 @@ namespace big
 		detour_hook_helper::add<hooks::unadvertise_session>("US", g_pointers->m_gta.m_unadvertise_session);
 		detour_hook_helper::add<hooks::send_session_detail_msg>("SSDM", g_pointers->m_gta.m_send_session_detail_msg);
 
+		detour_hook_helper::add<hooks::net_bundle_get_data_size>("NBGDS", g_pointers->m_gta.m_net_bundle_get_data_size);
+
   
 		detour_hook_helper::add<hooks::write_node_data>("WND", g_pointers->m_gta.m_write_node_data);
 		detour_hook_helper::add<hooks::can_send_node_to_player>("CSNTP", g_pointers->m_gta.m_can_send_node_to_player);

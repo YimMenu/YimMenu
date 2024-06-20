@@ -200,6 +200,8 @@ namespace big
 		static bool update_session_advertisement(int profile_index, MatchmakingId* id, int num_slots, int available_slots, rage::rlSessionInfo* info, MatchmakingAttributes* data, rage::rlTaskStatus* status);
 		static bool unadvertise_session(int profile_index, MatchmakingId* id, rage::rlTaskStatus* status);
 		static void send_session_detail_msg(rage::netConnectionManager* mgr, rage::netConnection::InFrame* request_frame, rage::rlSessionDetailMsg* msg);
+
+		static uint32_t net_bundle_get_data_size(__int64 _this);
 	};
 
 	class minhook_keepalive

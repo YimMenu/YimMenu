@@ -377,6 +377,8 @@ namespace big
 		PVOID m_send_session_detail_msg;
 
 		PVOID m_session_request_patch;
+
+		PVOID m_net_bundle_get_data_size;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

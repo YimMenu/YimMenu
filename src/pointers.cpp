@@ -1803,6 +1803,15 @@ namespace big
             {
                 g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
             }
+        },
+        // Net Bundle Get Data Size
+        {
+            "NBGDS",
+            "49 8B 5F 10 49 8B CE",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_net_bundle_get_data_size = ptr.add(8).rip().as<PVOID>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
