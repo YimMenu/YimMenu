@@ -355,22 +355,12 @@ namespace big
 			CGameScriptId script;
 			script_id_deserialize(script, buffer);
 
-			LOGF(stream::net_messages, VERBOSE, "MsgScriptJoin: {} {:X} {}", peer->m_info.name, script.m_hash, script.m_instance_id);
-
 			if (player && handle_block_script(player, script, event->m_msg_id))
 			{
 				LOGF(stream::net_messages, WARNING, "Denying script request from {} (hash={:X}, instance={})", player->get_name(), script.m_hash, script.m_instance_id);
 				return true;
 			}
 
-			break;
-		}
-		case rage::eNetMessage::MsgScriptHandshake:
-		{
-			CGameScriptId script;
-			script_id_deserialize(script, buffer);
-
-			LOGF(stream::net_messages, VERBOSE, "MsgScriptHandshake: {} {:X} {}", peer->m_info.name, script.m_hash, script.m_instance_id);
 			break;
 		}
 		case rage::eNetMessage::MsgScriptHostRequest:
