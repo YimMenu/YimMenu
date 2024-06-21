@@ -565,6 +565,7 @@ namespace big
 				if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
 					&& g_local_player->m_vehicle->m_net_object->m_object_id == entity)
 				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					LOGF(stream::net_events, WARNING, "Blocked SCRIPT_ENTITY_STATE_CHANGE_EVENT of type SetVehicleLockState from {} on our local vehicle", plyr->get_name());
 					return;
 				}
@@ -574,6 +575,7 @@ namespace big
 				if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
 				    && g_local_player->m_vehicle->m_net_object->m_object_id == entity)
 				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					LOGF(stream::net_events, WARNING, "Blocked SCRIPT_ENTITY_STATE_CHANGE_EVENT of type SetVehicleExclusiveDriver from {} on our local vehicle", plyr->get_name());
 					g.reactions.vehicle_kick.process(plyr);
 					return;
@@ -583,6 +585,7 @@ namespace big
 			{
 				if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id)
 				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					LOGF(stream::net_events, WARNING, "Blocked SCRIPT_ENTITY_STATE_CHANGE_EVENT of type SetPedFacialIdleAnimOverride from {} on our local player", plyr->get_name());
 					return;
 				}
@@ -878,6 +881,7 @@ namespace big
 		{
 			if (scan_weapon_damage_event(event_manager, source_player, target_player, event_index, event_handled_bitset, buffer))
 			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
 			break;
