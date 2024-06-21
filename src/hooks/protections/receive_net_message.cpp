@@ -155,9 +155,6 @@ namespace big
 			    name,
 			    rid.m_rockstar_id);
 
-			std::ostringstream pkt_data_log;
-
-
 			static std::ofstream log(g_file_manager.get_project_file("./packets.log").get_path(), std::ios::app);
 			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << log_msg << std::endl;
 			log.flush();
