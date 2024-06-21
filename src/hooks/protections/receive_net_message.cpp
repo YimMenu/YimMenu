@@ -161,8 +161,6 @@ namespace big
 			static std::ofstream log(g_file_manager.get_project_file("./packets.log").get_path(), std::ios::app);
 			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] " << log_msg << std::endl;
 			log.flush();
-
-			LOG(VERBOSE) << log_msg;
 		}
 	}
 
