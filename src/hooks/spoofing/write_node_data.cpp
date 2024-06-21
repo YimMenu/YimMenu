@@ -53,17 +53,6 @@ namespace
 		else
 			return nullptr;
 	}
-
-	int get_next_token_value(int prev_token)
-	{
-		for (int i = 0; i < 0x1F; i++)
-		{
-			if ((i << 27) - (prev_token << 27) > 0)
-				return i;
-		}
-
-		return 0;
-	}
 }
 
 namespace big
