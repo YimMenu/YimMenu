@@ -437,7 +437,7 @@ namespace big
 		}
 		case rage::eNetMessage::MsgRadioStationSync:
 		{
-			if (!session || is_host_of_session(session, event->m_peer_id))
+			if (!session || !is_host_of_session(session, event->m_peer_id))
 			{
 				LOGF(stream::net_messages, WARNING, "{} sent MsgRadioStationSync, but is not the host", peer->m_info.name);
 				return true;
