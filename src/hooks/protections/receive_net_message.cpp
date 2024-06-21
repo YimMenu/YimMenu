@@ -723,11 +723,7 @@ namespace big
 
 				    std::format("{} {}", player->get_name(), "IS_A_SPAMMER"_T.data()));
 				player->is_spammer = true;
-				if (g.session.kick_chat_spammers
-				    && !(player->is_trusted || (player->is_friend() && g.session.trust_friends) || g.session.trust_session))
-				{
-					dynamic_cast<player_command*>(command::get("smartkick"_J))->call(player, {});
-				}
+				g.reactions.chat_spam.process(player);
 				return true;
 			}
 			else
