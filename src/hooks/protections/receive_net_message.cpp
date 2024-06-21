@@ -166,7 +166,7 @@ namespace big
 
 	bool is_host_of_session(rage::snSession* session, std::uint32_t peer_id)
 	{
-		if (!session || peer_id != -1)
+		if (!session || peer_id == -1)
 			return false;
 
 		if (auto player = session->get_player_by_token(session->m_host_token))
