@@ -266,13 +266,12 @@ namespace big
 		components::command_button<"deletevehall">({});
 		components::command_button<"ragdollall">({}, "RAGDOLL_PLAYERS"_T);
 		components::command_button<"intkickall">({}, "KICK_ALL_FROM_INTERIORS"_T);
-		components::command_button<"breakgameall">({});
+		components::command_button<"missionall">({});
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		components::command_button<"missionall">({});
 		components::command_button<"errorall">({});
 		components::command_button<"ceoraidall">({});
 		components::button("TRIGGER_MC_RAID"_T, [] {
