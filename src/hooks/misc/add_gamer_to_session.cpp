@@ -13,7 +13,6 @@ namespace big
 		if (g.session.hide_token_spoofing_when_host
 		    && info->m_gamer_info.m_gamer_handle.m_rockstar_id == g_player_service->get_self()->get_rockstar_id())
 		{
-			LOG(INFO) << "actually reached here";
 			info->m_gamer_info.m_host_token = g.session.original_host_token;
 			info->m_gamer_info.m_peer_id = (info->m_gamer_info.m_peer_id & 0xFFFFFFFF) | (g.session.original_host_token << 32); // TODO: P2pSecurity info message
 		}
