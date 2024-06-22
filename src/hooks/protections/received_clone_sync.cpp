@@ -45,9 +45,6 @@ namespace big
 		if (plyr && plyr->block_clone_sync) [[unlikely]]
 			return eAckCode::ACKCODE_FAIL;
 
-		if (g_local_player && g_local_player->m_net_object && object_id == g_local_player->m_net_object->m_object_id)
-			LOG(INFO) << "local player sync recieved";
-
 		g.m_syncing_player      = src;
 		g.m_syncing_object_type = object_type;
 
