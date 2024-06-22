@@ -5,51 +5,51 @@
 namespace big
 {
 	const auto warn_bad_metrics = std::unordered_set<std::string_view>({
-        "REPORTER",
-        "REPORT_INVALIDMODEL",
-        "MEM_NEW",
-        "DEBUGGER_ATTACH",
-        "XP_LOSS",
-        "CF",
-        "CC",
-        "CNR",
-        "SCRIPT",
-        "CHEAT",
-        "AUX_DEUX",
-        "HARDWARE_OS",
-        "HARDWARE_GPU",
-        "HARDWARE_MOBO",
-        "HARDWARE_MEM",
-        "HARDWARE_CPU",
-        "PCSETTINGS",
-        "CASH_CREATED",
-        "DR_PS",
-        "IDLEKICK",
-        "GSCB",
-        "GSINV",
-        "GSCW",
-        "GSINT",
-        "GARAGE_TAMPER",
-        "DUPE_DETECT",
-        "LAST_VEH",
-        "FAIL_SERV",
-        "CCF_UPDATE",
-        "CODE_CRC",
-        "MM",
-        "RDEV",
-        "RQA",
-    });
+		"REPORTER",
+		"REPORT_INVALIDMODEL",
+		"MEM_NEW",
+		"DEBUGGER_ATTACH",
+		"XP_LOSS",
+		"CF",
+		"CC",
+		"CNR",
+		"SCRIPT",
+		"CHEAT",
+		"AUX_DEUX",
+		"HARDWARE_OS",
+		"HARDWARE_GPU",
+		"HARDWARE_MOBO",
+		"HARDWARE_MEM",
+		"HARDWARE_CPU",
+		"PCSETTINGS",
+		"CASH_CREATED",
+		"DR_PS",
+		"IDLEKICK",
+		"GSCB",
+		"GSINV",
+		"GSCW",
+		"GSINT",
+		"GARAGE_TAMPER",
+		"DUPE_DETECT",
+		"LAST_VEH",
+		"FAIL_SERV",
+		"CCF_UPDATE",
+		"CODE_CRC",
+		"MM",
+		"RDEV",
+		"RQA",
+	});
 	const auto filtered_bad_metrics = std::unordered_set<std::string_view>({
-	    "DIG",
-	    "AWARD_XP",
-	    "WEATHER",
-	    "UVC",
-	    "W_L",
-	    "ESVCS",
-	    "EARN",
-	    "COLLECTIBLE",
-	    "FIRST_VEH",
-	    "RANK_UP", 
+		"DIG",
+		"AWARD_XP",
+		"WEATHER",
+		"UVC",
+		"W_L",
+		"ESVCS",
+		"EARN",
+		"COLLECTIBLE",
+		"FIRST_VEH",
+		"RANK_UP", 
 		"COMMS_TEXT", 
 		"BLAST",
 	});
@@ -105,7 +105,7 @@ namespace big
 			if (g.notifications.warn_metric && is_warn_bad_metrics)
 			{
 				g_notification_service.push_warning("METRIC"_T.data(),
-				    std::format("{} {}", "METRIC_WARNING_MESSAGE"_T, metric_name).c_str());
+					std::format("{} {}", "METRIC_WARNING_MESSAGE"_T, metric_name).c_str());
 			}
 			if (!strcmp(metric_name, "MM") && !g.debug.block_all_metrics)
 			{
@@ -126,7 +126,7 @@ namespace big
 			LOG(INFO) << "METRIC: " << metric_name << "; DATA: " << yim_serializer.get_string();
 		}
 
-		if (g.debug.block_all_metrics)
+		if (g.debug.block_all_metrics) [[unlikely]]
 			return true;
 		else
 			return g_hooking->get_original<prepare_metric_for_sending>()(serializer, unk, time, metric);
