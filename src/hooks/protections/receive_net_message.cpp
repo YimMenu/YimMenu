@@ -193,7 +193,7 @@ namespace big
 
 		const static std::unordered_set<std::uint32_t> sleeping = {"mp_bed_high"_J, "ob_mp_bed_high"_J, "ob_mp_bed_low"_J, "ob_mp_bed_med"_J};
 
-		const static std::unordered_set<std::uint32_t> stores = {"clothes_shop_mp"_J, "tattoo_shop"_J, "am_hold_up"_J, "ob_cashregister"_J};
+		const static std::unordered_set<std::uint32_t> stores = {"clothes_shop_mp"_J, "hairdo_shop_mp"_J, "tattoo_shop"_J, "am_hold_up"_J, "ob_cashregister"_J};
 
 		const static std::unordered_set<std::uint32_t> strip_club = {"stripclub_drinking"_J, "stripclub_mp"_J, "stripperhome"_J, "ob_mp_stripper"_J, "sclub_front_bouncer"_J};
 
