@@ -217,7 +217,7 @@ namespace big
 			(opts.atms && hash == "atm_trigger"_J) ||
 			(opts.impromptu_dm && hash == "fm_impromptu_dm_controler"_J) ||
 			(opts.gang_attacks && hash == "fm_hideout_controler"_J) ||
-			(opts.vending_machines && hash == "fm_hideout_controler"_J);
+			(opts.vending_machines && vending_machines.contains(hash));
 	}
 
 	bool handle_block_script(player_ptr player, CGameScriptId& script, int msg_id)
