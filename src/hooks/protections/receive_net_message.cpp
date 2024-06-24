@@ -427,7 +427,7 @@ namespace big
 
 			if (!session || !session->is_host())
 			{
-				LOGF(stream::net_messages, WARNING, "{} sent MsgRadioStationSyncRequest, but we are not the host", player->get_name());
+				LOGF(stream::net_messages, WARNING, "{} sent MsgRadioStationSyncRequest, but we are not the host", peer->m_info.name);
 				return true;
 			}
 
