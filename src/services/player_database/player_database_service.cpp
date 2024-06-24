@@ -219,11 +219,13 @@ namespace big
 		return player;
 	}
 
-	void player_database_service::remove_untrusted_players()
+	void player_database_service::remove_filtered_players(bool filter_modder, bool filter_trust, bool filter_block_join, bool filter_track_player)
 	{
 		for (auto it = m_players.begin(); it != m_players.end();)
 		{
-			if (!it->second->is_trusted)
+			auto player = it->second;
+			if ((filter_modder && player->is_modder) || (filter_trust && player->is_trusted)
+			    || (filter_block_join && player->block_join) || (filter_track_player && player->notify_online))
 			{
 				it = m_players.erase(it);
 			}
@@ -235,7 +237,9 @@ namespace big
 
 		for (auto it = m_sorted_players.begin(); it != m_sorted_players.end();)
 		{
-			if (!it->second->is_trusted)
+			auto player = it->second;
+			if ((filter_modder && player->is_modder) || (filter_trust && player->is_trusted)
+			    || (filter_block_join && player->block_join) || (filter_track_player && player->notify_online))
 			{
 				it = m_sorted_players.erase(it);
 			}
