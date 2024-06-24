@@ -17,6 +17,10 @@ namespace big
 	char note_buffer[1024];
 	bool notes_dirty = false;
 	std::shared_ptr<persistent_player> current_player;
+	bool filter_modder                            = false;
+	bool filter_trust                             = false;
+	bool filter_block_join                        = false;
+	bool filter_track_player                      = false;
 
 	ImVec4 get_player_color(persistent_player& player)
 	{
@@ -30,12 +34,25 @@ namespace big
 			return ImVec4(0.f, 1.f, 0.f, 1.f);
 	}
 
-	void draw_player_db_entry(std::shared_ptr<persistent_player> player, const std::string& lower_search)
+	bool apply_filters(const std::shared_ptr<persistent_player>& player)
+	{
+		if (filter_modder && !player->is_modder)
+			return false;
+		if (filter_trust && !player->is_trusted)
+			return false;
+		if (filter_block_join && !player->block_join)
+			return false;
+		if (filter_track_player && !player->notify_online)
+			return false;
+		return true;
+	}
+
+	void draw_player_db_entry(const std::shared_ptr<persistent_player>& player, const std::string& lower_search)
 	{
 		std::string name = player->name;
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 
-		if (lower_search.empty() || name.find(lower_search) != std::string::npos)
+		if ((lower_search.empty() || name.find(lower_search) != std::string::npos) && apply_filters(player))
 		{
 			ImGui::PushID(player->rockstar_id);
 
@@ -281,19 +298,19 @@ namespace big
 			ImGui::EndChild();
 		}
 
-		if (ImGui::Button("REMOVE_UNTRUSTED"_T.data()))
+		if (ImGui::Button("REMOVE_FILTERED"_T.data()))
 		{
-			ImGui::OpenPopup("##removeuntrusted");
+			ImGui::OpenPopup("##removefiltered");
 		}
 
-		if (ImGui::BeginPopupModal("##removeuntrusted"))
+		if (ImGui::BeginPopupModal("##removefiltered"))
 		{
 			ImGui::Text("VIEW_NET_PLAYER_DB_ARE_YOU_SURE"_T.data());
 
 			if (ImGui::Button("YES"_T.data()))
 			{
 				g_player_database_service->set_selected(nullptr);
-				g_player_database_service->remove_untrusted_players();
+				g_player_database_service->remove_filtered_players(filter_modder, filter_trust, filter_block_join, filter_track_player);
 				g_player_database_service->save();
 				ImGui::CloseCurrentPopup();
 			}
@@ -353,6 +370,15 @@ namespace big
 			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_ON_BECOME_HOST"_T.data(), &g.player_db.notify_on_become_host);
 			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_JOB_LOBBY_CHANGE"_T.data(), &g.player_db.notify_on_transition_change);
 			ImGui::Checkbox("VIEW_NET_PLAYER_DB_NOTIFY_MISSION_CHANGE"_T.data(), &g.player_db.notify_on_mission_change);
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("VIEW_NET_PLAYER_DB_FILTERS"_T.data()))
+		{
+			ImGui::Checkbox("IS_MODDER"_T.data(), &filter_modder);
+			ImGui::Checkbox("TRUST"_T.data(), &filter_trust);
+			ImGui::Checkbox("BLOCK_JOIN"_T.data(), &filter_block_join);
+			ImGui::Checkbox("VIEW_NET_PLAYER_DB_TRACK_PLAYER"_T.data(), &filter_track_player);
+
 			ImGui::TreePop();
 		}
 
