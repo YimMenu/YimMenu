@@ -4,6 +4,7 @@
 #include "pointers.hpp"
 #include "script.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
 
@@ -34,12 +35,16 @@ namespace big
 						continue;
 
 					std::string session_str;
-
 					if (session.attributes.multiplex_count > 1)
 						session_str = std::format("{:X} (x{})", session.info.m_session_token, session.attributes.multiplex_count);
 					else
 						session_str = std::format("{:X}", session.info.m_session_token);
 
+					auto host_rid = session.info.m_net_player_data.m_gamer_handle.m_rockstar_id;
+					auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
+
+					if (g.session_browser.exclude_modder_sessions && player && player->block_join)
+						continue;
 
 					if (components::selectable(session_str, i == selected_session_idx))
 					{
@@ -169,6 +174,10 @@ namespace big
 			ImGui::Checkbox("FILTER_MULTIPLEXED_SESSIONS"_T.data(), &g.session_browser.filter_multiplexed_sessions);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("FILTER_MULTIPLEXED_SESSIONS_DESC"_T.data());
+      
+			ImGui::Checkbox("EXCLUDE_MODDER_SESSIONS"_T.data(), &g.session_browser.exclude_modder_sessions);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
 
 			ImGui::TreePop();
 		}
