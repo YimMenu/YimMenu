@@ -394,12 +394,6 @@ namespace big
 			if (player && player->block_radio_requests)
 				return true;
 
-			if (!session || !session->is_host())
-			{
-				LOGF(stream::net_messages, WARNING, "{} sent MsgRadioStationSyncRequest, but we are not the host", player->get_name());
-				return true;
-			}
-
 			if (player)
 			{
 				if (player->block_radio_requests)
@@ -430,6 +424,13 @@ namespace big
 					return true;
 				}
 			}
+
+			if (!session || !session->is_host())
+			{
+				LOGF(stream::net_messages, WARNING, "{} sent MsgRadioStationSyncRequest, but we are not the host", player->get_name());
+				return true;
+			}
+
 			break;
 		}
 		case rage::eNetMessage::MsgRadioStationSync:
