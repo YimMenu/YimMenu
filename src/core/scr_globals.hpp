@@ -4,66 +4,63 @@
 
 namespace big::scr_globals
 {
-	static inline const script_global gsbd(2648918);
-	static inline const script_global gsbd_fm(1845263);
+	static inline const script_global gsbd(2648938);
+	static inline const script_global gsbd_fm(1845281);
 	static inline const script_global gsbd_kicking(1877042);
-	static inline const script_global gsbd_fm_events(1916087);
-	static inline const script_global gsbd_block_c(2652572);
-	static inline const script_global gsbd_property_instances(1936138);
+	static inline const script_global gsbd_fm_events(1916617);
+	static inline const script_global gsbd_block_c(2657971);
+	static inline const script_global gsbd_property_instances(1936863);
 
-	static inline const script_global globalplayer_bd(2657921);
-	static inline const script_global gpbd_fm_3(1886967);
-	static inline const script_global gpbd_fm_1(1845263);
-	static inline const script_global interiors(1942781);
+	static inline const script_global globalplayer_bd(2657971);
+	static inline const script_global gpbd_fm_3(1887305);
+	static inline const script_global gpbd_fm_1(1845281);
+	static inline const script_global interiors(1943520);
 
-	static inline const script_global launcher_global(2698947);
-
-	static inline const script_global sp(114370); // check flow_controller
-	static inline const script_global mission_definition(92160); // standard_global_init (66, "agency_heist1", "AH1", 230, 1, 1, -1, -1, 8192)
+	static inline const script_global launcher_global(2699171);
 
 	// creator globals usually remain the same after updates
 	static inline const script_global creator_job_metadata(4718592);
 	static inline const script_global terminate_creator(1574607); // NETWORK::NETWORK_BAIL(1, 0, 0); fm_*_creator
-	static inline const script_global switch_struct(1574632);
+	static inline const script_global switch_struct(1574633);
 	static inline const script_global mission_creator_radar_follows_camera(2621443);
 	static inline const script_global mission_creator_exited(1574530);
 
-	static inline const script_global in_multiplayer(79248); // g_bInMultiplayer
-	static inline const script_global transition_state(1575008);
-	static inline const script_global sctv_spectator(2697509); // pausemenu_multiplayer function 0xE49C42EC
+	static inline const script_global in_multiplayer(79389); // g_bInMultiplayer
+	static inline const script_global transition_state(1575011);
+	static inline const script_global sctv_spectator(2697731); // pausemenu_multiplayer function 0xE49C42EC
 
-	static inline const script_global vehicle_global(1586504);
+	static inline const script_global vehicle_global(1586521);
 
-	static inline const script_global freemode_properties(2672741);
-	static inline const script_global freemode_global(2738587);
+	static inline const script_global freemode_properties(2672855);
+	static inline const script_global freemode_global(2738934);
 
-	static inline const script_global spawn_global(2695991);
+	static inline const script_global spawn_global(2696212);
 
-	static inline const script_global dance_state(1942774);
+	static inline const script_global dance_state(1943520);
 
-	static inline const script_global transaction_overlimit(20796);
+	static inline const script_global transaction_overlimit(20913);
 
 	static inline const script_global stats(2359296);
 
 	static inline const script_global session(1574589);
-	static inline const script_global session2(1575032);
-	static inline const script_global session3(32829);
-	static inline const script_global session4(1574941);
-	static inline const script_global session5(1575007);
-	static inline const script_global session6(2695909);
+	static inline const script_global session2(1575035);
+	static inline const script_global session3(32949);
+	static inline const script_global session4(1574942);
+	static inline const script_global session5(1575010);
+	static inline const script_global session6(2696130); // freemode -> if (NETWORK::NETWORK_IS_GAME_IN_PROGRESS() && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 
-	static inline const script_global gun_van(1948900);
+	static inline const script_global interaction_menu_access(2710429); // am_pi_menu -> if (NETWORK::NETWORK_IS_SIGNED_ONLINE()) first global after that
 
-	static inline const script_global interaction_menu_access(2710115); // am_pi_menu -> PI_BIK_13_2_H -> global = true;
-
-	static inline const script_global disable_wasted_sound(2707352); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
+	static inline const script_global disable_wasted_sound(2707679); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
 
 	static inline const script_global passive(1574582);
 
-	static inline const script_global property_garage(1936959);
-	static inline const script_global property_names(1312263);
+	static inline const script_global property_garage(1586521);
+	static inline const script_global property_names(1312298);
 
-	static inline const script_global reset_clothing(103936); // freemode 75, &iLocal_.*, 2\);
+	static inline const script_global reset_clothing(104077); // freemode 75, &iLocal_.*, 2\);
+
+	static inline const script_global gun_van(1948900);
 }
 
 namespace big::scr_locals
@@ -75,7 +72,7 @@ namespace big::scr_locals
 	}
 
 	namespace am_criminal_damage
-	{
+	{	
 		constexpr static auto broadcast_idx = 113;
 		constexpr static auto score_idx     = 108;
 	}
