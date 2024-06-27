@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "views/view.hpp"
 #include "script_mgr.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -23,6 +24,7 @@ namespace big
 			    {(300.f * g.window.gui_scale) - ImGui::CalcTextSize("UNLOAD"_T.data()).x - ImGui::GetStyle().ItemSpacing.x,
 			        ImGui::GetStyle().WindowPadding.y / 2 + ImGui::GetStyle().ItemSpacing.y + (ImGui::CalcTextSize("W").y / 2)});
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
+			ImGui::BeginDisabled(g_pointers && *g_pointers->m_gta.m_is_session_started);
 			if (components::nav_button("UNLOAD"_T))
 			{
 				// allow to unload in the main title screen.
@@ -45,6 +47,7 @@ namespace big
 					g_running = false;
 				}
 			}
+			ImGui::EndDisabled();
 			ImGui::PopStyleColor();
 		}
 		ImGui::End();

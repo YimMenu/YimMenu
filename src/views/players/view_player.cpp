@@ -41,16 +41,11 @@ namespace big
 			    std::format("{} ({}){}", current_player->get_name(), current_player->id(), name_appendage).c_str());
 
 			view::player_info();
-			ImGui::SameLine();
 			view::player_teleport();
-
 			view::player_kick();
-			ImGui::SameLine();
 			view::player_toxic();
-
-			view::player_misc();
-			ImGui::SameLine();
 			view::player_vehicle();
+			view::player_misc();
 		}
 		else
 			g_gui_service->set_selected(tabs::NONE);

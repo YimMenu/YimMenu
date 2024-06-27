@@ -34,13 +34,19 @@ namespace big
 					if (!session.is_valid)
 						continue;
 
+					std::string session_str;
+					if (session.attributes.multiplex_count > 1)
+						session_str = std::format("{:X} (x{})", session.info.m_session_token, session.attributes.multiplex_count);
+					else
+						session_str = std::format("{:X}", session.info.m_session_token);
+
 					auto host_rid = session.info.m_net_player_data.m_gamer_handle.m_rockstar_id;
 					auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
 
 					if (g.session_browser.exclude_modder_sessions && player && player->block_join)
 						continue;
 
-					if (components::selectable(std::to_string(session.info.m_session_token), i == selected_session_idx))
+					if (components::selectable(session_str, i == selected_session_idx))
 					{
 						selected_session_idx = i;
 						g_pointers->m_gta.m_encode_session_info(&session.info, session_info, 0xA9, nullptr);
@@ -51,7 +57,7 @@ namespace big
 						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {:X}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
 							"REGION"_T, regions[session.attributes.region].name,
 						    "LANGUAGE"_T, languages[session.attributes.language].name,
-						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id,
+						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id, // TODO: this is not accurate
 						    "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator);
 						ImGui::SetTooltip(tool_tip.c_str());
 					}
@@ -165,8 +171,11 @@ namespace big
 				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
 			}
 
+			ImGui::Checkbox("FILTER_MULTIPLEXED_SESSIONS"_T.data(), &g.session_browser.filter_multiplexed_sessions);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("FILTER_MULTIPLEXED_SESSIONS_DESC"_T.data());
+      
 			ImGui::Checkbox("EXCLUDE_MODDER_SESSIONS"_T.data(), &g.session_browser.exclude_modder_sessions);
-
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
 
@@ -183,9 +192,7 @@ namespace big
 			ImGui::TreePop();
 		}
 
-		if (ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking))
-			;
-
+		ImGui::Checkbox("REPLACE_GAME_MATCHMAKING"_T.data(), &g.session_browser.replace_game_matchmaking);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("REPLACE_GAME_MATCHMAKING_DESC"_T.data());
 

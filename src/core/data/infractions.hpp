@@ -26,5 +26,6 @@ namespace big
 		// So that lua scripts can add a custom runtime reason.
 		CUSTOM_REASON,
 		CHAT_SPAM,
+		SENT_MODDER_BEACONS
 	};
 }

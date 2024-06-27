@@ -178,8 +178,6 @@ namespace big
 				if (!m_thread->m_stack || !m_thread->m_net_component)
 					return false;
 			}
-
-			((CGameScriptHandlerNetComponent*)m_thread->m_net_component)->block_host_migration(true);
 		}
 
 		return true;

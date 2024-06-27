@@ -15,12 +15,12 @@
 
 namespace big
 {
-	inline bool is_spoofed_host_token(uint64_t token)
+	inline bool is_spoofed_host_token(rage::rlGamerInfo* info)
 	{
-		if (token < 200'000'000)
+		if (info->m_host_token < INT_MAX)
 			return true;
 
-		return false;
+		return (info->m_peer_id >> 32) != (info->m_host_token >> 32);
 	}
 
 	void* hooks::assign_physical_index(CNetworkPlayerMgr* netPlayerMgr, CNetGamePlayer* player, uint8_t new_index)
@@ -117,12 +117,12 @@ namespace big
 					if (plyr->block_join && *g_pointers->m_gta.m_is_session_started)
 						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr, {});
 
-					if (is_spoofed_host_token(plyr->get_net_data()->m_host_token))
+					if (is_spoofed_host_token(plyr->get_net_data()))
 					{
 						session::add_infraction(plyr, Infraction::SPOOFED_HOST_TOKEN);
 					}
 
-					if (g_player_service->get_self()->is_host() && plyr->get_net_data()->m_nat_type == 0)
+					if (g_player_service->get_self()->is_host() && plyr->get_net_data()->m_nat_type <= 1)
 					{
 						session::add_infraction(plyr, Infraction::DESYNC_PROTECTION);
 					}
@@ -130,6 +130,11 @@ namespace big
 					if (plyr->is_host() && plyr->get_net_data()->m_nat_type == 0)
 					{
 						session::add_infraction(plyr, Infraction::DESYNC_PROTECTION); // some broken menus may do this
+					}
+
+					if (g_player_service->did_player_send_modder_beacon(plyr->get_rockstar_id()))
+					{
+						session::add_infraction(plyr, Infraction::SENT_MODDER_BEACONS);
 					}
 				}
 			});

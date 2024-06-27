@@ -4,6 +4,7 @@
 #include "pointers.hpp"
 #include "util/misc.hpp"
 #include "util/vehicle.hpp"
+#include "util/pools.hpp"
 #include "util/world_model.hpp"
 #include "vehicle/CVehicle.hpp"
 
