@@ -82,7 +82,7 @@ namespace big
 
 		// Unable to Join. The session you are trying to join is a Premium Race. Joining and accepting invites is disabled for this mode.
 		PremiumRace = 29
-	}
+	};
 
 	inline constexpr auto block_join_reasons = std::to_array({
 	    "",                         // 0
