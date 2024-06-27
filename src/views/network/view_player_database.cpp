@@ -153,18 +153,26 @@ namespace big
 
 				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[current_player->block_join_reason]))
 				{
-					for (const auto& reason : block_join_reasons)
+					block_join_reason_t i = block_join_reason_t::None;
+					for (const auto& reason_str : block_join_reasons)
 					{
-						if (ImGui::Selectable(reason.second, reason.first == current_player->block_join_reason))
+						if (reason_str != "")
 						{
-							current_player->block_join_reason = reason.first;
-							g_player_database_service->save();
+							const bool is_selected = current_player->block_join_reason == i;
+
+							if (ImGui::Selectable(reason_str, is_selected))
+							{
+								current_player->block_join_reason = i;
+								g_player_database_service->save();
+							}
+
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
 						}
 
-						if (reason.first == current_player->block_join_reason)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
+						i++;
 					}
 
 					ImGui::EndCombo();

@@ -1,5 +1,6 @@
 #include "translation_service.hpp"
 
+#include "core/data/block_join_reasons.hpp"
 #include "fiber_pool.hpp"
 #include "file_manager.hpp"
 #include "http_client/http_client.hpp"
@@ -313,7 +314,7 @@ namespace big
 					// Tweaks to make it easier for people playing in the China region
 					g.session_browser.filter_multiplexed_sessions = true;
 					g.reactions.chat_spam.block_joins             = true;
-					g.reactions.chat_spam.block_join_reason       = 27;
+					g.reactions.chat_spam.block_join_reason       = block_join_reason_t::BadReputation;
 				}
 
 				if (does_language_exist(preferred_lang))
