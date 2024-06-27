@@ -29,6 +29,7 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
+		m_players_sending_modder_beacons.clear();
 		m_selected_player = m_dummy;
 		m_players.clear();
 	}
@@ -117,6 +118,16 @@ namespace big
 		{
 			m_players.erase(it);
 		}
+	}
+
+	void player_service::mark_player_as_sending_modder_beacons(std::uint64_t rid)
+	{
+		m_players_sending_modder_beacons.insert(rid);
+	}
+
+	bool player_service::did_player_send_modder_beacon(std::uint64_t rid)
+	{
+		return m_players_sending_modder_beacons.contains(rid);
 	}
 
 	void player_service::set_selected(player_ptr plyr)

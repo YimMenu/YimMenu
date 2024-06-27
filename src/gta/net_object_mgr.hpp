@@ -108,8 +108,8 @@ namespace rage
 
 		virtual void PackCloneCreate(netObject* object, CNetGamePlayer* player, datBitBuffer* buffer) = 0;
 		virtual bool PackCloneRemove(netObject* object, CNetGamePlayer* player, bool)                 = 0;
+		virtual void PackCloneSync(netObject* object, CNetGamePlayer* player) = 0;
 
-		virtual void _0x78(netObject* object, void*) = 0;
 		virtual void _0x80()                         = 0;
 		virtual void _0x88()                         = 0;
 		virtual const char* _0x90(int)               = 0;

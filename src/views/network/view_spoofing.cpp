@@ -166,5 +166,42 @@ namespace big
 			ImGui::SliderInt("###multiplex_cnt", &g.spoofing.multiplex_count, 2, 5);
 		}
 		components::command_checkbox<"32players">();
+
+		ImGui::SeparatorText("SPOOFING_DATA_HASHES"_T.data());
+
+		components::command_checkbox<"spoofdatahash">();
+		if (g.spoofing.spoof_game_data_hash)
+		{
+			ImGui::SameLine();
+			components::command_button<"storecurrenthash">();
+
+			if (ImGui::TreeNode("DATA_HASHES"_T.data()))
+			{
+				for (int i = 0; i < 15; i++)
+				{
+					ImGui::PushID(i);
+					ImGui::SetNextItemWidth(200);
+					if (ImGui::InputScalar("##data_hash_value", ImGuiDataType_U32, &g.spoofing.game_data_hash[i], nullptr, nullptr, "%08X", ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase))
+					{
+						g.spoofing.game_data_hash_dirty = true;
+					}
+					ImGui::PopID();
+
+					if (((i - 1) % 3) != 0 && i != 14)
+					{
+						ImGui::SameLine();
+					}
+				}
+				ImGui::TreePop();
+			}
+		}
+
+		components::command_checkbox<"spoofdlchash">();
+		if (g.spoofing.spoof_dlc_hash)
+		{
+			ImGui::SameLine();
+			components::command_button<"storedlchash">();
+			ImGui::InputScalar("Value", ImGuiDataType_U32, &g.spoofing.dlc_hash, nullptr, nullptr, "%08X", ImGuiInputTextFlags_CharsHexadecimal | ImGuiInputTextFlags_CharsUppercase);
+		}
 	}
 }

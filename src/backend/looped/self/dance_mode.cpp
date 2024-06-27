@@ -29,8 +29,6 @@ namespace big
 			g.m_dance_thread  = gta_util::find_script_thread_by_id(thread);
 			g.m_dance_program = gta_util::find_script_program("am_mp_nightclub"_J);
 
-			(*g_pointers->m_gta.m_script_handler_mgr)->attach_thread(g.m_dance_thread);
-
 			g.m_dance_thread->m_context.m_state = rage::eThreadState::unk_3;
 
 			// perform initial setup

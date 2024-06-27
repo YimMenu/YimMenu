@@ -16,6 +16,7 @@ enum class PedBones : uint16_t;
 class CNetComplaintMgr;
 class Network;
 class CNetworkObjectMgr;
+class CHeadBlendData;
 
 namespace rage
 {
@@ -44,6 +45,7 @@ namespace rage
 	class fiPackfile;
 	class scrNativeRegistrationTable;
 	class rlSessionByGamerTaskResult;
+	class SecurityPeer;
 	struct rlScTaskStatus
 	{
 		void* pad  = 0;
@@ -164,7 +166,7 @@ namespace big::functions
 
 	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* addr, int connection_id, rage::netTimeSyncMsg* msg, int flags);
 	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* adde, int connection_id, void* data, int size, int flags);
-	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
+	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerHandle* handle, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
 
 	using clear_ped_tasks_network = void (*)(CPed* ped, bool immediately);
 
@@ -215,4 +217,8 @@ namespace big::functions
 	using get_searchlight = void* (*) (CPed*);
 
 	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
+
+	using get_peer_by_security_id = rage::SecurityPeer*(*)(int id);
+
+	using set_head_blend_data = void(*)(CPed* ped, CHeadBlendData* data);
 }

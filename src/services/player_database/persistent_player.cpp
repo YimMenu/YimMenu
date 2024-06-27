@@ -24,6 +24,7 @@ namespace big
 	    {Infraction::UNDEAD_OTR, "Had used undead OTR"},
 	    {Infraction::CUSTOM_REASON, ""},
 	    {Infraction::CHAT_SPAM, "Chat spammer"},
+	    {Infraction::SENT_MODDER_BEACONS, "Sent modder beacons"},
 	};
 
 	const char* persistent_player::get_infraction_description(int infraction)

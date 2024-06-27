@@ -1135,6 +1135,8 @@ namespace big
 			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_SUBMARINE;
 		case eTaskTypeIndex::CTaskVehicleFleeAirborne:
 			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_HELI && g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_PLANE;
+		case eTaskTypeIndex::CTaskVehicleGoToPointWithAvoidanceAutomobile:
+			return g.m_syncing_object_type != eNetObjType::NET_OBJ_TYPE_AUTOMOBILE;
 		}
 
 		return false;
@@ -1261,7 +1263,8 @@ namespace big
 					return true;
 				}
 
-				if (attach_node->m_attached && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
+				if (attach_node->m_attached
+				    && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				{
 					if (auto net_obj =
 					        g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attach_node->m_attached_to, false))
@@ -1270,6 +1273,12 @@ namespace big
 						{
 							if (entity->m_entity_type != 3)
 							{
+								LOGF(stream::net_sync,
+								    WARNING,
+								    "Rejecting sync due to a CPhysicalAttachDataNode from {} since it's attaching a {} to a {}, which is known to cause crashes",
+								    sender->get_name(),
+								    net_object_type_strs[(int)g.m_syncing_object_type],
+								    net_object_type_strs[(int)net_obj->m_object_type]);
 								notify::crash_blocked(sender, "invalid attachment");
 								return true;
 							}

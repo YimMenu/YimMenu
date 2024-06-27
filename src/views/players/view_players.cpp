@@ -27,7 +27,8 @@ namespace big
 			player_icons += FONT_ICON_HOST;
 		if (plyr->is_friend())
 			player_icons += FONT_ICON_FRIEND;
-		if (const auto ped = plyr->get_ped(); (ped != nullptr && ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING))
+		if (const auto ped = plyr->get_ped(); (ped != nullptr
+		        && (ped->m_ped_task_flag & (uint8_t)ePedTask::TASK_DRIVING || PLAYER::IS_REMOTE_PLAYER_IN_NON_CLONED_VEHICLE(plyr->id()))))
 			player_icons += FONT_ICON_VEHICLE;
 
 		const auto player_iconsc    = player_icons.c_str();

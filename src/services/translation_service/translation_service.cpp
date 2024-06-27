@@ -308,6 +308,14 @@ namespace big
 				case 12: preferred_lang = "zh_CN"; break;
 				}
 
+				if (game_lang == 12 || game_lang == 9)
+				{
+					// Tweaks to make it easier for people playing in the China region
+					g.session_browser.filter_multiplexed_sessions = true;
+					g.reactions.chat_spam.block_joins             = true;
+					g.reactions.chat_spam.block_join_reason       = 27;
+				}
+
 				if (does_language_exist(preferred_lang))
 				{
 					m_local_index.selected_language = preferred_lang;

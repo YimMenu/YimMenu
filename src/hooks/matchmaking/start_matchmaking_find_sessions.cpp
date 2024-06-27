@@ -18,10 +18,7 @@ namespace big
 			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator] {
 				bool result = false;
 
-				if (g.session.join_in_sctv_slots)
-					result = g_matchmaking_service->matchmake();
-				else
-					result = g_matchmaking_service->matchmake(discriminator);
+				result = g_matchmaking_service->matchmake(discriminator, !g.session.join_in_sctv_slots);
 
 				if (result)
 				{

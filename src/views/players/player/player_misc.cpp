@@ -1,45 +1,36 @@
-#include "script/globals/GPBD_FM_3.hpp"
-#include "services/script_connection/script_connection_service.hpp"
-#include "util/scripts.hpp"
-#include "util/vehicle.hpp"
 #include "views/view.hpp"
+#include "services/players/player_service.hpp"
 
 namespace big
 {
 	void view::player_misc()
-	{
+	{ 
+		ImGui::SeparatorText("DEBUG_TAB_MISC"_T.data());
+
 		ImGui::BeginGroup();
-		components::sub_title("DEBUG_TAB_MISC"_T);
-		if (ImGui::BeginListBox("##misc", get_listbox_dimensions()))
-		{
-			components::player_command_button<"joinceo">(g_player_service->get_selected());
-			ImGui::SameLine();
-			components::player_command_button<"enterint">(g_player_service->get_selected());
-			components::player_command_button<"copyoutfit">(g_player_service->get_selected());
-			ImGui::SameLine();
-			components::player_command_button<"copymodel">(g_player_service->get_selected());
-			components::player_command_button<"clearwanted">(g_player_service->get_selected());
-			ImGui::SameLine();
-			components::player_command_button<"givehealth">(g_player_service->get_selected());
-			ImGui::SameLine();
-			components::player_command_button<"givearmor">(g_player_service->get_selected());
-			components::player_command_button<"giveammo">(g_player_service->get_selected());
-			ImGui::SameLine();
-			components::player_command_button<"giveweaps">(g_player_service->get_selected(), {});
+		components::player_command_button<"joinceo">(g_player_service->get_selected());
+		components::player_command_button<"enterint">(g_player_service->get_selected());
+		components::player_command_button<"copyoutfit">(g_player_service->get_selected());
+		components::player_command_button<"copymodel">(g_player_service->get_selected());
+		components::player_command_button<"clearwanted">(g_player_service->get_selected());
+		ImGui::EndGroup();
 
-			ImGui::BeginGroup();
-			ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g_player_service->get_selected()->off_radar);
-			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
-			ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
-			ImGui::EndGroup();
+		ImGui::SameLine();
 
-			ImGui::SameLine();
+		ImGui::BeginGroup();
+		components::player_command_button<"givehealth">(g_player_service->get_selected());
+		components::player_command_button<"givearmor">(g_player_service->get_selected());
+		components::player_command_button<"giveammo">(g_player_service->get_selected());
+		components::player_command_button<"giveweaps">(g_player_service->get_selected(), {});
+		ImGui::EndGroup();
 
-			ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g_player_service->get_selected()->fix_vehicle);
+		ImGui::SameLine();
 
-			ImGui::EndListBox();
-		}
-
+		ImGui::BeginGroup();
+		ImGui::Checkbox("OFF_THE_RADAR"_T.data(), &g_player_service->get_selected()->off_radar);
+		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g_player_service->get_selected()->never_wanted);
+		ImGui::Checkbox("SEMI_GODMODE"_T.data(), &g_player_service->get_selected()->semi_godmode);
+		ImGui::Checkbox("VIEW_NET_SESSION_FIX_VEHICLE"_T.data(), &g_player_service->get_selected()->fix_vehicle);
 		ImGui::EndGroup();
 	}
 }
