@@ -84,6 +84,20 @@ namespace big
 		PremiumRace = 29
 	};
 
+	inline block_join_reason_t& operator++(block_join_reason_t& reason)
+	{
+		reason = static_cast<block_join_reason_t>(static_cast<int32_t>(reason) + 1);
+
+		return reason;
+	}
+
+	inline block_join_reason_t operator++(block_join_reason_t& reason, int32_t)
+	{
+		block_join_reason_t a = reason;
+		++reason;
+		return a;
+	}
+
 	inline constexpr auto block_join_reasons = std::to_array({
 	    "",                         // 0
 	    "None",                     // 1
