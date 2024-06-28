@@ -47,7 +47,7 @@ namespace big
 			if (m_debug_logging)
 				LOG(VERBOSE) << "Starting " << m_script_name << " using am_launcher";
 
-			scripts::start_launcher_script(scripts::launcher_index_from_hash(m_script_hash));
+			scripts::start_launcher_script(m_script_hash);
 		}
 		else
 		{

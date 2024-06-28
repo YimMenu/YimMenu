@@ -213,7 +213,7 @@ namespace big
 					return;
 				}
 
-				scripts::start_launcher_script(idx);
+				scripts::start_launcher_script(hash);
 			});
 
 			if (*g_pointers->m_gta.m_game_state != eGameState::Invalid && std::chrono::high_resolution_clock::now() - last_stack_update_time > 100ms)
