@@ -152,6 +152,13 @@ namespace big
 
 		const auto file_version = memory::module("GTA5.exe").timestamp();
 
+		const auto ped_count = m_peds_cache.data_size() / sizeof(ped_item);
+		const auto vehicle_count = m_vehicles_cache.data_size() / sizeof(vehicle_item);
+		if (ped_count == 0 || vehicle_count == 0)
+		{
+			return false;
+		}
+
 		return m_peds_cache.up_to_date(file_version) && m_vehicles_cache.up_to_date(file_version) && m_weapons_cache.up_to_date(file_version);
 	}
 

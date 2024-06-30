@@ -18,33 +18,22 @@ namespace big
 		m_wrapper_call_back.push_back(cb);
 	}
 
-	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::u8string& path)
+	static bool safe_open_pack_file(rage::fiPackfile& packfile, const std::string& path)
 	{
-		bool success = false;
-
-		__try
-		{
-			success = packfile.OpenPackfile(reinterpret_cast<const char*>(path.c_str()), true, 0, 0);
-		}
-		__except (EXCEPTION_EXECUTE_HANDLER)
-		{
-			return false;
-		}
-
-		return success;
+		return packfile.OpenPackfile(path.c_str(), true, 0, 0);
 	}
 
-	void yim_fipackfile::traverse_rpf_file(const std::u8string& path, int depth)
+	void yim_fipackfile::traverse_rpf_file(const std::string& path, int depth)
 	{
 		std::string mount_path = std::format("temp{}:/", depth);
 
 		rage::fiPackfile packfile;
 		if (!safe_open_pack_file(packfile, path))
 		{
-			LOG(INFO) << "Failed opening " << reinterpret_cast<const char*>(path.c_str());
+			LOG(INFO) << "Failed opening " << path;
 			return;
 		}
-		
+
 		packfile.Mount(mount_path.c_str());
 
 		yim_fipackfile rpf_wrapper = yim_fipackfile(&packfile, mount_path);
@@ -52,14 +41,15 @@ namespace big
 		const auto files = rpf_wrapper.get_file_paths();
 		for (const auto& file : files)
 		{
-			if (file.extension() == ".rpf")
+			if (std::filesystem::path(file).extension() == ".rpf")
 			{
-				if (auto handle = ((rage::fiDevice*)&packfile)->Open(reinterpret_cast<const char*>(file.u8string().c_str()), true))
+				if (auto handle = ((rage::fiDevice*)&packfile)->Open(file.c_str(), true))
 				{
 					uint32_t encryption_type{};
-					((rage::fiDevice*)&packfile)->Seek(handle, 12, 0);
-					((rage::fiDevice*)&packfile)->Read(handle, &encryption_type, 4);
-					((rage::fiDevice*)&packfile)->Close(handle);
+					rage::fiDevice* device = &packfile;
+					device->Seek(handle, 12, 0);
+					device->Read(handle, &encryption_type, 4);
+					device->Close(handle);
 
 					if (encryption_type == 0xFFFFFF9)
 						continue; // skip AES encrypted RPFs
@@ -67,12 +57,12 @@ namespace big
 					// OPEN / CFXP
 					if (encryption_type == 0x4E45504F || encryption_type == 0x50584643)
 					{
-						LOG(INFO) << "Modded RPF, skipping " << reinterpret_cast<const char*>(file.u8string().c_str());
+						LOG(INFO) << "Modded RPF, skipping " << file;
 
 						continue;
 					}
 
-					traverse_rpf_file(file.u8string(), depth + 1);
+					traverse_rpf_file(file, depth + 1);
 				}
 			}
 			else
@@ -101,7 +91,8 @@ namespace big
 			}
 			else
 			{
-				LOG(WARNING) << "game_folder variable is not directory " << reinterpret_cast<const char*>(game_folder.u8string().c_str());
+				LOG(WARNING) << "game_folder variable is not directory "
+				             << reinterpret_cast<const char*>(game_folder.u8string().c_str());
 			}
 		}
 		else
@@ -129,33 +120,42 @@ namespace big
 			LOG(WARNING) << "Failed printing GTA install directory: " << e.what();
 		}
 
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(gta_folder, std::filesystem::directory_options::skip_permission_denied))
+		// Ensure current_path is gta folder.
+		std::filesystem::current_path(gta_folder);
+
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(std::filesystem::current_path(), std::filesystem::directory_options::skip_permission_denied))
 		{
 			if (!entry.is_regular_file())
 			{
 				continue;
 			}
 
-			const auto rel_path = std::filesystem::relative(entry.path());
+			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().wstring());
+
+			LOG(VERBOSE) << "Game file path: " << utf8_path;
+
+			if (entry.path().empty())
+				continue;
+
+			const auto rel_path = std::filesystem::relative(utf8_path);
+
+			const auto utf8_rel_path = string_conversions::utf_16_to_code_page(CP_UTF8, rel_path.wstring());
+			LOG(VERBOSE) << "Game file path relative: " << utf8_rel_path;
+
 			if (rel_path.empty())
 				continue;
 
-			const auto utf8_path = string_conversions::utf_16_to_code_page(CP_UTF8, entry.path().native());
-
-			if (utf8_path.empty())
-				continue;
-
-			if (utf8_path.contains("mods"))
+			if (utf8_rel_path.contains("mods"))
 				continue;
 
 			if (rel_path.extension() == ".rpf")
-				traverse_rpf_file(rel_path.u8string());
+				traverse_rpf_file(utf8_rel_path);
 		}
 	}
 
-	std::vector<std::filesystem::path> yim_fipackfile::get_file_paths(std::string parent)
+	std::vector<std::string> yim_fipackfile::get_file_paths(std::string parent)
 	{
-		std::vector<std::filesystem::path> file_paths;
+		std::vector<std::string> file_paths;
 		if (parent.empty())
 			parent = mount_name;
 
