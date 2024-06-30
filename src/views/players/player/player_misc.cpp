@@ -1,6 +1,8 @@
 #include "views/view.hpp"
 #include "services/players/player_service.hpp"
 #include "util/scripts.hpp"
+#include "services/script_connection/script_connection_service.hpp"
+#include "packet.hpp"
 
 namespace big
 {
@@ -35,11 +37,25 @@ namespace big
 
 		components::button("Trigger UFO Abduction", [] {
 			scripts::force_host("freemode"_J);
-			*scr_globals::gsbd_fm_events.at(11).at(145).as<int*>() = g_player_service->get_selected()->id();
-			*scr_globals::gsbd_fm_events.at(11).at(144).as<int*>() = scripts::launcher_index_from_hash("fm_content_ufo_abduction"_J);
-			*scr_globals::gsbd_fm_events.at(11).at(146).as<bool*>() = false;
-			script::get_current()->yield(2s);
-			scripts::start_launcher_script("fm_content_ufo_abduction"_J);
+			g_player_service->get_selected()->script_host_mission = 9999;
+			scripts::force_script_on_player(g_player_service->get_selected(), "fm_content_ufo_abduction"_J, g_player_service->get_selected()->id());
+			for (int i = 0; i < 10; i++)
+			{
+				memset(scr_globals::gsbd_fm_events.at(11).at(143).as<void*>(), __rdtsc(), sizeof(std::uint64_t) * 4);
+				script::get_current()->yield(30ms);
+			}
+		});
+
+		// Broken
+		components::button("Trigger Pizza Delivery", [] {
+			scripts::force_host("freemode"_J);
+			g_player_service->get_selected()->script_host_mission = 9999;
+			scripts::force_script_on_player(g_player_service->get_selected(), "fm_content_pizza_delivery"_J);
+			for (int i = 0; i < 10; i++)
+			{
+				memset(scr_globals::gsbd_fm_events.at(11).at(143).as<void*>(), __rdtsc(), sizeof(std::uint64_t) * 4);
+				script::get_current()->yield(30ms);
+			}
 		});
 
 		ImGui::EndGroup();

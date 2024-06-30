@@ -11,6 +11,7 @@
 #include "services/players/player_service.hpp"
 
 #include <memory/pattern.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big::scripts
 {
@@ -181,6 +182,31 @@ namespace big::scripts
 		{
 			// 1F) Cannot find launcher
 			g_notification_service.push_error("Script", "Cannot start script, am_launcher not running locally");
+		}
+	}
+
+	inline void force_script_on_player(player_ptr player, rage::joaat_t script_hash, int instance = -1)
+	{
+		const size_t arg_count  = 27;
+		int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id, 1 << player->id()};
+
+		args[3] = scripts::launcher_index_from_hash(script_hash);
+		strcpy((char*)&args[3 + 3], "0");
+		args[3 + 16] = instance;
+		args[3 + 17] = 1337;
+		args[3 + 19] = 0;
+		args[25] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[player->id()].ScriptEventReplayProtectionCounter;
+
+		g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::StartScriptBegin);
+
+		for (int i = 0; i < 2; i++)
+		{
+			const size_t arg_count_2 = 27;
+			int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id, 1 << player->id()};
+			args_2[3 + 17] = 1337;
+			g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << player->id(), (int)eRemoteEvent::StartScriptProceed);
+
+			script::get_current()->yield(20ms);
 		}
 	}
 

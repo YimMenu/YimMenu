@@ -87,6 +87,7 @@ namespace big
 		std::optional<uint32_t> time_difference;
 		std::optional<std::chrono::time_point<std::chrono::steady_clock>> last_message_time;
 		uint32_t num_time_syncs_sent = 9999;
+		std::optional<int> script_host_mission;
 
 		bool block_explosions   = false;
 		bool block_clone_create = false;
