@@ -28,7 +28,7 @@ namespace big
 			if (reaction.block_joins)
 				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
 				{
-					block_join_reason_t i = block_join_reason_t::None;
+					block_join_reason_t i = block_join_reason_t::UNK_0;
 					for (const auto& reason_str : block_join_reasons)
 					{
 						if (reason_str != "")
@@ -73,7 +73,7 @@ namespace big
 			if (reaction.block_joins)
 				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[reaction.block_join_reason]))
 				{
-					block_join_reason_t i = block_join_reason_t::None;
+					block_join_reason_t i = block_join_reason_t::UNK_0;
 					for (const auto& reason_str : block_join_reasons)
 					{
 						if (reason_str != "")
