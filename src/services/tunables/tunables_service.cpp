@@ -20,12 +20,6 @@ namespace big
 	tunables_service::~tunables_service()
 	{
 		m_loading          = false;
-
-		if (m_tunables_backup)
-		{
-			delete[] m_tunables_backup;
-		}
-
 		g_tunables_service = nullptr;
 	}
 
@@ -70,8 +64,8 @@ namespace big
 						return;
 					}
 
-					m_tunables_backup = new std::uint64_t[m_num_tunables];
-					memcpy(m_tunables_backup, script_global(0x40000).as<void*>(), m_num_tunables * 8);
+					m_tunables_backup = std::make_unique<std::uint64_t[]>(m_num_tunables);
+					memcpy(m_tunables_backup.get(), script_global(0x40000).as<void*>(), m_num_tunables * 8);
 
 					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tuneables_processing"_J);
 					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tunables_registration"_J);
@@ -90,7 +84,7 @@ namespace big
 							m_tunables.emplace(it->second, 0x40000 + i);
 						}
 					}
-					memcpy(script_global(0x40000).as<void*>(), m_tunables_backup, m_num_tunables * 8);
+					memcpy(script_global(0x40000).as<void*>(), m_tunables_backup.get(), m_num_tunables * 8);
 
 					if (m_tunables.size() == 0)
 					{
@@ -101,7 +95,7 @@ namespace big
 					m_script_started = false;
 					m_initialized    = true;
 					LOG(INFO) << "Saving " << m_tunables.size() << " tunables to cache";
-					delete[] m_tunables_backup;
+					m_tunables_backup.release();
 					save();
 				}
 			}

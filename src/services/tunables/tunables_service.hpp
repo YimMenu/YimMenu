@@ -80,7 +80,7 @@ namespace big
 		cache_file m_cache_file;
 
 		std::unordered_map<rage::joaat_t, int> m_tunables{};
-		std::uint64_t* m_tunables_backup;
+		std::unique_ptr<uint64_t[]> m_tunables_backup; 
 		int m_num_tunables;
 
 		void save();
