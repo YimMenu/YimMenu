@@ -50,7 +50,7 @@ namespace big
 			if (rotate_cam_bits)
 			{
 				const size_t arg_count = 4;
-				int64_t args[arg_count] = {(int64_t)eRemoteEvent::TSECommand, (int64_t)self::id, (int64_t)eRemoteEvent::TSECommandRotateCam, rotate_cam_bits};
+				int64_t args[arg_count] = {(int64_t)eRemoteEvent::TSECommand, (int64_t)self::id, (int64_t)rotate_cam_bits, (int64_t)eRemoteEvent::TSECommandRotateCam};
 
 				g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, rotate_cam_bits, (int)eRemoteEvent::TSECommand);
 			}

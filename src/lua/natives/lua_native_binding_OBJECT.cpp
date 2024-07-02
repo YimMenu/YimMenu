@@ -9,9 +9,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static Object LUA_NATIVE_OBJECT_CREATE_OBJECT_NO_OFFSET(Hash modelHash, float x, float y, float z, bool isNetwork, bool bScriptHostObj, bool dynamic)
+	static Object LUA_NATIVE_OBJECT_CREATE_OBJECT_NO_OFFSET(Hash modelHash, float x, float y, float z, bool isNetwork, bool bScriptHostObj, bool dynamic, Any p7)
 	{
-		auto retval = OBJECT::CREATE_OBJECT_NO_OFFSET(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic);
+		auto retval = OBJECT::CREATE_OBJECT_NO_OFFSET(modelHash, x, y, z, isNetwork, bScriptHostObj, dynamic, p7);
 		return retval;
 	}
 
@@ -126,9 +126,9 @@ namespace lua::native
 		OBJECT::PLAY_OBJECT_AUTO_START_ANIM(p0);
 	}
 
-	static void LUA_NATIVE_OBJECT_ADD_DOOR_TO_SYSTEM(Hash doorHash, Hash modelHash, float x, float y, float z, bool p5, bool scriptDoor, bool isLocal)
+	static void LUA_NATIVE_OBJECT_ADD_DOOR_TO_SYSTEM(Hash doorHash, Hash modelHash, float x, float y, float z, bool p5, bool scriptDoor, bool isLocal, Any p8)
 	{
-		OBJECT::ADD_DOOR_TO_SYSTEM(doorHash, modelHash, x, y, z, p5, scriptDoor, isLocal);
+		OBJECT::ADD_DOOR_TO_SYSTEM(doorHash, modelHash, x, y, z, p5, scriptDoor, isLocal, p8);
 	}
 
 	static void LUA_NATIVE_OBJECT_REMOVE_DOOR_FROM_SYSTEM(Hash doorHash, Any p1)

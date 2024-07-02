@@ -4,6 +4,7 @@
 #include "natives.hpp"
 #include "script.hpp"
 #include "util/scripts.hpp"
+#include "packet.hpp"
 
 #include <script/globals/GPBD_FM_3.hpp>
 
@@ -47,33 +48,14 @@ namespace big
 			if (m_debug_logging)
 				LOG(VERBOSE) << "Starting " << m_script_name << " using am_launcher";
 
-			scripts::start_launcher_script(scripts::launcher_index_from_hash(m_script_hash));
+			scripts::start_launcher_script(m_script_hash);
 		}
 		else
 		{
 			if (m_debug_logging)
 				LOG(VERBOSE) << "Starting " << m_script_name << " using TSEs";
 
-			const size_t arg_count = 26;
-			int64_t args[arg_count] = {(int64_t)eRemoteEvent::StartScriptBegin, (int64_t)self::id, 1 << m_target->get()->id()};
-
-			args[3] = scripts::launcher_index_from_hash(m_script_hash);
-			strcpy((char*)&args[3 + 3], "0");
-			args[3 + 16] = -1;
-			args[3 + 17] = 1337;
-			args[25] = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[m_target->get()->id()].ScriptEventReplayProtectionCounter;
-
-			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << m_target->get()->id(), (int)eRemoteEvent::StartScriptBegin);
-
-			for (int i = 0; i < 2; i++)
-			{
-				const size_t arg_count_2    = 26;
-				int64_t args_2[arg_count_2] = {(int64_t)eRemoteEvent::StartScriptProceed, (int64_t)self::id, 1 << m_target->get()->id()};
-				args_2[3 + 17]              = 1337;
-				g_pointers->m_gta.m_trigger_script_event(1, args_2, arg_count_2, 1 << m_target->get()->id(), (int)eRemoteEvent::StartScriptProceed);
-
-				script::get_current()->yield(20ms);
-			}
+			scripts::force_script_on_player(m_target.value(), m_script_hash);
 		}
 	}
 
@@ -94,7 +76,7 @@ namespace big
 	bool script_connection::set_script_as_networked()
 	{
 		gta_util::execute_as_script(m_thread, [this] {
-			NETWORK::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(32, true, m_instance_id);
+			NETWORK::NETWORK_SET_THIS_SCRIPT_IS_NETWORK_SCRIPT(m_max_players, false, m_instance_id);
 		});
 
 		for (int i = 0; i < 100; i++)
@@ -132,7 +114,7 @@ namespace big
 				memset(m_host_broadcast_data, 0, m_host_broadcast_size * sizeof(uint64_t));
 		}
 
-		if (m_player_broadcast_data)
+		if (m_player_broadcast_size)
 		{
 			m_player_broadcast_data = new uint64_t[m_player_broadcast_size];
 
@@ -203,7 +185,7 @@ namespace big
 
 	bool script_connection::wait_for_connection_to_remote()
 	{
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 3000; i++)
 		{
 			bool is_a_participant = false;
 			gta_util::execute_as_script(m_thread, [&is_a_participant, this] {
@@ -213,7 +195,7 @@ namespace big
 			if (is_a_participant)
 				return true;
 
-			script::get_current()->yield(25ms);
+			script::get_current()->yield();
 		}
 
 		return false;
@@ -279,6 +261,7 @@ namespace big
 
 		if (need_to_create && m_target && !wait_for_connection_to_remote())
 		{
+			force_host_of_script();
 			if (m_debug_logging)
 				LOG(FATAL) << "Failed to connect to remote";
 
@@ -360,8 +343,7 @@ namespace big
 			return true;
 		}
 
-#if 0
-		if (m_target && m_target->get()->is_valid())
+		if (m_startup_done && m_target && m_target->get()->is_valid())
 		{
 			bool is_a_participant = false;
 
@@ -377,7 +359,6 @@ namespace big
 				return true;
 			}
 		}
-#endif
 
 		bool might_cleanup = m_quick_cleanup || MISC::GET_NUMBER_OF_FREE_STACKS_OF_THIS_SIZE(DEFAULT_STACK_SIZE) < 5;
 
@@ -391,5 +372,47 @@ namespace big
 		}
 
 		return false;
+	}
+
+	void script_connection::give_host()
+	{
+		if (!m_thread)
+			return;
+
+		auto handler = static_cast<CGameScriptHandlerNetComponent*>(m_thread->m_net_component);
+		if (!handler)
+			return;
+
+		if (!handler->is_local_player_host())
+		{
+			// grab host first
+			handler->do_host_migration(g_player_service->get_self()->get_net_game_player(), 1, true);
+
+			packet pack;
+			pack.write_message(rage::eNetMessage::MsgScriptVerifyHostAck);
+			handler->m_script_handler->get_id()->serialize(&pack.m_buffer);
+			pack.write<bool>(true, 1);
+			pack.write<bool>(true, 1);
+			pack.write<std::uint16_t>(1, 16);
+
+			for (auto& player : g_player_service->players())
+			{
+				if (player.second->get_net_game_player())
+					pack.send(player.second->get_net_game_player()->m_msg_id);
+			}
+
+			script::get_current()->yield(500ms);
+		}
+
+		if (!m_thread)
+			return;
+
+		// give host
+		packet pack;
+		pack.write_message(rage::eNetMessage::MsgScriptMigrateHost);
+		handler->m_script_handler->get_id()->serialize(&pack.m_buffer);
+		pack.write<std::uint16_t>(handler->m_host_token + 2, 16);
+		pack.write<std::uint32_t>(0xFFFFFFFF, 32);
+		pack.send(m_target->get()->get_net_game_player()->m_msg_id);
 	}
 }

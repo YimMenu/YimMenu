@@ -55,10 +55,14 @@ namespace big::entity
 			ent = NULL;
 			return;
 		}
-		if (!force && !take_control_of(ent))
+
+		if (auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent))
 		{
-			LOG(VERBOSE) << "Failed to take control of entity before deleting";
-			return;
+			if (ptr->m_net_object)
+			{
+				force_remove_network_entity(ptr, true);
+				return;
+			}
 		}
 
 		if (ENTITY::IS_ENTITY_A_VEHICLE(ent))

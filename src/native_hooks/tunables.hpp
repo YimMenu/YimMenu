@@ -1,5 +1,6 @@
 #pragma once
 #include "services/tunables/tunables_service.hpp"
+#include "natives.hpp"
 
 namespace big
 {
@@ -13,22 +14,37 @@ namespace big
 			SYSTEM::WAIT(src->get_arg<int>(0));
 		}
 
-		inline void NETWORK_ACCESS_TUNABLE_INT_HASH(rage::scrNativeCallContext* src)
+		inline void _NETWORK_GET_TUNABLES_REGISTRATION_INT(rage::scrNativeCallContext* src)
 		{
-			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<int*>(2));
-			src->set_return_value<BOOL>(NETWORK::NETWORK_ACCESS_TUNABLE_INT_HASH(src->get_arg<Hash>(0), src->get_arg<Hash>(1), src->get_arg<int*>(2)));
+			if (g_tunables_service->caching_tunables())
+			{
+				g_tunables_service->m_junk_values.emplace(g_tunables_service->m_current_junk_val, src->get_arg<Hash>(0));
+				src->set_return_value<int>(g_tunables_service->m_current_junk_val++);
+				return;
+			}
+			src->set_return_value<int>(NETWORK::_NETWORK_GET_TUNABLES_REGISTRATION_INT(src->get_arg<Hash>(0), src->get_arg<int>(1)));
 		};
 
-		inline void NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(rage::scrNativeCallContext* src)
+		inline void _NETWORK_GET_TUNABLES_REGISTRATION_BOOL(rage::scrNativeCallContext* src)
 		{
-			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<bool*>(2));
-			src->set_return_value<BOOL>(NETWORK::NETWORK_ACCESS_TUNABLE_BOOL_MODIFICATION_DETECTION_REGISTRATION_HASH(src->get_arg<Hash>(0), src->get_arg<Hash>(1), src->get_arg<BOOL*>(2)));
+			if (g_tunables_service->caching_tunables())
+			{
+				g_tunables_service->m_junk_values.emplace(g_tunables_service->m_current_junk_val, src->get_arg<Hash>(0));
+				src->set_return_value<int>(g_tunables_service->m_current_junk_val++);
+				return;
+			}
+			src->set_return_value<BOOL>(NETWORK::_NETWORK_GET_TUNABLES_REGISTRATION_BOOL(src->get_arg<Hash>(0), src->get_arg<BOOL>(1)));
 		};
 
-		inline void NETWORK_ACCESS_TUNABLE_FLOAT_HASH(rage::scrNativeCallContext* src)
+		inline void _NETWORK_GET_TUNABLES_REGISTRATION_FLOAT(rage::scrNativeCallContext* src)
 		{
-			g_tunables_service->register_tunable(src->get_arg<Hash>(1), src->get_arg<float*>(2));
-			src->set_return_value<BOOL>(NETWORK::NETWORK_ACCESS_TUNABLE_FLOAT_HASH(src->get_arg<Hash>(0), src->get_arg<Hash>(1), src->get_arg<float*>(2)));
+			if (g_tunables_service->caching_tunables())
+			{
+				g_tunables_service->m_junk_values.emplace(g_tunables_service->m_current_junk_val, src->get_arg<Hash>(0));
+				src->set_return_value<int>(g_tunables_service->m_current_junk_val++);
+				return;
+			}
+			src->set_return_value<float>(NETWORK::_NETWORK_GET_TUNABLES_REGISTRATION_FLOAT(src->get_arg<Hash>(0), src->get_arg<float>(1)));
 		};
 	}
 }

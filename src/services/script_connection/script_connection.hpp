@@ -22,6 +22,7 @@ namespace big
 		bool m_quick_cleanup                                       = false;
 		std::optional<int> m_host_broadcast_default_data_address   = std::nullopt;
 		std::optional<int> m_player_broadcast_default_data_address = std::nullopt;
+		int m_max_players                                          = 32;
 
 		std::function<void(rage::scrThread*, uint64_t*, uint64_t*)> m_broadcast_setup_callback{};
 		std::function<void(rage::scrThread*, uint64_t*, uint64_t*)> m_broadcast_modify_callback{};
@@ -48,6 +49,7 @@ namespace big
 		void start();
 		void cleanup();
 		bool should_cleanup();
+		void give_host();
 
 		// clang-format off
 
@@ -63,6 +65,7 @@ namespace big
 		inline void set_quick_cleanup(bool enabled) { m_quick_cleanup = enabled; }
 		inline void set_host_broadcast_default_data_address(int data_address) { m_host_broadcast_default_data_address = data_address; }
 		inline void set_player_broadcast_default_data_address(int data_address) { m_player_broadcast_default_data_address = data_address; }
+		inline void set_max_players(int num) { m_max_players = num; }
 
 		// thread, host_broadcast_data, player_broadcast_data
 		inline void set_broadcast_setup_callback(std::function<void(rage::scrThread*, uint64_t*, uint64_t*)> cb) { m_broadcast_setup_callback = std::move(cb); }

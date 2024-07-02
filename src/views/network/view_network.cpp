@@ -432,7 +432,7 @@ namespace big
 		ImGui::Checkbox("SCRIPT_BLOCK_STRIP_CLUB"_T.data(), &g.session.script_block_opts.strip_club);
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip("SCRIPT_BLOCK_STRIP_CLUB_DESC"_T.data());
-		ImGui::Checkbox("SCRIPT_BLOCK_STRIP_CLUB"_T.data(), &g.session.script_block_opts.vending_machines);
+		ImGui::Checkbox("SCRIPT_BLOCK_VENDING_MACHINES"_T.data(), &g.session.script_block_opts.vending_machines);
 		ImGui::EndGroup();
 
 		ImGui::SameLine();
