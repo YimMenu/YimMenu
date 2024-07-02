@@ -25,7 +25,7 @@ namespace big
 		explosion_anti_cheat_bypass::m_can_blame_others =
 		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
 		explosion_anti_cheat_bypass::m_set_script_flag =
-		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.sub(0x12).as<uint32_t*>(), 0x90909090).get();
+		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.sub(0x63).as<uint32_t*>(), 0x90909090).get();
 		explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
