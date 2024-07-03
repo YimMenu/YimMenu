@@ -58,7 +58,7 @@ namespace big::scr_globals
 	
 	static inline const script_global passive(1574582); // if (((!PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED(bVar1), false) || Global_
 
-	static inline const script_global property_garage(1586521);
+	static inline const script_global property_garage(1937684);
 	static inline const script_global property_names(1312298);
 
 	static inline const script_global reset_clothing(104077); // freemode 75, &iLocal_.*, 2\);

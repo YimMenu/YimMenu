@@ -5,7 +5,7 @@
 #include "script.hpp"
 #include "util/mobile.hpp"
 
-#define MAX_GARAGE_NUM 30
+#define MAX_GARAGE_NUM 32
 
 namespace big
 {
@@ -43,6 +43,7 @@ namespace big
 			case 27: return 337;
 			case 28: return 350;
 			case 29: return 363;
+		    case 31: return 515;
 			case MAX_GARAGE_NUM+0: return 156; //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return 224; //Nightclub B1
 			case MAX_GARAGE_NUM+2: return 223; //Terrorbyte
@@ -59,6 +60,7 @@ namespace big
 			case MAX_GARAGE_NUM+2: //Terrorbyte
 			case MAX_GARAGE_NUM+3: //Kosatka
 			case 14: return 1;
+		    case 31: return 2;
 			case MAX_GARAGE_NUM+1: return 3; //Nightclub B1
 			case 11: return 8;
 			case 6:
@@ -127,10 +129,12 @@ namespace big
 			case 27: stat = self::char_index ? "MP1_MULTI_PROPERTY_8"_J : "MP0_MULTI_PROPERTY_8"_J; break;
 			case 28: stat = self::char_index ? "MP1_MULTI_PROPERTY_9"_J : "MP0_MULTI_PROPERTY_9"_J; break;
 			case 29: stat = self::char_index ? "MP1_MULTSTOREY_GAR_OWNED"_J : "MP0_MULTSTOREY_GAR_OWNED"_J; break;
+		    case 31: stat = self::char_index ? "MP1_PROP_BAIL_OFFICE"_J : "MP0_PROP_BAIL_OFFICE"_J; break;
 			case MAX_GARAGE_NUM+0:
 			case MAX_GARAGE_NUM+1:
 			case MAX_GARAGE_NUM+2:
 			case MAX_GARAGE_NUM+3: return 1;
+		    default: return -1;
 		}
 		if (stat == NULL)
 		{
@@ -150,7 +154,7 @@ namespace big
 		{
 			case 12: //Hangar
 			{
-				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(295).as<PINT>();
+			    auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(297).as<PINT>();
 				switch (hangar_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_1"); //LSIA Hangar 1
@@ -163,7 +167,7 @@ namespace big
 			}
 			case 13: //Facility
 			{
-				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(302).as<PINT>();
+			    auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(304).as<PINT>();
 				switch (facility_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility
@@ -190,6 +194,7 @@ namespace big
 			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
 			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
 			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case 31: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("BO_GARNAME"); //Bail Office
 			case MAX_GARAGE_NUM+0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
 			case MAX_GARAGE_NUM+2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
