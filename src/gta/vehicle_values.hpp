@@ -3659,6 +3659,85 @@ static bool GetVehicleInfoForClanLogo(Hash vehicleModel, rage::fvector3& x, rage
 		z     = {0.0f, -1.0f, 0.0f};
 		scale = 0.5f;
 		return true;
+	case VEHICLE_VORSCHLAGHAMMER:
+	case VEHICLE_DRIFTVORSCHLAG:
+		x     = {0.f, 1.141f, 1.f};
+		y     = {0.f, 0.f, -1.f};
+		z     = {-1.f, 0.f, 0.f};
+		scale = 0.25f;
+		return true;
+	case VEHICLE_POLIMPALER5:
+		x     = {-1.f, 0.16f, 0.295f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.43f;
+		return true;
+	case VEHICLE_CASTIGATOR:
+		x     = {-1.f, 0.315f, 0.1587f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.0455f};
+		scale = 0.4f;
+		return true;
+	case VEHICLE_POLIMPALER6:
+		x     = {-1.f, 0.216f, 0.124f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.41f;
+		return true;
+	case VEHICLE_PIPISTRELLO:
+		x     = {-1.f, -0.0897f, 0.f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.2375f;
+		return true;
+	case VEHICLE_ENVISAGE:
+		x     = {-1.f, 0.f, 0.2702f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.43f;
+		return true;
+	case VEHICLE_DOMINATOR10:
+		x     = {-1.f, 0.f, 0.0653f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_YOSEMITE1500:
+		x     = {-1.229f, 0.6f, 0.361f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.3f;
+		return true;
+	case VEHICLE_EUROSX32:
+		x     = {0.f, 1.71f, 1.f};
+		y     = {0.f, 0.f, -1.f};
+		z     = {-1.f, 0.f, 0.f};
+		scale = 0.3f;
+		return true;
+	case VEHICLE_NIOBE:
+		x     = {-1.f, 0.175f, 0.22f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.35f;
+		return true;
+	case VEHICLE_COQUETTE5:
+		x     = {-1.f, 0.f, 0.075f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_PARAGON3:
+		x     = {-1.f, 0.f, 0.175f};
+		y     = {1.f, 0.f, 0.f};
+		z     = {0.f, -1.f, 0.f};
+		scale = 0.5f;
+		return true;
+	case VEHICLE_PIZZABOY:
+		x     = {0.f, 1.0569f, 1.f};
+		y     = {0.f, -0.5995f, -1.f};
+		z     = {-0.4071f, 0.f, 0.f};
+		scale = 0.2f;
+		return true;
 	default: return false;
 	}
 }
