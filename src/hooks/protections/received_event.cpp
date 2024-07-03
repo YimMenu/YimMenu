@@ -372,9 +372,11 @@ namespace big
 			&& player->m_player_info->m_ped && player->m_player_info->m_ped->m_net_object
 			&& ownerNetId != player->m_player_info->m_ped->m_net_object->m_object_id)
 		{
+			auto p_name = player->get_name();
+
 			g_notification_service.push_error("WARNING"_T.data(),
 				std::vformat("BLAMED_FOR_EXPLOSION"_T,
-					std::make_format_args(player->get_name(),
+					std::make_format_args(p_name,
 						reinterpret_cast<CPed*>(entity)->m_player_info->m_net_player_data.m_name)));
 			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			LOGF(stream::net_events, WARNING, "{} sent an EXPLOSION_EVENT with addOwnedExplosion enabled and with the wrong owner", player->get_name());

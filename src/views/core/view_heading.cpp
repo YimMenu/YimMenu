@@ -19,36 +19,19 @@ namespace big
 			        g_local_player->m_player_info->m_net_player_data.m_name);
 			ImGui::PopStyleColor();
 			ImGui::EndGroup();
+#ifdef YIM_DEV
 			ImGui::SameLine();
 			ImGui::SetCursorPos(
 			    {(300.f * g.window.gui_scale) - ImGui::CalcTextSize("UNLOAD"_T.data()).x - ImGui::GetStyle().ItemSpacing.x,
 			        ImGui::GetStyle().WindowPadding.y / 2 + ImGui::GetStyle().ItemSpacing.y + (ImGui::CalcTextSize("W").y / 2)});
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
-			ImGui::BeginDisabled(g_pointers && *g_pointers->m_gta.m_is_session_started);
 			if (components::nav_button("UNLOAD"_T))
 			{
-				// allow to unload in the main title screen.
-				if (g_script_mgr.can_tick())
-				{
-					// empty the pool, we want the that job below run no matter what for clean up purposes.
-					g_fiber_pool->reset();
-					g_fiber_pool->queue_job([] {
-						g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
-						for (auto& command : g_looped_commands)
-							if (command->is_enabled())
-								command->on_disable();
-
-						g_running = false;
-					});
-				}
-				else
-				{
-					g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
-					g_running = false;
-				}
+				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
+				g_running = false;
 			}
-			ImGui::EndDisabled();
 			ImGui::PopStyleColor();
+#endif
 		}
 		ImGui::End();
 	}

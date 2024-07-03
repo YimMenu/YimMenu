@@ -79,5 +79,7 @@ if(MSVC)
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
           "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Oi /Ot /Oy /Ob3 /sdl- /GL /GF /GS- /Gw")
       string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+    else()
+        add_compile_definitions(YIM_DEV)
     endif()
 endif()

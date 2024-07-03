@@ -3931,6 +3931,23 @@
 			"return_type": "void",
 			"build": "323"
 		},
+		"0xEB7D0E1FCC8FE17A": {
+			"name": "_FORCE_VEHICLE_ENGINE_SYNTH",
+			"jhash": "",
+			"comment": "Called together with SET_VEHICLE_TYRES_CAN_BURST",
+			"params": [
+				{
+					"type": "Vehicle",
+					"name": "vehicle"
+				},
+				{
+					"type": "BOOL",
+					"name": "force"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
 		"0x1C073274E065C6D2": {
 			"name": "ENABLE_VEHICLE_FANBELT_DAMAGE",
 			"jhash": "0x9365E042",
@@ -6841,6 +6858,100 @@
 			],
 			"return_type": "BOOL",
 			"build": "323"
+		},
+		"0xDDA77EE33C005AAF": {
+			"name": "_INTERPOLATE_CAM_WITH_PARAMS",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Cam",
+					"name": "camera"
+				},
+				{
+					"type": "float",
+					"name": "camPosX"
+				},
+				{
+					"type": "float",
+					"name": "camPosY"
+				},
+				{
+					"type": "float",
+					"name": "camPosZ"
+				},
+				{
+					"type": "float",
+					"name": "camRotX"
+				},
+				{
+					"type": "float",
+					"name": "camRotY"
+				},
+				{
+					"type": "float",
+					"name": "camRotZ"
+				},
+				{
+					"type": "float",
+					"name": "fov"
+				},
+				{
+					"type": "int",
+					"name": "duration"
+				},
+				{
+					"type": "int",
+					"name": "posCurveType"
+				},
+				{
+					"type": "int",
+					"name": "rotCurveType"
+				},
+				{
+					"type": "int",
+					"name": "rotOrder"
+				},
+				{
+					"type": "int",
+					"name": "fovCurveType"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
+		"0x34CFC4C2A38E83E3": {
+			"name": "_ACTIVATE_CAM_WITH_INTERP_AND_FOV_CURVE",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Cam",
+					"name": "camTo"
+				},
+				{
+					"type": "Cam",
+					"name": "camFrom"
+				},
+				{
+					"type": "int",
+					"name": "duration"
+				},
+				{
+					"type": "int",
+					"name": "easeLocation"
+				},
+				{
+					"type": "int",
+					"name": "easeRotation"
+				},
+				{
+					"type": "int",
+					"name": "easeFov"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x9FBDA379383A52A4": {
 			"name": "SET_CAM_ACTIVE_WITH_INTERP",
@@ -9858,6 +9969,14 @@
 			"params": [],
 			"return_type": "int",
 			"build": "323"
+		},
+		"0x710286BC5EF4D6E1": {
+			"name": "GET_CUTSCENE_PLAY_TIME",
+			"jhash": "",
+			"comment": "",
+			"params": [],
+			"return_type": "int",
+			"build": "3258"
 		},
 		"0xEE53B14A19E480D4": {
 			"name": "GET_CUTSCENE_TOTAL_DURATION",
@@ -31584,6 +31703,19 @@
 				"_SET_NORTH_YANKTON_MAP"
 			]
 		},
+		"0xB09D42557C45EBA1": {
+			"name": "SET_MINIMAP_BACKGROUND_HIDDEN",
+			"jhash": "",
+			"comment": "This native does absolutely nothing on PC master builds, just a nullsub.",
+			"params": [
+				{
+					"type": "BOOL",
+					"name": "toggle"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
 		"0xF8DEE0A5600CBB93": {
 			"name": "SET_MINIMAP_HIDE_FOW",
 			"jhash": "0xD8D77733",
@@ -46188,6 +46320,10 @@
 				{
 					"type": "Any",
 					"name": "p0"
+				},
+				{
+					"type": "Any",
+					"name": "p1"
 				}
 			],
 			"return_type": "void",
@@ -47465,6 +47601,10 @@
 				{
 					"type": "Any",
 					"name": "p4"
+				},
+				{
+					"type": "Any",
+					"name": "p5"
 				}
 			],
 			"return_type": "void",
@@ -48648,6 +48788,10 @@
 				{
 					"type": "Any",
 					"name": "p0"
+				},
+				{
+					"type": "Any",
+					"name": "p1"
 				}
 			],
 			"return_type": "void",
@@ -49501,7 +49645,8 @@
 				}
 			],
 			"return_type": "void",
-			"build": "2802"
+			"build": "2802",
+			"unused": true
 		},
 		"0xCE4452AE85F5E252": {
 			"name": "_NETWORK_EARN_FOOLIGAN_JOB",
@@ -49535,7 +49680,8 @@
 				}
 			],
 			"return_type": "void",
-			"build": "2802"
+			"build": "2802",
+			"unused": true
 		},
 		"0x991E1588FAD9019D": {
 			"name": "_NETWORK_EARN_TAXI_JOB",
@@ -52187,6 +52333,22 @@
 			"return_type": "void",
 			"build": "323"
 		},
+		"0x7B335F84501145BB": {
+			"name": "_NETWORK_INVITE_GET_JOIN_FAIL_REASON",
+			"jhash": "",
+			"comment": "Retrieves the failed invite join alert reason",
+			"params": [],
+			"return_type": "const char*",
+			"build": "3179"
+		},
+		"0x8EF5F5811A940F82": {
+			"name": "_NETWORK_INVITE_CLEAR_JOIN_FAIL_REASON",
+			"jhash": "",
+			"comment": "Clears the failed invite join alert reason",
+			"params": [],
+			"return_type": "void",
+			"build": "3179"
+		},
 		"0xC74C33FCA52856D5": {
 			"name": "NETWORK_SESSION_HOST_SINGLE_PLAYER",
 			"jhash": "0xF3B1CA85",
@@ -54169,6 +54331,10 @@
 				{
 					"type": "Hash",
 					"name": "modelHash"
+				},
+				{
+					"type": "Any",
+					"name": "p1"
 				}
 			],
 			"return_type": "void",
@@ -55757,6 +55923,19 @@
 			"return_type": "BOOL",
 			"build": "323"
 		},
+		"0x338ECE3637937BC2": {
+			"name": "_NETWORK_LOAD_GAMER_DISPLAY_NAME",
+			"jhash": "",
+			"comment": "Returns the name from given friend gamer handle.",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "gamerHandle"
+				}
+			],
+			"return_type": "const char*",
+			"build": "3258"
+		},
 		"0xAFEBB0D5D8F687D2": {
 			"name": "NETWORK_GET_MAX_FRIENDS",
 			"jhash": "0x048171BC",
@@ -56007,6 +56186,23 @@
 			"return_type": "void",
 			"build": "3095"
 		},
+		"0x62E29CDA11F9C230": {
+			"name": "_NETWORK_HAS_PLAYER_PASSED_CHECK_TYPE",
+			"jhash": "",
+			"comment": "_NETWORK_HAS_P*\ncheckType 3 is similar as using 0x9F633448E4C73207",
+			"params": [
+				{
+					"type": "int",
+					"name": "checkType"
+				},
+				{
+					"type": "Any*",
+					"name": "gamerHandle"
+				}
+			],
+			"return_type": "BOOL",
+			"build": "3258"
+		},
 		"0xAD4326FCA30D62F8": {
 			"name": "NETWORK_IS_PLAYER_ON_BLOCKLIST",
 			"jhash": "",
@@ -56221,6 +56417,19 @@
 			],
 			"return_type": "BOOL",
 			"build": "323"
+		},
+		"0x9F633448E4C73207": {
+			"name": "_NETWORK_CAN_TEXT_FROM_GAMER_BE_VIEWED",
+			"jhash": "",
+			"comment": "NETWORK_CAN_*",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "gamerHandle"
+				}
+			],
+			"return_type": "BOOL",
+			"build": "3258"
 		},
 		"0x07DD29D5E22763F1": {
 			"name": "NETWORK_CAN_PLAY_MULTIPLAYER_WITH_GAMER",
@@ -58372,6 +58581,23 @@
 			"return_type": "void",
 			"build": "2545"
 		},
+		"0xCFE359CCCFE359CC": {
+			"name": "_NETWORK_HIDE_ENTITY_IN_TUTORIAL_SESSION",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "int",
+					"name": "netHandle"
+				},
+				{
+					"type": "BOOL",
+					"name": "hide"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
 		"0x7A5487FE9FAA6B48": {
 			"name": "GET_NETWORK_TIME",
 			"jhash": "0x998103C2",
@@ -58910,6 +59136,23 @@
 			],
 			"return_type": "BOOL",
 			"build": "944"
+		},
+		"0x527803286A8B6C81": {
+			"name": "_SET_FREEMODE_REPORT_DATA",
+			"jhash": "",
+			"comment": "reportData includes mc, ceo, yacht and licenceplate names",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "gamerHandle"
+				},
+				{
+					"type": "Any*",
+					"name": "reportData"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x77758139EC9B66C7": {
 			"name": "USE_PLAYER_COLOUR_INSTEAD_OF_TEAM_COLOUR",
@@ -59980,6 +60223,78 @@
 				"_NETWORK_GET_TUNABLES_VERSION"
 			]
 		},
+		"0x014A73449675121D": {
+			"name": "_NETWORK_SET_TUNABLES_REGISTRATION_CONTEXTS",
+			"jhash": "",
+			"comment": "Sets up tunable contexts for _NETWORK_GET_TUNABLES_REGISTRATION_{BOOL|INT|FLOAT}",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "tunableContextData"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
+		"0x0C87C83C8950432B": {
+			"name": "_NETWORK_CLEAR_TUNABLES_REGISTRATION_CONTEXTS",
+			"jhash": "",
+			"comment": "Clears tunable contexts that were set up using _NETWORK_SET_TUNABLES_REGISTRATION_CONTEXTS",
+			"params": [],
+			"return_type": "void",
+			"build": "3258"
+		},
+		"0xB327CF1B8C2C0EA3": {
+			"name": "_NETWORK_GET_TUNABLES_REGISTRATION_BOOL",
+			"jhash": "",
+			"comment": "Checks if the given tunable exists and returns its value. Otherwise returns defaultValue.\nPossible tunable contexts must first be set up using _NETWORK_SET_TUNABLES_REGISTRATION_CONTEXTS.",
+			"params": [
+				{
+					"type": "Hash",
+					"name": "tunableName"
+				},
+				{
+					"type": "BOOL",
+					"name": "defaultValue"
+				}
+			],
+			"return_type": "BOOL",
+			"build": "3258"
+		},
+		"0x0D94071E55F4C9CE": {
+			"name": "_NETWORK_GET_TUNABLES_REGISTRATION_INT",
+			"jhash": "",
+			"comment": "Checks if the given tunable exists and returns its value. Otherwise returns defaultValue.\nPossible tunable contexts must first be set up using _NETWORK_SET_TUNABLES_REGISTRATION_CONTEXTS.",
+			"params": [
+				{
+					"type": "Hash",
+					"name": "tunableName"
+				},
+				{
+					"type": "int",
+					"name": "defaultValue"
+				}
+			],
+			"return_type": "int",
+			"build": "3258"
+		},
+		"0x367E5E33E7F0DD1A": {
+			"name": "_NETWORK_GET_TUNABLES_REGISTRATION_FLOAT",
+			"jhash": "",
+			"comment": "Checks if the given tunable exists and returns its value. Otherwise returns defaultValue.\nPossible tunable contexts must first be set up using _NETWORK_SET_TUNABLES_REGISTRATION_CONTEXTS.",
+			"params": [
+				{
+					"type": "Hash",
+					"name": "tunableName"
+				},
+				{
+					"type": "float",
+					"name": "defaultValue"
+				}
+			],
+			"return_type": "float",
+			"build": "3258"
+		},
 		"0x85E5F8B9B898B20A": {
 			"name": "NETWORK_DOES_TUNABLE_EXIST",
 			"jhash": "0x9FCE9C9A",
@@ -60340,6 +60655,23 @@
 			"old_names": [
 				"_NETWORK_SET_VEHICLE_WHEELS_DESTRUCTIBLE"
 			]
+		},
+		"0xE9D0244ACBEE1BC4": {
+			"name": "_NETWORK_TRIGGER_DAMAGE_EVENT_FOR_ZERO_PED_DAMAGE",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Entity",
+					"name": "entity"
+				},
+				{
+					"type": "BOOL",
+					"name": "trigger"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x38B7C51AB1EDC7D8": {
 			"name": "NETWORK_TRIGGER_DAMAGE_EVENT_FOR_ZERO_WEAPON_HASH",
@@ -62584,6 +62916,14 @@
 			"return_type": "BOOL",
 			"build": "3095"
 		},
+		"0x9BA54B3CFB82ADDD": {
+			"name": "_NETWORK_HAS_ROS_PRIVILEGE_REPORTING",
+			"jhash": "",
+			"comment": "Checks for privilege 31",
+			"params": [],
+			"return_type": "BOOL",
+			"build": "3258"
+		},
 		"0x36391F397731595D": {
 			"name": "NETWORK_START_COMMUNICATION_PERMISSIONS_CHECK",
 			"jhash": "",
@@ -63053,6 +63393,10 @@
 				{
 					"type": "BOOL",
 					"name": "dynamic"
+				},
+				{
+					"type": "Any",
+					"name": "p7"
 				}
 			],
 			"return_type": "Object",
@@ -63186,6 +63530,27 @@
 			],
 			"return_type": "void",
 			"build": "323"
+		},
+		"0xB39F03368DB0CAA2": {
+			"name": "_SET_OBJECT_TARGETTABLE_BY_PLAYER",
+			"jhash": "",
+			"comment": "Sets the 34th and 35th object flags related to player peds.",
+			"params": [
+				{
+					"type": "Object",
+					"name": "object"
+				},
+				{
+					"type": "BOOL",
+					"name": "setFlag34"
+				},
+				{
+					"type": "BOOL",
+					"name": "setFlag35"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x77F33F2CCF64B3AA": {
 			"name": "SET_OBJECT_FORCE_VEHICLES_TO_AVOID",
@@ -63588,6 +63953,10 @@
 				{
 					"type": "BOOL",
 					"name": "isLocal"
+				},
+				{
+					"type": "Any",
+					"name": "p8"
 				}
 			],
 			"return_type": "void",
@@ -70020,6 +70389,14 @@
 			],
 			"return_type": "void",
 			"build": "323"
+		},
+		"0xC73EFFC5E043A8BA": {
+			"name": "_SET_BLOCK_AMBIENT_PEDS_FROM_DROPPING_WEAPONS_THIS_FRAME",
+			"jhash": "",
+			"comment": "",
+			"params": [],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x9911F4A24485F653": {
 			"name": "SET_BLOCKING_OF_NON_TEMPORARY_EVENTS_FOR_AMBIENT_PEDS_THIS_FRAME",
@@ -82708,14 +83085,6 @@
 			"return_type": "void",
 			"build": "323"
 		},
-		"0x875BDD898B99C8CE": {
-			"name": "GET_PLAYER_TARGETING_MODE",
-			"jhash": "",
-			"comment": "Returns targeting mode. See SET_PLAYER_TARGETING_MODE",
-			"params": [],
-			"return_type": "int",
-			"build": "3095"
-		},
 		"0x5702B917B99DB1CD": {
 			"name": "SET_PLAYER_TARGET_LEVEL",
 			"jhash": "0x772DA539",
@@ -86528,6 +86897,19 @@
 			"return_type": "BOOL",
 			"build": "323"
 		},
+		"0x69AA35F3F391CDBA": {
+			"name": "_SC_EMAIL_MARKETING_EMAIL_OPENED",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "int",
+					"name": "index"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
 		"0x44ACA259D67651DB": {
 			"name": "SC_EMAIL_DELETE_EMAILS",
 			"jhash": "",
@@ -86880,6 +87262,23 @@
 			],
 			"return_type": "int",
 			"build": "323"
+		},
+		"0x75CC8931A11128C9": {
+			"name": "SC_PROFANITY_GET_PROFANE_WORD",
+			"jhash": "",
+			"comment": "Retrieves the profane part of the string with max size of 128.\nReturns true if profane term was retrieved.",
+			"params": [
+				{
+					"type": "int",
+					"name": "token"
+				},
+				{
+					"type": "char*",
+					"name": "outProfaneWord"
+				}
+			],
+			"return_type": "BOOL",
+			"build": "3258"
 		},
 		"0xF6BAAAF762E1BF40": {
 			"name": "SC_LICENSEPLATE_CHECK_STRING",
@@ -88567,7 +88966,7 @@
 		"0xE6A27CDA42887F93": {
 			"name": "_PLAYSTATS_FLOW_LOW",
 			"jhash": "",
-			"comment": "p3: VehicleConversion, SCAdminCashGift\np4: 0",
+			"comment": "",
 			"params": [
 				{
 					"type": "float",
@@ -88583,15 +88982,15 @@
 				},
 				{
 					"type": "const char*",
-					"name": "p3"
+					"name": "action"
 				},
 				{
-					"type": "Any",
+					"type": "BOOL",
 					"name": "p4"
 				},
 				{
 					"type": "int",
-					"name": "amount"
+					"name": "p5"
 				}
 			],
 			"return_type": "void",
@@ -88600,35 +88999,68 @@
 		"0xC4493521BAA12CCE": {
 			"name": "_PLAYSTATS_FLOW_MEDIUM",
 			"jhash": "",
-			"comment": "interiorAction: can either be InteriorEntry or InteriorExit",
+			"comment": "",
 			"params": [
 				{
 					"type": "float",
-					"name": "x"
+					"name": "posX"
 				},
 				{
 					"type": "float",
-					"name": "y"
+					"name": "posY"
 				},
 				{
 					"type": "float",
-					"name": "z"
+					"name": "posZ"
 				},
 				{
 					"type": "const char*",
-					"name": "interiorAction"
+					"name": "action"
 				},
 				{
-					"type": "int",
+					"type": "BOOL",
 					"name": "p4"
 				},
 				{
-					"type": "Hash",
+					"type": "int",
 					"name": "p5"
 				}
 			],
 			"return_type": "void",
 			"build": "3095"
+		},
+		"0xCFB0E9C3456319EA": {
+			"name": "_PLAYSTATS_FLOW_HIGH",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "float",
+					"name": "posX"
+				},
+				{
+					"type": "float",
+					"name": "posY"
+				},
+				{
+					"type": "float",
+					"name": "posZ"
+				},
+				{
+					"type": "const char*",
+					"name": "action"
+				},
+				{
+					"type": "BOOL",
+					"name": "p4"
+				},
+				{
+					"type": "int",
+					"name": "p5"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x93054C88E6AA7C44": {
 			"name": "PLAYSTATS_NPC_INVITE",
@@ -89732,6 +90164,43 @@
 			"old_names": [
 				"_PLAYSTATS_PI_MENU_HIDE_SETTINGS"
 			]
+		},
+		"0xAA434D7D0A89A95C": {
+			"name": "_PLAYSTATS_NAMED_USER_CONTENT",
+			"jhash": "",
+			"comment": "Known text types: NAME_YACHT, NAME_ORG_OFFICE",
+			"params": [
+				{
+					"type": "BOOL",
+					"name": "isBoss"
+				},
+				{
+					"type": "int",
+					"name": "bossType"
+				},
+				{
+					"type": "int",
+					"name": "bossId1"
+				},
+				{
+					"type": "int",
+					"name": "bossId2"
+				},
+				{
+					"type": "int",
+					"name": "textType"
+				},
+				{
+					"type": "const char*",
+					"name": "textString"
+				},
+				{
+					"type": "int",
+					"name": "textSource"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		},
 		"0x117B45156D7EFF2E": {
 			"name": "LEADERBOARDS_GET_NUMBER_OF_COLUMNS",
@@ -92995,14 +93464,6 @@
 				"_PLAYSTATS_NJVS_VOTE"
 			]
 		},
-		"0x4AFF7E02E485E92B": {
-			"name": "PLAYSTATS_KILL_YOURSELF",
-			"jhash": "",
-			"comment": "",
-			"params": [],
-			"return_type": "void",
-			"build": "1868"
-		},
 		"0x46A70777BE6CEAB9": {
 			"name": "PLAYSTATS_FM_MISSION_END",
 			"jhash": "",
@@ -93560,6 +94021,32 @@
 			],
 			"return_type": "void",
 			"build": "2944"
+		},
+		"0xE6D323A5E9EFFB76": {
+			"name": "_PLAYSTATS_PIMENU_NAV",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "data"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
+		},
+		"0xBEB0D930B3CCE4D5": {
+			"name": "_PLAYSTATS_RECOVER_VEHICLE",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Any*",
+					"name": "data"
+				}
+			],
+			"return_type": "void",
+			"build": "3258"
 		}
 	},
 	"STREAMING": {
@@ -109559,6 +110046,32 @@
 			],
 			"return_type": "int",
 			"build": "3095"
+		},
+		"0x1FCB07FE230B6639": {
+			"name": "_GET_IS_VEHICLE_ELECTRIC",
+			"jhash": "",
+			"comment": "",
+			"params": [
+				{
+					"type": "Hash",
+					"name": "vehicleModel"
+				}
+			],
+			"return_type": "BOOL",
+			"build": "3258"
+		},
+		"0x1423725069EE1D14": {
+			"name": "_GET_VEHICLE_DRIVETRAIN_TYPE",
+			"jhash": "",
+			"comment": "Returns the vehicle's drivetrain type.\n\nenum eVehicleDrivetrainType\n{\n\tVehicleDrivetrainType_INVALID,\n\tVehicleDrivetrainType_FWD,\n\tVehicleDrivetrainType_RWD,\n\tVehicleDrivetrainType_AWD\n};\n\n_GET_VEHICLE_DE* - _GET_VEHICLE_DI*",
+			"params": [
+				{
+					"type": "Hash",
+					"name": "vehicleModel"
+				}
+			],
+			"return_type": "int",
+			"build": "3258"
 		},
 		"0x56185A25D45A0DCD": {
 			"name": "_GET_VEHICLE_CURRENT_DRIVE_GEAR",

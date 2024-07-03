@@ -39,6 +39,7 @@ namespace big
 
 		NETWORK,
 		CHAT,
+		NETWORK_CONTROLS,
 		MISSIONS,
 		SPOOFING,
 		PLAYER_DATABASE,
@@ -141,6 +142,7 @@ namespace big
 		            view::network,
 		            {
 						{TAB_DECL(CHAT), view::chat}},
+						{TAB_DECL(NETWORK_CONTROLS), view::network_controls}},
 						{TAB_DECL(MISSIONS), view::missions}},
 						{TAB_DECL(SPOOFING), view::spoofing}},
 						{TAB_DECL(PLAYER_DATABASE), view::player_database}},

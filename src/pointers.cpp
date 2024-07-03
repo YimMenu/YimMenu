@@ -548,7 +548,7 @@ namespace big
         // Send Chat Message
         {
             "SCM",
-            "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9",
+            "48 81 EC 80 00 00 00 48 8B E9 48 8B CA 41",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
@@ -574,11 +574,11 @@ namespace big
         },
         // Start Matchmaking Find Sessions
         {
-            "SGSBGH",
-            "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF",
+            "SMFS",
+            "83 ? ? ? ? E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? C7",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
+                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(6).rip().as<functions::start_matchmaking_find_sessions>();
             }
         },
         // Join Session By Info
@@ -674,7 +674,7 @@ namespace big
         // Player Info Gamer Info
         {
             "PIGI",
-            "E8 ? ? ? ? 48 8D 4D 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
+            "E8 ? ? ? ? 48 8D 4B 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_player_info_gamer_info = ptr.add(1).rip().add(3).rip().as<rage::rlGamerInfo*>();
@@ -800,10 +800,10 @@ namespace big
         // Handle Remove Gamer Command
         {
             "HRGC",
-            "48 85 D2 0F 84 0E 04",
+            "74 74 33 FF",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.as<functions::handle_remove_gamer_cmd>();
+                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.sub(0x3B).as<functions::handle_remove_gamer_cmd>();
             }
         },
         // Broadcast Net Array
@@ -1198,10 +1198,10 @@ namespace big
         // NetFilter Handle Message
         {
             "NHM",
-            "E9 ? ? ? ? 48 8D 81 ? ? ? ? 4C 39 08",
+            "EB 2E 49 8D 82 ? ? ? ? 4C",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_netfilter_handle_message = ptr.add(1).rip().as<PVOID>();
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.sub(4).rip().as<PVOID>();
             }
         },
         // Handle Chat Message
@@ -1481,15 +1481,6 @@ namespace big
                 g_pointers->m_gta.m_creator_warp_cheat_triggered_patch = ptr;
             }
         },
-        // Sound Overload Detour
-        {
-            "SOD",
-            "66 45 3B C1 74 38",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_sound_overload_detour = ptr;
-            }
-        },
         // Disable Collision
         {
             "DC",
@@ -1753,7 +1744,7 @@ namespace big
         // Write Node
         {
             "WN",
-            "49 89 43 C8 E8 E2 FB 50 00",
+            "49 89 43 C8 E8 ? ? ? ? 84 C0 0F 95 C0 48 83 C4 ? C3 4C 8B DC",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_write_node = ptr.sub(0x49).as<PVOID>();
@@ -1798,7 +1789,7 @@ namespace big
         // Send Session Detail Msg
         {
             "SSDM",
-            "4C 8D 85 F0 01 00 00 49 8B D5", // unstable
+            "4C 8D 85 ? ? 00 00 49 8B D5 49", // unstable
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_send_session_detail_msg = ptr.add(0xE).rip().as<PVOID>();
@@ -1807,7 +1798,7 @@ namespace big
         // Session Request Patch
         {
             "SRP",
-            "48 8B 9D 60 01 00 00 E9 FF 00 00 00",
+            "48 8B BD 70 01 00 00 E9 FF 00 00 00",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();

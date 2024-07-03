@@ -10,12 +10,12 @@ namespace big::scr_globals
 	static inline const script_global gsbd_fm_events(1916617);
 	static inline const script_global gsbd_block_c(2657971);
 	static inline const script_global gsbd_property_instances(1936863);
-	
+
 	static inline const script_global globalplayer_bd(2657971);
 	static inline const script_global gpbd_fm_3(1887305);
 	static inline const script_global gpbd_fm_1(1845281);
 	static inline const script_global interiors(1943520);
-	
+
 	static inline const script_global launcher_global(2699171);
 
 	static inline const script_global sp(114370); // check flow_controller
@@ -40,7 +40,7 @@ namespace big::scr_globals
 	static inline const script_global spawn_global(2696212);
 	
 	static inline const script_global dance_state(1943520);
-	
+
 	static inline const script_global transaction_overlimit(20913);
 
 	static inline const script_global stats(2359296);
@@ -53,15 +53,16 @@ namespace big::scr_globals
 	static inline const script_global session6(2696130); // freemode -> if (NETWORK::NETWORK_IS_GAME_IN_PROGRESS() && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
 
 	static inline const script_global interaction_menu_access(2710429); // am_pi_menu -> if (NETWORK::NETWORK_IS_SIGNED_ONLINE()) first global after that
-	
+
 	static inline const script_global disable_wasted_sound(2707679); // freemode -> AUDIO::PLAY_SOUND_FRONTEND(-1, "Wasted", "POWER_PLAY_General_Soundset", true);
 	
 	static inline const script_global passive(1574582); // if (((!PED::IS_PED_IN_ANY_VEHICLE(PLAYER::GET_PLAYER_PED(bVar1), false) || Global_
-	
-	static inline const script_global property_garage(1586521);
+
+	static inline const script_global property_garage(1937684);
 	static inline const script_global property_names(1312298);
 
 	static inline const script_global reset_clothing(104077); // freemode 75, &iLocal_.*, 2\);
+
 
 	static inline const script_global gun_van(1949748); // return -29.532f, 6435.136f, 31.162f;
 }
