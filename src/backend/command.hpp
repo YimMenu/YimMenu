@@ -5,8 +5,8 @@
 #include "core/enums.hpp"
 #include "gta/joaat.hpp"
 #include "services/players/player_service.hpp"
-#include "util/string_operations.hpp"
 #include "util/math.hpp"
+#include "util/string_operations.hpp"
 
 namespace big
 {
@@ -70,19 +70,11 @@ namespace big
 			string::operations::to_lower(local_player_name_lower);
 			string::operations::to_lower(proxy_lower);
 
-			// Unfortunately, C++ does not consider std::string as a type and does not have a comparator for it.
-			// So can't really make this a switch case
-
-			if (proxy_lower == "@" && g_player_service->get_selected()->is_valid())
+			switch (proxy_lower[0])
 			{
-				return g_player_service->get_selected()->id();
-			}
-			else if (proxy_lower == "!" && g_player_service->get_closest(true)->is_valid())
-			{
-				return g_player_service->get_closest(true)->id();
-			}
-			else if (proxy_lower == "#")
-			{
+			case '@': return g_player_service->get_selected()->id();
+			case '!': return g_player_service->get_closest(true)->id();
+			case '#':
 				float distance     = std::numeric_limits<float>::max();
 				player_ptr closest = nullptr;
 				for (auto p : g_player_service->players())
@@ -101,8 +93,10 @@ namespace big
 
 				if (closest)
 					return closest->id();
+				break;
 			}
-			else if (proxy_lower == "me" || proxy_lower == "self" || local_player_name_lower.find(proxy_lower) != std::string::npos)
+
+			if (proxy_lower == "me" || proxy_lower == "self" || local_player_name_lower.find(proxy_lower) != std::string::npos)
 			{
 				return g_player_service->get_self()->id();
 			}

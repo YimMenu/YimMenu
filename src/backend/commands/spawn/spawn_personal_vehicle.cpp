@@ -39,7 +39,7 @@ namespace big
 			command_arguments result(1);
 			const std::string personal_veh_display_name = args[0];
 
-			for (auto& [_, item] : g_mobile_service->personal_vehicles())
+			for (auto& item : g_mobile_service->personal_vehicles() | std::ranges::views::values)
 			{
 				std::string display_name = item.get()->get_display_name();
 				display_name             = string::operations::remove_whitespace(display_name);

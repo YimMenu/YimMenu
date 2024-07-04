@@ -65,7 +65,7 @@ namespace big
 
 	player_ptr player_service::get_by_host_token(uint64_t token) const
 	{
-		for (const auto& [_, player] : m_players)
+		for (const auto& player : m_players | std::ranges::views::values)
 		{
 			if (auto net_data = player->get_net_data())
 			{
