@@ -7,6 +7,7 @@ namespace big
 	custom_text_service::custom_text_service()
 	{
 		add_callback_for_labels({"RESPAWN_W"_J, "RESPAWN_W_MP"_J}, respawn_label_callback);
+		add_callback_for_labels({"FMMC_KEY_TIP15"_J, "FMMC_MCK_TIP15"_J}, do_ceo_name_resize);
 		add_label_overwrite("GC_OTR_TMR"_J, "HIDING FROM CLOWNS");
 		// add_label_overwrite("TICK_LEFTCHEAT"_J, "~a~~HUD_COLOUR_WHITE~ has been swatted by Rockstar.");
 
@@ -23,7 +24,7 @@ namespace big
 		return m_callbacks.insert({hash, cb}).second;
 	}
 
-	bool custom_text_service::add_callback_for_labels(std::list<rage::joaat_t> hashes, custom_label_callback&& cb)
+	bool custom_text_service::add_callback_for_labels(std::initializer_list<rage::joaat_t> hashes, custom_label_callback&& cb)
 	{
 		bool result = true;
 		for (const auto& hash : hashes)

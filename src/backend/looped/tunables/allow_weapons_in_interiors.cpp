@@ -9,15 +9,16 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (auto tunable = g_tunables_service->get_tunable<PBOOL>(-298441869))
+			if (auto tunable = g_tunables_service->get_tunable<PBOOL>("KICK_OUT_OF_NIGHTCLUB_WITH_WEAPON"_J)) [[likely]]
 			{
-				*tunable = FALSE;
+				if (*tunable == TRUE) [[unlikely]]
+					*tunable = FALSE;
 			}
 		}
 
 		virtual void on_disable() override
 		{
-			if (auto tunable = g_tunables_service->get_tunable<PBOOL>(-298441869))
+			if (auto tunable = g_tunables_service->get_tunable<PBOOL>("KICK_OUT_OF_NIGHTCLUB_WITH_WEAPON"_J)) [[likely]]
 			{
 				*tunable = TRUE;
 			}

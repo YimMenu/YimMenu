@@ -163,6 +163,7 @@ namespace big
 		        }},
 		        {"ANIMATION",
 		            [this] {
+						// TODO: maybe inform the user of this behavior
 						if(STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
 							g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
 						else
@@ -204,7 +205,7 @@ namespace big
 		        }},
 		        {"KICK",
 		            [this] {
-				    static player_command* command = dynamic_cast<player_command*>(command::get("multikick"_J));
+				    static player_command* command = dynamic_cast<player_command*>(command::get("smartkick"_J));
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            script::get_current()->yield(500ms);
 		        }},

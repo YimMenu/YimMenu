@@ -153,7 +153,7 @@ namespace big
 		static auto reset_spawn_pos_to_offset = [&]() -> void {
 			Ped player_ped_handle = g_pointers->m_gta.m_ptr_to_handle(s.target->get_ped());
 			s.m_spawn_pos         = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player_ped_handle, 0, -7, 0);
-			g_notification_service.push_warning("Squad Spawner", "No suitable spot found, spawning at an offset");
+			g_notification_service.push_warning("GUI_TAB_SQUAD_SPAWNER"_T.data(), "SQUAD_SPAWNER_NO_SPOT_FOUND"_T.data());
 		};
 
 		static auto is_pos_valid = [&]() -> bool {
@@ -206,7 +206,7 @@ namespace big
 
 		if (!s.target->get_net_game_player() || s.m_squad_size < 1 || !STREAMING::IS_MODEL_VALID(rage::joaat(s.m_ped_model)))
 		{
-			g_notification_service.push_error("Squad spawner", "Error spawning squad");
+			g_notification_service.push_error("GUI_TAB_SQUAD_SPAWNER"_T.data(), "SQUAD_SPAWNER_ERROR_SPAWN"_T.data());
 			return false;
 		}
 
@@ -225,7 +225,7 @@ namespace big
 			if (VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(veh_model_hash) < s.m_squad_size)
 			{
 				s.m_squad_size = VEHICLE::GET_VEHICLE_MODEL_NUMBER_OF_SEATS(veh_model_hash);
-				g_notification_service.push_warning("Squad Spawner", "The squad vehicle has insufficient seats, decreasing the squad size");
+				g_notification_service.push_warning("GUI_TAB_SQUAD_SPAWNER"_T.data(), "SQUAD_SPAWNER_INSUFFICIENT_SEATS"_T.data());
 			}
 		}
 
