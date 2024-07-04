@@ -31,7 +31,7 @@ namespace big
 		{
 			command_arguments result(1);
 
-			if (g_gta_data_service->vehicle_by_hash(rage::joaat(args[0])).m_hash != NULL)
+			if (g_gta_data_service->vehicle_by_hash(rage::joaat(args[0])).m_hash != 0)
 			{
 				result.push(rage::joaat(args[0]));
 				return result;

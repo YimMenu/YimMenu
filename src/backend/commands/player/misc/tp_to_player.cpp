@@ -12,7 +12,7 @@ namespace big
 			if (arg == 1 || arg == 2)
 			{
 				std::vector<std::string> suggestions;
-				for (auto& [_, player] : g_player_service->players())
+				for (auto& player : g_player_service->players() | std::ranges::views::values)
 				{
 					suggestions.push_back(player->get_name());
 				}

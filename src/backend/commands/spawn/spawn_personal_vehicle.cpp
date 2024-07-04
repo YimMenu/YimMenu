@@ -21,7 +21,7 @@ namespace big
 			if (arg == 1)
 			{
 				std::vector<std::string> suggestions;
-				for (auto& [_, item] : g_mobile_service->personal_vehicles())
+				for (auto& item : g_mobile_service->personal_vehicles() | std::ranges::views::values)
 				{
 					std::string display_name = item.get()->get_display_name();
 					display_name             = string::operations::remove_whitespace(display_name);
