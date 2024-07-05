@@ -15,6 +15,7 @@ include(cmake/git.cmake)
 
 # Fetch modules
 message("\nFetching modules")
+include(cmake/asmjit.cmake)
 include(cmake/minhook.cmake)
 include(cmake/async-logger.cmake)
 include(cmake/pugixml.cmake)
@@ -58,10 +59,11 @@ target_include_directories(YimMenu PRIVATE
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
     "${minhook_SOURCE_DIR}/src/hde"
+    "${asmjit_SOURCE_DIR}/src"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static asmjit::asmjit)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)

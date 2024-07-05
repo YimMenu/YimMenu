@@ -37,6 +37,9 @@ namespace big
 		std::unordered_map<menu_event, std::vector<sol::protected_function>> m_event_callbacks;
 		std::vector<void*> m_allocated_memory;
 
+		std::unordered_map<uintptr_t, std::vector<sol::protected_function>> m_dynamic_hook_pre_callbacks;
+		std::unordered_map<uintptr_t, std::vector<sol::protected_function>> m_dynamic_hook_post_callbacks;
+
 		lua_module(const std::filesystem::path& module_path, folder& scripts_folder, bool disabled = false);
 		~lua_module();
 
@@ -70,5 +73,8 @@ namespace big
 
 		void tick_scripts();
 		void cleanup_done_scripts();
+
+		sol::object to_lua(const lua::memory::runtime_func_t::parameters_t* params, const uint8_t i, const std::vector<lua::memory::type_info_t>& param_types);
+		sol::object to_lua(lua::memory::runtime_func_t::return_value_t* return_value, const lua::memory::type_info_t return_value_type);
 	};
 }
