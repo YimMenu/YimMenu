@@ -2,10 +2,10 @@
 #include "../script.hpp"
 #include "bindings/gui/gui_element.hpp"
 #include "core/data/menu_event.hpp"
-#include "lua/bindings/memory.hpp"
+#include "lua/bindings/runtime_func_t.hpp"
+#include "lua/bindings/type_info_t.hpp"
 #include "lua_patch.hpp"
-
-#include <services/gui/gui_service.hpp>
+#include "services/gui/gui_service.hpp"
 
 namespace big
 {
