@@ -1,4 +1,5 @@
 #include "vehicle.hpp"
+#include "pools.hpp"
 
 namespace big::vehicle
 {

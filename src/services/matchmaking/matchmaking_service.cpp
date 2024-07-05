@@ -43,7 +43,7 @@ namespace big
 			attributes->m_param_values[0] &= ~(1 << 14); // Good Sport
 	}
 
-	bool matchmaking_service::matchmake(std::optional<int> constraint)
+	bool matchmaking_service::matchmake(std::optional<int> constraint, std::optional<bool> enforce_player_limit)
 	{
 		for (auto& session : m_found_sessions)
 		{
@@ -69,6 +69,7 @@ namespace big
 		static rage::rlSessionInfo result_sessions[MAX_SESSIONS_TO_FIND];
 
 		m_active = true;
+		m_num_valid_sessions = 0;
 
 		if (g_hooking->get_original<hooks::start_matchmaking_find_sessions>()(0, 1, &component, MAX_SESSIONS_TO_FIND, result_sessions, &m_num_sessions_found, &state))
 		{
@@ -77,11 +78,26 @@ namespace big
 
 			if (state.status == 3)
 			{
+				std::unordered_map<std::uint64_t, session*> stok_map = {};
+
 				for (int i = 0; i < m_num_sessions_found; i++)
 				{
 					m_found_sessions[i].info = result_sessions[i];
 
-					if (constraint && m_found_sessions[i].attributes.player_count >= 30)
+					if (auto it = stok_map.find(m_found_sessions[i].info.m_session_token); it != stok_map.end())
+					{
+						if (g.session_browser.filter_multiplexed_sessions)
+						{
+							it->second->is_valid = false;
+						}
+
+						it->second->attributes.multiplex_count++;
+						m_found_sessions[i].is_valid = false;
+						continue;
+					}
+
+					if (enforce_player_limit.has_value() && enforce_player_limit.value()
+					    && m_found_sessions[i].attributes.player_count >= 30)
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.language_filter_enabled
@@ -99,6 +115,8 @@ namespace big
 					    && ((m_found_sessions[i].attributes.discriminator & (1 << 14)) == (1 << 14))
 					        != (bool)g.session_browser.pool_filter)
 						m_found_sessions[i].is_valid = false;
+
+					stok_map.emplace(m_found_sessions[i].info.m_session_token, &m_found_sessions[i]);
 				}
 
 				if (g.session_browser.sort_method != 0)

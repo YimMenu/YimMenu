@@ -135,7 +135,7 @@ namespace big
 		PED::SET_PED_FIRING_PATTERN(ped, "FIRING_PATTERN_FULL_AUTO"_J);
 		PED::SET_PED_SHOOT_RATE(ped, 150);
 
-		if (!clone)
+		if (!clone && g.world.spawn_ped.randomize_outfit)
 			ped::set_ped_random_component_variation(ped);
 
 		if (is_bodyguard)
@@ -598,6 +598,7 @@ namespace big
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVINCIBLE"_T.data(), &g.world.spawn_ped.spawn_invincible);
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVISIBLE"_T.data(), &g.world.spawn_ped.spawn_invisible);
 		ImGui::Checkbox("VIEW_SPAWN_PED_ATTACKER"_T.data(), &g.world.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("VIEW_SPAWN_PED_RANDOMIZE_OUTFIT"_T.data(), &g.world.spawn_ped.randomize_outfit);
 
 		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)

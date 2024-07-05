@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 project(YimMenu CXX ASM_MASM)
 
 if (NOT MSVC)
@@ -79,5 +81,7 @@ if(MSVC)
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
           "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Oi /Ot /Oy /Ob3 /sdl- /GL /GF /GS- /Gw")
       string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+    else()
+        add_compile_definitions(YIM_DEV)
     endif()
 endif()

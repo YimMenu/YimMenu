@@ -4,7 +4,9 @@
 #include "script.hpp"
 #include "util/entity.hpp"
 #include "gta/enums.hpp"
+#include "util/math.hpp"
 #include <numbers>
+
 namespace big
 {
 	static timer spawning_axe_delay(200ms);

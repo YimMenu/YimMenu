@@ -162,7 +162,9 @@ namespace big
 		ImGui::Spacing();
 		components::small_text("IPL_INFOS"_T);
 
-		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(ipls[current_select].ipl_names.size())).data());
+		auto ipls_data = ipls[current_select].ipl_names.size();
+
+		ImGui::Text(std::vformat("IPL_CNT"_T, std::make_format_args(ipls_data)).data());
 		ImGui::Text(std::vformat("IPL_POSITION"_T, std::make_format_args(ipls[current_select].location.x, ipls[current_select].location.y, ipls[current_select].location.z)).data());
 	}
 }

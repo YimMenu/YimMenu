@@ -1,6 +1,7 @@
 #include "fiber_pool.hpp"
 #include "views/view.hpp"
 #include "script_mgr.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -18,6 +19,7 @@ namespace big
 			        g_local_player->m_player_info->m_net_player_data.m_name);
 			ImGui::PopStyleColor();
 			ImGui::EndGroup();
+#ifdef YIM_DEV
 			ImGui::SameLine();
 			ImGui::SetCursorPos(
 			    {(300.f * g.window.gui_scale) - ImGui::CalcTextSize("UNLOAD"_T.data()).x - ImGui::GetStyle().ItemSpacing.x,
@@ -25,27 +27,11 @@ namespace big
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.69f, 0.29f, 0.29f, 1.00f));
 			if (components::nav_button("UNLOAD"_T))
 			{
-				// allow to unload in the main title screen.
-				if (g_script_mgr.can_tick())
-				{
-					// empty the pool, we want the that job below run no matter what for clean up purposes.
-					g_fiber_pool->reset();
-					g_fiber_pool->queue_job([] {
-						g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
-						for (auto& command : g_looped_commands)
-							if (command->is_enabled())
-								command->on_disable();
-
-						g_running = false;
-					});
-				}
-				else
-				{
-					g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
-					g_running = false;
-				}
+				g_lua_manager->trigger_event<menu_event::MenuUnloaded>();
+				g_running = false;
 			}
 			ImGui::PopStyleColor();
+#endif
 		}
 		ImGui::End();
 	}

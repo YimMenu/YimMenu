@@ -5,6 +5,7 @@
 #include "pointers.hpp"
 #include "script_global.hpp"
 #include "services/players/player_service.hpp"
+#include "pools.hpp"
 
 namespace big::train
 {

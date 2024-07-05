@@ -548,7 +548,7 @@ namespace big
         // Send Chat Message
         {
             "SCM",
-            "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9",
+            "48 81 EC 80 00 00 00 48 8B E9 48 8B CA 41",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
@@ -574,11 +574,11 @@ namespace big
         },
         // Start Matchmaking Find Sessions
         {
-            "SGSBGH",
-            "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF",
+            "SMFS",
+            "83 ? ? ? ? E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? C7",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
+                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(6).rip().as<functions::start_matchmaking_find_sessions>();
             }
         },
         // Join Session By Info
@@ -644,6 +644,15 @@ namespace big
                 g_pointers->m_gta.m_host_token = ptr.add(3).rip().as<uint64_t*>();
             }
         },
+        // Peer ID
+        {
+            "PI",
+            "48 83 F8 FF 74 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_peer_id = ptr.add(9).rip().as<uint64_t*>();
+            }
+        },
         // Profile Gamer Info
         {
             "PGI",
@@ -656,7 +665,7 @@ namespace big
         // Player Info Gamer Info
         {
             "PIGI",
-            "E8 ? ? ? ? 48 8D 4D 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
+            "E8 ? ? ? ? 48 8D 4B 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_player_info_gamer_info = ptr.add(1).rip().add(3).rip().as<rage::rlGamerInfo*>();
@@ -782,10 +791,10 @@ namespace big
         // Handle Remove Gamer Command
         {
             "HRGC",
-            "48 85 D2 0F 84 0E 04",
+            "74 74 33 FF",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.as<functions::handle_remove_gamer_cmd>();
+                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.sub(0x3B).as<functions::handle_remove_gamer_cmd>();
             }
         },
         // Broadcast Net Array
@@ -1180,10 +1189,10 @@ namespace big
         // NetFilter Handle Message
         {
             "NHM",
-            "E9 ? ? ? ? 48 8D 81 ? ? ? ? 4C 39 08",
+            "EB 2E 49 8D 82 ? ? ? ? 4C",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_netfilter_handle_message = ptr.add(1).rip().as<PVOID>();
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.sub(4).rip().as<PVOID>();
             }
         },
         // Handle Chat Message
@@ -1463,15 +1472,6 @@ namespace big
                 g_pointers->m_gta.m_creator_warp_cheat_triggered_patch = ptr;
             }
         },
-        // Sound Overload Detour
-        {
-            "SOD",
-            "66 45 3B C1 74 38",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_sound_overload_detour = ptr;
-            }
-        },
         // Disable Collision
         {
             "DC",
@@ -1735,7 +1735,7 @@ namespace big
         // Write Node
         {
             "WN",
-            "49 89 43 C8 E8 E2 FB 50 00",
+            "49 89 43 C8 E8 ? ? ? ? 84 C0 0F 95 C0 48 83 C4 ? C3 4C 8B DC",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_write_node = ptr.sub(0x49).as<PVOID>();
@@ -1780,7 +1780,7 @@ namespace big
         // Send Session Detail Msg
         {
             "SSDM",
-            "4C 8D 85 F0 01 00 00 49 8B D5", // unstable
+            "4C 8D 85 ? ? 00 00 49 8B D5 49", // unstable
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_send_session_detail_msg = ptr.add(0xE).rip().as<PVOID>();
@@ -1789,10 +1789,83 @@ namespace big
         // Session Request Patch
         {
             "SRP",
-            "48 8B 9D 60 01 00 00 E9 FF 00 00 00",
+            "48 8B BD 70 01 00 00 E9 FF 00 00 00",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
+            }
+        },
+        // Get Peer By Security Id
+        {
+            "GPBSI",
+            "76 E0 8B 4C 24 30 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_peer_by_security_id = ptr.add(7).rip().as<functions::get_peer_by_security_id>();
+            }
+        },
+        // Game Data Hash
+        {
+            "GDH",
+            "BA 05 AC 17 D9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_data_hash = ptr.add(0x18).rip().as<GameDataHash**>();
+            }
+        },
+        // Get DLC Hash
+        {
+            "GDLCH",
+            "74 0B 41 BC 10",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_dlc_manager = ptr.sub(0x11).rip().as<void**>();
+                g_pointers->m_gta.m_get_dlc_hash = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Add Gamer To Session
+        {
+            "AGTS",
+            "7C E8 EB 23",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_add_gamer_to_session = ptr.add(0x23).rip().as<PVOID>();
+            }
+        },
+        // Set Head Blend Data
+        {
+            "SHBD",
+            "44 88 B2 3A 01",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_head_blend_data = ptr.sub(0x21).as<functions::set_head_blend_data>();
+            }
+        },
+        // Object Ids Offset
+        {
+            "OIO",
+            "FF 50 50 48 83 C7 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_object_ids_offset = ptr.add(0xF).as<std::uint32_t*>();
+            }
+        },
+        // Error Packet Memmove
+        {
+            "EPM",
+            "49 8D 4C 24 60 44 8B C0 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_packet_memmove = ptr.add(0x8).as<PVOID>();
+            }
+        },
+        // Create Pool Item
+        {
+            "CPI",
+            "18 83 F9 FF 75",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_create_pool_item = ptr.sub(0x6).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

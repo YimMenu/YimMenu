@@ -163,6 +163,7 @@ namespace big
 		        }},
 		        {"ANIMATION",
 		            [this] {
+						// TODO: maybe inform the user of this behavior
 						if(STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
 							g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
 						else
