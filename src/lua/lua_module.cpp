@@ -355,4 +355,40 @@ namespace big
 			return script->is_done();
 		});
 	}
+
+	sol::object lua_module::to_lua(const lua::memory::runtime_func_t::parameters_t* params, const uint8_t i, const std::vector<lua::memory::type_info_t>& param_types)
+	{
+		if (param_types[i] == lua::memory::type_info_t::none_)
+		{
+			return sol::nil;
+		}
+		else if (param_types[i] == lua::memory::type_info_t::ptr_)
+		{
+			return sol::make_object(m_state, lua::memory::pointer(params->get<uintptr_t>(i)));
+		}
+		else
+		{
+			return sol::make_object(m_state, lua::memory::value_wrapper_t(params->get_arg_ptr(i), param_types[i]));
+		}
+
+		return sol::nil;
+	}
+
+	sol::object lua_module::to_lua(lua::memory::runtime_func_t::return_value_t* return_value, const lua::memory::type_info_t return_value_type)
+	{
+		if (return_value_type == lua::memory::type_info_t::none_)
+		{
+			return sol::nil;
+		}
+		else if (return_value_type == lua::memory::type_info_t::ptr_)
+		{
+			return sol::make_object(m_state, lua::memory::pointer((uintptr_t)return_value->get()));
+		}
+		else
+		{
+			return sol::make_object(m_state, lua::memory::value_wrapper_t((char*)return_value->get(), return_value_type));
+		}
+
+		return sol::nil;
+	}
 }
