@@ -1,4 +1,5 @@
 #pragma once
+#include "bindings/memory.hpp"
 #include "core/enums.hpp"
 #include "lua_module.hpp"
 
@@ -50,6 +51,9 @@ namespace big
 		bool has_gui_to_draw(rage::joaat_t tab_hash);
 		void draw_independent_gui();
 		void draw_gui(rage::joaat_t tab_hash);
+
+		bool dynamic_hook_pre_callbacks(const uintptr_t target_func_ptr, lua::memory::type_info_t return_type, lua::memory::runtime_func_t::return_value_t* return_value, std::vector<lua::memory::type_info_t> param_types, const lua::memory::runtime_func_t::parameters_t* params, const uint8_t param_count);
+		void dynamic_hook_post_callbacks(const uintptr_t target_func_ptr, lua::memory::type_info_t return_type, lua::memory::runtime_func_t::return_value_t* return_value, std::vector<lua::memory::type_info_t> param_types, const lua::memory::runtime_func_t::parameters_t* params, const uint8_t param_count);
 
 		std::weak_ptr<lua_module> enable_module(rage::joaat_t module_id);
 		std::weak_ptr<lua_module> disable_module(rage::joaat_t module_id);
