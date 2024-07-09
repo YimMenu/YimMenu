@@ -132,7 +132,7 @@ namespace big
 		            [this] {
 			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
 			            {
-				            static player_command* command = dynamic_cast<player_command*>(command::get("vehkick"_J));
+				            static player_command* command = player_command::get("vehkick"_J);
 				            command->call(ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)), {});
 			            }
 
@@ -205,17 +205,17 @@ namespace big
 		        }},
 		        {"KICK",
 		            [this] {
-				    static player_command* command = dynamic_cast<player_command*>(command::get("smartkick"_J));
+				    static player_command* command = player_command::get("smartkick"_J);
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            script::get_current()->yield(500ms);
 		        }},
 		        {"DISARM",
 		            [this] {
-			            static player_command* command = dynamic_cast<player_command*>(command::get("remweaps"_J));
+			            static player_command* command = player_command::get("remweaps"_J);
 			            command->call(ped::get_player_from_ped(m_handle), {});
 		        }},
 		        {"RAGDOLL", [this] {
-			         static player_command* command = dynamic_cast<player_command*>(command::get("ragdoll"_J));
+			         static player_command* command = player_command::get("ragdoll"_J);
 			         command->call(ped::get_player_from_ped(m_handle), {});
 		        }}
 		    }};

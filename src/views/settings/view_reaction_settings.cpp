@@ -186,9 +186,6 @@ namespace big
 		components::sub_title("SETTINGS_NOTIFY_OTHER"_T);
 
 		draw_pair_option("SETTINGS_NOTIFY_TRANSACTION_RATE_LIMIT"_T, g.notifications.transaction_rate_limit);
-		draw_pair_option("SETTINGS_NOTIFY_MISMATCH_SYNC_TYPE"_T, g.notifications.mismatch_sync_type);
-		draw_pair_option("SETTINGS_NOTIFY_OUT_OF_ALLOWED_RANGE_SYNC_TYPE"_T, g.notifications.out_of_allowed_range_sync_type);
-		draw_pair_option("SETTINGS_NOTIFY_INVALID_SYNC"_T, g.notifications.invalid_sync);
 	}
 
 }

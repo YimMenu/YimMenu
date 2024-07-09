@@ -40,7 +40,6 @@ namespace big
 		ImGui::SameLine();
 
 		ImGui::BeginGroup();
-		ImGui::Checkbox("SEND_SMS"_T.data(), &g.protections.script_events.send_sms);
 		ImGui::Checkbox("SPECTATE"_T.data(), &g.protections.script_events.spectate);
 		ImGui::Checkbox("VEHICLE_KICK"_T.data(), &g.protections.script_events.vehicle_kick);
 		ImGui::Checkbox("WANTED_LEVEL"_T.data(), &g.protections.script_events.clear_wanted_level);
