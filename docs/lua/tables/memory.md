@@ -2,7 +2,7 @@
 
 Table containing helper functions related to process memory.
 
-## Functions (6)
+## Functions (7)
 
 ### `scan_pattern(pattern)`
 
@@ -101,6 +101,29 @@ end)
 **Example Usage:**
 ```lua
 memory.dynamic_hook(hook_name, return_type, param_types, target_func_ptr, pre_callback, post_callback)
+```
+
+### `dynamic_call(return_type, param_types, target_func_ptr)`
+
+**Example Usage:**
+```lua
+local ptr = memory.scan_pattern("some ida sig")
+local func_to_call_test_global_name = memory.dynamic_call("bool", {"const char*", "float", "double", "void*", "int8_t", "int64_t"}, ptr)
+local call_res_test = _G[func_to_call_test_global_name]("yepi", 69.025, 420.69, 57005, 126, 1195861093)
+log.info("call_res_test: ", call_res_test)
+```
+
+- **Parameters:**
+  - `return_type` (string): Type of the return value of the function to call.
+  - `param_types` (table<string>): Types of the parameters of the function to call.
+  - `target_func_ptr` (memory.pointer): The pointer to the function to call.
+
+- **Returns:**
+  - `string`: Key name of the function that you can now call from lua.
+
+**Example Usage:**
+```lua
+string = memory.dynamic_call(return_type, param_types, target_func_ptr)
 ```
 
 
