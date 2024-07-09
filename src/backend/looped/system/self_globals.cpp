@@ -12,7 +12,12 @@ namespace big
 		    || (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id == -1) [[unlikely]]
 			self::id = 0;
 		else [[likely]]
+		{
 			self::id = (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id;
+
+			if (self::id == 255)
+				LOG(VERBOSE) << "how? " << (int)(*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id;
+		}
 
 		self::ped = PLAYER::PLAYER_PED_ID();
 
