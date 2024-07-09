@@ -2,7 +2,7 @@
 
 Table containing helper functions related to process memory.
 
-## Functions (6)
+## Functions (7)
 
 ### `scan_pattern(pattern)`
 
@@ -73,6 +73,7 @@ memory.free(ptr)
 **Example Usage:**
 ```lua
 local ptr = memory.scan_pattern("some ida sig")
+-- Check the implementation of the asmjit::TypeId get_type_id function if you are unsure what to use for return type / parameters types
 memory.dynamic_hook("test_hook", "float", {"const char*"}, ptr,
 function(ret_val, str)
 
@@ -101,6 +102,45 @@ end)
 **Example Usage:**
 ```lua
 memory.dynamic_hook(hook_name, return_type, param_types, target_func_ptr, pre_callback, post_callback)
+```
+
+### `dynamic_call(return_type, param_types, target_func_ptr)`
+
+**Example Usage:**
+```lua
+-- the sig in this example leads to an implementation of memcpy_s
+local ptr = memory.scan_pattern("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 49 8B D9 49 8B F0 48 8B FA")
+if ptr:is_valid() then
+     local dest_size = 8
+     local dest_ptr = memory.allocate(dest_size)
+     dest_ptr:set_qword(0)
+
+     local src_size = 8
+     local src_ptr = memory.allocate(src_size)
+     src_ptr:set_qword(123)
+
+     -- Check the implementation of the asmjit::TypeId get_type_id function if you are unsure what to use for return type / parameters types
+     local func_to_call_test_global_name = memory.dynamic_call("int", {"void*", "uint64_t", "void*", "uint64_t"}, ptr)
+     -- print zero.
+     log.info(dest_ptr:get_qword())
+     -- note: don't pass memory.pointer objects directly when you call the function, but use get_address() instead.
+     local call_res_test = _G[func_to_call_test_global_name](dest_ptr:get_address(), dest_size, src_ptr:get_address(), src_size)
+     -- print 123.
+     log.info(dest_ptr:get_qword())
+end
+```
+
+- **Parameters:**
+  - `return_type` (string): Type of the return value of the function to call.
+  - `param_types` (table<string>): Types of the parameters of the function to call.
+  - `target_func_ptr` (memory.pointer): The pointer to the function to call.
+
+- **Returns:**
+  - `string`: Key name of the function that you can now call from lua.
+
+**Example Usage:**
+```lua
+string = memory.dynamic_call(return_type, param_types, target_func_ptr)
 ```
 
 
