@@ -5,26 +5,50 @@ namespace lua_self = self;
 
 namespace lua::self
 {
+	// Lua API: Table
+	// Name: self
+	// Table for retrieving data or info about our own player object.
+
+	// Lua API: Function
+	// Table: self
+	// Name: get_ped
+	// Returns: integer: Script handle of our ped.
 	static Ped get_ped()
 	{
 		return lua_self::ped;
 	}
 
+	// Lua API: Function
+	// Table: self
+	// Name: get_id
+	// Returns: integer: Our player id.
 	static Player get_id()
 	{
 		return lua_self::id;
 	}
 
+	// Lua API: Function
+	// Table: self
+	// Name: get_ped
+	// Returns: vec3: Position of our ped.
 	static Vector3 get_pos()
 	{
 		return lua_self::pos;
 	}
 
+	// Lua API: Function
+	// Table: self
+	// Name: get_ped
+	// Returns: vec3: Rotation of our ped.
 	static Vector3 get_rot()
 	{
 		return lua_self::rot;
 	}
 
+	// Lua API: Function
+	// Table: self
+	// Name: get_ped
+	// Returns: integer: Script handle of our current vehicle.
 	static Vehicle get_veh()
 	{
 		return lua_self::veh;
