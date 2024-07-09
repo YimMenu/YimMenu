@@ -21,7 +21,7 @@ namespace big
 		fadeEnd.Value.w *= alpha;
 
 		int j            = 0;
-		int prevSpace    = 0;
+		int prevSpace    = -1;
 		float total_size = 0.f;
 		std::vector<std::string> split_points;
 
@@ -43,10 +43,19 @@ namespace big
 			}
 			else if (size.x >= 330.f)
 			{
-				total_size = total_size + size.y;
-				split_points.push_back(message.substr(j, prevSpace - j));
-				j = prevSpace + 1;
-				i = prevSpace;
+				if (prevSpace != -1)
+				{
+					total_size = total_size + size.y;
+					split_points.push_back(message.substr(j, prevSpace - j));
+					j = prevSpace + 1;
+					i = prevSpace;
+				}
+				else
+				{
+					total_size = total_size + size.y;
+					split_points.push_back(message.substr(j, i - j));
+					j = i;
+				}
 			}
 		}
 
