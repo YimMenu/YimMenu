@@ -29,14 +29,6 @@ namespace big
 				g_fiber_pool->reset();
 			}
 
-			components::button("Exception on Indirect Near JMP instruction", [] {
-				using func_t = __int64 (*)(__int64 a1);
-
-				func_t func = (func_t)((__int64)GetModuleHandleA(0) + 0x19F4C8);
-
-				func(0);
-			});
-
 			if (components::button("VIEW_DEBUG_MISC_TRIGGER_GTA_ERROR_BOX"_T))
 			{
 				hooks::log_error_message_box(0xBAFD530B, 1);
