@@ -216,6 +216,7 @@ namespace lua::memory
 	// **Example Usage:**
 	// ```lua
 	// local ptr = memory.scan_pattern("some ida sig")
+	// -- Check the implementation of the asmjit::TypeId get_type_id function if you are unsure what to use for return type / parameters types
 	// memory.dynamic_hook("test_hook", "float", {"const char*"}, ptr,
 	// function(ret_val, str)
 	//
@@ -552,10 +553,26 @@ namespace lua::memory
 	// Returns: string: Key name of the function that you can now call from lua.
 	// **Example Usage:**
 	// ```lua
-	// local ptr = memory.scan_pattern("some ida sig")
-	// local func_to_call_test_global_name = memory.dynamic_call("bool", {"const char*", "float", "double", "void*", "int8_t", "int64_t"}, ptr)
-	// local call_res_test = _G[func_to_call_test_global_name]("yepi", 69.025, 420.69, 57005, 126, 1195861093)
-	// log.info("call_res_test: ", call_res_test)
+	// -- the sig in this example leads to an implementation of memcpy_s
+	// local ptr = memory.scan_pattern("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 49 8B D9 49 8B F0 48 8B FA")
+	// if ptr:is_valid() then
+	//     local dest_size = 8
+	//     local dest_ptr = memory.allocate(dest_size)
+	//     dest_ptr:set_qword(0)
+	//
+	//     local src_size = 8
+	//     local src_ptr = memory.allocate(src_size)
+	//     src_ptr:set_qword(123)
+	//
+	//     -- Check the implementation of the asmjit::TypeId get_type_id function if you are unsure what to use for return type / parameters types
+	//     local func_to_call_test_global_name = memory.dynamic_call("int", {"void*", "uint64_t", "void*", "uint64_t"}, ptr)
+	//     -- print zero.
+	//     log.info(dest_ptr:get_qword())
+	//     -- note: don't pass memory.pointer objects directly when you call the function, but use get_address() instead.
+	//     local call_res_test = _G[func_to_call_test_global_name](dest_ptr:get_address(), dest_size, src_ptr:get_address(), src_size)
+	//     -- print 123.
+	//     log.info(dest_ptr:get_qword())
+	// end
 	// ```
 	static std::string dynamic_call(const std::string& return_type, sol::table param_types_table, lua::memory::pointer& target_func_ptr_obj, sol::this_state state_)
 	{
