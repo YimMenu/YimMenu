@@ -29,7 +29,7 @@ namespace lua::self
 
 	// Lua API: Function
 	// Table: self
-	// Name: get_ped
+	// Name: get_pos
 	// Returns: vec3: Position of our ped.
 	static Vector3 get_pos()
 	{
@@ -38,7 +38,7 @@ namespace lua::self
 
 	// Lua API: Function
 	// Table: self
-	// Name: get_ped
+	// Name: get_rot
 	// Returns: vec3: Rotation of our ped.
 	static Vector3 get_rot()
 	{
@@ -47,7 +47,7 @@ namespace lua::self
 
 	// Lua API: Function
 	// Table: self
-	// Name: get_ped
+	// Name: get_veh
 	// Returns: integer: Script handle of our current vehicle.
 	static Vehicle get_veh()
 	{
