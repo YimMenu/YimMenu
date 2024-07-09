@@ -24,34 +24,34 @@ integer = self.get_ped()
 integer = self.get_id()
 ```
 
-### `get_ped()`
+### `get_pos()`
 
 - **Returns:**
   - `vec3`: Position of our ped.
 
 **Example Usage:**
 ```lua
-vec3 = self.get_ped()
+vec3 = self.get_pos()
 ```
 
-### `get_ped()`
+### `get_rot()`
 
 - **Returns:**
   - `vec3`: Rotation of our ped.
 
 **Example Usage:**
 ```lua
-vec3 = self.get_ped()
+vec3 = self.get_rot()
 ```
 
-### `get_ped()`
+### `get_veh()`
 
 - **Returns:**
   - `integer`: Script handle of our current vehicle.
 
 **Example Usage:**
 ```lua
-integer = self.get_ped()
+integer = self.get_veh()
 ```
 
 
