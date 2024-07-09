@@ -1,6 +1,6 @@
 #include "protection.hpp"
-
 #include "model_info.hpp"
+#include "scripts.hpp"
 
 namespace big::protection
 {
@@ -75,8 +75,59 @@ namespace big::protection
 	    "A_C_Chop"_J,
 	    "A_C_HumpBack"_J,
 	};
+
+	enum class script_block_state
+	{
+		BLOCK_ALWAYS,
+		BLOCK_IN_FREEMODE
+	};
+
+	static std::unordered_map<rage::joaat_t, script_block_state> script_block_states = 
+	{{
+		{"AM_Darts"_J, script_block_state::BLOCK_ALWAYS},
+	    {"AM_PI_MENU"_J, script_block_state::BLOCK_ALWAYS},
+	    {"fm_intro"_J, script_block_state::BLOCK_ALWAYS},
+	    {"golf_mp"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"tennis_network_mp"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"Pilot_School_MP"_J, script_block_state::BLOCK_ALWAYS},
+	    {"FM_Impromptu_DM_Controler"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"fm_deathmatch_controler"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"FM_Race_Controler"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"FM_Horde_Controler"_J, script_block_state::BLOCK_IN_FREEMODE},
+	    {"am_darts_apartment"_J, script_block_state::BLOCK_ALWAYS},
+	    {"grid_arcade_cabinet"_J, script_block_state::BLOCK_ALWAYS},
+	    {"scroll_arcade_cabinet"_J, script_block_state::BLOCK_ALWAYS},
+	    {"example_arcade"_J, script_block_state::BLOCK_ALWAYS},
+	    {"road_arcade"_J, script_block_state::BLOCK_ALWAYS},
+	    {"gunslinger_arcade"_J, script_block_state::BLOCK_ALWAYS}, // Badlands Revenge II?
+	    {"wizard_arcade"_J, script_block_state::BLOCK_ALWAYS},
+	    {"ggsm_arcade"_J, script_block_state::BLOCK_ALWAYS}, // Space Monkey?
+	    {"puzzle"_J, script_block_state::BLOCK_ALWAYS},     // Qub3d?
+	    {"camhedz_arcade"_J, script_block_state::BLOCK_ALWAYS},
+	    {"SCTV"_J, script_block_state::BLOCK_ALWAYS}}
+	};
+
 	bool is_valid_player_model(rage::joaat_t model)
 	{
 		return valid_player_models.contains(model);
+	}
+
+	bool should_allow_script_launch(int launcher_script)
+	{
+		if (launcher_script >= launcher_scripts.size())
+			return false;
+
+		auto script = launcher_scripts[launcher_script];
+
+		if (auto it = script_block_states.find(script); it != script_block_states.end())
+		{
+			if (it->second == script_block_state::BLOCK_ALWAYS)
+				return false;
+			
+			if (it->second == script_block_state::BLOCK_IN_FREEMODE && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				return false;
+		}
+
+		return true;
 	}
 }

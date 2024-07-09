@@ -5,7 +5,7 @@
 #include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "util/math.hpp"
-#include "util/script_database.hpp"
+#include "util/protection.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
@@ -16,8 +16,6 @@
 
 namespace big
 {
-	static const script_protection_DB script_database;
-
 	void format_string(std::string_view player_name, std::string_view protection_type, bool should_log, bool should_notify)
 	{
 		if (should_log)
@@ -381,7 +379,7 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[3];
-			if (interior < 0 || interior > 166) // the upper bound will change after an update
+			if (interior < 0 || interior > 171) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
@@ -448,23 +446,15 @@ namespace big
 		{
 			auto script_id = args[3];
 
-			protection_status protection_status = script_database.get_protection_status(script_id);
-
-			if (protection_status == protection_status::BLOCK_ALWAYS)
+			if (!protection::should_allow_script_launch(script_id))
 			{
+				LOGF(stream::script_events, WARNING, "Blocked StartScriptBegin from {} with script ID {}", plyr->get_name(), script_id);
 				g.reactions.start_script.process(plyr);
 				return true;
 			}
-
-			if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() && protection_status == protection_status::BLOCK_IN_FREEMODE)
+			else
 			{
-				g.reactions.start_script.process(plyr);
-				return true;
-			}
-
-			if (protection_status == protection_status::ALLOWED_NOTIFY)
-			{
-				g.reactions.start_script.only_notify(plyr);
+				LOGF(stream::script_events, INFO, "Allowed StartScriptBegin from {} with script ID {}", plyr->get_name(), script_id);
 			}
 		}
 		}
