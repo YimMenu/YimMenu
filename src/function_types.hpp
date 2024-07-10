@@ -130,7 +130,7 @@ namespace big::functions
 	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
-	using invite_player_by_gamer_handle = bool (*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+	using invite_player_by_gamer_handle = bool (*)(Network* network, rage::rlGamerHandle* handles, int handlecount, const char* subject, const char* msg, rage::rlTaskStatus* state);
 	using add_friend_by_gamer_handle   = void (*)(rage::rlGamerHandle* handle, const char* unk);
 	using show_profile_by_gamer_handle = void (*)(rage::rlGamerHandle* handle);
 
