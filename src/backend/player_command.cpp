@@ -64,7 +64,7 @@ namespace big
 		std::vector<std::string> new_args;
 		command_arguments result(m_num_args.value());
 
-		auto proxy_result = this->get_argument_proxy_value(args[0]);
+		auto proxy_result = get_argument_proxy_value(args[0]);
 
 		if (proxy_result.has_value())
 		{
