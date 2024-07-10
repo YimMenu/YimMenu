@@ -48,7 +48,7 @@ namespace big
 
 			if ((!first_possible_proxy.has_value() && !sender) || (!second_possible_proxy.has_value() && !target))
 			{
-				g_notification_service.push_error("Teleport", "Invalid player name(s).");
+				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), (std::string("INVALID_PLAYER_NAME_NOTIFICATION"_T)));
 				return std::nullopt;
 			}
 
@@ -75,10 +75,13 @@ namespace big
 				auto coords     = target->get_ped()->get_position();
 				Vector3 coords_ = {coords->x, coords->y, coords->z};
 				teleport::teleport_player_to_coords(sender, coords_);
-				g_notification_service.push(sender->get_name(), "Teleported to " + std::string(target->get_name()));
+				const std::string message =
+				    std::vformat("TELEPORT_PLAYER_TO_PLAYER_NOTIFICATION"_T,
+					    std::make_format_args(sender->get_name(), target->get_name()));
+				g_notification_service.push(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), message);
 			}
 		}
 	};
 
-	tp_to_player tp_to_player_shortcut("tp", "Teleport to Player", "Teleport first player to the second", 1);
+	tp_to_player tp_to_player_shortcut("tp", "TELEPORT_PLAYER_TO_PLAYER", "TELEPORT_PLAYER_TO_PLAYER_DESC", 1);
 }
