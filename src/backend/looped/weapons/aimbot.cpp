@@ -5,8 +5,10 @@
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/misc.hpp"
+#include "util/math.hpp"
 
 #include <numbers>
+
 namespace big
 {
 	bool_command g_aimbot_only_on_player("aimonlyatplayer", "PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_PLAYER_DESC",

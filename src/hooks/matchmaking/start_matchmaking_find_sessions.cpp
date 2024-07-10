@@ -2,6 +2,7 @@
 #include "function_types.hpp"
 #include "hooking/hooking.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 #include <network/Network.hpp>
 
@@ -17,10 +18,7 @@ namespace big
 			g_fiber_pool->queue_job([max_sessions, results, num_sessions_found, status, discriminator] {
 				bool result = false;
 
-				if (g.session.join_in_sctv_slots)
-					result = g_matchmaking_service->matchmake();
-				else
-					result = g_matchmaking_service->matchmake(discriminator);
+				result = g_matchmaking_service->matchmake(discriminator, !g.session.join_in_sctv_slots);
 
 				if (result)
 				{
@@ -28,6 +26,13 @@ namespace big
 					{
 						if (g_matchmaking_service->get_found_sessions()[i].is_valid)
 						{
+							auto host_rid =
+							    g_matchmaking_service->get_found_sessions()[i].info.m_net_player_data.m_gamer_handle.m_rockstar_id;
+							auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
+							
+							if (g.session_browser.exclude_modder_sessions && player && player->block_join)
+								continue;
+
 							results[*num_sessions_found] = g_matchmaking_service->get_found_sessions()[i].info;
 							(*num_sessions_found)++;
 

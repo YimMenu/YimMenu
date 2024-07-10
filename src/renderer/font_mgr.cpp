@@ -14,6 +14,7 @@ namespace big
 	        {eAlphabetType::CYRILLIC, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	        {eAlphabetType::JAPANESE, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	        {eAlphabetType::KOREAN, {"malgun.ttf", "arial.ttf"}},
+	        {eAlphabetType::TURKISH, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	    })
 	{
 	}
@@ -99,9 +100,8 @@ namespace big
 	void font_mgr::update_required_alphabet_type(eAlphabetType type)
 	{
 		m_require_extra = type;
-		
-		g_thread_pool->push([this]
-		{
+
+		g_thread_pool->push([this] {
 			rebuild();
 		});
 	}
@@ -160,10 +160,32 @@ namespace big
 	const ImWchar* font_mgr::GetGlyphRangesTurkish()
 	{
 		static const ImWchar icons_ranges_Turkish[] = {
-		    0x0020, 0x00FF, // Basic Latin + Latin Supplement
-		    0x011E, 0x011F, // G with breve
-		    0x0130, 0x0131, // dotted I
-		    0x015E, 0x015F, // S-cedilla
+		    0x0020,
+		    0x00FF, // Basic Latin + Latin Supplement
+		    0x00c7,
+		    0x00c7, // Ç
+		    0x00e7,
+		    0x00e7, // ç
+		    0x011e,
+		    0x011e, // Ğ
+		    0x011f,
+		    0x011f, // ğ
+		    0x0130,
+		    0x0130, // İ
+		    0x0131,
+		    0x0131, // ı
+		    0x00d6,
+		    0x00d6, // Ö
+		    0x00f6,
+		    0x00f6, // ö
+		    0x015e,
+		    0x015e, // Ş
+		    0x015f,
+		    0x015f, // ş
+		    0x00dc,
+		    0x00dc, // Ü
+		    0x00fc,
+		    0x00fc, // ü
 		    0,
 		};
 		return &icons_ranges_Turkish[0];

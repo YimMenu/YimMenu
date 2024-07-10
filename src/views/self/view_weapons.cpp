@@ -93,6 +93,8 @@ namespace big
 			}
 		});
 
+		components::command_checkbox<"enablemk1variants">();
+
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("DEBUG_TAB_MISC"_T.data());

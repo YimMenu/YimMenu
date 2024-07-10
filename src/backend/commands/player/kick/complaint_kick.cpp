@@ -19,7 +19,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			if (!player)
+			if (!player || !player->is_valid())
 				return;
 			if (gta_util::get_network()->m_game_session_ptr->is_host())
 			{
@@ -27,7 +27,7 @@ namespace big
 				return;
 			}
 
-			g_player_service->m_player_to_use_complaint_kick = player;
+			player->trigger_desync_kick = true;
 		}
 	};
 

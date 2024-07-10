@@ -1,4 +1,29 @@
 #include "entity.hpp"
+#include "gta/joaat.hpp"
+#include "gta_util.hpp"
+#include "math.hpp"
+#include "natives.hpp"
+#include "pools.hpp"
+#include "script.hpp"
+#include "services/players/player_service.hpp"
+#include "packet.hpp"
+#include "gta/net_object_mgr.hpp"
+
+#include <entities/CDynamicEntity.hpp>
+
+namespace
+{
+	int get_next_token_value(int prev_token)
+	{
+		for (int i = 0; i < 0x1F; i++)
+		{
+			if ((i << 27) - (prev_token << 27) > 0)
+				return i;
+		}
+
+		return 0;
+	}
+}
 
 namespace big::entity
 {
@@ -30,10 +55,14 @@ namespace big::entity
 			ent = NULL;
 			return;
 		}
-		if (!force && !take_control_of(ent))
+
+		if (auto ptr = g_pointers->m_gta.m_handle_to_ptr(ent))
 		{
-			LOG(VERBOSE) << "Failed to take control of entity before deleting";
-			return;
+			if (ptr->m_net_object)
+			{
+				force_remove_network_entity(ptr, true);
+				return;
+			}
 		}
 
 		if (ENTITY::IS_ENTITY_A_VEHICLE(ent))
@@ -169,7 +198,7 @@ namespace big::entity
 		{
 			for (auto vehicle : pools::get_all_vehicles())
 			{
-				if (!include_self_veh && vehicle == gta_util::get_local_vehicle())
+				if (!vehicle || (!include_self_veh && vehicle == gta_util::get_local_vehicle()))
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(vehicle));
@@ -180,7 +209,7 @@ namespace big::entity
 		{
 			for (auto ped : pools::get_all_peds())
 			{
-				if (ped == g_local_player)
+				if (!ped || ped == g_local_player)
 					continue;
 
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(ped));
@@ -191,6 +220,9 @@ namespace big::entity
 		{
 			for (auto prop : pools::get_all_props())
 			{
+				if (!prop)
+					continue;
+
 				target_entities.push_back(g_pointers->m_gta.m_ptr_to_handle(prop));
 			}
 		}
@@ -346,5 +378,59 @@ namespace big::entity
 			*pointer = closest_entity_ptr;
 
 		return closest_entity;
+	}
+
+	void force_remove_network_entity(rage::CDynamicEntity* entity, bool delete_locally)
+	{
+		if (!entity->m_net_object)
+			return;
+
+		force_remove_network_entity(entity->m_net_object->m_object_id, entity->m_net_object->m_ownership_token, delete_locally);
+	}
+
+	void force_remove_network_entity(std::uint16_t net_id, int ownership_token, bool delete_locally)
+	{
+		char buf[0x200]{};
+		rage::datBitBuffer remove_buf(buf, sizeof(buf));
+		int msgs_written = 0;
+
+		if (ownership_token != -1)
+		{
+			remove_buf.Write<std::uint16_t>(net_id, 13);
+			remove_buf.Write<int>(get_next_token_value(ownership_token), 5);
+			msgs_written++;
+		}
+		else
+		{
+			// try all tokens if we don't know it
+			for (int i = 0; i < 0x1F; i++)
+			{
+				remove_buf.Write<std::uint16_t>(net_id, 13);
+				remove_buf.Write<int>(i, 5);
+				msgs_written++;
+			}
+		}
+
+		packet pack;
+		pack.write_message(rage::eNetMessage::MsgPackedReliables);
+		pack.write<int>(4, 4); // remove
+		pack.write<int>(msgs_written, 5);
+		pack.write<int>(remove_buf.GetPosition(), 13);
+		pack.m_buffer.WriteArray(&buf, remove_buf.GetPosition());
+
+		for (auto& player : g_player_service->players())
+		{
+			if (player.second->get_net_game_player())
+			{
+				if (!player.second->get_ped() || player.second->get_ped()->m_net_object->m_object_id != net_id) // would crash the player otherwise
+				{
+					pack.send(player.second->get_net_game_player()->m_msg_id);
+				}
+			}
+		}
+
+		if (delete_locally)
+			if (auto object = (*g_pointers->m_gta.m_network_object_mgr)->find_object_by_id(net_id, true))
+				(*g_pointers->m_gta.m_network_object_mgr)->UnregisterNetworkObject(object, 8, true, true);
 	}
 }

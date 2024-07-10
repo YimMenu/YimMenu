@@ -2,7 +2,7 @@
 
 Table containing helper functions for network related features.
 
-## Functions (12)
+## Functions (15)
 
 ### `trigger_script_event(bitset, _args)`
 
@@ -155,6 +155,43 @@ Sends a message to the in game chat.
 **Example Usage:**
 ```lua
 network.send_chat_message(msg, team_only)
+```
+
+### `send_chat_message_to_player(player_idx, msg)`
+
+Sends a chat message to the specified player. Other players would not be able to see the message
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+  - `msg` (string): Message to be sent.
+
+**Example Usage:**
+```lua
+network.send_chat_message_to_player(player_idx, msg)
+```
+
+### `get_player_rank(pid)`
+
+Call get_player_rank(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+**Example Usage:**
+```lua
+network.get_player_rank(pid)
+```
+
+### `get_player_rp(pid)`
+
+Call get_player_rp(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+**Example Usage:**
+```lua
+network.get_player_rp(pid)
 ```
 
 

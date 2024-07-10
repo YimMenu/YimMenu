@@ -5,7 +5,6 @@
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
 #include "util/explosion_anti_cheat_bypass.hpp"
-#include "util/police.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
 
@@ -16,12 +15,6 @@ namespace big
 {
 	static void init()
 	{
-		// Restore max wanted level after menu unload
-		police::m_max_wanted_level =
-		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(5).rip().as<uint32_t*>(), 0).get();
-		police::m_max_wanted_level_2 =
-		    memory::byte_patch::make(g_pointers->m_gta.m_max_wanted_level.add(14).rip().as<uint32_t*>(), 0).get();
-
 		// Patch World Model Spawn Bypass
 		std::array<uint8_t, 24> world_spawn_patch;
 		std::fill(world_spawn_patch.begin(), world_spawn_patch.end(), 0x90);
@@ -31,6 +24,8 @@ namespace big
 		// Patch blocked explosions
 		explosion_anti_cheat_bypass::m_can_blame_others =
 		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.as<uint16_t*>(), 0xE990).get();
+		explosion_anti_cheat_bypass::m_set_script_flag =
+		    memory::byte_patch::make(g_pointers->m_gta.m_blame_explode.sub(0x63).as<uint32_t*>(), 0x90909090).get();
 		explosion_anti_cheat_bypass::m_can_use_blocked_explosions =
 		    memory::byte_patch::make(g_pointers->m_gta.m_explosion_patch.sub(12).as<uint16_t*>(), 0x9090).get();
 
@@ -44,12 +39,6 @@ namespace big
 
 		// Disable cheat activated netevent when creator warping
 		memory::byte_patch::make(g_pointers->m_gta.m_creator_warp_cheat_triggered_patch.as<uint8_t*>(), 0xEB)->apply();
-
-		// Setup inline hook for sound overload crash protection
-		g_sound_overload_ret_addr = g_pointers->m_gta.m_sound_overload_detour.add(13 + 15).as<decltype(g_sound_overload_ret_addr)>();
-		std::vector<byte> bytes = {0xFF, 0x25, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90}; // far jump opcode + a nop opcode
-		*(void**)(bytes.data() + 6) = sound_overload_detour;
-		memory::byte_patch::make(g_pointers->m_gta.m_sound_overload_detour.add(13).as<void*>(), bytes)->apply();
 
 		// Disable collision when enabled
 		vehicle::disable_collisions::m_patch =

@@ -29,8 +29,7 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
-		m_player_to_use_end_session_kick.reset();
-		m_player_to_use_complaint_kick.reset();
+		m_players_sending_modder_beacons.clear();
 		m_selected_player = m_dummy;
 		m_players.clear();
 	}
@@ -38,24 +37,42 @@ namespace big
 	player_ptr player_service::get_by_msg_id(uint32_t msg_id) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (player->get_net_game_player()->m_msg_id == msg_id)
-				return player;
+		{
+			if (auto net_game_player = player->get_net_game_player())
+			{
+				if (net_game_player->m_msg_id == msg_id)
+				{
+					return player;
+				}
+			}
+		}
 		return nullptr;
 	}
 
 	player_ptr player_service::get_by_id(uint32_t id) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (player->id() == id)
+		{
+			if (player && player->id() == id)
+			{
 				return player;
+			}
+		}
 		return nullptr;
 	}
 
 	player_ptr player_service::get_by_host_token(uint64_t token) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (player->get_net_data()->m_host_token == token)
-				return player;
+		{
+			if (auto net_data = player->get_net_data())
+			{
+				if (net_data->m_host_token == token)
+				{
+					return player;
+				}
+			}
+		}
 		return nullptr;
 	}
 
@@ -99,14 +116,18 @@ namespace big
 		        });
 		    it != m_players.end())
 		{
-			if (m_player_to_use_end_session_kick == it->second)
-				m_player_to_use_end_session_kick = std::nullopt;
-
-			if (m_player_to_use_complaint_kick == it->second)
-				m_player_to_use_complaint_kick = std::nullopt;
-
 			m_players.erase(it);
 		}
+	}
+
+	void player_service::mark_player_as_sending_modder_beacons(std::uint64_t rid)
+	{
+		m_players_sending_modder_beacons.insert(rid);
+	}
+
+	bool player_service::did_player_send_modder_beacon(std::uint64_t rid)
+	{
+		return m_players_sending_modder_beacons.contains(rid);
 	}
 
 	void player_service::set_selected(player_ptr plyr)

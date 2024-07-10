@@ -33,6 +33,12 @@ if(Git_FOUND)
         OUTPUT_VARIABLE GIT_BRANCH
         ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+    # Check if GIT_BRANCH is empty
+    if(NOT GIT_BRANCH)
+      # If GIT_BRANCH is empty, use GITHUB_HEAD_REF
+      set(GIT_BRANCH "$ENV{GITHUB_HEAD_REF}")
+    endif()
+
     # generate version.cpp
     configure_file("${SRC_DIR}/version.cpp.in" "${SRC_DIR}/version.cpp" @ONLY)
 endif()

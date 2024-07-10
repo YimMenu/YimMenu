@@ -16,6 +16,7 @@ enum class PedBones : uint16_t;
 class CNetComplaintMgr;
 class Network;
 class CNetworkObjectMgr;
+class CHeadBlendData;
 
 namespace rage
 {
@@ -44,6 +45,7 @@ namespace rage
 	class fiPackfile;
 	class scrNativeRegistrationTable;
 	class rlSessionByGamerTaskResult;
+	class SecurityPeer;
 	struct rlScTaskStatus
 	{
 		void* pad  = 0;
@@ -75,7 +77,6 @@ namespace big::functions
 
 	using set_gravity_level = void (*)(int level);
 
-	using check_chat_profanity              = int(__int64 chat_type, const char* input, const char** output);
 	using write_player_game_state_data_node = bool (*)(rage::netObject* plr, CPlayerGameStateDataNode* node);
 
 	using get_gameplay_cam_coords = Vector3 (*)();
@@ -129,7 +130,7 @@ namespace big::functions
 	using start_get_presence_attributes = bool (*)(int profile_index, rage::rlScHandle* handle, int num_handles, rage::rlQueryPresenceAttributesContext** contexts, int count, rage::rlScTaskStatus* state);
 	using join_session_by_info = bool (*)(Network* network, rage::rlSessionInfo* info, int unk, int flags, rage::rlGamerHandle* handles, int handlecount);
 
-	using invite_player_by_gamer_handle = bool (*)(uint64_t config, rage::rlGamerHandle* handle, int unk1, int unk2, int unk3, int unk4);
+	using invite_player_by_gamer_handle = bool (*)(Network* network, rage::rlGamerHandle* handles, int handlecount, const char* subject, const char* msg, rage::rlTaskStatus* state);
 	using add_friend_by_gamer_handle   = void (*)(rage::rlGamerHandle* handle, const char* unk);
 	using show_profile_by_gamer_handle = void (*)(rage::rlGamerHandle* handle);
 
@@ -165,7 +166,7 @@ namespace big::functions
 
 	using sync_network_time = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* addr, int connection_id, rage::netTimeSyncMsg* msg, int flags);
 	using send_packet = bool (*)(rage::netConnectionManager* mgr, rage::netPeerAddress* adde, int connection_id, void* data, int size, int flags);
-	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
+	using connect_to_peer = bool (*)(rage::netConnectionManager* mgr, rage::rlGamerHandle* handle, rage::rlGamerInfoBase* gamer_info, rage::snConnectToPeerTaskData* data, rage::snConnectToPeerTaskResult* result, rage::rlTaskStatus* status);
 
 	using clear_ped_tasks_network = void (*)(CPed* ped, bool immediately);
 
@@ -213,5 +214,14 @@ namespace big::functions
 
 	using can_create_vehicle = bool (*)();
 
+
 	using cam_gameplay_directory_update = bool (*)(uintptr_t this_);
+
+	using get_searchlight = void* (*) (CPed*);
+
+	using get_sector_data = void (*) (rage::fvector3* coords, std::uint16_t* x, std::uint16_t* y, std::uint16_t* z, rage::fvector3* sector_pos);
+
+	using get_peer_by_security_id = rage::SecurityPeer*(*)(int id);
+
+	using set_head_blend_data = void(*)(CPed* ped, CHeadBlendData* data);
 }

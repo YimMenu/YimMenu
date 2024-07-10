@@ -186,6 +186,7 @@ namespace big
 
 		TSECommand          = 800157557, // CnCTG_IN_BF
 		TSECommandRotateCam = 225624744, // != 29) && f
+		TSECommandSound     = 385726943,
 
 		Notification             = -642704387,
 		NotificationMoneyBanked  = 94410750,   // TICK_TC_BANK
@@ -239,7 +240,7 @@ namespace big
 	NLOHMANN_JSON_SERIALIZE_ENUM(SpeedUnit,
 	    {
 	        {SpeedUnit::KMPH, "kmph"},
-	        {SpeedUnit::MIPH, "miph"},
+	        {SpeedUnit::MIPH, "mph"},
 	        {SpeedUnit::MPS, "mps"},
 	    })
 
