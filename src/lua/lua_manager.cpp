@@ -14,13 +14,13 @@ namespace big
 		{
 			rename(file, new_module_path);
 		}
-		catch(const std::filesystem::filesystem_error& e)
+		catch (const std::filesystem::filesystem_error& e)
 		{
 			LOG(FATAL) << "Failed to move Lua file: " << e.what();
 
 			return std::nullopt;
 		}
-		return { new_module_path };
+		return {new_module_path};
 	}
 
 	lua_manager::lua_manager(folder scripts_folder, folder scripts_config_folder) :
@@ -59,7 +59,8 @@ namespace big
 
 		for (const auto& script_path : script_paths)
 		{
-			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), script_path);
+			const auto new_module_path =
+			    move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), script_path);
 			if (new_module_path)
 			{
 				load_module(*new_module_path);
@@ -84,7 +85,8 @@ namespace big
 
 		for (const auto& script_path : script_paths)
 		{
-			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), script_path);
+			const auto new_module_path =
+			    move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), script_path);
 			if (new_module_path)
 			{
 				load_module(*new_module_path);
@@ -173,6 +175,64 @@ namespace big
 		}
 	}
 
+	bool lua_manager::dynamic_hook_pre_callbacks(const uintptr_t target_func_ptr, lua::memory::type_info_t return_type, lua::memory::runtime_func_t::return_value_t* return_value, std::vector<lua::memory::type_info_t> param_types, const lua::memory::runtime_func_t::parameters_t* params, const uint8_t param_count)
+	{
+		std::scoped_lock guard(m_module_lock);
+
+		bool call_orig_if_true = true;
+
+		for (const auto& module : m_modules)
+		{
+			const auto it = module->m_dynamic_hook_pre_callbacks.find(target_func_ptr);
+			if (it != module->m_dynamic_hook_pre_callbacks.end())
+			{
+				sol::object return_value_obj = module->to_lua(return_value, return_type);
+				std::vector<sol::object> args;
+				for (uint8_t i = 0; i < param_count; i++)
+				{
+					args.push_back(module->to_lua(params, i, param_types));
+				}
+
+				for (const auto& cb : it->second)
+				{
+					const auto new_call_orig_if_true = cb(return_value_obj, sol::as_args(args));
+
+					if (call_orig_if_true && new_call_orig_if_true.valid() && new_call_orig_if_true.get_type() == sol::type::boolean
+					    && new_call_orig_if_true.get<bool>() == false)
+					{
+						call_orig_if_true = false;
+					}
+				}
+			}
+		}
+
+		return call_orig_if_true;
+	}
+
+	void lua_manager::dynamic_hook_post_callbacks(const uintptr_t target_func_ptr, lua::memory::type_info_t return_type, lua::memory::runtime_func_t::return_value_t* return_value, std::vector<lua::memory::type_info_t> param_types, const lua::memory::runtime_func_t::parameters_t* params, const uint8_t param_count)
+	{
+		std::scoped_lock guard(m_module_lock);
+
+		for (const auto& module : m_modules)
+		{
+			const auto it = module->m_dynamic_hook_post_callbacks.find(target_func_ptr);
+			if (it != module->m_dynamic_hook_post_callbacks.end())
+			{
+				sol::object return_value_obj = module->to_lua(return_value, return_type);
+				std::vector<sol::object> args;
+				for (uint8_t i = 0; i < param_count; i++)
+				{
+					args.push_back(module->to_lua(params, i, param_types));
+				}
+
+				for (const auto& cb : it->second)
+				{
+					cb(return_value_obj, sol::as_args(args));
+				}
+			}
+		}
+	}
+
 	std::weak_ptr<lua_module> lua_manager::enable_module(rage::joaat_t module_id)
 	{
 		if (auto module = get_disabled_module(module_id).lock())
@@ -181,13 +241,14 @@ namespace big
 
 			// unload module
 			{
-			std::lock_guard guard(m_disabled_module_lock);
-			std::erase_if(m_disabled_modules, [module_id](auto& module) {
-				return module_id == module->module_id();
-			});
+				std::lock_guard guard(m_disabled_module_lock);
+				std::erase_if(m_disabled_modules, [module_id](auto& module) {
+					return module_id == module->module_id();
+				});
 			}
 
-			const auto new_module_path = move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), module_path);
+			const auto new_module_path =
+			    move_file_relative_to_folder(m_disabled_scripts_folder.get_path(), m_scripts_folder.get_path(), module_path);
 			if (new_module_path)
 			{
 				return load_module(*new_module_path);
@@ -205,13 +266,14 @@ namespace big
 
 			// unload module
 			{
-			std::lock_guard guard(m_disabled_module_lock);
-			std::erase_if(m_modules, [module_id](auto& module) {
-				return module_id == module->module_id();
-			});
+				std::lock_guard guard(m_disabled_module_lock);
+				std::erase_if(m_modules, [module_id](auto& module) {
+					return module_id == module->module_id();
+				});
 			}
 
-			const auto new_module_path = move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), module_path);
+			const auto new_module_path =
+			    move_file_relative_to_folder(m_scripts_folder.get_path(), m_disabled_scripts_folder.get_path(), module_path);
 			if (new_module_path)
 			{
 				return load_module(*new_module_path);

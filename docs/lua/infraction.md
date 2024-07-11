@@ -7,7 +7,7 @@ All the infraction from the menu are listed below, used as parameter for adding 
 network.flag_player_as_modder(player_index, infraction.CUSTOM_REASON, "My custom reason on why the player is flagged as a modder")
 ```
 
-## Infraction Count: 13
+## Infraction Count: 15
 
 ### `DESYNC_PROTECTION`
 ### `TRIGGERED_ANTICHEAT`
@@ -22,3 +22,5 @@ network.flag_player_as_modder(player_index, infraction.CUSTOM_REASON, "My custom
 ### `SUPER_JUMP`
 ### `UNDEAD_OTR`
 ### `CUSTOM_REASON`
+### `CHAT_SPAM`
+### `SENT_MODDER_BEACONS`

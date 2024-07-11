@@ -481,7 +481,7 @@ namespace big
         // Network
         {
             "N",
-            "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7",
+            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_network = ptr.add(3).rip().as<Network**>();
@@ -615,15 +615,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_show_profile_by_gamer_handle = ptr.add(1).rip().as<functions::show_profile_by_gamer_handle>();
-            }
-        },
-        // Network Config
-        {
-            "NC",
-            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_network_config = ptr.add(3).rip().as<uint64_t>();
             }
         },
         // Script VM

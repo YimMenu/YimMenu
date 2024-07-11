@@ -7,7 +7,8 @@ namespace stream
 {
 	inline auto net_events   = std::make_shared<LogStream>("net_events");
 	inline auto net_messages = std::make_shared<LogStream>("net_messages");
-	inline auto net_sync      = std::make_shared<LogStream>("net_sync");
+	inline auto net_sync     = std::make_shared<LogStream>("net_sync");
+	inline auto script_events     = std::make_shared<LogStream>("script_events");
 }
 
 namespace big
