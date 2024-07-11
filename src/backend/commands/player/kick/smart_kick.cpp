@@ -19,14 +19,14 @@ namespace big
 		{
 			if (g_player_service->get_self()->is_host())
 			{
-				dynamic_cast<player_command*>(command::get("breakup"_J))->call(player, {});
+				player_command::get("breakup"_J)->call(player, {});
 			}
 			else
 			{
 				if (player->is_host())
-					dynamic_cast<player_command*>(command::get("oomkick"_J))->call(player, {});
+					player_command::get("oomkick"_J)->call(player, {});
 				else
-					dynamic_cast<player_command*>(command::get("desync"_J))->call(player, {});
+					player_command::get("desync"_J)->call(player, {});
 			}
 		}
 	};
