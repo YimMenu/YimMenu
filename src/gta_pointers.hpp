@@ -58,8 +58,6 @@ namespace big
 
 		memory::handle m_creator_warp_cheat_triggered_patch;
 
-		memory::handle m_sound_overload_detour;
-
 		memory::handle m_disable_collision;
 
 		memory::handle m_crash_trigger;
@@ -171,7 +169,6 @@ namespace big
 		functions::invite_player_by_gamer_handle m_invite_player_by_gamer_handle;
 		functions::add_friend_by_gamer_handle m_add_friend_by_gamer_handle;
 		functions::show_profile_by_gamer_handle m_show_profile_by_gamer_handle;
-		uint64_t m_network_config;
 
 		functions::reset_network_complaints m_reset_network_complaints;
 

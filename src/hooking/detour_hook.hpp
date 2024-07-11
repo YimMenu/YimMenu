@@ -29,6 +29,11 @@ namespace big
 			return static_cast<T>(m_original);
 		}
 
+		void** get_original_ptr()
+		{
+			return &m_original;
+		}
+
 		void fix_hook_address();
 
 	private:

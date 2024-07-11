@@ -115,7 +115,7 @@ namespace big
 					}
 
 					if (plyr->block_join && *g_pointers->m_gta.m_is_session_started)
-						dynamic_cast<player_command*>(command::get("smartkick"_J))->call(plyr, {});
+						player_command::get("smartkick"_J)->call(plyr, {});
 
 					if (is_spoofed_host_token(plyr->get_net_data()))
 					{

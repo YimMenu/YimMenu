@@ -1517,9 +1517,9 @@ namespace lua::native
 		return retval;
 	}
 
-	static void LUA_NATIVE_NETWORK_NETWORK_ADD_INVALID_OBJECT_MODEL(Hash modelHash)
+	static void LUA_NATIVE_NETWORK_NETWORK_ADD_INVALID_OBJECT_MODEL(Hash modelHash, Any p1)
 	{
-		NETWORK::NETWORK_ADD_INVALID_OBJECT_MODEL(modelHash);
+		NETWORK::NETWORK_ADD_INVALID_OBJECT_MODEL(modelHash, p1);
 	}
 
 	static void LUA_NATIVE_NETWORK_NETWORK_REMOVE_INVALID_OBJECT_MODEL(Hash modelHash)
