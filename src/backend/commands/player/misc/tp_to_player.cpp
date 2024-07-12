@@ -75,9 +75,9 @@ namespace big
 				auto coords     = target->get_ped()->get_position();
 				Vector3 coords_ = {coords->x, coords->y, coords->z};
 				teleport::teleport_player_to_coords(sender, coords_);
-				const std::string message =
-				    std::vformat("TELEPORT_PLAYER_TO_PLAYER_NOTIFICATION"_T,
-					    std::make_format_args(sender->get_name(), target->get_name()));
+				auto sender_name = sender->get_name();
+				auto target_name = target->get_name();
+				const std::string message = std::vformat("TELEPORT_PLAYER_TO_PLAYER_NOTIFICATION"_T, std::make_format_args(sender_name, target_name));
 				g_notification_service.push(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), message);
 			}
 		}
