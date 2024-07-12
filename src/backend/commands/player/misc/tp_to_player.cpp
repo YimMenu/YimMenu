@@ -26,8 +26,8 @@ namespace big
 		{
 			command_arguments result(2);
 
-			auto first_possible_proxy  = this->get_argument_proxy_value(args[0]);
-			auto second_possible_proxy = this->get_argument_proxy_value(args[1]);
+			auto first_possible_proxy  = get_argument_proxy_value(args[0]);
+			auto second_possible_proxy = get_argument_proxy_value(args[1]);
 
 			if (first_possible_proxy.has_value())
 				result.push(first_possible_proxy.value());
