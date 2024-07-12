@@ -23,8 +23,8 @@ namespace big
 		static void title(const std::string_view);
 		static void nav_item(std::pair<tabs, navigation_struct>&, int);
 
-		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
-		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, int flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, std::string& buf, int flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr, ImGuiInputTextCallback callback = nullptr);
 
 		static bool input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 		static bool input_text(const std::string_view label, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);

@@ -39,6 +39,9 @@ namespace big
 		[[nodiscard]] player_ptr get_by_id(uint32_t id) const;
 		[[nodiscard]] player_ptr get_by_host_token(uint64_t token) const;
 		[[nodiscard]] player_ptr get_selected() const;
+		[[nodiscard]] player_ptr get_by_name(const std::string_view name) const;
+		[[nodiscard]] player_ptr get_by_name_closest(const std::string_view name) const;
+		[[nodiscard]] player_ptr get_closest(bool exclude_friends = false) const;
 
 		void player_join(CNetGamePlayer* net_game_player);
 		void player_leave(CNetGamePlayer* net_game_player);

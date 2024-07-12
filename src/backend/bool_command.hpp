@@ -20,6 +20,16 @@ namespace big
 			return m_toggle;
 		}
 
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg) override
+		{
+			if (arg == 1) // First argument of all bool commands is true or false
+			{
+				return std::vector<std::string>{"true", "false"};
+			}
+
+			return std::nullopt;
+		};
+
 		virtual void on_enable(){};
 		virtual void on_disable(){};
 		virtual void refresh();
