@@ -89,7 +89,7 @@ namespace big
 				components::button("COPY_SESSION_INFO"_T, [] {
 					ImGui::SetClipboardText(session_info);
 				});
-				ImGui::SameLine();
+				//ImGui::SameLine();
 				components::button("JOIN"_T, [session] {
 					if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("maintransition"_J) != 0 || STREAMING::IS_PLAYER_SWITCH_IN_PROGRESS())
 					{

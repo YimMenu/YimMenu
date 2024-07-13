@@ -1,6 +1,8 @@
 #include "player_command.hpp"
 
 #include "fiber_pool.hpp"
+#include "util/math.hpp"
+#include "util/string_operations.hpp"
 
 namespace big
 {
@@ -62,9 +64,11 @@ namespace big
 		std::vector<std::string> new_args;
 		command_arguments result(m_num_args.value());
 
-		if (args[0] == "me" || args[0] == "self")
+		auto proxy_result = get_argument_proxy_value(args[0]);
+
+		if (proxy_result.has_value())
 		{
-			result.push(ctx->get_sender()->id());
+			result.push(proxy_result.value());
 		}
 		else
 		{

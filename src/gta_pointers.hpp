@@ -169,7 +169,6 @@ namespace big
 		functions::invite_player_by_gamer_handle m_invite_player_by_gamer_handle;
 		functions::add_friend_by_gamer_handle m_add_friend_by_gamer_handle;
 		functions::show_profile_by_gamer_handle m_show_profile_by_gamer_handle;
-		uint64_t m_network_config;
 
 		functions::reset_network_complaints m_reset_network_complaints;
 

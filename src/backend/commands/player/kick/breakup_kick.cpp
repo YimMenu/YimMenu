@@ -28,14 +28,9 @@ namespace big
 			cmd.m_num_peers  = 1;
 			cmd.m_handles[0] = player->get_net_data()->m_gamer_handle;
 
-			if (g.session.show_cheating_message)
-				cmd.m_unk = 19;
-
 			g_pointers->m_gta.m_handle_remove_gamer_cmd(gta_util::get_network()->m_game_session_ptr, player->get_session_player(), &cmd);
 		}
 	};
 
 	breakup_kick g_breakup_kick("breakup", "BREAKUP_KICK", "BREAKUP_KICK_DESC", 0, false);
-	bool_command g_show_cheating_message("breakupcheating", "BREAKUP_KICK_SHOW_CHEATING", "BREAKUP_KICK_SHOW_CHEATING_DESC",
-	    g.session.show_cheating_message);
 }
