@@ -14,12 +14,209 @@ namespace big
 	static std::string command_buffer;
 	static std::string auto_fill_suggestion;
 	static std::string selected_suggestion;
+	static int cursor_pos = 0;
+
+	struct argument
+	{
+		std::string name;
+		int start_index;
+		int end_index;
+	};
+
+	struct command_scope
+	{
+		command* cmd;
+		std::string raw;
+		int start_index;
+		int end_index;
+		int argument_count;
+		std::vector<argument> arguments;
+
+		argument get_argument(int index)
+		{
+			auto found = std::find_if(arguments.begin(), arguments.end(), [&](const argument& arg) {
+				return index >= arg.start_index && index <= arg.end_index;
+			});
+
+			if (found != arguments.end())
+				return *found;
+
+			return argument();
+		}
+	};
+
+	class serialized_buffer
+	{
+		std::string buffer;
+		int total_length;
+		std::vector<int> delimeter_index_list;
+		int command_count;
+		std::vector<command_scope> command_scopes;
+
+	public:
+		serialized_buffer(std::string buffer) :
+		    buffer(buffer),
+		    total_length(0),
+		    command_count(0)
+		{
+			if (buffer.empty())
+				return;
+
+			clean_buffer();
+			parse_buffer();
+		}
+
+		command_scope get_command_scope(int index)
+		{
+			auto found = std::find_if(command_scopes.begin(), command_scopes.end(), [&](const command_scope& scope) {
+				return index >= scope.start_index && index <= scope.end_index;
+			});
+
+			if (found != command_scopes.end())
+				return *found;
+
+			return command_scope();
+		}
+
+		void print_scope_and_argument_index(int index)
+		{
+			auto scope = get_command_scope(index);
+
+			auto argument = scope.get_argument(index);
+
+			LOG(INFO) << "Scope: " << scope.raw << " Argument Index: " << argument.name;
+		}
+
+		void clean_buffer()
+		{
+			std::string new_buffer;
+			bool last_char_was_space = false;
+
+			for (size_t i = 0; i < buffer.size(); i++)
+			{
+				if (buffer[i] == ' ')
+				{
+					if (!last_char_was_space)
+					{
+						new_buffer += buffer[i];
+						last_char_was_space = true;
+					}
+				}
+				else
+				{
+					if (buffer[i] == ';')
+					{
+						new_buffer += buffer[i];
+
+						// Skip all spaces after the delimiter
+						while (i + 1 < buffer.size() && buffer[i + 1] == ' ')
+						{
+							i++;
+						}
+
+						last_char_was_space = false;
+					}
+					else
+					{
+						new_buffer += buffer[i];
+						last_char_was_space = false;
+					}
+				}
+			}
+
+			buffer = new_buffer;
+		}
+
+		void parse_buffer()
+		{
+			auto separate_commands = string::operations::split(buffer, ';');
+
+			command_count = separate_commands.size();
+			total_length  = 0; // Initialize total_length to 0
+
+			for (int i = 0; i < command_count; i++)
+			{
+				auto words = string::operations::split(separate_commands[i], ' ');
+				auto cmd   = command::get(rage::joaat(words.front()));
+
+				command_scope scope;
+				scope.cmd            = cmd;
+				scope.start_index    = total_length;
+				scope.raw            = separate_commands[i];
+				scope.argument_count = words.size() - 1;
+
+				size_t buffer_pos = total_length;
+
+				for (int j = 0; j < words.size(); j++)
+				{
+					size_t word_start = buffer.find(words[j], buffer_pos);
+
+					if (j > 0) // Skip the command word itself when counting arguments
+					{
+						argument arg;
+						arg.name        = words[j];
+						arg.start_index = word_start;
+						arg.end_index   = word_start + words[j].size();
+						scope.arguments.push_back(arg);
+					}
+
+					buffer_pos = word_start + words[j].size();
+					if (j < words.size() - 1)
+					{
+						buffer_pos++; // Move past the space
+					}
+				}
+
+				scope.end_index = buffer_pos;
+				total_length    = buffer_pos + 1; // Move past the semicolon or end of command
+
+				command_scopes.push_back(scope);
+			}
+		}
+
+		std::string deserialize()
+		{
+			if (command_count == 0)
+				return std::string();
+
+			std::string deserialized_buffer;
+			for (auto& command : command_scopes)
+			{
+				if (!command.cmd)
+					deserialized_buffer += command.raw;
+				else
+					deserialized_buffer += command.cmd->get_name();
+
+				deserialized_buffer += ' ';
+
+				if (!command.argument_count)
+					continue;
+
+				for (auto& argument : command.arguments)
+				{
+					deserialized_buffer += argument.name;
+
+					if (argument.name != command.arguments.back().name)
+						deserialized_buffer += ' ';
+				}
+
+				if (command.raw != command_scopes.back().raw)
+					deserialized_buffer += ';';
+			}
+
+			return deserialized_buffer;
+		}
+	};
+
+	void log_command_buffer(std::string buffer)
+	{
+		serialized_buffer serialized(buffer);
+		serialized.print_scope_and_argument_index(cursor_pos);
+	}
 
 	bool does_string_exist_in_list(const std::string& command, std::vector<std::string> list)
 	{
-		auto found = std::find_if(list.begin(), list.end(), [&](const std::string& cmd) {
-			return cmd == command;
-		});
+		auto found = std::find(list.begin(), list.end(), command);
 		return found != list.end();
 	}
 
@@ -201,6 +398,13 @@ namespace big
 		if (!data)
 			return 0;
 
+		if (cursor_pos != data->CursorPos)
+		{
+			selected_suggestion = std::string();
+			cursor_pos          = data->CursorPos;
+			log_command_buffer(data->Buf);
+		}
+
 		if (data->EventFlag == ImGuiInputTextFlags_CallbackCompletion)
 		{
 			// User has a suggestion selectable higlighted, this takes precedence
@@ -269,7 +473,7 @@ namespace big
 
 			ImGui::SetNextItemWidth((screen_x * 0.5f) - 30.f);
 
-			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory, nullptr, apply_suggestion))
+			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackAlways, nullptr, apply_suggestion))
 			{
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), false))
 				{
