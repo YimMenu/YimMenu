@@ -31,129 +31,44 @@ namespace big
 		{
 			const auto ped_type = PED::GET_PED_TYPE(ped_handle);
 
-			auto config_value = (uint64_t*)&g.weapons.aimbot.only_on_ped_type;
+			auto config_value = g.weapons.aimbot.only_on_ped_type;
 
-			if (ped_type == ePedType::PED_TYPE_PLAYER_0 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_PLAYER_0))
+			switch (ped_type)
 			{
-				return true;
+				case ePedType::PED_TYPE_PLAYER_0:
+				case ePedType::PED_TYPE_PLAYER_1:
+				case ePedType::PED_TYPE_NETWORK_PLAYER:
+				case ePedType::PED_TYPE_PLAYER_2:
+				case ePedType::PED_TYPE_CIVMALE:
+				case ePedType::PED_TYPE_CIVFEMALE:
+				case ePedType::PED_TYPE_COP:
+				case ePedType::PED_TYPE_GANG_ALBANIAN:
+				case ePedType::PED_TYPE_GANG_BIKER_1:
+				case ePedType::PED_TYPE_GANG_BIKER_2:
+				case ePedType::PED_TYPE_GANG_ITALIAN:
+				case ePedType::PED_TYPE_GANG_RUSSIAN:
+				case ePedType::PED_TYPE_GANG_RUSSIAN_2:
+				case ePedType::PED_TYPE_GANG_IRISH:
+				case ePedType::PED_TYPE_GANG_JAMAICAN:
+				case ePedType::PED_TYPE_GANG_AFRICAN_AMERICAN:
+				case ePedType::PED_TYPE_GANG_KOREAN:
+				case ePedType::PED_TYPE_GANG_CHINESE_JAPANESE:
+				case ePedType::PED_TYPE_GANG_PUERTO_RICAN:
+				case ePedType::PED_TYPE_DEALER:
+				case ePedType::PED_TYPE_MEDIC:
+				case ePedType::PED_TYPE_FIREMAN:
+				case ePedType::PED_TYPE_CRIMINAL:
+				case ePedType::PED_TYPE_BUM:
+				case ePedType::PED_TYPE_PROSTITUTE:
+				case ePedType::PED_TYPE_SPECIAL:
+				case ePedType::PED_TYPE_MISSION:
+				case ePedType::PED_TYPE_SWAT:
+				case ePedType::PED_TYPE_ANIMAL:
+				case ePedType::PED_TYPE_ARMY:
+				{
+					return (config_value & (1LL << ped_type)) == 0;
+				}
 			}
-			if (ped_type == ePedType::PED_TYPE_PLAYER_1 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_PLAYER_1))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_NETWORK_PLAYER && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_NETWORK_PLAYER))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_PLAYER_2 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_PLAYER_2))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_CIVMALE && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_CIVMALE))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_CIVFEMALE && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_CIVFEMALE))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_COP && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_COP))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_ALBANIAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_ALBANIAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_BIKER_1 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_BIKER_1))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_BIKER_2 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_BIKER_2))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_ITALIAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_ITALIAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_RUSSIAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_RUSSIAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_RUSSIAN_2 && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_RUSSIAN_2))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_IRISH && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_IRISH))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_JAMAICAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_JAMAICAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_AFRICAN_AMERICAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_AFRICAN_AMERICAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_KOREAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_KOREAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_CHINESE_JAPANESE && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_CHINESE_JAPANESE))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_GANG_PUERTO_RICAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_GANG_PUERTO_RICAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_DEALER && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_DEALER))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_MEDIC && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_MEDIC))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_FIREMAN && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_FIREMAN))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_CRIMINAL && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_CRIMINAL))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_BUM && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_BUM))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_PROSTITUTE && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_PROSTITUTE))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_SPECIAL && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_SPECIAL))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_MISSION && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_MISSION))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_SWAT && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_SWAT))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_ANIMAL && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_ANIMAL))
-			{
-				return true;
-			}
-			if (ped_type == ePedType::PED_TYPE_ARMY && !misc::has_bits_set(config_value, (uint64_t)ePedTypeFlag::PED_TYPE_ARMY))
-			{
-				return true;
-			}
-
 			return false;
 		}
 
