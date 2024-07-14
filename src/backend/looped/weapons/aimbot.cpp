@@ -4,8 +4,9 @@
 #include "hooking/hooking.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
-#include "util/misc.hpp"
 #include "util/math.hpp"
+#include "util/misc.hpp"
+#include "util/pools.hpp"
 
 #include <numbers>
 
