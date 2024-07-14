@@ -151,6 +151,7 @@ namespace big
 					g_player_database_service->save();
 				}
 
+				ImGui::SetNextItemWidth(250);
 				if (ImGui::BeginCombo("BLOCK_JOIN_ALERT"_T.data(), block_join_reasons[current_player->block_join_reason]))
 				{
 					block_join_reason_t i = block_join_reason_t::UNK_0;
@@ -182,6 +183,7 @@ namespace big
 					ImGui::SetTooltip("ONLY_AS_HOST"_T.data());
 
 
+				ImGui::SetNextItemWidth(250);
 				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
 				        COMMAND_ACCESS_LEVELS[current_player->command_access_level.value_or(g.session.chat_command_default_access_level)]))
 				{

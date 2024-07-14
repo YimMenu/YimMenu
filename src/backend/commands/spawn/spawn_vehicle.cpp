@@ -2,6 +2,8 @@
 #include "backend/command.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
+#include "services/gta_data/gta_data_service.hpp"
+#include "util/string_operations.hpp"
 #include "util/vehicle.hpp"
 
 namespace big
@@ -10,10 +12,44 @@ namespace big
 	{
 		using command::command;
 
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg) override
+		{
+			if (arg == 1)
+			{
+				std::vector<std::string> suggestions;
+				for (auto& item : g_gta_data_service->vehicles())
+				{
+					suggestions.push_back(item.second.m_name);
+				}
+				return suggestions;
+			}
+
+			return std::nullopt;
+		}
+
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
 			command_arguments result(1);
-			result.push(rage::joaat(args[0]));
+
+			if (g_gta_data_service->vehicle_by_hash(rage::joaat(args[0])).m_hash != 0)
+			{
+				result.push(rage::joaat(args[0]));
+				return result;
+			}
+
+			for (auto& item : g_gta_data_service->vehicles())
+			{
+				std::string item_name_lower, args_lower;
+				item_name_lower = item.second.m_name;
+				args_lower      = args[0];
+				string::operations::to_lower(item_name_lower);
+				string::operations::to_lower(args_lower);
+				if (item_name_lower.find(args_lower) != std::string::npos)
+				{
+					result.push(rage::joaat(item.first));
+					return result;
+				}
+			}
 
 			return result;
 		}

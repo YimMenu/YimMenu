@@ -23,8 +23,8 @@ namespace big
 		static void title(const std::string_view);
 		static void nav_item(std::pair<tabs, navigation_struct>&, int);
 
-		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
-		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, char* buf, size_t buf_size, int flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
+		static bool input_text_with_hint(const std::string_view label, const std::string_view hint, std::string& buf, int flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr, ImGuiInputTextCallback callback = nullptr);
 
 		static bool input_text(const std::string_view label, char* buf, size_t buf_size, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
 		static bool input_text(const std::string_view label, std::string& buf, ImGuiInputTextFlags_ flag = ImGuiInputTextFlags_None, std::function<void()> cb = nullptr);
@@ -36,7 +36,7 @@ namespace big
 
 		static bool script_patch_checkbox(const std::string_view text, bool* option, const std::string_view tooltip = "");
 
-		static void options_modal(const std::string_view element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "Options");
+		static void options_modal(const std::string_view element_name, std::function<void()> render_elements, bool sameline = true, std::string custom_button_name = "VIEW_PROTECTION_SETTINGS_OPTIONS"_T.data());
 
 		template<template_str cmd_str, ImVec2 size = ImVec2(0, 0), ImVec4 color = ImVec4(0.24f, 0.23f, 0.29f, 1.00f)>
 		static void command_button(const std::vector<uint64_t> args = {}, std::optional<const std::string_view> label_override = std::nullopt)
