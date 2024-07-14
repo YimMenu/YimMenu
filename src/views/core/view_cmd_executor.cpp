@@ -10,6 +10,7 @@ namespace big
 	//TODO Argument suggestions are limited to the last word in the buffer
 	//TODO Allow for optional arguments??
 
+
 	static std::vector<std::string> current_suggestion_list;
 	static std::string command_buffer;
 	static std::string auto_fill_suggestion;
@@ -45,6 +46,34 @@ namespace big
 		}
 	};
 
+	static void clean_buffer(std::string& buffer)
+	{
+		std::string new_buffer;
+
+		for (size_t i = 0; i < buffer.size(); ++i)
+		{
+			if (buffer[i] == ' ')
+			{
+				// Skip consecutive spaces
+				while (i + 1 < buffer.size() && buffer[i + 1] == ' ')
+				{
+					++i;
+				}
+				new_buffer += ' ';
+			}
+			else if (buffer[i] == ';')
+			{
+				new_buffer += ';';
+			}
+			else
+			{
+				new_buffer += buffer[i];
+			}
+		}
+
+		buffer = new_buffer;
+	}
+
 	class serialized_buffer
 	{
 		std::string buffer;
@@ -62,7 +91,7 @@ namespace big
 			if (buffer.empty())
 				return;
 
-			clean_buffer();
+			clean_buffer(buffer);
 			parse_buffer();
 		}
 
@@ -78,53 +107,38 @@ namespace big
 			return command_scope();
 		}
 
+		bool is_current_index_argument(int index)
+		{
+			auto scope = get_command_scope(index);
+
+			auto argument = scope.get_argument(index);
+
+			return argument.name.size() > 0;
+		}
+
+		int get_argument_index_from_char_index(int index)
+		{
+			auto scope = get_command_scope(index);
+			auto argument = scope.get_argument(index);
+
+			for (size_t i = 0; i < scope.argument_count; i++)
+			{
+				if (argument.name == scope.arguments[i].name)
+					return ++i;
+			}
+
+			return -1;
+		}
+
+		// Debugging purposes
 		void print_scope_and_argument_index(int index)
 		{
 			auto scope = get_command_scope(index);
 
 			auto argument = scope.get_argument(index);
 
-			LOG(INFO) << "Scope: " << scope.raw << " Argument Index: " << argument.name;
-		}
-
-		void clean_buffer()
-		{
-			std::string new_buffer;
-			bool last_char_was_space = false;
-
-			for (size_t i = 0; i < buffer.size(); i++)
-			{
-				if (buffer[i] == ' ')
-				{
-					if (!last_char_was_space)
-					{
-						new_buffer += buffer[i];
-						last_char_was_space = true;
-					}
-				}
-				else
-				{
-					if (buffer[i] == ';')
-					{
-						new_buffer += buffer[i];
-
-						// Skip all spaces after the delimiter
-						while (i + 1 < buffer.size() && buffer[i + 1] == ' ')
-						{
-							i++;
-						}
-
-						last_char_was_space = false;
-					}
-					else
-					{
-						new_buffer += buffer[i];
-						last_char_was_space = false;
-					}
-				}
-			}
-
-			buffer = new_buffer;
+			LOG(INFO) << "Scope: " << scope.raw << " Argument: " << argument.name;
+			LOG(INFO) << "Argument index: " << get_argument_index_from_char_index(index);
 		}
 
 		void parse_buffer()
@@ -132,7 +146,7 @@ namespace big
 			auto separate_commands = string::operations::split(buffer, ';');
 
 			command_count = separate_commands.size();
-			total_length  = 0; // Initialize total_length to 0
+			total_length  = 0;
 
 			for (int i = 0; i < command_count; i++)
 			{
@@ -207,6 +221,18 @@ namespace big
 			return deserialized_buffer;
 		}
 	};
+
+	static serialized_buffer s_buffer(command_buffer);
+
+
+	void render_debug_info()
+	{
+		auto s_buffer          = serialized_buffer(command_buffer);
+		bool is_index_argument = s_buffer.is_current_index_argument(cursor_pos);
+
+		ImGui::Text("Deserialized buffer: %s", s_buffer.deserialize().c_str());
+		ImGui::Text("Is Index Argument: %s", is_index_argument ? "True" : "False");
+	}
 
 	void log_command_buffer(std::string buffer)
 	{
@@ -393,16 +419,53 @@ namespace big
 		data->InsertChars(0, new_text.c_str());
 	}
 
-	static int apply_suggestion(ImGuiInputTextCallbackData* data)
+	bool buffer_needs_cleaning(const std::string& input)
+	{
+		for (size_t i = 0; i < input.size(); ++i)
+		{
+			if (input[i] == ' ')
+			{
+				if (i + 1 < input.size() && input[i + 1] == ' ')
+				{
+					return true; // Consecutive spaces
+				}
+			}
+			else if (input[i] == ';')
+			{
+				if (i + 1 < input.size() && input[i + 1] == ';')
+				{
+					return true; // Consecutive semicolons
+				}
+				else if (i + 1 < input.size() && input[i + 1] == ' ')
+				{
+					return true; // Space after semicolon
+				}
+			}
+		}
+		return false;
+	}
+
+	static int input_callback(ImGuiInputTextCallbackData* data)
 	{
 		if (!data)
 			return 0;
+
+		command_buffer = std::string(data->Buf);
+		s_buffer       = serialized_buffer(command_buffer);
 
 		if (cursor_pos != data->CursorPos)
 		{
 			selected_suggestion = std::string();
 			cursor_pos          = data->CursorPos;
 			log_command_buffer(data->Buf);
+
+			if (buffer_needs_cleaning(data->Buf))
+			{
+				std::string cleaned_buffer = data->Buf;
+				clean_buffer(cleaned_buffer);
+				data->DeleteChars(0, data->BufTextLen);
+				data->InsertChars(0, cleaned_buffer.c_str());
+			}
 		}
 
 		if (data->EventFlag == ImGuiInputTextFlags_CallbackCompletion)
@@ -465,6 +528,7 @@ namespace big
 
 		if (ImGui::Begin("cmd_executor", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMouseInputs))
 		{
+			render_debug_info();
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {10.f, 15.f});
 			components::sub_title("CMD_EXECUTOR_TITLE"_T);
 
@@ -473,7 +537,7 @@ namespace big
 
 			ImGui::SetNextItemWidth((screen_x * 0.5f) - 30.f);
 
-			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackAlways, nullptr, apply_suggestion))
+			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackAlways, nullptr, input_callback))
 			{
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), false))
 				{
