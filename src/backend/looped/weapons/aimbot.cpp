@@ -146,27 +146,37 @@ namespace big
 				constexpr auto dislike_relation = 4;
 				constexpr auto hate_relation    = 5;
 				const auto is_not_an_enemy_and_we_target_only_enemies = g_aimbot_only_on_enemy.is_enabled() && (relation != dislike_relation && relation != hate_relation);
-				if (is_not_an_enemy_and_we_target_only_enemies)
+				if (is_not_an_enemy_and_we_target_only_enemies || is_a_ped_type_we_dont_care_about(ped_handle))
 				{
 					continue;
 				}
 
-				if (is_a_ped_type_we_dont_care_about(ped_handle))
+				const auto my_head_pos          = self_ped->get_bone_coords(ePedBoneType::HEAD);
+				const auto their_head_pos       = ped->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
+
+				constexpr auto los_flags = (ST_OPTION_IGNORE_GLASS | ST_OPTION_IGNORE_NOTHING | ST_OPTION_IGNORE_TRANSPARENT);
+				auto shape_test_handle = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(my_head_pos.x,
+				    my_head_pos.y,
+				    my_head_pos.z,
+				    their_head_pos.x,
+				    their_head_pos.y,
+				    their_head_pos.z,
+				    ST_INCLUDE_ALL,
+				    self::ped,
+				    los_flags);
+				BOOL did_shapetest_hit{};
+				Vector3 dont_care;
+				Entity entity_hit{};
+				if (SHAPETEST::GET_SHAPE_TEST_RESULT(shape_test_handle, &did_shapetest_hit, &dont_care, &dont_care, &entity_hit))
 				{
-					continue;
+					if (!((did_shapetest_hit == TRUE && entity_hit == ped_handle) || !did_shapetest_hit))
+					{
+						continue;
+					}
 				}
 
-				constexpr int trace_flags = eTraceFlags::IntersectWorld | eTraceFlags::IntersectObject;
-				if (!ENTITY::HAS_ENTITY_CLEAR_LOS_TO_ENTITY(self::ped, ped_handle, trace_flags))
-				{
-					continue;
-				}
-
-				const auto head_position = ped->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
-
-				const auto fov = get_fov(head_position);
-
-				const auto distance_to_ped = self_pos.distance(head_position);
+				const auto fov = get_fov(their_head_pos);
+				const auto distance_to_ped = self_pos.distance(their_head_pos);
 				if (fov < best_fov && distance_to_ped < best_distance)
 				{
 					best_fov      = fov;
