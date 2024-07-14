@@ -20,58 +20,82 @@ namespace big
 	struct argument
 	{
 		std::string name;
+		int index;
 		int start_index;
 		int end_index;
+		bool is_argument = true; // If the argument is the command itself, this will be false
 	};
 
 	struct command_scope
 	{
 		command* cmd;
 		std::string raw;
+		std::string name; // If the command is not found, this will be the incomplete command
+		int name_start_index;
+		int name_end_index;
+		int index;
 		int start_index;
 		int end_index;
 		int argument_count;
 		std::vector<argument> arguments;
 
-		argument get_argument(int index)
+		argument* get_argument(int cursor_pos)
 		{
 			auto found = std::find_if(arguments.begin(), arguments.end(), [&](const argument& arg) {
-				return index >= arg.start_index && index <= arg.end_index;
+				return cursor_pos >= arg.start_index && cursor_pos <= arg.end_index;
 			});
 
 			if (found != arguments.end())
-				return *found;
+				return &*found;
 
-			return argument();
+			return nullptr;
 		}
 	};
 
-	static void clean_buffer(std::string& buffer)
+static void clean_buffer(std::string& buffer)
 	{
 		std::string new_buffer;
+		bool last_char_was_space = false;
 
 		for (size_t i = 0; i < buffer.size(); ++i)
 		{
 			if (buffer[i] == ' ')
 			{
 				// Skip consecutive spaces
-				while (i + 1 < buffer.size() && buffer[i + 1] == ' ')
+				if (!last_char_was_space)
 				{
-					++i;
+					new_buffer += ' ';
+					last_char_was_space = true;
 				}
-				new_buffer += ' ';
 			}
 			else if (buffer[i] == ';')
 			{
 				new_buffer += ';';
+				// Skip spaces after a semicolon
+				while (i + 1 < buffer.size() && buffer[i + 1] == ' ')
+				{
+					++i;
+				}
+				last_char_was_space = false;
 			}
 			else
 			{
 				new_buffer += buffer[i];
+				last_char_was_space = false;
 			}
 		}
 
-		buffer = new_buffer;
+		// Remove leading and trailing spaces (optional, if needed)
+		size_t start = new_buffer.find_first_not_of(' ');
+		size_t end   = new_buffer.find_last_not_of(' ');
+		if (start == std::string::npos || end == std::string::npos)
+		{
+			buffer.clear(); // No non-space characters found
+		}
+		else
+		{
+			buffer = new_buffer.substr(start, end - start + 1);
+		}
 	}
 
 	class serialized_buffer
@@ -95,52 +119,6 @@ namespace big
 			parse_buffer();
 		}
 
-		command_scope get_command_scope(int index)
-		{
-			auto found = std::find_if(command_scopes.begin(), command_scopes.end(), [&](const command_scope& scope) {
-				return index >= scope.start_index && index <= scope.end_index;
-			});
-
-			if (found != command_scopes.end())
-				return *found;
-
-			return command_scope();
-		}
-
-		bool is_current_index_argument(int index)
-		{
-			auto scope = get_command_scope(index);
-
-			auto argument = scope.get_argument(index);
-
-			return argument.name.size() > 0;
-		}
-
-		int get_argument_index_from_char_index(int index)
-		{
-			auto scope = get_command_scope(index);
-			auto argument = scope.get_argument(index);
-
-			for (size_t i = 0; i < scope.argument_count; i++)
-			{
-				if (argument.name == scope.arguments[i].name)
-					return ++i;
-			}
-
-			return -1;
-		}
-
-		// Debugging purposes
-		void print_scope_and_argument_index(int index)
-		{
-			auto scope = get_command_scope(index);
-
-			auto argument = scope.get_argument(index);
-
-			LOG(INFO) << "Scope: " << scope.raw << " Argument: " << argument.name;
-			LOG(INFO) << "Argument index: " << get_argument_index_from_char_index(index);
-		}
-
 		void parse_buffer()
 		{
 			auto separate_commands = string::operations::split(buffer, ';');
@@ -155,6 +133,8 @@ namespace big
 
 				command_scope scope;
 				scope.cmd            = cmd;
+				scope.name           = words.front();
+				scope.index          = i;
 				scope.start_index    = total_length;
 				scope.raw            = separate_commands[i];
 				scope.argument_count = words.size() - 1;
@@ -165,14 +145,13 @@ namespace big
 				{
 					size_t word_start = buffer.find(words[j], buffer_pos);
 
-					if (j > 0) // Skip the command word itself when counting arguments
-					{
-						argument arg;
-						arg.name        = words[j];
-						arg.start_index = word_start;
-						arg.end_index   = word_start + words[j].size();
-						scope.arguments.push_back(arg);
-					}
+					argument arg;
+					arg.name        = words[j];
+					arg.index       = j;
+					arg.is_argument = j > 0;
+					arg.start_index = word_start;
+					arg.end_index   = word_start + words[j].size();
+					scope.arguments.push_back(arg);
 
 					buffer_pos = word_start + words[j].size();
 					if (j < words.size() - 1)
@@ -219,6 +198,152 @@ namespace big
 			}
 
 			return deserialized_buffer;
+		}
+
+		command_scope* get_command_scope(int cursor_pos)
+		{
+			auto found = std::find_if(command_scopes.begin(), command_scopes.end(), [&](const command_scope& scope) {
+				return cursor_pos >= scope.start_index && cursor_pos <= scope.end_index;
+			});
+
+			if (found != command_scopes.end())
+				return &*found;
+
+			return nullptr;
+		}
+
+		bool is_current_index_argument(int cursor_pos)
+		{
+			auto* scope = get_command_scope(cursor_pos);
+
+			if (!scope)
+				return false;
+
+			auto* argument = scope->get_argument(cursor_pos);
+
+			return argument->is_argument;
+		}
+
+		int get_argument_index_from_char_index(int cursor_pos)
+		{
+			auto* scope = get_command_scope(cursor_pos);
+
+			if (!scope)
+				return -1;
+
+			auto* argument = scope->get_argument(cursor_pos);
+
+			if (!argument)
+				return -1;
+
+			for (size_t i = 0; i < scope->argument_count; i++)
+			{
+				if (argument->name == scope->arguments[i].name)
+					return ++i; // arguments are 1 based
+			}
+
+			return -1;
+		}
+
+		command* get_command_of_index(int cursor_pos)
+		{
+			auto* scope = get_command_scope(cursor_pos);
+
+			if (!scope)
+				return nullptr;
+
+			return scope->cmd;
+		}
+
+		// Updating command would mean updating every start and end index of the entire buffer
+		void update_command_of_scope(int cursor_pos, std::string cmd)
+		{
+			auto* scope = get_command_scope(cursor_pos);
+
+			if (!scope)
+				return;
+
+			auto original_cmd_textlen = scope->name.length();
+			auto new_cmd_textlen      = cmd.length();
+			auto len_diff             = new_cmd_textlen - original_cmd_textlen; // Can be negative
+			scope->cmd                = command::get(rage::joaat(cmd));
+
+			for (int i = scope->index; i < command_count; i++)
+			{
+				auto& current_scope = command_scopes[i];
+				if (current_scope.index != scope->index)
+				{
+					current_scope.start_index += len_diff;
+				}
+				current_scope.end_index += len_diff;
+
+				for (auto& argument : current_scope.arguments)
+				{
+					argument.start_index += len_diff;
+					argument.end_index += len_diff;
+				}
+			}
+
+			buffer = deserialize();
+		}
+
+
+		void update_argument_of_scope(int index, int arg, std::string new_argument)
+		{
+			auto* scope = get_command_scope(index);
+
+			if (!scope)
+				return;
+
+			auto* argument = scope->get_argument(index);
+
+			if (!argument)
+				return;
+
+			auto original_arg_textlen = argument->name.length();
+			auto new_arg_textlen      = new_argument.length();
+			auto len_diff             = new_arg_textlen - original_arg_textlen; // Can be negative
+			argument->name            = new_argument;
+
+			for (int i = scope->index; i < command_count; i++)
+			{
+				auto& current_scope = command_scopes[i];
+
+				if (current_scope.index == scope->index)
+				{
+					current_scope.end_index += len_diff;
+				}
+
+				for (auto& current_argument : current_scope.arguments)
+				{
+					if (current_argument.index == argument->index)
+					{
+						current_argument.end_index += len_diff;
+					}
+				}
+			}
+
+			buffer = deserialize();
+		}
+
+		// Debugging purposes
+		void print_scope_and_argument_index(int index)
+		{
+			auto* scope = get_command_scope(index);
+
+			if (!scope)
+				return;
+
+			auto* argument = scope->get_argument(index);
+
+			if (!argument)
+			{
+				LOG(INFO) << "No argument found";
+				return;
+			}
+
+			LOG(INFO) << "Scope: " << scope->raw << " Argument: " << argument->name;
+			LOG(INFO) << "Argument index: " << get_argument_index_from_char_index(index);
 		}
 	};
 
@@ -432,13 +557,9 @@ namespace big
 			}
 			else if (input[i] == ';')
 			{
-				if (i + 1 < input.size() && input[i + 1] == ';')
+				if (i + 1 < input.size() && (input[i + 1] == ';' || input[i + 1] == ' '))
 				{
-					return true; // Consecutive semicolons
-				}
-				else if (i + 1 < input.size() && input[i + 1] == ' ')
-				{
-					return true; // Space after semicolon
+					return true; // Consecutive semicolons or space after semicolon
 				}
 			}
 		}
