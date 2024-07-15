@@ -276,26 +276,6 @@ namespace big
 				}
 			}
 		}
-
-		// Debugging purposes
-		void print_scope_and_argument_index(int index)
-		{
-			auto* scope = get_command_scope(index);
-
-			if (!scope)
-				return;
-
-			auto* argument = scope->get_argument(index);
-
-			if (!argument)
-			{
-				LOG(INFO) << "No argument found";
-				return;
-			}
-
-			LOG(INFO) << "Scope: " << scope->raw << " Argument: " << argument->name;
-			LOG(INFO) << "Argument index: " << get_argument_index_from_char_index(index);
-		}
 	};
 
 	static serialized_buffer s_buffer(command_buffer);
