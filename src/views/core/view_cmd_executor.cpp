@@ -15,7 +15,7 @@ namespace big
 	static std::string auto_fill_suggestion;
 	static std::string selected_suggestion;
 	bool suggestion_is_history = false;
-	static int cursor_pos = 0;
+	static int cursor_pos      = 0;
 
 	struct argument
 	{
@@ -378,12 +378,23 @@ namespace big
 		std::vector<std::string> suggestions_filtered;
 		std::string filter_lowercase = filter;
 		string::operations::to_lower(filter_lowercase);
+
+		auto current_scope = s_buffer.get_command_scope(cursor_pos);
+
+		if (!current_scope)
+			return suggestions;
+
+		auto argument = current_scope->get_argument(cursor_pos);
+
+		if (!argument)
+			return suggestions;
+
 		for (auto suggestion : suggestions)
 		{
 			std::string suggestion_lowercase = suggestion;
 			string::operations::to_lower(suggestion_lowercase);
-			auto words = string::operations::split(command_buffer, ' ');
-			if (suggestion_lowercase.find(filter_lowercase) != std::string::npos || does_string_exist_in_list(words.back(), current_suggestion_list) /*Need this to maintain suggestion list while navigating it*/)
+
+			if (suggestion_lowercase.find(filter_lowercase) != std::string::npos || does_string_exist_in_list(argument->name, current_suggestion_list) /*Need this to maintain suggestion list while navigating it*/)
 				suggestions_filtered.push_back(suggestion);
 		}
 
@@ -395,7 +406,7 @@ namespace big
 		auto serbuffer       = serialized_buffer(current_buffer);
 		auto current_command = serbuffer.get_command_of_index(cursor_pos);
 		auto scope           = serbuffer.get_command_scope(cursor_pos);
-		auto argument_index = serbuffer.get_argument_index_from_char_index(cursor_pos);
+		auto argument_index  = serbuffer.get_argument_index_from_char_index(cursor_pos);
 
 		if (!scope)
 		{
@@ -487,10 +498,9 @@ namespace big
 
 	void update_current_argument_with_suggestion(ImGuiInputTextCallbackData* data, std::string suggestion)
 	{
-		
 		std::string new_text;
-		auto sbuffer = serialized_buffer(data->Buf);
-		auto scope   = sbuffer.get_command_scope(data->CursorPos);
+		auto sbuffer        = serialized_buffer(data->Buf);
+		auto scope          = sbuffer.get_command_scope(data->CursorPos);
 		auto argument_index = sbuffer.get_argument_index_from_char_index(data->CursorPos);
 
 		if (!scope)
@@ -504,8 +514,7 @@ namespace big
 		if (!argument)
 			return;
 
-		sbuffer
-		    .update_argument_of_scope(data->CursorPos, argument_index, suggestion);
+		sbuffer.update_argument_of_scope(data->CursorPos, argument_index, suggestion);
 
 		new_text = sbuffer.deserialize();
 
@@ -669,12 +678,12 @@ namespace big
 			else
 			{
 				suggestion_is_history = false;
-				auto current_scope = s_buffer.get_command_scope(cursor_pos);
+				auto current_scope    = s_buffer.get_command_scope(cursor_pos);
 
 				if (!current_scope)
 					goto VIEW_END;
 
-				auto argument      = current_scope->get_argument(cursor_pos);
+				auto argument = current_scope->get_argument(cursor_pos);
 
 				if (!argument)
 					goto VIEW_END;
@@ -700,19 +709,18 @@ namespace big
 				}
 				else
 				{
-					auto all_commands        = g_commands;
+					auto all_commands = g_commands;
 					std::vector<std::string> command_names{};
 					for (auto& [hash, cmd] : all_commands)
 					{
 						if (cmd && cmd->get_name().length() > 0)
 							command_names.push_back(cmd->get_name());
 					}
-					
+
 					auto filtered_commands = suggestion_list_filtered(command_names, argument->name);
 					if (filtered_commands.size() > 10)
 					{
-						current_suggestion_list =
-						    std::vector<std::string>(filtered_commands.begin(), filtered_commands.begin() + 10);
+						current_suggestion_list = std::vector<std::string>(filtered_commands.begin(), filtered_commands.begin() + 10);
 					}
 					else
 					{
@@ -720,7 +728,7 @@ namespace big
 					}
 				}
 			}
-VIEW_END:
+		VIEW_END:
 			ImGui::PopStyleVar();
 		}
 
