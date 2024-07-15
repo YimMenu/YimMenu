@@ -7,7 +7,6 @@
 
 namespace big
 {
-	//TODO Argument suggestions are limited to the last word in the buffer
 	//TODO Allow for optional arguments??
 
 
