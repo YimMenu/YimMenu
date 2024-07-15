@@ -43,8 +43,9 @@ namespace big
 					auto host_rid = session.info.m_net_player_data.m_gamer_handle.m_rockstar_id;
 					auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
 
-					if (g.session_browser.exclude_modder_sessions && player && player->block_join)
-						continue;
+					if ((g.session_browser.exclude_modder_sessions && player && player->block_join) || 
+						(g.session_browser.filter_multiplexed_sessions && session.attributes.multiplex_count > 1))
+							continue;
 
 					if (components::selectable(session_str, i == selected_session_idx))
 					{
