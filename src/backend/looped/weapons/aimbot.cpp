@@ -109,6 +109,7 @@ namespace big
 			direction_to_object = direction_to_object.normalize();
 
 			float dot_product = camera_aim_direction.dot_product(direction_to_object);
+			dot_product       = std::max(-1.0f, std::min(1.0f, dot_product));
 			float fov         = std::acos(dot_product);
 
 			return fov * 2;
