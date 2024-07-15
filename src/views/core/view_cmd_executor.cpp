@@ -301,22 +301,6 @@ namespace big
 
 	static serialized_buffer s_buffer(command_buffer);
 
-
-	void render_debug_info()
-	{
-		auto s_buffer          = serialized_buffer(command_buffer);
-		bool is_index_argument = s_buffer.is_current_index_argument(cursor_pos);
-
-		ImGui::Text("Deserialized buffer: %s", s_buffer.deserialize().c_str());
-		ImGui::Text("Is Index Argument: %s", is_index_argument ? "True" : "False");
-	}
-
-	void log_command_buffer(std::string buffer)
-	{
-		serialized_buffer serialized(buffer);
-		serialized.print_scope_and_argument_index(cursor_pos);
-	}
-
 	bool does_string_exist_in_list(const std::string& command, std::vector<std::string> list)
 	{
 		auto found = std::find(list.begin(), list.end(), command);
@@ -555,7 +539,6 @@ namespace big
 		{
 			selected_suggestion = std::string();
 			cursor_pos          = data->CursorPos;
-			//log_command_buffer(data->Buf);
 
 			if (buffer_needs_cleaning(data->Buf))
 			{
@@ -622,7 +605,6 @@ namespace big
 
 		if (ImGui::Begin("cmd_executor", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMouseInputs))
 		{
-			render_debug_info();
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {10.f, 15.f});
 			components::sub_title("CMD_EXECUTOR_TITLE"_T);
 
@@ -655,6 +637,9 @@ namespace big
 			ImGui::Separator();
 			ImGui::Spacing();
 
+			if (suggestion_is_history)
+				components::sub_title("CMD_HISTORY_LABEL"_T);
+
 			if (current_suggestion_list.size() > 0)
 			{
 				for (auto suggestion : current_suggestion_list)
@@ -667,7 +652,6 @@ namespace big
 			if (command_buffer.empty())
 			{
 				suggestion_is_history = true;
-				components::sub_title("CMD_HISTORY_LABEL"_T);
 
 				if (!g.cmd.command_history.empty())
 				{
