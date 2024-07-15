@@ -102,7 +102,6 @@ namespace big
 	{
 		std::string buffer;
 		int total_length;
-		std::vector<int> delimeter_index_list;
 		int command_count;
 		std::vector<command_scope> command_scopes;
 
