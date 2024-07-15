@@ -15,6 +15,7 @@ namespace big
 	static std::string command_buffer;
 	static std::string auto_fill_suggestion;
 	static std::string selected_suggestion;
+	bool suggestion_is_history = false;
 	static int cursor_pos = 0;
 
 	struct argument
@@ -175,16 +176,6 @@ namespace big
 			std::string deserialized_buffer;
 			for (auto& command : command_scopes)
 			{
-				if (!command.cmd)
-					deserialized_buffer += command.raw;
-				else
-					deserialized_buffer += command.cmd->get_name();
-
-				deserialized_buffer += ' ';
-
-				if (!command.argument_count)
-					continue;
-
 				for (auto& argument : command.arguments)
 				{
 					deserialized_buffer += argument.name;
@@ -286,8 +277,6 @@ namespace big
 					}
 				}
 			}
-
-			buffer = deserialize();
 		}
 
 		// Debugging purposes
@@ -497,24 +486,33 @@ namespace big
 			current = *(found + 1);
 	}
 
-	void rebuild_buffer_with_suggestion(ImGuiInputTextCallbackData* data, std::string suggestion)
+	void update_current_argument_with_suggestion(ImGuiInputTextCallbackData* data, std::string suggestion)
 	{
-		auto separate_commands = string::operations::split(data->Buf, ';'); // Split by semicolon to support multiple commands
-		auto words = string::operations::split(separate_commands.back(), ' ');
+		
 		std::string new_text;
+		auto sbuffer = serialized_buffer(data->Buf);
+		auto scope   = sbuffer.get_command_scope(data->CursorPos);
+		auto argument_index = sbuffer.get_argument_index_from_char_index(data->CursorPos);
 
-		// Replace the last word with the suggestion
-		words.pop_back();
-		words.push_back(suggestion);
+		if (!scope)
+			return;
 
-		// Replace the last command with the new suggestion
-		separate_commands.pop_back();
-		separate_commands.push_back(string::operations::join(words, ' '));
+		if (argument_index == -1)
+			return;
 
-		new_text = string::operations::join(separate_commands, ';');
+		auto argument = scope->get_argument(data->CursorPos);
+
+		if (!argument)
+			return;
+
+		sbuffer
+		    .update_argument_of_scope(data->CursorPos, argument_index, suggestion);
+
+		new_text = sbuffer.deserialize();
 
 		data->DeleteChars(0, data->BufTextLen);
 		data->InsertChars(0, new_text.c_str());
+		data->CursorPos = argument->end_index;
 	}
 
 	bool buffer_needs_cleaning(const std::string& input)
@@ -565,19 +563,15 @@ namespace big
 			// User has a suggestion selectable higlighted, this takes precedence
 			if (!selected_suggestion.empty())
 			{
-				// This could be a history suggestion with arguments, so we have to check for it
-				auto words   = string::operations::split(selected_suggestion, ' ');
-				auto command = command::get(rage::joaat(words.front()));
-
-				// Its a command, lets rewrite the entire buffer (history command potentially with arguments)
-				if (command)
+				if (suggestion_is_history)
 				{
 					data->DeleteChars(0, data->BufTextLen);
 					data->InsertChars(0, selected_suggestion.c_str());
 				}
-				// Its probably an argument suggestion or a raw command, append it
 				else
-					rebuild_buffer_with_suggestion(data, selected_suggestion);
+				{
+					update_current_argument_with_suggestion(data, selected_suggestion);
+				}
 
 				selected_suggestion = std::string();
 				return 0;
@@ -588,7 +582,7 @@ namespace big
 
 			if (auto_fill_suggestion != data->Buf)
 			{
-				rebuild_buffer_with_suggestion(data, auto_fill_suggestion);
+				update_current_argument_with_suggestion(data, auto_fill_suggestion);
 			}
 		}
 		else if (data->EventFlag == ImGuiInputTextFlags_CallbackHistory)
@@ -664,15 +658,18 @@ namespace big
 			// Show history if buffer is empty
 			if (command_buffer.empty())
 			{
+				suggestion_is_history = true;
+				components::sub_title("CMD_HISTORY_LABEL"_T);
+
 				if (!g.cmd.command_history.empty())
 				{
 					current_suggestion_list = deque_to_vector(g.cmd.command_history);
 				}
-				components::sub_title("CMD_HISTORY_LABEL"_T);
 			}
 			// If buffer isn't empty, we rely on the serialized buffer to suggest arguments or commands
 			else
 			{
+				suggestion_is_history = false;
 				auto current_scope = s_buffer.get_command_scope(cursor_pos);
 
 				if (!current_scope)
