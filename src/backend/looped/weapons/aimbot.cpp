@@ -105,12 +105,13 @@ namespace big
 			const auto camera_position = get_camera_position();
 			auto camera_aim_direction  = get_camera_aim_direction();
 
-			const auto direction_to_object = object_position - camera_position;
+			auto direction_to_object = object_position - camera_position;
+			direction_to_object = direction_to_object.normalize();
 
-			const float angle =
-			    std::atan2(camera_aim_direction.cross_product(direction_to_object).magnitude(), camera_aim_direction.dot_product(direction_to_object));
+			float dot_product = camera_aim_direction.dot_product(direction_to_object);
+			float fov         = std::acos(dot_product);
 
-			return angle;
+			return fov * 2;
 		}
 
 		static void find_best_target(CPed* self_ped, const rage::fvector3& self_pos)
