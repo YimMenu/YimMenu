@@ -52,7 +52,7 @@ namespace big
 		}
 	};
 
-static void clean_buffer(std::string& buffer)
+	static void clean_buffer(std::string& buffer)
 	{
 		std::string new_buffer;
 		bool last_char_was_space = false;
@@ -221,6 +221,9 @@ static void clean_buffer(std::string& buffer)
 
 			auto* argument = scope->get_argument(cursor_pos);
 
+			if (!argument)
+				return false;
+
 			return argument->is_argument;
 		}
 
@@ -236,13 +239,7 @@ static void clean_buffer(std::string& buffer)
 			if (!argument)
 				return -1;
 
-			for (size_t i = 0; i < scope->argument_count; i++)
-			{
-				if (argument->name == scope->arguments[i].name)
-					return ++i; // arguments are 1 based
-			}
-
-			return -1;
+			return argument->index;
 		}
 
 		command* get_command_of_index(int cursor_pos)
@@ -254,39 +251,6 @@ static void clean_buffer(std::string& buffer)
 
 			return scope->cmd;
 		}
-
-		// Updating command would mean updating every start and end index of the entire buffer
-		void update_command_of_scope(int cursor_pos, std::string cmd)
-		{
-			auto* scope = get_command_scope(cursor_pos);
-
-			if (!scope)
-				return;
-
-			auto original_cmd_textlen = scope->name.length();
-			auto new_cmd_textlen      = cmd.length();
-			auto len_diff             = new_cmd_textlen - original_cmd_textlen; // Can be negative
-			scope->cmd                = command::get(rage::joaat(cmd));
-
-			for (int i = scope->index; i < command_count; i++)
-			{
-				auto& current_scope = command_scopes[i];
-				if (current_scope.index != scope->index)
-				{
-					current_scope.start_index += len_diff;
-				}
-				current_scope.end_index += len_diff;
-
-				for (auto& argument : current_scope.arguments)
-				{
-					argument.start_index += len_diff;
-					argument.end_index += len_diff;
-				}
-			}
-
-			buffer = deserialize();
-		}
-
 
 		void update_argument_of_scope(int index, int arg, std::string new_argument)
 		{
@@ -440,38 +404,47 @@ static void clean_buffer(std::string& buffer)
 
 	void get_appropriate_suggestion(std::string current_buffer, std::string& suggestion_)
 	{
-		auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
-		auto words           = string::operations::split(separate_commands.back(), ' ');
-		auto current_command = command::get(rage::joaat(words.front()));
-		auto argument_index  = current_index(current_buffer);
+		auto serbuffer       = serialized_buffer(current_buffer);
+		auto current_command = serbuffer.get_command_of_index(cursor_pos);
+		auto scope           = serbuffer.get_command_scope(cursor_pos);
+		auto argument_index = serbuffer.get_argument_index_from_char_index(cursor_pos);
 
-		if (argument_index == 1)
+		if (!scope)
 		{
-			suggestion_ = auto_fill_command(words.back());
 			return;
 		}
-		else
+
+		if (argument_index == -1)
 		{
-			if (!current_command)
-				return;
+			return;
+		}
 
-			auto suggestions = current_command->get_argument_suggestions(argument_index - 1);
+		if (!scope->get_argument(cursor_pos)->is_argument)
+		{
+			suggestion_ = auto_fill_command(scope->name);
+			return;
+		}
 
-			if (suggestions == std::nullopt)
-				return;
+		if (!current_command)
+			return;
 
-			for (auto suggestion : suggestion_list_filtered(suggestions.value(), words.back()))
+		auto suggestions = current_command->get_argument_suggestions(argument_index);
+		auto argument    = scope->get_argument(cursor_pos);
+
+		if (suggestions == std::nullopt)
+			return;
+
+		for (auto suggestion : suggestion_list_filtered(suggestions.value(), argument->name))
+		{
+			std::string guess_lowercase      = argument->name;
+			std::string suggestion_lowercase = suggestion;
+			string::operations::to_lower(suggestion_lowercase);
+			string::operations::to_lower(guess_lowercase);
+
+			if (suggestion_lowercase.find(guess_lowercase) != std::string::npos)
 			{
-				std::string guess_lowercase      = words.back();
-				std::string suggestion_lowercase = suggestion;
-				string::operations::to_lower(suggestion_lowercase);
-				string::operations::to_lower(guess_lowercase);
-
-				if (suggestion_lowercase.find(guess_lowercase) != std::string::npos)
-				{
-					suggestion_ = suggestion;
-					break;
-				}
+				suggestion_ = suggestion;
+				break;
 			}
 		}
 	}
@@ -571,14 +544,12 @@ static void clean_buffer(std::string& buffer)
 		if (!data)
 			return 0;
 
-		command_buffer = std::string(data->Buf);
-		s_buffer       = serialized_buffer(command_buffer);
 
 		if (cursor_pos != data->CursorPos)
 		{
 			selected_suggestion = std::string();
 			cursor_pos          = data->CursorPos;
-			log_command_buffer(data->Buf);
+			//log_command_buffer(data->Buf);
 
 			if (buffer_needs_cleaning(data->Buf))
 			{
@@ -657,7 +628,7 @@ static void clean_buffer(std::string& buffer)
 			ImGui::SetKeyboardFocusHere(0);
 
 			ImGui::SetNextItemWidth((screen_x * 0.5f) - 30.f);
-
+			s_buffer = serialized_buffer(command_buffer); // Update serialized buffer every frame
 			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackAlways, nullptr, input_callback))
 			{
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), false))
@@ -671,8 +642,7 @@ static void clean_buffer(std::string& buffer)
 
 			if (!command_buffer.empty())
 			{
-				auto separate_commands = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
-				get_appropriate_suggestion(separate_commands.back(), auto_fill_suggestion);
+				get_appropriate_suggestion(command_buffer, auto_fill_suggestion);
 
 				if (auto_fill_suggestion != command_buffer)
 					ImGui::Text("Suggestion: %s", auto_fill_suggestion.data());
@@ -691,26 +661,36 @@ static void clean_buffer(std::string& buffer)
 				}
 			}
 
-			if (current_index(command_buffer) == 1)
+			// Show history if buffer is empty
+			if (command_buffer.empty())
 			{
 				if (!g.cmd.command_history.empty())
 				{
 					current_suggestion_list = deque_to_vector(g.cmd.command_history);
 				}
+				components::sub_title("CMD_HISTORY_LABEL"_T);
 			}
-			// If we are at any index above the first word, suggest arguments
-			else if (current_index(command_buffer) > 1)
+			// If buffer isn't empty, we rely on the serialized buffer to suggest arguments or commands
+			else
 			{
-				auto current_buffer_index = current_index(command_buffer);
-				auto separate_commands = string::operations::split(command_buffer, ';'); // Split by semicolon to support multiple commands
-				auto buffer_words = string::operations::split(separate_commands.back(), ' ');
+				auto current_scope = s_buffer.get_command_scope(cursor_pos);
 
-				if (auto current_command = command::get(rage::joaat(buffer_words.front())))
+				if (!current_scope)
+					goto VIEW_END;
+
+				auto argument      = current_scope->get_argument(cursor_pos);
+
+				if (!argument)
+					goto VIEW_END;
+
+				auto current_command = current_scope->cmd;
+
+				if (argument->is_argument && current_command)
 				{
-					auto argument_suggestions = current_command->get_argument_suggestions(current_buffer_index - 1);
+					auto argument_suggestions = current_command->get_argument_suggestions(argument->index);
 					if (argument_suggestions != std::nullopt)
 					{
-						auto filtered_suggestions = suggestion_list_filtered(argument_suggestions.value(), buffer_words.back());
+						auto filtered_suggestions = suggestion_list_filtered(argument_suggestions.value(), argument->name);
 						if (filtered_suggestions.size() > 10)
 						{
 							current_suggestion_list =
@@ -722,7 +702,29 @@ static void clean_buffer(std::string& buffer)
 						}
 					}
 				}
+				else
+				{
+					auto all_commands        = g_commands;
+					std::vector<std::string> command_names{};
+					for (auto& [hash, cmd] : all_commands)
+					{
+						if (cmd && cmd->get_name().length() > 0)
+							command_names.push_back(cmd->get_name());
+					}
+					
+					auto filtered_commands = suggestion_list_filtered(command_names, argument->name);
+					if (filtered_commands.size() > 10)
+					{
+						current_suggestion_list =
+						    std::vector<std::string>(filtered_commands.begin(), filtered_commands.begin() + 10);
+					}
+					else
+					{
+						current_suggestion_list = filtered_commands;
+					}
+				}
 			}
+VIEW_END:
 			ImGui::PopStyleVar();
 		}
 
