@@ -152,34 +152,33 @@ namespace big
 					continue;
 				}
 
-				const auto my_head_pos          = self_ped->get_bone_coords(ePedBoneType::HEAD);
-				const auto their_head_pos       = ped->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
+				const auto my_head_pos    = self_ped->get_bone_coords(ePedBoneType::HEAD);
+				const auto their_head_pos = ped->get_bone_coords((ePedBoneType)g.weapons.aimbot.selected_bone);
 
-				constexpr auto los_flags = (ST_OPTION_IGNORE_GLASS | ST_OPTION_IGNORE_NOTHING | ST_OPTION_IGNORE_TRANSPARENT);
-				auto shape_test_handle = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(my_head_pos.x,
-				    my_head_pos.y,
-				    my_head_pos.z,
-				    their_head_pos.x,
-				    their_head_pos.y,
-				    their_head_pos.z,
-				    ST_INCLUDE_ALL,
-				    self::ped,
-				    los_flags);
-				BOOL did_shapetest_hit{};
-				Vector3 dont_care;
-				Entity entity_hit{};
-				if (SHAPETEST::GET_SHAPE_TEST_RESULT(shape_test_handle, &did_shapetest_hit, &dont_care, &dont_care, &entity_hit))
-				{
-					if (!((did_shapetest_hit == TRUE && entity_hit == ped_handle) || !did_shapetest_hit))
-					{
-						continue;
-					}
-				}
-
-				const auto fov = get_fov(their_head_pos);
+				const auto fov             = get_fov(their_head_pos);
 				const auto distance_to_ped = self_pos.distance(their_head_pos);
 				if (fov < best_fov && distance_to_ped < best_distance)
 				{
+					constexpr auto los_flags = (ST_OPTION_IGNORE_GLASS | ST_OPTION_IGNORE_NOTHING | ST_OPTION_IGNORE_TRANSPARENT);
+					auto shape_test_handle = SHAPETEST::START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE(my_head_pos.x,
+					    my_head_pos.y,
+					    my_head_pos.z,
+					    their_head_pos.x,
+					    their_head_pos.y,
+					    their_head_pos.z,
+					    ST_INCLUDE_ALL,
+					    self::ped,
+					    los_flags);
+					BOOL did_shapetest_hit{};
+					Vector3 dont_care;
+					Entity entity_hit{};
+					if (SHAPETEST::GET_SHAPE_TEST_RESULT(shape_test_handle, &did_shapetest_hit, &dont_care, &dont_care, &entity_hit))
+					{
+						if (!((did_shapetest_hit == TRUE && entity_hit == ped_handle) || !did_shapetest_hit))
+						{
+							continue;
+						}
+					}
 					best_fov      = fov;
 					best_distance = distance_to_ped;
 					m_target      = ped;
