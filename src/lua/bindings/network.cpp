@@ -1,6 +1,7 @@
 #include "network.hpp"
 
 #include "../../script.hpp"
+#include "core/data/language_codes.hpp"
 #include "core/scr_globals.hpp"
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
@@ -12,6 +13,7 @@
 #include "util/system.hpp"
 #include "util/teleport.hpp"
 #include <script/globals/GPBD_FM.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace lua::network
 {
@@ -207,7 +209,7 @@ namespace lua::network
 	// Lua API: Function
 	// Table: network
 	// Name: get_player_rank
-	// Param: pid: int
+	// Param: pid: integer: Index of the player.
 	// Call get_player_rank(playerID)
 	static int get_player_rank(int pid)
 	{
@@ -222,7 +224,7 @@ namespace lua::network
 	// Lua API: Function
 	// Table: network
 	// Name: get_player_rp
-	// Param: pid: int
+	// Param: pid: integer: Index of the player.
 	// Call get_player_rp(playerID)
 	static int get_player_rp(int pid)
 	{
@@ -232,6 +234,81 @@ namespace lua::network
 			return stats.RP;
 		}
 		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_money
+	// Param: pid: integer: Index of the player.
+	// Call get_player_money(playerID)
+	static int get_player_money(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Money;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_wallet
+	// Param: pid: integer: Index of the player.
+	// Call get_player_wallet(playerID)
+	static int get_player_wallet(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.WalletBalance;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_bank
+	// Param: pid: integer: Index of the player.
+	// Call get_player_bank(playerID)
+	static int get_player_bank(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Money - stats.WalletBalance;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_language_id
+	// Param: pid: integer: Index of the player.
+	// Call get_player_language_id(playerID)
+	static int get_player_language_id(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& boss_goon = big::scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[pid].BossGoon;
+			return boss_goon.Language;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_language_name
+	// Param: pid: integer: Index of the player.
+	// Call get_player_language_name(playerID)
+	static std::string get_player_language_name(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& boss_goon = big::scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[pid].BossGoon;
+			return big::languages[boss_goon.Language].name;
+		}
+		return "Unknown";
 	}
 
 	void bind(sol::state& state)
@@ -275,5 +352,10 @@ namespace lua::network
 		ns["send_chat_message_to_player"]              = send_chat_message_to_player;
 		ns["get_player_rank"]                          = get_player_rank;
 		ns["get_player_rp"]                            = get_player_rp;
+		ns["get_player_money"]                         = get_player_money;
+		ns["get_player_wallet"]                        = get_player_wallet;
+		ns["get_player_bank"]                          = get_player_bank;
+		ns["get_player_language_id"]                   = get_player_language_id;
+		ns["get_player_language_name"]                 = get_player_language_name;
 	}
 }

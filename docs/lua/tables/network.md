@@ -177,6 +177,9 @@ Call get_player_rank(playerID)
 - **Parameters:**
   - `pid` (int)
 
+- **Returns:**
+  - `int`: Returns an integer which contains the players rank.
+
 **Example Usage:**
 ```lua
 network.get_player_rank(pid)
@@ -189,9 +192,85 @@ Call get_player_rp(playerID)
 - **Parameters:**
   - `pid` (int)
 
+- **Returns:**
+  - `int`: Returns an integer which contains the players rp.
+
 **Example Usage:**
 ```lua
 network.get_player_rp(pid)
 ```
 
+### `get_player_money(pid)`
 
+Call get_player_money(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players money.
+
+**Example Usage:**
+```lua
+network.get_player_money(pid)
+```
+
+### `get_player_wallet(pid)`
+
+Call get_player_wallet(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players wallet.
+
+**Example Usage:**
+```lua
+network.get_player_wallet(pid)
+```
+
+### `get_player_bank(pid)`
+
+Call get_player_bank(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players bank.
+
+**Example Usage:**
+```lua
+network.get_player_bank(pid)
+```
+
+### `get_player_language_id(pid)`
+
+Call get_player_language_id(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players language id.
+
+**Example Usage:**
+```lua
+network.get_player_language_id(pid)
+```
+
+### `get_player_language_name(pid)`
+
+Call get_player_language_name(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `string`: Returns a string which contains the players language name.
+
+**Example Usage:**
+```lua
+network.get_player_language_name(pid)
+```
