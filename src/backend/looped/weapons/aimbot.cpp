@@ -144,11 +144,15 @@ namespace big
 
 				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 
-				const auto relation             = PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped);
-				constexpr auto dislike_relation = 4;
-				constexpr auto hate_relation    = 5;
-				const auto is_not_an_enemy_and_we_target_only_enemies = g_aimbot_only_on_enemy.is_enabled() && (relation != dislike_relation && relation != hate_relation);
-				if (is_not_an_enemy_and_we_target_only_enemies || is_a_ped_type_we_dont_care_about(ped_handle))
+				bool is_enemy = false;
+				switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
+				{
+					case Dislike:
+					case Wanted:
+					case Hate: is_enemy = true;
+				}
+
+				if ((g_aimbot_only_on_enemy.is_enabled() && !is_enemy) || is_a_ped_type_we_dont_care_about(ped_handle))
 				{
 					continue;
 				}

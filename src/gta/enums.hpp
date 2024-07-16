@@ -2111,3 +2111,14 @@ enum ShapeTestOptionFlag : int
 	ST_OPTION_IGNORE_TRANSPARENT = (1 << 1),
 	ST_OPTION_IGNORE_NOTHING     = (1 << 2),
 };
+
+enum PedRelationships : int
+{
+	Companion,
+	Like,
+	Nothing,
+	Dislike,
+	Wanted,
+	Hate,
+	Indifferent = 255
+};
