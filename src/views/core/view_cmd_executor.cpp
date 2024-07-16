@@ -8,8 +8,6 @@
 namespace big
 {
 	//TODO Allow for optional arguments??
-
-
 	static std::vector<std::string> current_suggestion_list;
 	static std::string command_buffer;
 	static std::string auto_fill_suggestion;
@@ -283,6 +281,7 @@ namespace big
 	bool does_string_exist_in_list(const std::string& command, std::vector<std::string> list)
 	{
 		auto found = std::find(list.begin(), list.end(), command);
+		argument_is_in_suggestion_list = found != list.end();
 		return found != list.end();
 	}
 
@@ -328,14 +327,6 @@ namespace big
 		return std::string();
 	}
 
-	// What word in the sentence are we currently at
-	int current_index(std::string current_buffer)
-	{
-		auto separate_commands = string::operations::split(current_buffer, ';'); // Split by semicolon to support multiple commands
-		auto words = string::operations::split(separate_commands.back(), ' ');
-		return words.size();
-	}
-
 	std::vector<std::string> suggestion_list_filtered(std::vector<std::string> suggestions, std::string filter)
 	{
 		std::vector<std::string> suggestions_filtered;
@@ -357,7 +348,7 @@ namespace big
 			std::string suggestion_lowercase = suggestion;
 			string::operations::to_lower(suggestion_lowercase);
 
-			if (suggestion_lowercase.find(filter_lowercase) != std::string::npos || does_string_exist_in_list(argument->name, current_suggestion_list) /*Need this to maintain suggestion list while navigating it*/)
+			if (suggestion_lowercase.find(filter_lowercase) != std::string::npos || does_string_exist_in_list(argument->name, suggestions) /*Need this to maintain suggestion list while navigating it*/)
 				suggestions_filtered.push_back(suggestion);
 		}
 
@@ -512,7 +503,6 @@ namespace big
 	{
 		if (!data)
 			return 0;
-
 
 		if (cursor_pos != data->CursorPos)
 		{
