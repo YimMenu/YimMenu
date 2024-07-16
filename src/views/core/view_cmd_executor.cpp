@@ -630,6 +630,10 @@ namespace big
 					components::selectable(suggestion, suggestion == selected_suggestion);
 				}
 			}
+			else
+			{
+				components::small_text("CMD_EXECUTOR_NO_SUGGESTIONS"_T);
+			}
 
 			// Show history if buffer is empty
 			if (command_buffer.empty())
