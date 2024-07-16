@@ -451,6 +451,9 @@ namespace big
 
 	void update_current_argument_with_suggestion(ImGuiInputTextCallbackData* data, std::string suggestion)
 	{
+		if (!data)
+			return;
+
 		std::string new_text;
 		auto sbuffer        = serialized_buffer(data->Buf);
 		auto scope          = sbuffer.get_command_scope(data->CursorPos);
@@ -501,8 +504,10 @@ namespace big
 	static int input_callback(ImGuiInputTextCallbackData* data)
 	{
 		if (!data)
+		{
 			return 0;
-
+		}
+		
 		if (cursor_pos != data->CursorPos)
 		{
 			selected_suggestion = std::string();
@@ -570,7 +575,7 @@ namespace big
 				data->SelectionEnd   = argument->end_index;
 			}
 		}
-
+		
 		return 0;
 	}
 
