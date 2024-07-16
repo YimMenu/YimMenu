@@ -551,9 +551,24 @@ namespace big
 
 			if (data->EventKey == ImGuiKey_UpArrow)
 				get_previous_from_list(current_suggestion_list, selected_suggestion);
-
 			else if (data->EventKey == ImGuiKey_DownArrow)
 				get_next_from_list(current_suggestion_list, selected_suggestion);
+
+			if (!selected_suggestion.empty() && !suggestion_is_history)
+			{
+				auto scope = s_buffer.get_command_scope(data->CursorPos);
+
+				if (!scope)
+					return 0;
+
+				auto argument = scope->get_argument(data->CursorPos);
+
+				if (!argument)
+					return 0;
+
+				data->SelectionStart = argument->start_index;
+				data->SelectionEnd   = argument->end_index;
+			}
 		}
 
 		return 0;
