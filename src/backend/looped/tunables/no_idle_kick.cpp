@@ -1,7 +1,7 @@
 #include "backend/looped_command.hpp"
-#include "services/tunables/tunables_service.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
+#include "services/tunables/tunables_service.hpp"
 
 namespace big
 {
@@ -12,40 +12,51 @@ namespace big
 		std::array<int, 8> m_restore;
 		bool m_backed_up;
 
+		const std::vector<Hash> m_tunable_hashes = {"IDLEKICK_WARNING1"_J, "IDLEKICK_WARNING2"_J, "IDLEKICK_WARNING3"_J, "IDLEKICK_KICK"_J, "ConstrainedKick_Warning1"_J, "ConstrainedKick_Warning2"_J, "ConstrainedKick_Warning3"_J, "ConstrainedKick_Kick"_J};
+
 		virtual void on_tick() override
 		{
 			if (!m_backed_up) [[unlikely]]
 			{
-				m_restore[0] = *g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J);
-				m_restore[1] = *g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J);
-				m_restore[2] = *g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J);
-				m_restore[3] = *g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J);
-				m_restore[4] = *g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J);
-				m_restore[5] = *g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J);
-				m_restore[6] = *g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J);
-				m_restore[7] = *g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J);
-				m_backed_up  = true;
+				bool did_fail = false;
+				for (int i = 0; i < m_restore.size(); i++)
+				{
+					if (auto tunable = g_tunables_service->get_tunable<int*>(m_tunable_hashes[i]))
+					{
+						m_restore[i] = *tunable;
+					}
+					else
+					{
+						did_fail = true;
+					}
+				}
+				m_backed_up = did_fail;
 			}
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J) = INT_MAX;
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J) = INT_MAX;
+			else
+			{
+				for (Hash hash_iter : m_tunable_hashes)
+				{
+					if (auto tunable_ptr = g_tunables_service->get_tunable<int*>(hash_iter))
+					{
+						*tunable_ptr = INT_MAX;
+					}
+				}
+			}
 		}
 
 		virtual void on_disable() override
 		{
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J) = m_restore[0];
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J) = m_restore[1];
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J) = m_restore[2];
-			*g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J) = m_restore[3];
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J) = m_restore[4];
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J) = m_restore[5];
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J) = m_restore[6];
-			*g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J) = m_restore[7];
+			if (m_backed_up)
+			{
+				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J)        = m_restore[0];
+				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J)        = m_restore[1];
+				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J)        = m_restore[2];
+				*g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J)            = m_restore[3];
+				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J) = m_restore[4];
+				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J) = m_restore[5];
+				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J) = m_restore[6];
+				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J)     = m_restore[7];
+			}
 		}
 	};
 
