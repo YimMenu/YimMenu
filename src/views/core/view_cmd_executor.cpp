@@ -281,7 +281,6 @@ namespace big
 	bool does_string_exist_in_list(const std::string& command, std::vector<std::string> list)
 	{
 		auto found = std::find(list.begin(), list.end(), command);
-		argument_is_in_suggestion_list = found != list.end();
 		return found != list.end();
 	}
 

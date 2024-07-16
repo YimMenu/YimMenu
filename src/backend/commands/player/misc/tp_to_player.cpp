@@ -24,8 +24,8 @@ namespace big
 
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
-			command_arguments result(2);
 
+			command_arguments result(2);
 			// Get possible proxies for the arguments
 			auto first_proxy  = get_argument_proxy_value(args[0]);
 			auto second_proxy = get_argument_proxy_value(args[1]);
@@ -48,21 +48,17 @@ namespace big
 				target = g_player_service->get_by_name_closest(args[1]);
 
 			// Error handling for invalid or not found players
-			if ((!first_proxy && !sender) || (!second_proxy && !target))
+			if (!sender || !target)
 			{
 				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), std::string("INVALID_PLAYER_NAME_NOTIFICATION"_T));
 				return std::nullopt;
 			}
 
-			if (!sender || !target)
-			{
-				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), std::string("PLAYER_NOT_FOUND_NOTIFICATION"_T));
-				return std::nullopt;
-			}
-
 			// Add resolved player IDs to result
-			result.push(sender->id());
-			result.push(target->id());
+			if (sender)
+				result.push(sender->id());
+			if (target)
+				result.push(target->id());
 
 			return result;
 		}
