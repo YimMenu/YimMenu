@@ -30,7 +30,7 @@ namespace big
 						did_fail = true;
 					}
 				}
-				m_backed_up = did_fail;
+				m_backed_up = !did_fail;
 			}
 			else
 			{
@@ -48,14 +48,8 @@ namespace big
 		{
 			if (m_backed_up)
 			{
-				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J)        = m_restore[0];
-				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J)        = m_restore[1];
-				*g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J)        = m_restore[2];
-				*g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J)            = m_restore[3];
-				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J) = m_restore[4];
-				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J) = m_restore[5];
-				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J) = m_restore[6];
-				*g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J)     = m_restore[7];
+				for (int i = 0; i < m_restore.size(); ++i)
+					*g_tunables_service->get_tunable<int*>(m_tunable_hashes[i]) = m_restore[i];
 			}
 		}
 	};
