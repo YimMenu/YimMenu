@@ -48,7 +48,7 @@ namespace big
 				target = g_player_service->get_by_name_closest(args[1]);
 
 			// Error handling for invalid or not found players
-			if (!sender || !target)
+			if ((first_proxy == std::nullopt && !sender) || (second_proxy == std::nullopt && !target))
 			{
 				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), std::string("INVALID_PLAYER_NAME_NOTIFICATION"_T));
 				return std::nullopt;
