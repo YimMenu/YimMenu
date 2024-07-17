@@ -7,7 +7,7 @@
 #include "util/explosion_anti_cheat_bypass.hpp"
 #include "util/vehicle.hpp"
 #include "util/world_model.hpp"
-#include "backend/commands/weapons/no_sway.h"
+#include "backend/commands/weapons/no_sway.hpp"
 
 extern "C" void sound_overload_detour();
 uint64_t g_sound_overload_ret_addr;

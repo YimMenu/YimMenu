@@ -1,7 +1,5 @@
-#include "no_sway.h"
-
 #include "backend/bool_command.hpp"
-#include "gta/weapons.hpp"
+#include "no_sway.hpp"
 
 namespace big
 {
