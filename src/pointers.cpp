@@ -1686,6 +1686,24 @@ namespace big
                 g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
             }
         },
+        // Cam Gameplay Director
+        {
+            "CGD",
+            "48 8B 05 ? ? ? ? 38 98 ? ? ? ? 8A C3",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director = ptr.add(3).rip().as<uintptr_t*>();
+            }
+        },
+        // Cam Gameplay Director Update
+        {
+            "CGDU",
+            "E9 CD 09 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director_update = ptr.sub(0x32).as<functions::cam_gameplay_directory_update>();
+            }
+        },
         // Format Integer
         {
             "FI",
@@ -1866,6 +1884,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_create_pool_item = ptr.sub(0x6).as<PVOID>();
+            }
+        },
+        // Scope Sway Function
+        {
+            "SSF",
+            "74 ? F3 0F 10 15 ? ? ? ? 41 B9 ? ? ? ? 48 8B D0 48 8B CF 44 89 7C 24",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_scope_sway_function = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end

@@ -193,6 +193,8 @@ namespace big
 
 		static bool can_create_vehicle();
 
+		static bool aimbot_cam_gameplay_director_update(uintptr_t this_);
+
 		static void format_int(int64_t integer_to_format, char* format_string, size_t size_always_64, bool use_commas);
 
 		static void write_node_data(void* data_node, rage::netObject* net_object, rage::datBitBuffer* buffer, void* log, bool update);
