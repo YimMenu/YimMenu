@@ -24,36 +24,41 @@ namespace big
 
 		virtual std::optional<command_arguments> parse_args(const std::vector<std::string>& args, const std::shared_ptr<command_context> ctx) override
 		{
+
 			command_arguments result(2);
+			// Get possible proxies for the arguments
+			auto first_proxy  = get_argument_proxy_value(args[0]);
+			auto second_proxy = get_argument_proxy_value(args[1]);
 
-			auto first_possible_proxy  = get_argument_proxy_value(args[0]);
-			auto second_possible_proxy = get_argument_proxy_value(args[1]);
+			// Add proxies to result if they exist
+			if (first_proxy)
+				result.push(first_proxy.value());
+			if (second_proxy)
+				result.push(second_proxy.value());
 
-			if (first_possible_proxy.has_value())
-				result.push(first_possible_proxy.value());
-
-			if (second_possible_proxy.has_value())
-				result.push(second_possible_proxy.value());
-
-			if (first_possible_proxy.has_value() && second_possible_proxy.has_value())
+			// Return result if both proxies are valid
+			if (first_proxy && second_proxy)
 				return result;
 
+			// Resolve players if proxies are not valid
 			player_ptr sender, target;
-
-			if (!first_possible_proxy.has_value())
+			if (first_proxy == std::nullopt)
 				sender = g_player_service->get_by_name_closest(args[0]);
-
-			if (!second_possible_proxy.has_value())
+			if (second_proxy == std::nullopt)
 				target = g_player_service->get_by_name_closest(args[1]);
 
-			if ((!first_possible_proxy.has_value() && !sender) || (!second_possible_proxy.has_value() && !target))
+			// Error handling for invalid or not found players
+			if ((first_proxy == std::nullopt && !sender) || (second_proxy == std::nullopt && !target))
 			{
-				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), (std::string("INVALID_PLAYER_NAME_NOTIFICATION"_T)));
+				g_notification_service.push_error(std::string("TELEPORT_PLAYER_TO_PLAYER"_T), std::string("INVALID_PLAYER_NAME_NOTIFICATION"_T));
 				return std::nullopt;
 			}
 
-			result.push(sender->id());
-			result.push(target->id());
+			// Add resolved player IDs to result
+			if (sender)
+				result.push(sender->id());
+			if (target)
+				result.push(target->id());
 
 			return result;
 		}

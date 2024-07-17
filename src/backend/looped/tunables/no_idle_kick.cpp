@@ -1,7 +1,7 @@
 #include "backend/looped_command.hpp"
-#include "services/tunables/tunables_service.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
+#include "services/tunables/tunables_service.hpp"
 
 namespace big
 {
@@ -9,48 +9,47 @@ namespace big
 	{
 		using looped_command::looped_command;
 
-		std::array<int*, 8> m_tunables = {nullptr};
 		std::array<int, 8> m_restore;
-		bool m_ready_to_use;
+		bool m_backed_up;
+
+		const std::vector<Hash> m_tunable_hashes = {"IDLEKICK_WARNING1"_J, "IDLEKICK_WARNING2"_J, "IDLEKICK_WARNING3"_J, "IDLEKICK_KICK"_J, "ConstrainedKick_Warning1"_J, "ConstrainedKick_Warning2"_J, "ConstrainedKick_Warning3"_J, "ConstrainedKick_Kick"_J};
 
 		virtual void on_tick() override
 		{
-			if (!m_ready_to_use)
+			if (!m_backed_up) [[unlikely]]
 			{
-				m_tunables[0] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING1"_J);
-				m_tunables[1] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING2"_J);
-				m_tunables[2] = g_tunables_service->get_tunable<int*>("IDLEKICK_WARNING3"_J);
-				m_tunables[3] = g_tunables_service->get_tunable<int*>("IDLEKICK_KICK"_J);
-				m_tunables[4] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning1"_J);
-				m_tunables[5] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning2"_J);
-				m_tunables[6] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Warning3"_J);
-				m_tunables[7] = g_tunables_service->get_tunable<int*>("ConstrainedKick_Kick"_J);
-
-				// create backup of tunables
-				m_ready_to_use = true;
-				for (int i = 0; i < m_restore.size(); ++i)
+				bool did_fail = false;
+				for (int i = 0; i < m_restore.size(); i++)
 				{
-					if (m_ready_to_use = m_tunables[i]; !m_ready_to_use)
-						break;
-					m_restore[i] = *m_tunables[i];
+					if (auto tunable = g_tunables_service->get_tunable<int*>(m_tunable_hashes[i]))
+					{
+						m_restore[i] = *tunable;
+					}
+					else
+					{
+						did_fail = true;
+					}
 				}
+				m_backed_up = !did_fail;
 			}
 			else
 			{
-				for (const auto& tunable : m_tunables)
+				for (Hash hash_iter : m_tunable_hashes)
 				{
-					if (tunable)
-						*tunable = INT_MAX;
+					if (auto tunable_ptr = g_tunables_service->get_tunable<int*>(hash_iter))
+					{
+						*tunable_ptr = INT_MAX;
+					}
 				}
 			}
 		}
 
 		virtual void on_disable() override
 		{
-			for (int i = 0; m_ready_to_use && i < m_restore.size(); ++i)
+			if (m_backed_up)
 			{
-				if (m_tunables[i])
-					*m_tunables[i] = m_restore[i];
+				for (int i = 0; i < m_restore.size(); ++i)
+					*g_tunables_service->get_tunable<int*>(m_tunable_hashes[i]) = m_restore[i];
 			}
 		}
 	};
