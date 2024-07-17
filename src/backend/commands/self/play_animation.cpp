@@ -20,6 +20,7 @@ namespace big
 			if (arg == 1)
 			{
 				std::vector<std::string> suggestions;
+				suggestions.push_back("stop");
 				for (auto& item : g_ped_animation_service.all_saved_animations | std::views::values | std::views::join)
 				{
 					std::string anim_name = item.name;
