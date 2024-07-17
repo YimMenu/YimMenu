@@ -1889,10 +1889,10 @@ namespace big
         // Scope Sway Function
         {
             "SSF",
-            "F3 0F 10 49 ? F3 0F 11 4F",
+            "74 ? F3 0F 10 15 ? ? ? ? 41 B9 ? ? ? ? 48 8B D0 48 8B CF 44 89 7C 24",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_scope_sway_function = ptr.add(0x8).as<PVOID>();
+                g_pointers->m_gta.m_scope_sway_function = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end
