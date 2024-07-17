@@ -12,7 +12,7 @@
 
 namespace big
 {
-	bool_command g_aimbot_only_on_player("aimonlyatplayer", "PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_PLAYER_DESC",
+	bool_command g_aimbot_only_on_player("aimonlyatplayer", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_PLAYER", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_PLAYER_DESC",
 	    g.weapons.aimbot.only_on_player);
 
 	bool_command g_aimbot_only_on_enemy("aimonlyatenemy", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_ENEMY", "BACKEND_LOOPED_WEAPONS_AIM_ONLY_AT_ENEMY_DESC",

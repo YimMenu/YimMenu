@@ -102,6 +102,8 @@ namespace big
 		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
+		ImGui::SameLine();
+		components::command_checkbox<"nosway">();
 
 		components::button("GET_ALL_WEAPONS"_T, [] {
 			for (const auto& [_, weapon] : g_gta_data_service->weapons())
@@ -193,39 +195,33 @@ namespace big
 			ImGui::SameLine();
 			components::command_checkbox<"aimonlyatenemy">();
 
-#define ImGui_CheckboxFlags_ped_type(ped_type) \
-	ImGui::CheckboxFlags(#ped_type, &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::ped_type)
+			ImGui::CheckboxFlags("PLAYERS"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_NETWORK_PLAYER);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_CIVMALE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_CIVMALE);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_CIVFEMALE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_CIVFEMALE);
 
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_0);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_1);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_NETWORK_PLAYER);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_PLAYER_2);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_CIVMALE);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_CIVFEMALE);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_COP);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_ALBANIAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_BIKER_1);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_BIKER_2);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_ITALIAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_RUSSIAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_RUSSIAN_2);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_IRISH);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_JAMAICAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_AFRICAN_AMERICAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_KOREAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_CHINESE_JAPANESE);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_GANG_PUERTO_RICAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_DEALER);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_MEDIC);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_FIREMAN);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_CRIMINAL);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_BUM);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_PROSTITUTE);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_SPECIAL);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_MISSION);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_SWAT);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_ANIMAL);
-			ImGui_CheckboxFlags_ped_type(PED_TYPE_ARMY);
+			ImGui::CheckboxFlags("PED_TYPE_DEALER"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_DEALER);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_PROSTITUTE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_PROSTITUTE);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_BUM"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_BUM);
+
+			ImGui::CheckboxFlags("PED_TYPE_MEDIC"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_MEDIC);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_FIREMAN"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_FIREMAN);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_ARMY"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_ARMY);
+
+			ImGui::CheckboxFlags("POLICE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_COP);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_SWAT"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_SWAT);
+
+			ImGui::CheckboxFlags("GUI_TAB_MISSIONS"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_MISSION);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_ANIMAL"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_ANIMAL);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_SPECIAL"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_SPECIAL);
 
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");

@@ -903,8 +903,8 @@ namespace big
 				int64_t only_on_ped_type = -1;
 				bool only_on_player      = false;
 				bool only_on_enemy       = false;
-				float fov                = 20.f;
-				float distance           = 210.f;
+				float fov                = 60.f;
+				float distance           = 200.f;
 				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, only_on_ped_type, only_on_player, only_on_enemy, fov, distance, selected_bone)
 			} aimbot{};
@@ -925,6 +925,7 @@ namespace big
 			bool modify_explosion_radius  = false;
 			bool no_recoil                = false;
 			bool no_spread                = false;
+			bool no_sway                  = false;
 			std::string vehicle_gun_model = "bus";
 			bool increased_c4_limit       = false;
 			bool increased_flare_limit    = false;

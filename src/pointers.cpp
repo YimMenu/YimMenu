@@ -1644,7 +1644,7 @@ namespace big
         // Nullsub
         {
             "NS",
-            "90 C3",
+            "90 C3 CC",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
@@ -1884,6 +1884,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_create_pool_item = ptr.sub(0x6).as<PVOID>();
+            }
+        },
+        // Scope Sway Function
+        {
+            "SSF",
+            "F3 0F 10 49 ? F3 0F 11 4F",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_scope_sway_function = ptr.add(0x8).as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end
