@@ -276,6 +276,9 @@ namespace big
 			const auto target_velocity = get_velocity(m_target);
 			const auto my_velocity     = get_velocity(g_local_player);
 
+			if (target_velocity == rage::fvector3{})
+				return;
+
 			target_position += (target_velocity - my_velocity);
 		}
 
