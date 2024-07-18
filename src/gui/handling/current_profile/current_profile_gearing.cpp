@@ -8,7 +8,7 @@ namespace big
 		{
 			ImGui::Text("HANDLING_INITIAL_DRIVE_GEARS"_T.data());
 			int initial_drive_gears = g_local_player->m_vehicle->m_handling_data->m_initial_drive_gears;
-			if (ImGui::DragInt("###handling_drive_gears", &initial_drive_gears, .1f, 1, 16))
+			if (ImGui::SliderInt("###handling_drive_gears", &initial_drive_gears, 1, 16))
 				g_local_player->m_vehicle->m_handling_data->m_initial_drive_gears = initial_drive_gears;
 
 			ImGui::Text("HANDLING_UPSHIFT_MULTIPLIER"_T.data());
