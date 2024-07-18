@@ -17,5 +17,5 @@ namespace big
 			weapons::m_no_sway_patch->restore();
 		}
 	};
-	no_sway g_veh_no_collision("nosway", "NO_SWAY", "NO_SWAY_DESC", g.weapons.no_sway);
+	no_sway g_no_sway("nosway", "NO_SWAY", "NO_SWAY_DESC", g.weapons.no_sway);
 }
