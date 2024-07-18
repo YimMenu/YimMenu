@@ -358,6 +358,9 @@ namespace big
 
 		functions::can_create_vehicle m_can_create_vehicle;
 
+		uintptr_t* m_cam_gameplay_director;
+		functions::cam_gameplay_directory_update m_cam_gameplay_director_update;
+    
 		PVOID m_format_int;
     
 		PVOID m_searchlight_crash;
@@ -393,6 +396,8 @@ namespace big
 		PVOID m_error_packet_memmove;
 
 		PVOID m_create_pool_item;
+
+		PVOID m_scope_sway_function;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

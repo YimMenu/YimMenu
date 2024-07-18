@@ -296,6 +296,41 @@ namespace big
 		STEAM     = 1 << 15,
 		WATER     = 1 << 16,
 	};
+
+	enum class ePedTypeFlag : int64_t
+	{
+		PED_TYPE_PLAYER_0              = 1 << 0,
+		PED_TYPE_PLAYER_1              = 1 << 1,
+		PED_TYPE_NETWORK_PLAYER        = 1 << 2,
+		PED_TYPE_PLAYER_2              = 1 << 3,
+		PED_TYPE_CIVMALE               = 1 << 4,
+		PED_TYPE_CIVFEMALE             = 1 << 5,
+		PED_TYPE_COP                   = 1 << 6,
+		PED_TYPE_GANG_ALBANIAN         = 1 << 7,
+		PED_TYPE_GANG_BIKER_1          = 1 << 8,
+		PED_TYPE_GANG_BIKER_2          = 1 << 9,
+		PED_TYPE_GANG_ITALIAN          = 1 << 10,
+		PED_TYPE_GANG_RUSSIAN          = 1 << 11,
+		PED_TYPE_GANG_RUSSIAN_2        = 1 << 12,
+		PED_TYPE_GANG_IRISH            = 1 << 13,
+		PED_TYPE_GANG_JAMAICAN         = 1 << 14,
+		PED_TYPE_GANG_AFRICAN_AMERICAN = 1 << 15,
+		PED_TYPE_GANG_KOREAN           = 1 << 16,
+		PED_TYPE_GANG_CHINESE_JAPANESE = 1 << 17,
+		PED_TYPE_GANG_PUERTO_RICAN     = 1 << 18,
+		PED_TYPE_DEALER                = 1 << 19,
+		PED_TYPE_MEDIC                 = 1 << 20,
+		PED_TYPE_FIREMAN               = 1 << 21,
+		PED_TYPE_CRIMINAL              = 1 << 22,
+		PED_TYPE_BUM                   = 1 << 23,
+		PED_TYPE_PROSTITUTE            = 1 << 24,
+		PED_TYPE_SPECIAL               = 1 << 25,
+		PED_TYPE_MISSION               = 1 << 26,
+		PED_TYPE_SWAT                  = 1 << 27,
+		PED_TYPE_ANIMAL                = 1 << 28,
+		PED_TYPE_ARMY                  = 1 << 29,
+	};
+
 	enum ePedType : uint32_t
 	{
 		PED_TYPE_PLAYER_0,
@@ -384,5 +419,20 @@ namespace big
 		NOT_A_SPAMMER,
 		STATIC_DETECTION,
 		TIMER_DETECTION
+	};
+
+	enum eTraceFlags : uint32_t
+	{
+		IntersectNone               = 0,
+		IntersectWorld              = 1 << 0,
+		IntersectVehicle            = 1 << 1,
+		IntersectPedSimpleCollision = 1 << 2,
+		IntersectPed                = 1 << 3,
+		IntersectObject             = 1 << 4,
+		IntersectPickup             = 1 << 5,
+		IntersectGlass              = 1 << 6,
+		IntersectWater              = 1 << 7,
+		IntersectFoliage            = 1 << 8,
+		IntersectEverything         = eTraceFlags(-1),
 	};
 }
