@@ -144,16 +144,19 @@ namespace big
 
 				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 
-				bool is_enemy = false;
+				bool is_hated_relationship = false;
+				bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped_handle, self::ped);
 				switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
 				{
 					case Dislike:
 					case Wanted:
-					case Hate: is_enemy = true;
+					case Hate: is_hated_relationship = true;
 				}
 
-				if ((g_aimbot_only_on_enemy.is_enabled() && !is_enemy) || is_a_ped_type_we_dont_care_about(ped_handle))
+				if ((g_aimbot_only_on_enemy.is_enabled() && (!is_hated_relationship && !is_in_combat)) || is_a_ped_type_we_dont_care_about(ped_handle))
 				{
+					/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
+						LOG(INFO) << " is_hated_relationship " << is_hated_relationship << " GET_PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " is_in_combat " << is_in_combat;*/
 					continue;
 				}
 
@@ -272,6 +275,9 @@ namespace big
 		{
 			const auto target_velocity = get_velocity(m_target);
 			const auto my_velocity     = get_velocity(g_local_player);
+
+			if (target_velocity == rage::fvector3{})
+				return;
 
 			target_position += (target_velocity - my_velocity);
 		}
