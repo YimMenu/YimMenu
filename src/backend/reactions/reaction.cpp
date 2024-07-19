@@ -57,7 +57,7 @@ namespace big
 
 		if (log)
 		{
-			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), player->get_rockstar_id());
+			LOGF(WARNING, "Received {} from {} ({})", g_translation_service.get_translation(m_event_name), player->get_name(), player->get_rockstar_id());
 		}
 
 		if (announce_in_chat)
@@ -92,7 +92,7 @@ namespace big
 
 		if (log)
 		{
-			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), player->get_rockstar_id());
+			LOGF(WARNING, "Received {} from {} ({})", g_translation_service.get_translation(m_event_name), player->get_name(), player->get_rockstar_id());
 		}
 
 		if (notify)

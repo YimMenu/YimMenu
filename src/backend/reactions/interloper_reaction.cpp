@@ -27,7 +27,7 @@ namespace big
 		{
 			LOGF(WARNING,
 			    "Received {} from {} ({}), victim is {}",
-			    m_event_name,
+			    g_translation_service.get_translation(m_event_name),
 			    attacker->get_name(),
 			    attacker->get_rockstar_id(),
 			    victim->get_name());
