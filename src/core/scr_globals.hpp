@@ -6,7 +6,7 @@ namespace big::scr_globals
 {
 	static inline const script_global gsbd(2648938);
 	static inline const script_global gsbd_fm(1845281);
-	static inline const script_global gsbd_kicking(1877042);
+	static inline const script_global gsbd_kicking(1877252);
 	static inline const script_global gsbd_fm_events(1916617);
 	static inline const script_global gsbd_block_c(2652592);
 	static inline const script_global gsbd_property_instances(1936863);
