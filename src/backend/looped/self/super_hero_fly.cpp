@@ -399,7 +399,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			g_notification_service.push("Super hero fly", "SUPER_HERO_FLY_ENABLE_NOTIFICATION"_T.data());
+			g_notification_service.push("SUPER_HERO_FLY"_T.data(), "SUPER_HERO_FLY_ENABLE_NOTIFICATION"_T.data());
 		}
 
 		virtual void on_disable() override
