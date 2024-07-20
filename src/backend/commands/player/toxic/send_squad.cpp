@@ -9,6 +9,13 @@ namespace big
 	{
 		using player_command::player_command;
 
+		std::string sterilized_name(std::string name)
+		{
+			string::operations::remove_whitespace(name);
+			string::operations::to_lower(name);
+			return name;
+		}
+
 		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg) override
 		{
 			if (arg == 1)
@@ -26,7 +33,7 @@ namespace big
 				std::vector<std::string> suggestions;
 				for (auto& item : g_squad_spawner_service.m_templates)
 				{
-					suggestions.push_back(item.m_name);
+					suggestions.push_back(sterilized_name(item.m_name));
 				}
 				return suggestions;
 			}
@@ -58,7 +65,7 @@ namespace big
 			int template_index = -1;
 			for (int i = 0; i < g_squad_spawner_service.m_templates.size(); i++)
 			{
-				if (g_squad_spawner_service.m_templates[i].m_name == args[1])
+				if (sterilized_name(g_squad_spawner_service.m_templates[i].m_name) == args[1])
 				{
 					template_index = i;
 					break;
