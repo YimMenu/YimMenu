@@ -598,11 +598,13 @@ namespace big
 
 			// set focus by default on input box
 			ImGui::SetKeyboardFocusHere(0);
-
 			ImGui::SetNextItemWidth((screen_x * 0.5f) - 30.f);
 			s_buffer = serialized_buffer(command_buffer); // Update serialized buffer every frame
 			if (components::input_text_with_hint("", "CMD_EXECUTOR_TYPE_CMD"_T, command_buffer, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackAlways, nullptr, input_callback))
 			{
+				if (!s_buffer.get_command_of_index(cursor_pos))
+					return;
+
 				if (command::process(command_buffer, std::make_shared<default_command_context>(), false))
 				{
 					g.cmd_executor.enabled = false;
