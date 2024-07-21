@@ -189,7 +189,7 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"aimbot">();
 
-		if (g.weapons.aimbot.enable)
+		if (g.weapons.aimbot.enable || g.weapons.triggerbot)
 		{
 			components::command_checkbox<"aimonlyatplayer">();
 			ImGui::SameLine();

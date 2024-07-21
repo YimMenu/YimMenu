@@ -903,6 +903,7 @@ namespace big
 				int64_t only_on_ped_type = -1;
 				bool only_on_player      = false;
 				bool only_on_enemy       = false;
+				bool has_target          = false;
 				float fov                = 60.f;
 				float distance           = 200.f;
 				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;

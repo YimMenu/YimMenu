@@ -321,7 +321,8 @@ namespace big
 		self_pos = *self_ped->get_position();
 
 		aimbot::find_best_target(self_ped, self_pos);
-		if (!aimbot::m_target)
+		g.weapons.aimbot.has_target = aimbot::m_target != nullptr;
+		if (!g.weapons.aimbot.has_target)
 		{
 			goto exit;
 		}
