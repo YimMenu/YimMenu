@@ -33,6 +33,8 @@ namespace big
 
 						bool is_hated_relationship = false;
 						bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
+						auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
+						bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
 						switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
 						{
 							case Dislike:
@@ -82,7 +84,7 @@ namespace big
 							default: is_a_ped_type_we_dont_care_about = false;
 						}
 
-						if ((g.weapons.aimbot.only_on_enemy && (!is_hated_relationship && !is_in_combat)) || is_a_ped_type_we_dont_care_about)
+						if ((g.weapons.aimbot.only_on_enemy && (!is_hated_relationship && !is_in_combat && !is_enemy)) || is_a_ped_type_we_dont_care_about)
 						{
 							return;
 						}

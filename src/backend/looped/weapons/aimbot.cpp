@@ -146,6 +146,9 @@ namespace big
 
 				bool is_hated_relationship = false;
 				bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped_handle, self::ped);
+				auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped_handle));
+				bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped_handle, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
+				
 				switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
 				{
 					case Dislike:
@@ -153,10 +156,10 @@ namespace big
 					case Hate: is_hated_relationship = true;
 				}
 
-				if ((g_aimbot_only_on_enemy.is_enabled() && (!is_hated_relationship && !is_in_combat)) || is_a_ped_type_we_dont_care_about(ped_handle))
+				if ((g_aimbot_only_on_enemy.is_enabled() && (!is_hated_relationship && !is_in_combat && !is_enemy)) || is_a_ped_type_we_dont_care_about(ped_handle))
 				{
 					/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
-						LOG(INFO) << " is_hated_relationship " << is_hated_relationship << " GET_PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " is_in_combat " << is_in_combat;*/
+						LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
 					continue;
 				}
 

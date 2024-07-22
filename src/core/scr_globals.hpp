@@ -28,7 +28,6 @@ namespace big::scr_globals
 	static inline const script_global mission_creator_radar_follows_camera(2621443);
 	static inline const script_global mission_creator_exited(1574530);
 
-	static inline const script_global in_multiplayer(79389); // g_bInMultiplayer
 	static inline const script_global transition_state(1575011);
 	static inline const script_global sctv_spectator(2697731); // pausemenu_multiplayer function 0xE49C42EC
 
