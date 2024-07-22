@@ -104,7 +104,7 @@ namespace rage
 
 		virtual void _0x80() = 0; //
 
-		virtual void _0x88() = 0; //
+		virtual void _0x88(int) = 0; //
 
 		virtual void* get_identifier() = 0; // 0x90
 
@@ -130,7 +130,7 @@ namespace rage
 
 		virtual void verify_array_data() = 0; // 0xE8
 
-		virtual void _0xF0() = 0; //
+		virtual void verify_array_data_ack(CNetGamePlayer* player, int) = 0; //
 
 		virtual char* get_name() = 0; // 0xF8
 

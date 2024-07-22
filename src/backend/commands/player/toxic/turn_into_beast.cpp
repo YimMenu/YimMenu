@@ -29,7 +29,7 @@ namespace big
 
 				g_notification_service.push("TURN_INTO_BEAST"_T.data(), "BACKEND_TURN_INTO_BEAST_STARTING"_T.data());
 
-				scripts::start_launcher_script(47);
+				scripts::start_launcher_script("AM_HUNT_THE_BEAST"_J);
 
 				for (int i = 0; !NETWORK::NETWORK_IS_PLAYER_A_PARTICIPANT_ON_SCRIPT(id, "am_hunt_the_beast", -1); i++)
 				{
@@ -83,7 +83,7 @@ namespace big
 
 		virtual void execute(const command_arguments& _args, const std::shared_ptr<command_context> ctx)
 		{
-			scripts::start_launcher_script(47);
+			scripts::start_launcher_script("AM_HUNT_THE_BEAST"_J);
 
 			for (int i = 0; !scripts::is_running("am_launcher"_J); i++)
 			{
@@ -118,7 +118,6 @@ namespace big
 			if (!stack || !net_component)
 				return;
 
-			((CGameScriptHandlerNetComponent*)thread->m_net_component)->block_host_migration(true);
 			thread->m_context.m_state = rage::eThreadState::unk_3;
 			g.m_hunt_the_beast_thread = thread;
 

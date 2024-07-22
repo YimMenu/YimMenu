@@ -2,6 +2,7 @@
 #include "fiber_pool.hpp"
 #include "script.hpp"
 #include "services/gta_data/cache_file.hpp"
+#include "script_global.hpp"
 
 namespace big
 {
@@ -30,16 +31,11 @@ namespace big
 			return m_initialized;
 		}
 
-		inline void register_tunable(rage::joaat_t hash, void* pointer)
-		{
-			m_tunables.emplace(hash, pointer);
-		}
-
 		template<typename T>
 		inline std::enable_if_t<std::is_pointer_v<T>, T> get_tunable(rage::joaat_t hash)
 		{
 			if (auto it = m_tunables.find(hash); it != m_tunables.end())
-				return reinterpret_cast<T>(it->second);
+				return reinterpret_cast<T>(script_global(it->second).as<void*>());
 
 			return nullptr;
 		}
@@ -73,6 +69,9 @@ namespace big
 			}
 		}
 
+		int m_current_junk_val = 0x1000000;
+		std::unordered_map<int, rage::joaat_t> m_junk_values{};
+
 	private:
 		bool m_initialized    = false;
 		bool m_loading        = false;
@@ -80,7 +79,9 @@ namespace big
 
 		cache_file m_cache_file;
 
-		std::unordered_map<rage::joaat_t, void*> m_tunables{};
+		std::unordered_map<rage::joaat_t, int> m_tunables{};
+		std::unique_ptr<uint64_t[]> m_tunables_backup; 
+		int m_num_tunables;
 
 		void save();
 		void load();

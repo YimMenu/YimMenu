@@ -8,6 +8,7 @@
 #include "file_manager.hpp"
 
 #include <bitset>
+#include <ped/CPedBoneInfo.hpp>
 #include <rage/rlSessionInfo.hpp>
 #include <weapon/CAmmoInfo.hpp>
 #include <weapon/CAmmoRocketInfo.hpp>
@@ -69,6 +70,7 @@ namespace big
 		int player_count = 0;
 
 		CNetGamePlayer* m_syncing_player  = nullptr;
+		std::uint8_t m_sync_target_player  = -1;
 		eNetObjType m_syncing_object_type = (eNetObjType)-1;
 
 		int m_remote_controller_vehicle = -1;
@@ -83,6 +85,30 @@ namespace big
 
 		rage::scrThread* m_mission_creator_thread = nullptr;
 
+		struct script_block_opts
+		{
+			bool lsc = false;
+			bool atms = false;
+			bool interiors = false;
+			bool drones    = false;
+			bool strip_club = false;
+			bool ammunation = false;
+			bool stores     = false;
+			bool sitting    = false;
+			bool sleeping    = false;
+			bool casino_games = false;
+			bool arcade_games = false;
+			bool prostitutes  = false;
+			bool movies       = false;
+			bool street_dealer = false;
+			bool impromptu_dm   = false;
+			bool impromptu_race = false;
+			bool gang_attacks   = false;
+			bool vending_machines = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_block_opts, lsc, atms, interiors, drones, strip_club, ammunation, stores, sitting, sleeping, casino_games, arcade_games, prostitutes, movies, street_dealer, impromptu_dm, impromptu_race, gang_attacks, vending_machines);
+		};
+
 		struct cmd_executor
 		{
 			bool enabled = false;
@@ -95,8 +121,8 @@ namespace big
 		{
 			struct logs
 			{
-				bool metric_logs{};
-				bool packet_logs{};
+				int metric_logs{};
+				int packet_logs{};
 
 				bool script_hook_logs{};
 
@@ -125,9 +151,10 @@ namespace big
 			} fuzzer{};
 
 			bool external_console = true;
-			bool window_hook = false;
+			bool window_hook      = false;
+			bool block_all_metrics = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(debug, logs, external_console, window_hook, block_all_metrics)
 		} debug{};
 
 		struct tunables
@@ -167,65 +194,64 @@ namespace big
 
 			pair send_net_info_to_lobby{};
 			pair transaction_rate_limit{};
-			pair mismatch_sync_type{};
-			pair out_of_allowed_range_sync_type{};
-			pair invalid_sync{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications, gta_thread_kill, gta_thread_start, network_player_mgr_init, network_player_mgr_shutdown, player_join, player_leave, send_net_info_to_lobby, transaction_rate_limit, mismatch_sync_type, out_of_allowed_range_sync_type, invalid_sync)
+			bool warn_metric = false;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(notifications, gta_thread_kill, gta_thread_start, network_player_mgr_init, network_player_mgr_shutdown, player_join, player_leave, send_net_info_to_lobby, transaction_rate_limit, warn_metric)
 		} notifications{};
 
 		struct reactions
 		{
 			// first constructor param is an internal identifier for the event
-			// it's never shown in the UI
-			reaction bounty{"Bounty", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
-			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
-			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
-			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
-			reaction crash{"Crash", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
-			reaction end_session_kick{"End Session Kick", "REACTION_END_SESSION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction fake_deposit{"Fake Deposit", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
-			reaction force_mission{"Force Mission", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
-			reaction force_teleport{"Force Teleport", "REACTION_FORCE_TELEPORT_NOTIFY", "REACTION_FORCE_TELEPORT_ANNOUNCE"};
-			reaction gta_banner{"GTA Banner", "REACTION_GTA_BANNER_NOTIFY", "REACTION_GTA_BANNER_ANNOUNCE"}; // please don't enable this
-			reaction kick_from_interior{"Kick From Interior", "REACTION_KICK_FROM_INTERIOR_NOTIFY", "REACTION_KICK_FROM_INTERIOR_ANNOUNCE"};
-			reaction mc_teleport{"MC Teleport", "REACTION_MC_TELEPORT_NOTIFY", "REACTION_MC_TELEPORT_ANNOUNCE"};
-			reaction network_bail{"Network Bail", "REACTION_NETWORK_BAIL_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction personal_vehicle_destroyed{"Personal Vehicle Destroyed", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
-			reaction remote_off_radar{"Remote Off Radar", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
-			reaction rotate_cam{"Rotate Cam", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
-			reaction send_to_cutscene{"Send To Cutscene", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
-			reaction send_to_location{"Send To Location", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
-			reaction send_to_interior{"Send To Interior", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
-			reaction sound_spam{"Sound Spam", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
-			reaction spectate_notification{"Spectate Notification", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
-			reaction give_collectible{"Give Collectible", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
-			reaction transaction_error{"Transaction Error", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
-			reaction tse_freeze{"TSE Freeze", "REACTION_TSE_FREEZE_NOTIFY", "REACTION_TSE_FREEZE_ANNOUNCE"};
-			reaction tse_sender_mismatch{"TSE Sender Mismatch", "REACTION_TSE_SENDER_MISMATCH_NOTIFY", "REACTION_TSE_SENDER_MISMATCH_ANNOUNCE"};
-			reaction vehicle_kick{"Vehicle Kick", "REACTION_VEHICLE_KICK_NOTIFY", "REACTION_VEHICLE_KICK_ANNOUNCE"};
-			reaction teleport_to_warehouse{"Teleport To Warehouse", "REACTION_TELEPORT_TO_WAREHOUSE_NOTIFY", "REACTION_TELEPORT_TO_WAREHOUSE_ANNOUNCE"};
-			reaction start_activity{"Start Activity", "REACTION_START_ACTIVITY_NOTIFY", "REACTION_START_ACTIVITY_ANNOUNCE"};
-			reaction start_script{"Start Script", "REACTION_START_SCRIPT_NOTIFY", "REACTION_START_SCRIPT_ANNOUNCE"};
-			reaction null_function_kick{"Null Function Kick", "REACTION_NULL_FUNCTION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction destroy_personal_vehicle{"Destroy Personal Vehicle", "REACTION_DESTROY_PERSONAL_VEHICLE_NOTIFY", "REACTION_DESTROY_PERSONAL_VEHICLE_ANNOUNCE"};
-			reaction trigger_business_raid{"Trigger Business Raid", "REACTION_TRIGGER_BUSINESS_RAID_NOTIFY", "REACTION_TRIGGER_BUSINESS_RAID_ANNOUNCE"};
-			reaction turn_into_beast{"Turn Into Beast", "REACTION_TURN_INTO_BEAST_NOTIFY", "REACTION_TURN_INTO_BEAST_RAID_ANNOUNCE"};
-			reaction remote_wanted_level{"Remote Wanted Level", "REACTION_REMOTE_WANTED_LEVEL_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_ANNOUNCE"};
-			interloper_reaction remote_wanted_level_others{"Remote Wanted Level On Other Players", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_ANNOUNCE", false, false};
+			reaction bounty{"BOUNTY", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
+			reaction break_game{"BREAK_GAME", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
+			reaction ceo_kick{"CEO_KICK", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
+			reaction ceo_money{"CEO_MONEY", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
+			reaction clear_wanted_level{"CLEAR_WANTED_LEVEL", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
+			reaction crash{"CRASH", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
+			reaction delete_vehicle{"DELETE_VEHICLE", "REACTION_DELETE_VEHICLE_NOTIFY", "REACTION_DELETE_VEHICLE_ANNOUNCE"};
+			reaction fake_deposit{"FAKE_DEPOSIT", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
+			reaction force_mission{"FORCE_MISSION", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
+			reaction force_teleport{"FORCE_TELEPORT", "REACTION_FORCE_TELEPORT_NOTIFY", "REACTION_FORCE_TELEPORT_ANNOUNCE"};
+			reaction gta_banner{"GTA_BANNER", "REACTION_GTA_BANNER_NOTIFY", "REACTION_GTA_BANNER_ANNOUNCE"}; // please don't enable this
+			reaction kick{"KICKS", "REACTION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
+			reaction kick_from_interior{"KICK_FROM_INTERIOR", "REACTION_KICK_FROM_INTERIOR_NOTIFY", "REACTION_KICK_FROM_INTERIOR_ANNOUNCE"};
+			reaction mc_teleport{"MC_TELEPORT", "REACTION_MC_TELEPORT_NOTIFY", "REACTION_MC_TELEPORT_ANNOUNCE"};
+			reaction personal_vehicle_destroyed{"PERSONAL_VEHICLE_DESTROYED", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
+			reaction remote_off_radar{"REMOTE_OFF_RADAR", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
+			reaction rotate_cam{"ROTATE_CAM", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
+			reaction send_to_cutscene{"SEND_TO_CUTSCENE", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
+			reaction send_to_location{"SEND_TO_LOCATION", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
+			reaction send_to_interior{"TP_TO_INTERIOR", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
+			reaction sound_spam{"SOUND_SPAM", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
+			reaction spectate_notification{"SPECTATE_NOTIFICATION", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
+			reaction give_collectible{"GIVE_COLLECTIBLE", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
+			reaction transaction_error{"SHOW_TRANSACTION_ERROR", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
+			reaction tse_freeze{"TSE_FREEZE", "REACTION_TSE_FREEZE_NOTIFY", "REACTION_TSE_FREEZE_ANNOUNCE"};
+			reaction tse_sender_mismatch{"TSE_SENDER_MISMATCH", "REACTION_TSE_SENDER_MISMATCH_NOTIFY", "REACTION_TSE_SENDER_MISMATCH_ANNOUNCE"};
+			reaction vehicle_kick{"VEHICLE_KICK", "REACTION_VEHICLE_KICK_NOTIFY", "REACTION_VEHICLE_KICK_ANNOUNCE"};
+			reaction teleport_to_warehouse{"TELEPORT_TO_WAREHOUSE", "REACTION_TELEPORT_TO_WAREHOUSE_NOTIFY", "REACTION_TELEPORT_TO_WAREHOUSE_ANNOUNCE"};
+			reaction start_activity{"START_ACTIVITY", "REACTION_START_ACTIVITY_NOTIFY", "REACTION_START_ACTIVITY_ANNOUNCE"};
+			reaction start_script{"START_SCRIPT", "REACTION_START_SCRIPT_NOTIFY", "REACTION_START_SCRIPT_ANNOUNCE"};
+			reaction destroy_personal_vehicle{"DESTROY_PERSONAL_VEHICLE", "REACTION_DESTROY_PERSONAL_VEHICLE_NOTIFY", "REACTION_DESTROY_PERSONAL_VEHICLE_ANNOUNCE"};
+			reaction trigger_business_raid{"TRIGGER_BUSINESS_RAID", "REACTION_TRIGGER_BUSINESS_RAID_NOTIFY", "REACTION_TRIGGER_BUSINESS_RAID_ANNOUNCE"};
+			reaction turn_into_beast{"TURN_INTO_BEAST", "REACTION_TURN_INTO_BEAST_NOTIFY", "REACTION_TURN_INTO_BEAST_RAID_ANNOUNCE"};
+			reaction remote_wanted_level{"WANTED_LEVEL", "REACTION_REMOTE_WANTED_LEVEL_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_ANNOUNCE"};
+			interloper_reaction remote_wanted_level_others{"WANTED_LEVEL_ON_OTHERS", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_ANNOUNCE", false, false};
 
-			reaction clear_ped_tasks{"Clear Ped Tasks", "REACTION_CLEAR_PED_TASKS_NOTIFY", "REACTION_CLEAR_PED_TASKS_ANNOUNCE"};
-			reaction remote_ragdoll{"Remote Ragdoll", "REACTION_REMOTE_RAGDOLL_NOTIFY", "REACTION_REMOTE_RAGDOLL_ANNOUNCE"};
-			reaction kick_vote{"Kick Vote", "REACTION_VOTE_KICK_NOTIFY", "REACTION_VOTE_KICK_ANNOUNCE"};
-			reaction report_cash_spawn{"Cash Spawn", "REACTION_CASH_SPAWN_GENERIC", "REACTION_CASH_SPAWN_GENERIC"};
-			reaction modder_detection{"Modder Detection", "REACTION_MODDER_DETECTED_GENERIC", "REACTION_MODDER_DETECTED_GENERIC"};
-			reaction game_anti_cheat_modder_detection{"Game Anti-Cheat Modder Detection", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC"};
-			reaction request_control_event{"Request Control Event", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
-			reaction report{"Report", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
-			reaction spectate{"Spectate", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
-			interloper_reaction spectate_others{"Spectate Others", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
+			reaction clear_ped_tasks{"CLEAR_PED_TASKS", "REACTION_CLEAR_PED_TASKS_NOTIFY", "REACTION_CLEAR_PED_TASKS_ANNOUNCE"};
+			reaction remote_ragdoll{"REMOTE_RAGDOLL", "REACTION_REMOTE_RAGDOLL_NOTIFY", "REACTION_REMOTE_RAGDOLL_ANNOUNCE"};
+			reaction kick_vote{"VOTE_KICK", "REACTION_VOTE_KICK_NOTIFY", "REACTION_VOTE_KICK_ANNOUNCE"};
+			reaction report_cash_spawn{"CASH_SPAWN", "REACTION_CASH_SPAWN_GENERIC", "REACTION_CASH_SPAWN_GENERIC"};
+			reaction modder_detection{"MODDER_DETECTION", "REACTION_MODDER_DETECTED_GENERIC", "REACTION_MODDER_DETECTED_GENERIC"};
+			reaction game_anti_cheat_modder_detection{"GAME_ANTICHEAT_DETECTION", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC"};
+			reaction request_control_event{"REQUEST_CONTROL_EVENT", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
+			reaction report{"REPORT", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
+			reaction chat_spam{"CHAT_SPAM", "REACTION_CHAT_SPAM_NOTIFY", "REACTION_CHAT_SPAM_ANNOUNCE"};
+			reaction spectate{"SPECTATE", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
+			interloper_reaction spectate_others{"SPECTATE_OTHERS", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, spectate, spectate_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, delete_vehicle, fake_deposit, force_mission, force_teleport, gta_banner, kick, kick_from_interior, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, chat_spam, spectate, spectate_others)
 		} reactions{};
 
 		struct player
@@ -276,9 +302,8 @@ namespace big
 				bool vehicle_kick               = true;
 				bool teleport_to_warehouse      = true;
 				bool start_activity             = true;
-				bool send_sms                   = true;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity, send_sms)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(script_events, bounty, ceo_money, clear_wanted_level, force_mission, force_teleport, gta_banner, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate, give_collectible, vehicle_kick, teleport_to_warehouse, start_activity)
 			} script_events{};
 
 			bool rid_join                = false;
@@ -287,8 +312,9 @@ namespace big
 			bool kick_rejoin             = true;
 			bool force_relay_connections = false;
 			bool stop_traffic            = true;
+			bool desync_kick             = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic, desync_kick)
 		} protections{};
 
 		struct self
@@ -312,12 +338,12 @@ namespace big
 			} ipls{};
 
 			bool clean_player                 = false;
+			bool never_wanted                 = false;
 			bool force_wanted_level           = false;
 			bool passive                      = false;
 			bool free_cam                     = false;
 			bool invisibility                 = false;
 			bool local_visibility             = true;
-			bool never_wanted                 = false;
 			bool no_ragdoll                   = false;
 			bool noclip                       = false;
 			float noclip_aim_speed_multiplier = 0.25f;
@@ -330,7 +356,6 @@ namespace big
 			bool no_water_collision           = false;
 			int wanted_level                  = 0;
 			bool god_mode                     = false;
-			bool part_water                   = false;
 			bool proof_bullet                 = false;
 			bool proof_fire                   = false;
 			bool proof_collision              = false;
@@ -344,7 +369,7 @@ namespace big
 			bool auto_tp                      = false;
 			bool super_jump                   = false;
 			bool beast_jump                   = false;
-			bool graceful_landing			  = false;	
+			bool graceful_landing             = false;
 			bool healthregen                  = false;
 			float healthregenrate             = 1.0f;
 			bool superman                     = false;
@@ -388,7 +413,8 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(super_hero_fly, gradual, explosions, auto_land, charge, ptfx, fly_speed, initial_launch)
 			} super_hero_fly{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, force_wanted_level, passive, free_cam, invisibility, local_visibility, never_wanted, no_ragdoll, noclip, noclip_aim_speed_multiplier, noclip_speed_multiplier, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, part_water, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, prompt_ambient_animations, persist_outfit, persist_outfits_mis, interaction_menu_freedom, super_hero_fly)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(self, ipls, ptfx_effects, clean_player, never_wanted, force_wanted_level, passive, free_cam, invisibility, local_visibility, no_ragdoll, noclip, noclip_aim_speed_multiplier, noclip_speed_multiplier, off_radar, super_run, no_collision, unlimited_oxygen, no_water_collision, wanted_level, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, mobile_radio, fast_respawn, auto_tp, super_jump, beast_jump, healthregen, healthregenrate, hud, superman, custom_weapon_stop, prompt_ambient_animations, persist_outfit, persist_outfits_mis, interaction_menu_freedom, super_hero_fly)
+
 		} self{};
 
 		struct session
@@ -397,7 +423,9 @@ namespace big
 			bool log_text_messages                 = false;
 			bool decloak_players                   = false;
 			bool unhide_players_from_player_list   = true;
-			bool force_session_host                = false;
+			int spoof_host_token_type              = 0;
+			std::uint64_t custom_host_token        = 0x000000200235F2EA;
+			bool hide_token_spoofing_when_host     = true;
 			bool force_script_host                 = false;
 			bool player_magnet_enabled             = false;
 			int player_magnet_count                = 32;
@@ -417,7 +445,6 @@ namespace big
 			bool chat_commands                                   = false;
 			CommandAccessLevel chat_command_default_access_level = CommandAccessLevel::FRIENDLY;
 
-			bool kick_chat_spammers          = false;
 			bool kick_host_when_forcing_host = false;
 
 			bool explosion_karma = false;
@@ -432,11 +459,16 @@ namespace big
 			bool block_jobs           = false;
 			bool block_muggers        = false;
 			bool block_ceo_raids      = false;
+			bool block_ceo_creation   = false;
 
 			int send_to_apartment_idx = 1;
 			int send_to_warehouse_idx = 1;
 
+			script_block_opts script_block_opts;
+
 			// not to be saved
+			std::atomic_bool spoof_host_token_dirty = true;
+			std::uint64_t original_host_token = 0;
 			bool join_queued = false;
 			rage::rlSessionInfo info;
 			bool never_wanted_all = false;
@@ -444,19 +476,32 @@ namespace big
 			bool semi_godmode_all = false;
 			bool wanted_level_all = false;
 			bool vehicle_fix_all  = false;
+			bool harass_players   = false;
+			bool spam_killfeed    = false;
 
-			bool show_cheating_message = false;
 			bool anonymous_bounty      = true;
 
 			bool fast_join = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, force_session_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_chat_spammers, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, show_cheating_message, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length)
+			struct chat_translator
+			{
+				bool enabled                = false;
+				bool print_result           = false;
+				bool draw_result            = true;
+				bool bypass_same_language   = true;
+				std::string target_language = "en";
+				std::string endpoint        = "http://localhost:5000/translate";
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(chat_translator, enabled, print_result, draw_result, bypass_same_language, target_language, endpoint);
+			} chat_translator{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session, log_chat_messages, log_text_messages, decloak_players, spoof_host_token_type, custom_host_token, hide_token_spoofing_when_host, force_script_host, player_magnet_enabled, player_magnet_count, is_team, join_in_sctv_slots, kick_host_when_forcing_host, explosion_karma, damage_karma, disable_traffic, disable_peds, force_thunder, block_ceo_money, randomize_ceo_colors, block_jobs, block_muggers, block_ceo_raids, block_ceo_creation, send_to_apartment_idx, send_to_warehouse_idx, chat_commands, chat_command_default_access_level, anonymous_bounty, lock_session, fast_join, unhide_players_from_player_list, allow_friends_into_locked_session, trust_friends, use_spam_timer, spam_timer, spam_length, chat_translator, script_block_opts)
 		} session{};
 
 		struct settings
 		{
 			bool onboarding_complete = false;
-			bool dev_dlc = false;
+			bool dev_dlc             = false;
 
 			struct hotkeys
 			{
@@ -487,9 +532,8 @@ namespace big
 				int repairpv                = 0;
 				int open_vehicle_controller = 0;
 				int clear_wanted            = 0;
-				int random_ped_components   = 0;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_selected, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, passive, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted, random_ped_components)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, editing_menu_toggle, menu_toggle, teleport_waypoint, teleport_objective, teleport_selected, teleport_pv, noclip, vehicle_flymode, bringvehicle, invis, heal, fill_inventory, skip_cutscene, freecam, superrun, passive, superjump, beastjump, invisveh, localinvisveh, fill_ammo, fast_quit, cmd_excecutor, repairpv, open_vehicle_controller, clear_wanted)
 			} hotkeys{};
 
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys, dev_dlc, onboarding_complete)
@@ -546,13 +590,6 @@ namespace big
 				bool derail_train = false;
 			} train{};
 
-			struct water
-			{
-				bool part_water = false;
-
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(water, part_water)
-			} water{};
-
 			struct gravity
 			{
 				bool modify_gravity   = false;
@@ -586,8 +623,9 @@ namespace big
 				bool spawn_invincible  = false;
 				bool spawn_invisible   = false;
 				bool spawn_as_attacker = false;
+				bool randomize_outfit  = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(spawn_ped, preview_ped, spawn_invincible, spawn_invisible, spawn_as_attacker, randomize_outfit)
 			} spawn_ped{};
 
 			struct custom_time
@@ -647,7 +685,7 @@ namespace big
 			bool blackout    = false;
 			bool ground_snow = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, water, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout, ground_snow)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(world, spawn_ped, custom_time, blackhole, model_swapper, nearby, orbital_drone, local_weather, override_weather, blackout, ground_snow)
 		} world{};
 
 		struct spoofing
@@ -671,11 +709,11 @@ namespace big
 
 			bool spoof_player_model   = false;
 			std::string player_model  = "";
-			std::string player_outfit = "";
 
 			bool spoof_cheater = false;
 
 			bool spoof_hide_god      = true;
+			bool spoof_hide_veh_god  = true;
 			bool spoof_hide_spectate = true;
 
 			bool spoof_crew_data = false;
@@ -689,12 +727,23 @@ namespace big
 			eGameLanguage session_language      = eGameLanguage::ENGLISH;
 			bool spoof_session_player_count     = false;
 			int session_player_count            = 25;
-			bool spoof_session_bad_sport_status = false;
-			bool session_bad_sport              = false;
+			int spoof_session_bad_sport_status  = 0;
+			bool multiplex_session              = false;
+			int multiplex_count                 = 2;
+			bool increase_player_limit          = false;
 
 			bool voice_chat_audio = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, session_bad_sport, voice_chat_audio)
+			bool spoof_game_data_hash = false;
+			std::array<std::uint32_t, 15> game_data_hash{};
+			bool spoof_dlc_hash = false;
+			std::uint32_t dlc_hash;
+
+			// do not save
+
+			bool game_data_hash_dirty = true;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(spoofing, hide_from_player_list, spoof_blip, blip_type, spoof_rank, rank, spoof_job_points, job_points, spoof_kd_ratio, kd_ratio, spoof_bad_sport, badsport_type, spoof_player_model, player_model, spoof_cheater, spoof_hide_god, spoof_hide_veh_god, spoof_hide_spectate, spoof_crew_data, crew_tag, rockstar_crew, square_crew_tag, spoof_session_region_type, session_region_type, spoof_session_language, session_language, spoof_session_player_count, session_player_count, spoof_session_bad_sport_status, multiplex_session, multiplex_count, increase_player_limit, voice_chat_audio, spoof_game_data_hash, game_data_hash, spoof_dlc_hash, dlc_hash)
 		} spoofing{};
 
 		struct vehicle
@@ -754,6 +803,7 @@ namespace big
 			bool drive_on_water                         = false;
 			bool horn_boost                             = false;
 			bool instant_brake                          = false;
+			bool infinite_veh_ammo					    = false;
 			bool block_homing                           = true;
 			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
@@ -808,7 +858,7 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_ammo_special, enabled, type, explosion_tag, speed, time_between_shots, alternate_wait_time, weapon_range, rocket_time_between_shots, rocket_alternate_wait_time, rocket_lock_on_range, rocket_range, rocket_reload_time, rocket_explosion_tag, rocket_lifetime, rocket_launch_speed, rocket_time_before_homing, rocket_improve_tracking)
 			} vehicle_ammo_special{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, abilities, vehicle_ammo_special)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle, speedo_meter, fly, rainbow_paint, speed_unit, god_mode, proof_bullet, proof_fire, proof_collision, proof_melee, proof_explosion, proof_steam, proof_water, proof_mask, auto_drive_destination, auto_drive_style, auto_drive_speed, auto_turn_signals, boost_behavior, drive_on_water, horn_boost, instant_brake, infinite_veh_ammo, block_homing, seatbelt, turn_signals, vehicle_jump, keep_vehicle_repaired, no_water_collision, disable_engine_auto_start, change_engine_state_immediately, keep_engine_running, keep_vehicle_clean, vehinvisibility, localveh_visibility, keep_on_ground, no_collision, unlimited_weapons, siren_mute, all_vehs_in_heists, abilities, vehicle_ammo_special)
 		} vehicle{};
 
 		struct weapons
@@ -848,22 +898,20 @@ namespace big
 
 			struct aimbot
 			{
-				bool enable            = false;
-				bool smoothing         = true;
-				float smoothing_speed  = 2.f;
-				bool on_player         = true;
-				bool on_enemy          = false;
-				bool on_police         = false;
-				bool on_npc            = false;
-				float fov              = 90.f;
-				float distance         = 200.f;
-				uint32_t selected_bone = 0x796E; // Default to head
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, smoothing, smoothing_speed, on_player, on_enemy, on_police, on_npc, fov, distance)
+				bool enable              = false;
+				int64_t only_on_ped_type = -1;
+				bool only_on_player      = false;
+				bool only_on_enemy       = false;
+				bool has_target          = false;
+				float fov                = 60.f;
+				float distance           = 200.f;
+				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, only_on_ped_type, only_on_player, only_on_enemy, fov, distance, selected_bone)
 			} aimbot{};
 
 			struct flying_axe
 			{
-				bool enable            = false;
+				bool enable = false;
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(flying_axe, enable)
 			} flying_axe{};
 
@@ -877,6 +925,7 @@ namespace big
 			bool modify_explosion_radius  = false;
 			bool no_recoil                = false;
 			bool no_spread                = false;
+			bool no_sway                  = false;
 			std::string vehicle_gun_model = "bus";
 			bool increased_c4_limit       = false;
 			bool increased_flare_limit    = false;
@@ -885,9 +934,10 @@ namespace big
 			bool triggerbot               = false;
 			bool infinite_range           = false;
 			bool enable_weapon_hotkeys    = false;
+			bool enable_mk1_variants      = false;
 			std::map<int, std::vector<uint32_t>> weapon_hotkeys{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, set_explosion_radius, modify_explosion_radius, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(weapons, ammo_special, custom_weapon, aimbot, infinite_ammo, always_full_ammo, infinite_mag, increased_damage, increase_damage, set_explosion_radius, modify_explosion_radius, no_recoil, no_spread, vehicle_gun_model, increased_c4_limit, increased_flare_limit, rapid_fire, gravity_gun, paintgun, interior_weapon, triggerbot, infinite_range, enable_weapon_hotkeys, weapon_hotkeys, enable_mk1_variants, no_sway)
 		} weapons{};
 
 		struct window
@@ -948,7 +998,14 @@ namespace big
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(vehicle_control, operation_animation, render_distance_on_veh, show_info)
 			} vehicle_control{};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators)
+			struct gui
+			{
+				bool format_money = true;
+
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(gui, format_money)
+			} gui{};
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, background_color, demo, text_color, button_color, frame_color, gui_scale, switched_view, ingame_overlay, vehicle_control, ingame_overlay_indicators, gui)
 		} window{};
 
 		struct context_menu
@@ -1006,13 +1063,23 @@ namespace big
 			int player_count_filter_minimum  = 0;
 			int player_count_filter_maximum  = 32;
 
+			bool filter_multiplexed_sessions = false;
+
 			int sort_method    = 0;
 			int sort_direction = 0;
 
 			bool replace_game_matchmaking = false;
+			bool exclude_modder_sessions     = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_browser, region_filter_enabled, region_filter, language_filter_enabled, language_filter, player_count_filter_enabled, player_count_filter_minimum, player_count_filter_maximum, filter_multiplexed_sessions, sort_method, sort_direction, replace_game_matchmaking, pool_filter_enabled, pool_filter, exclude_modder_sessions)
 		} session_browser{};
+
+		struct session_protection
+		{
+			int block_join_reason = 0;
+
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(session_protection, block_join_reason)
+		} session_protection{};
 
 		struct ugc
 		{
@@ -1100,7 +1167,13 @@ namespace big
 			NLOHMANN_DEFINE_TYPE_INTRUSIVE(vfx, enable_custom_sky_color, azimuth_east, azimuth_west, azimuth_transition, zenith, stars_intensity)
 		} vfx{};
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, persist_car, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons, vfx)
+		struct cmd
+		{
+			std::deque<std::string> command_history;
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(cmd, command_history)
+		} cmd{};
+
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, debug, tunables, notifications, player, player_db, protections, self, session, settings, spawn_vehicle, clone_pv, persist_car, spoofing, vehicle, weapons, window, context_menu, esp, session_browser, ugc, reactions, world, stat_editor, lua, persist_weapons, vfx, cmd)
 	};
 
 	inline auto g = menu_settings();

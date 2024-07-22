@@ -5,7 +5,7 @@
 #include "script.hpp"
 #include "util/mobile.hpp"
 
-#define MAX_GARAGE_NUM 30
+#define MAX_GARAGE_NUM 32
 
 namespace big
 {
@@ -43,6 +43,7 @@ namespace big
 			case 27: return 337;
 			case 28: return 350;
 			case 29: return 363;
+		    case 31: return 515;
 			case MAX_GARAGE_NUM+0: return 156; //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return 224; //Nightclub B1
 			case MAX_GARAGE_NUM+2: return 223; //Terrorbyte
@@ -59,6 +60,7 @@ namespace big
 			case MAX_GARAGE_NUM+2: //Terrorbyte
 			case MAX_GARAGE_NUM+3: //Kosatka
 			case 14: return 1;
+		    case 31: return 2;
 			case MAX_GARAGE_NUM+1: return 3; //Nightclub B1
 			case 11: return 8;
 			case 6:
@@ -127,10 +129,12 @@ namespace big
 			case 27: stat = self::char_index ? "MP1_MULTI_PROPERTY_8"_J : "MP0_MULTI_PROPERTY_8"_J; break;
 			case 28: stat = self::char_index ? "MP1_MULTI_PROPERTY_9"_J : "MP0_MULTI_PROPERTY_9"_J; break;
 			case 29: stat = self::char_index ? "MP1_MULTSTOREY_GAR_OWNED"_J : "MP0_MULTSTOREY_GAR_OWNED"_J; break;
+		    case 31: stat = self::char_index ? "MP1_PROP_BAIL_OFFICE"_J : "MP0_PROP_BAIL_OFFICE"_J; break;
 			case MAX_GARAGE_NUM+0:
 			case MAX_GARAGE_NUM+1:
 			case MAX_GARAGE_NUM+2:
 			case MAX_GARAGE_NUM+3: return 1;
+		    default: return -1;
 		}
 		if (stat == NULL)
 		{
@@ -144,13 +148,13 @@ namespace big
 		return -1;
 	}
 
-	std::string get_static_property_name(int property)
+	std::string get_static_property_name(int property, int garage_slot_iterator)
 	{
 		switch (property)
 		{
 			case 12: //Hangar
 			{
-				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(295).as<PINT>();
+			    auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(297).as<PINT>();
 				switch (hangar_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_1"); //LSIA Hangar 1
@@ -163,7 +167,7 @@ namespace big
 			}
 			case 13: //Facility
 			{
-				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(302).as<PINT>();
+			    auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(304).as<PINT>();
 				switch (facility_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility
@@ -184,12 +188,24 @@ namespace big
 			case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
 			case 18: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F0"); //Arena Workshop
 			case 19: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F1"); //Arena Workshop B1
-			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B1
+			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B2
 			case 21: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CASINO_GARNAME"); //Casino Penthouse
 			case 22: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARCADE_GARNAME"); //Arcade
 			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
 			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
-			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case 29:
+			{
+				int garage_level = (garage_slot_iterator - 1) / 10;
+				switch (garage_level)
+				{
+					case 0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B1"); //Eclipse Blvd Garage B1
+					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B2"); //Eclipse Blvd Garage B2
+					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B3"); //Eclipse Blvd Garage B3
+					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B4"); //Eclipse Blvd Garage B4
+					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B5"); //Eclipse Blvd Garage B5
+				}
+			}
+			case 31: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("BO_GARNAME"); //Bail Office
 			case MAX_GARAGE_NUM+0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
 			case MAX_GARAGE_NUM+2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
@@ -212,7 +228,7 @@ namespace big
 					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
 					if (item_in_slot == m_id)
 					{
-						auto static_property_string = get_static_property_name(property_iterator);
+						auto static_property_string = get_static_property_name(property_iterator, garage_slot_iterator);
 						if (static_property_string.empty())
 						{
 							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());

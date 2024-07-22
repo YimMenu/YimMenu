@@ -69,7 +69,7 @@ namespace big
 			*scr_globals::gsbd.as<eFreemodeState*>() = eFreemodeState::RUNNING;
 
 			if (auto plyr = g_player_service->get_by_id(sender->m_player_id))
-				g.reactions.end_session_kick.process(plyr);
+				g.reactions.kick.process(plyr);
 		}
 
 		return result;

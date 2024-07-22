@@ -8,10 +8,10 @@ namespace big
 {
 	void looped::system_self_globals()
 	{
-		if (!*g_pointers->m_gta.m_network_player_mgr || !(*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player
-		    || (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id == -1)
+		if (!(*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player
+		    || (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id == static_cast<uint8_t>(-1)) [[unlikely]]
 			self::id = 0;
-		else
+		else [[likely]]
 			self::id = (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id;
 
 		self::ped = PLAYER::PLAYER_PED_ID();

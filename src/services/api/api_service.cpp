@@ -18,6 +18,44 @@ namespace big
 		g_api_service = nullptr;
 	}
 
+	std::string api_service::get_translation(std::string message, std::string target_language)
+	{
+		std::string url = g.session.chat_translator.endpoint;
+		const auto response = g_http_client.post(url,
+		    {{"Content-Type", "application/json"}}, std::format(R"({{"q":"{}", "source":"auto", "target": "{}"}})", message, target_language));
+		if (response.status_code == 200)
+		{
+			try
+			{
+				nlohmann::json obj = nlohmann::json::parse(response.text);
+				std::string source_language = obj["detectedLanguage"]["language"];
+				std::string result = obj["translatedText"];
+
+				if (source_language == g.session.chat_translator.target_language && g.session.chat_translator.bypass_same_language)
+					return "";
+				return result;
+			}
+			catch (std::exception& e)
+			{
+				LOG(WARNING) << "[Chat Translator]Error when parse JSON data: " << e.what();
+
+				return "";
+			}
+		}
+		else if (response.status_code == 0)
+		{
+			g.session.chat_translator.enabled = false;
+			g_notification_service.push_error("TRANSLATOR_TOGGLE"_T.data(), "TRANSLATOR_FAILED_TO_CONNECT"_T.data());
+			LOG(WARNING) << "[Chat Translator]Unable to connect to LibreTranslate server. Follow the guide in Yimmenu Wiki to setup LibreTranslate server on your computer.";
+		}
+		else
+		{
+			LOG(WARNING) << "[Chat Translator]Error when sending request. Status code: " << response.status_code << " Response: " << response.text;
+		}
+		
+		return "";
+	}
+
 	bool api_service::get_rid_from_username(std::string_view username, uint64_t& result)
 	{
 		const auto response = g_http_client.post("https://scui.rockstargames.com/api/friend/accountsearch", {{"Authorization", AUTHORIZATION_TICKET}, {"X-Requested-With", "XMLHttpRequest"}}, {std::format("searchNickname={}", username)});

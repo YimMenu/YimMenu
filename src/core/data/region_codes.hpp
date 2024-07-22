@@ -10,12 +10,12 @@ namespace big
 
 	const RegionType regions[] = {
 	    {0, "CIS"},
-	    {1, "Africa"},
-	    {2, "East"},
+	    {1, "South America"},
+	    {2, "US East"},
 	    {3, "Europe"},
 	    {4, "China"},
 	    {5, "Australia"},
-	    {6, "West"},
+	    {6, "US West"},
 	    {7, "Japan"},
 	    {8, "Unknown"},
 	};

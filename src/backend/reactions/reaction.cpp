@@ -19,13 +19,14 @@ namespace big
 
 	void reaction::process_common(player_ptr player)
 	{
-		if (add_to_player_db)
+		if (add_to_player_db || block_joins)
 		{
 			auto entry = g_player_database_service->get_or_create_player(player);
 
 			if (block_joins)
 			{
 				entry->block_join = true;
+				entry->block_join_reason = block_join_reason;
 				g_player_database_service->save();
 			}
 		}
@@ -33,7 +34,7 @@ namespace big
 		if (kick)
 		{
 			g_fiber_pool->queue_job([player] {
-				dynamic_cast<player_command*>(command::get("multikick"_J))->call(player, {});
+				player_command::get("smartkick"_J)->call(player, {});
 			});
 		}
 
@@ -56,25 +57,51 @@ namespace big
 
 		if (log)
 		{
-			uint64_t rockstar_id = player->get_net_data() == nullptr ? 0 : player->get_net_data()->m_gamer_handle.m_rockstar_id;
-			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), rockstar_id);
+			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), player->get_rockstar_id());
 		}
 
 		if (announce_in_chat)
 		{
+			auto p_name = player->get_name();
+
 			auto msg = std::format("{} {}",
-			    g.session.chat_output_prefix,
-			    std::vformat(g_translation_service.get_translation(m_announce_message), std::make_format_args(player->get_name())));
+       g.session.chat_output_prefix, std::vformat(g_translation_service.get_translation(m_announce_message), std::make_format_args(p_name)));
 
 			chat::send_message(msg);
 		}
 
 		if (notify)
 		{
+			auto p_name = player->get_name();
+
 			g_notification_service.push_warning("PROTECTIONS"_T.data(),
-			    std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(player->get_name())));
+       std::vformat(g_translation_service.get_translation(m_notify_message), std::make_format_args(p_name)));
 		}
 
 		process_common(player);
+	}
+
+	// This function provides the same notification capabilities as process, but without further kick/timeout actions
+	// Probably no point announcing to chat, either
+	void reaction::only_notify(player_ptr player)
+	{
+		if (!player->is_valid())
+			return;
+		if ((player->is_friend() && g.session.trust_friends) || player->is_trusted || g.session.trust_session)
+			return;
+
+		if (log)
+		{
+			LOGF(WARNING, "Received {} from {} ({})", m_event_name, player->get_name(), player->get_rockstar_id());
+		}
+
+		if (notify)
+		{
+			auto p_name = player->get_name();
+
+			// Use a different notification since the default start_script reaction is "Blocked Start Script"
+			g_notification_service.push_warning("PROTECTIONS"_T.data(),
+       std::vformat("REACTION_START_SCRIPT_ALLOWED"_T.data(), std::make_format_args(p_name)));
+		}
 	}
 }

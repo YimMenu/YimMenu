@@ -69,7 +69,25 @@ namespace big
 				LOG(FATAL) << "Cannot resume execution, crashing";
 				return EXCEPTION_CONTINUE_SEARCH;
 			}
-			exception_info->ContextRecord->Rip += opcode.len;
+
+			if (opcode.opcode == 0xFF && opcode.modrm_reg == 4) // JMP (FF /4)
+			{
+				auto return_address_ptr = (uint64_t*)exception_info->ContextRecord->Rsp;
+				if (IsBadReadPtr(reinterpret_cast<void*>(return_address_ptr), 8))
+				{
+					LOG(FATAL) << "Cannot resume execution, crashing";
+					return EXCEPTION_CONTINUE_SEARCH;
+				}
+				else
+				{
+					exception_info->ContextRecord->Rip = *return_address_ptr;
+					exception_info->ContextRecord->Rsp += 8;
+				}
+			}
+			else
+			{
+				exception_info->ContextRecord->Rip += opcode.len;
+			}
 		}
 
 		return EXCEPTION_CONTINUE_EXECUTION;

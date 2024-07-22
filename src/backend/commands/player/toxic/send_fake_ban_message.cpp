@@ -21,7 +21,7 @@ namespace big
 			const size_t arg_count  = 9;
 			int64_t args[arg_count] = {(int64_t)eRemoteEvent::SendTextLabelSMS, self::id, 1 << player->id()};
 
-			strcpy((char*)&args[2], "HUD_ROSBANPERM");
+			strcpy((char*)&args[3], "HUD_ROSBANPERM");
 
 			g_pointers->m_gta.m_trigger_script_event(1, args, arg_count, 1 << player->id(), (int)eRemoteEvent::SendTextLabelSMS);
 		}

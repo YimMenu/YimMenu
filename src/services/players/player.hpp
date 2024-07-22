@@ -34,12 +34,10 @@ namespace big
 		player& operator=(const player&)     = default;
 		player& operator=(player&&) noexcept = default;
 
-		float screen_position_x = -1.f;
-		float screen_position_y = -1.f;
-
 		[[nodiscard]] CVehicle* get_current_vehicle() const;
 		[[nodiscard]] const char* get_name() const;
 		[[nodiscard]] rage::rlGamerInfo* get_net_data() const;
+		[[nodiscard]] int64_t get_rockstar_id() const;
 		[[nodiscard]] CNetGamePlayer* get_net_game_player() const;
 		[[nodiscard]] CPed* get_ped() const;
 		[[nodiscard]] CPlayerInfo* get_player_info() const;
@@ -64,20 +62,19 @@ namespace big
 
 		bool kill_loop       = false;
 		bool explosion_loop  = false;
-		bool freeze_loop     = false;
 		bool ragdoll_loop    = false;
 		bool rotate_cam_loop = false;
 
 		rate_limiter m_host_migration_rate_limit{2s, 15};
 		rate_limiter m_play_sound_rate_limit{1s, 10};
+		rate_limiter m_play_sound_rate_limit_tse{5s, 2};
 		rate_limiter m_invites_rate_limit{10s, 2};
 		rate_limiter m_radio_request_rate_limit{5s, 2};
+		rate_limiter m_radio_station_change_rate_limit{1s, 3};
 
 		bool block_radio_requests = false;
-
-		int m_num_spawned_permanent_vehicles = 0;
-
-		bool m_block_permanent_vehicles = false;
+		bool received_object_id_request = false;
+		bool received_object_id_response = false;
 
 		bool is_modder        = false;
 		bool is_trusted       = false;
@@ -90,6 +87,7 @@ namespace big
 		std::optional<uint32_t> time_difference;
 		std::optional<std::chrono::time_point<std::chrono::steady_clock>> last_message_time;
 		uint32_t num_time_syncs_sent = 9999;
+		std::optional<int> script_host_mission;
 
 		bool block_explosions   = false;
 		bool block_clone_create = false;
@@ -98,8 +96,14 @@ namespace big
 		bool log_clones         = false;
 		bool log_network_events = false;
 
+		bool trigger_desync_kick = false;
+		bool trigger_end_session_kick = false;
+
+		bool spam_killfeed = false;
+
 		int spectating_player = -1;
 
+		menu_settings::script_block_opts script_block_opts{};
 	protected:
 		bool equals(const CNetGamePlayer* net_game_player) const;
 

@@ -11,9 +11,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check_recent_commit:
+    runs-on: ubuntu-latest
+    name: Check Recent Commit
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: should_run
+        name: Check if latest commit date is within the previous 24 hours
+        run: |
+          if [ -z "$(git rev-list --since="24 hours ago" --all)" ]; then
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
   build_nightly:
     runs-on: [self-hosted, Windows]
     name: Build Nightly
+    needs: check_recent_commit
+    if: needs.check_recent_commit.outputs.should_run == 'true'
     outputs:
       full_sha: ${{ steps.var.outputs.full_sha }}
       short_sha: ${{ steps.var.outputs.short_sha }}
@@ -50,28 +69,55 @@ jobs:
           echo "full_sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
           echo "short_sha=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
-  check_date:
+  recreate_release:
     runs-on: ubuntu-latest
-    name: Check latest commit
+    name: Recreate Release
     needs: build_nightly
-    outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
+    if: needs.check_recent_commit.outputs.should_run == 'true'
     steps:
       - uses: actions/checkout@v3
 
-      - id: should_run
-        continue-on-error: true
-        name: Check if latest commit date is within the previous 24 hours
-        if: ${{ github.event_name == 'schedule' }}
-        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "should_run=false" >> $GITHUB_OUTPUT
+      - name: Delete Existing Release
+        id: delete_release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const tag = "nightly";
+      
+            // List all releases and find the release by tag
+            const releases = await github.rest.repos.listReleases({
+              owner: owner,
+              repo: repo,
+            });
+      
+            const release = releases.data.find(release => release.tag_name === tag);
+      
+            // Check if the release exists and delete it
+            if (release) {
+              await github.rest.repos.deleteRelease({
+                owner: owner,
+                repo: repo,
+                release_id: release.id,
+              });
+              console.log(`Deleted release with ID ${release.id}`);
+            } else {
+              console.log("No existing release to delete");
+            }
+      
+            // Delete the tag
+            try {
+              await github.rest.git.deleteRef({
+                owner: owner,
+                repo: repo,
+                ref: `tags/${tag}`,
+              });
+              console.log(`Deleted tag ${tag}`);
+            } catch (error) {
+              console.error(`Error deleting tag: ${error.message}`);
+            }
 
-  create_release:
-    runs-on: ubuntu-latest
-    name: Create Release
-    needs: [ check_date, build_nightly ]
-    if: ${{ needs.check_date.outputs.should_run != 'false' }}
-    steps:
-      - uses: actions/checkout@v3
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
@@ -83,11 +129,6 @@ jobs:
           sha256sum YimMenu.dll > sha256.checksum
           echo "build_sha=$(cat sha256.checksum)" >> $GITHUB_OUTPUT
           cat sha256.checksum
-
-      - name: Run latest-tag
-        uses: EndBug/latest-tag@84c87607fcb948bcef069c9a27445e653113979f
-        with:
-          ref: nightly
 
       - name: Nightly Release
         uses: softprops/action-gh-release@v1

@@ -11,7 +11,7 @@ namespace big
 
 		const auto elapsed_time_in_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time);
 
-		if (elapsed_time_in_ms >= 500ms)
+		if (elapsed_time_in_ms >= 500ms) [[unlikely]]
 		{
 			last_time = time_now;
 

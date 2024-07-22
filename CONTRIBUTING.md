@@ -11,13 +11,13 @@ Types:
 - refactor: Refactoring a specific section of the codebase
 - test: Everything related to testing
 - docs: Everything related to documentation
-- chore: Regular code maintanance
+- chore: Regular code maintenance
 
-A scope is a phrase descibing parts of the code affected by the changes. For example "(userservice)"
+A scope is a phrase describing parts of the code affected by the changes. For example "(userservice)"
 
 Body (optional) can provide additional contextual information. For breaking changes the body MUST start with "BREAKING CHANGE".
 
-Footer (optional) is used to reference issues effected bt the code changes. For example "Fixes #13". Can also be used to indicate breaking changes by starting with "BREAKING CHANGE".
+Footer (optional) is used to reference issues affected by the code changes. For example "Fixes #13". Can also be used to indicate breaking changes by starting with "BREAKING CHANGE".
 #### Structure
 
 
@@ -145,7 +145,7 @@ else
     value = 2
 }
 ```
-Instead we prefer this:
+Instead, we prefer this:
 ```c++
 int value{2};
 if(true)
@@ -205,7 +205,7 @@ void method()
 
 ### **Member variables in classes**
 
-1. Seperate every variable to a single line
+1. Separate every variable to a single line
 2. Initialize all member variables
 3. Use the same order of initialization as in the header file
 4. Order data types from big to low 

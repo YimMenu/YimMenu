@@ -15,6 +15,7 @@ namespace big
 	        {eAlphabetType::CYRILLIC, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	        {eAlphabetType::JAPANESE, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	        {eAlphabetType::KOREAN, {"malgun.ttf", "arial.ttf"}},
+	        {eAlphabetType::TURKISH, {"msyh.ttc", "msyh.ttf", "arial.ttf"}},
 	    })
 	{
 	}
@@ -32,9 +33,8 @@ namespace big
 	void font_mgr::update_required_alphabet_type(eAlphabetType type)
 	{
 		m_require_extra = type;
-		
-		g_thread_pool->push([this]
-		{
+
+		g_thread_pool->push([this] {
 			rebuild();
 		});
 	}
@@ -51,7 +51,7 @@ namespace big
 		const auto required_alphabet_types = get_required_alphabet_types();
 		for (const auto required_type : required_alphabet_types)
 		{
-			const auto font_file = get_available_font_file_for_alphabet_type(required_type);
+			const auto font_file   = get_available_font_file_for_alphabet_type(required_type);
 			const auto glyph_range = get_imgui_alphabet_type(required_type);
 
 			for (auto [size, font_ptr] : m_extra_font_sizes)
@@ -61,10 +61,10 @@ namespace big
 				strcpy(fnt_cfg.Name, std::format("Fnt{}px", (int)size).c_str());
 
 				const auto tmp_ptr = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
-					sizeof(font_storopia),
-					size,
-					&fnt_cfg,
-					io.Fonts->GetGlyphRangesDefault());
+				    sizeof(font_storopia),
+				    size,
+				    &fnt_cfg,
+				    io.Fonts->GetGlyphRangesDefault());
 				if (font_ptr)
 				{
 					*font_ptr = tmp_ptr;
@@ -112,8 +112,8 @@ namespace big
 
 	const std::unordered_set<eAlphabetType> font_mgr::get_required_alphabet_types() const
 	{
-		auto required_alphabet_types = std::unordered_set<eAlphabetType>({ eAlphabetType::LATIN });
-		
+		auto required_alphabet_types = std::unordered_set<eAlphabetType>({eAlphabetType::LATIN});
+
 		required_alphabet_types.insert(get_game_language_alphabet_type());
 		required_alphabet_types.insert(m_require_extra);
 
@@ -124,15 +124,11 @@ namespace big
 	{
 		switch (*g_pointers->m_gta.m_language)
 		{
-		case eGameLanguage::RUSSIAN:
-			return eAlphabetType::CYRILLIC;
-		case eGameLanguage::JAPANESE:
-			return eAlphabetType::JAPANESE;
-		case eGameLanguage::KOREAN:
-			return eAlphabetType::KOREAN;
+		case eGameLanguage::RUSSIAN: return eAlphabetType::CYRILLIC;
+		case eGameLanguage::JAPANESE: return eAlphabetType::JAPANESE;
+		case eGameLanguage::KOREAN: return eAlphabetType::KOREAN;
 		case eGameLanguage::SIMPLIFIED_CHINESE:
-		case eGameLanguage::TRADITIONAL_CHINESE:
-			return eAlphabetType::CHINESE;
+		case eGameLanguage::TRADITIONAL_CHINESE: return eAlphabetType::CHINESE;
 		}
 		return eAlphabetType::LATIN;
 	}
@@ -189,10 +185,32 @@ namespace big
 	const ImWchar* font_mgr::GetGlyphRangesTurkish()
 	{
 		static const ImWchar icons_ranges_Turkish[] = {
-		    0x0020, 0x00FF, // Basic Latin + Latin Supplement
-		    0x011E, 0x011F, // G with breve
-		    0x0130, 0x0131, // dotted I
-		    0x015E, 0x015F, // S-cedilla
+		    0x0020,
+		    0x00FF, // Basic Latin + Latin Supplement
+		    0x00c7,
+		    0x00c7, // Ç
+		    0x00e7,
+		    0x00e7, // ç
+		    0x011e,
+		    0x011e, // Ğ
+		    0x011f,
+		    0x011f, // ğ
+		    0x0130,
+		    0x0130, // İ
+		    0x0131,
+		    0x0131, // ı
+		    0x00d6,
+		    0x00d6, // Ö
+		    0x00f6,
+		    0x00f6, // ö
+		    0x015e,
+		    0x015e, // Ş
+		    0x015f,
+		    0x015f, // ş
+		    0x00dc,
+		    0x00dc, // Ü
+		    0x00fc,
+		    0x00fc, // ü
 		    0,
 		};
 		return &icons_ranges_Turkish[0];

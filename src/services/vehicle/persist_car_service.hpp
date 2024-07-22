@@ -13,6 +13,7 @@ namespace big
 		static Vehicle clone_ped_car(Ped ped, Vehicle vehicle);
 		static void save_vehicle(Vehicle vehicle, std::string_view file_name, std::string folder_name);
 		static Vehicle load_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
+		static Vehicle preview_vehicle(std::string_view file_name, std::string folder_name = "", const std::optional<Vector3>& = std::nullopt);
 		static void delete_vehicle(std::string_view file_name, std::string folder_name);
 
 	private:
@@ -68,7 +69,7 @@ namespace big
 
 		static Vehicle spawn_vehicle_full(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
 		static Vehicle spawn_vehicle(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords);
-		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt);
+		static Vehicle spawn_vehicle_json(nlohmann::json vehicle_json, Ped ped, const std::optional<Vector3>& spawn_coords = std::nullopt, bool is_preview = false);
 
 		static nlohmann::json get_full_vehicle_json(Vehicle vehicle);
 

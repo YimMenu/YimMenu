@@ -4,6 +4,10 @@
 #include "lua/lua_manager.hpp"
 #include "script_mgr.hpp"
 #include "gta_util.hpp"
+#include "script_function.hpp"
+#include "lua/bindings/network.hpp"
+#include "memory/pattern.hpp"
+#include "services/script_patcher/script_patcher_service.hpp"
 
 namespace lua::script
 {
@@ -155,19 +159,64 @@ namespace lua::script
 	// Lua API: function
 	// Table: script
 	// Name: execute_as_script
-	// Param: script_name: string: target script thread.
-	// Param: func: function: function that will be executed once in the script thread.
+	// Param: script_name: string: Target script thread.
+	// Param: func: function: Function that will be executed once in the script thread.
 	static void execute_as_script(const std::string& script_name, sol::protected_function func)
 	{
 		big::gta_util::execute_as_script(rage::joaat(script_name), func);
 	}
 
+	// Lua API: function
+	// Table: script
+	// Name: add_patch
+	// Param: script_name: string: The name of the script.
+	// Param: name: string: The name of the patch.
+	// Param: pattern: string: The pattern to scan for within the script.
+	// Param offset: integer: The position within the pattern.
+	// Param _patch: table: The bytes to be written into the script's bytecode.
+	// Adds a patch for the specified script.
+	// **Example Usage:**
+	//```lua
+	//script.add_patch("fm_content_xmas_truck", "Flickering Fix", "56 ? ? 4F ? ? 40 ? 5D ? ? ? 74", 0, {0x2B, 0x00, 0x00})
+	//```
+	static void add_patch(const std::string& script_name, const std::string& name, const std::string& pattern, int offset, sol::table _patch)
+	{
+		auto patch = convert_sequence<uint8_t>(_patch);
+
+		big::g_script_patcher_service->add_patch({rage::joaat(script_name), name, ::memory::pattern(pattern), offset, patch, nullptr}); // TO-DO: Add toggle feature?
+		if (auto program = big::gta_util::find_script_program(rage::joaat(script_name)))
+			big::g_script_patcher_service->on_script_load(program);
+	}
+	
+	// Lua API: function
+	// Table: script
+	// Name: call_function
+	// Param: name: string: The name of the script function.
+	// Param: script_name: string: The name of the script.
+	// Param: pattern: string: The pattern to scan for within the script.
+	// Param offset: integer: The position within the pattern.
+	// Param _args: table: The arguments to pass to the script function.
+	// Calls a function from the specified script.
+	// **Example Usage:**
+	//```lua
+	//script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
+	//```
+	static void call_function(const std::string& name, const std::string& script_name, const std::string& pattern, int offset, sol::table _args)
+	{
+		auto args = convert_sequence<uint64_t>(_args);
+
+		big::script_function script_function(name, rage::joaat(script_name), pattern, offset);
+		script_function(args);
+	}
+
 	void bind(sol::state& state)
 	{
-		auto ns               = state["script"].get_or_create<sol::table>();
-		ns["register_looped"] = register_looped;
-		ns["run_in_fiber"]    = run_in_fiber;
+		auto ns                 = state["script"].get_or_create<sol::table>();
+		ns["register_looped"]   = register_looped;
+		ns["run_in_fiber"]      = run_in_fiber;
 		ns["execute_as_script"] = execute_as_script;
+		ns["add_patch"]         = add_patch;
+		ns["call_function"]     = call_function;
 
 		auto usertype = state.new_usertype<script_util>("script_util");
 

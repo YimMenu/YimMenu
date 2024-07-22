@@ -1,6 +1,8 @@
 #include "player_command.hpp"
 
 #include "fiber_pool.hpp"
+#include "util/math.hpp"
+#include "util/string_operations.hpp"
 
 namespace big
 {
@@ -29,6 +31,8 @@ namespace big
 	{
 		if (make_all_version)
 			m_all_component = std::make_unique<player_all_component>(this, name, label, description, num_args);
+
+		g_player_commands[rage::joaat(name)] = this;
 	}
 
 	void player_command::execute(const command_arguments& args, const std::shared_ptr<command_context> ctx)
@@ -60,9 +64,11 @@ namespace big
 		std::vector<std::string> new_args;
 		command_arguments result(m_num_args.value());
 
-		if (args[0] == "me" || args[0] == "self")
+		auto proxy_result = get_argument_proxy_value(args[0]);
+
+		if (proxy_result.has_value())
 		{
-			result.push(ctx->get_sender()->id());
+			result.push(proxy_result.value());
 		}
 		else
 		{
@@ -111,12 +117,11 @@ namespace big
 
 	void player_command::call(player_ptr player, const command_arguments& args, const std::shared_ptr<command_context> ctx)
 	{
-		// TODO: Code duplication
 		if (m_num_args.has_value() && args.size() != (m_num_args.value() - 1))
 		{
 			ctx->report_error(std::format("Command {} called with the wrong number of arguments. Expected {}, got {}",
 			    m_name,
-			    m_num_args.value(),
+			    m_num_args.value() - 1,
 			    args.size()));
 			return;
 		}

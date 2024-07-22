@@ -75,13 +75,13 @@ namespace big
 
 	void renderer::on_present()
 	{
-		if (m_font_mgr.can_use())
+		if (m_font_mgr.can_use()) [[likely]]
 		{
 			new_frame();
 			for (const auto& cb : m_dx_callbacks | std::views::values)
 				cb();
 			end_frame();
-			
+
 			m_font_mgr.release_use();
 		}
 	}

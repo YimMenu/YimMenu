@@ -10,10 +10,11 @@ namespace big
 	{
 		components::button("MORS_FIX_ALL"_T, [] {
 			int amount_fixed = mobile::mors_mutual::fix_all();
+			auto v_fixed     = amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data(); 
+
 			g_notification_service.push_success("MOBILE"_T.data(),
 			    std::vformat("VEHICLE_FIX_AMOUNT"_T.data(),
-			        std::make_format_args(amount_fixed,
-			            amount_fixed == 1 ? "VEHICLE_FIX_HAS"_T.data() : "VEHICLE_FIX_HAVE"_T.data())));
+			        std::make_format_args(amount_fixed, v_fixed)));
 		});
 
 		ImGui::SameLine();
@@ -68,6 +69,7 @@ namespace big
 			ImGui::BeginGroup();
 
 			components::command_checkbox<"vehgodmode">("GOD_MODE"_T.data());
+			components::command_checkbox<"infinitevehammo">();
 			components::command_checkbox<"hornboost">();
 			components::command_checkbox<"vehjump">();
 			components::command_checkbox<"invisveh">();

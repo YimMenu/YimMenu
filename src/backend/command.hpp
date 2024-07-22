@@ -4,6 +4,9 @@
 #include "context/default_command_context.hpp"
 #include "core/enums.hpp"
 #include "gta/joaat.hpp"
+#include "services/players/player_service.hpp"
+#include "util/math.hpp"
+#include "util/string_operations.hpp"
 
 namespace big
 {
@@ -53,6 +56,52 @@ namespace big
 		inline const std::optional<uint8_t>& get_num_args()
 		{
 			return m_num_args;
+		}
+
+		virtual std::optional<std::vector<std::string>> get_argument_suggestions(int arg)
+		{
+			return std::nullopt;
+		};
+
+		inline std::optional<int> get_argument_proxy_value(const std::string proxy)
+		{
+			std::string local_player_name_lower = g_player_service->get_self()->get_name();
+			std::string proxy_lower             = proxy;
+			string::operations::to_lower(local_player_name_lower);
+			string::operations::to_lower(proxy_lower);
+
+			switch (proxy_lower[0])
+			{
+			case '@': return g_player_service->get_selected()->id();
+			case '!': return g_player_service->get_closest(true)->id();
+			case '#':
+				float distance     = std::numeric_limits<float>::max();
+				player_ptr closest = nullptr;
+				for (auto p : g_player_service->players())
+				{
+					if (p.second->is_friend() && p.second->get_ped() && p.second->get_ped()->get_position())
+					{
+						auto distance_ = math::distance_between_vectors(*g_player_service->get_self()->get_ped()->get_position(),
+						    *p.second->get_ped()->get_position());
+						if (distance_ < distance)
+						{
+							closest  = p.second;
+							distance = distance_;
+						}
+					}
+				}
+
+				if (closest)
+					return closest->id();
+				break;
+			}
+
+			if (proxy_lower == "me" || proxy_lower == "self" || local_player_name_lower.find(proxy_lower) != std::string::npos)
+			{
+				return g_player_service->get_self()->id();
+			}
+
+			return std::nullopt;
 		}
 
 		void call(command_arguments& args, const std::shared_ptr<command_context> ctx = std::make_shared<default_command_context>());

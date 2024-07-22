@@ -11,13 +11,13 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				g_local_player->m_navigation->m_damp->m_water_collision = 0;
 		}
 
 		virtual void on_disable() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				g_local_player->m_navigation->m_damp->m_water_collision = 1;
 		}
 	};

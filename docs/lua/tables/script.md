@@ -2,11 +2,16 @@
 
 Table containing helper functions related to gta scripts.
 
-## Functions (3)
+## Functions (5)
 
 ### `register_looped(name, func)`
 
 Registers a function that will be looped as a gta script.
+
+- **Parameters:**
+  - `name` (string): name of your new looped script
+  - `func` (function): function that will be executed in a forever loop.
+
 **Example Usage:**
 ```lua
 script.register_looped("nameOfMyLoopedScript", function (script)
@@ -31,18 +36,13 @@ script.register_looped("nameOfMyLoopedScript", function (script)
 end)
 ```
 
-- **Parameters:**
-  - `name` (string): name of your new looped script
-  - `func` (function): function that will be executed in a forever loop.
-
-**Example Usage:**
-```lua
-script.register_looped(name, func)
-```
-
 ### `run_in_fiber(func)`
 
 Executes a function once inside the fiber pool, you can call natives inside it and yield or sleep.
+
+- **Parameters:**
+  - `func` (function): function that will be executed once in the fiber pool.
+
 **Example Usage:**
 ```lua
 script.run_in_fiber(function (script)
@@ -67,23 +67,45 @@ script.run_in_fiber(function (script)
 end)
 ```
 
-- **Parameters:**
-  - `func` (function): function that will be executed once in the fiber pool.
-
-**Example Usage:**
-```lua
-script.run_in_fiber(func)
-```
-
 ### `execute_as_script(script_name, func)`
 
 - **Parameters:**
-  - `script_name` (string): target script thread.
-  - `func` (function): function that will be executed once in the script thread.
+  - `script_name` (string): Target script thread.
+  - `func` (function): Function that will be executed once in the script thread.
 
 **Example Usage:**
 ```lua
 script.execute_as_script(script_name, func)
 ```
 
+### `add_patch(script_name, name, pattern, offset, _patch)`
 
+Adds a patch for the specified script.
+
+- **Parameters:**
+  - `script_name` (string): The name of the script.
+  - `name` (string): The name of the patch.
+  - `pattern` (string): Pattern to scan for within the script.
+  - `offset` (integer): The position within the pattern.
+  - `_patch` (table): The bytes to be written into the script's bytecode.
+
+**Example Usage:**
+```lua
+script.add_patch("fm_content_xmas_truck", "Flickering Fix", "56 ? ? 4F ? ? 40 ? 5D ? ? ? 74", 0, {0x2B, 0x00, 0x00})
+```
+
+### `call_function(name, script_name, pattern, offset, _args)`
+
+Calls a function from the specified script.
+
+- **Parameters:**
+  - `name` (string): The name of the script function.
+  - `script_name` (string): The name of the script.
+  - `pattern` (string): The pattern to scan for within the script.
+  - `offset` (integer): The position within the pattern.
+  - `_args` (table): The arguments to pass to the script function.
+
+**Example Usage:**
+```lua
+script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
+```

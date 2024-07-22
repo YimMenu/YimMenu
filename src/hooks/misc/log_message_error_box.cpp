@@ -38,4 +38,9 @@ namespace big
 
 		log_stack_trace();
 	}
+
+	void hooks::log_error_message_box_2(rage::joaat_t joaated_error_code)
+	{
+		log_error_message_box(joaated_error_code, false);
+	}
 }

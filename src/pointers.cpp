@@ -27,7 +27,7 @@ namespace big
             "48 83 EC 28 83 3D ? ? ? ? ? 75 10",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_region_code = ptr.add(16).rip().add(1).as<uint32_t*>();
+                g_pointers->m_gta.m_region_code = ptr.add(16).rip().as<uint32_t*>();
             }
         },
         // Ocean Quads
@@ -303,15 +303,6 @@ namespace big
                 g_pointers->m_gta.m_write_bitbuf_array = ptr.add(1).rip().as<decltype(gta_pointers::m_write_bitbuf_array)>();
             }
         },
-        // Write Player Game State Data Node
-        {
-            "WPGSDN",
-            "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 0F B7 81",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_game_state_data_node = ptr.as<functions::write_player_game_state_data_node>();
-            }
-        },
         // Ptr To Handle
         {
             "PTH",
@@ -391,15 +382,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_give_pickup_rewards = ptr.sub(0x28).as<decltype(gta_pointers::m_give_pickup_rewards)>();
-            }
-        },
-        // Write Player Gamer Data Node
-        {
-            "WPGDN",
-            "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 20 48 81 C1 ? ? ? ? 48 8B DA E8",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_gamer_data_node = ptr.as<PVOID>();
             }
         },
         // Receive Net Message
@@ -489,25 +471,17 @@ namespace big
         // Get Label Text
         {
             "GLT",
-            "75 ? E8 ? ? ? ? 8B 0D ? ? ? ? 65 48 8B 04 25 ? ? ? ? BA ? ? ? ? 48 8B 04 C8 8B 0C 02 D1 E9",
+            "48 8D 0D ? ? ? ? E8 ? ? ? ? 45 33 C9 41 B0 ? B2",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_get_label_text = ptr.sub(19).as<PVOID>();
-            }
-        },
-        // Multiplayer chat filter
-        {
-            "MCF",
-            "E8 ? ? ? ? 83 F8 FF 75 B9",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_check_chat_profanity = ptr.add(1).rip().as<decltype(gta_pointers::m_check_chat_profanity)>();
+                g_pointers->m_gta.m_ctext_file_ptr = ptr.add(3).rip().as<PVOID>();
+                g_pointers->m_gta.m_get_label_text = ptr.add(8).rip().as<PVOID>();
             }
         },
         // Network
         {
             "N",
-            "48 8B 0D ? ? ? ? 48 8B D7 E8 ? ? ? ? 84 C0 75 17 48 8B 0D ? ? ? ? 48 8B D7",
+            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_network = ptr.add(3).rip().as<Network**>();
@@ -562,15 +536,6 @@ namespace big
                 g_pointers->m_gta.m_fipackfile_mount = ptr.add(0x47).rip().as<functions::fipackfile_mount>();
             }
         },
-        // Invalid Mods Crash Detour
-        {
-            "IMCD",
-            "E8 ? ? ? ? 40 88 7C 24 ? 49 89 9C 24",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_invalid_mods_crash_detour = ptr.add(1).rip().as<PVOID>();
-            }
-        },
         // Send Chat Ptr
         {
             "SCP",
@@ -583,7 +548,7 @@ namespace big
         // Send Chat Message
         {
             "SCM",
-            "48 83 EC 20 48 8B F1 48 8B CA 41 8A E9",
+            "48 81 EC 80 00 00 00 48 8B E9 48 8B CA 41",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_send_chat_message = ptr.sub(21).as<functions::send_chat_message>();
@@ -609,11 +574,11 @@ namespace big
         },
         // Start Matchmaking Find Sessions
         {
-            "SGSBGH",
-            "E8 ? ? ? ? 84 C0 0F 84 F6 FE FF FF",
+            "SMFS",
+            "83 ? ? ? ? E8 ? ? ? ? 84 C0 0F 84 ? ? ? ? C7",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(1).rip().as<functions::start_matchmaking_find_sessions>();
+                g_pointers->m_gta.m_start_matchmaking_find_sessions = ptr.add(6).rip().as<functions::start_matchmaking_find_sessions>();
             }
         },
         // Join Session By Info
@@ -652,15 +617,6 @@ namespace big
                 g_pointers->m_gta.m_show_profile_by_gamer_handle = ptr.add(1).rip().as<functions::show_profile_by_gamer_handle>();
             }
         },
-        // Network Config
-        {
-            "NC",
-            "48 8B 0D ? ? ? ? 45 33 C9 48 8B D7",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_network_config = ptr.add(3).rip().as<uint64_t>();
-            }
-        },
         // Script VM
         {
             "VM",
@@ -688,6 +644,15 @@ namespace big
                 g_pointers->m_gta.m_host_token = ptr.add(3).rip().as<uint64_t*>();
             }
         },
+        // Peer ID
+        {
+            "PI",
+            "48 83 F8 FF 74 0D",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_peer_id = ptr.add(9).rip().as<uint64_t*>();
+            }
+        },
         // Profile Gamer Info
         {
             "PGI",
@@ -700,7 +665,7 @@ namespace big
         // Player Info Gamer Info
         {
             "PIGI",
-            "E8 ? ? ? ? 48 8D 4D 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
+            "E8 ? ? ? ? 48 8D 4B 20 48 8B D0 E8 ? ? ? ? 41 8A CF",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_player_info_gamer_info = ptr.add(1).rip().add(3).rip().as<rage::rlGamerInfo*>();
@@ -760,15 +725,6 @@ namespace big
                 g_pointers->m_gta.m_process_matchmaking_find_response = ptr.as<PVOID>();
             }
         },
-        // Serialize Player Data Message
-        {
-            "SPDM",
-            "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 41 56 48 83 EC 20 BF 01 00 00 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_serialize_player_data_msg = ptr.as<PVOID>();
-            }
-        },
         // Serialize Join Request Message
         {
             "SJRM",
@@ -776,6 +732,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_join_request_message = ptr.add(1).rip().as<PVOID>();
+            }
+        },
+        // Serialize Join Request Message 2
+        {
+            "SJRM2",
+            "E8 ? ? ? ? 48 8D 8D 08 01 00 00 8A D8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_serialize_join_request_message_2 = ptr.add(1).rip().as<PVOID>();
             }
         },
         // Send Network Damage
@@ -826,10 +791,10 @@ namespace big
         // Handle Remove Gamer Command
         {
             "HRGC",
-            "48 85 D2 0F 84 0E 04",
+            "74 74 33 FF",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.as<functions::handle_remove_gamer_cmd>();
+                g_pointers->m_gta.m_handle_remove_gamer_cmd = ptr.sub(0x3B).as<functions::handle_remove_gamer_cmd>();
             }
         },
         // Broadcast Net Array
@@ -839,24 +804,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_broadcast_net_array = ptr.as<PVOID>();
-            }
-        },
-        // Rage Security
-        {
-            "RS",
-            "48 8B 1D ? ? ? ? 33 F6 BD C3 9E 26 00",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_security = ptr.add(3).rip().as<rage::atSingleton<rage::RageSecurity>*>();
-            }
-        },
-        // Send Session Matchmaking Attributes
-        {
-            "SSMA",
-            "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 81 EC D0 00 00 00 49 8B",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_send_session_matchmaking_attributes = ptr.as<PVOID>();
             }
         },
         // Serialize Take Off Ped Variation Task
@@ -1102,15 +1049,6 @@ namespace big
                 g_pointers->m_gta.m_receive_pickup = ptr.as<PVOID>();
             }
         },
-        // Write Player Camera Data Node
-        {
-            "WPCDN",
-            "48 8B C4 48 89 58 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 B0 48 81 EC 50 01 00 00 4C",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_camera_data_node = ptr.as<PVOID>();
-            }
-        },
         // Send Player Card Stats
         {
             "SPCS",
@@ -1136,24 +1074,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_serialize_stats = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Creation Data Node
-        {
-            "WPCDN",
-            "48 83 EC 38 48 8B 81 F0",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_creation_data_node = ptr.as<PVOID>();
-            }
-        },
-        // Write Player Appearance Data Node
-        {
-            "WPADN",
-            "48 8B C4 48 89 50 10 48 89 48 08 53",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_write_player_appearance_data_node = ptr.as<PVOID>();
             }
         },
         // Enumerate Audio Devices
@@ -1269,10 +1189,10 @@ namespace big
         // NetFilter Handle Message
         {
             "NHM",
-            "E9 ? ? ? ? 48 8D 81 ? ? ? ? 4C 39 08",
+            "EB 2E 49 8D 82 ? ? ? ? 4C",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_netfilter_handle_message = ptr.add(1).rip().as<PVOID>();
+                g_pointers->m_gta.m_netfilter_handle_message = ptr.sub(4).rip().as<PVOID>();
             }
         },
         // Handle Chat Message
@@ -1498,15 +1418,6 @@ namespace big
                 g_pointers->m_gta.m_delete_object = ptr.as<functions::delete_object>();
             }
         },
-        // Max Wanted Level
-        {
-            "MWL",
-            "8B 43 6C 89 05",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_max_wanted_level = ptr;
-            }
-        },
         // World Model Spawn Bypass
         {
             "WMSB",
@@ -1559,15 +1470,6 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_creator_warp_cheat_triggered_patch = ptr;
-            }
-        },
-        // Sound Overload Detour
-        {
-            "SOD",
-            "66 45 3B C1 74 38",
-            [](memory::handle ptr)
-            {
-                g_pointers->m_gta.m_sound_overload_detour = ptr;
             }
         },
         // Disable Collision
@@ -1638,10 +1540,12 @@ namespace big
         // ERROR message box
         {
             "E0MB",
-            "E8 ? ? ? ? CC FF 15",
+            "E8 ? ? ? ? 33 F6 EB 0F",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_error_message_box = ptr.add(1).rip().as<PVOID>();
+                ptr = ptr.add(1).rip();
+                g_pointers->m_gta.m_error_message_box = ptr.add(7).rip().as<PVOID>();
+                g_pointers->m_gta.m_error_message_box_2 = ptr.as<PVOID>();
             }
         },
         // Get title caption for ERROR message box
@@ -1740,7 +1644,7 @@ namespace big
         // Nullsub
         {
             "NS",
-            "90 C3",
+            "90 C3 CC",
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_nullsub = ptr.as<void(*)()>();
@@ -1771,6 +1675,224 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_weapon_info_manager = ptr.add(3).rip().sub(72).as<CWeaponInfoManager*>();
+            }
+        },
+        // Can Create Vehicle
+        {
+            "CCV",
+            "8B 0D ? ? ? ? 39 0D ? ? ? ? 0F 9C C0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_create_vehicle = ptr.as<functions::can_create_vehicle>();
+            }
+        },
+        // Cam Gameplay Director
+        {
+            "CGD",
+            "48 8B 05 ? ? ? ? 38 98 ? ? ? ? 8A C3",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director = ptr.add(3).rip().as<uintptr_t*>();
+            }
+        },
+        // Cam Gameplay Director Update
+        {
+            "CGDU",
+            "E9 CD 09 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_cam_gameplay_director_update = ptr.sub(0x32).as<functions::cam_gameplay_directory_update>();
+            }
+        },
+        // Format Integer
+        {
+            "FI",
+            "48 83 EC ? 44 88 4C 24",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_format_int = ptr.as<PVOID>();
+            }
+        },
+        // Searchlight Crash
+        {
+            "SLC",
+            "0F 29 70 E8 0F 29 78 D8 48 8B F9 48 8B CA",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_searchlight_crash = ptr.sub(0x1E).as<PVOID>();
+                g_pointers->m_gta.m_get_searchlight = ptr.add(0x28).rip().as<functions::get_searchlight>();
+            }
+        },
+        // Vehicle Allocator
+        {
+            "VA",
+            "48 8B 0D ? ? ? ? 45 33 C9 BA ? ? ? ? 41",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_vehicle_allocator = ptr.add(3).rip().as<GenericPool**>();
+            }
+        },
+        // Write Node Data
+        {
+            "WND",
+            "48 8B 89 A8 00 00 00 4C 8B 11 49 FF 62 10",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_node_data = ptr.as<PVOID>();
+            }
+        },
+        // Can Send Node To Player
+        {
+            "CSNTP",
+            "44 8B C3 FF 90 B0 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_send_node_to_player = ptr.sub(0x2E).as<PVOID>();
+            }
+        },
+        // Write Node
+        {
+            "WN",
+            "49 89 43 C8 E8 ? ? ? ? 84 C0 0F 95 C0 48 83 C4 ? C3 4C 8B DC",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_write_node = ptr.sub(0x49).as<PVOID>();
+            }
+        },
+        // Get Sector Data
+        {
+            "GSD",
+            "40 53 48 83 EC 20 F3 0F 10 59 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_sector_data = ptr.as<functions::get_sector_data>();
+            }
+        },
+        // Advertise Session
+        {
+            "AS",
+            "F6 D8 1B C9 83 C1 05 EB 43",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_advertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Update Session Advertisement
+        {
+            "USA",
+            "84 C0 74 0A 44 89 43 30",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_session_advertisement = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Unadvertise Session
+        {
+            "US",
+            "EB 21 B9 01 00 00 00 87 4B 28",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_unadvertise_session = ptr.sub(4).rip().as<PVOID>();
+            }
+        },
+        // Send Session Detail Msg
+        {
+            "SSDM",
+            "4C 8D 85 ? ? 00 00 49 8B D5 49", // unstable
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_send_session_detail_msg = ptr.add(0xE).rip().as<PVOID>();
+            }
+        },
+        // Session Request Patch
+        {
+            "SRP",
+            "48 8B BD 70 01 00 00 E9 FF 00 00 00",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_session_request_patch = ptr.add(0x13).as<PVOID>();
+            }
+        },
+        // Get Peer By Security Id
+        {
+            "GPBSI",
+            "76 E0 8B 4C 24 30 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_peer_by_security_id = ptr.add(7).rip().as<functions::get_peer_by_security_id>();
+            }
+        },
+        // Game Data Hash
+        {
+            "GDH",
+            "BA 05 AC 17 D9",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_data_hash = ptr.add(0x18).rip().as<GameDataHash**>();
+            }
+        },
+        // Get DLC Hash
+        {
+            "GDLCH",
+            "74 0B 41 BC 10",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_dlc_manager = ptr.sub(0x11).rip().as<void**>();
+                g_pointers->m_gta.m_get_dlc_hash = ptr.sub(0xA).rip().as<PVOID>();
+            }
+        },
+        // Add Gamer To Session
+        {
+            "AGTS",
+            "7C E8 EB 23",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_add_gamer_to_session = ptr.add(0x23).rip().as<PVOID>();
+            }
+        },
+        // Set Head Blend Data
+        {
+            "SHBD",
+            "44 88 B2 3A 01",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_set_head_blend_data = ptr.sub(0x21).as<functions::set_head_blend_data>();
+            }
+        },
+        // Object Ids Offset
+        {
+            "OIO",
+            "FF 50 50 48 83 C7 08",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_object_ids_offset = ptr.add(0xF).as<std::uint32_t*>();
+            }
+        },
+        // Error Packet Memmove
+        {
+            "EPM",
+            "49 8D 4C 24 60 44 8B C0 E8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_error_packet_memmove = ptr.add(0x8).as<PVOID>();
+            }
+        },
+        // Create Pool Item
+        {
+            "CPI",
+            "18 83 F9 FF 75",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_create_pool_item = ptr.sub(0x6).as<PVOID>();
+            }
+        },
+        // Scope Sway Function
+        {
+            "SSF",
+            "74 ? F3 0F 10 15 ? ? ? ? 41 B9 ? ? ? ? 48 8B D0 48 8B CF 44 89 7C 24",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_scope_sway_function = ptr.as<PVOID>();
             }
         }
         >(); // don't leave a trailing comma at the end
