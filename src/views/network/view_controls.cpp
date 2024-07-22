@@ -1,15 +1,8 @@
-﻿#include "core/data/apartment_names.hpp"
-#include "core/data/region_codes.hpp"
-#include "core/data/warehouse_names.hpp"
-#include "fiber_pool.hpp"
+﻿#include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "hooking/hooking.hpp"
-#include "util/scripts.hpp"
-#include "util/session.hpp"
 #include "util/troll.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
-#include "backend/bool_command.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>

@@ -2,9 +2,6 @@
 
 #include "pointers.hpp"
 
-#include <player/CNonPhysicalPlayerData.hpp>
-#include <network/CNetGamePlayer.hpp>
-
 namespace big
 {
 	hooking::hooking() :

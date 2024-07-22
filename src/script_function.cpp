@@ -5,7 +5,6 @@
 #include "util/scripts.hpp"
 
 #include <script/scrProgram.hpp>
-#include <script/scrProgramTable.hpp>
 
 namespace big
 {

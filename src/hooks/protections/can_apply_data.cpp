@@ -21,7 +21,6 @@
 #include "netsync/nodes/ped/CPedCreationDataNode.hpp"
 #include "netsync/nodes/ped/CPedGameStateDataNode.hpp"
 #include "netsync/nodes/ped/CPedHealthDataNode.hpp"
-#include "netsync/nodes/ped/CPedInventoryDataNode.hpp"
 #include "netsync/nodes/ped/CPedMovementGroupDataNode.hpp"
 #include "netsync/nodes/ped/CPedMovementDataNode.hpp"
 #include "netsync/nodes/ped/CPedOrientationDataNode.hpp"

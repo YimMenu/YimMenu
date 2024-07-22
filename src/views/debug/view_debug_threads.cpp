@@ -1,16 +1,10 @@
 #include "core/data/all_script_names.hpp"
 #include "core/data/stack_sizes.hpp"
 #include "fiber_pool.hpp"
-#include "gta/joaat.hpp"
-#include "gta_util.hpp"
 #include "gui/components/components.hpp"
 #include "natives.hpp"
-#include "network/Network.hpp"
 #include "script.hpp"
-#include "script_global.hpp"
-#include "util/misc.hpp"
 #include "util/scripts.hpp"
-#include "util/system.hpp"
 #include "view_debug.hpp"
 
 static rage::scrThread* selected_thread;

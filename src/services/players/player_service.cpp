@@ -3,8 +3,6 @@
 #include "gta_util.hpp"
 #include "util/math.hpp"
 
-#include <network/CNetworkPlayerMgr.hpp>
-
 
 namespace big
 {

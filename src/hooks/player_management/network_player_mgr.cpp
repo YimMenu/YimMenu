@@ -1,7 +1,6 @@
 #include "core/data/menu_event.hpp"
 #include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
-#include "pointers.hpp"
 #include "services/players/player_service.hpp"
 
 #include <network/CNetworkPlayerMgr.hpp>

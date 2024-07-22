@@ -1,8 +1,5 @@
 #include "backend/looped/looped.hpp"
-#include "gta/pickup_rewards.hpp"
 #include "services/players/player_service.hpp"
-#include "util/globals.hpp"
-#include "util/misc.hpp"
 #include "util/toxic.hpp"
 
 namespace big

@@ -6,7 +6,6 @@
 #include "script_local.hpp"
 #include "services/players/player_service.hpp"
 #include "util/misc.hpp"
-#include "util/notify.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
 

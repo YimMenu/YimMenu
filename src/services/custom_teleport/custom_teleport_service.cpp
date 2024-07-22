@@ -1,7 +1,5 @@
 #include "custom_teleport_service.hpp"
 
-#include "util/notify.hpp"
-
 namespace big
 {
 	std::filesystem::path custom_teleport_service::get_telelocations_file_path()

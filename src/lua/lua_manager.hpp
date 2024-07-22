@@ -1,6 +1,4 @@
 #pragma once
-#include "bindings/memory.hpp"
-#include "core/enums.hpp"
 #include "lua_module.hpp"
 
 namespace big

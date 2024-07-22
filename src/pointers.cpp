@@ -1,7 +1,6 @@
 #include "pointers.hpp"
 
 #include "gta_pointers_layout_info.hpp"
-#include "memory/all.hpp"
 #include "sc_pointers_layout_info.hpp"
 
 namespace big

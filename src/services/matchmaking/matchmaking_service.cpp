@@ -1,7 +1,6 @@
 #include "matchmaking_service.hpp"
 
 #include "hooking/hooking.hpp"
-#include "pointers.hpp"
 #include "script.hpp"
 #include "fiber_pool.hpp"
 

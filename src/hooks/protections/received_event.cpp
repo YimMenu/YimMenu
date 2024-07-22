@@ -3,7 +3,6 @@
 #include "gta/net_game_event.hpp"
 #include "gta/weapon_info_manager.hpp"
 #include "hooking/hooking.hpp"
-#include "script/scriptIdBase.hpp"
 #include "util/math.hpp"
 #include "util/mobile.hpp"
 #include "util/notify.hpp"
@@ -527,19 +526,6 @@ namespace big
 			if (player_bitfield & (1 << target_player->m_player_id))
 			{
 				g.reactions.kick_vote.process(plyr);
-			}
-			buffer->Seek(0);
-			break;
-		}
-		case eNetworkEvents::NETWORK_INCREMENT_STAT_EVENT:
-		{
-			const auto increment_stat_event = std::make_unique<CNetworkIncrementStatEvent>();
-			buffer->ReadDword(&increment_stat_event->m_stat, 0x20);
-			buffer->ReadDword(&increment_stat_event->m_amount, 0x20);
-			if (hooks::increment_stat_event(increment_stat_event.get(), source_player))
-			{
-				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				return;
 			}
 			buffer->Seek(0);
 			break;

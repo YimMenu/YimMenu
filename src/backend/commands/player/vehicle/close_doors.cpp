@@ -1,7 +1,7 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
-#include "util/teleport.hpp"
+#include "util/entity.hpp"
+
 namespace big
 {
 	class close_doors : player_command

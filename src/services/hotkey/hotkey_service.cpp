@@ -5,7 +5,6 @@
 #include "network/ChatData.hpp"
 #include "pointers.hpp"
 #include "renderer/renderer.hpp"
-#include "util/teleport.hpp"
 
 #include <script/GtaThread.hpp>
 

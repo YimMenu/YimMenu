@@ -2,7 +2,6 @@
 #include "gta/net_game_event.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "util/teleport.hpp"
 
 namespace big
 {

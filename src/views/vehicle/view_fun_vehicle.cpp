@@ -3,14 +3,8 @@
 #include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
-#include "services/gta_data/gta_data_service.hpp"
-#include "services/model_preview/model_preview_service.hpp"
-#include "util/mobile.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
-
-#include <imgui_internal.h>
 
 namespace big
 {

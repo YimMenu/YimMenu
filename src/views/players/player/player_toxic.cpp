@@ -1,6 +1,3 @@
-#include "core/data/apartment_names.hpp"
-#include "core/data/warehouse_names.hpp"
-#include "util/teleport.hpp"
 #include "util/toxic.hpp"
 #include "util/troll.hpp"
 #include "views/view.hpp"

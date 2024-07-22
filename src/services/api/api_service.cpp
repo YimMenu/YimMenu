@@ -1,7 +1,6 @@
 #include "api_service.hpp"
 
 #include "http_client/http_client.hpp"
-#include "pointers.hpp"
 #include "services/creator_storage/creator_storage_service.hpp"
 
 

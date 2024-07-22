@@ -1,4 +1,3 @@
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/mobile/mobile_service.hpp"

@@ -2,9 +2,7 @@
 #include "core/scr_globals.hpp"
 #include "file_manager.hpp"
 #include "gta/enums.hpp"
-#include "logger/logger.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "services/outfit/outfit_service.hpp"
 #include "services/tunables/tunables_service.hpp"
 

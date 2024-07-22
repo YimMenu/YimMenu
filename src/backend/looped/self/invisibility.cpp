@@ -1,11 +1,6 @@
-#include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "core/scr_globals.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
-
-#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {

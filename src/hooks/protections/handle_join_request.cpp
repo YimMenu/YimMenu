@@ -1,7 +1,6 @@
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "services/friends/friends_service.hpp"
-#include "services/notifications/notification.hpp"
 #include "services/player_database/player_database_service.hpp"
 
 #include <network/CJoinRequestContext.hpp>

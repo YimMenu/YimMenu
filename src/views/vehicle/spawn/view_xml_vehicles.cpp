@@ -1,5 +1,4 @@
 #include "pointers.hpp"
-#include "pugixml.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"

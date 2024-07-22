@@ -69,9 +69,6 @@ namespace big::functions
 
 	using trigger_script_event = void (*)(int event_group, int64_t* args, int arg_count, int player_bits, int event_id);
 
-
-	using increment_stat_event = bool (*)(uint64_t net_event_struct, int64_t sender, int64_t a3);
-
 	using ptr_to_handle = Entity (*)(void*);
 	using handle_to_ptr = rage::CDynamicEntity* (*)(Entity);
 

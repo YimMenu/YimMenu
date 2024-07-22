@@ -1,5 +1,4 @@
 #include "gui.hpp"
-#include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "view.hpp"
 
