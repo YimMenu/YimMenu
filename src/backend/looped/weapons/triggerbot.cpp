@@ -31,19 +31,27 @@ namespace big
 						if (g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info)
 							return;
 
-						bool is_hated_relationship = false;
-						bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
-						auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
-						bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
-						switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
+						if (g.weapons.aimbot.only_on_enemy)
 						{
-							case Dislike:
-							case Wanted:
-							case Hate: is_hated_relationship = true;
+							bool is_hated_relationship = false;
+							bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
+							auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
+							bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
+
+							switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
+							{
+								case Dislike:
+								case Wanted:
+								case Hate: is_hated_relationship = true;
+							}
+
+							if (!is_hated_relationship && !is_in_combat && !is_enemy)
+							{
+								return;
+							}
 						}
 
-						bool is_a_ped_type_we_dont_care_about = false;
-
+						bool is_a_ped_type_we_dont_care_about;
 						const auto ped_type = PED::GET_PED_TYPE(ped);
 
 						switch (ped_type)
@@ -84,7 +92,7 @@ namespace big
 							default: is_a_ped_type_we_dont_care_about = false;
 						}
 
-						if ((g.weapons.aimbot.only_on_enemy && (!is_hated_relationship && !is_in_combat && !is_enemy)) || is_a_ped_type_we_dont_care_about)
+						if (is_a_ped_type_we_dont_care_about)
 						{
 							return;
 						}

@@ -144,22 +144,30 @@ namespace big
 
 				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 
-				bool is_hated_relationship = false;
-				bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped_handle, self::ped);
-				auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped_handle));
-				bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped_handle, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
-				
-				switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
+				if (g_aimbot_only_on_enemy.is_enabled())
 				{
+					bool is_hated_relationship = false;
+					bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped_handle, self::ped);
+					auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped_handle));
+					bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped_handle, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
+
+					switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
+					{
 					case Dislike:
 					case Wanted:
 					case Hate: is_hated_relationship = true;
+					}
+
+					if (!is_hated_relationship && !is_in_combat && !is_enemy)
+					{
+						/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
+						LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
+						continue;
+					}
 				}
 
-				if ((g_aimbot_only_on_enemy.is_enabled() && (!is_hated_relationship && !is_in_combat && !is_enemy)) || is_a_ped_type_we_dont_care_about(ped_handle))
+				if (is_a_ped_type_we_dont_care_about(ped_handle))
 				{
-					/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
-						LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
 					continue;
 				}
 
