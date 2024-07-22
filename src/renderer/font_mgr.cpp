@@ -49,34 +49,34 @@ namespace big
 		io.Fonts->Clear();
 
 		const auto required_alphabet_types = get_required_alphabet_types();
-		for (const auto required_type : required_alphabet_types)
+
+		for (auto [size, font_ptr] : m_extra_font_sizes)
 		{
-			const auto font_file   = get_available_font_file_for_alphabet_type(required_type);
-			const auto glyph_range = get_imgui_alphabet_type(required_type);
+			ImFontConfig fnt_cfg{};
+			fnt_cfg.FontDataOwnedByAtlas = false;
+			strcpy(fnt_cfg.Name, std::format("Fnt{}px", (int)size).c_str());
 
-			for (auto [size, font_ptr] : m_extra_font_sizes)
+			const auto tmp_ptr = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
+			    sizeof(font_storopia),
+			    size,
+			    &fnt_cfg,
+			    io.Fonts->GetGlyphRangesDefault());
+			if (font_ptr)
 			{
-				ImFontConfig fnt_cfg{};
-				fnt_cfg.FontDataOwnedByAtlas = false;
-				strcpy(fnt_cfg.Name, std::format("Fnt{}px", (int)size).c_str());
+				*font_ptr = tmp_ptr;
+			}
 
-				const auto tmp_ptr = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
-				    sizeof(font_storopia),
-				    size,
-				    &fnt_cfg,
-				    io.Fonts->GetGlyphRangesDefault());
-				if (font_ptr)
-				{
-					*font_ptr = tmp_ptr;
-				}
-
+			for (const auto required_type : required_alphabet_types)
+			{
+				const auto font_file   = get_available_font_file_for_alphabet_type(required_type);
+				const auto glyph_range = get_imgui_alphabet_type(required_type);
 				if (required_type != eAlphabetType::LATIN && font_file.exists())
 				{
 					fnt_cfg.MergeMode = true;
 					io.Fonts->AddFontFromFileTTF(font_file.get_path().string().c_str(), size, &fnt_cfg, glyph_range);
 				}
-				io.Fonts->Build();
 			}
+			io.Fonts->Build();
 		}
 
 		// icons blueh
