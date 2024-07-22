@@ -16,7 +16,7 @@ namespace big
 	void draw_reaction(reaction& reaction)
 	{
 		ImGui::PushID(&reaction);
-		if (ImGui::TreeNode(reaction.m_event_name))
+		if (ImGui::TreeNode(g_translation_service.get_translation(reaction.m_event_name).data()))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
 			ImGui::SameLine();
@@ -61,7 +61,7 @@ namespace big
 	void draw_interloper_reaction(interloper_reaction& reaction)
 	{
 		ImGui::PushID(&reaction);
-		if (ImGui::TreeNode(reaction.m_event_name))
+		if (ImGui::TreeNode(g_translation_service.get_translation(reaction.m_event_name).data()))
 		{
 			ImGui::Checkbox("REACTION_CHAT"_T.data(), &reaction.announce_in_chat);
 			ImGui::SameLine();
@@ -125,19 +125,17 @@ namespace big
 		draw_reaction(g.reactions.crash);
 		draw_reaction(g.reactions.delete_vehicle);
 		draw_reaction(g.reactions.destroy_personal_vehicle);
-		draw_reaction(g.reactions.end_session_kick);
 		draw_reaction(g.reactions.fake_deposit);
 		draw_reaction(g.reactions.force_mission);
 		draw_reaction(g.reactions.force_teleport);
 		draw_reaction(g.reactions.game_anti_cheat_modder_detection);
 		draw_reaction(g.reactions.give_collectible);
 		draw_reaction(g.reactions.gta_banner);
+		draw_reaction(g.reactions.kick);
 		draw_reaction(g.reactions.kick_from_interior);
 		draw_reaction(g.reactions.kick_vote);
 		draw_reaction(g.reactions.mc_teleport);
 		draw_reaction(g.reactions.modder_detection);
-		draw_reaction(g.reactions.network_bail);
-		draw_reaction(g.reactions.null_function_kick);
 		draw_reaction(g.reactions.personal_vehicle_destroyed);
 		draw_reaction(g.reactions.remote_off_radar);
 		draw_reaction(g.reactions.remote_ragdoll);

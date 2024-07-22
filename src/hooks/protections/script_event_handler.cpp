@@ -322,7 +322,7 @@ namespace big
 			break;
 		case eRemoteEvent::NetworkBail:
 			session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-			g.reactions.network_bail.process(plyr);
+			g.reactions.kick.process(plyr);
 			return true;
 		case eRemoteEvent::TeleportToWarehouse:
 			if (g.protections.script_events.teleport_to_warehouse && !is_player_driver_of_local_vehicle(player->m_player_id))
@@ -383,7 +383,7 @@ namespace big
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-				g.reactions.null_function_kick.process(plyr);
+				g.reactions.kick.process(plyr);
 				return true;
 			}
 

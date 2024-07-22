@@ -202,57 +202,55 @@ namespace big
 		struct reactions
 		{
 			// first constructor param is an internal identifier for the event
-			reaction bounty{"Bounty", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
-			reaction break_game{"Break Game", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
-			reaction ceo_kick{"CEO Kick", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
-			reaction ceo_money{"CEO Money", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
-			reaction clear_wanted_level{"Clear Wanted Level", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
-			reaction crash{"Crash", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
-			reaction delete_vehicle{"Delete Vehicle", "REACTION_DELETE_VEHICLE_NOTIFY", "REACTION_DELETE_VEHICLE_ANNOUNCE"};
-			reaction end_session_kick{"End Session Kick", "REACTION_END_SESSION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction fake_deposit{"Fake Deposit", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
-			reaction force_mission{"Force Mission", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
-			reaction force_teleport{"Force Teleport", "REACTION_FORCE_TELEPORT_NOTIFY", "REACTION_FORCE_TELEPORT_ANNOUNCE"};
-			reaction gta_banner{"GTA Banner", "REACTION_GTA_BANNER_NOTIFY", "REACTION_GTA_BANNER_ANNOUNCE"}; // please don't enable this
-			reaction kick_from_interior{"Kick From Interior", "REACTION_KICK_FROM_INTERIOR_NOTIFY", "REACTION_KICK_FROM_INTERIOR_ANNOUNCE"};
-			reaction mc_teleport{"MC Teleport", "REACTION_MC_TELEPORT_NOTIFY", "REACTION_MC_TELEPORT_ANNOUNCE"};
-			reaction network_bail{"Network Bail", "REACTION_NETWORK_BAIL_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction personal_vehicle_destroyed{"Personal Vehicle Destroyed", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
-			reaction remote_off_radar{"Remote Off Radar", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
-			reaction rotate_cam{"Rotate Cam", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
-			reaction send_to_cutscene{"Send To Cutscene", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
-			reaction send_to_location{"Send To Location", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
-			reaction send_to_interior{"Send To Interior", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
-			reaction sound_spam{"Sound Spam", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
-			reaction spectate_notification{"Spectate Notification", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
-			reaction give_collectible{"Give Collectible", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
-			reaction transaction_error{"Transaction Error", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
-			reaction tse_freeze{"TSE Freeze", "REACTION_TSE_FREEZE_NOTIFY", "REACTION_TSE_FREEZE_ANNOUNCE"};
-			reaction tse_sender_mismatch{"TSE Sender Mismatch", "REACTION_TSE_SENDER_MISMATCH_NOTIFY", "REACTION_TSE_SENDER_MISMATCH_ANNOUNCE"};
-			reaction vehicle_kick{"Vehicle Kick", "REACTION_VEHICLE_KICK_NOTIFY", "REACTION_VEHICLE_KICK_ANNOUNCE"};
-			reaction teleport_to_warehouse{"Teleport To Warehouse", "REACTION_TELEPORT_TO_WAREHOUSE_NOTIFY", "REACTION_TELEPORT_TO_WAREHOUSE_ANNOUNCE"};
-			reaction start_activity{"Start Activity", "REACTION_START_ACTIVITY_NOTIFY", "REACTION_START_ACTIVITY_ANNOUNCE"};
-			reaction start_script{"Start Script", "REACTION_START_SCRIPT_NOTIFY", "REACTION_START_SCRIPT_ANNOUNCE"};
-			reaction null_function_kick{"Null Function Kick", "REACTION_NULL_FUNCTION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
-			reaction destroy_personal_vehicle{"Destroy Personal Vehicle", "REACTION_DESTROY_PERSONAL_VEHICLE_NOTIFY", "REACTION_DESTROY_PERSONAL_VEHICLE_ANNOUNCE"};
-			reaction trigger_business_raid{"Trigger Business Raid", "REACTION_TRIGGER_BUSINESS_RAID_NOTIFY", "REACTION_TRIGGER_BUSINESS_RAID_ANNOUNCE"};
-			reaction turn_into_beast{"Turn Into Beast", "REACTION_TURN_INTO_BEAST_NOTIFY", "REACTION_TURN_INTO_BEAST_RAID_ANNOUNCE"};
-			reaction remote_wanted_level{"Remote Wanted Level", "REACTION_REMOTE_WANTED_LEVEL_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_ANNOUNCE"};
-			interloper_reaction remote_wanted_level_others{"Remote Wanted Level On Other Players", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_ANNOUNCE", false, false};
+			reaction bounty{"BOUNTY", "REACTION_BOUNTY_NOTIFY", "REACTION_BOUNTY_ANNOUNCE"};
+			reaction break_game{"BREAK_GAME", "REACTION_BREAK_GAME_NOTIFY", "REACTION_BREAK_GAME_ANNOUNCE"};
+			reaction ceo_kick{"CEO_KICK", "REACTION_CEO_KICK_NOTIFY", "REACTION_CEO_KICK_ANNOUNCE"};
+			reaction ceo_money{"CEO_MONEY", "REACTION_CEO_MONEY_NOTIFY", "REACTION_CEO_MONEY_ANNOUNCE"};
+			reaction clear_wanted_level{"CLEAR_WANTED_LEVEL", "REACTION_CLEAR_WANTED_LEVEL_NOTIFY", "REACTION_CLEAR_WANTED_LEVEL_ANNOUNCE"};
+			reaction crash{"CRASH", "REACTION_CRASH_NOTIFY", "REACTION_CRASH_ANNOUNCE"};
+			reaction delete_vehicle{"DELETE_VEHICLE", "REACTION_DELETE_VEHICLE_NOTIFY", "REACTION_DELETE_VEHICLE_ANNOUNCE"};
+			reaction fake_deposit{"FAKE_DEPOSIT", "REACTION_FAKE_DEPOSIT_NOTIFY", "REACTION_FAKE_DEPOSIT_ANNOUNCE"};
+			reaction force_mission{"FORCE_MISSION", "REACTION_FORCE_MISSION_NOTIFY", "REACTION_FORCE_MISSION_ANNOUNCE"};
+			reaction force_teleport{"FORCE_TELEPORT", "REACTION_FORCE_TELEPORT_NOTIFY", "REACTION_FORCE_TELEPORT_ANNOUNCE"};
+			reaction gta_banner{"GTA_BANNER", "REACTION_GTA_BANNER_NOTIFY", "REACTION_GTA_BANNER_ANNOUNCE"}; // please don't enable this
+			reaction kick{"KICKS", "REACTION_KICK_NOTIFY", "REACTION_GENERIC_KICK_ANNOUNCE"};
+			reaction kick_from_interior{"KICK_FROM_INTERIOR", "REACTION_KICK_FROM_INTERIOR_NOTIFY", "REACTION_KICK_FROM_INTERIOR_ANNOUNCE"};
+			reaction mc_teleport{"MC_TELEPORT", "REACTION_MC_TELEPORT_NOTIFY", "REACTION_MC_TELEPORT_ANNOUNCE"};
+			reaction personal_vehicle_destroyed{"PERSONAL_VEHICLE_DESTROYED", "REACTION_PERSONAL_VEHICLE_DESTROYED_NOTIFY", "REACTION_PERSONAL_VEHICLE_DESTROYED_ANNOUNCE"};
+			reaction remote_off_radar{"REMOTE_OFF_RADAR", "REACTION_OFF_RADAR_NOTIFY", "REACTION_OFF_RADAR_ANNOUNCE"};
+			reaction rotate_cam{"ROTATE_CAM", "REACTION_ROTATE_CAM_NOTIFY", "REACTION_ROTATE_CAM_ANNOUNCE"};
+			reaction send_to_cutscene{"SEND_TO_CUTSCENE", "REACTION_SEND_TO_CUTSCENE_NOTIFY", "REACTION_SEND_TO_CUTSCENE_ANNOUNCE"};
+			reaction send_to_location{"SEND_TO_LOCATION", "REACTION_SEND_TO_LOCATION_NOTIFY", "REACTION_SEND_TO_LOCATION_ANNOUNCE"};
+			reaction send_to_interior{"TP_TO_INTERIOR", "REACTION_SEND_TO_INTERIOR_NOTIFY", "REACTION_SEND_TO_INTERIOR_ANNOUNCE"};
+			reaction sound_spam{"SOUND_SPAM", "REACTION_SOUND_SPAM_NOTIFY", "REACTION_SOUND_SPAM_ANNOUNCE"};
+			reaction spectate_notification{"SPECTATE_NOTIFICATION", "REACTION_SPECTATE_NOTIFICATION_NOTIFY", "REACTION_SPECTATE_NOTIFICATION_ANNOUNCE"};
+			reaction give_collectible{"GIVE_COLLECTIBLE", "REACTION_GIVE_COLLECTIBLE_NOTIFY", "REACTION_GIVE_COLLECTIBLE_ANNOUNCE"};
+			reaction transaction_error{"SHOW_TRANSACTION_ERROR", "REACTION_TRANSACTION_ERROR_NOTIFY", "REACTION_TRANSACTION_ERROR_ANNOUNCE"};
+			reaction tse_freeze{"TSE_FREEZE", "REACTION_TSE_FREEZE_NOTIFY", "REACTION_TSE_FREEZE_ANNOUNCE"};
+			reaction tse_sender_mismatch{"TSE_SENDER_MISMATCH", "REACTION_TSE_SENDER_MISMATCH_NOTIFY", "REACTION_TSE_SENDER_MISMATCH_ANNOUNCE"};
+			reaction vehicle_kick{"VEHICLE_KICK", "REACTION_VEHICLE_KICK_NOTIFY", "REACTION_VEHICLE_KICK_ANNOUNCE"};
+			reaction teleport_to_warehouse{"TELEPORT_TO_WAREHOUSE", "REACTION_TELEPORT_TO_WAREHOUSE_NOTIFY", "REACTION_TELEPORT_TO_WAREHOUSE_ANNOUNCE"};
+			reaction start_activity{"START_ACTIVITY", "REACTION_START_ACTIVITY_NOTIFY", "REACTION_START_ACTIVITY_ANNOUNCE"};
+			reaction start_script{"START_SCRIPT", "REACTION_START_SCRIPT_NOTIFY", "REACTION_START_SCRIPT_ANNOUNCE"};
+			reaction destroy_personal_vehicle{"DESTROY_PERSONAL_VEHICLE", "REACTION_DESTROY_PERSONAL_VEHICLE_NOTIFY", "REACTION_DESTROY_PERSONAL_VEHICLE_ANNOUNCE"};
+			reaction trigger_business_raid{"TRIGGER_BUSINESS_RAID", "REACTION_TRIGGER_BUSINESS_RAID_NOTIFY", "REACTION_TRIGGER_BUSINESS_RAID_ANNOUNCE"};
+			reaction turn_into_beast{"TURN_INTO_BEAST", "REACTION_TURN_INTO_BEAST_NOTIFY", "REACTION_TURN_INTO_BEAST_RAID_ANNOUNCE"};
+			reaction remote_wanted_level{"WANTED_LEVEL", "REACTION_REMOTE_WANTED_LEVEL_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_ANNOUNCE"};
+			interloper_reaction remote_wanted_level_others{"WANTED_LEVEL_ON_OTHERS", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_NOTIFY", "REACTION_REMOTE_WANTED_LEVEL_OTHERS_ANNOUNCE", false, false};
 
-			reaction clear_ped_tasks{"Clear Ped Tasks", "REACTION_CLEAR_PED_TASKS_NOTIFY", "REACTION_CLEAR_PED_TASKS_ANNOUNCE"};
-			reaction remote_ragdoll{"Remote Ragdoll", "REACTION_REMOTE_RAGDOLL_NOTIFY", "REACTION_REMOTE_RAGDOLL_ANNOUNCE"};
-			reaction kick_vote{"Kick Vote", "REACTION_VOTE_KICK_NOTIFY", "REACTION_VOTE_KICK_ANNOUNCE"};
-			reaction report_cash_spawn{"Cash Spawn", "REACTION_CASH_SPAWN_GENERIC", "REACTION_CASH_SPAWN_GENERIC"};
-			reaction modder_detection{"Modder Detection", "REACTION_MODDER_DETECTED_GENERIC", "REACTION_MODDER_DETECTED_GENERIC"};
-			reaction game_anti_cheat_modder_detection{"Game Anti-Cheat Modder Detection", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC"};
-			reaction request_control_event{"Request Control Event", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
-			reaction report{"Report", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
-			reaction chat_spam{"Chat Spam", "REACTION_CHAT_SPAM_NOTIFY", "REACTION_CHAT_SPAM_ANNOUNCE"};
-			reaction spectate{"Spectate", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
-			interloper_reaction spectate_others{"Spectate Others", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
+			reaction clear_ped_tasks{"CLEAR_PED_TASKS", "REACTION_CLEAR_PED_TASKS_NOTIFY", "REACTION_CLEAR_PED_TASKS_ANNOUNCE"};
+			reaction remote_ragdoll{"REMOTE_RAGDOLL", "REACTION_REMOTE_RAGDOLL_NOTIFY", "REACTION_REMOTE_RAGDOLL_ANNOUNCE"};
+			reaction kick_vote{"VOTE_KICK", "REACTION_VOTE_KICK_NOTIFY", "REACTION_VOTE_KICK_ANNOUNCE"};
+			reaction report_cash_spawn{"CASH_SPAWN", "REACTION_CASH_SPAWN_GENERIC", "REACTION_CASH_SPAWN_GENERIC"};
+			reaction modder_detection{"MODDER_DETECTION", "REACTION_MODDER_DETECTED_GENERIC", "REACTION_MODDER_DETECTED_GENERIC"};
+			reaction game_anti_cheat_modder_detection{"GAME_ANTICHEAT_DETECTION", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC", "REACTION_MODDER_DETECTED_BY_ANTICHEAT_GENERIC"};
+			reaction request_control_event{"REQUEST_CONTROL_EVENT", "REACTION_REQUEST_CONTROL_NOTIFY", "REACTION_REQUEST_CONTROL_ANNOUNCE"};
+			reaction report{"REPORT", "REACTION_REPORT_NOTIFY", "REACTION_REPORT_ANNOUNCE"};
+			reaction chat_spam{"CHAT_SPAM", "REACTION_CHAT_SPAM_NOTIFY", "REACTION_CHAT_SPAM_ANNOUNCE"};
+			reaction spectate{"SPECTATE", "REACTION_SPECTATING_NOTIFY", "REACTION_SPECTATING_ANNOUNCE"};
+			interloper_reaction spectate_others{"SPECTATE_OTHERS", "REACTION_SPECTATING_OTHERS_NOTIFY", "REACTION_SPECTATING_OTHERS_ANNOUNCE", false, false};
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, delete_vehicle, end_session_kick, fake_deposit, force_mission, force_teleport, gta_banner, kick_from_interior, mc_teleport, network_bail, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, null_function_kick, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, chat_spam, spectate, spectate_others)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(reactions, bounty, ceo_money, ceo_kick, clear_wanted_level, crash, delete_vehicle, fake_deposit, force_mission, force_teleport, gta_banner, kick, kick_from_interior, mc_teleport, personal_vehicle_destroyed, remote_off_radar, rotate_cam, send_to_cutscene, send_to_location, sound_spam, spectate_notification, give_collectible, transaction_error, tse_freeze, tse_sender_mismatch, vehicle_kick, teleport_to_warehouse, trigger_business_raid, start_activity, start_script, destroy_personal_vehicle, clear_ped_tasks, turn_into_beast, remote_wanted_level, remote_wanted_level_others, remote_ragdoll, kick_vote, report_cash_spawn, modder_detection, game_anti_cheat_modder_detection, request_control_event, report, send_to_interior, chat_spam, spectate, spectate_others)
 		} reactions{};
 
 		struct player
