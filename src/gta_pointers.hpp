@@ -1,5 +1,6 @@
 #pragma once
 #include "function_types.hpp"
+#include "gta/enums.hpp"
 
 #include <memory/handle.hpp>
 
@@ -284,7 +285,7 @@ namespace big
 
 		functions::handle_chat_message m_handle_chat_message;
 
-		int* m_language;
+		eGameLanguage* m_language;
 		functions::update_language m_update_language;
 
 		PVOID m_model_spawn_bypass;

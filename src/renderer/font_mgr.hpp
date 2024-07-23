@@ -15,7 +15,8 @@ namespace big
 		std::mutex m_update_lock;
 
 	public:
-		font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes = {{28.f, &g.window.font_title},
+		font_mgr(std::vector<std::pair<float, ImFont**>> extra_font_sizes = {{20.f, nullptr},
+					 {28.f, &g.window.font_title},
 		             {24.f, &g.window.font_sub_title},
 		             {18.f, &g.window.font_small}});
 		virtual ~font_mgr() = default;
@@ -33,9 +34,14 @@ namespace big
 	private:
 		void rebuild();
 
-		file get_available_font_file_for_alphabet_type();
-		const ImWchar* GetGlyphRangesChineseSimplifiedOfficial();
-		const ImWchar* GetGlyphRangesTurkish();
-		const ImWchar* get_imgui_alphabet_type();
+		file get_available_font_file_for_alphabet_type(const eAlphabetType type) const;
+		const std::unordered_set<eAlphabetType> get_required_alphabet_types() const;
+
+		static eAlphabetType get_game_language_alphabet_type();
+		static const ImWchar* get_imgui_alphabet_type(const eAlphabetType type);
+
+		static const ImWchar* GetGlyphRangesChineseSimplifiedOfficial();
+		static const ImWchar* GetGlyphRangesTurkish();
+
 	};
 }
