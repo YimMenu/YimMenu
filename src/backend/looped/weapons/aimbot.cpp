@@ -139,7 +139,7 @@ namespace big
 					continue;
 				}
 				
-				if (g.weapons.aimbot.exclude_friends && !ped->m_player_info)
+				if (g.weapons.aimbot.exclude_friends && ped->m_player_info)
 				{
 					auto rockstar_id = ped->m_player_info->m_net_player_data.m_gamer_handle.m_rockstar_id;
 					auto is_friend   = friends_service::is_friend(rockstar_id);
