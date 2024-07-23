@@ -2,6 +2,8 @@
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
+#include "services/friends/friends_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 
 namespace big
 {
@@ -31,12 +33,23 @@ namespace big
 						if (g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info)
 							return;
 
+						if (g.weapons.aimbot.exclude_friends && !ped_ptr->m_player_info)
+						{
+							auto rockstar_id = ped_ptr->m_player_info->m_net_player_data.m_gamer_handle.m_rockstar_id;
+							auto is_friend   = friends_service::is_friend(rockstar_id);
+							auto db_player   = g_player_database_service->get_player_by_rockstar_id(rockstar_id);
+							auto is_trusted  = db_player && db_player->is_trusted;
+
+							if (is_friend || is_trusted)
+								return;
+						}
+
 						if (g.weapons.aimbot.only_on_enemy)
 						{
 							bool is_hated_relationship = false;
 							bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
-							auto blip_color            = HUD::GET_BLIP_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
-							bool is_enemy = PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE || (blip_color == (int)BlipColors::BlipColorEnemy || blip_color == (int)BlipColors::RedMission);
+							auto blip_color            = HUD::GET_BLIP_HUD_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
+							bool is_enemy = ((PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE) || (blip_color == HUD_COLOUR_RED));
 
 							switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
 							{
