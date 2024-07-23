@@ -1,8 +1,6 @@
 #pragma once
-#include "globals.hpp"
 #include "memory.hpp"
 #include "script_global.hpp"
-#include "vector.hpp"
 
 namespace lua::globals
 {

@@ -1,5 +1,5 @@
 #include "hooking/hooking.hpp"
-#include "native_hooks/native_hooks.hpp"
+#include "gta/script_thread.hpp"
 
 namespace big
 {

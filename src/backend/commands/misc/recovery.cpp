@@ -1,5 +1,4 @@
 #include "backend/command.hpp"
-#include "natives.hpp"
 
 namespace big
 {

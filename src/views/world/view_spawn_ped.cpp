@@ -1,8 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "script.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/players/player_service.hpp"

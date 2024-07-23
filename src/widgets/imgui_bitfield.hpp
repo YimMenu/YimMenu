@@ -1,7 +1,6 @@
 #pragma once
 
 #include <imgui.h>
-#include <string.h>
 
 namespace ImGui
 {

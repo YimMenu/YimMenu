@@ -1,7 +1,6 @@
 #include "renderer.hpp"
 
 #include "file_manager.hpp"
-#include "fonts/fonts.hpp"
 #include "gui.hpp"
 #include "pointers.hpp"
 

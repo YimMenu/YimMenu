@@ -1,6 +1,7 @@
 #include "font_mgr.hpp"
 
 #include "fonts/fonts.hpp"
+#include "pointers.hpp"
 #include "renderer.hpp"
 #include "thread_pool.hpp"
 
@@ -29,57 +30,51 @@ namespace big
 		m_update_lock.unlock();
 	}
 
+	void font_mgr::update_required_alphabet_type(eAlphabetType type)
+	{
+		m_require_extra = type;
+
+		g_thread_pool->push([this] {
+			rebuild();
+		});
+	}
+
 	void font_mgr::rebuild()
 	{
 		m_update_lock.lock();
 
 		g_renderer.pre_reset();
 
-		const auto extra_font_file = get_available_font_file_for_alphabet_type();
-		if (m_require_extra != eAlphabetType::LATIN && !extra_font_file.exists())
-		{
-			LOG(WARNING) << "Could not find an appropriate font for the current language!";
-		}
-		const auto extra_glyph_range = get_imgui_alphabet_type();
-
 		auto& io = ImGui::GetIO();
 		io.Fonts->Clear();
 
-		// default font size
-		{
-			ImFontConfig fnt_cfg{};
-			fnt_cfg.FontDataOwnedByAtlas = false;
-			strcpy(fnt_cfg.Name, "Fnt20px");
+		const auto required_alphabet_types = get_required_alphabet_types();
 
-			io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
-			    sizeof(font_storopia),
-			    20.f,
-			    &fnt_cfg,
-			    io.Fonts->GetGlyphRangesDefault());
-			if (m_require_extra != eAlphabetType::LATIN && extra_font_file.exists())
-			{
-				fnt_cfg.MergeMode = true;
-				io.Fonts->AddFontFromFileTTF(extra_font_file.get_path().string().c_str(), 20.f, &fnt_cfg, extra_glyph_range);
-			}
-			io.Fonts->Build();
-		}
-
-		// any other font sizes we need to support
 		for (auto [size, font_ptr] : m_extra_font_sizes)
 		{
 			ImFontConfig fnt_cfg{};
 			fnt_cfg.FontDataOwnedByAtlas = false;
 			strcpy(fnt_cfg.Name, std::format("Fnt{}px", (int)size).c_str());
 
-			*font_ptr = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
+			const auto tmp_ptr = io.Fonts->AddFontFromMemoryTTF(const_cast<uint8_t*>(font_storopia),
 			    sizeof(font_storopia),
 			    size,
 			    &fnt_cfg,
 			    io.Fonts->GetGlyphRangesDefault());
-			if (m_require_extra != eAlphabetType::LATIN && extra_font_file.exists())
+			if (font_ptr)
 			{
-				fnt_cfg.MergeMode = true;
-				io.Fonts->AddFontFromFileTTF(extra_font_file.get_path().string().c_str(), size, &fnt_cfg, extra_glyph_range);
+				*font_ptr = tmp_ptr;
+			}
+
+			for (const auto required_type : required_alphabet_types)
+			{
+				const auto font_file   = get_available_font_file_for_alphabet_type(required_type);
+				const auto glyph_range = get_imgui_alphabet_type(required_type);
+				if (required_type != eAlphabetType::LATIN && font_file.exists())
+				{
+					fnt_cfg.MergeMode = true;
+					io.Fonts->AddFontFromFileTTF(font_file.get_path().string().c_str(), size, &fnt_cfg, glyph_range);
+				}
 			}
 			io.Fonts->Build();
 		}
@@ -97,20 +92,11 @@ namespace big
 		m_update_lock.unlock();
 	}
 
-	void font_mgr::update_required_alphabet_type(eAlphabetType type)
-	{
-		m_require_extra = type;
-
-		g_thread_pool->push([this] {
-			rebuild();
-		});
-	}
-
-	file font_mgr::get_available_font_file_for_alphabet_type()
+	file font_mgr::get_available_font_file_for_alphabet_type(const eAlphabetType type) const
 	{
 		static const auto fonts_folder = std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts";
 
-		const auto& fonts = m_fonts.find(m_require_extra);
+		const auto& fonts = m_fonts.find(type);
 		if (fonts == m_fonts.end())
 			return {};
 		for (const auto& font : fonts->second)
@@ -122,6 +108,45 @@ namespace big
 			}
 		}
 		return {};
+	}
+
+	const std::unordered_set<eAlphabetType> font_mgr::get_required_alphabet_types() const
+	{
+		auto required_alphabet_types = std::unordered_set<eAlphabetType>({eAlphabetType::LATIN});
+
+		required_alphabet_types.insert(get_game_language_alphabet_type());
+		required_alphabet_types.insert(m_require_extra);
+
+		return required_alphabet_types;
+	}
+
+	eAlphabetType font_mgr::get_game_language_alphabet_type()
+	{
+		switch (*g_pointers->m_gta.m_language)
+		{
+		case eGameLanguage::RUSSIAN: return eAlphabetType::CYRILLIC;
+		case eGameLanguage::JAPANESE: return eAlphabetType::JAPANESE;
+		case eGameLanguage::KOREAN: return eAlphabetType::KOREAN;
+		case eGameLanguage::SIMPLIFIED_CHINESE:
+		case eGameLanguage::TRADITIONAL_CHINESE: return eAlphabetType::CHINESE;
+		}
+		return eAlphabetType::LATIN;
+	}
+
+	const ImWchar* font_mgr::get_imgui_alphabet_type(const eAlphabetType type)
+	{
+		auto& io = ImGui::GetIO();
+		switch (type)
+		{
+		case eAlphabetType::CHINESE: return GetGlyphRangesChineseSimplifiedOfficial();
+		case eAlphabetType::CYRILLIC: return io.Fonts->GetGlyphRangesCyrillic();
+		case eAlphabetType::JAPANESE: return io.Fonts->GetGlyphRangesJapanese();
+		case eAlphabetType::KOREAN: return io.Fonts->GetGlyphRangesKorean();
+		case eAlphabetType::TURKISH: return GetGlyphRangesTurkish();
+
+		default:
+		case eAlphabetType::LATIN: return io.Fonts->GetGlyphRangesDefault();
+		}
 	}
 
 	const ImWchar* font_mgr::GetGlyphRangesChineseSimplifiedOfficial()
@@ -189,21 +214,5 @@ namespace big
 		    0,
 		};
 		return &icons_ranges_Turkish[0];
-	}
-
-	const ImWchar* font_mgr::get_imgui_alphabet_type()
-	{
-		auto& io = ImGui::GetIO();
-		switch (m_require_extra)
-		{
-		case eAlphabetType::CHINESE: return GetGlyphRangesChineseSimplifiedOfficial();
-		case eAlphabetType::CYRILLIC: return io.Fonts->GetGlyphRangesCyrillic();
-		case eAlphabetType::JAPANESE: return io.Fonts->GetGlyphRangesJapanese();
-		case eAlphabetType::KOREAN: return io.Fonts->GetGlyphRangesKorean();
-		case eAlphabetType::TURKISH: return GetGlyphRangesTurkish();
-
-		default:
-		case eAlphabetType::LATIN: return io.Fonts->GetGlyphRangesDefault();
-		}
 	}
 }

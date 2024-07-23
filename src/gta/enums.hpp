@@ -3,6 +3,24 @@
 
 constexpr auto MAX_PLAYERS = 32;
 
+enum class eGameLanguage : int
+{
+	ENGLISH,
+	FRENCH,
+	GERMAN,
+	ITALIAN,
+	SPANISH,
+	BRAZILIAN_PORTUGUESE,
+	POLISH,
+	RUSSIAN,
+	KOREAN,
+	TRADITIONAL_CHINESE,
+	JAPANESE,
+	MEXICAN_SPANISH,
+	SIMPLIFIED_CHINESE
+};
+NLOHMANN_JSON_SERIALIZE_ENUM(eGameLanguage, {{eGameLanguage::ENGLISH, "english"}, {eGameLanguage::FRENCH, "french"}, {eGameLanguage::GERMAN, "german"}, {eGameLanguage::ITALIAN, "italian"}, {eGameLanguage::SPANISH, "spanish"}, {eGameLanguage::BRAZILIAN_PORTUGUESE, "brazilian_portuguese"}, {eGameLanguage::POLISH, "polish"}, {eGameLanguage::RUSSIAN, "russian"}, {eGameLanguage::KOREAN, "korean"}, {eGameLanguage::TRADITIONAL_CHINESE, "traditional_chinese"}, {eGameLanguage::JAPANESE, "japanese"}, {eGameLanguage::MEXICAN_SPANISH, "mexican_spanish"}, {eGameLanguage::SIMPLIFIED_CHINESE, "simplified_chinese"}})
+
 enum class ControllerInputs : uint32_t
 {
 	INPUT_NEXT_CAMERA,
@@ -1976,18 +1994,18 @@ enum class eTaskTypeIndex
 enum class eTaskFlags
 {
 	ParachuteWhenCoordThresholdIsReached = 1 << 3,
-	CamShakeOnFall = 1 << 4,
-	PlayRagdollAnim = 1 << 5,
-	PlayDiveAnim = 1 << 7,
-	NoFallAnimation = 1 << 10,
-	NoSlowFall = 1 << 11,
-	Unk12 = 1 << 12,
-	SuperJump = 1 << 15,
-	LandOnJump = 1 << 16,
-	BeastJump = 1 << 17,
-	BeastJumpWithSuper = SuperJump | BeastJump,
-	GracefulLanding = NoFallAnimation | NoSlowFall | Unk12 | LandOnJump,
-	RagdollOnFall = BeastJump | PlayRagdollAnim
+	CamShakeOnFall                       = 1 << 4,
+	PlayRagdollAnim                      = 1 << 5,
+	PlayDiveAnim                         = 1 << 7,
+	NoFallAnimation                      = 1 << 10,
+	NoSlowFall                           = 1 << 11,
+	Unk12                                = 1 << 12,
+	SuperJump                            = 1 << 15,
+	LandOnJump                           = 1 << 16,
+	BeastJump                            = 1 << 17,
+	BeastJumpWithSuper                   = SuperJump | BeastJump,
+	GracefulLanding                      = NoFallAnimation | NoSlowFall | Unk12 | LandOnJump,
+	RagdollOnFall                        = BeastJump | PlayRagdollAnim
 };
 
 enum class eDoorId

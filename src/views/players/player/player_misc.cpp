@@ -1,8 +1,6 @@
 #include "views/view.hpp"
 #include "services/players/player_service.hpp"
 #include "util/scripts.hpp"
-#include "services/script_connection/script_connection_service.hpp"
-#include "packet.hpp"
 
 namespace big
 {

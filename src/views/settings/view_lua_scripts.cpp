@@ -1,8 +1,5 @@
 #include "fiber_pool.hpp"
 #include "lua/lua_manager.hpp"
-#include "script.hpp"
-#include "thread_pool.hpp"
-#include "util/scripts.hpp"
 #include "views/view.hpp"
 
 namespace big

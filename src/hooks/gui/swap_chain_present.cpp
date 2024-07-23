@@ -1,6 +1,5 @@
 #include "hooking/hooking.hpp"
 #include "renderer/renderer.hpp"
-#include "script.hpp"
 
 namespace big
 {

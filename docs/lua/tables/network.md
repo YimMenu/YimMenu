@@ -2,7 +2,7 @@
 
 Table containing helper functions for network related features.
 
-## Functions (15)
+## Functions (17)
 
 ### `trigger_script_event(bitset, _args)`
 
@@ -15,6 +15,15 @@ Call trigger_script_event (TSE)
 **Example Usage:**
 ```lua
 network.trigger_script_event(bitset, _args)
+```
+
+### `is_session_started()`
+
+Returns true if the local player is in a multiplayer session.
+
+**Example Usage:**
+```lua
+network.is_session_started()
 ```
 
 ### `give_pickup_rewards(player, reward)`
@@ -134,7 +143,7 @@ string = network.get_flagged_modder_reason(player_idx)
 
 ### `force_script_host(script_name)`
 
-Try to force ourself to be host for the given GTA Script.
+Try to force ourself to be host for the given GTA Script. Needs to be called in the fiber pool or a loop.
 
 - **Parameters:**
   - `script_name` (string): Name of the script
@@ -142,6 +151,20 @@ Try to force ourself to be host for the given GTA Script.
 **Example Usage:**
 ```lua
 network.force_script_host(script_name)
+```
+
+### `force_script_on_player(player_idx, script_name, instance_id)`
+
+Forces the given GTA script to be started on a player. Needs to be called in the fiber pool or a loop.
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+  - `script_name` (string): Name of the script.
+  - `instance_id` (integer): Instance ID of the script.
+
+**Example Usage:**
+```lua
+network.force_script_on_player(script_name)
 ```
 
 ### `send_chat_message(msg, team_only)`

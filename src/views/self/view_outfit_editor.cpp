@@ -1,5 +1,4 @@
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "util/outfit.hpp"
 #include "util/ped.hpp"
 #include "views/view.hpp"
@@ -31,6 +30,8 @@ namespace big
 				item.texture_id_max = PED::GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS(self::ped, item.id, item.drawable_id) - 1;
 			}
 		});
+
+		components::sub_title("VIEW_OUTFIT_EDITOR_TIP"_T);
 
 		components::button("OUTFIT_RANDOM_COMPONENT"_T, [] {
 			ped::set_ped_random_component_variation(self::ped);

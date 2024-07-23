@@ -1,6 +1,5 @@
 #include "gui.hpp"
 
-#include "common.hpp"
 #include "natives.hpp"
 #include "renderer/renderer.hpp"
 #include "script.hpp"

@@ -1,26 +1,21 @@
 #pragma once
+#include "gta/enums.hpp"
 
 namespace big
 {
-	struct LanguageType
-	{
-		uint32_t id;
-		const char name[32];
-	};
-
-	const LanguageType languages[] = {
-	    {0, "English"},
-	    {1, "French"},
-	    {2, "German"},
-	    {3, "Italian"},
-	    {4, "Spanish (Spain)"},
-	    {5, "Portuguese (Brazil)"},
-	    {6, "Polish"},
-	    {7, "Russian"},
-	    {8, "Korean"},
-	    {9, "Chinese (Traditional)"},
-	    {10, "Japanese"},
-	    {11, "Spanish (Mexico)"},
-	    {12, "Chinese (Simpified)"},
+	const std::map<eGameLanguage, const std::string_view> languages = {
+	    {eGameLanguage::ENGLISH, "English"},
+	    {eGameLanguage::FRENCH, "French"},
+	    {eGameLanguage::GERMAN, "German"},
+	    {eGameLanguage::ITALIAN, "Italian"},
+	    {eGameLanguage::SPANISH, "Spanish (Spain)"},
+	    {eGameLanguage::BRAZILIAN_PORTUGUESE, "Portuguese (Brazil)"},
+	    {eGameLanguage::POLISH, "Polish"},
+	    {eGameLanguage::RUSSIAN, "Russian"},
+	    {eGameLanguage::KOREAN, "Korean"},
+	    {eGameLanguage::TRADITIONAL_CHINESE, "Chinese (Traditional)"},
+	    {eGameLanguage::JAPANESE, "Japanese"},
+	    {eGameLanguage::MEXICAN_SPANISH, "Spanish (Mexico)"},
+	    {eGameLanguage::SIMPLIFIED_CHINESE, "Chinese (Simpified)"},
 	};
 }

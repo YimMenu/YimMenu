@@ -1,7 +1,5 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
-#include "util/teleport.hpp"
 #include "util/vehicle.hpp"
 
 namespace big

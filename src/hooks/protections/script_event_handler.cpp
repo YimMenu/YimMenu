@@ -1,6 +1,4 @@
-#include "backend/player_command.hpp"
 #include "gta/net_game_event.hpp"
-#include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
@@ -9,9 +7,9 @@
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
-#include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
+#include <script/CGameScriptHandlerNetComponent.hpp>
 
 
 namespace big

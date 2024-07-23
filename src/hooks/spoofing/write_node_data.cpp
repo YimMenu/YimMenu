@@ -11,8 +11,6 @@
 #include <netsync/nodes/ped/CPedTaskTreeDataNode.hpp>
 #include <netsync/nodes/physical/CPhysicalScriptGameStateDataNode.hpp>
 #include <netsync/nodes/proximity_migrateable/CSectorDataNode.hpp>
-#include <netsync/nodes/proximity_migrateable/CGlobalFlagsDataNode.hpp>
-#include <netsync/nodes/dynamic_entity/CDynamicEntityGameStateDataNode.hpp>
 #include <netsync/nodes/player/CPlayerAppearanceDataNode.hpp>
 #include <netsync/nodes/player/CPlayerCameraDataNode.hpp>
 #include <netsync/nodes/player/CPlayerGameStateDataNode.hpp>
@@ -20,7 +18,6 @@
 #include <netsync/nodes/player/CPlayerGamerDataNode.hpp>
 #include <netsync/nodes/player/CPlayerSectorPosNode.hpp>
 #include <netsync/nodes/ped/CPedHealthDataNode.hpp>
-#include <netsync/nodes/ped/CPedTaskSpecificDataNode.hpp>
 
 namespace
 {

@@ -1,10 +1,4 @@
 #include "interloper_reaction.hpp"
-
-#include "backend/player_command.hpp"
-#include "fiber_pool.hpp"
-#include "hooking/hooking.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
 #include "util/chat.hpp"
 
 namespace big

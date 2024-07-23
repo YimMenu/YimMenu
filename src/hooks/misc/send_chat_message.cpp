@@ -1,9 +1,6 @@
 #include "backend/command.hpp"
 #include "backend/context/chat_command_context.hpp"
-#include "gta/net_game_event.hpp"
-#include "gta_util.hpp"
 #include "hooking/hooking.hpp"
-#include "packet.hpp"
 #include "services/players/player_service.hpp"
 #include "util/chat.hpp"
 

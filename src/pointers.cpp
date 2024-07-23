@@ -1,7 +1,6 @@
 #include "pointers.hpp"
 
 #include "gta_pointers_layout_info.hpp"
-#include "memory/all.hpp"
 #include "sc_pointers_layout_info.hpp"
 
 namespace big
@@ -1210,7 +1209,7 @@ namespace big
             "83 3D ? ? ? ? ? 44 8B C3",
             [](memory::handle ptr)
             {
-                g_pointers->m_gta.m_language = ptr.add(2).rip().add(1).as<int*>();
+                g_pointers->m_gta.m_language = ptr.add(2).rip().add(1).as<eGameLanguage*>();
                 g_pointers->m_gta.m_update_language = ptr.add(0x38).rip().as<functions::update_language>();
             }
         },

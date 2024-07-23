@@ -1,9 +1,5 @@
-#include "gta_util.hpp"
 #include "hooking/hooking.hpp"
-#include "services/players/player_service.hpp"
-
 #include <network/CNetGamePlayerDataMsg.hpp>
-#include <network/Network.hpp>
 #include <network/RemoteGamerInfoMsg.hpp>
 #include <network/CMsgJoinRequest.hpp>
 

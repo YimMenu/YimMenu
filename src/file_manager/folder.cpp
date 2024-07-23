@@ -1,7 +1,5 @@
 #include "folder.hpp"
 
-#include "file_manager.hpp"
-
 namespace big
 {
 	folder::folder(const std::filesystem::path& folder_path) :

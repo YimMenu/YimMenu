@@ -95,7 +95,6 @@ namespace big
 		static void received_event(rage::netEventMgr* event_manager, CNetGamePlayer* source_player, CNetGamePlayer* target_player, uint16_t event_id, int event_index, int event_handled_bitset, int unk, rage::datBitBuffer* bit_buffer);
 
 		// these two aren't actually hooks, just helper functions for hooks
-		static bool increment_stat_event(CNetworkIncrementStatEvent* net_event_struct, CNetGamePlayer* sender);
 		static bool scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player);
 
 		static bool receive_net_message(void* a1, rage::netConnectionManager* mgr, rage::netEvent* event);

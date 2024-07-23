@@ -1,7 +1,5 @@
-#include "fiber_pool.hpp"
 #include "views/view.hpp"
-#include "script_mgr.hpp"
-#include "pointers.hpp"
+#include "lua/lua_manager.hpp"
 
 namespace big
 {

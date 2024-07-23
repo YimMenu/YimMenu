@@ -1,6 +1,4 @@
 #include "backend/player_command.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "services/squad_spawner/squad_spawner.hpp"
 
 namespace big

@@ -1,5 +1,4 @@
 #include "fiber_pool.hpp"
-#include "function_types.hpp"
 #include "hooking/hooking.hpp"
 #include "services/matchmaking/matchmaking_service.hpp"
 #include "services/player_database/player_database_service.hpp"

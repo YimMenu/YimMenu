@@ -1,5 +1,3 @@
-#include "core/scr_globals.hpp"
-#include "fiber_pool.hpp"
 #include "gta_util.hpp"
 #include "views/view.hpp"
 #include "util/chat.hpp"

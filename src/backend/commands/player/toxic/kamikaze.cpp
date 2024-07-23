@@ -2,7 +2,6 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
-#include "util/pathfind.hpp"
 #include "util/string_operations.hpp"
 #include "util/teleport.hpp"
 #include "util/vehicle.hpp"

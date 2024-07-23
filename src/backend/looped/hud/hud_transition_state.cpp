@@ -5,7 +5,6 @@
 #include "gta_util.hpp"
 #include "natives.hpp"
 #include "script_global.hpp"
-#include "services/players/player_service.hpp"
 
 // Credits: QuickNET
 namespace big

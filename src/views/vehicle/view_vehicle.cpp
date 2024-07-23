@@ -1,5 +1,4 @@
 #include "core/data/speed_units.hpp"
-#include "fiber_pool.hpp"
 #include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"

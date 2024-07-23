@@ -2,6 +2,7 @@
 #include "backend/reactions/interloper_reaction.hpp"
 #include "backend/reactions/reaction.hpp"
 #include "core/data/hud_colors.hpp"
+#include "core/data/language_codes.hpp"
 #include "core/data/ptfx_effects.hpp"
 #include "enums.hpp"
 #include "file_manager.hpp"
@@ -723,7 +724,7 @@ namespace big
 			bool spoof_session_region_type      = false;
 			int session_region_type             = 0;
 			bool spoof_session_language         = false;
-			int session_language                = 0;
+			eGameLanguage session_language      = eGameLanguage::ENGLISH;
 			bool spoof_session_player_count     = false;
 			int session_player_count            = 25;
 			int spoof_session_bad_sport_status  = 0;
@@ -1053,7 +1054,7 @@ namespace big
 			int region_filter          = 0;
 
 			bool language_filter_enabled = false;
-			int language_filter          = 0;
+			eGameLanguage language_filter = eGameLanguage::ENGLISH;
 
 			bool pool_filter_enabled = false;
 			int pool_filter          = 0;

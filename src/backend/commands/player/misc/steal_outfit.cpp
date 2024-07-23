@@ -1,6 +1,5 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "util/ped.hpp"
 
 namespace big

@@ -1,4 +1,3 @@
-#include "gui.hpp"
 #include "renderer/renderer.hpp"
 #include "views/view.hpp"
 

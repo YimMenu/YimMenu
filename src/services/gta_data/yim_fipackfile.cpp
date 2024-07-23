@@ -1,8 +1,6 @@
 #include "yim_fipackfile.hpp"
 
 #include "gta/fidevice.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
 #include "util/string_conversions.hpp"
 
 namespace big

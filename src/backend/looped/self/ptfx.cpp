@@ -1,5 +1,4 @@
 #include "backend/looped_command.hpp"
-#include "core/data/ptfx_effects.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 

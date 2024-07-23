@@ -1,11 +1,5 @@
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
-#include "script.hpp"
 #include "util/scripts.hpp"
-
-#include <script/globals/GPBD_FM_3.hpp>
 
 namespace big
 {
