@@ -16,7 +16,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			for (auto& weapon : g_gta_data_service->weapons())
+			for (auto& weapon : g_gta_data_service.weapons())
 				WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(player->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
 		}
 	};
@@ -33,7 +33,7 @@ namespace big
 		virtual void execute(const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
 			g_player_service->iterate([](auto& plyr) {
-				for (auto& weapon : g_gta_data_service->weapons())
+				for (auto& weapon : g_gta_data_service.weapons())
 					WEAPON::GIVE_WEAPON_TO_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr.second->id()), weapon.second.m_hash, 9999, FALSE, FALSE);
 				script::get_current()->yield(500ms);
 			});

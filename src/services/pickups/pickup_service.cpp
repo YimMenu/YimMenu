@@ -39,7 +39,7 @@ namespace big
 
 	void pickup_service::give_ammo(const int targets) const
 	{
-		for (const auto& [_, weapon] : g_gta_data_service->weapons())
+		for (const auto& [_, weapon] : g_gta_data_service.weapons())
 		{
 			if (weapon.m_reward_ammo_hash != 0 || weapon.m_throwable)
 			{
@@ -65,7 +65,7 @@ namespace big
 
 	void pickup_service::give_weapons(const int targets) const
 	{
-		for (const auto& [_, weapon] : g_gta_data_service->weapons())
+		for (const auto& [_, weapon] : g_gta_data_service.weapons())
 		{
 			if (weapon.m_reward_hash != 0)
 			{

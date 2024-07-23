@@ -42,7 +42,7 @@ namespace big
 			}
 			else if (arg == 3)
 			{
-				for (auto& item : g_gta_data_service->vehicles())
+				for (auto& item : g_gta_data_service.vehicles())
 				{
 					suggestions.push_back(item.second.m_name);
 				}
@@ -92,7 +92,7 @@ namespace big
 			std::string item_name_lower, args_lower;
 			args_lower = args[2];
 			string::operations::to_lower(args_lower);
-			for (auto& item : g_gta_data_service->vehicles())
+			for (auto& item : g_gta_data_service.vehicles())
 			{
 				item_name_lower = item.second.m_name;
 				string::operations::to_lower(item_name_lower);

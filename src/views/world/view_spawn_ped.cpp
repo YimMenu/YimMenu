@@ -28,8 +28,8 @@ namespace big
 			return;
 		}
 
-		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		for (auto& [_, weapon] : g_gta_data_service->weapons())
+		const auto& weapon_type_arr = g_gta_data_service.weapon_types();
+		for (auto& [_, weapon] : g_gta_data_service.weapons())
 		{
 			if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
 			{
@@ -194,11 +194,11 @@ namespace big
 		static char ped_model_buf[64];
 		static Player selected_ped_player_id = -1;
 
-		auto& ped_type_arr = g_gta_data_service->ped_types();
-		auto& ped_arr      = g_gta_data_service->peds();
+		auto& ped_type_arr = g_gta_data_service.ped_types();
+		auto& ped_arr      = g_gta_data_service.peds();
 
-		auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		auto& weapon_arr      = g_gta_data_service->weapons();
+		auto& weapon_type_arr = g_gta_data_service.weapon_types();
+		auto& weapon_arr      = g_gta_data_service.weapons();
 
 		static Player selected_ped_for_player_id = -1;
 		auto& player_arr                         = g_player_service->players();
@@ -489,7 +489,7 @@ namespace big
 				            "NO_WEAPONS"_T.data() :
 				            selected_ped_weapon_hash == 0 ?
 				            "ALL"_T.data() :
-				            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
+				            g_gta_data_service.weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
 				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{

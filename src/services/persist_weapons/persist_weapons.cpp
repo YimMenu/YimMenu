@@ -1,7 +1,8 @@
 #include "persist_weapons.hpp"
-#include "services/gta_data/gta_data_service.hpp"
+
 #include "gta/weapons.hpp"
 #include "natives.hpp"
+#include "services/gta_data/gta_data_service.hpp"
 
 namespace big
 {
@@ -9,10 +10,10 @@ namespace big
 
 	void persist_weapons::save_weapons(std::string loadout_name)
 	{
-		Player player  = self::id; 
+		Player player  = self::id;
 		Ped player_ped = self::ped;
 		weaponloadout_json weapon_json{};
-		for (const auto& [name, weapon] : g_gta_data_service->weapons())
+		for (const auto& [name, weapon] : g_gta_data_service.weapons())
 		{
 			Hash weapon_hash = weapon.m_hash;
 			if (weapon_hash != WEAPON_UNARMED && WEAPON::HAS_PED_GOT_WEAPON(player_ped, weapon_hash, FALSE))
@@ -167,7 +168,7 @@ namespace big
 				if (weapon.group != GROUP_MELEE)
 				{
 					WEAPON::SET_PED_WEAPON_TINT_INDEX(player_ped, weapon_hash, weapon.tint);
-					for (auto component : g_gta_data_service->weapon_by_hash(weapon_hash).m_attachments)
+					for (auto component : g_gta_data_service.weapon_by_hash(weapon_hash).m_attachments)
 						WEAPON::REMOVE_WEAPON_COMPONENT_FROM_PED(player_ped, weapon_hash, rage::joaat(component));
 					for (auto component : weapon.component_array)
 						WEAPON::GIVE_WEAPON_COMPONENT_TO_PED(player_ped, weapon_hash, component);

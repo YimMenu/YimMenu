@@ -21,8 +21,8 @@
 #include "netsync/nodes/ped/CPedCreationDataNode.hpp"
 #include "netsync/nodes/ped/CPedGameStateDataNode.hpp"
 #include "netsync/nodes/ped/CPedHealthDataNode.hpp"
-#include "netsync/nodes/ped/CPedMovementGroupDataNode.hpp"
 #include "netsync/nodes/ped/CPedMovementDataNode.hpp"
+#include "netsync/nodes/ped/CPedMovementGroupDataNode.hpp"
 #include "netsync/nodes/ped/CPedOrientationDataNode.hpp"
 #include "netsync/nodes/ped/CPedScriptCreationDataNode.hpp"
 #include "netsync/nodes/ped/CPedTaskSequenceDataNode.hpp"
@@ -206,7 +206,7 @@ namespace big
 
 		if (info->m_model_type == eModelType::Vehicle)
 		{
-			for (auto& [name, data] : g_gta_data_service->vehicles())
+			for (auto& [name, data] : g_gta_data_service.vehicles())
 			{
 				if (data.m_hash == model)
 				{
@@ -217,7 +217,7 @@ namespace big
 		}
 		else if (info->m_model_type == eModelType::Ped || info->m_model_type == eModelType::OnlineOnlyPed)
 		{
-			for (auto& [name, data] : g_gta_data_service->peds())
+			for (auto& [name, data] : g_gta_data_service.peds())
 			{
 				if (data.m_hash == model)
 				{
@@ -1262,8 +1262,7 @@ namespace big
 					return true;
 				}
 
-				if (attach_node->m_attached
-				    && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
+				if (attach_node->m_attached && object->m_object_type == (int16_t)eNetObjType::NET_OBJ_TYPE_TRAILER)
 				{
 					if (auto net_obj =
 					        g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, attach_node->m_attached_to, false))
@@ -1380,7 +1379,7 @@ namespace big
 			{
 				const auto game_state_node = (CPlayerGameStateDataNode*)(node);
 				if (game_state_node->m_is_overriding_population_control_sphere
-				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x,game_state_node->m_population_control_sphere_y))
+				    && is_invalid_override_pos(game_state_node->m_population_control_sphere_x, game_state_node->m_population_control_sphere_y))
 				{
 					if (gta_util::get_network()->m_game_session_ptr->is_host())
 						notify::crash_blocked(sender, "invalid sector position (player game state node)");
@@ -1573,7 +1572,7 @@ namespace big
 							}
 						}
 					}
-					else if (veh_creation_model != std::nullopt) 
+					else if (veh_creation_model != std::nullopt)
 					{
 						// object hasn't been created yet, but we have the model hash from the creation node
 						if (auto model_info = model_info::get_vehicle_model(veh_creation_model.value()))

@@ -22,7 +22,9 @@ namespace big
 	{
 	public:
 		gta_data_service();
-		~gta_data_service();
+		~gta_data_service() = default;
+
+		bool init();
 
 		bool cache_needs_update() const;
 		eGtaDataUpdateState state() const;
@@ -88,5 +90,5 @@ namespace big
 		static constexpr weapon_component empty_component{};
 	};
 
-	inline gta_data_service* g_gta_data_service{};
+	inline gta_data_service g_gta_data_service{};
 }

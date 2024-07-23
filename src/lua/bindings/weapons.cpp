@@ -18,7 +18,7 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_display_name(Hash weapon_hash)
 	{
-		return big::g_gta_data_service->weapon_by_hash(weapon_hash).m_display_name;
+		return big::g_gta_data_service.weapon_by_hash(weapon_hash).m_display_name;
 	}
 
 	// Lua API: Function
@@ -32,7 +32,7 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_display_name_string(std::string weapon_name)
 	{
-		return big::g_gta_data_service->weapon_by_hash(rage::joaat(weapon_name)).m_display_name;
+		return big::g_gta_data_service.weapon_by_hash(rage::joaat(weapon_name)).m_display_name;
 	}
 
 	// Lua API: Function
@@ -50,7 +50,7 @@ namespace lua::weapons
 	static std::vector<std::string> get_all_weapons_of_group_type(Hash group_hash)
 	{
 		std::vector<std::string> return_value;
-		for (auto& [name, weapon] : big::g_gta_data_service->weapons())
+		for (auto& [name, weapon] : big::g_gta_data_service.weapons())
 		{
 			if (rage::joaat("GROUP_" + weapon.m_weapon_type) == group_hash)
 			{
@@ -85,7 +85,7 @@ namespace lua::weapons
 			group_name.erase(0, 6);
 		}
 		std::vector<std::string> return_value;
-		for (auto& [name, weapon] : big::g_gta_data_service->weapons())
+		for (auto& [name, weapon] : big::g_gta_data_service.weapons())
 		{
 			if (weapon.m_weapon_type == group_name)
 			{
@@ -109,7 +109,7 @@ namespace lua::weapons
 	//```
 	static std::vector<std::string> get_all_weapon_components(Hash weapon_hash)
 	{
-		return big::g_gta_data_service->weapon_by_hash(weapon_hash).m_attachments;
+		return big::g_gta_data_service.weapon_by_hash(weapon_hash).m_attachments;
 	}
 
 	// Lua API: Function
@@ -126,7 +126,7 @@ namespace lua::weapons
 	//```
 	static std::vector<std::string> get_all_weapon_components_string(std::string weapon_name)
 	{
-		return big::g_gta_data_service->weapon_by_hash(rage::joaat(weapon_name)).m_attachments;
+		return big::g_gta_data_service.weapon_by_hash(rage::joaat(weapon_name)).m_attachments;
 	}
 
 	// Lua API: Function
@@ -140,7 +140,7 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_component_display_name(Hash weapon_component_hash)
 	{
-		return big::g_gta_data_service->weapon_component_by_hash(weapon_component_hash).m_display_name;
+		return big::g_gta_data_service.weapon_component_by_hash(weapon_component_hash).m_display_name;
 	}
 
 	// Lua API: Function
@@ -154,7 +154,7 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_component_display_name_string(std::string weapon_component)
 	{
-		return big::g_gta_data_service->weapon_component_by_hash(rage::joaat(weapon_component)).m_display_name;
+		return big::g_gta_data_service.weapon_component_by_hash(rage::joaat(weapon_component)).m_display_name;
 	}
 
 	// Lua API: Function
@@ -168,7 +168,7 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_component_display_desc(Hash weapon_component_hash)
 	{
-		return big::g_gta_data_service->weapon_component_by_hash(weapon_component_hash).m_display_desc;
+		return big::g_gta_data_service.weapon_component_by_hash(weapon_component_hash).m_display_desc;
 	}
 
 	// Lua API: Function
@@ -182,15 +182,15 @@ namespace lua::weapons
 	//```
 	static std::string get_weapon_component_display_desc_string(std::string weapon_component)
 	{
-		return big::g_gta_data_service->weapon_component_by_hash(rage::joaat(weapon_component)).m_display_desc;
+		return big::g_gta_data_service.weapon_component_by_hash(rage::joaat(weapon_component)).m_display_desc;
 	}
 
 	void bind(sol::state& state)
 	{
-		auto ns                                 = state["weapons"].get_or_create<sol::table>();
-		ns["get_weapon_display_name"]           = sol::overload(get_weapon_display_name, get_weapon_display_name_string);
-		ns["get_all_weapons_of_group_type"]     = sol::overload(get_all_weapons_of_group_type, get_all_weapons_of_group_type_string);
-		ns["get_all_weapon_components"]         = sol::overload(get_all_weapon_components, get_all_weapon_components_string);
+		auto ns                       = state["weapons"].get_or_create<sol::table>();
+		ns["get_weapon_display_name"] = sol::overload(get_weapon_display_name, get_weapon_display_name_string);
+		ns["get_all_weapons_of_group_type"] = sol::overload(get_all_weapons_of_group_type, get_all_weapons_of_group_type_string);
+		ns["get_all_weapon_components"] = sol::overload(get_all_weapon_components, get_all_weapon_components_string);
 		ns["get_weapon_component_display_name"] = sol::overload(get_weapon_component_display_name, get_weapon_component_display_name_string);
 		ns["get_weapon_component_display_desc"] = sol::overload(get_weapon_component_display_desc, get_weapon_component_display_desc_string);
 	}
