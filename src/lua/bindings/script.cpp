@@ -7,6 +7,7 @@
 #include "lua/bindings/network.hpp"
 #include "memory/pattern.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
+#include "util/scripts.hpp"
 
 namespace lua::script
 {
@@ -157,6 +158,23 @@ namespace lua::script
 
 	// Lua API: function
 	// Table: script
+	// Name: is_active
+	// Param: script_name: string: The name of the script.
+	// Returns true if the specified script is currently active/running.
+	// **Example Usage:**
+	// ```lua
+	// local is_freemode_active = script.is_active("freemode")
+	// ```
+	static bool is_active(const std::string& script_name)
+	{
+		if (auto script = big::gta_util::find_script_thread(rage::joaat(script_name)))
+			return true;
+
+		return false;
+	}
+
+	// Lua API: function
+	// Table: script
 	// Name: execute_as_script
 	// Param: script_name: string: Target script thread.
 	// Param: func: function: Function that will be executed once in the script thread.
@@ -175,9 +193,9 @@ namespace lua::script
 	// Param _patch: table: The bytes to be written into the script's bytecode.
 	// Adds a patch for the specified script.
 	// **Example Usage:**
-	//```lua
-	//script.add_patch("fm_content_xmas_truck", "Flickering Fix", "56 ? ? 4F ? ? 40 ? 5D ? ? ? 74", 0, {0x2B, 0x00, 0x00})
-	//```
+	// ```lua
+	// script.add_patch("fm_content_xmas_truck", "Flickering Fix", "56 ? ? 4F ? ? 40 ? 5D ? ? ? 74", 0, {0x2B, 0x00, 0x00})
+	// ```
 	static void add_patch(const std::string& script_name, const std::string& name, const std::string& pattern, int offset, sol::table _patch)
 	{
 		auto patch = convert_sequence<uint8_t>(_patch);
@@ -197,9 +215,9 @@ namespace lua::script
 	// Param _args: table: The arguments to pass to the script function.
 	// Calls a function from the specified script.
 	// **Example Usage:**
-	//```lua
-	//script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
-	//```
+	// ```lua
+	// script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
+	// ```
 	static void call_function(const std::string& name, const std::string& script_name, const std::string& pattern, int offset, sol::table _args)
 	{
 		auto args = convert_sequence<uint64_t>(_args);
@@ -208,14 +226,32 @@ namespace lua::script
 		script_function(args);
 	}
 
+	// Lua API: function
+	// Table: script
+	// Name: start_launcher_script
+	// Param: script_name: string: The name of the script.
+	// Tries to start a launcher script. Needs to be called in the fiber pool or a loop.
+	// **Example Usage:**
+	// ```lua
+	// script.run_in_fiber(function()
+	//     script.start_launcher_script("am_hunt_the_beast")
+	// end)
+	// ```
+	static void start_launcher_script(const std::string& script_name)
+	{
+		big::scripts::start_launcher_script(rage::joaat(script_name));
+	}
+
 	void bind(sol::state& state)
 	{
-		auto ns                 = state["script"].get_or_create<sol::table>();
-		ns["register_looped"]   = register_looped;
-		ns["run_in_fiber"]      = run_in_fiber;
-		ns["execute_as_script"] = execute_as_script;
-		ns["add_patch"]         = add_patch;
-		ns["call_function"]     = call_function;
+		auto ns                     = state["script"].get_or_create<sol::table>();
+		ns["register_looped"]       = register_looped;
+		ns["run_in_fiber"]          = run_in_fiber;
+		ns["is_active"]             = is_active;
+		ns["execute_as_script"]     = execute_as_script;
+		ns["add_patch"]             = add_patch;
+		ns["call_function"]         = call_function;
+		ns["start_launcher_script"] = start_launcher_script;
 
 		auto usertype = state.new_usertype<script_util>("script_util");
 

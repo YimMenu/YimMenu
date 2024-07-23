@@ -12,7 +12,7 @@ static rage::scrThread* selected_thread;
 static int selected_stack_size             = 128;
 static int free_stacks                     = -1;
 static const char* selected_stack_size_str = "MULTIPLAYER_MISSION";
-static const char* selected_script         = "<SELECT>";
+static const char* selected_script         = "";
 
 static std::chrono::high_resolution_clock::time_point last_stack_update_time{};
 
@@ -37,7 +37,7 @@ namespace big
 				return;
 			}
 
-			components::small_text("VIEW_DEBUG_THREADS"_T);
+			ImGui::SeparatorText("VIEW_DEBUG_THREADS"_T.data());
 
 			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_THREAD"_T.data(), selected_thread ? selected_thread->m_name : "VIEW_DEBUG_THREADS_SELECTED_NONE"_T.data()))
 			{
@@ -72,6 +72,13 @@ namespace big
 
 			if (selected_thread)
 			{
+				static const std::string thread_states = std::string("VIEW_DEBUG_THREADS_STATE_0"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_1"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_2"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_3"_T.data()) + '\0'
+				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data()) + '\0';
+				ImGui::Combo("VIEW_DEBUG_THREADS_STATE"_T.data(), (int*)&selected_thread->m_context.m_state, thread_states.c_str());
+
 				auto net_handler = reinterpret_cast<CGameScriptHandlerNetComponent*>(selected_thread->m_net_component);
 
 				if (net_handler)
@@ -83,36 +90,28 @@ namespace big
 
 						if (!net_handler->is_local_player_host())
 						{
-							components::button("VIEW_DEBUG_THREADS_TAKE_CONTROL"_T, [net_handler] {
-								net_handler->send_host_migration_event(g_player_service->get_self()->get_net_game_player());
-							});
+							ImGui::SameLine();
+							if (ImGui::SmallButton("VIEW_DEBUG_THREADS_TAKE_CONTROL"_T.data()))
+							{
+								g_fiber_pool->queue_job([net_handler] {
+									net_handler->send_host_migration_event(g_player_service->get_self()->get_net_game_player());				
+								});
+							}
 						}
 					}
 				}
 
-				static const std::string thread_states = std::string("VIEW_DEBUG_THREADS_STATE_0"_T.data()) + '\0'
-				    + std::string("VIEW_DEBUG_THREADS_STATE_1"_T.data()) + '\0'
-				    + std::string("VIEW_DEBUG_THREADS_STATE_2"_T.data()) + '\0'
-				    + std::string("VIEW_DEBUG_THREADS_STATE_3"_T.data()) + '\0'
-				    + std::string("VIEW_DEBUG_THREADS_STATE_4"_T.data()) + '\0';
-				ImGui::Combo("VIEW_DEBUG_THREADS_STATE"_T.data(), (int*)&selected_thread->m_context.m_state, thread_states.c_str());
-				//Script Pointer
-				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T).c_str());
+				ImGui::Text(std::format("{}: 0x{:X}", "VIEW_DEBUG_THREADS_SCRIPT_POINTER"_T, (DWORD64)selected_thread).c_str());
 				ImGui::SameLine();
-				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread).c_str()))
+				if (ImGui::SmallButton(std::format("{}##script_ptr", "COPY"_T).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread).c_str());
-				//Stack Pointer
-				ImGui::Text(std::format("{}: ", "VIEW_DEBUG_THREADS_STACK_POINTER"_T).c_str());
+				ImGui::Text(std::format("{}: 0x{:X}", "VIEW_DEBUG_THREADS_STACK_POINTER"_T, (DWORD64)selected_thread->m_stack).c_str());
 				ImGui::SameLine();
-				if (ImGui::Button(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str()))
+				if (ImGui::SmallButton(std::format("{}##stack_ptr", "COPY"_T).c_str()))
 					ImGui::SetClipboardText(std::format("0x{:X}", (DWORD64)selected_thread->m_stack).c_str());
-				ImGui::SameLine();
-				ImGui::Text(std::format("{}: {} {}: {}",
-				    "VIEW_DEBUG_THREADS_INTERNAL_STACK_POINTER"_T, selected_thread->m_context.m_stack_pointer,
-				    "VIEW_DEBUG_THREADS_STACK_SIZE"_T, selected_thread->m_context.m_stack_size)
-				                .c_str());
-				//Instruction Pointer
-				ImGui::Text(std::format("{}: 0x{:X}","VIEW_DEBUG_THREADS_INSTRUCTION_POINTER"_T, selected_thread->m_context.m_instruction_pointer).c_str());
+				ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_INTERNAL_STACK_POINTER"_T, selected_thread->m_context.m_stack_pointer).c_str());
+				ImGui::Text(std::format("{}: 0x{:X}", "VIEW_DEBUG_THREADS_INSTRUCTION_POINTER"_T, selected_thread->m_context.m_instruction_pointer).c_str());
+				ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_STACK_SIZE"_T, selected_thread->m_context.m_stack_size).c_str());
 
 				if (selected_thread->m_context.m_state == rage::eThreadState::killed)
 				{
@@ -130,22 +129,11 @@ namespace big
 				}
 			}
 
-			components::small_text("VIEW_DEBUG_THREADS_NEW"_T);
+			ImGui::SeparatorText("VIEW_DEBUG_THREADS_NEW"_T.data());
 
-			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_SCRIPT"_T.data(), selected_script))
-			{
-				for (auto script : all_script_names)
-				{
-					if (ImGui::Selectable(script, script == selected_script))
-					{
-						selected_script = script;
-					}
+			static std::string search_script = "";
 
-					if (script == selected_script)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
+			components::input_text_with_hint("VIEW_DEBUG_THREADS_SCRIPT"_T, "SEARCH"_T, search_script, ImGuiInputTextFlags_None);
 
 			if (ImGui::BeginCombo("VIEW_DEBUG_THREADS_STACK_SIZE"_T.data(), selected_stack_size_str))
 			{
@@ -165,6 +153,28 @@ namespace big
 						ImGui::SetItemDefaultFocus();
 				}
 				ImGui::EndCombo();
+			}
+
+			if (ImGui::BeginListBox("##scripts"))
+			{
+				std::string lower_search = search_script;
+				std::transform(lower_search.begin(), lower_search.end(), lower_search.begin(), ::tolower);
+
+				for (auto& script : all_script_names)
+				{
+					std::string lower_script = script;
+					std::transform(lower_script.begin(), lower_script.end(), lower_script.begin(), ::tolower);
+
+					if (lower_script.find(lower_search) != std::string::npos)
+					{
+						if (ImGui::Selectable(script, selected_script == script))
+						{
+							selected_script = script;
+							search_script   = script;
+						}
+					}
+				}
+				ImGui::EndListBox();
 			}
 
 			ImGui::Text(std::format("{}: {}", "VIEW_DEBUG_THREADS_FREE_STACKS"_T, free_stacks).c_str());

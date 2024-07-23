@@ -2,7 +2,7 @@
 
 Table containing helper functions related to gta scripts.
 
-## Functions (5)
+## Functions (7)
 
 ### `register_looped(name, func)`
 
@@ -67,6 +67,18 @@ script.run_in_fiber(function (script)
 end)
 ```
 
+### `is_active(script_name)`
+
+Returns true if the specified script is currently active/running.
+
+- **Parameters:**
+  - `script_name` (string): The name of the script.
+
+**Example Usage:**
+```lua
+local is_freemode_active = script.is_active("freemode")
+```
+
 ### `execute_as_script(script_name, func)`
 
 - **Parameters:**
@@ -108,4 +120,18 @@ Calls a function from the specified script.
 **Example Usage:**
 ```lua
 script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
+```
+
+### `start_launcher_script(script_name)`
+
+Tries to start a launcher script. Needs to be called in the fiber pool or a loop.
+
+- **Parameters:**
+  - `name` (string): The name of the script.
+
+**Example Usage:**
+```lua
+script.run_in_fiber(function()
+    script.start_launcher_script("am_hunt_the_beast")
+end)
 ```

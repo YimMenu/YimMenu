@@ -31,6 +31,8 @@ namespace big
 			}
 		});
 
+		components::sub_title("VIEW_OUTFIT_EDITOR_TIP"_T);
+
 		components::button("OUTFIT_RANDOM_COMPONENT"_T, [] {
 			ped::set_ped_random_component_variation(self::ped);
 		});
