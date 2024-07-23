@@ -33,7 +33,7 @@ namespace big
 						if (g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info)
 							return;
 
-						if (g.weapons.aimbot.exclude_friends && !ped_ptr->m_player_info)
+						if (g.weapons.aimbot.exclude_friends && ped_ptr->m_player_info)
 						{
 							auto rockstar_id = ped_ptr->m_player_info->m_net_player_data.m_gamer_handle.m_rockstar_id;
 							auto is_friend   = friends_service::is_friend(rockstar_id);
