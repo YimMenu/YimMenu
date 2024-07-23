@@ -215,14 +215,6 @@ namespace big
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
 
-		m_weapon_types.clear();
-		m_weapon_types.reserve(m_weapons_cache.weapon_map.size());
-
-		for (const auto& [_, weapon] : m_weapons_cache.weapon_map)
-		{
-			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
-		}
-
 		std::sort(m_weapon_types.begin(), m_weapon_types.end());
 	}
 
@@ -558,12 +550,16 @@ namespace big
 				m_weapons_cache.version_info.m_online_version = g_pointers->m_gta.m_online_version;
 				m_weapons_cache.version_info.m_file_version   = file_version;
 
+				m_weapon_types.clear();
+				m_weapon_types.reserve(weapons.size());
+				m_weapons_cache.weapon_map.clear();
 				for (auto weapon : weapons)
 				{
 					add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
 					m_weapons_cache.weapon_map.insert({weapon.m_name, weapon});
 				}
 
+				m_weapons_cache.weapon_components.clear();
 				for (auto weapon_component : weapon_components)
 				{
 					m_weapons_cache.weapon_components.insert({weapon_component.m_name, weapon_component});
