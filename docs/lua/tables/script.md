@@ -122,7 +122,7 @@ Calls a function from the specified script.
 script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
 ```
 
-### `start_launcher_script(script_name_)`
+### `start_launcher_script(script_name)`
 
 Tries to start a launcher script. Needs to be called in the fiber pool or a loop.
 

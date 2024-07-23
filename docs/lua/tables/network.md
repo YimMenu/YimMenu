@@ -143,7 +143,7 @@ string = network.get_flagged_modder_reason(player_idx)
 
 ### `force_script_host(script_name)`
 
-Try to force ourself to be host for the given GTA Script.
+Try to force ourself to be host for the given GTA Script. Needs to be called in the fiber pool or a loop.
 
 - **Parameters:**
   - `script_name` (string): Name of the script
