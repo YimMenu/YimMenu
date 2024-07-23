@@ -1,5 +1,4 @@
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "util/outfit.hpp"
 #include "util/ped.hpp"
 #include "views/view.hpp"

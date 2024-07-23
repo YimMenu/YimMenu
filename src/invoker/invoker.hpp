@@ -2,7 +2,6 @@
 #include "crossmap.hpp"
 
 #include <script/scrNativeHandler.hpp>
-#include <script/types.hpp>
 
 namespace big
 {

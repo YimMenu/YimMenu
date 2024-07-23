@@ -1,7 +1,4 @@
-#include "core/scr_globals.hpp"
-#include "fiber_pool.hpp"
 #include "gta_util.hpp"
-#include "script_local.hpp"
 #include "util/scripts.hpp"
 #include "views/network/missions/cp_collection.hpp"
 #include "views/network/missions/criminal_damage.hpp"

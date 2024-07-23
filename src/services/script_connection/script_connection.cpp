@@ -6,8 +6,6 @@
 #include "util/scripts.hpp"
 #include "packet.hpp"
 
-#include <script/globals/GPBD_FM_3.hpp>
-
 namespace big
 {
 	bool script_connection::does_remote_script_exist()

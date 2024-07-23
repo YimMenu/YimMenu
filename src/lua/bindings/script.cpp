@@ -2,7 +2,6 @@
 #include "script.hpp"
 
 #include "lua/lua_manager.hpp"
-#include "script_mgr.hpp"
 #include "gta_util.hpp"
 #include "script_function.hpp"
 #include "lua/bindings/network.hpp"

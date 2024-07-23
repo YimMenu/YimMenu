@@ -1,8 +1,5 @@
-#include "backend/bool_command.hpp"
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
 #include "gta_util.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
 
 #include <network/Network.hpp>

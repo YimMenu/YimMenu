@@ -1,6 +1,5 @@
 #include "gui/components/components.hpp"
 #include "script_global.hpp"
-#include "thread_pool.hpp"
 #include "view_debug.hpp"
 #include "widgets/imgui_bitfield.hpp"
 

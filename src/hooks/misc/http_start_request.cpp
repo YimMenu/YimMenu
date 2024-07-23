@@ -1,7 +1,4 @@
 #include "hooking/hooking.hpp"
-#include "logger/stack_trace.hpp"
-#include "pointers.hpp"
-#include "util/string_conversions.hpp"
 
 namespace big
 {

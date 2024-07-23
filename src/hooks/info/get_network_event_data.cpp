@@ -5,7 +5,6 @@
 #include "util/misc.hpp"
 #include "util/session.hpp"
 
-#include <entities/CDynamicEntity.hpp>
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
 

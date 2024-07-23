@@ -1,6 +1,5 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 
 namespace big

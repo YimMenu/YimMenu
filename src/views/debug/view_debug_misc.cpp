@@ -1,16 +1,12 @@
 #include "gta/joaat.hpp"
-#include "gta_util.hpp"
 #include "gui/components/components.hpp"
 #include "hooking/hooking.hpp"
 #include "natives.hpp"
-#include "network/Network.hpp"
-#include "script.hpp"
-#include "script_global.hpp"
-#include "util/misc.hpp"
 #include "util/pathfind.hpp"
 #include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
 
 namespace big
 {

@@ -14,8 +14,6 @@
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "services/xml_maps/xml_map_service.hpp"
-#include "thread_pool.hpp"
-
 
 namespace big
 {

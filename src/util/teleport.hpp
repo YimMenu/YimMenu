@@ -2,7 +2,6 @@
 #include "blip.hpp"
 #include "entity.hpp"
 #include "gta/enums.hpp"
-#include "gta/net_object_mgr.hpp"
 #include "services/players/player_service.hpp"
 #include "vehicle.hpp"
 

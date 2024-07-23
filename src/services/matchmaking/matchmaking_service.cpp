@@ -2,7 +2,6 @@
 
 #include "fiber_pool.hpp"
 #include "hooking/hooking.hpp"
-#include "pointers.hpp"
 #include "script.hpp"
 
 #include <network/Network.hpp>

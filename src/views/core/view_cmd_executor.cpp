@@ -1,7 +1,5 @@
 #include "backend/context/default_command_context.hpp"
-#include "gui.hpp"
 #include "pointers.hpp"
-#include "services/hotkey/hotkey_service.hpp"
 #include "util/string_operations.hpp"
 #include "views/view.hpp"
 

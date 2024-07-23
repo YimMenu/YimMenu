@@ -1,8 +1,7 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
-#include "pointers.hpp"
-#include "util/teleport.hpp"
-#include "util/vehicle.hpp"
+#include "util/entity.hpp"
+#include "gta/vehicle_values.hpp"
 
 namespace big
 {

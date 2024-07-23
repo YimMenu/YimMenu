@@ -1,6 +1,4 @@
 #pragma once
-#include "stats.hpp"
-
 #include "natives.hpp"
 
 namespace lua::stats

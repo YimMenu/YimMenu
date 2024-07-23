@@ -2,7 +2,6 @@
 #include "natives.hpp"
 #include "script_function.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
-#include "util/entity.hpp"
 #include "util/scripts.hpp"
 
 namespace big

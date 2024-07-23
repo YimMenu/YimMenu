@@ -3,14 +3,11 @@
 #include "../../script.hpp"
 #include "core/data/language_codes.hpp"
 #include "core/scr_globals.hpp"
-#include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "util/chat.hpp"
-#include "util/notify.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
-#include "util/system.hpp"
 #include "util/teleport.hpp"
 
 #include <script/globals/GPBD_FM.hpp>

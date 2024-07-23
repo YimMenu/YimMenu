@@ -1,7 +1,4 @@
-#include "gta/net_array.hpp"
 #include "hooking/hooking.hpp"
-#include "script_global.hpp"
-#include "script_local.hpp"
 
 #include <netsync/nodes/vehicle/CVehicleProximityMigrationDataNode.hpp>
 

@@ -1,5 +1,4 @@
 #include "hooking/hooking.hpp"
-#include "pointers.hpp"
 #include "security/ObfVar.hpp"
 #include <Psapi.h>
 

@@ -1,12 +1,9 @@
 #include "core/data/block_join_reasons.hpp"
 #include "core/data/command_access_levels.hpp"
-#include "core/data/infractions.hpp"
-#include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "pointers.hpp"
 #include "services/api/api_service.hpp"
 #include "services/player_database/player_database_service.hpp"
-#include "services/players/player_service.hpp"
 #include "util/session.hpp"
 #include "views/view.hpp"
 

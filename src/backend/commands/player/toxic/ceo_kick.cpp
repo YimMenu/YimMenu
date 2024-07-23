@@ -1,6 +1,5 @@
 #include "backend/player_command.hpp"
 #include "core/scr_globals.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
 
 #include <script/globals/GPBD_FM_3.hpp>

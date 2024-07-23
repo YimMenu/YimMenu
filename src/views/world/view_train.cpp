@@ -1,9 +1,6 @@
 #include "util/train.hpp"
 #include "views/view.hpp"
 
-#include <imgui_internal.h>
-
-
 namespace big
 {
 	void view::train()
