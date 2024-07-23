@@ -17,7 +17,7 @@ namespace big
 			if (arg == 1)
 			{
 				std::vector<std::string> suggestions;
-				for (auto& item : g_gta_data_service->vehicles())
+				for (auto& item : g_gta_data_service.vehicles())
 				{
 					suggestions.push_back(item.second.m_name);
 				}
@@ -31,13 +31,13 @@ namespace big
 		{
 			command_arguments result(1);
 
-			if (g_gta_data_service->vehicle_by_hash(rage::joaat(args[0])).m_hash != 0)
+			if (g_gta_data_service.vehicle_by_hash(rage::joaat(args[0])).m_hash != 0)
 			{
 				result.push(rage::joaat(args[0]));
 				return result;
 			}
 
-			for (auto& item : g_gta_data_service->vehicles())
+			for (auto& item : g_gta_data_service.vehicles())
 			{
 				std::string item_name_lower, args_lower;
 				item_name_lower = item.second.m_name;
@@ -70,8 +70,7 @@ namespace big
 
 			auto id = ctx->get_sender()->id();
 
-			const auto spawn_location = vehicle::get_spawn_location(id == self::id ? g.spawn_vehicle.spawn_inside : false,
-			        hash, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(id));
+			const auto spawn_location = vehicle::get_spawn_location(id == self::id ? g.spawn_vehicle.spawn_inside : false, hash, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(id));
 			const auto spawn_heading = ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(id));
 
 			auto veh = vehicle::spawn(hash, spawn_location, spawn_heading);

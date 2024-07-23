@@ -3,11 +3,11 @@
 #include "backend/player_command.hpp"
 #include "natives.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "services/ped_animations/ped_animations_service.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "util/entity.hpp"
 #include "util/ped.hpp"
 #include "util/teleport.hpp"
-#include "services/ped_animations/ped_animations_service.hpp"
 
 
 namespace big
@@ -62,8 +62,7 @@ namespace big
 		s_context_menu vehicle_menu{ContextEntityType::VEHICLE,
 		    0,
 		    {},
-		    {
-			{"KILL ENGINE",
+		    {{"KILL ENGINE",
 		         [this] {
 			         if (entity::take_control_of(m_handle))
 			         {
@@ -72,19 +71,19 @@ namespace big
 			         }
 			         else
 				         g_notification_service.push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},
+		         }},
 		        {"FIX VEHICLE",
-		           [this] {
+		            [this] {
 			            if (entity::take_control_of(m_handle))
-		        	    {
-			        	    VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 1000.f);
+			            {
+				            VEHICLE::SET_VEHICLE_ENGINE_HEALTH(m_handle, 1000.f);
 				            VEHICLE::SET_VEHICLE_FIXED(m_handle);
 				            VEHICLE::SET_VEHICLE_DEFORMATION_FIXED(m_handle);
 				            VEHICLE::SET_VEHICLE_DIRT_LEVEL(m_handle, 0.f);
 			            }
 			            else
 				            g_notification_service.push_warning("WARNING"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},		     
+		            }},
 		        {"BURST TIRES",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
@@ -98,7 +97,7 @@ namespace big
 			            }
 			            else
 				            g_notification_service.push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},
+		            }},
 		        {"HALT",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
@@ -107,27 +106,27 @@ namespace big
 			            }
 			            else
 				            g_notification_service.push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},
+		            }},
 		        {"COPY VEHICLE",
 		            [this] {
 			            Vehicle v = persist_car_service::clone_ped_car(PLAYER::PLAYER_PED_ID(), m_handle);
 			            script::get_current()->yield();
 			            PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), v, -1);
-		        }},
+		            }},
 		        {"BOOST",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
 				            VEHICLE::SET_VEHICLE_FORWARD_SPEED(m_handle, 79);
 			            else
 				            g_notification_service.push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},
+		            }},
 		        {"LAUNCH",
 		            [this] {
 			            if (entity::take_control_of(m_handle))
 				            ENTITY::APPLY_FORCE_TO_ENTITY(m_handle, 1, 0.f, 0.f, 50000.f, 0.f, 0.f, 0.f, 0, 0, 1, 1, 0, 1);
 			            else
 				            g_notification_service.push_warning("TOXIC"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
-		        }},
+		            }},
 		        {"EJECT",
 		            [this] {
 			            if (ped::get_player_from_ped(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0)) != NULL)
@@ -138,37 +137,35 @@ namespace big
 
 			            TASK::CLEAR_PED_TASKS_IMMEDIATELY(VEHICLE::GET_PED_IN_VEHICLE_SEAT(m_handle, -1, 0));
 			            TASK::CLEAR_PED_TASKS_IMMEDIATELY(m_handle);
-		        }},
+		            }},
 		        {"TP INTO", [this] {
 			         teleport::into_vehicle(m_handle);
-		        }}
-		    }};
+		         }}}};
 
 		s_context_menu ped_menu{ContextEntityType::PED,
 		    0,
 		    {},
-		    {
-			{"DISARM",
+		    {{"DISARM",
 		         [this] {
-			         for (auto& [_, weapon] : g_gta_data_service->weapons())
+			         for (auto& [_, weapon] : g_gta_data_service.weapons())
 				         WEAPON::REMOVE_WEAPON_FROM_PED(m_handle, weapon.m_hash);
-		        }},
+		         }},
 		        {"KILL",
 		            [this] {
 			            ped::kill_ped(m_handle);
-		        }},
+		            }},
 		        {"RAGDOLL",
 		            [this] {
 			            PED::SET_PED_TO_RAGDOLL(m_handle, 2000, 2000, 0, 0, 0, 0);
-		        }},
+		            }},
 		        {"ANIMATION",
 		            [this] {
-						// TODO: maybe inform the user of this behavior
-						if(STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
-							g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
-						else
-							ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1", 3.5f, -4.0f, -1, 1);
-		        }},
+			            // TODO: maybe inform the user of this behavior
+			            if (STREAMING::DOES_ANIM_DICT_EXIST(g_ped_animation_service.current_animation.dict.data()))
+				            g_ped_animation_service.play_saved_ped_animation(g_ped_animation_service.current_animation, m_handle);
+			            else
+				            ped::ped_play_animation(m_handle, "mini@strip_club@private_dance@part1", "priv_dance_p1", 3.5f, -4.0f, -1, 1);
+		            }},
 		        {"RECRUIT", [this] {
 			         TASK::CLEAR_PED_TASKS(m_handle);
 			         PED::SET_PED_AS_GROUP_MEMBER(m_handle, PED::GET_PED_GROUP_INDEX(self::ped));
@@ -186,63 +183,60 @@ namespace big
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, "weapon_microsmg"_J, 9999, false, false);
 			         WEAPON::GIVE_WEAPON_TO_PED(m_handle, "weapon_carbinerifle"_J, 9999, false, true);
 			         TASK::TASK_COMBAT_HATED_TARGETS_AROUND_PED(self::ped, 100, 67108864);
-		        }}
-		    }};
+		         }}}};
 
 		s_context_menu object_menu{ContextEntityType::OBJECT, 0, {}, {}};
 
 		s_context_menu player_menu{ContextEntityType::PLAYER,
 		    0,
 		    {},
-		    {
-			{"SET SELECTED",
+		    {{"SET SELECTED",
 		         [this] {
 			         g_player_service->set_selected(ped::get_player_from_ped(m_handle));
-		        }},
+		         }},
 		        {"STEAL OUTFIT",
 		            [this] {
 			            ped::steal_outfit(m_handle);
-		        }},
+		            }},
 		        {"KICK",
 		            [this] {
-				    static player_command* command = player_command::get("smartkick"_J);
+			            static player_command* command = player_command::get("smartkick"_J);
 			            command->call(ped::get_player_from_ped(m_handle), {});
 			            script::get_current()->yield(500ms);
-		        }},
+		            }},
 		        {"DISARM",
 		            [this] {
 			            static player_command* command = player_command::get("remweaps"_J);
 			            command->call(ped::get_player_from_ped(m_handle), {});
-		        }},
+		            }},
 		        {"RAGDOLL", [this] {
 			         static player_command* command = player_command::get("ragdoll"_J);
 			         command->call(ped::get_player_from_ped(m_handle), {});
-		        }}
-		    }};
+		         }}}};
 
 		s_context_menu shared_menu{ContextEntityType::SHARED,
 		    0,
 		    {},
-		    {
-		        {"COPY HASH", [this] {
+		    {{"COPY HASH",
+		         [this] {
 			         ImGui::SetClipboardText(std::format("0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
 			         g_notification_service.push("Context Menu",
 			             std::format("Copy hash 0x{:08X}", (rage::joaat_t)m_pointer->m_model_info->m_hash).c_str());
-		        }},
-			{"EXPLODE",
-		         [this] {
-			         rage::fvector3 pos = *m_pointer->m_navigation->get_position();
-			         FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
-		        }},
+		         }},
+		        {"EXPLODE",
+		            [this] {
+			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
+			            FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, 1, 1000, 1, 0, 1, 0);
+		            }},
 		        {"TP TO",
 		            [this] {
 			            rage::fvector3 pos = *m_pointer->m_navigation->get_position();
 			            teleport::to_coords({pos.x, pos.y, pos.z});
-		        }},
+		            }},
 		        {"TP ON TOP",
 		            [this] {
 			            teleport::tp_on_top(m_handle, true);
-		        }},
+		            }},
 		        {"BRING",
 		            [this] {
 			            rage::fvector3 pos = *g_local_player->m_navigation->get_position();
@@ -261,22 +255,20 @@ namespace big
 					            ENTITY::SET_ENTITY_COORDS(m_handle, pos.x, pos.y, pos.z, false, false, false, false);
 				            }
 			            }
-		        }},
+		            }},
 		        {"ENFLAME",
 		            [this] {
 			            Vector3 pos = ENTITY::GET_ENTITY_COORDS(m_handle, TRUE);
 			            FIRE::START_ENTITY_FIRE(m_handle);
 			            FIRE::START_SCRIPT_FIRE(pos.x, pos.y, pos.z, 25, TRUE);
 			            FIRE::ADD_EXPLOSION(pos.x, pos.y, pos.z, eExplosionTag::MOLOTOV, 1, false, false, 0, false);
-		        }},
-		        {"DELETE",
-		            [this] {
-			            if (entity::take_control_of(m_handle))
-			            {
-				            entity::delete_entity(m_handle);
-			            }
-		        }}
-		    }};
+		            }},
+		        {"DELETE", [this] {
+			         if (entity::take_control_of(m_handle))
+			         {
+				         entity::delete_entity(m_handle);
+			         }
+		         }}}};
 
 		std::unordered_map<ContextEntityType, s_context_menu> options = {{ContextEntityType::VEHICLE, vehicle_menu}, {ContextEntityType::PLAYER, player_menu}, {ContextEntityType::PED, ped_menu}, {ContextEntityType::SHARED, shared_menu}, {ContextEntityType::OBJECT, object_menu}};
 	};

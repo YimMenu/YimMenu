@@ -28,21 +28,21 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 6),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
+	}
+
+	bool gta_data_service::init()
+	{
+		m_peds_cache     = {g_file_manager.get_project_file("./cache/peds.bin"), 5};
+		m_vehicles_cache = {g_file_manager.get_project_file("./cache/vehicles.bin"), 6};
+
 		if (!is_cache_up_to_date())
 			m_update_state = eGtaDataUpdateState::NEEDS_UPDATE;
 		else
 			load_data();
 
-		g_gta_data_service = this;
-	}
-
-	gta_data_service::~gta_data_service()
-	{
-		g_gta_data_service = nullptr;
+		return true;
 	}
 
 	bool gta_data_service::cache_needs_update() const
@@ -171,6 +171,10 @@ namespace big
 		const auto ped_count = m_peds_cache.data_size() / sizeof(ped_item);
 		LOG(INFO) << "Loading " << ped_count << " peds from cache.";
 
+		m_ped_types.clear();
+		m_ped_types.reserve(ped_count);
+		m_peds.clear();
+
 		auto cached_peds = reinterpret_cast<const ped_item*>(m_peds_cache.data());
 		for (size_t i = 0; i < ped_count; i++)
 		{
@@ -189,6 +193,10 @@ namespace big
 		const auto vehicle_count = m_vehicles_cache.data_size() / sizeof(vehicle_item);
 		LOG(INFO) << "Loading " << vehicle_count << " vehicles from cache.";
 
+		m_vehicle_classes.clear();
+		m_vehicle_classes.reserve(vehicle_count);
+		m_vehicles.clear();
+
 		auto cached_vehicles = reinterpret_cast<const vehicle_item*>(m_vehicles_cache.data());
 		for (size_t i = 0; i < vehicle_count; i++)
 		{
@@ -206,6 +214,9 @@ namespace big
 	{
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
+
+		m_weapon_types.clear();
+		m_weapon_types.reserve(m_weapons_cache.weapon_map.size());
 
 		for (const auto& [_, weapon] : m_weapons_cache.weapon_map)
 		{

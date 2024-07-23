@@ -52,7 +52,7 @@ namespace big
 
 		return false;
 	}
-  
+
 	// Returns true if bad event
 	bool scan_weapon_damage_event(rage::netEventMgr* event_manager, CNetGamePlayer* player, CNetGamePlayer* target_player, int event_index, int event_handled_bitset, rage::datBitBuffer* buffer)
 	{
@@ -103,7 +103,11 @@ namespace big
 		if (!is_valid_weapon(weaponType))
 		{
 			notify::crash_blocked(player, "invalid weapon type");
-			LOGF(stream::net_events, WARNING, "Blocked WEAPON_DAMAGE_EVENT from {} with invalid weapon hash {:X}", player->get_name(), weaponType);
+			LOGF(stream::net_events,
+			    WARNING,
+			    "Blocked WEAPON_DAMAGE_EVENT from {} with invalid weapon hash {:X}",
+			    player->get_name(),
+			    weaponType);
 			g_pointers->m_gta.m_send_event_ack(event_manager, player, target_player, event_index, event_handled_bitset);
 			return true;
 		}
@@ -424,7 +428,8 @@ namespace big
 		static const std::unordered_set<uint32_t> blocked_script_hashes = {"main_persistent"_J, "shop_controller"_J};
 
 		bool should_block = [&] {
-			if (blocked_ref_hashes.contains(ref_hash) || blocked_sound_hashes.contains(sound_hash) || blocked_script_hashes.contains(script_hash))
+			if (blocked_ref_hashes.contains(ref_hash) || blocked_sound_hashes.contains(sound_hash)
+			    || blocked_script_hashes.contains(script_hash))
 				return true;
 
 			switch (sound_hash)
@@ -551,7 +556,7 @@ namespace big
 			else if (type == ScriptEntityChangeType::SetVehicleLockState)
 			{
 				if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
-					&& g_local_player->m_vehicle->m_net_object->m_object_id == entity)
+				    && g_local_player->m_vehicle->m_net_object->m_object_id == entity)
 				{
 					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 					LOGF(stream::net_events, WARNING, "Blocked SCRIPT_ENTITY_STATE_CHANGE_EVENT of type SetVehicleLockState from {} on our local vehicle", plyr->get_name());
@@ -673,8 +678,8 @@ namespace big
 			{
 				Vehicle personal_vehicle = mobile::mechanic::get_personal_vehicle();
 				Vehicle veh              = g_pointers->m_gta.m_ptr_to_handle(g_local_player->m_vehicle);
-				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION() //If we're in Freemode.
-				    || personal_vehicle == veh              //Or we're in our personal vehicle.
+				if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()     //If we're in Freemode.
+				    || personal_vehicle == veh                  //Or we're in our personal vehicle.
 				    || self::spawned_vehicles.contains(net_id)) // Or it's a vehicle we spawned.
 				{
 					// Let trusted friends and players request control (e.g., they want to hook us to their tow-truck or something)
@@ -769,9 +774,9 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
+				weapon_item weapon = g_gta_data_service.weapon_by_hash(hash);
 				g_notification_service.push_warning("PROTECTIONS"_T.data(),
-					std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
+				    std::format("{} {} {}.", source_player->get_name(), "REMOVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
 				return;
 			}
@@ -786,7 +791,7 @@ namespace big
 
 			if (g_local_player && g_local_player->m_net_object && g_local_player->m_net_object->m_object_id == net_id)
 			{
-				weapon_item weapon = g_gta_data_service->weapon_by_hash(hash);
+				weapon_item weapon = g_gta_data_service.weapon_by_hash(hash);
 				g_notification_service.push_warning("PROTECTIONS"_T.data(),
 				    std::format("{} {} {}.", source_player->get_name(), "GIVE_WEAPON_ATTEMPT_MESSAGE"_T, weapon.m_display_name));
 				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);

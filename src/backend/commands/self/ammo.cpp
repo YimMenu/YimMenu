@@ -10,7 +10,7 @@ namespace big
 
 		virtual void execute(const command_arguments&, const std::shared_ptr<command_context> ctx) override
 		{
-			for (const auto& [_, weapon] : g_gta_data_service->weapons())
+			for (const auto& [_, weapon] : g_gta_data_service.weapons())
 			{
 				int ammo_in;
 				WEAPON::GET_MAX_AMMO(self::ped, weapon.m_hash, &ammo_in);

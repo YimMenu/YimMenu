@@ -10,7 +10,7 @@ namespace big
 
 	static void resolve_weapon_hotkey(Hash weapon)
 	{
-		if (g_gta_data_service->weapon_by_hash(weapon).m_name.empty())
+		if (g_gta_data_service.weapon_by_hash(weapon).m_name.empty())
 		{
 			WEAPON::SET_CURRENT_PED_VEHICLE_WEAPON(self::ped, weapon);
 		}

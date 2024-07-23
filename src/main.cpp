@@ -204,12 +204,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto hooking_instance = std::make_unique<hooking>();
 			    LOG(INFO) << "Hooking initialized.";
 
+			    g_gta_data_service.init();
+
 			    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
 			    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
 			    auto mobile_service_instance            = std::make_unique<mobile_service>();
 			    auto pickup_service_instance            = std::make_unique<pickup_service>();
 			    auto player_service_instance            = std::make_unique<player_service>();
-			    auto gta_data_service_instance          = std::make_unique<gta_data_service>();
 			    auto model_preview_service_instance     = std::make_unique<model_preview_service>();
 			    auto handling_service_instance          = std::make_unique<handling_service>();
 			    auto gui_service_instance               = std::make_unique<gui_service>();
@@ -224,8 +225,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
 			    LOG(INFO) << "Registered service instances...";
 
-				g_notification_service.initialise();
-				LOG(INFO) << "Finished initialising services.";
+			    g_notification_service.initialise();
+			    LOG(INFO) << "Finished initialising services.";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
 
@@ -300,8 +301,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();
 			    LOG(INFO) << "Gui Service reset.";
-			    gta_data_service_instance.reset();
-			    LOG(INFO) << "GTA Data Service reset.";
 			    handling_service_instance.reset();
 			    LOG(INFO) << "Vehicle Service reset.";
 			    model_preview_service_instance.reset();
