@@ -295,21 +295,21 @@ namespace big
 
 				switch (game_lang)
 				{
-				case 1: preferred_lang = "fr_FR"; break;
-				case 2: preferred_lang = "de_DE"; break;
-				case 3: preferred_lang = "it_IT"; break;
-				case 4:
-				case 11: preferred_lang = "es_ES"; break;
-				case 5: preferred_lang = "pt_BR"; break;
-				case 6: preferred_lang = "pl_PL"; break;
-				case 7: preferred_lang = "ru_RU"; break;
-				case 8: preferred_lang = "ko_KR"; break;
-				case 9: preferred_lang = "zh_TW"; break;
-				case 10: preferred_lang = "ja_JP"; break;
-				case 12: preferred_lang = "zh_CN"; break;
+				case eGameLanguage::FRENCH: preferred_lang = "fr_FR"; break;
+				case eGameLanguage::GERMAN: preferred_lang = "de_DE"; break;
+				case eGameLanguage::ITALIAN: preferred_lang = "it_IT"; break;
+				case eGameLanguage::SPANISH:
+				case eGameLanguage::MEXICAN_SPANISH: preferred_lang = "es_ES"; break;
+				case eGameLanguage::BRAZILIAN_PORTUGUESE: preferred_lang = "pt_BR"; break;
+				case eGameLanguage::POLISH: preferred_lang = "pl_PL"; break;
+				case eGameLanguage::RUSSIAN: preferred_lang = "ru_RU"; break;
+				case eGameLanguage::KOREAN: preferred_lang = "ko_KR"; break;
+				case eGameLanguage::TRADITIONAL_CHINESE: preferred_lang = "zh_TW"; break;
+				case eGameLanguage::JAPANESE: preferred_lang = "ja_JP"; break;
+				case eGameLanguage::SIMPLIFIED_CHINESE: preferred_lang = "zh_CN"; break;
 				}
 
-				if (game_lang == 12 || game_lang == 9)
+				if (game_lang == eGameLanguage::SIMPLIFIED_CHINESE || game_lang == eGameLanguage::TRADITIONAL_CHINESE)
 				{
 					// Tweaks to make it easier for people playing in the China region
 					g.session_browser.filter_multiplexed_sessions = true;

@@ -19,7 +19,8 @@ namespace big
 		static char name_buf[32];
 		static char search[64];
 		static char session_info[0x100]{};
-		ImGui::Text(std::format("{}: {}", "VIEW_SESSION_TOTAL_SESSIONS_FOUND"_T.data(), g_matchmaking_service->get_num_found_sessions()).c_str());
+		ImGui::Text(std::format("{}: {}", "VIEW_SESSION_TOTAL_SESSIONS_FOUND"_T.data(), g_matchmaking_service->get_num_found_sessions())
+		                .c_str());
 
 		ImGui::SetNextItemWidth(300.f);
 
@@ -41,11 +42,11 @@ namespace big
 						session_str = std::format("{:X}", session.info.m_session_token);
 
 					auto host_rid = session.info.m_net_player_data.m_gamer_handle.m_rockstar_id;
-					auto player = g_player_database_service->get_player_by_rockstar_id(host_rid);
+					auto player   = g_player_database_service->get_player_by_rockstar_id(host_rid);
 
-					if ((g.session_browser.exclude_modder_sessions && player && player->block_join) || 
-						(g.session_browser.filter_multiplexed_sessions && session.attributes.multiplex_count > 1))
-							continue;
+					if ((g.session_browser.exclude_modder_sessions && player && player->block_join)
+					    || (g.session_browser.filter_multiplexed_sessions && session.attributes.multiplex_count > 1))
+						continue;
 
 					if (components::selectable(session_str, i == selected_session_idx))
 					{
@@ -55,11 +56,17 @@ namespace big
 
 					if (ImGui::IsItemHovered())
 					{
-						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {:X}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count,
-							"REGION"_T, regions[session.attributes.region].name,
-						    "LANGUAGE"_T, languages[session.attributes.language].name,
-						    "SESSION_BROWSER_HOST_RID"_T, session.info.m_net_player_data.m_gamer_handle.m_rockstar_id, // TODO: this is not accurate
-						    "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator);
+						auto tool_tip = std::format("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {:X}",
+						    "SESSION_BROWSER_NUM_PLAYERS"_T,
+						    session.attributes.player_count,
+						    "REGION"_T,
+						    regions[session.attributes.region].name,
+						    "LANGUAGE"_T,
+						    languages.at((eGameLanguage)session.attributes.language),
+						    "SESSION_BROWSER_HOST_RID"_T,
+						    session.info.m_net_player_data.m_gamer_handle.m_rockstar_id, // TODO: this is not accurate
+						    "SESSION_BROWSER_DISCRIMINATOR"_T,
+						    session.attributes.discriminator);
 						ImGui::SetTooltip(tool_tip.c_str());
 					}
 				}
@@ -80,9 +87,11 @@ namespace big
 				auto& session = g_matchmaking_service->get_found_sessions()[selected_session_idx];
 
 				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_NUM_PLAYERS"_T, session.attributes.player_count).c_str());
-				ImGui::Text(std::format("{}: 0x{:X}", "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator).c_str());
+				ImGui::Text(
+				    std::format("{}: 0x{:X}", "SESSION_BROWSER_DISCRIMINATOR"_T, session.attributes.discriminator).c_str());
 				ImGui::Text(std::format("{}: {}", "REGION"_T, regions[session.attributes.region].name).c_str());
-				ImGui::Text(std::format("{}: {}", "LANGUAGE"_T, languages[session.attributes.language].name).c_str());
+				ImGui::Text(
+				    std::format("{}: {}", "LANGUAGE"_T, languages.at((eGameLanguage)session.attributes.language)).c_str());
 
 				auto& data = session.info.m_net_player_data;
 				ImGui::Text(std::format("{}: {}", "SESSION_BROWSER_HOST_RID"_T, data.m_gamer_handle.m_rockstar_id).c_str());
@@ -143,13 +152,13 @@ namespace big
 			{
 				ImGui::SameLine();
 
-				if (ImGui::BeginCombo("###language_select", languages[g.session_browser.language_filter].name))
+				if (ImGui::BeginCombo("###language_select", languages.at(g.session_browser.language_filter).data()))
 				{
-					for (const auto& language : languages)
+					for (const auto& [id, language] : languages)
 					{
-						if (ImGui::Selectable(language.name, g.session_browser.language_filter == language.id))
+						if (ImGui::Selectable(language.data(), g.session_browser.language_filter == id))
 						{
-							g.session_browser.language_filter = language.id;
+							g.session_browser.language_filter = id;
 						};
 					}
 					ImGui::EndCombo();
@@ -168,14 +177,15 @@ namespace big
 			if (g.session_browser.pool_filter_enabled)
 			{
 				ImGui::SameLine();
-				static const std::string pool_filter_options = std::string("NORMAL"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
+				static const std::string pool_filter_options =
+				    std::string("NORMAL"_T.data()) + '\0' + std::string("BAD_SPORT"_T.data());
 				ImGui::Combo("###pooltype", &g.session_browser.pool_filter, pool_filter_options.c_str());
 			}
 
 			ImGui::Checkbox("FILTER_MULTIPLEXED_SESSIONS"_T.data(), &g.session_browser.filter_multiplexed_sessions);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("FILTER_MULTIPLEXED_SESSIONS_DESC"_T.data());
-      
+
 			ImGui::Checkbox("EXCLUDE_MODDER_SESSIONS"_T.data(), &g.session_browser.exclude_modder_sessions);
 			if (ImGui::IsItemHovered())
 				ImGui::SetTooltip("EXCLUDE_MODDER_SESSIONS_DESC"_T.data());
@@ -186,7 +196,8 @@ namespace big
 		if (ImGui::TreeNode("SORTING"_T.data()))
 		{
 			static const std::string sort_by_options = std::string("OFF"_T.data()) + '\0' + std::string("PLAYER_COUNT"_T.data());
-			static const std::string sort_direction_options = std::string("ASCENDING"_T.data()) + '\0' + std::string("DESCENDING"_T.data());
+			static const std::string sort_direction_options =
+			    std::string("ASCENDING"_T.data()) + '\0' + std::string("DESCENDING"_T.data());
 			ImGui::Combo("SORT_BY"_T.data(), &g.session_browser.sort_method, sort_by_options.c_str());
 			if (g.session_browser.sort_method != 0)
 				ImGui::Combo("DIRECTION"_T.data(), &g.session_browser.sort_direction, sort_direction_options.c_str());

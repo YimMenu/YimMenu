@@ -12,6 +12,7 @@
 #include "util/session.hpp"
 #include "util/system.hpp"
 #include "util/teleport.hpp"
+
 #include <script/globals/GPBD_FM.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 
@@ -202,7 +203,6 @@ namespace lua::network
 		if (auto player = big::g_player_service->get_by_id(player_idx))
 		{
 			big::chat::send_message(msg, player);
-
 		}
 	}
 
@@ -306,7 +306,7 @@ namespace lua::network
 		if (big::g_player_service->get_by_id(pid))
 		{
 			auto& boss_goon = big::scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[pid].BossGoon;
-			return big::languages[boss_goon.Language].name;
+			return big::languages.at((eGameLanguage)boss_goon.Language).data();
 		}
 		return "Unknown";
 	}
@@ -343,19 +343,19 @@ namespace lua::network
 		ns["set_all_player_coords"]                    = set_all_player_coords;
 		ns["get_selected_player"]                      = get_selected_player;
 		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
-		ns["flag_player_as_modder"]                    = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
-		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
-		ns["is_player_friend"]                         = is_player_friend;
-		ns["get_flagged_modder_reason"]                = get_flagged_modder_reason;
-		ns["force_script_host"]                        = force_script_host;
-		ns["send_chat_message"]                        = send_chat_message;
-		ns["send_chat_message_to_player"]              = send_chat_message_to_player;
-		ns["get_player_rank"]                          = get_player_rank;
-		ns["get_player_rp"]                            = get_player_rp;
-		ns["get_player_money"]                         = get_player_money;
-		ns["get_player_wallet"]                        = get_player_wallet;
-		ns["get_player_bank"]                          = get_player_bank;
-		ns["get_player_language_id"]                   = get_player_language_id;
-		ns["get_player_language_name"]                 = get_player_language_name;
+		ns["flag_player_as_modder"]       = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
+		ns["is_player_flagged_as_modder"] = is_player_flagged_as_modder;
+		ns["is_player_friend"]            = is_player_friend;
+		ns["get_flagged_modder_reason"]   = get_flagged_modder_reason;
+		ns["force_script_host"]           = force_script_host;
+		ns["send_chat_message"]           = send_chat_message;
+		ns["send_chat_message_to_player"] = send_chat_message_to_player;
+		ns["get_player_rank"]             = get_player_rank;
+		ns["get_player_rp"]               = get_player_rp;
+		ns["get_player_money"]            = get_player_money;
+		ns["get_player_wallet"]           = get_player_wallet;
+		ns["get_player_bank"]             = get_player_bank;
+		ns["get_player_language_id"]      = get_player_language_id;
+		ns["get_player_language_name"]    = get_player_language_name;
 	}
 }

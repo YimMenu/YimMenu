@@ -1,9 +1,9 @@
 #include "matchmaking_service.hpp"
 
+#include "fiber_pool.hpp"
 #include "hooking/hooking.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "fiber_pool.hpp"
 
 #include <network/Network.hpp>
 
@@ -25,7 +25,7 @@ namespace big
 			attributes->m_param_values[4] = g.spoofing.session_region_type;
 
 		if (g.spoofing.spoof_session_language)
-			attributes->m_param_values[3] = g.spoofing.session_language;
+			attributes->m_param_values[3] = (uint32_t)g.spoofing.session_language;
 
 		if (g.spoofing.spoof_session_player_count && g.spoofing.increase_player_limit)
 			attributes->m_param_values[2] = std::min(29, g.spoofing.session_player_count);
@@ -68,7 +68,7 @@ namespace big
 		rage::rlTaskStatus state{};
 		static rage::rlSessionInfo result_sessions[MAX_SESSIONS_TO_FIND];
 
-		m_active = true;
+		m_active             = true;
 		m_num_valid_sessions = 0;
 
 		if (g_hooking->get_original<hooks::start_matchmaking_find_sessions>()(0, 1, &component, MAX_SESSIONS_TO_FIND, result_sessions, &m_num_sessions_found, &state))
@@ -101,7 +101,7 @@ namespace big
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.language_filter_enabled
-					    && m_found_sessions[i].attributes.language != g.session_browser.language_filter)
+					    && (eGameLanguage)m_found_sessions[i].attributes.language != g.session_browser.language_filter)
 						m_found_sessions[i].is_valid = false;
 
 					if (g.session_browser.player_count_filter_enabled
@@ -163,7 +163,7 @@ namespace big
 
 		if (!g.spoofing.multiplex_session)
 			return false;
-		
+
 		if (status->status)
 			return true;
 
@@ -190,10 +190,10 @@ namespace big
 			}
 
 			MatchmakingId primary_id = *out_id; // create a copy if the original memory gets deallocated
-			std::uint32_t id_hash             = rage::joaat(primary_id.m_data1);
+			std::uint32_t id_hash    = rage::joaat(primary_id.m_data1);
 
 			// m_data1 is generated from m_data2 and m_data3
-			m_multiplexed_sessions.emplace(id_hash, std::vector<MatchmakingId>{ });
+			m_multiplexed_sessions.emplace(id_hash, std::vector<MatchmakingId>{});
 
 			// create multiplex advertisements
 			for (int i = 0; i < (g.spoofing.multiplex_count - 1); i++)
@@ -206,7 +206,7 @@ namespace big
 						LOG(WARNING) << __FUNCTION__ ": advertise_session returned false for multiplex task " << i;
 						return;
 					}
-					
+
 					while (status.status == 1)
 						script::get_current()->yield();
 
@@ -264,7 +264,6 @@ namespace big
 						LOG(WARNING) << __FUNCTION__ ": update_session_advertisement failed for multiplex task " << i;
 						return;
 					}
-
 				});
 				i++;
 			}

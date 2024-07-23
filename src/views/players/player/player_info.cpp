@@ -2,10 +2,10 @@
 #include "core/data/language_codes.hpp"
 #include "core/scr_globals.hpp"
 #include "natives.hpp"
-#include "services/player_database/player_database_service.hpp"
-#include "views/view.hpp"
 #include "services/gta_data/gta_data_service.hpp"
+#include "services/player_database/player_database_service.hpp"
 #include "util/session.hpp"
+#include "views/view.hpp"
 
 #include <network/netConnection.hpp>
 #include <script/globals/GPBD_FM.hpp>
@@ -19,9 +19,9 @@ namespace big
 	{
 		switch (type)
 		{
-			case 1: return "VIEW_PLAYER_INFO_NAT_TYPE_OPEN"_T.data();
-			case 2: return "VIEW_PLAYER_INFO_NAT_TYPE_MODERATE"_T.data();
-			case 3: return "VIEW_PLAYER_INFO_NAT_TYPE_STRICT"_T.data();
+		case 1: return "VIEW_PLAYER_INFO_NAT_TYPE_OPEN"_T.data();
+		case 2: return "VIEW_PLAYER_INFO_NAT_TYPE_MODERATE"_T.data();
+		case 3: return "VIEW_PLAYER_INFO_NAT_TYPE_STRICT"_T.data();
 		}
 
 		return "VIEW_NET_PLAYER_DB_GAME_MODE_UNKNOWN"_T.data();
@@ -31,9 +31,9 @@ namespace big
 	{
 		switch (type)
 		{
-			case 1: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_DIRECT"_T.data();
-			case 2: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_RELAY"_T.data();
-			case 3: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_PEER_RELAY"_T.data();
+		case 1: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_DIRECT"_T.data();
+		case 2: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_RELAY"_T.data();
+		case 3: return "VIEW_PLAYER_INFO_CONNECTION_TYPE_PEER_RELAY"_T.data();
 		}
 
 		return "VIEW_NET_PLAYER_DB_GAME_MODE_UNKNOWN"_T.data();
@@ -60,118 +60,135 @@ namespace big
 		}
 
 		components::options_modal(
-			"VIEW_PLAYER_INFO_EXTRA_INFO"_T.data(),
-			[ped_health, ped_maxhealth] {
-				ImGui::BeginGroup();
+		    "VIEW_PLAYER_INFO_EXTRA_INFO"_T.data(),
+		    [ped_health, ped_maxhealth] {
+			    ImGui::BeginGroup();
 
-				auto id = g_player_service->get_selected()->id();
+			    auto id = g_player_service->get_selected()->id();
 
-				if (id != -1)
-				{
-					auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
-					auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
+			    if (id != -1)
+			    {
+				    auto& stats     = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].PlayerStats;
+				    auto& boss_goon = scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[id].BossGoon;
 
-					const auto money  = reinterpret_cast<uint64_t&>(stats.Money);
-					const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
+				    const auto money  = reinterpret_cast<uint64_t&>(stats.Money);
+				    const auto wallet = reinterpret_cast<uint64_t&>(stats.WalletBalance);
 
-					if (boss_goon.Language >= 0 && boss_goon.Language < 13)
-						ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages[boss_goon.Language].name);
+				    if (boss_goon.Language >= 0 && boss_goon.Language < 13)
+					    ImGui::Text("PLAYER_INFO_LANGUAGE"_T.data(), languages.at((eGameLanguage)boss_goon.Language).data());
 
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_CEO_NAME"_T, boss_goon.GangName.Data).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MC_NAME"_T, boss_goon.ClubhouseName.Data).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_WALLET"_T, wallet).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_BANK"_T, money - wallet).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_TOTAL_MONEY"_T, money).c_str());
-					ImGui::Text(std::format("{}: {} ({} {})", "PLAYER_INFO_RANK"_T, stats.Rank, "PLAYER_INFO_RANK_RP"_T, stats.RP).c_str());
-					ImGui::Text(std::format("{}: {} ({} {})", "VIEW_PLAYER_INFO_HEALTH"_T, ped_health, "VIEW_PLAYER_INFO_MAXHEALTH"_T, ped_maxhealth).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KD"_T, stats.KdRatio).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KILLS"_T, stats.KillsOnPlayers).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_DEATHS"_T, stats.DeathsByPlayers).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_PROSTITUTES"_T, stats.ProstitutesFrequented).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_LAP_DANCES"_T, stats.LapDancesBought).c_str());
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MISSIONS_CREATED"_T, stats.MissionsCreated).c_str());
-					auto meltdown_completed = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T : "NO"_T;
-					ImGui::Text(std::format("{}: {}", "PLAYER_INFO_METLDOWN_COMPLETE"_T, meltdown_completed).c_str());
-				}
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_CEO_NAME"_T, boss_goon.GangName.Data).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MC_NAME"_T, boss_goon.ClubhouseName.Data).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_WALLET"_T, wallet).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_BANK"_T, money - wallet).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_TOTAL_MONEY"_T, money).c_str());
+				    ImGui::Text(
+				        std::format("{}: {} ({} {})", "PLAYER_INFO_RANK"_T, stats.Rank, "PLAYER_INFO_RANK_RP"_T, stats.RP)
+				            .c_str());
+				    ImGui::Text(std::format("{}: {} ({} {})", "VIEW_PLAYER_INFO_HEALTH"_T, ped_health, "VIEW_PLAYER_INFO_MAXHEALTH"_T, ped_maxhealth)
+				                    .c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KD"_T, stats.KdRatio).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_KILLS"_T, stats.KillsOnPlayers).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_DEATHS"_T, stats.DeathsByPlayers).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_PROSTITUTES"_T, stats.ProstitutesFrequented).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_LAP_DANCES"_T, stats.LapDancesBought).c_str());
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_MISSIONS_CREATED"_T, stats.MissionsCreated).c_str());
+				    auto meltdown_completed = scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[id].MeltdownComplete ? "YES"_T : "NO"_T;
+				    ImGui::Text(std::format("{}: {}", "PLAYER_INFO_METLDOWN_COMPLETE"_T, meltdown_completed).c_str());
+			    }
 
-				ImGui::EndGroup();
+			    ImGui::EndGroup();
 
-				ImGui::SameLine();
+			    ImGui::SameLine();
 
-				ImGui::BeginGroup();
+			    ImGui::BeginGroup();
 
-				ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NAT_TYPE"_T, get_nat_type_str(g_player_service->get_selected()->get_net_data()->m_nat_type)).c_str());
+			    ImGui::Text(std::format("{}: {}",
+			        "VIEW_PLAYER_INFO_NAT_TYPE"_T,
+			        get_nat_type_str(g_player_service->get_selected()->get_net_data()->m_nat_type))
+			                    .c_str());
 
-				if (auto peer = g_player_service->get_selected()->get_connection_peer())
-				{
-					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_CONNECTION_TYPE"_T, get_connection_type_str(peer->m_peer_address.m_connection_type)).c_str());
+			    if (auto peer = g_player_service->get_selected()->get_connection_peer())
+			    {
+				    ImGui::Text(std::format("{}: {}",
+				        "VIEW_PLAYER_INFO_CONNECTION_TYPE"_T,
+				        get_connection_type_str(peer->m_peer_address.m_connection_type))
+				                    .c_str());
 
-					if (peer->m_peer_address.m_connection_type == 2)
-					{
-						auto ip = peer->m_relay_address.m_relay_address;
-						ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4).c_str());
-					}
-					else if (peer->m_peer_address.m_connection_type == 3)
-					{
-						auto ip = peer->m_peer_address.m_relay_address;
-						ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_PEER_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4).c_str());
-					}
+				    if (peer->m_peer_address.m_connection_type == 2)
+				    {
+					    auto ip = peer->m_relay_address.m_relay_address;
+					    ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
+					                    .c_str());
+				    }
+				    else if (peer->m_peer_address.m_connection_type == 3)
+				    {
+					    auto ip = peer->m_peer_address.m_relay_address;
+					    ImGui::Text(std::format("{}: {}.{}.{}.{}", "VIEW_PLAYER_INFO_PEER_RELAY_IP"_T, ip.m_field1, ip.m_field2, ip.m_field3, ip.m_field4)
+					                    .c_str());
+				    }
 
-					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_MESSAGES_SENT"_T, peer->m_num_messages_batched).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_SENT"_T, peer->m_num_reliable_messages_batched).c_str());
-					ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_RESENT"_T, peer->m_num_resent_reliable_messages_batched).c_str());
-				}
+				    ImGui::Text(
+				        std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_MESSAGES_SENT"_T, peer->m_num_messages_batched).c_str());
+				    ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_SENT"_T, peer->m_num_reliable_messages_batched)
+				                    .c_str());
+				    ImGui::Text(std::format("{}: {}", "VIEW_PLAYER_INFO_NUM_RELIABLES_RESENT"_T, peer->m_num_resent_reliable_messages_batched)
+				                    .c_str());
+			    }
 
-				ImGui::Text(std::format("{}: {:X}", "VIEW_PLAYER_INFO_HOST_TOKEN"_T, g_player_service->get_selected()->get_net_data()->m_host_token).c_str());
-				ImGui::SameLine();
-				if (ImGui::Button("Copy"))
-				{
-					ImGui::SetClipboardText(std::format("{:X}", g_player_service->get_selected()->get_net_data()->m_host_token).data());
-				}
+			    ImGui::Text(std::format("{}: {:X}",
+			        "VIEW_PLAYER_INFO_HOST_TOKEN"_T,
+			        g_player_service->get_selected()->get_net_data()->m_host_token)
+			                    .c_str());
+			    ImGui::SameLine();
+			    if (ImGui::Button("Copy"))
+			    {
+				    ImGui::SetClipboardText(
+				        std::format("{:X}", g_player_service->get_selected()->get_net_data()->m_host_token).data());
+			    }
 
-				ImGui::EndGroup();
+			    ImGui::EndGroup();
 
-				ImGui::Separator();
+			    ImGui::Separator();
 
-				if (ImGui::Checkbox("TRUST"_T.data(), &g_player_service->get_selected()->is_trusted))
-				{
-					auto entry = g_player_database_service->get_or_create_player(g_player_service->get_selected());
-					entry->is_trusted = g_player_service->get_selected()->is_trusted;
-					g_player_database_service->save();
-				}
-				ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_EXPLOSIONS"_T.data(), &g_player_service->get_selected()->block_explosions);
-				ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_CREATE"_T.data(), &g_player_service->get_selected()->block_clone_create);
-				ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_SYNC"_T.data(), &g_player_service->get_selected()->block_clone_sync);
-				ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_NETWORK_EVENTS"_T.data(), &g_player_service->get_selected()->block_net_events);
-				ImGui::Checkbox("VIEW_PLAYER_INFO_LOG_CLONES"_T.data(), &g_player_service->get_selected()->log_clones);
+			    if (ImGui::Checkbox("TRUST"_T.data(), &g_player_service->get_selected()->is_trusted))
+			    {
+				    auto entry = g_player_database_service->get_or_create_player(g_player_service->get_selected());
+				    entry->is_trusted = g_player_service->get_selected()->is_trusted;
+				    g_player_database_service->save();
+			    }
+			    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_EXPLOSIONS"_T.data(), &g_player_service->get_selected()->block_explosions);
+			    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_CREATE"_T.data(), &g_player_service->get_selected()->block_clone_create);
+			    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_CLONE_SYNC"_T.data(), &g_player_service->get_selected()->block_clone_sync);
+			    ImGui::Checkbox("VIEW_PLAYER_INFO_BLOCK_NETWORK_EVENTS"_T.data(), &g_player_service->get_selected()->block_net_events);
+			    ImGui::Checkbox("VIEW_PLAYER_INFO_LOG_CLONES"_T.data(), &g_player_service->get_selected()->log_clones);
 
-				ImGui::Separator();
+			    ImGui::Separator();
 
-				if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
-				        COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(
-				            g.session.chat_command_default_access_level)]))
-				{
-					for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
-					{
-						if (ImGui::Selectable(name,
-						        type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)))
-						{
-							g.session.chat_command_default_access_level = type;
-							g_player_database_service->get_or_create_player(g_player_service->get_selected())->command_access_level = type;
-							g_player_database_service->save();
-						}
+			    if (ImGui::BeginCombo("CHAT_COMMAND_PERMISSIONS"_T.data(),
+			            COMMAND_ACCESS_LEVELS[g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)]))
+			    {
+				    for (const auto& [type, name] : COMMAND_ACCESS_LEVELS)
+				    {
+					    if (ImGui::Selectable(name,
+					            type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level)))
+					    {
+						    g.session.chat_command_default_access_level = type;
+						    g_player_database_service->get_or_create_player(g_player_service->get_selected())->command_access_level = type;
+						    g_player_database_service->save();
+					    }
 
-						if (type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level))
-						{
-							ImGui::SetItemDefaultFocus();
-						}
-					}
+					    if (type == g_player_service->get_selected()->command_access_level.value_or(g.session.chat_command_default_access_level))
+					    {
+						    ImGui::SetItemDefaultFocus();
+					    }
+				    }
 
-					ImGui::EndCombo();
-				}
-			},
-			false,
-			"VIEW_PLAYER_INFO_EXTRA_INFO"_T.data());
+				    ImGui::EndCombo();
+			    }
+		    },
+		    false,
+		    "VIEW_PLAYER_INFO_EXTRA_INFO"_T.data());
 
 		ImGui::SameLine();
 
@@ -280,11 +297,11 @@ namespace big
 			if (ip)
 			{
 				ImGui::Text("PLAYER_INFO_IP"_T.data(),
-					ip.value().m_field1,
-					ip.value().m_field2,
-					ip.value().m_field3,
-					ip.value().m_field4,
-					port);
+				    ip.value().m_field1,
+				    ip.value().m_field2,
+				    ip.value().m_field3,
+				    ip.value().m_field4,
+				    port);
 
 				ImGui::SameLine();
 
@@ -308,8 +325,8 @@ namespace big
 					ImGui::Text("VIEW_PLAYER_INFO_IP_UNKNOWN"_T.data());
 
 				auto cxn_type = g_player_service->get_selected()->get_connection_peer() ?
-					g_player_service->get_selected()->get_connection_peer()->m_peer_address.m_connection_type :
-					0;
+				    g_player_service->get_selected()->get_connection_peer()->m_peer_address.m_connection_type :
+				    0;
 
 				if (g.protections.force_relay_connections && ImGui::IsItemHovered())
 					ImGui::SetTooltip("VIEW_PLAYER_INFO_IP_FORCE_RELAY_TOOLTIP"_T.data());

@@ -130,13 +130,13 @@ namespace big
 		{
 			ImGui::SameLine();
 
-			if (ImGui::BeginCombo("###language_select", languages[g.spoofing.session_language].name))
+			if (ImGui::BeginCombo("###language_select", languages.at(g.spoofing.session_language).data()))
 			{
-				for (const auto& language : languages)
+				for (const auto& [id, language] : languages)
 				{
-					if (ImGui::Selectable(language.name, g.spoofing.session_language == language.id))
+					if (ImGui::Selectable(language.data(), g.spoofing.session_language == id))
 					{
-						g.spoofing.session_language = language.id;
+						g.spoofing.session_language = id;
 					};
 				}
 				ImGui::EndCombo();
