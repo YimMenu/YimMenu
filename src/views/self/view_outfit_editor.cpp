@@ -106,7 +106,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (item.drawable_id_max <= 0)
 				ImGui::BeginDisabled();
-			if (ImGui::SliderInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0, item.drawable_id_max))
+			if (ImGui::DragInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0.25f, 0, item.drawable_id_max))
 			{
 				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
 				g_fiber_pool->queue_job([item] {
@@ -126,7 +126,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (item.texture_id_max <= 0)
 				ImGui::BeginDisabled();
-			if (ImGui::SliderInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0, item.texture_id_max))
+			if (ImGui::DragInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0.1f, 0, item.texture_id_max))
 			{
 				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
 				g_fiber_pool->queue_job([item] {
@@ -146,7 +146,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (item.drawable_id_max <= 0)
 				ImGui::BeginDisabled();
-			if (ImGui::SliderInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id, -1, item.drawable_id_max))
+			if (ImGui::DragInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0.25f, -1, item.drawable_id_max))
 			{
 				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is only used here as a magic number to signal the removal of the prop.)
 				g_fiber_pool->queue_job([item] {
@@ -169,7 +169,7 @@ namespace big
 			ImGui::SetNextItemWidth(120);
 			if (item.texture_id_max <= 0)
 				ImGui::BeginDisabled();
-			if (ImGui::SliderInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0, item.texture_id_max))
+			if (ImGui::DragInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0.1f, 0, item.texture_id_max))
 			{
 				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
 				g_fiber_pool->queue_job([item] {
