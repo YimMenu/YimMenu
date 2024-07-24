@@ -104,17 +104,14 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (item.drawable_id_max <= 0)
-				ImGui::BeginDisabled();
-			if (ImGui::DragInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0.25f, 0, item.drawable_id_max))
+			if (ImGui::InputInt(std::format("{} [0,{}]##1", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
-				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, 0, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
 			}
-			if (item.drawable_id_max <= 0)
-				ImGui::EndDisabled();
 		}
 		ImGui::EndGroup();
 
@@ -124,17 +121,14 @@ namespace big
 		for (auto& item : components.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (item.texture_id_max <= 0)
-				ImGui::BeginDisabled();
-			if (ImGui::DragInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0.1f, 0, item.texture_id_max))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##2", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
-				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_COMPONENT_VARIATION(self::ped, item.id, item.drawable_id, item.texture_id, PED::GET_PED_PALETTE_VARIATION(self::ped, item.id));
 				});
 			}
-			if (item.texture_id_max <= 0)
-				ImGui::EndDisabled();
 		}
 		ImGui::EndGroup();
 
@@ -144,11 +138,10 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (item.drawable_id_max <= 0)
-				ImGui::BeginDisabled();
-			if (ImGui::DragInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id, 0.25f, -1, item.drawable_id_max))
+			if (ImGui::InputInt(std::format("{} [0,{}]##3", item.label, item.drawable_id_max).c_str(), &item.drawable_id))
 			{
-				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is only used here as a magic number to signal the removal of the prop.)
+				outfit::check_bounds_drawable(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					if (item.drawable_id == -1)
 						PED::CLEAR_PED_PROP(self::ped, item.id, 1);
@@ -156,8 +149,6 @@ namespace big
 						PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, 0, TRUE, 1);
 				});
 			}
-			if (item.drawable_id_max <= 0)
-				ImGui::EndDisabled();
 		}
 		ImGui::EndGroup();
 
@@ -167,17 +158,14 @@ namespace big
 		for (auto& item : props.items)
 		{
 			ImGui::SetNextItemWidth(120);
-			if (item.texture_id_max <= 0)
-				ImGui::BeginDisabled();
-			if (ImGui::DragInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id, 0.1f, 0, item.texture_id_max))
+			if (ImGui::InputInt(std::format("{} {} [0,{}]##4", item.label, "OUTFIT_TEX"_T, item.texture_id_max).c_str(), &item.texture_id))
 			{
-				//outfit::check_bounds_drawable(&item); // The game does this on its own, but seems to crash if we call OOB values to fast. (-1 is not a valid scenario)
+				outfit::check_bounds_texture(&item); // The game does this on it's own but seems to crash if we call OOB values to fast.
+
 				g_fiber_pool->queue_job([item] {
 					PED::SET_PED_PROP_INDEX(self::ped, item.id, item.drawable_id, item.texture_id, TRUE, 1);
 				});
 			}
-			if (item.texture_id_max <= 0)
-				ImGui::EndDisabled();
 		}
 		ImGui::EndGroup();
 
