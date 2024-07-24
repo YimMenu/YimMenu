@@ -38,20 +38,20 @@ namespace big::outfit
 		    {7, "OUTFIT_WRIST"_T.data()}};
 	};
 
-	inline void check_bounds_drawable(outfit_t* item)
+	inline void check_bounds_drawable(outfit_t* item, const int lower)
 	{
 		if(item->drawable_id > item->drawable_id_max)
 			item->drawable_id = item->drawable_id_max;
-		if(item->drawable_id < 0)
-			item->drawable_id = 0;
+		if(item->drawable_id < lower)
+			item->drawable_id = lower;
 	}
 
-	inline void check_bounds_texture(outfit_t* item)
+	inline void check_bounds_texture(outfit_t* item, const int lower)
 	{
 		if(item->texture_id > item->texture_id_max)
 			item->texture_id = item->texture_id_max;
-		if(item->texture_id < 0)
-			item->texture_id = 0;
+		if(item->texture_id < lower)
+			item->texture_id = lower;
 	}
 
 	// usually each update increases 1//
