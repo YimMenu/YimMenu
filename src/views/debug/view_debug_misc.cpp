@@ -154,21 +154,6 @@ namespace big
 				ImGui::TreePop();
 			}
 
-			if (ImGui::TreeNode("ANIMATION_PLAYER"_T.data()))
-			{
-				static char dict[100], anim[100];
-
-				ImGui::PushItemWidth(200);
-				components::input_text_with_hint("##dictionary", "DICT"_T, dict, IM_ARRAYSIZE(dict));
-				components::input_text_with_hint("##animation", "ANIMATION"_T, anim, IM_ARRAYSIZE(anim));
-				if (ImGui::Button("PLAY_ANIMATION"_T.data()))
-					g_fiber_pool->queue_job([=] {
-						ped::ped_play_animation(self::ped, dict, anim);
-					});
-				ImGui::PopItemWidth();
-				ImGui::TreePop();
-			}
-
 			ImGui::EndTabItem();
 		}
 	}

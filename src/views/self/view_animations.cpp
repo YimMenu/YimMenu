@@ -1,10 +1,84 @@
 #include "services/ped_animations/ped_animations_service.hpp"
 #include "util/animations.hpp"
+#include "util/ped.hpp"
 #include "views/debug/view_debug.hpp"
 #include "views/view.hpp"
 
 namespace big
 {
+	void json_animations(std::string* dict, std::string* anim)
+	{
+		static std::string current_dict, current_anim;
+		static std::vector<std::string> selected_dict_anim_list{};
+
+		if (dict && anim)
+		{
+			*dict = current_dict;
+			*anim = current_anim;
+		}
+
+		static auto reload_anim_list = []() -> void {
+			selected_dict_anim_list.clear();
+			auto range = animations::all_anims.equal_range(current_dict);
+			for (auto it = range.first; it != range.second; ++it)
+			{
+				selected_dict_anim_list.push_back(it->second);
+			}
+		};
+
+		if (animations::has_anim_list_been_populated())
+		{
+			ImGui::Text("VIEW_DEBUG_ANIMATIONS_ANIMATIONS_IN_MEMORY"_T.data(), animations::anim_dict_count(), animations::total_anim_count());
+		}
+
+		components::button("VIEW_DEBUG_ANIMATIONS_FETCH_ALL_ANIMS"_T, [] {
+			animations::fetch_all_anims();
+		});
+
+		ImGui::SetNextItemWidth(400);
+		components::input_text_with_hint("##dictionaryfilter", "DICT"_T, current_dict);
+
+		if (animations::has_anim_list_been_populated() && ImGui::BeginListBox("##dictionaries", ImVec2(400, 200)))
+		{
+			for (auto& entry : animations::all_dicts)
+			{
+				std::string entry_lowercase  = entry;
+				std::string search_lowercase = current_dict;
+				std::transform(entry.begin(), entry.end(), entry.begin(), ::tolower);
+				std::transform(current_dict.begin(), current_dict.end(), current_dict.begin(), ::tolower);
+				if (entry.find(search_lowercase) != std::string::npos && ImGui::Selectable(entry.data()))
+				{
+					current_dict = entry;
+					reload_anim_list();
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		if (selected_dict_anim_list.size() > 0 && ImGui::BeginListBox("##animations", ImVec2(400, 200)))
+		{
+			for (auto& entry : selected_dict_anim_list)
+			{
+				if (ImGui::Selectable(entry.data(), entry == current_anim))
+				{
+					current_anim = entry;
+				}
+			}
+
+			ImGui::EndListBox();
+		}
+
+		components::button("VIEW_DEBUG_ANIMATIONS_PLAY"_T, [] {
+			TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+			ped::ped_play_animation(self::ped, current_dict, current_anim, 4.f, -4.f, -1, 0, 0, false);
+		});
+		ImGui::SameLine();
+		components::button("VIEW_DEBUG_ANIMATIONS_STOP"_T, [] {
+			TASK::CLEAR_PED_TASKS(self::ped);
+		});
+	}
+
 	void view::animations()
 	{
 		ImGui::BeginGroup();
@@ -42,7 +116,7 @@ namespace big
 		components::options_modal(
 		    "VIEW_SELF_ANIMATIONS_DEBUG_ANIMATIONS"_T.data(),
 		    [] {
-			    debug::animations(&g_ped_animation_service.current_animation.dict, &g_ped_animation_service.current_animation.anim);
+			    json_animations(&g_ped_animation_service.current_animation.dict, &g_ped_animation_service.current_animation.anim);
 		    },
 		    true,
 		    "VIEW_SELF_ANIMATIONS_LIST_FROM_DEBUG"_T.data());
