@@ -130,7 +130,7 @@ namespace big
 		components::command_checkbox<"modifyexplosionradius">();
 		ImGui::InputFloat("VIEW_WEAPON_EXPLOSION_RADIUS"_T.data(), &g.weapons.set_explosion_radius, .1, 200, "%.1f");
 
-
+		ImGui::PushID("custom_weapon_view");
 		ImGui::SeparatorText("CUSTOM_WEAPONS"_T.data());
 
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
@@ -154,6 +154,7 @@ namespace big
 
 			ImGui::EndCombo();
 		}
+		ImGui::PopID();
 
 		switch (selected)
 		{
@@ -228,6 +229,7 @@ namespace big
 			ImGui::PopItemWidth();
 		}
 
+		ImGui::PushID("ammunation_view");
 		if (ImGui::CollapsingHeader("VIEW_WEAPON_AMMUNATION"_T.data()))
 		{
 			static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
@@ -326,6 +328,7 @@ namespace big
 				WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
 			});
 		}
+		ImGui::PopID();
 		if (ImGui::CollapsingHeader("VIEW_WEAPON_PERSIST_WEAPONS"_T.data()))
 		{
 			ImGui::PushID(1);
