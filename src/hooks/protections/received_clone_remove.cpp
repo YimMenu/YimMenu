@@ -15,11 +15,14 @@ namespace big
 		if (g_local_player && g_local_player->m_vehicle && g_local_player->m_vehicle->m_net_object
 		    && object_id == g_local_player->m_vehicle->m_net_object->m_object_id) [[unlikely]]
 		{
-			if (auto plyr = g_player_service->get_by_id(src->m_player_id))
+			if (!NETWORK::NETWORK_IS_ACTIVITY_SESSION()) //If we're in Freemode.
 			{
-				g.reactions.delete_vehicle.process(plyr);
+				if (auto plyr = g_player_service->get_by_id(src->m_player_id))
+				{
+					g.reactions.delete_vehicle.process(plyr);
+				}
+				return;
 			}
-			return;
 		}
 
 		if (auto object = g_pointers->m_gta.m_get_net_object(*g_pointers->m_gta.m_network_object_mgr, object_id, true)) [[likely]]
