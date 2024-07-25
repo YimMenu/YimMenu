@@ -225,7 +225,13 @@ namespace big
 
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
+			if (g.weapons.aimbot.use_weapon_range)
+				ImGui::BeginDisabled();
 			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::SameLine();
+			if (g.weapons.aimbot.use_weapon_range)
+				ImGui::EndDisabled();
+			ImGui::Checkbox("BACKEND_LOOPED_WEAPONS_USE_MAX_RANGE"_T.data(), &g.weapons.aimbot.use_weapon_range);
 			ImGui::PopItemWidth();
 		}
 
