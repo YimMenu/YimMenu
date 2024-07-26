@@ -904,6 +904,7 @@ namespace big
 				bool exclude_friends     = false;
 				bool only_on_enemy       = false;
 				bool has_target          = false;
+				bool use_weapon_range    = false;
 				float fov                = 60.f;
 				float distance           = 200.f;
 				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;

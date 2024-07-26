@@ -55,7 +55,7 @@ namespace big
 							{
 								case Dislike:
 								case Wanted:
-								case Hate: is_hated_relationship = true;
+								case Hate: is_hated_relationship = blip_color != HUD_COLOUR_BLUE;
 							}
 
 							if (!is_hated_relationship && !is_in_combat && !is_enemy)

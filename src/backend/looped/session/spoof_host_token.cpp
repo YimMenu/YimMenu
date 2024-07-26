@@ -19,7 +19,8 @@ namespace big
 
 		g_pointers->m_gta.m_profile_gamer_info->m_peer_id                                          = *g_pointers->m_gta.m_peer_id;
 		g_pointers->m_gta.m_player_info_gamer_info->m_peer_id = *g_pointers->m_gta.m_peer_id;
-		(*g_pointers->m_gta.m_communications)->m_voice.m_connections[0]->m_gamer_info.m_peer_id = *g_pointers->m_gta.m_peer_id;
+		if (g_pointers->m_gta.m_communications != nullptr)
+			(*g_pointers->m_gta.m_communications)->m_voice.m_connections[0]->m_gamer_info.m_peer_id = *g_pointers->m_gta.m_peer_id;
 
 		if (g_local_player && g_local_player->m_player_info)
 			g_local_player->m_player_info->m_net_player_data.m_peer_id = *g_pointers->m_gta.m_peer_id;
@@ -36,7 +37,8 @@ namespace big
 
 		g_pointers->m_gta.m_profile_gamer_info->m_host_token                                       = token;
 		g_pointers->m_gta.m_player_info_gamer_info->m_host_token                                   = token;
-		(*g_pointers->m_gta.m_communications)->m_voice.m_connections[0]->m_gamer_info.m_host_token = token;
+		if (g_pointers->m_gta.m_communications != nullptr)
+			(*g_pointers->m_gta.m_communications)->m_voice.m_connections[0]->m_gamer_info.m_host_token = token;
 
 		if (g_local_player && g_local_player->m_player_info)
 			g_local_player->m_player_info->m_net_player_data.m_host_token = token;
