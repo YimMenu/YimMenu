@@ -144,8 +144,9 @@ namespace big
 					continue;
 				}
 
-				const auto is_not_a_player_and_we_target_only_players = g_aimbot_only_on_player.is_enabled() && !ped->m_player_info;
-				if (is_not_a_player_and_we_target_only_players)
+				const bool is_not_a_player_and_we_target_only_players = g_aimbot_only_on_player.is_enabled() && !ped->m_player_info;
+				const bool we_in_the_same_vehicle = self::veh != 0 && ped->m_vehicle == g_player_service->get_self()->get_current_vehicle();
+				if (is_not_a_player_and_we_target_only_players || we_in_the_same_vehicle)
 				{
 					continue;
 				}

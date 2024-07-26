@@ -30,8 +30,12 @@ namespace big
 						if (ped_ptr == nullptr)
 							return;
 
-						if (g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info)
+						const bool trace_hit_non_player = g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info;
+						const bool we_in_the_same_vehicle = self::veh != 0 && ped_ptr->m_vehicle == g_player_service->get_self()->get_current_vehicle();
+						if (trace_hit_non_player || we_in_the_same_vehicle)
+						{
 							return;
+						}
 
 						if (g.weapons.aimbot.exclude_friends && ped_ptr->m_player_info)
 						{
