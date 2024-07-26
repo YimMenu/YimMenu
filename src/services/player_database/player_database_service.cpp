@@ -33,7 +33,7 @@ namespace big
 		if (!player.notify_online)
 			return;
 
-		if (g.player_db.notify_when_joinable && !is_joinable_session(player.session_type) && is_joinable_session(new_session_type))
+		if (g.player_db.notify_when_joinable && !is_joinable_session(player.session_type, player.game_mode) && is_joinable_session(new_session_type, player.game_mode))
 		{
 			g_notification_service.push_success("Player DB", std::format("{} is now in a joinable session", player.name));
 		}
@@ -41,7 +41,7 @@ namespace big
 		{
 			g_notification_service.push_success("Player DB", std::format("{} is now online", player.name));
 		}
-		else if (g.player_db.notify_when_unjoinable && is_joinable_session(player.session_type) && !is_joinable_session(new_session_type) && new_session_type != GSType::Invalid)
+		else if (g.player_db.notify_when_unjoinable && is_joinable_session(player.session_type, player.game_mode) && !is_joinable_session(new_session_type, player.game_mode) && new_session_type != GSType::Invalid)
 		{
 			g_notification_service.push("Player DB", std::format("{} is no longer in a joinable session", player.name));
 		}
@@ -101,8 +101,7 @@ namespace big
 
 		for (auto& player : m_players)
 		{
-			if (player.second->join_redirect && is_joinable_session(player.second->session_type)
-			    && current_preference_level < player.second->join_redirect_preference)
+			if (player.second->join_redirect && is_joinable_session(player.second->session_type, player.second->game_mode))
 			{
 				current_preference_level = player.second->join_redirect_preference;
 				preferred_session        = player.second->redirect_info;
@@ -528,9 +527,9 @@ namespace big
 		}
 	}
 
-	bool player_database_service::is_joinable_session(GSType type)
+	bool player_database_service::is_joinable_session(GSType type, GameMode mode)
 	{
-		return type == GSType::Public || type == GSType::OpenCrew;
+		return (type == GSType::Public || type == GSType::OpenCrew) && !can_fetch_name(mode);
 	}
 
 	const char* player_database_service::get_session_type_str(GSType type)

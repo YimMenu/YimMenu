@@ -57,7 +57,7 @@ namespace big
 		void start_update_loop();
 		void update_player_states(bool tracked_only = false);
 
-		static bool is_joinable_session(GSType type);
+		static bool is_joinable_session(GSType type, GameMode mode);
 		static const char* get_session_type_str(GSType type);
 		static const char* get_game_mode_str(GameMode mode);
 		static bool can_fetch_name(GameMode mode);
