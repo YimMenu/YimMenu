@@ -6,7 +6,7 @@
 
 namespace big
 {
-	constexpr int TUNABLE_BASE_ADDRESS = 0x40000; // This never changes
+	constexpr int TUNABLE_BASE_ADDRESS = 0x40001; // This never changes
 
 #pragma pack(push, 1)
 	struct tunable_save_struct
@@ -78,9 +78,9 @@ namespace big
 				auto offset = it->second;
 
 				if (offset > TUNABLE_BASE_ADDRESS)
-					return (offset - TUNABLE_BASE_ADDRESS) - 1;
+					return (offset - TUNABLE_BASE_ADDRESS);
 
-				return (TUNABLE_BASE_ADDRESS - offset) - 1;
+				return (TUNABLE_BASE_ADDRESS - offset);
 			}
 
 			return 0;
