@@ -52,7 +52,7 @@ namespace big
 
 				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("tuneables_processing"_J) && SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("tunables_registration"_J))
 				{
-					m_num_tunables = gta_util::find_script_program("tunables_registration"_J)->m_global_count - 0x40000;
+					m_num_tunables = gta_util::find_script_program("tunables_registration"_J)->m_global_count - TUNABLE_BASE_ADDRESS;
 
 					uint64_t args[] = {6, 27}; // TODO: check args
 
@@ -65,7 +65,7 @@ namespace big
 					}
 
 					m_tunables_backup = std::make_unique<std::uint64_t[]>(m_num_tunables);
-					memcpy(m_tunables_backup.get(), script_global(0x40000).as<void*>(), m_num_tunables * 8);
+					memcpy(m_tunables_backup.get(), script_global(TUNABLE_BASE_ADDRESS).as<void*>(), m_num_tunables * 8);
 
 					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tuneables_processing"_J);
 					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tunables_registration"_J);
@@ -78,13 +78,13 @@ namespace big
 				{
 					for (int i = 0; i < m_num_tunables; i++)
 					{
-						auto value = *script_global(0x40000).at(i).as<int*>();
+						auto value = *script_global(TUNABLE_BASE_ADDRESS).at(i).as<int*>();
 						if (auto it = m_junk_values.find(value); it != m_junk_values.end())
 						{
-							m_tunables.emplace(it->second, 0x40000 + i);
+							m_tunables.emplace(it->second, TUNABLE_BASE_ADDRESS + i);
 						}
 					}
-					memcpy(script_global(0x40000).as<void*>(), m_tunables_backup.get(), m_num_tunables * 8);
+					memcpy(script_global(TUNABLE_BASE_ADDRESS).as<void*>(), m_tunables_backup.get(), m_num_tunables * 8);
 
 					if (m_tunables.size() == 0)
 					{

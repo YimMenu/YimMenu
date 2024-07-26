@@ -1,9 +1,7 @@
 #include "gta/joaat.hpp"
 #include "gui/components/components.hpp"
 #include "hooking/hooking.hpp"
-#include "natives.hpp"
 #include "util/pathfind.hpp"
-#include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
 #include "network/CNetworkPlayerMgr.hpp"
@@ -151,21 +149,6 @@ namespace big
 					ImGui::InputScalar("NETWORK_OBJ_MGR"_T.data(), ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("ANIMATION_PLAYER"_T.data()))
-			{
-				static char dict[100], anim[100];
-
-				ImGui::PushItemWidth(200);
-				components::input_text_with_hint("##dictionary", "DICT"_T, dict, IM_ARRAYSIZE(dict));
-				components::input_text_with_hint("##animation", "ANIMATION"_T, anim, IM_ARRAYSIZE(anim));
-				if (ImGui::Button("PLAY_ANIMATION"_T.data()))
-					g_fiber_pool->queue_job([=] {
-						ped::ped_play_animation(self::ped, dict, anim);
-					});
-				ImGui::PopItemWidth();
 				ImGui::TreePop();
 			}
 

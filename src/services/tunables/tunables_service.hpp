@@ -6,6 +6,8 @@
 
 namespace big
 {
+	constexpr int TUNABLE_BASE_ADDRESS = 0x40000; // This never changes
+
 #pragma pack(push, 1)
 	struct tunable_save_struct
 	{
@@ -67,6 +69,21 @@ namespace big
 					}
 				});
 			}
+		}
+
+		inline int get_tunable_offset(rage::joaat_t hash)
+		{
+			if (auto it = m_tunables.find(hash); it != m_tunables.end())
+			{
+				auto offset = it->second;
+
+				if (offset > TUNABLE_BASE_ADDRESS)
+					return (offset - TUNABLE_BASE_ADDRESS) - 1;
+
+				return (TUNABLE_BASE_ADDRESS - offset) - 1;
+			}
+
+			return 0;
 		}
 
 		int m_current_junk_val = 0x1000000;

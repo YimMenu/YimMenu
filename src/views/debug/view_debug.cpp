@@ -14,17 +14,12 @@ namespace big
 			ImGui::BeginTabBar("debug_tabbar");
 			misc();
 			logs();
+			tunables();
 			globals();
 			locals();
 			script_events();
 			scripts();
 			threads();
-			if (ImGui::BeginTabItem("GUI_TAB_ANIMATIONS"_T.data()))
-			{
-				animations();
-				ImGui::EndTabItem();
-			}
-			ImGui::EndTabBar();
 		}
 		ImGui::End();
 	}
