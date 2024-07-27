@@ -401,6 +401,12 @@ namespace big
 		PVOID m_scope_sway_function;
 
 		PVOID m_report_myself_sender;
+
+		functions::create_chat_guid m_create_chat_guid;
+
+		uint32_t* m_game_lifetime;
+
+		functions::begin_scaleform m_begin_scaleform;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");
