@@ -186,12 +186,11 @@ namespace big::chat
 
 	inline void render_chat(const char* msg, const char* player_name, bool is_team)
 	{
-		int scaleform = GRAPHICS::REQUEST_SCALEFORM_MOVIE("MULTIPLAYER_CHAT");
+		const auto chat_data = *g_pointers->m_gta.m_chat_data;
 
-		while (!GRAPHICS::HAS_SCALEFORM_MOVIE_LOADED(scaleform))
-			script::get_current()->yield();
+		if (!g_pointers->m_gta.m_begin_scaleform(&chat_data->m_scaleform, "ADD_MESSAGE"))
+			return;
 
-		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "ADD_MESSAGE");
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player name
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_LITERAL_STRING(msg);             // content
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_TEXTURE_NAME_STRING(HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(is_team ? "MP_CHAT_TEAM" : "MP_CHAT_ALL")); // scope
@@ -199,19 +198,20 @@ namespace big::chat
 		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
 		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
 
-		GRAPHICS::BEGIN_SCALEFORM_MOVIE_METHOD(scaleform, "SET_FOCUS");
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);                                    // VISIBLE_STATE_DEFAULT
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scopeType (unused)
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                                    // scope (unused)
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name);           // player
-		GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
-		GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+		if (!chat_data->m_chat_open && !chat_data->m_timer_two)
+		{
+			if (g_pointers->m_gta.m_begin_scaleform(&chat_data->m_scaleform, "SET_FOCUS"))
+			{
+				GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(1);                          // VISIBLE_STATE_DEFAULT
+				GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                          // scopeType (unused)
+				GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT(0);                          // scope (unused)
+				GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING(player_name); // player
+				GRAPHICS::SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT((int)HudColor::HUD_COLOUR_PURE_WHITE); // eHudColour
+				GRAPHICS::END_SCALEFORM_MOVIE_METHOD();
+			}
+		}
 
-		GRAPHICS::DRAW_SCALEFORM_MOVIE_FULLSCREEN(scaleform, 255, 255, 255, 255, 0);
-
-		// fix broken scaleforms, when chat alrdy opened
-		if (const auto chat_data = *g_pointers->m_gta.m_chat_data; chat_data && (chat_data->m_chat_open || chat_data->m_timer_two))
-			HUD::CLOSE_MP_TEXT_CHAT();
+		chat_data->m_timer_one = *g_pointers->m_gta.m_game_lifetime;
 	}
 
 	inline void draw_chat(const std::string& message, const std::string& sender, bool is_team)
@@ -265,9 +265,16 @@ namespace big::chat
 		if (!*g_pointers->m_gta.m_is_session_started)
 			return;
 
+		GUID guid;
+		g_pointers->m_gta.m_create_chat_guid(&guid);
+
+		char guid_str[40];
+		std::sprintf(guid_str, "%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x", guid.Data1, guid.Data2, guid.Data3, guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3], guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
+
 		packet msg{};
 		msg.write_message(rage::eNetMessage::MsgTextMessage);
 		msg.m_buffer.WriteString(message.c_str(), 256);
+		msg.m_buffer.WriteString(guid_str, 40);
 		gamer_handle_serialize(g_player_service->get_self()->get_net_data()->m_gamer_handle, msg.m_buffer);
 		msg.write<bool>(is_team, 1);
 
