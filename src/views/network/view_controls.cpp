@@ -171,11 +171,11 @@ namespace big
 
 		ImGui::EndDisabled();
 
-		//if (g.session.force_session_host)
-		//{
-		//	ImGui::SameLine();
-		//	ImGui::Checkbox("KICK_HOST_ON_JOIN"_T.data(), &g.session.kick_host_when_forcing_host);
-		//}
+		if (g.session.spoof_host_token_type != 0)
+		{
+			ImGui::SameLine();
+			ImGui::Checkbox("KICK_HOST_ON_JOIN"_T.data(), &g.session.kick_host_when_forcing_host);
+		}
 
 		ImGui::Checkbox("FORCE_SCRIPT_HOST"_T.data(), &g.session.force_script_host);
 		if (ImGui::IsItemHovered())
