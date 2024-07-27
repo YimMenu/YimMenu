@@ -1902,6 +1902,33 @@ namespace big
             {
                 g_pointers->m_gta.m_report_myself_sender = ptr.add(1).rip().as<PVOID>();
             }
+        },
+        // Create Chat GUID
+        {
+            "CCG",
+            "48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 57 41 56 41 57 48 83 EC 20 33",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_create_chat_guid = ptr.as<functions::create_chat_guid>();
+            }
+        },
+        // Game Lifetime
+        {
+            "GL",
+            "8B 05 ? ? ? ? 89 ? 48 8D 4D C8",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_game_lifetime = ptr.add(2).rip().as<uint32_t*>();
+            }
+        },
+        // Begin Scaleform Movie Method
+        {
+            "BS",
+            "48 83 EC 38 4C 8B C2 8B 51 04",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_begin_scaleform = ptr.as<functions::begin_scaleform>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

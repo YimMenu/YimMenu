@@ -221,4 +221,8 @@ namespace big::functions
 	using get_peer_by_security_id = rage::SecurityPeer*(*)(int id);
 
 	using set_head_blend_data = void(*)(CPed* ped, CHeadBlendData* data);
+
+	using create_chat_guid = void (*)(GUID* guid);
+
+	using begin_scaleform = bool (*)(uint32_t* scaleform, const char* method);
 }

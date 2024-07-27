@@ -684,9 +684,12 @@ namespace big
 		case rage::eNetMessage::MsgTextMessage2:
 		{
 			char message[256];
+			char guid[40];
 			rage::rlGamerHandle handle{};
 			bool is_team;
 			buffer.ReadString(message, sizeof(message));
+			if (msgType == rage::eNetMessage::MsgTextMessage)
+				buffer.ReadString(guid, sizeof(guid));
 			gamer_handle_deserialize(handle, buffer);
 			is_team = buffer.Read<bool>(1);
 
