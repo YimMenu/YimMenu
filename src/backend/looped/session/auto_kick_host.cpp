@@ -13,8 +13,9 @@ namespace big
 		{
 			g_player_service->iterate([](auto& plyr) {
 				// Don't kick trusted players
-				if (plyr.second->is_trusted || (g.session.trust_friends && plyr.second->is_friend()))
-					return;
+				if (plyr.second->is_trusted || (g.session.trust_friends && plyr.second->is_friend()) 
+					|| (plyr.second->is_modder && g.session.exclude_modders_from_kick_host))
+						return;
 
 				if (plyr.second->is_host())
 				{
