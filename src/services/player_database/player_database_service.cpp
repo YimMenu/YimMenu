@@ -323,14 +323,18 @@ namespace big
 				first_time = false;
 			}
 
+			static auto last_update = std::chrono::high_resolution_clock::now() - 45s;
+
 			while (g_running && g.player_db.update_player_online_states)
 			{
-				if (!updating)
+				const auto cur = std::chrono::high_resolution_clock::now();
+				if (cur - last_update > 45s && !updating)
 				{
 					updating = true;
 					g_fiber_pool->queue_job([this] {
 						update_player_states(true);
 						updating = false;
+						last_update = std::chrono::high_resolution_clock::now();
 					});
 				}
 
