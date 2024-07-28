@@ -19,6 +19,7 @@ namespace big
 		g_script_patcher_service->add_patch({"freemode"_J, "prevent normal blip update", "06 56 ? ? 38 02 2C ? ? ? 71 71", 0, {0x2B, 0x55}, &g.spoofing.spoof_blip}); // prevent normal blip update
 		g_script_patcher_service->add_patch({"freemode"_J, "prevent normal blip update 2", "2C ? ? ? 55 ? ? 71 2C ? ? ? 61", 7, std::vector<uint8_t>(16, 0x0), &g.spoofing.spoof_blip}); // prevent normal blip update 2
 		g_script_patcher_service->add_patch({"freemode"_J, "stop relinquishing invalid CEO slots", "2D 01 05 00 00 38 00 2C ? ? ? 39 03 38 03 2C ? ? ? 56", 5, {0x2E, 0x01, 0x00}, &g.session.block_ceo_creation}); // stop relinquishing invalid CEO slots
+		g_script_patcher_service->add_patch({"freemode"_J, "prevent NPC bounties", "2D 04 06 00 00 25 1D", 5, {0x2E, 0x04, 0x00}, &g.protections.script_events.bounty}); // disable NPCs putting bounties on us.
 		g_script_patcher_service->add_patch({"shop_controller"_J, "despawn bypass", "2D 01 04 00 00 2C ? ? ? 56 ? ? 71", 5, {0x71, 0x2E, 0x01, 0x01}, nullptr}); // despawn bypass
 		g_script_patcher_service->add_patch({"shop_controller"_J, "godmode/invisibility detection bypass", "2D 01 03 00 00 5D ? ? ? 06 56 ? ? 2E ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // godmode/invisibility detection bypass
 		g_script_patcher_service->add_patch({"am_mp_nightclub"_J, "am_mp_nightclub1", "2D 01 03 00 00 2C ? ? ? 56 ? ? 72 2E ? ? 38 00", 5, {0x72, 0x2E, 0x01, 0x01}, &g.self.dance_mode});
