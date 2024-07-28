@@ -1,11 +1,11 @@
-﻿#include "core/data/apartment_names.hpp"
+﻿#include "backend/bool_command.hpp"
+#include "core/data/apartment_names.hpp"
 #include "core/data/region_codes.hpp"
 #include "core/data/warehouse_names.hpp"
 #include "gta_util.hpp"
 #include "util/session.hpp"
 #include "util/toxic.hpp"
 #include "views/view.hpp"
-#include "backend/bool_command.hpp"
 
 #include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
@@ -25,24 +25,26 @@ namespace big
 
 		ImGui::BeginGroup();
 		static uint64_t rid = 0;
-		static char username[20];
-		static char base64[500]{};
-		
-		ImGui::SetNextItemWidth(200);
-		ImGui::InputScalar("##inputrid", ImGuiDataType_U64, &rid);
-		ImGui::SameLine();
-		components::button("JOIN_BY_RID"_T, [] {
-			session::join_by_rockstar_id(rid);
-		});
 
 		ImGui::SetNextItemWidth(200);
-		components::input_text_with_hint("##usernameinput", "INPUT_USERNAME"_T, username, sizeof(username));
+		bool rid_submitted = ImGui::InputScalar("##inputrid", ImGuiDataType_U64, &rid, nullptr, nullptr, nullptr, ImGuiInputTextFlags_EnterReturnsTrue);
 		ImGui::SameLine();
-		if (components::button("JOIN_BY_USERNAME"_T))
+		if (components::button("JOIN_BY_RID"_T) || rid_submitted)
+		{
+			session::join_by_rockstar_id(rid);
+		}
+
+		ImGui::SetNextItemWidth(200);
+
+		static std::string username;
+		bool username_submitted = components::input_text_with_hint("##usernameinput", "INPUT_USERNAME"_T, username, ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::SameLine();
+		if (components::button("JOIN_BY_USERNAME"_T) || username_submitted)
 		{
 			session::join_by_username(username);
-		};
+		}
 
+		static char base64[500]{};
 		ImGui::SetNextItemWidth(200);
 		components::input_text_with_hint("##sessioninfoinput", "SESSION_INFO"_T, base64, sizeof(base64));
 		ImGui::SameLine();
@@ -124,7 +126,8 @@ namespace big
 
 	bool_command whitelist_friends("trustfriends", "TRUST_FRIENDS", "TRUST_FRIENDS_DESC", g.session.trust_friends);
 	bool_command whitelist_session("trustsession", "TRUST_SESSION", "TRUST_SESSION_DESC", g.session.trust_session);
-	bool_command chat_translate("translatechat", "TRANSLATOR_TOGGLE", "TRANSLATOR_TOGGLE_DESC", g.session.chat_translator.enabled);
+	bool_command
+	    chat_translate("translatechat", "TRANSLATOR_TOGGLE", "TRANSLATOR_TOGGLE_DESC", g.session.chat_translator.enabled);
 
 	void render_general_options()
 	{
@@ -133,8 +136,12 @@ namespace big
 		ImGui::BeginGroup();
 		components::command_checkbox<"trustfriends">();
 		components::command_checkbox<"trustsession">();
-		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T, &g.session.decloak_players, "REVEAL_OTR_PLAYERS_DESC"_T.data());
-		components::script_patch_checkbox("REVEAL_HIDDEN_PLAYERS"_T, &g.session.unhide_players_from_player_list,"REVEAL_HIDDEN_PLAYERS_DESC"_T.data());
+		components::script_patch_checkbox("REVEAL_OTR_PLAYERS"_T,
+		    &g.session.decloak_players,
+		    "REVEAL_OTR_PLAYERS_DESC"_T.data());
+		components::script_patch_checkbox("REVEAL_HIDDEN_PLAYERS"_T,
+		    &g.session.unhide_players_from_player_list,
+		    "REVEAL_HIDDEN_PLAYERS_DESC"_T.data());
 		components::command_button<"sextall">({}, "SEND_SEXT"_T);
 		components::command_button<"fakebanall">({}, "FAKE_BAN_MESSAGE"_T);
 		ImGui::EndGroup();
