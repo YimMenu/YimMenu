@@ -2,13 +2,13 @@
 
 #include "all_scripts.hpp"
 #include "am_launcher.hpp"
+#include "am_pi_menu.hpp"
 #include "carmod_shop.hpp"
 #include "creator.hpp"
 #include "freemode.hpp"
 #include "network_session_host.hpp"
 #include "shop_controller.hpp"
 #include "tunables.hpp"
-#include "am_pi_menu.hpp"
 
 #include <script/scrProgram.hpp>
 
@@ -48,7 +48,7 @@ namespace big
 
 		for (auto& [replacement_index, replacement_handler] : native_replacements)
 		{
-			auto og_handler = native_invoker::get_handlers()[static_cast<int>(replacement_index)];
+			auto og_handler                  = native_invoker::get_handlers()[static_cast<int>(replacement_index)];
 			handler_replacements[og_handler] = replacement_handler;
 		}
 
@@ -107,8 +107,6 @@ namespace big
 		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_COORDS, carmod_shop::SET_ENTITY_COORDS);
 		add_native_detour("carmod_shop"_J, NativeIndex::SET_ENTITY_HEADING, carmod_shop::SET_ENTITY_HEADING);
 		add_native_detour("carmod_shop"_J, NativeIndex::SET_VEHICLE_LIGHTS, carmod_shop::SET_VEHICLE_LIGHTS);
-		add_native_detour("carmod_shop"_J, NativeIndex::STAT_GET_INT, carmod_shop::STAT_GET_INT);
-		add_native_detour("carmod_shop"_J, NativeIndex::STAT_SET_INT, carmod_shop::STAT_SET_INT);
 		add_native_detour("carmod_shop"_J, NativeIndex::DISABLE_ALL_CONTROL_ACTIONS, carmod_shop::DISABLE_ALL_CONTROL_ACTIONS);
 
 		add_native_detour("freemode"_J, NativeIndex::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH, freemode::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH);
