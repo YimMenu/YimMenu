@@ -1044,8 +1044,12 @@ enum class BlipColors
 	WaypointColor  = 0x54
 };
 
-enum BlipDisplayBits
+enum BlipDisplayBits : uint32_t
 {
+	BlipIsFlashing           = (1 << 2),
+	BlipIsGPSRoute           = (1 << 4),
+	BlipShowHeightMarker     = (1 << 5),
+	BlipsIsDirectional       = (1 << 11),
 	BlipShowCheckmark        = (1 << 16),
 	BlipShowDollarSign       = (1 << 17),
 	BlipShowHeadingIndicator = (1 << 18),
