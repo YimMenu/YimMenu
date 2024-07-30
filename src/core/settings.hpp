@@ -80,9 +80,6 @@ namespace big
 
 		rage::scrThread* m_hunt_the_beast_thread = nullptr;
 
-		rage::scrThread* m_dance_thread   = nullptr;
-		rage::scrProgram* m_dance_program = nullptr;
-
 		rage::scrThread* m_mission_creator_thread = nullptr;
 
 		struct script_block_opts
@@ -114,8 +111,7 @@ namespace big
 			bool enabled = false;
 		} cmd_executor{};
 
-		rage::scrThread* m_modshop_thread = nullptr;
-		bool in_script_vm                 = false;
+		bool in_script_vm = false;
 
 		struct debug
 		{
@@ -396,8 +392,6 @@ namespace big
 
 				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hud, color_override, color_override_initialized, hud_color_overrides, hide_radar, hide_ammo, selected_hud_component, hud_components_states, force_show_hud_element, force_show_hud)
 			} hud{};
-			// do not save below entries
-			bool dance_mode = false;
 
 			struct super_hero_fly
 			{
@@ -806,7 +800,6 @@ namespace big
 			bool instant_brake                          = false;
 			bool infinite_veh_ammo					    = false;
 			bool block_homing                           = true;
-			bool ls_customs                             = false; // don't save this to disk
 			bool seatbelt                               = false;
 			bool turn_signals                           = false;
 			bool vehicle_jump                           = false;

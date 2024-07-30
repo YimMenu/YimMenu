@@ -1,5 +1,5 @@
 #include "backend/player_command.hpp"
-#include "script_function.hpp"
+#include "util/scr_functions.hpp"
 
 namespace big
 {
@@ -9,7 +9,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			scr_functions::join_ceo({player->id(), 0, false, false});
+			scr_functions::set_as_ceo(player->id(), 0, false, false);
 		}
 	};
 

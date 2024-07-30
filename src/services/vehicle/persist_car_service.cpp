@@ -2,6 +2,7 @@
 
 #include "base/CObject.hpp"
 #include "pointers.hpp"
+#include "util/scr_functions.hpp"
 #include "util/misc.hpp"
 #include "util/vehicle.hpp"
 #include "util/pools.hpp"
@@ -329,7 +330,7 @@ namespace big
 
 			const BOOL have_clan_logo = vehicle_json[clan_logo_key];
 			if (have_clan_logo)
-				vehicle_helper::add_clan_logo_to_vehicle(vehicle, ped);
+				scr_functions::add_clan_logo_to_vehicle(&vehicle, self::id);
 
 			VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, vehicle_json[headlight_color_key]);
 		}
