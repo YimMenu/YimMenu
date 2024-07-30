@@ -236,7 +236,7 @@ namespace big::teleport
 		{
 			entity = self::veh;
 		}
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_x, blip->m_y, blip->m_z, FALSE, FALSE, TRUE);
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, blip->m_position.x, blip->m_position.y, blip->m_position.z, FALSE, FALSE, TRUE);
 		ENTITY::SET_ENTITY_HEADING(entity, blip->m_rotation);
 
 		return false;

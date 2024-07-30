@@ -125,9 +125,9 @@ namespace big
 					return;
 				}
 				teleport_location.name  = new_location_name;
-				teleport_location.x     = blip->m_x;
-				teleport_location.y     = blip->m_y;
-				teleport_location.z     = blip->m_z;
+				teleport_location.x     = blip->m_position.x;
+				teleport_location.y     = blip->m_position.y;
+				teleport_location.z     = blip->m_position.z;
 				teleport_location.yaw   = blip->m_rotation;
 				teleport_location.pitch = 0.0f;
 				teleport_location.roll  = 0.0f;
