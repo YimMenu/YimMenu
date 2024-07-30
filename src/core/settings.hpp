@@ -909,7 +909,7 @@ namespace big
 				float fov                = 60.f;
 				float distance           = 200.f;
 				int32_t selected_bone    = (int32_t)ePedBoneType::HEAD;
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, only_on_ped_type, only_on_player, only_on_enemy, fov, distance, selected_bone)
+				NLOHMANN_DEFINE_TYPE_INTRUSIVE(aimbot, enable, only_on_ped_type, only_on_player, only_on_enemy, fov, distance, selected_bone, use_weapon_range)
 			} aimbot{};
 
 			struct flying_axe
