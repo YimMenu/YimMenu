@@ -87,11 +87,11 @@ static const std::map<int, std::string> lsc_classic_colors = {
     {COLOR_CLASSIC_BRIGHT_GREEN, "Bright Green"},
     {COLOR_CLASSIC_GASOLINE_GREEN, "Gasoline Green"},
     {COLOR_CLASSIC_LIME_GREEN, "Lime Green"},
-	{COLOR_CLASSIC_GREEN, "Green"},
-	{COLOR_CLASSIC_HUNTER_GREEN, "Hunter Green"},
-	{COLOR_CLASSIC_MIDNIGHT_GREEN, "Midnight Green"},
-	{COLOR_CLASSIC_PALE_DARK_GREEN, "Pale Dark Green"},
-	{COLOR_CLASSIC_PEA_GREEN, "Pea Green"},
+    {COLOR_CLASSIC_GREEN, "Green"},
+    {COLOR_CLASSIC_HUNTER_GREEN, "Hunter Green"},
+    {COLOR_CLASSIC_MIDNIGHT_GREEN, "Midnight Green"},
+    {COLOR_CLASSIC_PALE_DARK_GREEN, "Pale Dark Green"},
+    {COLOR_CLASSIC_PEA_GREEN, "Pea Green"},
     {COLOR_CLASSIC_MIDNIGHT_BLUE, "Midnight Blue"},
     {COLOR_CLASSIC_GALAXY_BLUE, "Galaxy Blue"},
     {COLOR_CLASSIC_DARK_BLUE, "Dark Blue"},
@@ -105,12 +105,12 @@ static const std::map<int, std::string> lsc_classic_colors = {
     {COLOR_CLASSIC_RACING_BLUE, "Racing Blue"},
     {COLOR_CLASSIC_ULTRA_BLUE, "Ultra Blue"},
     {COLOR_CLASSIC_LIGHT_BLUE, "Light Blue"},
- 	{COLOR_CLASSIC_BABY_BLUE, "Baby Blue"},
-	{COLOR_CLASSIC_EPSILON_BLUE, "Epsilon Blue"},
-	{COLOR_CLASSIC_FLOURESCENT_BLUE, "Flourescent Blue"},
-	{COLOR_CLASSIC_MIDNIGHT_GALAXY_BLUE, "Midnight Galaxy Blue"},
-	{COLOR_CLASSIC_POLICE_BLUE, "Police Blue"},
-	{COLOR_CLASSIC_SLATE_BLUE, "Slate Blue"},
+    {COLOR_CLASSIC_BABY_BLUE, "Baby Blue"},
+    {COLOR_CLASSIC_EPSILON_BLUE, "Epsilon Blue"},
+    {COLOR_CLASSIC_FLOURESCENT_BLUE, "Flourescent Blue"},
+    {COLOR_CLASSIC_MIDNIGHT_GALAXY_BLUE, "Midnight Galaxy Blue"},
+    {COLOR_CLASSIC_POLICE_BLUE, "Police Blue"},
+    {COLOR_CLASSIC_SLATE_BLUE, "Slate Blue"},
     {COLOR_CLASSIC_CHOCOLATE_BROWN, "Chocolate Brown"},
     {COLOR_CLASSIC_BISON_BROWN, "Bison Brown"},
     {COLOR_CLASSIC_CREEEN_BROWN, "Creek Brown"},
@@ -129,10 +129,10 @@ static const std::map<int, std::string> lsc_classic_colors = {
     {COLOR_CLASSIC_MIDNIGHT_PURPLE, "Midnight Purple"},
     {COLOR_CLASSIC_BRIGHT_PURPLE, "Bright Purple"},
     {COLOR_CLASSIC_CREAM, "Cream"},
-	{COLOR_CLASSIC_CHAMPAGNE, "Champagne"},    
+    {COLOR_CLASSIC_CHAMPAGNE, "Champagne"},    
     {COLOR_CLASSIC_ICE_WHITE, "Ice White"},
     {COLOR_CLASSIC_FROST_WHITE, "Frost White"},
-	{COLOR_CLASSIC_PURE_WHITE, "Pure White"},
+    {COLOR_CLASSIC_PURE_WHITE, "Pure White"},
 };
 
 static const std::map<int, std::string> lsc_matte_colors = {
@@ -156,7 +156,7 @@ static const std::map<int, std::string> lsc_matte_colors = {
     {COLOR_MATTE_OLIVE_DARB, "Olive Drab"},
     {COLOR_MATTE_DARK_EARTH, "Dark Earth"},
     {COLOR_MATTE_DESERT_TAN, "Desert Tan"},
-	{COLOR_MATTE_BROWN, "Brown"},
+    {COLOR_MATTE_BROWN, "Brown"},
 };
 
 static const std::map<int, std::string> lsc_metal_colors = {
@@ -167,7 +167,7 @@ static const std::map<int, std::string> lsc_metal_colors = {
     {COLOR_METALS_PURE_GOLD, "Pure Gold"},
     {COLOR_METALS_BRUSHED_GOLD, "Brushed Gold"},
     {COLOR_METALS_PEARLESCENT_GOLD, "Pearlescent Gold"},
-	{COLOR_METALS_DEFAULT_ALLOY, "Default Alloy"},
+    {COLOR_METALS_DEFAULT_ALLOY, "Default Alloy"},
 };
 
 static const std::map<int, std::string> lsc_util_colors = {
