@@ -1,16 +1,10 @@
 #include "gta/joaat.hpp"
-#include "gta_util.hpp"
 #include "gui/components/components.hpp"
 #include "hooking/hooking.hpp"
-#include "natives.hpp"
-#include "network/Network.hpp"
-#include "script.hpp"
-#include "script_global.hpp"
-#include "util/misc.hpp"
 #include "util/pathfind.hpp"
-#include "util/ped.hpp"
 #include "util/system.hpp"
 #include "view_debug.hpp"
+#include "network/CNetworkPlayerMgr.hpp"
 
 namespace big
 {
@@ -44,10 +38,10 @@ namespace big
 			});
 
 			components::button("DEBUG_REMOVE_FROM_BAD_SPORT"_T, [] {
-				STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_BADSPORT_MESSAGE"), 0, 1);
-				STATS::STAT_SET_INT(RAGE_JOAAT("MPPLY_BECAME_BADSPORT_NUM"), 0, 1);
-				STATS::STAT_SET_FLOAT(RAGE_JOAAT("MPPLY_OVERALL_BADSPORT"), 0, true);
-				STATS::STAT_SET_BOOL(RAGE_JOAAT("MPPLY_CHAR_IS_BADSPORT"), false, true);
+				STATS::STAT_SET_INT("MPPLY_BADSPORT_MESSAGE"_J, 0, 1);
+				STATS::STAT_SET_INT("MPPLY_BECAME_BADSPORT_NUM"_J, 0, 1);
+				STATS::STAT_SET_FLOAT("MPPLY_OVERALL_BADSPORT"_J, 0, true);
+				STATS::STAT_SET_BOOL("MPPLY_CHAR_IS_BADSPORT"_J, false, true);
 			});
 
 			components::button("LOAD_MP_MAP"_T, [] {
@@ -58,6 +52,10 @@ namespace big
 
 			components::button("LOAD_SP_MAP"_T, [] {
 				DLC::ON_ENTER_SP();
+			});
+
+			components::button("START_LS_CUSTOMS"_T, [] {
+				g.vehicle.ls_customs = true;
 			});
 
 			components::button("SKIP_CUTSCENE"_T, [] {
@@ -79,6 +77,13 @@ namespace big
 
 			components::button("REMOVE_BLACKSCREEN"_T, [] {
 				CAM::DO_SCREEN_FADE_IN(0);
+				PLAYER::SET_PLAYER_CONTROL(self::id, true, 0);
+				ENTITY::FREEZE_ENTITY_POSITION(self::ped, false);
+				MISC::FORCE_GAME_STATE_PLAYING();
+				if (self::veh == 0)
+					TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
+				HUD::DISPLAY_RADAR(true);
+				HUD::DISPLAY_HUD(true);
 			});
 
 			components::button("TP_TO_SAFE_POS"_T, [] {
@@ -87,7 +92,7 @@ namespace big
 				if (pathfind::find_closest_vehicle_node(self::pos, safepos, heading, 0))
 					ENTITY::SET_ENTITY_COORDS(self::ped, safepos.x, safepos.y, safepos.z, 0, 0, 0, false);
 				else
-					g_notification_service->push_error("DEBUG_TAB_MISC"_T.data(), "VIEW_DEBUG_MISC_TP_TO_SAFE_POS_FAILED"_T.data());
+					g_notification_service.push_error("DEBUG_TAB_MISC"_T.data(), "VIEW_DEBUG_MISC_TP_TO_SAFE_POS_FAILED"_T.data());
 			});
 
 			ImGui::Checkbox("VIEW_DEBUG_MISC_IMGUI_DEMO"_T.data(), &g.window.demo);
@@ -144,21 +149,6 @@ namespace big
 					ImGui::InputScalar("NETWORK_OBJ_MGR"_T.data(), ImGuiDataType_U64, &nw, NULL, NULL, "%p", ImGuiInputTextFlags_CharsHexadecimal);
 				}
 
-				ImGui::TreePop();
-			}
-
-			if (ImGui::TreeNode("ANIMATION_PLAYER"_T.data()))
-			{
-				static char dict[100], anim[100];
-
-				ImGui::PushItemWidth(200);
-				components::input_text_with_hint("##dictionary", "DICT"_T, dict, IM_ARRAYSIZE(dict));
-				components::input_text_with_hint("##animation", "ANIMATION"_T, anim, IM_ARRAYSIZE(anim));
-				if (ImGui::Button("PLAY_ANIMATION"_T.data()))
-					g_fiber_pool->queue_job([=] {
-						ped::ped_play_animation(self::ped, dict, anim);
-					});
-				ImGui::PopItemWidth();
 				ImGui::TreePop();
 			}
 

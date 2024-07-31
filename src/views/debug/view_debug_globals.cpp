@@ -1,6 +1,5 @@
 #include "gui/components/components.hpp"
 #include "script_global.hpp"
-#include "thread_pool.hpp"
 #include "view_debug.hpp"
 #include "widgets/imgui_bitfield.hpp"
 
@@ -364,7 +363,7 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("DEBUG_TAB_GLOBALS"_T.data(), "VIEW_DEBUG_GLOBAL_INVALID_TYPE"_T.data());
+					g_notification_service.push_warning("DEBUG_TAB_GLOBALS"_T.data(), "VIEW_DEBUG_GLOBAL_INVALID_TYPE"_T.data());
 				}
 			}
 			ImGui::SameLine();

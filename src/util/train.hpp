@@ -5,6 +5,7 @@
 #include "pointers.hpp"
 #include "script_global.hpp"
 #include "services/players/player_service.hpp"
+#include "pools.hpp"
 
 namespace big::train
 {
@@ -12,7 +13,7 @@ namespace big::train
 	{
 		for (auto veh : pools::get_all_vehicles())
 		{
-			if (veh->m_model_info->m_hash == RAGE_JOAAT("freight"))
+			if (veh->m_model_info->m_hash == "freight"_J)
 				return g_pointers->m_gta.m_ptr_to_handle(veh);
 		}
 		return 0;
@@ -28,11 +29,11 @@ namespace big::train
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(ped);
 
 			PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), train, -1);
-			g_notification_service->push_success("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_FOUND_TRAIN"_T.data());
+			g_notification_service.push_success("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_FOUND_TRAIN"_T.data());
 		}
 		else
 		{
-			g_notification_service->push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
+			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_NOTFOUND_TRAIN"_T.data());
 		}
 	}
 
@@ -44,7 +45,7 @@ namespace big::train
 		}
 		else
 		{
-			g_notification_service->push_warning("HIJACK_TRAIN"_T.data(), "Cannot find any trains nearby");
+			g_notification_service.push_warning("HIJACK_TRAIN"_T.data(), "HIJACK_TRAIN_NOTFOUND_TRAIN"_T.data());
 		}
 	}
 

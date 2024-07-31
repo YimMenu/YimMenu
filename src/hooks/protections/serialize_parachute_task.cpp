@@ -18,7 +18,7 @@ namespace big
 		auto object = reinterpret_cast<TaskObject*>(info + 0x30);
 		g_hooking->get_original<hooks::serialize_parachute_task>()(info, serializer);
 
-		if (object->m_entity && object->m_entity->m_entity_type != 5)
+		if (object->m_entity && object->m_entity->m_entity_type != 5) [[unlikely]]
 		{
 			g_pointers->m_gta.m_remove_reference(object->m_entity, &object->m_entity);
 			notify::crash_blocked(g.m_syncing_player, "invalid parachute object type");

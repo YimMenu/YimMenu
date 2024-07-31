@@ -2,7 +2,7 @@
 
 Table containing helper functions for network related features.
 
-## Functions (12)
+## Functions (17)
 
 ### `trigger_script_event(bitset, _args)`
 
@@ -15,6 +15,15 @@ Call trigger_script_event (TSE)
 **Example Usage:**
 ```lua
 network.trigger_script_event(bitset, _args)
+```
+
+### `is_session_started()`
+
+Returns true if the local player is in a multiplayer session.
+
+**Example Usage:**
+```lua
+network.is_session_started()
 ```
 
 ### `give_pickup_rewards(player, reward)`
@@ -134,7 +143,7 @@ string = network.get_flagged_modder_reason(player_idx)
 
 ### `force_script_host(script_name)`
 
-Try to force ourself to be host for the given GTA Script.
+Try to force ourself to be host for the given GTA Script. Needs to be called in the fiber pool or a loop.
 
 - **Parameters:**
   - `script_name` (string): Name of the script
@@ -142,6 +151,20 @@ Try to force ourself to be host for the given GTA Script.
 **Example Usage:**
 ```lua
 network.force_script_host(script_name)
+```
+
+### `force_script_on_player(player_idx, script_name, instance_id)`
+
+Forces the given GTA script to be started on a player. Needs to be called in the fiber pool or a loop.
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+  - `script_name` (string): Name of the script.
+  - `instance_id` (integer): Instance ID of the script.
+
+**Example Usage:**
+```lua
+network.force_script_on_player(script_name)
 ```
 
 ### `send_chat_message(msg, team_only)`
@@ -157,4 +180,120 @@ Sends a message to the in game chat.
 network.send_chat_message(msg, team_only)
 ```
 
+### `send_chat_message_to_player(player_idx, msg)`
 
+Sends a chat message to the specified player. Other players would not be able to see the message
+
+- **Parameters:**
+  - `player_idx` (integer): Index of the player.
+  - `msg` (string): Message to be sent.
+
+**Example Usage:**
+```lua
+network.send_chat_message_to_player(player_idx, msg)
+```
+
+### `get_player_rank(pid)`
+
+Call get_player_rank(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players rank.
+
+**Example Usage:**
+```lua
+network.get_player_rank(pid)
+```
+
+### `get_player_rp(pid)`
+
+Call get_player_rp(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players rp.
+
+**Example Usage:**
+```lua
+network.get_player_rp(pid)
+```
+
+### `get_player_money(pid)`
+
+Call get_player_money(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players money.
+
+**Example Usage:**
+```lua
+network.get_player_money(pid)
+```
+
+### `get_player_wallet(pid)`
+
+Call get_player_wallet(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players wallet.
+
+**Example Usage:**
+```lua
+network.get_player_wallet(pid)
+```
+
+### `get_player_bank(pid)`
+
+Call get_player_bank(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players bank.
+
+**Example Usage:**
+```lua
+network.get_player_bank(pid)
+```
+
+### `get_player_language_id(pid)`
+
+Call get_player_language_id(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `int`: Returns an integer which contains the players language id.
+
+**Example Usage:**
+```lua
+network.get_player_language_id(pid)
+```
+
+### `get_player_language_name(pid)`
+
+Call get_player_language_name(playerID)
+
+- **Parameters:**
+  - `pid` (int)
+
+- **Returns:**
+  - `string`: Returns a string which contains the players language name.
+
+**Example Usage:**
+```lua
+network.get_player_language_name(pid)
+```

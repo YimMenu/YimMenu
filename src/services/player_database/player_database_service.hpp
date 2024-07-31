@@ -47,6 +47,7 @@ namespace big
 		std::map<std::string, std::shared_ptr<persistent_player>>& get_sorted_players();
 		std::shared_ptr<persistent_player> get_player_by_rockstar_id(uint64_t rockstar_id);
 		std::shared_ptr<persistent_player> get_or_create_player(player_ptr player);
+		void remove_filtered_players(bool filter_modder, bool filter_trust, bool filter_block_join, bool filter_track_player);
 		void update_rockstar_id(uint64_t old, uint64_t _new);
 		void remove_rockstar_id(uint64_t rockstar_id);
 
@@ -56,7 +57,7 @@ namespace big
 		void start_update_loop();
 		void update_player_states(bool tracked_only = false);
 
-		static bool is_joinable_session(GSType type);
+		static bool is_joinable_session(GSType type, GameMode mode);
 		static const char* get_session_type_str(GSType type);
 		static const char* get_game_mode_str(GameMode mode);
 		static bool can_fetch_name(GameMode mode);

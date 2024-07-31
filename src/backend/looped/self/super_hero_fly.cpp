@@ -1,11 +1,10 @@
-#include "backend/looped_command.hpp"
 #include "backend/bool_command.hpp"
 #include "backend/float_command.hpp"
+#include "backend/looped_command.hpp"
 #include "gta/enums.hpp"
 #include "natives.hpp"
 #include "util/entity.hpp"
 #include "util/math.hpp"
-#include "util/notify.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 
@@ -22,7 +21,7 @@ namespace big
 
 		bool m_timer = false;
 		std::chrono::system_clock::time_point m_time_stamp;
-		std::chrono::milliseconds m_duration;
+		std::chrono::duration<double> m_duration;
 
 		bool m_charging             = false;
 		double m_charge_intensity   = 1;
@@ -213,7 +212,7 @@ namespace big
 			if (!m_landing && m_flying)
 			{
 				//Negative Z velocity results in gravity assuming we are falling, hence the removal of the parachute.
-				constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+				constexpr auto parachute_hash = "GADGET_PARACHUTE"_J;
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, parachute_hash);
 				detach_delete_vehicle();
 				TASK::CLEAR_PED_TASKS_IMMEDIATELY(self::ped);
@@ -239,6 +238,14 @@ namespace big
 
 		virtual void on_tick() override
 		{
+			if (PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
+			{
+				if (m_flying || m_charging || m_landing || m_launching)
+					reset();
+
+				return;
+			}
+
 			//Both anims are required in order to consider the player ped flying.
 			m_anims_are_playing = ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, "missfam5_yoga", "c8_to_start", 3) && ENTITY::IS_ENTITY_PLAYING_ANIM(self::ped, "skydive@parachute@first_person", "chute_idle_alt_lookright", 3);
 
@@ -249,7 +256,7 @@ namespace big
 			PAD::DISABLE_CONTROL_ACTION(0, (int)ControllerInputs::INPUT_COVER, false);
 
 			if (m_timer)
-				m_duration = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::system_clock::now() - m_time_stamp);
+				m_duration = std::chrono::system_clock::now() - m_time_stamp;
 
 			//Timer is used for both the reset and the charged launch
 			if (PAD::IS_DISABLED_CONTROL_JUST_RELEASED(0, (int)ControllerInputs::INPUT_COVER))
@@ -289,7 +296,7 @@ namespace big
 			}
 
 			if (PAD::IS_DISABLED_CONTROL_PRESSED(0, (int)ControllerInputs::INPUT_COVER) && !m_flying
-			    && g.self.super_hero_fly.charge)
+			    && g.self.super_hero_fly.charge && !PED::IS_PED_IN_ANY_VEHICLE(self::ped, false))
 			{
 				charge_launch();
 			}
@@ -391,7 +398,7 @@ namespace big
 
 		virtual void on_enable() override
 		{
-			g_notification_service->push("SUPER_HERO_FLY"_T.data(), "SUPER_HERO_FLY_ENABLE_NOTIFICATION"_T.data());
+			g_notification_service.push("SUPER_HERO_FLY"_T.data(), "SUPER_HERO_FLY_ENABLE_NOTIFICATION"_T.data());
 		}
 
 		virtual void on_disable() override
@@ -401,11 +408,17 @@ namespace big
 	};
 
 	super_hero_fly g_super_hero_fly("superherofly", "SUPER_HERO_FLY", "SUPER_HERO_FLY_DESC", g.self.super_hero_fly.enabled);
-	bool_command gradual_speed("superheroflygradualspeed", "SUPER_HERO_FLY_GRADUAL_SPEED", "SUPER_HERO_FLY_GRADUAL_SPEED_DESC", g.self.super_hero_fly.gradual);
-	bool_command explosions("superheroflyexplosions", "SUPER_HERO_FLY_EXPLOSIONS", "SUPER_HERO_FLY_EXPLOSIONS_DESC", g.self.super_hero_fly.explosions);
-	bool_command auto_land("superheroflyautoland", "SUPER_HERO_FLY_AUTO_LAND", "SUPER_HERO_FLY_AUTO_LAND_DESC", g.self.super_hero_fly.auto_land);
-	bool_command charge_launch("superheroflychargelaunch", "SUPER_HERO_FLY_CHARGE_LAUNCH", "SUPER_HERO_FLY_CHARGE_LAUNCH_DESC", g.self.super_hero_fly.charge);
-	bool_command charge_ptfx("superheroflychargeptfx", "SUPER_HERO_FLY_CHARGE_PTFX", "SUPER_HERO_FLY_CHARGE_PTFX_DESC", g.self.super_hero_fly.ptfx);
+	bool_command gradual_speed("superheroflygradualspeed", "SUPER_HERO_FLY_GRADUAL_SPEED", "SUPER_HERO_FLY_GRADUAL_SPEED_DESC",
+	    g.self.super_hero_fly.gradual);
+	bool_command explosions("superheroflyexplosions", "SUPER_HERO_FLY_EXPLOSIONS", "SUPER_HERO_FLY_EXPLOSIONS_DESC",
+	    g.self.super_hero_fly.explosions);
+	bool_command auto_land("superheroflyautoland", "SUPER_HERO_FLY_AUTO_LAND", "SUPER_HERO_FLY_AUTO_LAND_DESC",
+	    g.self.super_hero_fly.auto_land);
+	bool_command charge_launch("superheroflychargelaunch", "SUPER_HERO_FLY_CHARGE_LAUNCH", "SUPER_HERO_FLY_CHARGE_LAUNCH_DESC",
+	    g.self.super_hero_fly.charge);
+	bool_command charge_ptfx("superheroflychargeptfx", "SUPER_HERO_FLY_CHARGE_PTFX", "SUPER_HERO_FLY_CHARGE_PTFX_DESC",
+	    g.self.super_hero_fly.ptfx);
 	float_command speed("superheroflyspeed", "SUPER_HERO_FLY_SPEED", "SUPER_HERO_FLY_SPEED_DESC", g.self.super_hero_fly.fly_speed, 1.f, 50.f);
-	float_command initial_launch("superheroflyinitiallaunch", "SUPER_HERO_FLY_INITIAL_LAUNCH", "SUPER_HERO_FLY_INITIAL_LAUNCH_DESC", g.self.super_hero_fly.initial_launch, 1.f, 50.f);
+	float_command initial_launch("superheroflyinitiallaunch", "SUPER_HERO_FLY_INITIAL_LAUNCH", "SUPER_HERO_FLY_INITIAL_LAUNCH_DESC",
+	    g.self.super_hero_fly.initial_launch, 1.f, 50.f);
 }

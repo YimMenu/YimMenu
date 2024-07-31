@@ -1,8 +1,15 @@
 #pragma once
 #include "file_manager.hpp"
-
 #include <AsyncLogger/Logger.hpp>
 using namespace al;
+
+namespace stream
+{
+	inline auto net_events   = std::make_shared<LogStream>("net_events");
+	inline auto net_messages = std::make_shared<LogStream>("net_messages");
+	inline auto net_sync     = std::make_shared<LogStream>("net_sync");
+	inline auto script_events     = std::make_shared<LogStream>("script_events");
+}
 
 namespace big
 {
@@ -28,6 +35,7 @@ namespace big
 	private:
 		bool m_attach_console = true;
 		bool m_did_console_exist = false;
+		bool m_is_console_open = false;
 
 		void (logger::*m_console_logger)(const LogMessagePtr msg) = &logger::format_console;
 

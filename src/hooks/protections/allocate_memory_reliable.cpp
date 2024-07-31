@@ -24,12 +24,12 @@ namespace big
 
 	void* hooks::allocate_memory_reliable(rage::netConnection* cxn, int required_memory)
 	{
-		if (!cxn || !required_memory)
+		if (!cxn || !required_memory) [[unlikely]]
 			return nullptr;
 
 		auto memory = reinterpret_cast<rage::sysMemAllocator*>(cxn->m_allocator)->Allocate(required_memory, 0, 0);
 
-		if (memory)
+		if (memory) [[likely]]
 			return memory;
 
 		LOG(WARNING) << "Failed to allocate " << required_memory << " bytes for reliable message, free space: "
@@ -73,7 +73,7 @@ namespace big
 		if (memory)
 			return memory;
 
-		g_notification_service->push_error("Protections", "The network message allocator is out of memory"); // this never reaches here but why not
+		g_notification_service.push_error("Protections", "The network message allocator is out of memory"); // this never reaches here but why not
 
 		return nullptr;
 	}

@@ -8,15 +8,15 @@ namespace big
 {
 	void looped::system_self_globals()
 	{
-		if (!*g_pointers->m_gta.m_network_player_mgr || !(*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player
-		    || (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id == -1)
+		if (!(*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player
+		    || (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id == static_cast<uint8_t>(-1)) [[unlikely]]
 			self::id = 0;
-		else
+		else [[likely]]
 			self::id = (*g_pointers->m_gta.m_network_player_mgr)->m_local_net_player->m_player_id;
 
 		self::ped = PLAYER::PLAYER_PED_ID();
 
-		STATS::STAT_GET_INT(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"), &self::char_index, true);
+		STATS::STAT_GET_INT("MPPLY_LAST_MP_CHAR"_J, &self::char_index, true);
 
 		self::pos = ENTITY::GET_ENTITY_COORDS(self::ped, false /*Unused*/);
 

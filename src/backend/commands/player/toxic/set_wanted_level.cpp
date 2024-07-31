@@ -1,11 +1,8 @@
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
 #include "util/globals.hpp"
-
-#include <script/globals/GlobalPlayerBD.hpp>
 
 namespace big
 {

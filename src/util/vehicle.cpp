@@ -1,4 +1,5 @@
 #include "vehicle.hpp"
+#include "pools.hpp"
 
 namespace big::vehicle
 {
@@ -56,13 +57,13 @@ namespace big::vehicle
 	void bring(Vehicle veh, Vector3 location, bool put_in, int seatIdx)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh))
-			return g_notification_service->push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
+			return g_notification_service.push_error("VEHICLE"_T.data(), "VEHICLE_INVALID"_T.data());
 
 		auto vecVehicleLocation = ENTITY::GET_ENTITY_COORDS(veh, true);
 		entity::load_ground_at_3dcoord(vecVehicleLocation);
 
 		if (!entity::take_control_of(veh))
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 		auto ped = self::ped;
 
 		ENTITY::SET_ENTITY_COORDS(veh, location.x, location.y, location.z + 1.f, 0, 0, 0, 0);
@@ -137,12 +138,21 @@ namespace big::vehicle
 		return true;
 	}
 
+	void repair_engine_from_water(Vehicle veh)
+	{
+		auto cvehicle = (uint8_t*)g_pointers->m_gta.m_handle_to_ptr(veh);
+		// fix vehicle being completly fucked after going into water.
+		cvehicle[0xD8] &= ~(1 << 0);
+	}
+
 	bool repair(Vehicle veh)
 	{
 		if (!ENTITY::IS_ENTITY_A_VEHICLE(veh) || !entity::take_control_of(veh, 0))
 		{
 			return false;
 		}
+
+		repair_engine_from_water(veh);
 
 		VEHICLE::SET_VEHICLE_FIXED(veh);
 		VEHICLE::SET_VEHICLE_DIRT_LEVEL(veh, 0.f);
@@ -152,13 +162,16 @@ namespace big::vehicle
 
 	Vehicle spawn(Hash hash, Vector3 location, float heading, bool is_networked, bool script_veh)
 	{
+		if (is_networked && !*g_pointers->m_gta.m_is_session_started)
+			is_networked = false;
+
 		if (entity::request_model(hash))
 		{
 			auto veh = VEHICLE::CREATE_VEHICLE(hash, location.x, location.y, location.z, heading, is_networked, script_veh, false);
 
 			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 
-			if (*g_pointers->m_gta.m_is_session_started)
+			if (is_networked)
 			{
 				set_mp_bitset(veh);
 			}
@@ -342,9 +355,9 @@ namespace big::vehicle
 		}
 
 		// EXTRA
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id  = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id  = (extra - MOD_EXTRA_1) * -1;
 			owned_mods[extra] = val_77 >> (gta_extra_id - 1) & 1;
 		}
 
@@ -354,9 +367,9 @@ namespace big::vehicle
 	}
 
 
-	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked)
+	Vehicle clone_from_owned_mods(std::map<int, int32_t> owned_mods, Vector3 location, float heading, bool is_networked, bool is_script_vehicle)
 	{
-		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked);
+		auto vehicle = spawn(owned_mods[MOD_MODEL_HASH], location, heading, is_networked, is_script_vehicle);
 		if (vehicle == 0)
 		{
 			return 0;
@@ -371,12 +384,12 @@ namespace big::vehicle
 		}
 
 		VEHICLE::SET_VEHICLE_MOD_KIT(vehicle, 0);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(vehicle, owned_mods[MOD_PLATE_STYLE]);
 		VEHICLE::SET_VEHICLE_WINDOW_TINT(vehicle, owned_mods[MOD_WINDOW_TINT]);
 		VEHICLE::SET_VEHICLE_WHEEL_TYPE(vehicle, owned_mods[MOD_WHEEL_TYPE]);
-		script::get_current()->yield(10ms);
+		//script::get_current()->yield(10ms);
 
 		VEHICLE::SET_VEHICLE_COLOURS(vehicle, owned_mods[MOD_PRIMARY_COL], owned_mods[MOD_SECONDARY_COL]);
 		VEHICLE::SET_VEHICLE_EXTRA_COLOURS(vehicle, owned_mods[MOD_PEARLESCENT_COL], owned_mods[MOD_WHEEL_COL]);
@@ -435,9 +448,9 @@ namespace big::vehicle
 			}
 		}
 
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id = (extra - MOD_EXTRA_1) * -1;
 			if (owned_mods.count(extra) && VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
 			{
 				VEHICLE::SET_VEHICLE_EXTRA(vehicle, gta_extra_id, owned_mods[extra] == 0);
@@ -523,9 +536,9 @@ namespace big::vehicle
 			}
 		}
 
-		for (int extra = MOD_EXTRA_11; extra <= MOD_EXTRA_0; extra++)
+		for (int extra = MOD_EXTRA_14; extra <= MOD_EXTRA_1; extra++)
 		{
-			int gta_extra_id = (extra - MOD_EXTRA_0) * -1;
+			int gta_extra_id = (extra - MOD_EXTRA_1) * -1;
 			if (VEHICLE::DOES_EXTRA_EXIST(vehicle, gta_extra_id))
 			{
 				owned_mods[extra] = VEHICLE::IS_VEHICLE_EXTRA_TURNED_ON(vehicle, gta_extra_id);
@@ -605,7 +618,7 @@ namespace big::vehicle
 		if (current_vehicle)
 			VEHICLE::SET_VEHICLE_ENGINE_ON(current_vehicle, state, immediately, disable_auto_start);
 		else
-			return g_notification_service->push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
+			return g_notification_service.push_warning("VEHICLE"_T.data(), "PLEASE_ENTER_VEHICLE"_T.data());
 	}
 
 	void downgrade(Vehicle vehicle)
@@ -621,7 +634,7 @@ namespace big::vehicle
 	{
 		if (!entity::take_control_of(veh, 4000))
 		{
-			g_notification_service->push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
+			g_notification_service.push_warning("REMOTE_CONTROL"_T.data(), "VEHICLE_FAILED_CONTROL"_T.data());
 			return false;
 		}
 

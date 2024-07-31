@@ -23,14 +23,14 @@ namespace big
 			if (scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[player->id()].PropertyData.Index != -1)
 			{
 				auto cxn = g_script_connection_service->create_connection("am_mp_property_int", player);
-				cxn->set_host_broadcast_size(1359);
-				cxn->set_player_broadcast_size(1185);
+				cxn->set_host_broadcast_size(1317);
+				// cxn->set_player_broadcast_size(1185);
 				cxn->set_no_remote_start(true);
 				cxn->set_wait_for_host_broadcast_data(true);
 				cxn->set_quick_cleanup(true);
 				cxn->set_debug_logging(true);
 				cxn->set_broadcast_modify_callback([](rage::scrThread* thread, uint64_t* server_vars, uint64_t* client_vars) {
-					server_vars[718] = 1;
+					server_vars[677] = 1; // this changes every update
 				});
 
 				g_fiber_pool->queue_job([cxn] {

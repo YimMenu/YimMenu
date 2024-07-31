@@ -1,15 +1,16 @@
 #include "core/data/hud_component_names.hpp"
 #include "core/data/ptfx_effects.hpp"
 #include "fiber_pool.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
-#include "util/entity.hpp"
-#include "util/scripts.hpp"
 #include "views/view.hpp"
+#include "core/scr_globals.hpp"
+#include "gta_util.hpp"
 
 #include <script/globals/GPBD_FM_3.hpp>
 
 namespace big
 {
+	extern bool user_updated_wanted_level;
+
 	void view::self()
 	{
 		components::command_button<"suicide">();
@@ -45,8 +46,8 @@ namespace big
 		// clang-format off
 		ImGui::BeginDisabled(!*g_pointers->m_gta.m_is_session_started ||
 			gpbd_fm_3->Entries[self::id].BossGoon.Boss != -1 ||
-			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller")) ||
-			gta_util::find_script_thread(RAGE_JOAAT("fm_mission_controller_2020")));
+			gta_util::find_script_thread("fm_mission_controller"_J) ||
+			gta_util::find_script_thread("fm_mission_controller_2020"_J));
 		// clang-format on
 		components::command_checkbox<"passive">();
 		ImGui::EndDisabled();
@@ -204,24 +205,29 @@ namespace big
 			}
 		});
 
-		ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-		components::options_modal("POLICE"_T.data(), [] {
-			ImGui::Checkbox("NEVER_WANTED"_T.data(), &g.self.never_wanted);
-			components::command_button<"clearwantedlvl">();
-			if (!g.self.never_wanted)
-			{
-				ImGui::Checkbox("FORCE_WANTED_LVL"_T.data(), &g.self.force_wanted_level);
-				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("FORCE_WANTED_LVL_INFO"_T.data());
-				ImGui::Text("WANTED_LVL"_T.data());
-				if (ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5) && !g.self.force_wanted_level && g_local_player != nullptr)
-				{
-					g_local_player->m_player_info->m_wanted_level = g.self.wanted_level;
-				}
-			}
-		});
-
 		ImGui::EndGroup();
+
+		ImGui::SeparatorText("WANTED_LEVEL"_T.data());
+
+		components::command_checkbox<"neverwanted">();
+
+		// Only show all the other stuff like clear wanted, force wanted, and the slider if we don't have never_wanted enabled, since never_wanted overrides all of that
+		if (!g.self.never_wanted)
+		{
+			ImGui::SameLine();
+			components::command_button<"clearwantedself">();
+
+			// Most ImGui widgets return true when they've been changed, so this is useful to prevent us from overwriting the wanted level's natural decay/progression if we're not keeping it locked
+			ImGui::SetNextItemWidth(200);
+			user_updated_wanted_level = ImGui::SliderInt("###wanted_level", &g.self.wanted_level, 0, 5);
+
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("WANTED_LEVEL_SLIDER_DESC"_T.data());
+			ImGui::SameLine();
+			ImGui::Checkbox("FORCE_WANTED_LEVEL"_T.data(), &g.self.force_wanted_level);
+			if (ImGui::IsItemHovered())
+				ImGui::SetTooltip("FORCE_WANTED_LEVEL_DESC"_T.data());
+		}
 
 		ImGui::SeparatorText("PROOFS"_T.data());
 
@@ -233,7 +239,6 @@ namespace big
 			g.self.proof_melee     = true;
 			g.self.proof_explosion = true;
 			g.self.proof_steam     = true;
-			g.self.proof_drown     = true;
 			g.self.proof_water     = true;
 		}
 
@@ -247,7 +252,6 @@ namespace big
 			g.self.proof_melee     = false;
 			g.self.proof_explosion = false;
 			g.self.proof_steam     = false;
-			g.self.proof_drown     = false;
 			g.self.proof_water     = false;
 		}
 
@@ -274,7 +278,6 @@ namespace big
 		ImGui::SameLine();
 		ImGui::BeginGroup();
 
-		ImGui::Checkbox("DROWN"_T.data(), &g.self.proof_drown);
 		ImGui::Checkbox("WATER"_T.data(), &g.self.proof_water);
 
 		ImGui::EndGroup();
@@ -407,10 +410,6 @@ namespace big
 		if (g.self.proof_steam)
 		{
 			g.self.proof_mask |= static_cast<int>(eEntityProofs::STEAM);
-		}
-		if (g.self.proof_drown)
-		{
-			g.self.proof_mask |= static_cast<int>(eEntityProofs::DROWN);
 		}
 		if (g.self.proof_water)
 		{

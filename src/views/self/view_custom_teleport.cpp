@@ -77,11 +77,11 @@ namespace big
 		components::button("VIEW_SELF_CUSTOM_TELEPORT_SAVE_CURRENT_LOCATION"_T, [] {
 			if (new_location_name.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
+				g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
 			}
 			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
+				g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
 			}
 			else
 			{
@@ -104,15 +104,15 @@ namespace big
 		components::button("VIEW_SELF_CUSTOM_TELEPORT_SAVE_BLIP"_T, [] {
 			if (new_location_name.empty())
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
+				g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_NAME"_T.data());
 			}
 			else if (g_custom_teleport_service.get_saved_location_by_name(new_location_name))
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
+				g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::vformat("VIEW_SELF_CUSTOM_TELEPORT_LOCATION_ALREADY_EXISTS"_T, std::make_format_args(new_location_name)));
 			}
 			else if (!*g_pointers->m_gta.m_is_session_started)
 			{
-				g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
+				g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "TELEPORT_NOT_ONLINE"_T.data());
 				return;
 			}
 			else
@@ -121,13 +121,13 @@ namespace big
 				auto blip = blip::get_selected_blip();
 				if (blip == nullptr)
 				{
-					g_notification_service->push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_BLIP"_T.data());
+					g_notification_service.push_warning("GUI_TAB_CUSTOM_TELEPORT"_T.data(), "VIEW_SELF_CUSTOM_TELEPORT_INVALID_BLIP"_T.data());
 					return;
 				}
 				teleport_location.name  = new_location_name;
-				teleport_location.x     = blip->m_x;
-				teleport_location.y     = blip->m_y;
-				teleport_location.z     = blip->m_z;
+				teleport_location.x     = blip->m_position.x;
+				teleport_location.y     = blip->m_position.y;
+				teleport_location.z     = blip->m_position.z;
 				teleport_location.yaw   = blip->m_rotation;
 				teleport_location.pitch = 0.0f;
 				teleport_location.roll  = 0.0f;

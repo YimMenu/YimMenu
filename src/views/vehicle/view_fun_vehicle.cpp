@@ -3,14 +3,8 @@
 #include "core/data/speed_units.hpp"
 #include "core/enums.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
-#include "services/gta_data/gta_data_service.hpp"
-#include "services/model_preview/model_preview_service.hpp"
-#include "util/mobile.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
-
-#include <imgui_internal.h>
 
 namespace big
 {
@@ -104,7 +98,7 @@ namespace big
 					if (ImGui::Selectable(driving_style_names[i], g.vehicle.auto_drive_style == (AutoDriveStyle)i))
 					{
 						g.vehicle.auto_drive_style = (AutoDriveStyle)i;
-						g_notification_service->push_success("AUTO_DRIVE"_T.data(),
+						g_notification_service.push_success("AUTO_DRIVE"_T.data(),
 						    std::vformat("DRIVING_STYLE_SET_TO"_T.data(), std::make_format_args(driving_style_names[i])));
 					}
 

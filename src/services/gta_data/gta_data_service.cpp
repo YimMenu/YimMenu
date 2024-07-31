@@ -28,21 +28,21 @@ namespace big
 	}
 
 	gta_data_service::gta_data_service() :
-	    m_peds_cache(g_file_manager.get_project_file("./cache/peds.bin"), 5),
-	    m_vehicles_cache(g_file_manager.get_project_file("./cache/vehicles.bin"), 6),
 	    m_update_state(eGtaDataUpdateState::IDLE)
 	{
+	}
+
+	bool gta_data_service::init()
+	{
+		m_peds_cache     = {g_file_manager.get_project_file("./cache/peds.bin"), 5};
+		m_vehicles_cache = {g_file_manager.get_project_file("./cache/vehicles.bin"), 6};
+
 		if (!is_cache_up_to_date())
 			m_update_state = eGtaDataUpdateState::NEEDS_UPDATE;
 		else
 			load_data();
 
-		g_gta_data_service = this;
-	}
-
-	gta_data_service::~gta_data_service()
-	{
-		g_gta_data_service = nullptr;
+		return true;
 	}
 
 	bool gta_data_service::cache_needs_update() const
@@ -150,7 +150,7 @@ namespace big
 			}
 		}
 
-		const auto file_version = memory::module("GTA5.exe").size();
+		const auto file_version = memory::module("GTA5.exe").timestamp();
 
 		return m_peds_cache.up_to_date(file_version) && m_vehicles_cache.up_to_date(file_version) && m_weapons_cache.up_to_date(file_version);
 	}
@@ -171,6 +171,10 @@ namespace big
 		const auto ped_count = m_peds_cache.data_size() / sizeof(ped_item);
 		LOG(INFO) << "Loading " << ped_count << " peds from cache.";
 
+		m_ped_types.clear();
+		m_ped_types.reserve(ped_count);
+		m_peds.clear();
+
 		auto cached_peds = reinterpret_cast<const ped_item*>(m_peds_cache.data());
 		for (size_t i = 0; i < ped_count; i++)
 		{
@@ -189,6 +193,10 @@ namespace big
 		const auto vehicle_count = m_vehicles_cache.data_size() / sizeof(vehicle_item);
 		LOG(INFO) << "Loading " << vehicle_count << " vehicles from cache.";
 
+		m_vehicle_classes.clear();
+		m_vehicle_classes.reserve(vehicle_count);
+		m_vehicles.clear();
+
 		auto cached_vehicles = reinterpret_cast<const vehicle_item*>(m_vehicles_cache.data());
 		for (size_t i = 0; i < vehicle_count; i++)
 		{
@@ -206,11 +214,6 @@ namespace big
 	{
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_map.size() << " weapons from cache.";
 		LOG(INFO) << "Loading " << m_weapons_cache.weapon_components.size() << " weapon components from cache.";
-
-		for (const auto& [_, weapon] : m_weapons_cache.weapon_map)
-		{
-			add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
-		}
 
 		std::sort(m_weapon_types.begin(), m_weapon_types.end());
 	}
@@ -352,7 +355,7 @@ namespace big
 						const auto name = item.child("Name").text().as_string();
 						const auto hash = rage::joaat(name);
 
-						if (hash == RAGE_JOAAT("WEAPON_BIRD_CRAP"))
+						if (hash == "WEAPON_BIRD_CRAP"_J)
 							continue;
 
 						if (exists(mapped_weapons, hash))
@@ -522,7 +525,7 @@ namespace big
 
 		LOG(VERBOSE) << "Starting cache saving procedure...";
 		g_thread_pool->push([this, peds = std::move(peds), vehicles = std::move(vehicles), weapons = std::move(weapons), weapon_components = std::move(weapon_components)] {
-			const auto file_version = memory::module("GTA5.exe").size();
+			const auto file_version = memory::module("GTA5.exe").timestamp();
 
 			{
 				const auto data_size = sizeof(ped_item) * peds.size();
@@ -547,12 +550,16 @@ namespace big
 				m_weapons_cache.version_info.m_online_version = g_pointers->m_gta.m_online_version;
 				m_weapons_cache.version_info.m_file_version   = file_version;
 
+				m_weapon_types.clear();
+				m_weapon_types.reserve(weapons.size());
+				m_weapons_cache.weapon_map.clear();
 				for (auto weapon : weapons)
 				{
 					add_if_not_exists(m_weapon_types, weapon.m_weapon_type);
 					m_weapons_cache.weapon_map.insert({weapon.m_name, weapon});
 				}
 
+				m_weapons_cache.weapon_components.clear();
 				for (auto weapon_component : weapon_components)
 				{
 					m_weapons_cache.weapon_components.insert({weapon_component.m_name, weapon_component});

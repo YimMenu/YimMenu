@@ -10,7 +10,7 @@ namespace big
 		{
 			const auto hash = src->get_arg<rage::joaat_t>(0);
 
-			if (hash == RAGE_JOAAT("director_mode") || hash == RAGE_JOAAT("main"))
+			if (hash == "director_mode"_J || hash == "main"_J)
 			{
 				src->set_return_value(0);
 				return;
@@ -21,7 +21,7 @@ namespace big
 
 		void STAT_GET_INT(rage::scrNativeCallContext* src)
 		{
-			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == RAGE_JOAAT("MP0_PERSONAL_VEHICLE_ACCESS") || src->get_arg<Hash>(0) == RAGE_JOAAT("MP1_PERSONAL_VEHICLE_ACCESS")))
+			if (g_vehicle_control_service.m_driver_performing_task && (src->get_arg<Hash>(0) == "MP0_PERSONAL_VEHICLE_ACCESS"_J || src->get_arg<Hash>(0) == "MP1_PERSONAL_VEHICLE_ACCESS"_J))
 			{
 				src->set_return_value<int>(0);
 				return;
@@ -71,17 +71,7 @@ namespace big
 			}
 			else
 			{
-				if (g.session.force_script_host && (g.session.fast_join || NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA()))
-				{
-					auto hash = SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME();
-					g_fiber_pool->queue_job([hash] {
-						scripts::force_host(hash);
-						if (auto script = gta_util::find_script_thread(hash); script && script->m_net_component)
-							((CGameScriptHandlerNetComponent*)script->m_net_component)->block_host_migration(true);
-					});
-				}
-
-				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == RAGE_JOAAT("freemode") && g.session.fast_join)
+				if (SCRIPT::GET_HASH_OF_THIS_SCRIPT_NAME() == "freemode"_J && g.session.fast_join)
 				{
 					scr_functions::set_freemode_session_active({});
 					src->set_return_value<BOOL>(TRUE);
@@ -91,6 +81,28 @@ namespace big
 					src->set_return_value<BOOL>(NETWORK::NETWORK_HAS_RECEIVED_HOST_BROADCAST_DATA());
 				}
 			}
+		}
+
+		void REMOVE_WEAPON_FROM_PED(rage::scrNativeCallContext* src)
+		{
+			auto ped         = src->get_arg<Ped>(0);
+			auto weapon_hash = src->get_arg<Hash>(1);
+			if (g.weapons.enable_mk1_variants)
+			{
+				static const std::unordered_set<Hash> weapon_variants = {
+					"WEAPON_PISTOL"_J, "WEAPON_SMG"_J, "WEAPON_ASSAULTRIFLE"_J, "WEAPON_CARBINERIFLE"_J,
+					"WEAPON_COMBATMG"_J, "WEAPON_HEAVYSNIPER"_J, "WEAPON_BULLPUPRIFLE"_J, "WEAPON_MARKSMANRIFLE"_J,
+					"WEAPON_PUMPSHOTGUN"_J, "WEAPON_REVOLVER"_J, "WEAPON_SNSPISTOL"_J, "WEAPON_SPECIALCARBINE"_J,
+					//MK2 variants
+					"WEAPON_PISTOL_MK2"_J, "WEAPON_SMG_MK2"_J, "WEAPON_ASSAULTRIFLE_MK2"_J, "WEAPON_CARBINERIFLE_MK2"_J,
+					"WEAPON_COMBATMG_MK2"_J, "WEAPON_HEAVYSNIPER_MK2"_J, "WEAPON_BULLPUPRIFLE_MK2"_J, "WEAPON_MARKSMANRIFLE_MK2"_J,
+					"WEAPON_PUMPSHOTGUN_MK2"_J, "WEAPON_REVOLVER_MK2"_J, "WEAPON_SNSPISTOL_MK2"_J, "WEAPON_SPECIALCARBINE_MK2"_J };
+				if (ped == self::ped && weapon_variants.contains(weapon_hash))
+				{
+					return;
+				}
+			}
+			WEAPON::REMOVE_WEAPON_FROM_PED(ped, weapon_hash);
 		}
 	}
 }

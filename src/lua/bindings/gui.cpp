@@ -245,13 +245,24 @@ namespace lua::gui
 
 	// Lua API: Function
 	// Table: gui
+	// Name: show_success
+	// Param: title: string
+	// Param: message: string
+	// Shows a success to the user with the given title and message.
+	static void show_success(const std::string& title, const std::string& message)
+	{
+		big::g_notification_service.push_success(title, message);
+	}
+
+	// Lua API: Function
+	// Table: gui
 	// Name: show_message
 	// Param: title: string
 	// Param: message: string
 	// Shows a message to the user with the given title and message.
 	static void show_message(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push(title, message);
+		big::g_notification_service.push(title, message);
 	}
 
 	// Lua API: Function
@@ -262,7 +273,7 @@ namespace lua::gui
 	// Shows a warning to the user with the given title and message.
 	static void show_warning(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push_warning(title, message);
+		big::g_notification_service.push_warning(title, message);
 	}
 
 	// Lua API: Function
@@ -273,7 +284,7 @@ namespace lua::gui
 	// Shows an error to the user with the given title and message.
 	static void show_error(const std::string& title, const std::string& message)
 	{
-		big::g_notification_service->push_error(title, message);
+		big::g_notification_service.push_error(title, message);
 	}
 
 	// Lua API: Function
@@ -317,6 +328,7 @@ namespace lua::gui
 		auto ns            = state["gui"].get_or_create<sol::table>();
 		ns["get_tab"]      = get_tab;
 		ns["add_tab"]      = add_tab;
+		ns["show_success"] = show_success;
 		ns["show_message"] = show_message;
 		ns["show_warning"] = show_warning;
 		ns["show_error"]   = show_error;

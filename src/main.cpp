@@ -22,16 +22,13 @@
 #include "services/mobile/mobile_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/notifications/notification_service.hpp"
-#include "services/orbital_drone/orbital_drone.hpp"
 #include "services/pickups/pickup_service.hpp"
 #include "services/player_database/player_database_service.hpp"
 #include "services/players/player_service.hpp"
 #include "services/script_connection/script_connection_service.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
-#include "services/squad_spawner/squad_spawner.hpp"
 #include "services/tunables/tunables_service.hpp"
 #include "services/vehicle/handling_service.hpp"
-#include "services/vehicle/vehicle_control_service.hpp"
 #include "services/vehicle/xml_vehicles_service.hpp"
 #include "services/xml_maps/xml_map_service.hpp"
 #include "thread_pool.hpp"
@@ -47,14 +44,14 @@ namespace big
 		{
 			for (rage::game_skeleton_update_base* update_node = mode->m_head; update_node; update_node = update_node->m_next)
 			{
-				if (update_node->m_hash != RAGE_JOAAT("Common Main"))
+				if (update_node->m_hash != "Common Main"_J)
 					continue;
 				rage::game_skeleton_update_group* group = reinterpret_cast<rage::game_skeleton_update_group*>(update_node);
 				for (rage::game_skeleton_update_base* group_child_node = group->m_head; group_child_node;
 				     group_child_node                                  = group_child_node->m_next)
 				{
 					// TamperActions is a leftover from the old AC, but still useful to block anyway
-					if (group_child_node->m_hash != 0xA0F39FB6 && group_child_node->m_hash != RAGE_JOAAT("TamperActions"))
+					if (group_child_node->m_hash != 0xA0F39FB6 && group_child_node->m_hash != "TamperActions"_J)
 						continue;
 					patched = true;
 					//LOG(INFO) << "Patching problematic skeleton update";
@@ -67,7 +64,7 @@ namespace big
 
 		for (rage::skeleton_data& i : g_pointers->m_gta.m_game_skeleton->m_sys_data)
 		{
-			if (i.m_hash != 0xA0F39FB6 && i.m_hash != RAGE_JOAAT("TamperActions"))
+			if (i.m_hash != 0xA0F39FB6 && i.m_hash != "TamperActions"_J)
 				continue;
 			i.m_init_func     = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
 			i.m_shutdown_func = reinterpret_cast<uint64_t>(g_pointers->m_gta.m_nullsub);
@@ -152,9 +149,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    g_file_manager.init(base_dir);
 
 			    g.init(g_file_manager.get_project_file("./settings.json"));
-			    LOG(INFO) << "Settings Loaded.";
-
 			    g_log.initialize("YimMenu", g_file_manager.get_project_file("./cout.log"), g.debug.external_console);
+			    LOG(INFO) << "Settings Loaded and logger initialized.";
 
 			    LOG(INFO) << "Yim's Menu Initializing";
 			    LOGF(INFO, "Git Info\n\tBranch:\t{}\n\tHash:\t{}\n\tDate:\t{}", version::GIT_BRANCH, version::GIT_SHA1, version::GIT_DATE);
@@ -208,13 +204,13 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto hooking_instance = std::make_unique<hooking>();
 			    LOG(INFO) << "Hooking initialized.";
 
+			    g_gta_data_service.init();
+
 			    auto context_menu_service_instance      = std::make_unique<context_menu_service>();
 			    auto custom_text_service_instance       = std::make_unique<custom_text_service>();
 			    auto mobile_service_instance            = std::make_unique<mobile_service>();
-			    auto notification_service_instance      = std::make_unique<notification_service>();
 			    auto pickup_service_instance            = std::make_unique<pickup_service>();
 			    auto player_service_instance            = std::make_unique<player_service>();
-			    auto gta_data_service_instance          = std::make_unique<gta_data_service>();
 			    auto model_preview_service_instance     = std::make_unique<model_preview_service>();
 			    auto handling_service_instance          = std::make_unique<handling_service>();
 			    auto gui_service_instance               = std::make_unique<gui_service>();
@@ -228,6 +224,9 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    auto xml_vehicles_service_instance      = std::make_unique<xml_vehicles_service>();
 			    auto xml_maps_service_instance          = std::make_unique<xml_map_service>();
 			    LOG(INFO) << "Registered service instances...";
+
+			    g_notification_service.initialise();
+			    LOG(INFO) << "Finished initialising services.";
 
 			    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func, "GUI", false));
 
@@ -302,8 +301,6 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 			    LOG(INFO) << "Script Patcher Service reset.";
 			    gui_service_instance.reset();
 			    LOG(INFO) << "Gui Service reset.";
-			    gta_data_service_instance.reset();
-			    LOG(INFO) << "GTA Data Service reset.";
 			    handling_service_instance.reset();
 			    LOG(INFO) << "Vehicle Service reset.";
 			    model_preview_service_instance.reset();

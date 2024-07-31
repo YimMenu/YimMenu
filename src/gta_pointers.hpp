@@ -1,5 +1,6 @@
 #pragma once
 #include "function_types.hpp"
+#include "gta/enums.hpp"
 
 #include <memory/handle.hpp>
 
@@ -17,6 +18,10 @@ class CBlipList;
 class TimecycleKeyframeData;
 class CTrainConfig;
 class CWeaponInfoManager;
+class CGameScriptHandlerMgr;
+class CPedFactory;
+class GtaThread;
+class GameDataHash;
 
 namespace rage
 {
@@ -30,6 +35,7 @@ namespace rage
 	class netTime;
 	class rlGamerInfo;
 	struct game_skeleton;
+	class scrProgramTable;
 }
 
 template<typename T>
@@ -41,8 +47,6 @@ namespace big
 #pragma pack(push, 1)
 	struct gta_pointers
 	{
-		memory::handle m_max_wanted_level;
-
 		PVOID m_world_model_spawn_bypass;
 
 		memory::handle m_blame_explode;
@@ -54,8 +58,6 @@ namespace big
 		memory::handle m_broadcast_patch;
 
 		memory::handle m_creator_warp_cheat_triggered_patch;
-
-		memory::handle m_sound_overload_detour;
 
 		memory::handle m_disable_collision;
 
@@ -104,9 +106,8 @@ namespace big
 		functions::set_gravity_level m_set_gravity_level;
 
 		PVOID m_native_return;
+		PVOID m_ctext_file_ptr;
 		PVOID m_get_label_text;
-		functions::check_chat_profanity* m_check_chat_profanity;
-		functions::write_player_game_state_data_node m_write_player_game_state_data_node;
 
 		ChatData** m_chat_data;
 		ScInfo* m_sc_info;
@@ -124,8 +125,6 @@ namespace big
 		PVOID m_network_player_mgr_shutdown;
 
 		functions::get_gameplay_cam_coords m_get_gameplay_cam_coords;
-
-		PVOID m_write_player_gamer_data_node;
 
 		functions::trigger_script_event m_trigger_script_event;
 
@@ -171,7 +170,6 @@ namespace big
 		functions::invite_player_by_gamer_handle m_invite_player_by_gamer_handle;
 		functions::add_friend_by_gamer_handle m_add_friend_by_gamer_handle;
 		functions::show_profile_by_gamer_handle m_show_profile_by_gamer_handle;
-		uint64_t m_network_config;
 
 		functions::reset_network_complaints m_reset_network_complaints;
 
@@ -184,7 +182,6 @@ namespace big
 		functions::fipackfile_unmount m_fipackfile_unmount;
 		functions::fipackfile_close_archive m_fipackfile_close_archive;
 
-		PVOID m_invalid_mods_crash_detour;
 		PVOID m_invalid_decal_crash;
 		PVOID m_task_parachute_object;
 		PVOID m_task_ambient_clips;
@@ -197,6 +194,7 @@ namespace big
 
 		functions::generate_uuid m_generate_uuid;
 		uint64_t* m_host_token;
+		uint64_t* m_peer_id;
 		rage::rlGamerInfo* m_profile_gamer_info;     // per profile gamer info
 		rage::rlGamerInfo* m_player_info_gamer_info; // the gamer info that is applied to CPlayerInfo
 		CCommunications** m_communications;
@@ -209,9 +207,9 @@ namespace big
 		PVOID m_sort_session_details;
 
 		PVOID m_process_matchmaking_find_response;
-		PVOID m_serialize_player_data_msg;
 
 		PVOID m_serialize_join_request_message;
+		PVOID m_serialize_join_request_message_2;
 
 		functions::give_pickup_rewards m_give_pickup_rewards;
 		functions::send_network_damage m_send_network_damage;
@@ -225,15 +223,12 @@ namespace big
 
 		PVOID m_broadcast_net_array;
 
-		rage::atSingleton<rage::RageSecurity>* m_security;
 		PVOID m_prepare_metric_for_sending;
 
 		PVOID m_queue_dependency;
 		PVOID m_interval_check_func;
 
 		PVOID m_http_start_request;
-
-		PVOID m_send_session_matchmaking_attributes;
 
 		PVOID m_serialize_take_off_ped_variation_task;
 		PVOID m_serialize_parachute_task;
@@ -261,15 +256,10 @@ namespace big
 
 		PVOID m_receive_pickup;
 
-		PVOID m_write_player_camera_data_node;
-
 		PVOID m_send_player_card_stats;
 		bool* m_force_player_card_refresh;
 
 		PVOID m_serialize_stats;
-
-		PVOID m_write_player_creation_data_node;
-		PVOID m_write_player_appearance_data_node;
 
 		PVOID m_enumerate_audio_devices;
 		PVOID m_direct_sound_capture_create;
@@ -295,7 +285,7 @@ namespace big
 
 		functions::handle_chat_message m_handle_chat_message;
 
-		int* m_language;
+		eGameLanguage* m_language;
 		functions::update_language m_update_language;
 
 		PVOID m_model_spawn_bypass;
@@ -303,6 +293,7 @@ namespace big
 		functions::get_host_array_handler_by_index m_get_host_array_handler_by_index;
 
 		PVOID m_error_message_box;
+		PVOID m_error_message_box_2;
 
 		functions::get_title_caption_error_message_box m_get_title_caption_error_message_box;
 
@@ -365,6 +356,57 @@ namespace big
 		functions::received_clone_remove m_received_clone_remove;
 
 		CWeaponInfoManager* m_weapon_info_manager;
+
+		functions::can_create_vehicle m_can_create_vehicle;
+
+		uintptr_t* m_cam_gameplay_director;
+		functions::cam_gameplay_directory_update m_cam_gameplay_director_update;
+
+		PVOID m_format_int;
+
+		PVOID m_searchlight_crash;
+		functions::get_searchlight m_get_searchlight;
+
+		GenericPool** m_vehicle_allocator; // this is not a normal pool
+
+		PVOID m_write_node_data;
+		PVOID m_can_send_node_to_player;
+		PVOID m_write_node;
+		functions::get_sector_data m_get_sector_data;
+
+		PVOID m_advertise_session;
+		PVOID m_update_session_advertisement;
+		PVOID m_unadvertise_session;
+		PVOID m_send_session_detail_msg;
+
+		PVOID m_session_request_patch;
+
+		functions::get_peer_by_security_id m_get_peer_by_security_id;
+
+		GameDataHash** m_game_data_hash;
+
+		void** m_dlc_manager;
+		PVOID m_get_dlc_hash;
+
+		PVOID m_add_gamer_to_session;
+
+		functions::set_head_blend_data m_set_head_blend_data;
+
+		std::uint32_t* m_object_ids_offset;
+
+		PVOID m_error_packet_memmove;
+
+		PVOID m_create_pool_item;
+
+		PVOID m_scope_sway_function;
+
+		PVOID m_report_myself_sender;
+
+		functions::create_chat_guid m_create_chat_guid;
+
+		uint32_t* m_game_lifetime;
+
+		functions::begin_scaleform m_begin_scaleform;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

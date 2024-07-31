@@ -1,6 +1,5 @@
 #include "gui/components/components.hpp"
 #include "script_local.hpp"
-#include "thread_pool.hpp"
 #include "view_debug.hpp"
 #include "widgets/imgui_bitfield.hpp"
 #include "gta_util.hpp"
@@ -388,7 +387,7 @@ namespace big
 				}
 				else
 				{
-					g_notification_service->push_warning("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_INVALID_TYPE"_T.data());
+					g_notification_service.push_warning("DEBUG_TAB_LOCALS"_T.data(), "VIEW_DEBUG_LOCALS_INVALID_TYPE"_T.data());
 				}
 			}
 			ImGui::SameLine();

@@ -1,5 +1,5 @@
 #include "hooking/hooking.hpp"
-#include "native_hooks/native_hooks.hpp"
+#include "gta/script_thread.hpp"
 
 namespace big
 {
@@ -12,7 +12,7 @@ namespace big
 			if (g.notifications.gta_thread_kill.log)
 				LOG(INFO) << "Script Thread '" << name << "' started.";
 			if (g.notifications.gta_thread_kill.notify)
-				g_notification_service->push("Script Thread Startup", std::format("Script Thread '{}' started.", name));
+				g_notification_service.push("Script Thread Startup", std::format("Script Thread '{}' started.", name));
 		}
 
 		return new_thread;

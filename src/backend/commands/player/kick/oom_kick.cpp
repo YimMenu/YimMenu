@@ -1,9 +1,5 @@
 #include "backend/player_command.hpp"
-#include "core/scr_globals.hpp"
-#include "natives.hpp"
 #include "packet.hpp"
-#include "pointers.hpp"
-#include "util/scripts.hpp"
 
 #include <network/snSession.hpp>
 
@@ -20,7 +16,7 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			if (!player)
+			if (!player || !player->is_valid())
 				return;
 			packet msg{};
 

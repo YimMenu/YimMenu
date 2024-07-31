@@ -1,6 +1,5 @@
 #include "pointers.hpp"
 #include "util/entity.hpp"
-#include "util/notify.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
@@ -31,7 +30,7 @@ namespace big
 
 		ImGui::SeparatorText("PED"_T.data());
 
-		components::button<ImVec2(110, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {
+		components::button<ImVec2(150, 0), ImVec4(0.70196f, 0.3333f, 0.00392f, 1.f)>("VIEW_DEBUG_THREADS_KILL"_T, [] {
 			for (auto peds : entity::get_entities(false, true))
 			{
 				if (!PED::IS_PED_A_PLAYER(peds))
@@ -40,7 +39,7 @@ namespace big
 		});
 		ImGui::SameLine();
 
-		components::button<ImVec2(110, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("VIEW_WORLD_KILL_ENEMIES"_T, [] {
+		components::button<ImVec2(150, 0), ImVec4(0.76078f, 0.f, 0.03529f, 1.f)>("VIEW_WORLD_KILL_ENEMIES"_T, [] {
 			for (auto ped : entity::get_entities(false, true))
 			{
 				if (!PED::IS_PED_A_PLAYER(ped))
@@ -54,12 +53,12 @@ namespace big
 
 		// Nearby Ped Loops / Toggles
 		components::command_checkbox<"pedsignore">();
-		ImGui::SameLine(140.f);
+		ImGui::SameLine();
 		components::command_checkbox<"pedrain">();
-		ImGui::SameLine(265.f);
+		ImGui::SameLine();
 		components::command_checkbox<"riotmode">();
 		components::command_checkbox<"highalert">();
-		ImGui::SameLine(140.f);
+		ImGui::SameLine();
 		components::command_checkbox<"pedrush">();
 		ImGui::SameLine();
 		components::command_checkbox<"autodisarm">();
@@ -127,7 +126,7 @@ namespace big
 
 				quantity  = list.size();
 				remaining = quantity;
-				g_notification_service->push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
+				g_notification_service.push("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Deleting {} entities", quantity));
 				deleting   = true;
 				int failed = 0;
 
@@ -167,7 +166,7 @@ namespace big
 				}
 
 				if (failed > 0)
-					g_notification_service->push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
+					g_notification_service.push_warning("GUI_TAB_TIME_N_WEATHER"_T.data(), std::format("Failed deleting {} entities", failed));
 
 				deleting = false;
 			});

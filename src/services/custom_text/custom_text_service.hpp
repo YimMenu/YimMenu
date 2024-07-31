@@ -19,7 +19,7 @@ namespace big
 		custom_text_service& operator=(custom_text_service&&) noexcept = delete;
 
 		bool add_callback_for_label(rage::joaat_t hash, custom_label_callback&& cb);
-		bool add_callback_for_labels(std::list<rage::joaat_t> hashes, custom_label_callback&& cb);
+		bool add_callback_for_labels(std::initializer_list<rage::joaat_t> hashes, custom_label_callback&& cb);
 		bool add_label_overwrite(rage::joaat_t hash, std::string_view overwrite);
 
 		/**

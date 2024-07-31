@@ -1,10 +1,9 @@
 #include "core/data/bullet_impact_types.hpp"
 #include "core/data/special_ammo_types.hpp"
-#include "fiber_pool.hpp"
 #include "gta/joaat.hpp"
 #include "gta/weapons.hpp"
+#include "imgui_internal.h"
 #include "natives.hpp"
-#include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/persist_weapons/persist_weapons.hpp"
 #include "views/view.hpp"
@@ -91,6 +90,8 @@ namespace big
 			}
 		});
 
+		components::command_checkbox<"enablemk1variants">();
+
 		ImGui::EndGroup();
 
 		ImGui::SeparatorText("DEBUG_TAB_MISC"_T.data());
@@ -98,21 +99,23 @@ namespace big
 		components::command_checkbox<"norecoil">();
 		ImGui::SameLine();
 		components::command_checkbox<"nospread">();
+		ImGui::SameLine();
+		components::command_checkbox<"nosway">();
 
 		components::button("GET_ALL_WEAPONS"_T, [] {
-			for (const auto& [_, weapon] : g_gta_data_service->weapons())
+			for (const auto& [_, weapon] : g_gta_data_service.weapons())
 			{
 				WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, weapon.m_hash, 9999, false);
 			}
 
-			constexpr auto parachute_hash = RAGE_JOAAT("GADGET_PARACHUTE");
+			constexpr auto parachute_hash = "GADGET_PARACHUTE"_J;
 			WEAPON::GIVE_DELAYED_WEAPON_TO_PED(self::ped, parachute_hash, 0, true);
 		});
 		ImGui::SameLine();
 		components::button("REMOVE_CUR_WEAPON"_T, [] {
 			Hash weaponHash;
 			WEAPON::GET_CURRENT_PED_WEAPON(self::ped, &weaponHash, 1);
-			if (weaponHash != RAGE_JOAAT("WEAPON_UNARMED"))
+			if (weaponHash != "WEAPON_UNARMED"_J)
 			{
 				WEAPON::REMOVE_WEAPON_FROM_PED(self::ped, weaponHash);
 			}
@@ -127,13 +130,14 @@ namespace big
 		components::command_checkbox<"modifyexplosionradius">();
 		ImGui::InputFloat("VIEW_WEAPON_EXPLOSION_RADIUS"_T.data(), &g.weapons.set_explosion_radius, .1, 200, "%.1f");
 
-
+		ImGui::PushID("custom_weapon_view");
 		ImGui::SeparatorText("CUSTOM_WEAPONS"_T.data());
 
 		ImGui::Checkbox("VIEW_WEAPON_CUSTOM_GUN_ONLY_FIRES_WHEN_THE_WEAPON_IS_OUT"_T.data(), &g.self.custom_weapon_stop);
 		CustomWeapon selected = g.weapons.custom_weapon;
 
-		if (ImGui::BeginCombo("WEAPON"_T.data(), g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
+		if (ImGui::BeginCombo("WEAPON"_T.data(),
+		        g_translation_service.get_translation(custom_weapons[(int)selected].name).data()))
 		{
 			for (const custom_weapon& weapon : custom_weapons)
 			{
@@ -150,6 +154,7 @@ namespace big
 
 			ImGui::EndCombo();
 		}
+		ImGui::PopID();
 
 		switch (selected)
 		{
@@ -171,7 +176,10 @@ namespace big
 		case CustomWeapon::PAINT_GUN:
 			ImGui::Checkbox("RAINBOW_PAINT"_T.data(), &g.weapons.paintgun.rainbow);
 			ImGui::SliderFloat("VIEW_WEAPON_RAINBOW_SPEED"_T.data(), &g.weapons.paintgun.speed, 0.f, 10.f);
-			if (!g.weapons.paintgun.rainbow) { ImGui::ColorEdit4("VIEW_WEAPON_PAINT_GUN_COLOR"_T.data(), g.weapons.paintgun.col); }
+			if (!g.weapons.paintgun.rainbow)
+			{
+				ImGui::ColorEdit4("VIEW_WEAPON_PAINT_GUN_COLOR"_T.data(), g.weapons.paintgun.col);
+			}
 		}
 
 		ImGui::SeparatorText("VIEW_WEAPON_AIM_ASSISTANCE"_T.data());
@@ -179,30 +187,55 @@ namespace big
 		ImGui::SameLine();
 		components::command_checkbox<"aimbot">();
 
-		if (g.weapons.aimbot.enable)
+		if (g.weapons.aimbot.enable || g.weapons.triggerbot)
 		{
-			components::command_checkbox<"aimatplayer">();
+			components::command_checkbox<"aimonlyatplayer">();
 			ImGui::SameLine();
-			components::command_checkbox<"aimatnpc">();
+			ImGui::Checkbox("TRUST_FRIENDS"_T.data(), &g.weapons.aimbot.exclude_friends);
 			ImGui::SameLine();
-			components::command_checkbox<"aimatpolice">();
-			ImGui::SameLine();
-			components::command_checkbox<"aimatenemy">();
+			components::command_checkbox<"aimonlyatenemy">();
 
-			components::command_checkbox<"smoothing">();
-			if (g.weapons.aimbot.smoothing)
-			{
-				ImGui::SameLine();
-				ImGui::PushItemWidth(220);
-				ImGui::SliderFloat("VIEW_WEAPON_AIM_SPEED"_T.data(), &g.weapons.aimbot.smoothing_speed, 1.f, 8.f, "%.1f");
-				ImGui::PopItemWidth();
-			}
+			ImGui::CheckboxFlags("PLAYERS"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_NETWORK_PLAYER);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_CIVMALE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_CIVMALE);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_CIVFEMALE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_CIVFEMALE);
+
+			ImGui::CheckboxFlags("PED_TYPE_DEALER"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_DEALER);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_PROSTITUTE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_PROSTITUTE);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_BUM"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_BUM);
+
+			ImGui::CheckboxFlags("PED_TYPE_MEDIC"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_MEDIC);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_FIREMAN"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_FIREMAN);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_ARMY"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_ARMY);
+
+			ImGui::CheckboxFlags("POLICE"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_COP);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_SWAT"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_SWAT);
+
+			ImGui::CheckboxFlags("GUI_TAB_MISSIONS"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_MISSION);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_ANIMAL"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_ANIMAL);
+			ImGui::SameLine();
+			ImGui::CheckboxFlags("PED_TYPE_SPECIAL"_T.data(), &g.weapons.aimbot.only_on_ped_type, (int64_t)ePedTypeFlag::PED_TYPE_SPECIAL);
+
 			ImGui::PushItemWidth(350);
 			ImGui::SliderFloat("VIEW_WEAPON_AIM_FOV"_T.data(), &g.weapons.aimbot.fov, 1.f, 360.f, "%.0f");
+			if (g.weapons.aimbot.use_weapon_range)
+				ImGui::BeginDisabled();
 			ImGui::SliderFloat("VIEW_SELF_CUSTOM_TELEPORT_DISTANCE"_T.data(), &g.weapons.aimbot.distance, 1.f, 1000.f, "%.0f");
+			ImGui::SameLine();
+			if (g.weapons.aimbot.use_weapon_range)
+				ImGui::EndDisabled();
+			ImGui::Checkbox("BACKEND_LOOPED_WEAPONS_USE_MAX_RANGE"_T.data(), &g.weapons.aimbot.use_weapon_range);
 			ImGui::PopItemWidth();
 		}
 
+		ImGui::PushID("ammunation_view");
 		if (ImGui::CollapsingHeader("VIEW_WEAPON_AMMUNATION"_T.data()))
 		{
 			static Hash selected_weapon_hash, selected_weapon_attachment_hash{};
@@ -211,7 +244,7 @@ namespace big
 			if (ImGui::BeginCombo("GUI_TAB_WEAPONS"_T.data(), selected_weapon.c_str()))
 			{
 				std::map<std::string, weapon_item> sorted_map;
-				for (const auto& [_, weapon] : g_gta_data_service->weapons())
+				for (const auto& [_, weapon] : g_gta_data_service.weapons())
 				{
 					sorted_map.emplace(weapon.m_display_name, weapon);
 				}
@@ -245,14 +278,14 @@ namespace big
 			ImGui::PushItemWidth(250);
 			if (ImGui::BeginCombo("VIEW_WEAPON_ATTACHMENTS"_T.data(), selected_weapon_attachment.c_str()))
 			{
-				weapon_item weapon = g_gta_data_service->weapon_by_hash(selected_weapon_hash);
+				weapon_item weapon = g_gta_data_service.weapon_by_hash(selected_weapon_hash);
 				if (!weapon.m_attachments.empty())
 				{
 					for (std::string attachment : weapon.m_attachments)
 					{
-						weapon_component attachment_component   = g_gta_data_service->weapon_component_by_name(attachment);
-						std::string attachment_name = attachment_component.m_display_name;
-						Hash attachment_hash        = attachment_component.m_hash;
+						weapon_component attachment_component = g_gta_data_service.weapon_component_by_name(attachment);
+						std::string attachment_name           = attachment_component.m_display_name;
+						Hash attachment_hash                  = attachment_component.m_hash;
 						if (attachment_hash == NULL)
 						{
 							attachment_name = attachment;
@@ -301,6 +334,7 @@ namespace big
 				WEAPON::SET_PED_WEAPON_TINT_INDEX(self::ped, selected_weapon_hash, tint);
 			});
 		}
+		ImGui::PopID();
 		if (ImGui::CollapsingHeader("VIEW_WEAPON_PERSIST_WEAPONS"_T.data()))
 		{
 			ImGui::PushID(1);
@@ -336,7 +370,8 @@ namespace big
 			components::button("VIEW_WEAPON_PERSIST_WEAPONS_SET_LOADOUT"_T, [] {
 				persist_weapons::set_weapon_loadout(selected_loadout);
 			});
-			ImGui::Text(std::format("{}: {}:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T, g.persist_weapons.weapon_loadout_file).data());
+			ImGui::Text(std::format("{}: {}:", "VIEW_WEAPON_PERSIST_WEAPONS_CURRENT_LOADOUT"_T, g.persist_weapons.weapon_loadout_file)
+			                .data());
 			ImGui::EndGroup();
 			ImGui::PopItemWidth();
 		}
@@ -363,16 +398,16 @@ namespace big
 				for (auto& weapon_hash : g.weapons.weapon_hotkeys[selected_key])
 				{
 					ImGui::PushID(counter);
-					weapon_item weapon = g_gta_data_service->weapon_by_hash(weapon_hash);
+					weapon_item weapon = g_gta_data_service.weapon_by_hash(weapon_hash);
 					ImGui::PushItemWidth(300);
 					if (ImGui::BeginCombo("GUI_TAB_WEAPONS"_T.data(), weapon.m_display_name.c_str()))
 					{
 						std::map<std::string, weapon_item> sorted_map;
-						for (const auto& [_, weapon_iter] : g_gta_data_service->weapons())
+						for (const auto& [_, weapon_iter] : g_gta_data_service.weapons())
 						{
 							sorted_map.emplace(weapon_iter.m_display_name, weapon_iter);
 						}
-						for (const auto& [_, weapon_iter] : g_gta_data_service->weapons())
+						for (const auto& [_, weapon_iter] : g_gta_data_service.weapons())
 						{
 							if (weapon_iter.m_display_name == "NULL")
 							{

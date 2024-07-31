@@ -6,7 +6,6 @@
 #include "script_local.hpp"
 #include "services/players/player_service.hpp"
 #include "util/misc.hpp"
-#include "util/notify.hpp"
 
 #include <script/globals/GlobalPlayerBD.hpp>
 
@@ -16,7 +15,7 @@ namespace big
 	{
 		int old_beast_index = -1;
 		int participant_id  = 0;
-		auto beast          = gta_util::find_script_thread(RAGE_JOAAT("am_hunt_the_beast"));
+		auto beast          = gta_util::find_script_thread("am_hunt_the_beast"_J);
 
 		if (beast)
 		{
@@ -69,7 +68,7 @@ namespace big
 			*scr_globals::gsbd.as<eFreemodeState*>() = eFreemodeState::RUNNING;
 
 			if (auto plyr = g_player_service->get_by_id(sender->m_player_id))
-				g.reactions.end_session_kick.process(plyr);
+				g.reactions.kick.process(plyr);
 		}
 
 		return result;

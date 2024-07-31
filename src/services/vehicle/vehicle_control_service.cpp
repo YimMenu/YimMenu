@@ -34,7 +34,7 @@ namespace big
 		}
 	};
 
-	vehicle_control_command g_vehicle_control("vehiclecontrol", "Vehicle controller", "Enables/Disables the vehicle controller.",
+	vehicle_control_command g_vehicle_control("vehiclecontrol", "VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_DESC"_T.data(),
 	    g.window.vehicle_control.opened);
 
 	void update_controlled_vehicle_doors(controlled_vehicle& veh)
@@ -172,7 +172,7 @@ namespace big
 					    4.f,
 					    5.f);
 					//LOG(INFO) << "Navmesh probably failed, issiuing regular task ";
-					g_notification_service->push_warning("VEHICLE_CONTROLLER"_T.data(),
+					g_notification_service.push_warning("VEHICLE_CONTROLLER"_T.data(),
 					    "VEHICLE_CONTROLLER_TRY_ALT_PATHFINDING"_T.data());
 					script::get_current()->yield(500ms);
 				}
@@ -199,7 +199,7 @@ namespace big
 		{
 			//LOG(INFO) << "Driver didnt exist, creating one";
 			m_driver = ped::spawn(PED_TYPE_CIVMALE,
-			    RAGE_JOAAT("s_m_y_devinsec_01"),
+			    "s_m_y_devinsec_01"_J,
 			    -1,
 			    ENTITY::GET_ENTITY_COORDS(m_controlled_vehicle.handle, 1),
 			    0,
@@ -308,13 +308,13 @@ namespace big
 			if (vehicle_control::find_suitable_destination_near_player(destination, heading))
 			{
 				//LOG(INFO) << "Suitable destination found";
-				g_notification_service->push_success("VEHICLE_CONTROLLER"_T.data(),
+				g_notification_service.push_success("VEHICLE_CONTROLLER"_T.data(),
 				    "VEHICLE_CONTROLLER_FOUND_LOCATION"_T.data());
 			}
 			else
 			{
 				//LOG(INFO) << "Couldn't find suitable destionation, defaulting to offset of player\nThis might go wrong";
-				g_notification_service->push_error("VEHICLE_CONTROLLER"_T.data(),
+				g_notification_service.push_error("VEHICLE_CONTROLLER"_T.data(),
 				    "VEHICLE_CONTROLLER_FORCE_PATHFINDING"_T.data());
 				destination = behind_pos;
 			}
@@ -338,7 +338,7 @@ namespace big
 			else
 			{
 				//LOG(INFO) << "Navmesh load failed";
-				g_notification_service->push_error("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_NAVMESH_FAILURE"_T.data());
+				g_notification_service.push_error("VEHICLE_CONTROLLER"_T.data(), "VEHICLE_CONTROLLER_NAVMESH_FAILURE"_T.data());
 				m_driver_performing_task = false;
 			}
 		}

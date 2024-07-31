@@ -1,9 +1,6 @@
-#include "core/data/speed_units.hpp"
 #include "fiber_pool.hpp"
-#include "script.hpp"
 #include "services/vehicle/persist_car_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
-#include "util/mobile.hpp"
 #include "util/teleport.hpp"
 #include "views/view.hpp"
 
@@ -26,7 +23,7 @@ namespace big
 			const auto vehicle = persist_car_service::load_vehicle(selected_vehicle_file, g.persist_car.persist_vehicle_sub_folder);
 			if (!vehicle)
 			{
-				g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
+				g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_TO_MANY_SPAWNED"_T.data());
 			}
 			else if (g.persist_car.spawn_inside && self::veh != vehicle)
 			{
@@ -37,7 +34,7 @@ namespace big
 		}
 		else
 		{
-			g_notification_service->push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
+			g_notification_service.push_warning("PERSIST_CAR"_T.data(), "SELECT_FILE_FIRST"_T.data());
 		}
 	}
 
@@ -131,8 +128,8 @@ namespace big
 						selected_vehicle_file = pair;
 						g_fiber_pool->queue_job([] {
 							load_vehicle(selected_vehicle_file);
-							g_model_preview_service->stop_preview();
 						});
+						g_model_preview_service->stop_preview();
 					}
 
 					if (!g.persist_car.preview_vehicle || (g.persist_car.preview_vehicle && !ImGui::IsAnyItemHovered()))
@@ -141,9 +138,7 @@ namespace big
 					}
 					else if (ImGui::IsItemHovered())
 					{
-						g_fiber_pool->queue_job([pair] {
-							g_model_preview_service->show_vehicle_persisted(pair);
-						});
+						g_model_preview_service->show_vehicle_persisted(pair);
 					}
 
 					ImGui::SameLine();
@@ -188,7 +183,7 @@ namespace big
 					return;
 
 				if (!self::veh)
-					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+					return g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
 				save_vehicle(vehicle_file_name_input, save_folder);
 			});
@@ -200,7 +195,7 @@ namespace big
 					return;
 
 				if (!self::veh)
-					return g_notification_service->push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
+					return g_notification_service.push_warning("PERSIST_CAR"_T.data(), "PERSIST_CAR_NOT_IN_VEHICLE"_T.data());
 
 				save_vehicle(vehicle_file_name_input, g.persist_car.persist_vehicle_sub_folder.c_str());
 			});

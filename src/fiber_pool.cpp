@@ -1,8 +1,8 @@
 #include "fiber_pool.hpp"
 
-#include "common.hpp"
 #include "script.hpp"
 #include "script_mgr.hpp"
+#include <script/tlsContext.hpp>
 
 namespace big
 {
@@ -28,6 +28,18 @@ namespace big
 		{
 			std::lock_guard lock(m_mutex);
 			m_jobs.push(std::move(func));
+		}
+	}
+
+	
+	void fiber_pool::execute_on_game_thread(std::function<void()> func)
+	{
+		if (func)
+		{
+			if (rage::tlsContext::get()->m_script_thread && rage::tlsContext::get()->m_is_script_thread_active)
+				func();
+			else
+				queue_job(func);
 		}
 	}
 

@@ -1,6 +1,5 @@
 #include "backend/player_command.hpp"
 #include "gta/net_object_mgr.hpp"
-#include "natives.hpp"
 #include "pointers.hpp"
 
 namespace big

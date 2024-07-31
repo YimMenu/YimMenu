@@ -1,14 +1,17 @@
 #include "network.hpp"
 
 #include "../../script.hpp"
-#include "hooking/hooking.hpp"
+#include "core/data/language_codes.hpp"
+#include "core/scr_globals.hpp"
 #include "pointers.hpp"
 #include "services/player_database/player_database_service.hpp"
-#include "util/notify.hpp"
+#include "util/chat.hpp"
 #include "util/scripts.hpp"
 #include "util/session.hpp"
-#include "util/system.hpp"
 #include "util/teleport.hpp"
+
+#include <script/globals/GPBD_FM.hpp>
+#include <script/globals/GPBD_FM_3.hpp>
 
 namespace lua::network
 {
@@ -35,6 +38,15 @@ namespace lua::network
 			actual_args.push_back((uint32_t)arg);
 
 		big::g_pointers->m_gta.m_trigger_script_event(1, actual_args.data(), actual_args.size(), bitset, args[0]);
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: is_session_started
+	// Returns true if the local player is in a multiplayer session.
+	static bool is_session_started()
+	{
+		return *big::g_pointers->m_gta.m_is_session_started;
 	}
 
 	// Lua API: Function
@@ -168,11 +180,24 @@ namespace lua::network
 	// Lua API: Function
 	// Table: network
 	// Name: force_script_host
-	// Param: script_name: string: Name of the script
-	// Try to force ourself to be host for the given GTA Script.
+	// Param: script_name: string: Name of the script.
+	// Try to force ourself to be host for the given GTA Script. Needs to be called in the fiber pool or a loop.
 	static void force_script_host(const std::string& script_name)
 	{
 		big::scripts::force_host(rage::joaat(script_name));
+	}
+
+	// Lua API: function
+	// Table: script
+	// Name: force_script_on_player
+	// Param: player_idx: integer: Index of the player.
+	// Param: script_name: string: Name of the script.
+	// Param: script_name: integer: Instance ID of the script.
+	// Forces the given GTA script to be started on a player. Needs to be called in the fiber pool or a loop.
+	static void force_script_on_player(int player_idx, const std::string& script_name, int instance_id)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+			big::scripts::force_script_on_player(player, rage::joaat(script_name), instance_id);
 	}
 
 	// Lua API: Function
@@ -183,13 +208,126 @@ namespace lua::network
 	// Sends a message to the in game chat.
 	static void send_chat_message(const std::string& msg, bool team_only)
 	{
-		big::g_fiber_pool->queue_job([msg, team_only] {
-			if (big::g_hooking->get_original<big::hooks::send_chat_message>()(*big::g_pointers->m_gta.m_send_chat_ptr,
-			        big::g_player_service->get_self()->get_net_data(),
-			        (char*)msg.c_str(),
-			        team_only))
-				big::notify::draw_chat((char*)msg.data(), big::g_player_service->get_self()->get_name(), team_only);
-		});
+		big::chat::send_message(msg, nullptr, true, team_only);
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: send_chat_message_to_player
+	// Param: player_idx: integer: Index of the player.
+	// Param: msg: string: Message to be sent.
+	// Sends a chat message to the specified player. Other players would not be able to see the message
+	static void send_chat_message_to_player(int player_idx, const std::string& msg)
+	{
+		if (auto player = big::g_player_service->get_by_id(player_idx))
+		{
+			big::chat::send_message(msg, player);
+		}
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rank
+	// Param: pid: integer: Index of the player.
+	// Call get_player_rank(playerID)
+	static int get_player_rank(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Rank;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_rp
+	// Param: pid: integer: Index of the player.
+	// Call get_player_rp(playerID)
+	static int get_player_rp(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.RP;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_money
+	// Param: pid: integer: Index of the player.
+	// Call get_player_money(playerID)
+	static int get_player_money(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Money;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_wallet
+	// Param: pid: integer: Index of the player.
+	// Call get_player_wallet(playerID)
+	static int get_player_wallet(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.WalletBalance;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_bank
+	// Param: pid: integer: Index of the player.
+	// Call get_player_bank(playerID)
+	static int get_player_bank(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& stats = big::scr_globals::gpbd_fm_1.as<GPBD_FM*>()->Entries[pid].PlayerStats;
+			return stats.Money - stats.WalletBalance;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_language_id
+	// Param: pid: integer: Index of the player.
+	// Call get_player_language_id(playerID)
+	static int get_player_language_id(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& boss_goon = big::scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[pid].BossGoon;
+			return boss_goon.Language;
+		}
+		return -1;
+	}
+
+	// Lua API: Function
+	// Table: network
+	// Name: get_player_language_name
+	// Param: pid: integer: Index of the player.
+	// Call get_player_language_name(playerID)
+	static std::string get_player_language_name(int pid)
+	{
+		if (big::g_player_service->get_by_id(pid))
+		{
+			auto& boss_goon = big::scr_globals::gpbd_fm_3.as<GPBD_FM_3*>()->Entries[pid].BossGoon;
+			return big::languages.at((eGameLanguage)boss_goon.Language).data();
+		}
+		return "Unknown";
 	}
 
 	void bind(sol::state& state)
@@ -213,21 +351,32 @@ namespace lua::network
 		        {"TRIED_KICK_PLAYER", big::Infraction::TRIED_KICK_PLAYER},
 		        {"TRIGGERED_ANTICHEAT", big::Infraction::TRIGGERED_ANTICHEAT},
 		        {"UNDEAD_OTR", big::Infraction::UNDEAD_OTR},
+		        {"CHAT_SPAM", big::Infraction::CHAT_SPAM},
 		    });
 
 		auto ns = state["network"].get_or_create<sol::table>();
 
 		ns["trigger_script_event"]                     = trigger_script_event;
+		ns["is_session_started"]                       = is_session_started;
 		ns["give_pickup_rewards"]                      = give_pickup_rewards;
 		ns["set_player_coords"]                        = set_player_coords;
 		ns["set_all_player_coords"]                    = set_all_player_coords;
 		ns["get_selected_player"]                      = get_selected_player;
 		ns["get_selected_database_player_rockstar_id"] = get_selected_database_player_rockstar_id;
-		ns["flag_player_as_modder"]                    = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
-		ns["is_player_flagged_as_modder"]              = is_player_flagged_as_modder;
-		ns["is_player_friend"]                         = is_player_friend;
-		ns["get_flagged_modder_reason"]                = get_flagged_modder_reason;
-		ns["force_script_host"]                        = force_script_host;
-		ns["send_chat_message"]                        = send_chat_message;
+		ns["flag_player_as_modder"]       = sol::overload(flag_player_as_modder, flag_player_as_modder_custom_reason);
+		ns["is_player_flagged_as_modder"] = is_player_flagged_as_modder;
+		ns["is_player_friend"]            = is_player_friend;
+		ns["get_flagged_modder_reason"]   = get_flagged_modder_reason;
+		ns["force_script_host"]           = force_script_host;
+		ns["force_script_on_player"]      = force_script_on_player;
+		ns["send_chat_message"]           = send_chat_message;
+		ns["send_chat_message_to_player"] = send_chat_message_to_player;
+		ns["get_player_rank"]             = get_player_rank;
+		ns["get_player_rp"]               = get_player_rp;
+		ns["get_player_money"]            = get_player_money;
+		ns["get_player_wallet"]           = get_player_wallet;
+		ns["get_player_bank"]             = get_player_bank;
+		ns["get_player_language_id"]      = get_player_language_id;
+		ns["get_player_language_name"]    = get_player_language_name;
 	}
 }

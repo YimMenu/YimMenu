@@ -31,11 +31,16 @@ namespace big
 
 	void hooks::log_error_message_box(rage::joaat_t joaated_error_code, bool a2)
 	{
-		if (joaated_error_code == RAGE_JOAAT("ERR_NET_EVENT"))
+		if (joaated_error_code == "ERR_NET_EVENT"_J)
 			return;
 
 		LOG(WARNING) << "Error Code: " << string_conversions::utf_16_to_code_page(CP_UTF8, g_pointers->m_gta.m_get_title_caption_error_message_box(joaated_error_code));
 
 		log_stack_trace();
+	}
+
+	void hooks::log_error_message_box_2(rage::joaat_t joaated_error_code)
+	{
+		log_error_message_box(joaated_error_code, false);
 	}
 }

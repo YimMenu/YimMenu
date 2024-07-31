@@ -5,7 +5,7 @@
 #include "script.hpp"
 #include "util/mobile.hpp"
 
-#define MAX_GARAGE_NUM 30
+#define MAX_GARAGE_NUM 32
 
 namespace big
 {
@@ -43,6 +43,7 @@ namespace big
 			case 27: return 337;
 			case 28: return 350;
 			case 29: return 363;
+		    case 31: return 515;
 			case MAX_GARAGE_NUM+0: return 156; //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return 224; //Nightclub B1
 			case MAX_GARAGE_NUM+2: return 223; //Terrorbyte
@@ -59,6 +60,7 @@ namespace big
 			case MAX_GARAGE_NUM+2: //Terrorbyte
 			case MAX_GARAGE_NUM+3: //Kosatka
 			case 14: return 1;
+		    case 31: return 2;
 			case MAX_GARAGE_NUM+1: return 3; //Nightclub B1
 			case 11: return 8;
 			case 6:
@@ -97,40 +99,42 @@ namespace big
 		Hash stat = NULL;
 		switch (property)
 		{
-			case 0: stat = self::char_index ? RAGE_JOAAT("MP1_PROPERTY_HOUSE") : RAGE_JOAAT("MP0_PROPERTY_HOUSE"); break;
-			case 1: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_1") : RAGE_JOAAT("MP0_MULTI_PROPERTY_1"); break;
-			case 2: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_2") : RAGE_JOAAT("MP0_MULTI_PROPERTY_2"); break;
-			case 3: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_3") : RAGE_JOAAT("MP0_MULTI_PROPERTY_3"); break;
-			case 4: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_4") : RAGE_JOAAT("MP0_MULTI_PROPERTY_4"); break;
-			case 5: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_OFFICE") : RAGE_JOAAT("MP0_PROP_OFFICE"); break;
-			case 6: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_CLUBHOUSE") : RAGE_JOAAT("MP0_PROP_CLUBHOUSE"); break;
-			case 7: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_5") : RAGE_JOAAT("MP0_MULTI_PROPERTY_5"); break;
-			case 8: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_OFFICE_GAR1") : RAGE_JOAAT("MP0_PROP_OFFICE_GAR1"); break;
-			case 9: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_OFFICE_GAR2") : RAGE_JOAAT("MP0_PROP_OFFICE_GAR2"); break;
-			case 10: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_OFFICE_GAR3") : RAGE_JOAAT("MP0_PROP_OFFICE_GAR3"); break;
-			case 11: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_IE_WAREHOUSE") : RAGE_JOAAT("MP0_PROP_IE_WAREHOUSE"); break;
-			case 12: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_HANGAR") : RAGE_JOAAT("MP0_PROP_HANGAR"); break;
-			case 13: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_DEFUNCBASE") : RAGE_JOAAT("MP0_PROP_DEFUNCBASE"); break;
-			case 14: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_NIGHTCLUB") : RAGE_JOAAT("MP0_PROP_NIGHTCLUB"); break;
-			case 15: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_MEGAWARE_GAR1") : RAGE_JOAAT("MP0_PROP_MEGAWARE_GAR1"); break;
-			case 16: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_MEGAWARE_GAR2") : RAGE_JOAAT("MP0_PROP_MEGAWARE_GAR2"); break;
-			case 17: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_MEGAWARE_GAR3") : RAGE_JOAAT("MP0_PROP_MEGAWARE_GAR3"); break;
-			case 18: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_ARENAWARS_GAR1") : RAGE_JOAAT("MP0_PROP_ARENAWARS_GAR1"); break;
-			case 19: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_ARENAWARS_GAR2") : RAGE_JOAAT("MP0_PROP_ARENAWARS_GAR2"); break;
-			case 20: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_ARENAWARS_GAR3") : RAGE_JOAAT("MP0_PROP_ARENAWARS_GAR3"); break;
-			case 21: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_CASINO_GAR1") : RAGE_JOAAT("MP0_PROP_CASINO_GAR1"); break;
-			case 22: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_ARCADE_GAR1") : RAGE_JOAAT("MP0_PROP_ARCADE_GAR1"); break;
-			case 23: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_6") : RAGE_JOAAT("MP0_MULTI_PROPERTY_6"); break;
-			case 24: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_7") : RAGE_JOAAT("MP0_MULTI_PROPERTY_7"); break;
-			case 25: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_AUTO_SHOP") : RAGE_JOAAT("MP0_PROP_AUTO_SHOP"); break;
-			case 26: stat = self::char_index ? RAGE_JOAAT("MP1_PROP_SECURITY_OFFICE_GAR") : RAGE_JOAAT("MP0_PROP_SECURITY_OFFICE_GAR"); break;
-			case 27: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_8") : RAGE_JOAAT("MP0_MULTI_PROPERTY_8"); break;
-			case 28: stat = self::char_index ? RAGE_JOAAT("MP1_MULTI_PROPERTY_9") : RAGE_JOAAT("MP0_MULTI_PROPERTY_9"); break;
-			case 29: stat = self::char_index ? RAGE_JOAAT("MP1_MULTSTOREY_GAR_OWNED") : RAGE_JOAAT("MP0_MULTSTOREY_GAR_OWNED"); break;
+			case 0: stat = self::char_index ? "MP1_PROPERTY_HOUSE"_J : "MP0_PROPERTY_HOUSE"_J; break;
+			case 1: stat = self::char_index ? "MP1_MULTI_PROPERTY_1"_J : "MP0_MULTI_PROPERTY_1"_J; break;
+			case 2: stat = self::char_index ? "MP1_MULTI_PROPERTY_2"_J : "MP0_MULTI_PROPERTY_2"_J; break;
+			case 3: stat = self::char_index ? "MP1_MULTI_PROPERTY_3"_J : "MP0_MULTI_PROPERTY_3"_J; break;
+			case 4: stat = self::char_index ? "MP1_MULTI_PROPERTY_4"_J : "MP0_MULTI_PROPERTY_4"_J; break;
+			case 5: stat = self::char_index ? "MP1_PROP_OFFICE"_J : "MP0_PROP_OFFICE"_J; break;
+			case 6: stat = self::char_index ? "MP1_PROP_CLUBHOUSE"_J : "MP0_PROP_CLUBHOUSE"_J; break;
+			case 7: stat = self::char_index ? "MP1_MULTI_PROPERTY_5"_J : "MP0_MULTI_PROPERTY_5"_J; break;
+			case 8: stat = self::char_index ? "MP1_PROP_OFFICE_GAR1"_J : "MP0_PROP_OFFICE_GAR1"_J; break;
+			case 9: stat = self::char_index ? "MP1_PROP_OFFICE_GAR2"_J : "MP0_PROP_OFFICE_GAR2"_J; break;
+			case 10: stat = self::char_index ? "MP1_PROP_OFFICE_GAR3"_J : "MP0_PROP_OFFICE_GAR3"_J; break;
+			case 11: stat = self::char_index ? "MP1_PROP_IE_WAREHOUSE"_J : "MP0_PROP_IE_WAREHOUSE"_J; break;
+			case 12: stat = self::char_index ? "MP1_PROP_HANGAR"_J : "MP0_PROP_HANGAR"_J; break;
+			case 13: stat = self::char_index ? "MP1_PROP_DEFUNCBASE"_J : "MP0_PROP_DEFUNCBASE"_J; break;
+			case 14: stat = self::char_index ? "MP1_PROP_NIGHTCLUB"_J : "MP0_PROP_NIGHTCLUB"_J; break;
+			case 15: stat = self::char_index ? "MP1_PROP_MEGAWARE_GAR1"_J : "MP0_PROP_MEGAWARE_GAR1"_J; break;
+			case 16: stat = self::char_index ? "MP1_PROP_MEGAWARE_GAR2"_J : "MP0_PROP_MEGAWARE_GAR2"_J; break;
+			case 17: stat = self::char_index ? "MP1_PROP_MEGAWARE_GAR3"_J : "MP0_PROP_MEGAWARE_GAR3"_J; break;
+			case 18: stat = self::char_index ? "MP1_PROP_ARENAWARS_GAR1"_J : "MP0_PROP_ARENAWARS_GAR1"_J; break;
+			case 19: stat = self::char_index ? "MP1_PROP_ARENAWARS_GAR2"_J : "MP0_PROP_ARENAWARS_GAR2"_J; break;
+			case 20: stat = self::char_index ? "MP1_PROP_ARENAWARS_GAR3"_J : "MP0_PROP_ARENAWARS_GAR3"_J; break;
+			case 21: stat = self::char_index ? "MP1_PROP_CASINO_GAR1"_J : "MP0_PROP_CASINO_GAR1"_J; break;
+			case 22: stat = self::char_index ? "MP1_PROP_ARCADE_GAR1"_J : "MP0_PROP_ARCADE_GAR1"_J; break;
+			case 23: stat = self::char_index ? "MP1_MULTI_PROPERTY_6"_J : "MP0_MULTI_PROPERTY_6"_J; break;
+			case 24: stat = self::char_index ? "MP1_MULTI_PROPERTY_7"_J : "MP0_MULTI_PROPERTY_7"_J; break;
+			case 25: stat = self::char_index ? "MP1_PROP_AUTO_SHOP"_J : "MP0_PROP_AUTO_SHOP"_J; break;
+			case 26: stat = self::char_index ? "MP1_PROP_SECURITY_OFFICE_GAR"_J : "MP0_PROP_SECURITY_OFFICE_GAR"_J; break;
+			case 27: stat = self::char_index ? "MP1_MULTI_PROPERTY_8"_J : "MP0_MULTI_PROPERTY_8"_J; break;
+			case 28: stat = self::char_index ? "MP1_MULTI_PROPERTY_9"_J : "MP0_MULTI_PROPERTY_9"_J; break;
+			case 29: stat = self::char_index ? "MP1_MULTSTOREY_GAR_OWNED"_J : "MP0_MULTSTOREY_GAR_OWNED"_J; break;
+		    case 31: stat = self::char_index ? "MP1_PROP_BAIL_OFFICE"_J : "MP0_PROP_BAIL_OFFICE"_J; break;
 			case MAX_GARAGE_NUM+0:
 			case MAX_GARAGE_NUM+1:
 			case MAX_GARAGE_NUM+2:
 			case MAX_GARAGE_NUM+3: return 1;
+		    default: return -1;
 		}
 		if (stat == NULL)
 		{
@@ -144,13 +148,13 @@ namespace big
 		return -1;
 	}
 
-	std::string get_static_property_name(int property)
+	std::string get_static_property_name(int property, int garage_slot_iterator)
 	{
 		switch (property)
 		{
 			case 12: //Hangar
 			{
-				auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(295).as<PINT>();
+			    auto hangar_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(297).as<PINT>();
 				switch (hangar_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_HANGAR_1"); //LSIA Hangar 1
@@ -163,7 +167,7 @@ namespace big
 			}
 			case 13: //Facility
 			{
-				auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 877).at(267).at(302).as<PINT>();
+			    auto facility_id = *scr_globals::gpbd_fm_1.at(self::id, 883).at(268).at(304).as<PINT>();
 				switch (facility_id)
 				{
 					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_DBASE_1"); //Grand Senora Desert Facility
@@ -184,12 +188,24 @@ namespace big
 			case 17: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR3"); //Nightclub B4
 			case 18: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F0"); //Arena Workshop
 			case 19: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F1"); //Arena Workshop B1
-			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B1
+			case 20: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARENA_GAR_F2"); //Arena Workshop B2
 			case 21: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("CASINO_GARNAME"); //Casino Penthouse
 			case 22: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("ARCADE_GARNAME"); //Arcade
 			case 25: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("AUT_SHP_GAR"); //Auto Shop
 			case 26: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("FIXER_GARNAME"); //Agency
-			case 29: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("WIN22_GARNAME"); //Eclipse Blvd Garage
+			case 29:
+			{
+				int garage_level = (garage_slot_iterator - 1) / 10;
+				switch (garage_level)
+				{
+					case 0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B1"); //Eclipse Blvd Garage B1
+					case 1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B2"); //Eclipse Blvd Garage B2
+					case 2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B3"); //Eclipse Blvd Garage B3
+					case 3: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B4"); //Eclipse Blvd Garage B4
+					case 4: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MSG_B5"); //Eclipse Blvd Garage B5
+				}
+			}
+			case 31: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("BO_GARNAME"); //Bail Office
 			case MAX_GARAGE_NUM+0: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("GRTRUCK"); //Mobile Operations Center
 			case MAX_GARAGE_NUM+1: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_GAR0"); //Nightclub B1
 			case MAX_GARAGE_NUM+2: return HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION("MP_BHUB_CLUBT"); //Terrorbyte
@@ -212,7 +228,7 @@ namespace big
 					auto item_in_slot = *scr_globals::property_garage.at(garage_offset).at(garage_slot_iterator).as<PINT>() - 1;
 					if (item_in_slot == m_id)
 					{
-						auto static_property_string = get_static_property_name(property_iterator);
+						auto static_property_string = get_static_property_name(property_iterator, garage_slot_iterator);
 						if (static_property_string.empty())
 						{
 							m_garage = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(scr_globals::property_names.at(property_stat_state, 1951).at(16).as<const char*>());
@@ -283,23 +299,23 @@ namespace big
 	{
 		switch (m_hash)
 		{
-			case RAGE_JOAAT("avenger"):
-			case RAGE_JOAAT("avenger3"):
-			case RAGE_JOAAT("hauler2"):
-			case RAGE_JOAAT("phantom3"):
-			case RAGE_JOAAT("trailersmall2"):
-			case RAGE_JOAAT("khanjali"):
-			case RAGE_JOAAT("chernobog"):
-			case RAGE_JOAAT("riot2"):
-			case RAGE_JOAAT("thruster"):
-			case RAGE_JOAAT("brickade2"):
-			case RAGE_JOAAT("manchez3"):
-			case RAGE_JOAAT("terbyte"):
-			case RAGE_JOAAT("speedo4"):
-			case RAGE_JOAAT("mule4"):
-			case RAGE_JOAAT("pounder2"):
-			case RAGE_JOAAT("rcbandito"):
-			case RAGE_JOAAT("minitank"):
+			case "avenger"_J:
+			case "avenger3"_J:
+			case "hauler2"_J:
+			case "phantom3"_J:
+			case "trailersmall2"_J:
+			case "khanjali"_J:
+			case "chernobog"_J:
+			case "riot2"_J:
+			case "thruster"_J:
+			case "brickade2"_J:
+			case "manchez3"_J:
+			case "terbyte"_J:
+			case "speedo4"_J:
+			case "mule4"_J:
+			case "pounder2"_J:
+			case "rcbandito"_J:
+			case "minitank"_J:
 				return !g.clone_pv.spawn_clone;
 		}
 		return false;

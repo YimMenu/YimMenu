@@ -31,7 +31,7 @@ namespace big
 
 			m_cache_file.load();
 
-			if (m_cache_file.up_to_date(memory::module("GTA5.exe").size()))
+			if (m_cache_file.up_to_date(memory::module("GTA5.exe").timestamp()))
 			{
 				LOG(INFO) << "Loading tunables from cache";
 				m_loading = true;
@@ -42,18 +42,21 @@ namespace big
 			if (m_initialized || m_loading)
 				return;
 
-			if (!m_script_started && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("tuneables_processing")) > 0)
+			if (!m_script_started && SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("tuneables_processing"_J) > 0)
 				continue;
 
 			if (!m_script_started)
 			{
-				SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH(RAGE_JOAAT("tuneables_processing"));
+				SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("tuneables_processing"_J);
+				SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("tunables_registration"_J);
 
-				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED(RAGE_JOAAT("tuneables_processing")))
+				if (SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("tuneables_processing"_J) && SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("tunables_registration"_J))
 				{
+					m_num_tunables = gta_util::find_script_program("tunables_registration"_J)->m_global_count - TUNABLE_BASE_ADDRESS;
+
 					uint64_t args[] = {6, 27}; // TODO: check args
 
-					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS(RAGE_JOAAT("tuneables_processing"), (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
+					int id = SYSTEM::START_NEW_SCRIPT_WITH_NAME_HASH_AND_ARGS("tuneables_processing"_J, (Any*)args, sizeof(args) / 8, DEFAULT_STACK_SIZE);
 
 					if (!id)
 					{
@@ -61,29 +64,38 @@ namespace big
 						return;
 					}
 
-					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED(RAGE_JOAAT("tuneables_processing"));
-					m_script_started = true;
+					m_tunables_backup = std::make_unique<std::uint64_t[]>(m_num_tunables);
+					memcpy(m_tunables_backup.get(), script_global(TUNABLE_BASE_ADDRESS).as<void*>(), m_num_tunables * 8);
 
-					g_script_patcher_service->add_patch({RAGE_JOAAT("tuneables_processing"), "tuneables_processing1", "2E ? ? 55 ? ? 38 06", 0, std::vector<uint8_t>(17, 0x0), &m_script_started}); // bool tunables registration hack
-					if (auto program = gta_util::find_script_program(RAGE_JOAAT("tuneables_processing")))
-						g_script_patcher_service->on_script_load(program);
+					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tuneables_processing"_J);
+					SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("tunables_registration"_J);
+					m_script_started = true;
 				}
 			}
 			else
 			{
-				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH(RAGE_JOAAT("tuneables_processing")) == 0)
+				if (SCRIPT::GET_NUMBER_OF_THREADS_RUNNING_THE_SCRIPT_WITH_THIS_HASH("tuneables_processing"_J) == 0)
 				{
+					for (int i = 0; i < m_num_tunables; i++)
+					{
+						auto value = *script_global(TUNABLE_BASE_ADDRESS).at(i).as<int*>();
+						if (auto it = m_junk_values.find(value); it != m_junk_values.end())
+						{
+							m_tunables.emplace(it->second, TUNABLE_BASE_ADDRESS + i);
+						}
+					}
+					memcpy(script_global(TUNABLE_BASE_ADDRESS).as<void*>(), m_tunables_backup.get(), m_num_tunables * 8);
+
 					if (m_tunables.size() == 0)
 					{
 						LOG(FATAL) << "Failed to cache tunables";
-						g_script_patcher_service->update();
 						return;
 					}
 
 					m_script_started = false;
 					m_initialized    = true;
 					LOG(INFO) << "Saving " << m_tunables.size() << " tunables to cache";
-					g_script_patcher_service->update();
+					m_tunables_backup.release();
 					save();
 				}
 			}
@@ -99,15 +111,15 @@ namespace big
 		*(uint32_t*)data_ptr = m_tunables.size();
 		data_ptr += sizeof(uint32_t);
 
-		for (auto& [hash, ptr] : m_tunables)
+		for (auto& [hash, val] : m_tunables)
 		{
 			auto save_struct    = (tunable_save_struct*)data_ptr;
 			save_struct->hash   = hash;
-			save_struct->offset = ((std::int64_t*)ptr) - g_pointers->m_gta.m_script_globals[1];
+			save_struct->offset = val;
 			data_ptr += sizeof(tunable_save_struct);
 		}
 
-		m_cache_file.set_header_version(memory::module("GTA5.exe").size());
+		m_cache_file.set_header_version(memory::module("GTA5.exe").timestamp());
 		m_cache_file.set_data(std::move(data), data_size);
 		m_cache_file.write();
 	}
@@ -122,7 +134,7 @@ namespace big
 		for (int i = 0; i < num_tunables; i++)
 		{
 			auto save_struct = (tunable_save_struct*)data;
-			m_tunables.emplace(save_struct->hash, (void*)(g_pointers->m_gta.m_script_globals[1] + save_struct->offset));
+			m_tunables.emplace(save_struct->hash, save_struct->offset);
 			data += sizeof(tunable_save_struct);
 		}
 

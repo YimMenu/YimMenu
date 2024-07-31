@@ -27,20 +27,20 @@ namespace big
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("VIEW_SETTINGS_GAME_LANGUAGE"_T.data(), languages[*g_pointers->m_gta.m_language].name))
+		if (ImGui::BeginCombo("VIEW_SETTINGS_GAME_LANGUAGE"_T.data(), languages.at(*g_pointers->m_gta.m_language).data()))
 		{
-			for (auto& language : languages)
+			for (auto& [id, language] : languages)
 			{
-				if (ImGui::Selectable(language.name, language.id == *g_pointers->m_gta.m_language))
+				if (ImGui::Selectable(language.data(), id == *g_pointers->m_gta.m_language))
 				{
-					*g_pointers->m_gta.m_language = language.id;
+					*g_pointers->m_gta.m_language = id;
 
 					g_fiber_pool->queue_job([] {
 						g_pointers->m_gta.m_update_language(true);
 					});
 				}
 
-				if (language.id == *g_pointers->m_gta.m_language)
+				if (id == *g_pointers->m_gta.m_language)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
@@ -54,7 +54,7 @@ namespace big
 			g_thread_pool->push([] {
 				g_translation_service.update_n_reload_language_packs();
 
-				g_notification_service->push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
+				g_notification_service.push_success("LANGUAGE"_T.data(), "VIEW_SETTINGS_FINISHED_UPDATING_TRANSLATIONS"_T.data());
 			});
 		}
 

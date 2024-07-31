@@ -1,5 +1,4 @@
 #include "backend/looped_command.hpp"
-#include "natives.hpp"
 
 #include <ped/CPedIntelligence.hpp>
 
@@ -11,7 +10,7 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				g_local_player->m_ped_intelligence->m_oxygen_time = 0;
 		}
 	};

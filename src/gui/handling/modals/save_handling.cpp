@@ -1,6 +1,4 @@
 #include "../current_profile/current_profile_tabs.hpp"
-#include "fiber_pool.hpp"
-#include "script.hpp"
 #include "services/vehicle/handling_service.hpp"
 #include "thread_pool.hpp"
 #include "views/view.hpp"

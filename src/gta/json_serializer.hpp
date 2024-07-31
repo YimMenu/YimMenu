@@ -11,7 +11,8 @@ namespace rage
         uint32_t curlen; // 0x10
         uint32_t maxlen; // 0x14
         uint32_t unk4;   // 0x18
-        uint8_t flags;   // 0x1C
+        uint32_t unk5; // 0x1C
+        uint8_t flags; // 0x20
 
     public:
         json_serializer(char* _buffer, uint32_t _length) :
@@ -22,6 +23,7 @@ namespace rage
             unk1   = 0;
             curlen = 0;
             unk4   = 1;
+            unk5   = 0;
             flags  = 0;
         }
 
@@ -30,6 +32,6 @@ namespace rage
             return buffer;
         }
     };
-    static_assert(sizeof(json_serializer) == 0x1D); // size is actually 0x20
+    static_assert(sizeof(json_serializer) == 0x21); // size is actually 0x28
     #pragma pack(pop)
 }

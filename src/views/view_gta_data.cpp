@@ -1,5 +1,4 @@
 #include "gui.hpp"
-#include "pointers.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "view.hpp"
 
@@ -7,10 +6,10 @@ namespace big
 {
 	void view::gta_data()
 	{
-		if (!g_gta_data_service)
+		if (!g.settings.onboarding_complete)
 			return;
 
-		if (g_gta_data_service->cache_needs_update())
+		if (g_gta_data_service.cache_needs_update())
 		{
 			g_gui->toggle(true);
 			ImGui::OpenPopup("GAME_CACHE"_T.data());
@@ -20,7 +19,7 @@ namespace big
 		ImGui::SetNextWindowPos({200, 200}, ImGuiCond_FirstUseEver);
 		if (ImGui::BeginPopupModal("GAME_CACHE"_T.data()))
 		{
-			switch (g_gta_data_service->state())
+			switch (g_gta_data_service.state())
 			{
 			case eGtaDataUpdateState::NEEDS_UPDATE:
 			{
@@ -28,7 +27,7 @@ namespace big
 
 				if (ImGui::Button("GAME_CACHE_UPDATE_CACHE"_T.data()))
 				{
-					g_gta_data_service->update_now();
+					g_gta_data_service.update_now();
 				}
 
 				break;

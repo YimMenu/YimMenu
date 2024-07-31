@@ -1,8 +1,5 @@
 #include "stack_trace.hpp"
 
-#include "gta/script_thread.hpp"
-#include "memory/module.hpp"
-
 #include <DbgHelp.h>
 #include <winternl.h>
 
@@ -30,6 +27,9 @@ namespace big
 		std::lock_guard lock(m);
 
 		m_exception_info = exception_info;
+
+		m_dump.str("");
+		m_dump.clear();
 
 		m_dump << exception_code_to_string(exception_info->ExceptionRecord->ExceptionCode) << '\n';
 
@@ -77,7 +77,7 @@ namespace big
 			{
 				auto mod_info = module_info(table_entry->FullDllName.Buffer, table_entry->DllBase);
 
-				m_dump << mod_info.m_path.filename().string() << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
+				m_dump << mod_info.m_name << " Base Address: " << HEX_TO_UPPER(mod_info.m_base)
 				       << " Size: " << mod_info.m_size << '\n';
 
 				m_modules.emplace_back(std::move(mod_info));
@@ -128,29 +128,39 @@ namespace big
 
 		for (size_t i = 0; i < m_frame_pointers.size() && m_frame_pointers[i]; ++i)
 		{
-			const auto addr = m_frame_pointers[i];
+			const auto addr        = m_frame_pointers[i];
+			const auto module_info = get_module_by_address(addr);
 
 			m_dump << "\n[" << i << "]\t";
 			if (SymFromAddr(GetCurrentProcess(), addr, &displacement64, symbol))
 			{
 				if (SymGetLineFromAddr64(GetCurrentProcess(), addr, &displacement, &line))
 				{
-					m_dump << line.FileName << " L: " << line.LineNumber << " " << std::string_view(symbol->Name, symbol->NameLen);
+					m_dump << line.FileName << " L: " << line.LineNumber << ' ' << std::string_view(symbol->Name, symbol->NameLen);
 
 					continue;
 				}
-				const auto module_info = get_module_by_address(addr);
+				
+				if (module_info)
+				{
+					m_dump << module_info->m_name << ' ' << std::string_view(symbol->Name, symbol->NameLen);
 
-				if (module_info->m_base == (uint64_t)GetModuleHandle(0))
-					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen) << " ("
-					       << module_info->m_path.filename().string() << "+" << HEX_TO_UPPER(addr - module_info->m_base) << ")";
-				else
-					m_dump << module_info->m_path.filename().string() << " " << std::string_view(symbol->Name, symbol->NameLen);
+					continue;
+				}
+
+				m_dump << HEX_TO_UPPER(addr) << ' ' << std::string_view(symbol->Name, symbol->NameLen);
 
 				continue;
 			}
-			const auto module_info = get_module_by_address(addr);
-			m_dump << module_info->m_path.filename().string() << "+" << HEX_TO_UPPER(addr - module_info->m_base) << " " << HEX_TO_UPPER(addr);
+			
+			if (module_info)
+			{
+				m_dump << module_info->m_name << '+' << HEX_TO_UPPER(addr - module_info->m_base) << ' ' << HEX_TO_UPPER(addr);
+				
+				continue;
+			}
+
+			m_dump << HEX_TO_UPPER(addr);
 		}
 	}
 
@@ -167,6 +177,7 @@ namespace big
 		if (m_exception_info->ExceptionRecord->ExceptionCode == msvc_exception_code)
 		{
 			m_dump
+			    << '\n'
 			    << reinterpret_cast<const std::exception*>(m_exception_info->ExceptionRecord->ExceptionInformation[1])->what() << '\n';
 		}
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include "gta/enums.hpp"
+#include "pointers.hpp"
 
 namespace big
 {
@@ -17,10 +18,9 @@ namespace big
 		template<size_t N>
 		constexpr sync_node_id(char const (&pp)[N])
 		{
-			id   = rage::consteval_joaat(pp);
+			id   = rage::constexpr_joaat(pp);
 			name = pp;
 		}
-
 		// implicit conversion
 		constexpr operator Hash() const
 		{
@@ -39,6 +39,7 @@ namespace big
 		static constexpr size_t sync_tree_count = size_t(eNetObjType::NET_OBJ_TYPE_TRAIN) + 1;
 
 		std::array<sync_node_vft_to_ids, sync_tree_count> sync_trees_sync_node_addr_to_ids;
+		sync_node_vft_to_ids global_node_identifier;
 
 		std::array<sync_tree_node_array_index_to_node_id_t, sync_tree_count> sync_trees_node_array_index_to_node_id = {
 		    {
@@ -518,7 +519,18 @@ namespace big
 	public:
 		static const sync_node_id& find(eNetObjType obj_type, uintptr_t addr)
 		{
+			if (!is_initialized()) [[unlikely]]
+				init();
+
 			return finder.sync_trees_sync_node_addr_to_ids[(int)obj_type][addr];
+		}
+
+		static const sync_node_id& find(uintptr_t addr)
+		{
+			if (!is_initialized()) [[unlikely]]
+				init();
+
+			return finder.global_node_identifier[addr];
 		}
 
 		static sync_node_vft_to_ids& get_object_nodes(eNetObjType obj_type)
@@ -535,9 +547,6 @@ namespace big
 		{
 			for (int i = (int)eNetObjType::NET_OBJ_TYPE_AUTOMOBILE; i <= (int)eNetObjType::NET_OBJ_TYPE_TRAIN; i++)
 			{
-				if (i == (int)eNetObjType::NET_OBJ_TYPE_TRAILER)
-					continue;
-
 				rage::netSyncTree* tree = g_pointers->m_gta.m_get_sync_tree_for_type(*g_pointers->m_gta.m_network_object_mgr, i);
 
 				if (tree->m_child_node_count != finder.sync_trees_node_array_index_to_node_id[i].size())
@@ -555,6 +564,7 @@ namespace big
 					const sync_node_id node_id = finder.sync_trees_node_array_index_to_node_id[i][j];
 
 					finder.sync_trees_sync_node_addr_to_ids[i][addr] = node_id;
+					finder.global_node_identifier.emplace(addr, node_id);
 				}
 			}
 

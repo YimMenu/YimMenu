@@ -74,10 +74,11 @@ const ipl_libary ipls[] = {
         {{"jewel2fake"}},
         {{"jewel2fake"}, {"bh1_16_refurb"}},
     }, // Jewelry Interior
-    {"Coroner Morgue Interior", 
-    {244.9, -1374.7, 39.5},
-    {{"coroner_int_on"}, {"coronertrash"}},
-    {{"coroner_int_off"}},
-    {{"coroner_int_off"}},
+    {
+        "Coroner Morgue Interior", 
+        {244.9, -1374.7, 39.5},
+        {{"coroner_int_on"}, {"coronertrash"}},
+        {{"coroner_int_off"}},
+        {{"coroner_int_off"}},
     }, // Coroner Morgue Interior
 };

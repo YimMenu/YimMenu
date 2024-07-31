@@ -12,13 +12,22 @@ namespace big
 {
 	unsigned int hooks::broadcast_net_array(rage::netArrayHandlerBase* _this, CNetGamePlayer* target, rage::datBitBuffer* bit_buffer, uint16_t counter, uint32_t* elem_start, bool silent)
 	{
+		int orig_mission_id;
+		int orig_mission_plyr;
+		int orig_mission_inst;
+		bool orig_mission_started;
+
 		int orig_gsbd;
 
 		Player orig_player;
 		int orig_participant;
 
-		bool need_to_use_end_session_kick = g_player_service->m_player_to_use_end_session_kick
-		    && target->m_player_id == g_player_service->m_player_to_use_end_session_kick->get()->id()
+		bool need_to_spoof_mission_data = false;
+
+		auto plyr = g_player_service->get_by_id(target->m_player_id);
+
+		bool need_to_use_end_session_kick = plyr && plyr->is_valid()
+		    && plyr->trigger_end_session_kick
 		    && _this->m_array == scr_globals::gsbd.as<void*>();
 
 		bool need_to_modify_wanted_level = g.session.wanted_level_all
@@ -32,6 +41,19 @@ namespace big
 
 		bool need_to_randomize_replay_protection =
 		    g.session.block_ceo_money && _this->m_array == scr_globals::gsbd_fm_events.as<void*>();
+
+		if (_this->m_array == scr_globals::gsbd_fm_events.as<void*>())
+		{
+			// TODO: we don't need this if we can consistently get arrays to sync
+			for (auto& player : g_player_service->players())
+			{
+				if (player.second->script_host_mission.has_value())
+				{
+					need_to_spoof_mission_data = true;
+					break;
+				}
+			}
+		}
 
 		if (need_to_use_end_session_kick)
 		{
@@ -74,6 +96,27 @@ namespace big
 			broadcast_net_array::m_patch->apply();
 		}
 
+		if (need_to_spoof_mission_data)
+		{
+			orig_mission_id = *scr_globals::gsbd_fm_events.at(11).at(144).as<int*>();
+			orig_mission_plyr = *scr_globals::gsbd_fm_events.at(11).at(145).as<int*>();
+			orig_mission_inst = *scr_globals::gsbd_fm_events.at(11).at(143).as<int*>();
+			orig_mission_started = *scr_globals::gsbd_fm_events.at(11).at(146).as<bool*>();
+
+			if (plyr->script_host_mission.has_value())
+			{
+				*scr_globals::gsbd_fm_events.at(11).at(145).as<int*>() = plyr->id();
+				*scr_globals::gsbd_fm_events.at(11).at(144).as<int*>()  = plyr->script_host_mission.value();
+				*scr_globals::gsbd_fm_events.at(11).at(146).as<bool*>() = false;
+				*scr_globals::gsbd_fm_events.at(11).at(143).as<int*>()  = -1;
+			}
+			else
+			{
+				*scr_globals::gsbd_fm_events.at(11).at(146).as<bool*>() = true;
+			}
+			broadcast_net_array::m_patch->apply();
+		}
+
 		int ret = g_hooking->get_original<hooks::broadcast_net_array>()(_this, target, bit_buffer, counter, elem_start, silent);
 
 		if (need_to_use_end_session_kick)
@@ -96,6 +139,15 @@ namespace big
 
 		if (need_to_randomize_replay_protection)
 		{
+			broadcast_net_array::m_patch->restore();
+		}
+
+		if (need_to_spoof_mission_data)
+		{
+			*scr_globals::gsbd_fm_events.at(11).at(144).as<int*>() = orig_mission_id;
+			*scr_globals::gsbd_fm_events.at(11).at(145).as<int*>() = orig_mission_plyr;
+			*scr_globals::gsbd_fm_events.at(11).at(143).as<int*>() = orig_mission_inst;
+			*scr_globals::gsbd_fm_events.at(11).at(144).as<bool*>() = orig_mission_started;
 			broadcast_net_array::m_patch->restore();
 		}
 

@@ -1,11 +1,12 @@
 #pragma once
-#include "gta/joaat.hpp"
-#include "gta_util.hpp"
-#include "math.hpp"
-#include "natives.hpp"
-#include "pools.hpp"
-#include "script.hpp"
-#include "services/players/player_service.hpp"
+#include <script/types.hpp>
+#include <rage/vector.hpp>
+
+namespace rage
+{
+	class netObject;
+	class CEntity;
+}
 
 namespace big::entity
 {
@@ -21,4 +22,6 @@ namespace big::entity
 	bool request_model(rage::joaat_t hash);
 	double distance_to_middle_of_screen(const rage::fvector2& screen_pos);
 	Entity get_entity_closest_to_middle_of_screen(rage::fwEntity** pointer = nullptr, std::vector<Entity> ignore_entities = {}, bool include_veh = true, bool include_ped = true, bool include_prop = true, bool include_players = true);
+	void force_remove_network_entity(rage::CDynamicEntity* entity, bool delete_locally = true);
+	void force_remove_network_entity(std::uint16_t net_id, int ownership_token = -1, bool delete_locally = true);
 }

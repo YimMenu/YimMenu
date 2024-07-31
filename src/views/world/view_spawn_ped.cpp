@@ -1,8 +1,6 @@
 #include "backend/looped/looped.hpp"
-#include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "pointers.hpp"
-#include "script.hpp"
 #include "services/gta_data/gta_data_service.hpp"
 #include "services/model_preview/model_preview_service.hpp"
 #include "services/players/player_service.hpp"
@@ -30,12 +28,12 @@ namespace big
 			return;
 		}
 
-		const auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		for (auto& [_, weapon] : g_gta_data_service->weapons())
+		const auto& weapon_type_arr = g_gta_data_service.weapon_types();
+		for (auto& [_, weapon] : g_gta_data_service.weapons())
 		{
 			if (selected_ped_weapon_type == SPAWN_PED_ALL_WEAPONS || weapon.m_weapon_type == weapon_type_arr[selected_ped_weapon_type])
 			{
-				if ((selected_ped_weapon_hash == 0 || weapon.m_hash == selected_ped_weapon_hash) && weapon.m_hash != RAGE_JOAAT("WEAPON_UNARMED"))
+				if ((selected_ped_weapon_hash == 0 || weapon.m_hash == selected_ped_weapon_hash) && weapon.m_hash != "WEAPON_UNARMED"_J)
 				{
 					WEAPON::GIVE_WEAPON_TO_PED(ped, weapon.m_hash, 9999, false, selected_ped_weapon_hash != 0);
 				}
@@ -63,7 +61,7 @@ namespace big
 				auto plyr = g_player_service->get_by_id(selected_ped_player_id);
 				if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 				{
-					g_notification_service->push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
+					g_notification_service.push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
 					return 0;
 				}
 
@@ -88,7 +86,7 @@ namespace big
 			auto plyr = g_player_service->get_by_id(selected_ped_for_player_id);
 			if (plyr == nullptr || !plyr->is_valid() || !plyr->get_ped() || !plyr->get_ped()->m_navigation)
 			{
-				g_notification_service->push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
+				g_notification_service.push_error("PED"_T.data(), "INVALID_ONLINE_PED"_T.data());
 				return 0;
 			}
 
@@ -107,7 +105,7 @@ namespace big
 
 		if (ped == 0)
 		{
-			g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
+			g_notification_service.push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
 			return 0;
 		}
 
@@ -132,10 +130,10 @@ namespace big
 		PED::SET_PED_SEEING_RANGE(ped, 200.0f);
 		PED::SET_PED_HEARING_RANGE(ped, 200.0f);
 		PED::SET_PED_ID_RANGE(ped, 200.0f);
-		PED::SET_PED_FIRING_PATTERN(ped, RAGE_JOAAT("FIRING_PATTERN_FULL_AUTO"));
+		PED::SET_PED_FIRING_PATTERN(ped, "FIRING_PATTERN_FULL_AUTO"_J);
 		PED::SET_PED_SHOOT_RATE(ped, 150);
 
-		if (!clone)
+		if (!clone && g.world.spawn_ped.randomize_outfit)
 			ped::set_ped_random_component_variation(ped);
 
 		if (is_bodyguard)
@@ -177,7 +175,7 @@ namespace big
 			PED::SET_PED_KEEP_TASK(ped, true);
 			PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
 			TASK::TASK_COMBAT_PED(ped, player_ped, 0, 16);
-			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, RAGE_JOAAT("HATES_PLAYER"));
+			PED::SET_PED_RELATIONSHIP_GROUP_HASH(ped, "HATES_PLAYER"_J);
 			PED::SET_PED_ALERTNESS(ped, 3);
 		}
 
@@ -196,11 +194,11 @@ namespace big
 		static char ped_model_buf[64];
 		static Player selected_ped_player_id = -1;
 
-		auto& ped_type_arr = g_gta_data_service->ped_types();
-		auto& ped_arr      = g_gta_data_service->peds();
+		auto& ped_type_arr = g_gta_data_service.ped_types();
+		auto& ped_arr      = g_gta_data_service.peds();
 
-		auto& weapon_type_arr = g_gta_data_service->weapon_types();
-		auto& weapon_arr      = g_gta_data_service->weapons();
+		auto& weapon_type_arr = g_gta_data_service.weapon_types();
+		auto& weapon_arr      = g_gta_data_service.weapons();
 
 		static Player selected_ped_for_player_id = -1;
 		auto& player_arr                         = g_player_service->players();
@@ -292,11 +290,9 @@ namespace big
 						}
 						else if (ImGui::IsItemHovered())
 						{
-							g_fiber_pool->queue_job([] {
-								Ped ped   = self::ped;
-								Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-								g_model_preview_service->show_ped(hash, ped);
-							});
+							Ped ped   = self::ped;
+							Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+							g_model_preview_service->show_ped(hash, ped);
 						}
 
 						if (selected_ped_player_id == -1)
@@ -323,15 +319,13 @@ namespace big
 								}
 								else if (ImGui::IsItemHovered())
 								{
-									g_fiber_pool->queue_job([plyr_id] {
-										auto plyr = g_player_service->get_by_id(plyr_id);
-										if (plyr)
-										{
-											Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
-											Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
-											g_model_preview_service->show_ped(hash, ped);
-										}
-									});
+									auto plyr = g_player_service->get_by_id(plyr_id);
+									if (plyr)
+									{
+										Ped ped   = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(plyr->id());
+										Hash hash = ENTITY::GET_ENTITY_MODEL(ped);
+										g_model_preview_service->show_ped(hash, ped);
+									}
 								}
 								ImGui::PopID();
 
@@ -495,7 +489,7 @@ namespace big
 				            "NO_WEAPONS"_T.data() :
 				            selected_ped_weapon_hash == 0 ?
 				            "ALL"_T.data() :
-				            g_gta_data_service->weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
+				            g_gta_data_service.weapon_by_hash(selected_ped_weapon_hash).m_display_name.c_str()))
 				{
 					if (selected_ped_weapon_type != SPAWN_PED_NO_WEAPONS)
 					{
@@ -602,6 +596,7 @@ namespace big
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVINCIBLE"_T.data(), &g.world.spawn_ped.spawn_invincible);
 		ImGui::Checkbox("VIEW_SPAWN_PED_INVISIBLE"_T.data(), &g.world.spawn_ped.spawn_invisible);
 		ImGui::Checkbox("VIEW_SPAWN_PED_ATTACKER"_T.data(), &g.world.spawn_ped.spawn_as_attacker);
+		ImGui::Checkbox("VIEW_SPAWN_PED_RANDOMIZE_OUTFIT"_T.data(), &g.world.spawn_ped.randomize_outfit);
 
 		components::button("CHANGE_PLAYER_MODEL"_T, [] {
 			if (selected_ped_type == -2)
@@ -620,7 +615,7 @@ namespace big
 			{
 				if (!ped::change_player_model(rage::joaat(ped_model_buf)))
 				{
-					g_notification_service->push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
+					g_notification_service.push_error("PED"_T.data(), "SPAWN_MODEL_FAILED"_T.data());
 					return;
 				}
 

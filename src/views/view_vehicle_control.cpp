@@ -1,8 +1,4 @@
 #include "backend/bool_command.hpp"
-#include "backend/float_command.hpp"
-#include "gta_util.hpp"
-#include "gui.hpp"
-#include "pointers.hpp"
 #include "services/vehicle/vehicle_control_service.hpp"
 #include "util/ped.hpp"
 #include "util/vehicle.hpp"

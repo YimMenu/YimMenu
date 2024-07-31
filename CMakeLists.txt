@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 project(YimMenu CXX ASM_MASM)
+
+if (NOT MSVC)
+  message(FATAL_ERROR "Unsupported compiler used '${CMAKE_CXX_COMPILER_ID}', YimMenu only supports MSVC.")
+endif()
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
@@ -9,6 +15,7 @@ include(cmake/git.cmake)
 
 # Fetch modules
 message("\nFetching modules")
+include(cmake/asmjit.cmake)
 include(cmake/minhook.cmake)
 include(cmake/async-logger.cmake)
 include(cmake/pugixml.cmake)
@@ -52,10 +59,11 @@ target_include_directories(YimMenu PRIVATE
     "${gtav_classes_SOURCE_DIR}"
     "${imgui_SOURCE_DIR}"
     "${minhook_SOURCE_DIR}/src/hde"
+    "${asmjit_SOURCE_DIR}/src"
 )
 
 target_precompile_headers(YimMenu PRIVATE "${SRC_DIR}/common.hpp")
-target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static)
+target_link_libraries(YimMenu PRIVATE pugixml minhook AsyncLogger dbghelp imgui cpr lua_static asmjit::asmjit)
 
 # Warnings as errors
 set_property(TARGET YimMenu PROPERTY COMPILE_WARNING_AS_ERROR ON)
@@ -75,5 +83,7 @@ if(MSVC)
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
           "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /O2 /Oi /Ot /Oy /Ob3 /sdl- /GL /GF /GS- /Gw")
       string(REPLACE "/Ob1" "/Ob3" CMAKE_CXX_FLAGS_RELWITHDEBINFO ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+    else()
+        add_compile_definitions(YIM_DEV)
     endif()
 endif()

@@ -1,8 +1,8 @@
 #include "player_service.hpp"
 
 #include "gta_util.hpp"
+#include "util/math.hpp"
 
-#include <network/CNetworkPlayerMgr.hpp>
 
 namespace big
 {
@@ -29,8 +29,7 @@ namespace big
 
 	void player_service::do_cleanup()
 	{
-		m_player_to_use_end_session_kick.reset();
-		m_player_to_use_complaint_kick.reset();
+		m_players_sending_modder_beacons.clear();
 		m_selected_player = m_dummy;
 		m_players.clear();
 	}
@@ -38,25 +37,106 @@ namespace big
 	player_ptr player_service::get_by_msg_id(uint32_t msg_id) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (player->get_net_game_player()->m_msg_id == msg_id)
-				return player;
+		{
+			if (auto net_game_player = player->get_net_game_player())
+			{
+				if (net_game_player->m_msg_id == msg_id)
+				{
+					return player;
+				}
+			}
+		}
 		return nullptr;
 	}
 
 	player_ptr player_service::get_by_id(uint32_t id) const
 	{
 		for (const auto& [_, player] : m_players)
-			if (player->id() == id)
+		{
+			if (player && player->id() == id)
+			{
 				return player;
+			}
+		}
 		return nullptr;
 	}
 
 	player_ptr player_service::get_by_host_token(uint64_t token) const
 	{
-		for (const auto& [_, player] : m_players)
-			if (player->get_net_data()->m_host_token == token)
-				return player;
+		for (const auto& player : m_players | std::ranges::views::values)
+		{
+			if (auto net_data = player->get_net_data())
+			{
+				if (net_data->m_host_token == token)
+				{
+					return player;
+				}
+			}
+		}
 		return nullptr;
+	}
+
+		player_ptr player_service::get_by_name(std::string_view name) const
+	{
+		std::string self_name  = g_player_service->get_self()->get_name();
+		std::string name_lower = name.data();
+		std::transform(self_name.begin(), self_name.end(), self_name.begin(), ::tolower);
+		std::transform(name_lower.begin(), name_lower.end(), name_lower.begin(), ::tolower);
+
+		for (auto& [_, player] : m_players)
+		{
+			std::string player_name = player->get_name();
+			std::transform(player_name.begin(), player_name.end(), player_name.begin(), ::tolower);
+			if (player_name == name_lower)
+				return player;
+		}
+		return nullptr;
+	}
+
+	player_ptr player_service::get_by_name_closest(std::string_view guess) const
+	{
+		std::string self_name   = g_player_service->get_self()->get_name();
+		std::string lower_guess = guess.data();
+		std::transform(self_name.begin(), self_name.end(), self_name.begin(), ::tolower);
+		std::transform(lower_guess.begin(), lower_guess.end(), lower_guess.begin(), ::tolower);
+
+		for (auto& [_, player] : m_players)
+		{
+			std::string player_name = player->get_name();
+			std::transform(player_name.begin(), player_name.end(), player_name.begin(), ::tolower);
+
+			if (player_name.find(lower_guess) != std::string::npos)
+			{
+				return player;
+			}
+		}
+
+		return nullptr;
+	}
+
+	player_ptr player_service::get_closest(bool exclude_friends) const
+	{
+		float closest_distance    = std::numeric_limits<float>::max();
+		player_ptr closest_player = nullptr;
+		for (auto player : m_players | std::ranges::views::values)
+		{
+			if (exclude_friends && player->is_friend())
+				continue;
+
+			if (player && player->get_ped() && player->get_ped()->get_position())
+			{
+				if (math::distance_between_vectors(*player->get_ped()->get_position(),
+				        *g_player_service->get_self()->get_ped()->get_position())
+				    < closest_distance)
+				{
+					closest_distance = math::distance_between_vectors(*player->get_ped()->get_position(),
+					    *g_player_service->get_self()->get_ped()->get_position());
+					closest_player   = player;
+				}
+			}
+		}
+
+		return closest_player;
 	}
 
 	player_ptr player_service::get_selected() const
@@ -99,14 +179,18 @@ namespace big
 		        });
 		    it != m_players.end())
 		{
-			if (m_player_to_use_end_session_kick == it->second)
-				m_player_to_use_end_session_kick = std::nullopt;
-
-			if (m_player_to_use_complaint_kick == it->second)
-				m_player_to_use_complaint_kick = std::nullopt;
-
 			m_players.erase(it);
 		}
+	}
+
+	void player_service::mark_player_as_sending_modder_beacons(std::uint64_t rid)
+	{
+		m_players_sending_modder_beacons.insert(rid);
+	}
+
+	bool player_service::did_player_send_modder_beacon(std::uint64_t rid)
+	{
+		return m_players_sending_modder_beacons.contains(rid);
 	}
 
 	void player_service::set_selected(player_ptr plyr)

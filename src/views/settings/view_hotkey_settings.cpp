@@ -59,7 +59,7 @@ namespace big
 		if (ImGui::Hotkey("VIEW_HOTKEY_SETTINGS_TOGGLE_VEHICLE_FLY"_T.data(), &g.settings.hotkeys.vehicle_flymode))
 			g_hotkey_service->update_hotkey("vehiclefly", g.settings.hotkeys.vehicle_flymode);
 		if (ImGui::Hotkey("CLEAR_WANTED_LEVEL"_T.data(), &g.settings.hotkeys.clear_wanted))
-			g_hotkey_service->update_hotkey("clearwantedlvl", g.settings.hotkeys.clear_wanted);
+			g_hotkey_service->update_hotkey("clearwantedself", g.settings.hotkeys.clear_wanted);
 
 		ImGui::PopItemWidth();
 	}

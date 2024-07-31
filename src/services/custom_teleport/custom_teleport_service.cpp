@@ -1,7 +1,5 @@
 #include "custom_teleport_service.hpp"
 
-#include "util/notify.hpp"
-
 namespace big
 {
 	std::filesystem::path custom_teleport_service::get_telelocations_file_path()
@@ -70,7 +68,7 @@ namespace big
 		file_out << j.dump(4);
 		file_out.close();
 
-		g_notification_service->push_success("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::format("Succesfully saved location {}", t.name));
+		g_notification_service.push_success("GUI_TAB_CUSTOM_TELEPORT"_T.data(), std::format("Succesfully saved location {}", t.name));
 
 		return true;
 	}

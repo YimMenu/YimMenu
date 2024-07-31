@@ -1,7 +1,4 @@
-#include "backend/looped/looped.hpp"
 #include "backend/looped_command.hpp"
-#include "fiber_pool.hpp"
-#include "natives.hpp"
 
 namespace big
 {
@@ -11,13 +8,13 @@ namespace big
 
 		virtual void on_tick() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				g_local_player->m_navigation->m_damp->m_water_collision = 0;
 		}
 
 		virtual void on_disable() override
 		{
-			if (g_local_player)
+			if (g_local_player) [[likely]]
 				g_local_player->m_navigation->m_damp->m_water_collision = 1;
 		}
 	};

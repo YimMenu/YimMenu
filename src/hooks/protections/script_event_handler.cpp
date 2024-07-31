@@ -1,16 +1,16 @@
-#include "backend/player_command.hpp"
 #include "gta/net_game_event.hpp"
-#include "gta/script_handler.hpp"
 #include "gta_util.hpp"
 #include "hooking/hooking.hpp"
 #include "lua/lua_manager.hpp"
 #include "util/math.hpp"
+#include "util/protection.hpp"
 #include "util/session.hpp"
 
 #include <network/CNetGamePlayer.hpp>
-#include <network/Network.hpp>
 #include <script/globals/GPBD_FM_3.hpp>
 #include <script/globals/GlobalPlayerBD.hpp>
+#include <script/CGameScriptHandlerNetComponent.hpp>
+
 
 namespace big
 {
@@ -20,7 +20,7 @@ namespace big
 			LOG(WARNING) << "BLOCKED_SCRIPT_EVENT From: " << player_name << " Event Type: " << protection_type;
 
 		if (should_notify)
-			g_notification_service->push_warning("Script Event Protection",
+			g_notification_service.push_warning("Script Event Protection",
 			    std::format("From: {}\nEvent Type: {}", player_name.data(), protection_type.data()));
 	}
 
@@ -59,7 +59,8 @@ namespace big
 
 	bool hooks::scripted_game_event(CScriptedGameEvent* scripted_game_event, CNetGamePlayer* player)
 	{
-		const auto args = scripted_game_event->m_args;
+		const auto args       = scripted_game_event->m_args;
+		const auto args_count = scripted_game_event->m_args_size / 8;
 
 		const auto hash        = static_cast<eRemoteEvent>(args[0]);
 		const auto player_name = player->get_name();
@@ -70,8 +71,8 @@ namespace big
 		{
 			std::vector<int32_t> script_event_args;
 
-			script_event_args.reserve(scripted_game_event->m_args_size);
-			for (int i = 0; i < scripted_game_event->m_args_size; i++)
+			script_event_args.reserve(args_count);
+			for (int i = 0; i < args_count; i++)
 				script_event_args.push_back(args[i]);
 
 			auto event_ret = g_lua_manager->trigger_event<menu_event::ScriptedGameEventReceived, bool>((int)player->m_player_id, script_event_args);
@@ -120,9 +121,17 @@ namespace big
 			break;
 		case eRemoteEvent::Crash3:
 		{
-			if (isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
+			if (isnan(*(float*)&args[3]) || isnan(*(float*)&args[4]) || isnan(*(float*)&args[5]))
 			{
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
 				g.reactions.crash.process(plyr);
+				return true;
+			}
+			if (args[3] == -4640169 && args[7] == -36565476 && args[8] == -53105203)
+			{
+				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER);
+				g.reactions.crash.process(plyr);
+
 				return true;
 			}
 			break;
@@ -138,7 +147,7 @@ namespace big
 				session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
 				return true;
 			case eRemoteEvent::NotificationCrash2:
-				if (!gta_util::find_script_thread(RAGE_JOAAT("gb_salvage")))
+				if (!gta_util::find_script_thread("gb_salvage"_J))
 				{
 					// This looks like it's meant to trigger a sound crash by spamming too many notifications. We've already patched it, but the notifications are still annoying
 					session::add_infraction(plyr, Infraction::TRIED_CRASH_PLAYER); // stand user detected
@@ -203,12 +212,28 @@ namespace big
 			}
 			break;
 		case eRemoteEvent::TSECommand:
-			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam && !NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+		{
+			if (NETWORK::NETWORK_IS_ACTIVITY_SESSION())
+				break;
+
+			if (g.protections.script_events.rotate_cam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandRotateCam)
 			{
 				g.reactions.rotate_cam.process(plyr);
 				return true;
 			}
+
+			if (g.protections.script_events.sound_spam && static_cast<eRemoteEvent>(args[3]) == eRemoteEvent::TSECommandSound)
+			{
+				if (!plyr || plyr->m_play_sound_rate_limit_tse.process())
+				{
+					if (plyr->m_play_sound_rate_limit_tse.exceeded_last_process())
+						g.reactions.sound_spam.process(plyr);
+					return true;
+				}
+			}
+
 			break;
+		}
 		case eRemoteEvent::SendToCayoPerico:
 			if (g.protections.script_events.send_to_location && args[4] == 0)
 			{
@@ -295,7 +320,7 @@ namespace big
 			break;
 		case eRemoteEvent::NetworkBail:
 			session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-			g.reactions.network_bail.process(plyr);
+			g.reactions.kick.process(plyr);
 			return true;
 		case eRemoteEvent::TeleportToWarehouse:
 			if (g.protections.script_events.teleport_to_warehouse && !is_player_driver_of_local_vehicle(player->m_player_id))
@@ -352,11 +377,11 @@ namespace big
 		case eRemoteEvent::InteriorControl:
 		{
 			int interior = (int)args[3];
-			if (interior < 0 || interior > 166) // the upper bound will change after an update
+			if (interior < 0 || interior > 171) // the upper bound will change after an update
 			{
 				if (auto plyr = g_player_service->get_by_id(player->m_player_id))
 					session::add_infraction(plyr, Infraction::TRIED_KICK_PLAYER);
-				g.reactions.null_function_kick.process(plyr);
+				g.reactions.kick.process(plyr);
 				return true;
 			}
 
@@ -380,9 +405,7 @@ namespace big
 
 			break;
 		}
-		case eRemoteEvent::DestroyPersonalVehicle:
-			g.reactions.destroy_personal_vehicle.process(plyr);
-			return true;
+		case eRemoteEvent::DestroyPersonalVehicle: g.reactions.destroy_personal_vehicle.process(plyr); return true;
 		case eRemoteEvent::KickFromInterior:
 			if (scr_globals::globalplayer_bd.as<GlobalPlayerBD*>()->Entries[self::id].SimpleInteriorData.Owner != plyr->id())
 			{
@@ -392,7 +415,7 @@ namespace big
 			break;
 		case eRemoteEvent::TriggerCEORaid:
 		{
-			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			if (auto script = gta_util::find_script_thread("freemode"_J))
 			{
 				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
 				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
@@ -406,7 +429,7 @@ namespace big
 		case eRemoteEvent::StartScriptProceed:
 		{
 			// TODO: Breaks stuff
-			if (auto script = gta_util::find_script_thread(RAGE_JOAAT("freemode")))
+			if (auto script = gta_util::find_script_thread("freemode"_J))
 			{
 				if (script->m_net_component && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host
 				    && ((CGameScriptHandlerNetComponent*)script->m_net_component)->m_host->m_net_game_player != player)
@@ -417,10 +440,25 @@ namespace big
 			}
 			break;
 		}
+		case eRemoteEvent::StartScriptBegin:
+		{
+			auto script_id = args[3];
+
+			if (!protection::should_allow_script_launch(script_id))
+			{
+				LOGF(stream::script_events, WARNING, "Blocked StartScriptBegin from {} with script ID {}", plyr->get_name(), script_id);
+				g.reactions.start_script.process(plyr);
+				return true;
+			}
+			else
+			{
+				LOGF(stream::script_events, INFO, "Allowed StartScriptBegin from {} with script ID {}", plyr->get_name(), script_id);
+			}
+		}
 		}
 
 		// detect pasted menus setting args[1] to something other than PLAYER_ID()
-		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1)
+		if (*(int*)&args[1] != player->m_player_id && player->m_player_id != -1) [[unlikely]]
 		{
 			LOG(INFO) << "Hash = " << (int)args[0];
 			LOG(INFO) << "Sender = " << args[1];
@@ -429,24 +467,31 @@ namespace big
 		}
 
 		if (g.debug.logs.script_event.logs
-		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id))
+		    && (!g.debug.logs.script_event.filter_player || g.debug.logs.script_event.player_id == player->m_player_id)) [[unlikely]]
 		{
-			std::string script_args = "{ ";
-			for (std::size_t i = 0; i < scripted_game_event->m_args_size; i++)
+			std::stringstream output;
+			output << "Script Event From: " << player->get_name() << " (" << plyr->get_rockstar_id() << ") Args: { ";
+			for (int i = 0; i < args_count; i++)
 			{
 				if (i)
-					script_args += ", ";
+					output << ", ";
 
-				script_args += std::to_string((int)args[i]);
+				output << (int)args[i];
 			}
-			script_args += " };";
+			output << " }; ";
 
-			LOG(VERBOSE) << "Script Event:\n"
-			             << "\tPlayer: " << player->get_name() << "\n"
-			             << "\tArgs: " << script_args;
+			auto now        = std::chrono::system_clock::now();
+			auto ms         = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+			auto timer      = std::chrono::system_clock::to_time_t(now);
+			auto local_time = *std::localtime(&timer);
+
+			static std::ofstream log(g_file_manager.get_project_file("./script_events.log").get_path(), std::ios::app);
+			log << "[" << std::put_time(&local_time, "%m/%d/%Y %I:%M:%S") << ":" << std::setfill('0') << std::setw(3) << ms.count() << " " << std::put_time(&local_time, "%p") << "] "
+			    << output.str() << std::endl;
+			log.flush();
 		}
 
-		if (g.debug.logs.script_event.block_all)
+		if (g.debug.logs.script_event.block_all) [[unlikely]]
 			return true;
 
 		return false;

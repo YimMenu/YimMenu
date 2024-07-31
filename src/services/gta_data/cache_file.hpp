@@ -15,6 +15,7 @@ namespace big
 	class cache_file final
 	{
 	public:
+		cache_file() = default;
 		/// <summary>
 		///
 		/// </summary>

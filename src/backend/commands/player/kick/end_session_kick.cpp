@@ -1,7 +1,5 @@
 #include "backend/player_command.hpp"
 #include "core/scr_globals.hpp"
-#include "natives.hpp"
-#include "pointers.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -17,20 +15,20 @@ namespace big
 
 		virtual void execute(player_ptr player, const command_arguments& _args, const std::shared_ptr<command_context> ctx) override
 		{
-			if (!player)
+			if (!player || !player->is_valid())
 				return;
-			if (!scripts::force_host(RAGE_JOAAT("freemode")))
+			if (!scripts::force_host("freemode"_J))
 			{
-				g_notification_service->push_error("END_KICK"_T.data(), "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
+				g_notification_service.push_error("END_KICK"_T.data(), "BACKEND_END_SESSION_KICK_FORCE_SCRIPT_HOST_FAILED"_T.data());
 				return;
 			}
 
-			g_player_service->m_player_to_use_end_session_kick = player;
+			player->trigger_end_session_kick = true;
 			*scr_globals::gsbd.as<int*>() = (int)(__rdtsc() % 50000) + 6; // making the game trigger the broadcast is a bit difficult and requires a little bit of tampering with the value and some luck
 			script::get_current()->yield(5s);
 			*scr_globals::gsbd.as<int*>() = 4;
 		}
 	};
 
-	end_session_kick g_end_session_kick("endkick", "END_KICK", "END_KICK_DESC", 0, false);
+	end_session_kick g_end_session_kick("endkick", "END_KICK", "END_KICK_DESC", 0);
 }
