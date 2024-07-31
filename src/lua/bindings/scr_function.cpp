@@ -14,12 +14,28 @@ namespace lua::scr_function
 		*reinterpret_cast<std::remove_cv_t<std::remove_reference_t<Arg>>*>(reinterpret_cast<uint64_t*>(stack) + (stack_pointer++)) = std::forward<Arg>(value);
 	}
 
-	// Usage from lua: call_script_function("freemode", "wear_sunglasses_at_night", "69 42 06 66", "bool",
-	// {
+	// Lua API: Table
+	// Name: scr_function
+	// Table for calling GTA script functions. Needs to be called in the fiber pool.
+
+	// Lua API: function
+	// Table: scr_function
+	// Name: call_script_function
+	// Param: script_name: string: Name of the script.
+	// Param: function_name: string: Name of the function.
+	// Param: pattern: string: Pattern to scan for within the script.
+	// Param: return_type_string: string: Return type of the function.
+	// Param: args_: table: Arguments to pass to the function.
+	// Calls a script function. Returns the return value as the given type.
+	// **Example Usage:**
+	// ```lua
+	// local value = scr_function.call_script_function("freemode", "wear_sunglasses_at_night", "69 42 06 66", "bool", {
 	//   { "int", 69 },
 	//   { "float", 4.20 },
 	//   { "int", 666 }
 	// })
+	// ```
+
 	static sol::object call_script_function_by_signature(const std::string& script_name, const std::string& function_name, const std::string& pattern, const std::string& return_type_string, sol::table args_, sol::this_state state_)
 	{
 		std::vector<lua::memory::type_info_t> param_types;
@@ -182,6 +198,21 @@ namespace lua::scr_function
 			return sol::lua_nil;
 		}
 	}
+
+	// Lua API: function
+	// Table: scr_function
+	// Name: call_script_function
+	// Param: script_name: string: Name of the script.
+	// Param: instruction_pointer: integer: Position of the function within the script.
+	// Param: return_type_string: string: Return type of the function.
+	// Param: args_: table: Arguments to pass to the function.
+	// Calls a script function directly using the function position. Returns the return value as the given type.
+	// **Example Usage:**
+	// ```lua
+	// local value = scr_function.call_script_function("freemode", 0xE792, "string", {
+	//   { "int", 191 }
+	// })
+	// ```
 
 	static sol::object call_script_function_by_instruction_pointer(const std::string& script_name, const int instruction_pointer, const std::string& return_type_string, sol::table args_, sol::this_state state_)
 	{
