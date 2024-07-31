@@ -19,9 +19,9 @@ namespace big::scr_functions
 		big::save_to_datafile.call<void>(storage);
 	}
 
-	inline void load_from_datafile(int iParam0, bool bParam1, bool bParam2, int iParam3)
+	inline bool load_from_datafile(int* load_stage, int ugc_language, bool is_mission)
 	{
-		big::load_from_datafile.call<void>(iParam0, bParam1, bParam2, iParam3);
+		return big::load_from_datafile.call<bool>(load_stage, ugc_language, is_mission);
 	}
 
 	inline void reset_session_data(bool bParam0, bool bParam1)

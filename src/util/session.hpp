@@ -26,11 +26,6 @@ namespace big::session
 {
 	inline bool join_type(eSessionType session)
 	{
-		SCRIPT::REQUEST_SCRIPT_WITH_NAME_HASH("pausemenu_multiplayer"_J);
-
-		while (!SCRIPT::HAS_SCRIPT_WITH_NAME_HASH_LOADED("pausemenu_multiplayer"_J))
-			script::get_current()->yield();
-
 		*scr_globals::sctv_spectator.as<int*>() = (session == eSessionType::SC_TV ? 1 : 0); // If SCTV then enable spectator mode
 
 		if (session == eSessionType::LEAVE_ONLINE)
@@ -64,7 +59,6 @@ namespace big::session
 			*scr_globals::session.as<int*>() = 0;
 		}
 
-		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("pausemenu_multiplayer"_J);
 		return true;
 	}
 

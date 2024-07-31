@@ -77,7 +77,7 @@ namespace lua::scr_function
 		tls_ctx->m_script_thread           = thread;
 		tls_ctx->m_is_script_thread_active = true;
 		rage::scrThreadContext ctx         = thread->m_context;
-		auto top_stack = ctx.m_stack_pointer; // This will be the top item in the stack after the args and return address are cleaned off
+		auto top_stack                     = ctx.m_stack_pointer; // This will be the top item in the stack after the args and return address are cleaned off
 
 		for (size_t i = 0; i < param_types.size(); i++)
 		{
@@ -163,7 +163,7 @@ namespace lua::scr_function
 		}
 		else
 		{
-			LOG(FATAL) << "Unimplemented return type" << return_type_string;
+			LOG(FATAL) << "Unimplemented return type " << return_type_string;
 			return sol::lua_nil;
 		}
 	}
@@ -199,7 +199,7 @@ namespace lua::scr_function
 		tls_ctx->m_script_thread           = thread;
 		tls_ctx->m_is_script_thread_active = true;
 		rage::scrThreadContext ctx         = thread->m_context;
-		auto top_stack = ctx.m_stack_pointer; // This will be the top item in the stack after the args and return address are cleaned off
+		auto top_stack                     = ctx.m_stack_pointer; // This will be the top item in the stack after the args and return address are cleaned off
 
 		for (size_t i = 0; i < param_types.size(); i++)
 		{
@@ -285,7 +285,7 @@ namespace lua::scr_function
 		}
 		else
 		{
-			LOG(FATAL) << "Unimplemented return type" << return_type_string;
+			LOG(FATAL) << "Unimplemented return type " << return_type_string;
 			return sol::lua_nil;
 		}
 	}
