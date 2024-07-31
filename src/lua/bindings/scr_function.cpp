@@ -128,6 +128,17 @@ namespace lua::scr_function
 				}
 				break;
 			}
+			case lua::memory::type_info_t::vector3_:
+			{
+				const auto val = actual_args[i].as<std::optional<Vector3>>();
+				if (val)
+				{
+					push_arg(stack, ctx.m_stack_pointer, val.value().x);
+					push_arg(stack, ctx.m_stack_pointer, val.value().y);
+					push_arg(stack, ctx.m_stack_pointer, val.value().z);
+				}
+				break;
+			}
 			default: break;
 			}
 		}
@@ -141,25 +152,29 @@ namespace lua::scr_function
 		tls_ctx->m_script_thread           = og_thread;
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 
-		if (return_type == lua::memory::boolean_)
+		if (return_type == lua::memory::type_info_t::boolean_)
 		{
-			return sol::make_object(state_, *reinterpret_cast<BOOL*>(stack + top_stack));
+			return sol::make_object(state_, (bool)(stack + top_stack));
 		}
-		else if (return_type == lua::memory::string_)
+		else if (return_type == lua::memory::type_info_t::string_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<const char**>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::integer_)
+		else if (return_type == lua::memory::type_info_t::integer_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<int*>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::ptr_)
+		else if (return_type == lua::memory::type_info_t::ptr_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<uint64_t*>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::float_)
+		else if (return_type == lua::memory::type_info_t::float_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<float*>(stack + top_stack));
+		}
+		else if (return_type == lua::memory::type_info_t::vector3_)
+		{
+			return sol::make_object(state_, *reinterpret_cast<Vector3*>(stack + top_stack));
 		}
 		else
 		{
@@ -250,6 +265,17 @@ namespace lua::scr_function
 				}
 				break;
 			}
+			case lua::memory::type_info_t::vector3_:
+			{
+				const auto val = actual_args[i].as<std::optional<Vector3>>();
+				if (val)
+				{
+					push_arg(stack, ctx.m_stack_pointer, val.value().x);
+					push_arg(stack, ctx.m_stack_pointer, val.value().y);
+					push_arg(stack, ctx.m_stack_pointer, val.value().z);
+				}
+				break;
+			}
 			default: break;
 			}
 		}
@@ -263,25 +289,29 @@ namespace lua::scr_function
 		tls_ctx->m_script_thread           = og_thread;
 		tls_ctx->m_is_script_thread_active = og_thread != nullptr;
 
-		if (return_type == lua::memory::boolean_)
+		if (return_type == lua::memory::type_info_t::boolean_)
 		{
-			return sol::make_object(state_, *reinterpret_cast<BOOL*>(stack + top_stack));
+			return sol::make_object(state_, (bool)(stack + top_stack));
 		}
-		else if (return_type == lua::memory::string_)
+		else if (return_type == lua::memory::type_info_t::string_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<const char**>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::integer_)
+		else if (return_type == lua::memory::type_info_t::integer_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<int*>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::ptr_)
+		else if (return_type == lua::memory::type_info_t::ptr_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<uint64_t*>(stack + top_stack));
 		}
-		else if (return_type == lua::memory::float_)
+		else if (return_type == lua::memory::type_info_t::float_)
 		{
 			return sol::make_object(state_, *reinterpret_cast<float*>(stack + top_stack));
+		}
+		else if (return_type == lua::memory::type_info_t::vector3_)
+		{
+			return sol::make_object(state_, *reinterpret_cast<Vector3*>(stack + top_stack));
 		}
 		else
 		{
