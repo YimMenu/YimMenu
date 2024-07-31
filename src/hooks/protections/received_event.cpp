@@ -389,16 +389,14 @@ namespace big
 
 		// logs all type of explosion including owned one, fire, water hydrant etc, one without damage but camerashake, npcs shooting explosive ammo from planes from source client etc
 		if (g.debug.logs.explosion_event && plyr)
-			{
-				auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
-				LOGF(
-					WARNING,
-			    	"Explosion Event: {} (Dist- {} {})",
-			    	player->get_name(),
-			    	math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
-					exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?"
-				);
-			}
+		{
+			auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
+			LOGF(WARNING,
+			    "Explosion Event: {} (Dist- {} {})",
+			    player->get_name(),
+			    math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
+			    exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?");
+		}
 
 		if (g.session.explosion_karma && g_local_player
 			&& math::distance_between_vectors({posX, posY, posZ}, *g_local_player->m_navigation->get_position()) < 3.0f)
