@@ -48,7 +48,7 @@ static const std::map<int, std::string> lsc_classic_colors = {
 	{COLOR_CLASSIC_BLACK, "Black"},
 	{COLOR_CLASSIC_CARBON_BLACK, "Carbon Black"},
 	{COLOR_CLASSIC_GRAPHITE, "Graphite"},
-	{COLOR_CLASSIC_ANTHRACITE_BLACK, "Anhracite Black"},
+	{COLOR_CLASSIC_ANTHRACITE_BLACK, "Anthracite Black"},
 	{COLOR_CLASSIC_BLACK_STEEL, "Black Steel"},
 	{COLOR_CLASSIC_DARK_STEEL, "Dark Steel"},
 	{COLOR_CLASSIC_SILVER, "Silver"},
