@@ -168,7 +168,7 @@ namespace lua::scr_function
 		}
 	}
 
-	static sol::object call_script_function_by_instruction_pointer(const std::string& script_name, const int& instruction_pointer, const std::string& return_type_string, sol::table args_, sol::this_state state_)
+	static sol::object call_script_function_by_instruction_pointer(const std::string& script_name, const int instruction_pointer, const std::string& return_type_string, sol::table args_, sol::this_state state_)
 	{
 		std::vector<lua::memory::type_info_t> param_types;
 		std::vector<sol::object> actual_args;
