@@ -392,7 +392,7 @@ namespace big
 		{
 			auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
 			LOGF(WARNING,
-			    "Explosion Event: {} (Dist- {} {})",
+			    "EXPLOSION_EVENT from {} (Distance- {} Type- {})",
 			    player->get_name(),
 			    math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
 			    exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?");
