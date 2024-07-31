@@ -7,6 +7,7 @@
 #include "util/mobile.hpp"
 #include "util/notify.hpp"
 #include "util/toxic.hpp"
+#include "core/data/bullet_impact_types.hpp"
 
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
@@ -259,7 +260,7 @@ namespace big
 		return false;
 	}
 
-	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	void scan_explosion_event(player_ptr plyr, CNetGamePlayer* player, rage::datBitBuffer* buffer)
 	{
 		uint16_t f186;
 		uint16_t targetEntity;
@@ -385,6 +386,19 @@ namespace big
 			LOGF(stream::net_events, WARNING, "{} sent an EXPLOSION_EVENT with addOwnedExplosion enabled and with the wrong owner", player->get_name());
 			return;
 		}
+
+		// logs all type of explosion including owned one, fire, water hydrant etc, one without damage but camerashake, npcs shooting explosive ammo from planes from source client etc
+		if (g.debug.logs.explosion_event && plyr)
+			{
+				auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
+				LOGF(
+					WARNING,
+			    	"Explosion Event: {} (Dist- {} {})",
+			    	player->get_name(),
+			    	math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
+					exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?"
+				);
+			}
 
 		if (g.session.explosion_karma && g_local_player
 			&& math::distance_between_vectors({posX, posY, posZ}, *g_local_player->m_navigation->get_position()) < 3.0f)
@@ -867,7 +881,15 @@ namespace big
 				return;
 			}
 
-			scan_explosion_event(source_player, buffer);
+			scan_explosion_event(plyr, source_player, buffer);
+
+			// dont accept event in died state
+			if (g_local_player->m_player_info->m_game_state == eGameState::Died)
+			{
+				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+				return;
+			}
+		
 			break;
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:

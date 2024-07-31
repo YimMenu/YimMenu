@@ -123,6 +123,7 @@ namespace big
 			{
 				int metric_logs{};
 				int packet_logs{};
+				bool explosion_event = false;
 
 				bool script_hook_logs{};
 
