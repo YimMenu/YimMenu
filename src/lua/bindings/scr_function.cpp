@@ -22,7 +22,7 @@ namespace lua::scr_function
 	// Table: scr_function
 	// Name: call_script_function
 	// Param: script_name: string: Name of the script.
-	// Param: function_name: string: Name of the function.
+	// Param: function_name: string: Name of the function. This parameter needs to be unique.
 	// Param: pattern: string: Pattern to scan for within the script.
 	// Param: return_type_string: string: Return type of the function.
 	// Param: args_: table: Arguments to pass to the function.
