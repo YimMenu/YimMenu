@@ -170,7 +170,7 @@ namespace lua::scr_function
 
 		if (return_type == lua::memory::type_info_t::boolean_)
 		{
-			return sol::make_object(state_, (bool)(stack + top_stack));
+			return sol::make_object(state_, (bool)*reinterpret_cast<BOOL*>(stack + top_stack));
 		}
 		else if (return_type == lua::memory::type_info_t::string_)
 		{
@@ -322,7 +322,7 @@ namespace lua::scr_function
 
 		if (return_type == lua::memory::type_info_t::boolean_)
 		{
-			return sol::make_object(state_, (bool)(stack + top_stack));
+			return sol::make_object(state_, (bool)*reinterpret_cast<BOOL*>(stack + top_stack));
 		}
 		else if (return_type == lua::memory::type_info_t::string_)
 		{
