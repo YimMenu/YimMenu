@@ -16,7 +16,7 @@ namespace big
 		std::string m_name;
 
 	public:
-		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern);	
+		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern);
 		void populate_ip();
 
 		template<typename Arg>
@@ -47,40 +47,6 @@ namespace big
 
 			stack[ctx.m_stack_pointer++] = 0;
 			ctx.m_instruction_pointer    = m_ip;
-			ctx.m_state                  = rage::eThreadState::idle;
-
-			g_pointers->m_gta.m_script_vm(stack, g_pointers->m_gta.m_script_globals, program, &ctx);
-
-			tls_ctx->m_script_thread           = og_thread;
-			tls_ctx->m_is_script_thread_active = og_thread != nullptr;
-
-			if constexpr (!std::is_same_v<Ret, void>)
-			{
-				return *reinterpret_cast<Ret*>(stack + top_stack);
-			}
-		}
-
-		template<typename Ret, typename... Args>
-		Ret call(rage::joaat_t script, uint32_t ip, Args... args)
-		{
-			auto thread  = gta_util::find_script_thread(script);
-			auto program = gta_util::find_script_program(script);
-
-			if (!thread || !program)
-				return Ret();
-
-			auto tls_ctx                       = rage::tlsContext::get();
-			auto stack                         = (uint64_t*)thread->m_stack;
-			auto og_thread                     = tls_ctx->m_script_thread;
-			tls_ctx->m_script_thread           = thread;
-			tls_ctx->m_is_script_thread_active = true;
-			rage::scrThreadContext ctx         = thread->m_context;
-			auto top_stack                     = ctx.m_stack_pointer;
-
-			(push_arg(stack, ctx.m_stack_pointer, std::forward<Args>(args)), ...);
-
-			stack[ctx.m_stack_pointer++] = 0;
-			ctx.m_instruction_pointer    = ip;
 			ctx.m_state                  = rage::eThreadState::idle;
 
 			g_pointers->m_gta.m_script_vm(stack, g_pointers->m_gta.m_script_globals, program, &ctx);
