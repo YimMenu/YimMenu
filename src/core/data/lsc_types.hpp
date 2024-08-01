@@ -102,7 +102,7 @@ static const std::map<int, std::string> lsc_classic_colors = {
     {COLOR_CLASSIC_LIGHT_BLUE, "Light Blue"},
     {COLOR_CLASSIC_CHOCOLATE_BROWN, "Chocolate Brown"},
     {COLOR_CLASSIC_BISON_BROWN, "Bison Brown"},
-    {COLOR_CLASSIC_CREEEN_BROWN, "Creek Brown"},
+    {COLOR_CLASSIC_CREEK_BROWN, "Creek Brown"},
     {COLOR_CLASSIC_FELTZER_BROWN, "Feltzer Brown"},
     {COLOR_CLASSIC_MAPLE_BROWN, "Maple Brown"},
     {COLOR_CLASSIC_BEECHWOOD_BROWN, "Beechwood Brown"},
