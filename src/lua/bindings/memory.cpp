@@ -625,12 +625,14 @@ namespace lua::memory
 		pointer_ut["add"]         = &pointer::add;
 		pointer_ut["sub"]         = &pointer::sub;
 		pointer_ut["rip"]         = &pointer::rip;
+		pointer_ut["get_int"]     = &pointer::get<int32_t>;
 		pointer_ut["get_byte"]    = &pointer::get<uint8_t>;
 		pointer_ut["get_word"]    = &pointer::get<uint16_t>;
 		pointer_ut["get_dword"]   = &pointer::get<uint32_t>;
 		pointer_ut["get_qword"]   = &pointer::get<uint64_t>;
 		pointer_ut["get_float"]   = &pointer::get<float>;
 		pointer_ut["get_string"]  = &pointer::get_string;
+		pointer_ut["set_int"]     = &pointer::set<int32_t>;
 		pointer_ut["set_byte"]    = &pointer::set<uint8_t>;
 		pointer_ut["set_word"]    = &pointer::set<uint16_t>;
 		pointer_ut["set_dword"]   = &pointer::set<uint32_t>;

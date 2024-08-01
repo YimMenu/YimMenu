@@ -1,6 +1,6 @@
 # Table: scr_function
 
-Table for calling GTA script functions. Needs to be called in the fiber pool.
+Table for calling GTA script functions. Needs to be called in the fiber pool or a GTA script. Only call the function when necessary.
 
 ## Functions (2)
 
@@ -10,9 +10,9 @@ Calls a script function. Returns the return value as the given type.
 
 - **Parameters:**
   - `script_name` (string): Name of the script.
-  - `function_name` (string): Name of the function.
+  - `function_name` (string): Name of the function. This parameter needs to be unique.
   - `pattern` (string): Pattern to scan for within the script.
-  - `return_type_string` (string): Return type of the function.
+  - `return_type_string` (string): Return type of the function. Supported types are **"int"**, **"bool"**, **"const char\*/string"**, **"ptr/pointer/*"**, **"float"**, and **"vector3"**. Anything different will be rejected.
   - `_args` (table): Arguments to pass to the function.
 
 **Example Usage:**
@@ -32,7 +32,7 @@ Calls a script function directly using the function position. Returns the return
   - `script_name` (string): Name of the script.
   - `function_name` (string): Name of the function.
   - `instruction_pointer` (integer): Position of the function within the script.
-  - `return_type_string` (string): Return type of the function.
+  - `return_type_string` (string): Return type of the function. Supported types are **"int"**, **"bool"**, **"const char\*/string"**, **"ptr/pointer/*"**, **"float"**, and **"vector3"**. Anything different will be rejected.
   - `_args` (table): Arguments to pass to the function.
 
 **Example Usage:**

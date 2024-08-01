@@ -10,23 +10,21 @@ namespace big
 	{
 	}
 
-	void script_function::populate_ip()
+	uint32_t script_function::get_ip(rage::scrProgram* program)
 	{
-		if (m_ip == 0)
+		if (m_ip != 0)
+			return m_ip;
+
+		if (auto location = scripts::get_code_location_by_pattern(program, m_pattern))
 		{
-			auto program = gta_util::find_script_program(m_script);
-
-			if (!program)
-				return;
-
-			auto location = scripts::get_code_location_by_pattern(program, m_pattern);
-
-			if (!location)
-				LOG(FATAL) << "Failed to find pattern " << m_name << " in script " << program->m_name;
-			else
-				LOG(VERBOSE) << "Found pattern " << m_name << " at " << HEX_TO_UPPER(location.value()) << " in script " << program->m_name;
-
-			m_ip = location.value();
+			m_ip = *location;
+			LOG(VERBOSE) << "Found pattern " << m_name << " at " << HEX_TO_UPPER(m_ip) << " in script " << program->m_name;
 		}
+		else
+		{
+			LOG(FATAL) << "Failed to find pattern " << m_name << " in script " << program->m_name;
+		}
+
+		return m_ip;
 	}
 }

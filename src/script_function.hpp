@@ -12,12 +12,12 @@ namespace big
 	{
 		rage::joaat_t m_script;
 		const memory::pattern m_pattern;
-		int32_t m_ip;
+		uint32_t m_ip;
 		std::string m_name;
 
 	public:
 		script_function(const std::string& name, const rage::joaat_t script, const std::string& pattern);
-		void populate_ip();
+		uint32_t get_ip(rage::scrProgram* program);
 
 		template<typename Arg>
 		void push_arg(uint64_t* stack, uint32_t& stack_pointer, Arg&& value)
@@ -30,9 +30,9 @@ namespace big
 		{
 			auto thread  = gta_util::find_script_thread(m_script);
 			auto program = gta_util::find_script_program(m_script);
-			populate_ip();
+			auto ip      = get_ip(program);
 
-			if (!thread || !program || !m_ip)
+			if (!thread || !program || !ip)
 				return Ret();
 
 			auto tls_ctx                       = rage::tlsContext::get();
@@ -46,7 +46,7 @@ namespace big
 			(push_arg(stack, ctx.m_stack_pointer, std::forward<Args>(args)), ...);
 
 			stack[ctx.m_stack_pointer++] = 0;
-			ctx.m_instruction_pointer    = m_ip;
+			ctx.m_instruction_pointer    = ip;
 			ctx.m_state                  = rage::eThreadState::idle;
 
 			g_pointers->m_gta.m_script_vm(stack, g_pointers->m_gta.m_script_globals, program, &ctx);
