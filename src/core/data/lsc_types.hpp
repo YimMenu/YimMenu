@@ -131,6 +131,7 @@ static const std::map<int, std::string> lsc_classic_colors = {
     {COLOR_CLASSIC_CHAMPAGNE, "Champagne"},
     {COLOR_CLASSIC_PURE_WHITE, "Pure White"},
     {COLOR_CLASSIC_DEFAULT_ALLOY, "Default Alloy"},
+    {COLOR_CLASSIC_SECRET_GOLD, "Secret Gold"},
 };
 
 static const std::map<int, std::string> lsc_matte_colors = {
@@ -163,7 +164,6 @@ static const std::map<int, std::string> lsc_metal_colors = {
     {COLOR_METALS_BRUSHED_ALUMINUM, "Brushed Aluminium"},
     {COLOR_METALS_PURE_GOLD, "Pure Gold"},
     {COLOR_METALS_BRUSHED_GOLD, "Brushed Gold"},
-    {COLOR_METALS_PEARLESCENT_GOLD, "Pearlescent Gold"},
 };
 
 static const std::map<int, std::string> lsc_util_colors = {
