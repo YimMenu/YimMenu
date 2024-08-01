@@ -1,3 +1,4 @@
+#include "core/data/bullet_impact_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
@@ -7,7 +8,6 @@
 #include "util/mobile.hpp"
 #include "util/notify.hpp"
 #include "util/toxic.hpp"
-#include "core/data/bullet_impact_types.hpp"
 
 #include <base/CObject.hpp>
 #include <network/CNetGamePlayer.hpp>
@@ -390,12 +390,24 @@ namespace big
 		// logs all type of explosion including owned one, fire, water hydrant etc, one without damage but camerashake, npcs shooting explosive ammo from planes from source client etc
 		if (g.debug.logs.explosion_event && plyr)
 		{
-			auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
-			LOGF(WARNING,
-			    "EXPLOSION_EVENT from {} (Distance- {} Type- {})",
-			    player->get_name(),
-			    math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
-			    exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?");
+			static player_ptr last_exp_player  = nullptr;
+			static eExplosionTag last_exp_type = eExplosionTag::DONTCARE;
+			std::chrono::system_clock::time_point last_exp_time{};
+
+			auto time_now = std::chrono::system_clock::now();
+			if (last_exp_player != plyr || last_exp_type != explosionType || (time_now - last_exp_time < 1s))
+			{
+				auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
+				LOGF(WARNING,
+				    "EXPLOSION_EVENT from {} (Distance- {} Type- {})",
+				    player->get_name(),
+				    math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
+				    exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?");
+			}
+
+			last_exp_player = plyr;
+			last_exp_type   = explosionType;
+			last_exp_time   = time_now;
 		}
 
 		if (g.session.explosion_karma && g_local_player
@@ -880,7 +892,7 @@ namespace big
 			}
 
 			scan_explosion_event(plyr, source_player, buffer);
-		
+
 			break;
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
