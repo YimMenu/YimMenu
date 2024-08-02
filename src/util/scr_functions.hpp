@@ -33,4 +33,9 @@ namespace big::scr_functions
 	{
 		return big::add_clan_logo_to_vehicle.call<bool>(vehicle, pid);
 	}
+
+	inline bool vehicle_cannot_accept_clan_logo(Vehicle vehicle)
+	{
+		return big::vehicle_cannot_accept_clan_logo.call<bool>(vehicle);
+	}
 }

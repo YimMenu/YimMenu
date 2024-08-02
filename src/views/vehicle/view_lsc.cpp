@@ -25,6 +25,7 @@ namespace big
 		static int selected_slot         = -1;
 		static bool is_bennys            = false;
 		static bool has_clan_logo        = false; 
+		static bool vehicle_cannot_accept_clan_logo = false; 
 		static int front_wheel_stock_mod = -1;
 		static int rear_wheel_stock_mod  = -1;
 
@@ -80,6 +81,7 @@ namespace big
 
 				is_bennys     = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
 				has_clan_logo = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(player_vehicle, self::id);
+				vehicle_cannot_accept_clan_logo = scr_functions::vehicle_cannot_accept_clan_logo(player_vehicle);
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 				{
@@ -262,19 +264,22 @@ namespace big
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
 		}
-		if (ImGui::Checkbox("CLAN_LOGO"_T.data(), &has_clan_logo))
+		if (!vehicle_cannot_accept_clan_logo) //This will always fail in SP.
 		{
-			g_fiber_pool->queue_job([] {
-				if (has_clan_logo)
-				{
-					scr_functions::add_clan_logo_to_vehicle(&player_vehicle, self::id);
-				}
-				else
-				{
-					GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
-					GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
-				}
-			});
+			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), &has_clan_logo))
+			{
+				g_fiber_pool->queue_job([] {
+					if (has_clan_logo)
+					{
+						scr_functions::add_clan_logo_to_vehicle(&player_vehicle, self::id);
+					}
+					else
+					{
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
+						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
+					}
+				});
+			}
 		}
 
 		ImGui::SeparatorText("VIEW_LSC_MOD_SLOTS"_T.data());
