@@ -330,7 +330,7 @@ namespace big
 
 			const BOOL have_clan_logo = vehicle_json[clan_logo_key];
 			if (have_clan_logo)
-				scr_functions::add_clan_logo_to_vehicle(&vehicle, self::id);
+				scr_functions::add_clan_logo_to_vehicle(&vehicle, NETWORK::NETWORK_GET_PLAYER_INDEX_FROM_PED(ped));
 
 			VEHICLE::SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicle, vehicle_json[headlight_color_key]);
 		}
