@@ -26,7 +26,7 @@ namespace big
 		g_script_patcher_service->add_patch({"shop_controller"_J, "godmode/invisibility detection bypass", "2D 01 03 00 00 5D ? ? ? 06 56 ? ? 2E ? ? 2C", 5, {0x2E, 0x01, 0x00}, nullptr}); // godmode/invisibility detection bypass
 		g_script_patcher_service->add_patch({"carmod_shop"_J, "allow all vehicles", "2D 03 16 00 00 38 00", 5, {0x72, 0x2E, 0x03, 0x01}, nullptr}); // allow all vehicles
 		g_script_patcher_service->add_patch({"carmod_shop"_J, "allow all vehicles 2", "2D 03 07 00 00 71 38 02", 5, {0x72, 0x2E, 0x03, 0x01}, nullptr}); // allow all vehicles 2
-		g_script_patcher_service->add_patch({"main_persistent"_J, "vehicle clan logo SP bypass", "2E ? ? 2C ? ? ? 5D ? ? ? 74 57 ? ? 38 00 5D", 0, {0x00, 0x00, 0x00}, nullptr}); // vehicle clan logo SP bypass
+		g_script_patcher_service->add_patch({"main_persistent"_J, "vehicle clan logo SP bypass", "56 04 00 72 2E 01 01 2C 01 04 1F 5D ? ? ? 74", 0, {0x55}, nullptr}); // vehicle clan logo SP bypass
 
 		for (auto& entry : *g_pointers->m_gta.m_script_program_table)
 		{

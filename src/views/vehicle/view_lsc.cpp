@@ -264,7 +264,7 @@ namespace big
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
 		}
-		if (!vehicle_cannot_accept_clan_logo) //This will always fail in SP.
+		if (!vehicle_cannot_accept_clan_logo)
 		{
 			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), &has_clan_logo))
 			{
