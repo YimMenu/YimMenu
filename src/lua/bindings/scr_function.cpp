@@ -16,7 +16,7 @@ namespace lua::scr_function
 
 	// Lua API: Table
 	// Name: scr_function
-	// Table for calling GTA script functions. Needs to be called in the fiber pool.
+	// Table for calling GTA script functions. Needs to be called in the fiber pool. Only call the function when necessary.
 
 	// Lua API: function
 	// Table: scr_function
@@ -24,9 +24,9 @@ namespace lua::scr_function
 	// Param: script_name: string: Name of the script.
 	// Param: function_name: string: Name of the function. This parameter needs to be unique.
 	// Param: pattern: string: Pattern to scan for within the script.
-	// Param: return_type_string: string: Return type of the function.
-	// Param: args_: table: Arguments to pass to the function.
-	// Calls a script function. Returns the return value as the given type.
+	// Param: return_type_string: string: Return type of the function. Supported types are **"int"**, **"bool"**, **"const char\*/string"**, **"ptr/pointer/*"**, **"float"**, and **"vector3"**. Anything different will be rejected.
+	// Param: args_: table: Arguments to pass to the function. Supported types are the same as return types.
+	// Calls a script function with the given arguments. Returns the return value as the given type.
 	// **Example Usage:**
 	// ```lua
 	// local value = scr_function.call_script_function("freemode", "wear_sunglasses_at_night", "69 42 06 66", "bool", {
@@ -204,9 +204,9 @@ namespace lua::scr_function
 	// Name: call_script_function
 	// Param: script_name: string: Name of the script.
 	// Param: instruction_pointer: integer: Position of the function within the script.
-	// Param: return_type_string: string: Return type of the function.
-	// Param: args_: table: Arguments to pass to the function.
-	// Calls a script function directly using the function position. Returns the return value as the given type.
+	// Param: return_type_string: string: Return type of the function. Supported types are **"int"**, **"bool"**, **"const char\*/string"**, **"ptr/pointer/*"**, **"float"**, and **"vector3"**. Anything different will be rejected.
+	// Param: args_: table: Arguments to pass to the function. Supported types are the same as return types.
+	// Calls a script function directly using the function position with the given arguments. Returns the return value as the given type.
 	// **Example Usage:**
 	// ```lua
 	// local value = scr_function.call_script_function("freemode", 0xE792, "string", {
