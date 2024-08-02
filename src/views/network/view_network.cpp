@@ -31,7 +31,9 @@ namespace big
 		ImGui::SameLine();
 		if (components::button("JOIN_BY_RID"_T) || rid_submitted)
 		{
-			session::join_by_rockstar_id(rid);
+			g_fiber_pool->queue_job([rid]() {
+				session::join_by_rockstar_id(rid);
+			});
 		}
 
 		ImGui::SetNextItemWidth(200);
