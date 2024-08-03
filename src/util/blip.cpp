@@ -79,4 +79,40 @@ namespace big::blip
 		}
 		return nullptr;
 	}
+
+	rage::CBlip* get_blip_from_blip_id(Blip blip_id)
+	{
+		for (int i = 0; i < 1500; i++)
+		{
+			auto blip = g_pointers->m_gta.m_blip_list->m_Blips[i].m_pBlip;
+			if (blip && (blip->m_blip_array_index == blip_id))
+			{
+				return blip;
+			}
+		}
+		return nullptr;
+	}
+
+	bool is_ped_a_friend(Ped ped)
+	{
+		bool is_hated_relationship = false;
+		bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
+		auto blip_id               = HUD::GET_BLIP_FROM_ENTITY(ped);
+		auto blip_color            = HUD::GET_BLIP_HUD_COLOUR(blip_id);
+		auto blip                  = get_blip_from_blip_id(blip_id);
+		auto blip_is_enemy = (blip && (blip->m_icon == (int)BlipIcons::RADAR_LEVEL) && (blip->m_color == (uint32_t)BlipColors::BlipColorEnemy) && !(blip->m_display_bits & BlipIsFriendly));
+		bool is_enemy = ((PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE) || blip_is_enemy);
+
+		switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
+		{
+			case Dislike:
+			case Wanted:
+			case Hate: is_hated_relationship = blip_color != HUD_COLOUR_BLUE;
+		}
+
+		/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
+			LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
+
+		return (!is_hated_relationship && !is_in_combat && !is_enemy);
+	}
 }

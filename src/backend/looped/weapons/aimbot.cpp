@@ -6,6 +6,7 @@
 #include "util/pools.hpp"
 #include "services/friends/friends_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "util/blip.hpp"
 
 namespace big
 {
@@ -164,27 +165,9 @@ namespace big
 
 				const auto ped_handle = g_pointers->m_gta.m_ptr_to_handle(ped);
 
-				if (g_aimbot_only_on_enemy.is_enabled())
+				if (g_aimbot_only_on_enemy.is_enabled() && blip::is_ped_a_friend(ped_handle))
 				{
-					bool is_hated_relationship = false;
-					bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped_handle, self::ped);
-					auto blip_color            = HUD::GET_BLIP_HUD_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped_handle));
-					bool is_enemy = ((PED::GET_PED_CONFIG_FLAG(ped_handle, 38, TRUE) == TRUE) || (blip_color == HUD_COLOUR_RED));
-
-					switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped_handle, self::ped))
-					{
-						case Dislike:
-						case Wanted:
-						case Hate: is_hated_relationship = blip_color != HUD_COLOUR_BLUE;
-					}
-
-					if (!is_hated_relationship && !is_in_combat && !is_enemy)
-					{
-						continue;
-					}
-
-					/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
-						LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
+					continue;
 				}
 
 				if (is_a_ped_type_we_dont_care_about(ped_handle))

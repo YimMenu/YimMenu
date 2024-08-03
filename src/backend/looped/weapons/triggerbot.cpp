@@ -4,6 +4,7 @@
 #include "util/entity.hpp"
 #include "services/friends/friends_service.hpp"
 #include "services/player_database/player_database_service.hpp"
+#include "util/blip.hpp"
 
 namespace big
 {
@@ -48,24 +49,9 @@ namespace big
 								return;
 						}
 
-						if (g.weapons.aimbot.only_on_enemy)
+						if (g.weapons.aimbot.only_on_enemy && blip::is_ped_a_friend(ped))
 						{
-							bool is_hated_relationship = false;
-							bool is_in_combat          = PED::IS_PED_IN_COMBAT(ped, self::ped);
-							auto blip_color            = HUD::GET_BLIP_HUD_COLOUR(HUD::GET_BLIP_FROM_ENTITY(ped));
-							bool is_enemy = ((PED::GET_PED_CONFIG_FLAG(ped, 38, TRUE) == TRUE) || (blip_color == HUD_COLOUR_RED));
-
-							switch (PED::GET_RELATIONSHIP_BETWEEN_PEDS(ped, self::ped))
-							{
-								case Dislike:
-								case Wanted:
-								case Hate: is_hated_relationship = blip_color != HUD_COLOUR_BLUE;
-							}
-
-							if (!is_hated_relationship && !is_in_combat && !is_enemy)
-							{
-								return;
-							}
+							return;
 						}
 
 						bool is_a_ped_type_we_dont_care_about;
