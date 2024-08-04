@@ -99,13 +99,17 @@ namespace big::teleport
 			{
 				script::get_current()->yield(25ms);
 
-				if (auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd))
-				{
-					if (auto netobj = ptr->m_net_object)
-					{
-						g_pointers->m_gta.m_migrate_object(player->get_net_game_player(), netobj, 3);
-					}
-				}
+				auto ptr = (rage::CDynamicEntity*)g_pointers->m_gta.m_handle_to_ptr(hnd);
+
+				if (!ptr || !ptr->m_net_object)
+					break;
+
+				auto plyr = player->get_net_game_player();
+
+				if (!plyr)
+					break;
+
+				g_pointers->m_gta.m_migrate_object(plyr, ptr->m_net_object, 3);
 
 				auto new_coords = ENTITY::GET_ENTITY_COORDS(hnd, true);
 				if (SYSTEM::VDIST2(coords.x, coords.y, coords.z, new_coords.x, new_coords.y, new_coords.z) < 20 * 20 && VEHICLE::GET_PED_IN_VEHICLE_SEAT(hnd, 0, true) == ent)
