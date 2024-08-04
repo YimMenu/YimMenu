@@ -228,14 +228,9 @@ namespace big
 					ImGui::SliderInt("VIEW_NET_PLAYER_DB_PREFERENCE"_T.data(), &current_player->join_redirect_preference, 1, 10);
 				}
 
-				bool joinable =
-				    player_database_service::is_joinable_session(current_player->session_type, current_player->game_mode);
-
-				ImGui::BeginDisabled(!joinable);
 				components::button("JOIN_SESSION"_T, [] {
 					session::join_by_rockstar_id(current_player->rockstar_id);
 				});
-				ImGui::EndDisabled();
 
 				ImGui::SameLine();
 
