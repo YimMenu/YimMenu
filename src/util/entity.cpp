@@ -169,8 +169,21 @@ namespace big::entity
 
 		auto hnd = g_pointers->m_gta.m_handle_to_ptr(ent);
 
-		if (!hnd || !hnd->m_net_object || !*g_pointers->m_gta.m_is_session_started)
+		if (!hnd || !hnd->m_net_object)
 			return false;
+
+		using GetClassId  = uint32_t (*)();
+		uint32_t class_id = (*(GetClassId*)(*(__int64*)hnd + 0x10))();
+
+		LOG(VERBOSE) << HEX_TO_UPPER(class_id);
+
+		if (class_id == "CEntity"_J)
+		{
+			return false;
+		}
+
+		if (hnd->m_entity_type != 3 && hnd->m_entity_type != 4 && hnd->m_entity_type != 5)
+			LOG(VERBOSE) << "Entity Type: " << (int)hnd->m_entity_type;
 
 		if (network_has_control_of_entity(hnd->m_net_object))
 			return true;
