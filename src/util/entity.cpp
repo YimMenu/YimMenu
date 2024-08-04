@@ -172,18 +172,8 @@ namespace big::entity
 		if (!hnd || !hnd->m_net_object)
 			return false;
 
-		using GetClassId  = uint32_t (*)();
-		uint32_t class_id = (*(GetClassId*)(*(__int64*)hnd + 0x10))();
-
-		LOG(VERBOSE) << HEX_TO_UPPER(class_id);
-
-		if (class_id == "CEntity"_J)
-		{
-			return false;
-		}
-
 		if (hnd->m_entity_type != 3 && hnd->m_entity_type != 4 && hnd->m_entity_type != 5)
-			LOG(VERBOSE) << "Entity Type: " << (int)hnd->m_entity_type;
+			return false;
 
 		for (int i = 0; i <= timeout; ++i)
 		{
