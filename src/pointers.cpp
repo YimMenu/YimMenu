@@ -451,6 +451,15 @@ namespace big
                 g_pointers->m_gta.m_read_bitbuffer_into_sync_tree = ptr.add(1).rip().as<functions::read_bitbuffer_into_sync_tree>();
             }
         },
+        // Update Sync Tree
+        {
+            "UST",
+            "E8 ? ? ? ? 45 84 ED 75 1B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_sync_tree = ptr.add(1).rip().as<PVOID>();
+            }
+        },
         // Model Hash Table
         {
             "MHT",
