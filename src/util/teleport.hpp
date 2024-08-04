@@ -169,7 +169,7 @@ namespace big::teleport
 		if (!blip::get_blip_location(location, sprite, color))
 			return false;
 
-		if (sprite == (int)BlipIcons::Waypoint)
+		if (sprite == (int)BlipIcons::RADAR_WAYPOINT)
 			entity::load_ground_at_3dcoord(location);
 
 		to_coords(location);
@@ -193,7 +193,7 @@ namespace big::teleport
 
 	inline bool to_waypoint()
 	{
-		if (!to_blip((int)BlipIcons::Waypoint))
+		if (!to_blip((int)BlipIcons::RADAR_WAYPOINT))
 		{
 			g_notification_service.push_warning("TELEPORT"_T.data(), "TELEPORT_NO_WAYPOINT_SET"_T.data());
 
