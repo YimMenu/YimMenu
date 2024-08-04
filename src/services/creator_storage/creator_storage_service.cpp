@@ -4,7 +4,7 @@
 #include "natives.hpp"
 #include "pointers.hpp"
 #include "script.hpp"
-#include "util/scr_functions.hpp"
+#include "script_function.hpp"
 #include "script/tlsContext.hpp"
 
 namespace big
@@ -37,7 +37,7 @@ namespace big
 		}
 
 		char* storage = new char[0x50000];
-		scr_functions::save_to_datafile((uint64_t)storage);
+		scr_functions::save_to_datafile.call<void>((uint64_t)storage);
 		delete[] storage;
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("fm_race_creator"_J);
@@ -79,7 +79,7 @@ namespace big
 
 		int load_stage   = 0; // Will be incremented at the end of each case in the function
 		int ugc_language = NETWORK::UGC_GET_CONTENT_LANGUAGE(0);
-		scr_functions::load_from_datafile(&load_stage, ugc_language, false);
+		scr_functions::load_from_datafile.call<bool>(&load_stage, ugc_language, false);
 
 		SCRIPT::SET_SCRIPT_WITH_NAME_HASH_AS_NO_LONGER_NEEDED("fm_race_creator"_J);
 		file_stream.close();

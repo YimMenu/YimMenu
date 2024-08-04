@@ -1,6 +1,6 @@
 #include "vehicle.hpp"
 #include "pools.hpp"
-#include "util/scr_functions.hpp"
+#include "script_function.hpp"
 
 namespace big::vehicle
 {
@@ -460,7 +460,7 @@ namespace big::vehicle
 
 		if (owned_mods[MOD_HAS_CLAN_LOGO] != 0)
 		{
-			scr_functions::add_clan_logo_to_vehicle(&vehicle, self::id);
+			scr_functions::add_clan_logo_to_vehicle.call<bool>(&vehicle, self::id);
 		}
 
 		return vehicle;
