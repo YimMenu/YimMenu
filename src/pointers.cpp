@@ -3,6 +3,8 @@
 #include "gta_pointers_layout_info.hpp"
 #include "sc_pointers_layout_info.hpp"
 
+#define GTA_VERSION_TARGET "1.69-3274"
+
 namespace big
 {
 	constexpr auto pointers::get_gta_batch()
@@ -2024,7 +2026,8 @@ namespace big
 
 	pointers::pointers() :
 	    m_gta_pointers_cache(g_file_manager.get_project_file("./cache/gta_pointers.bin")),
-	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin"))
+	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin")),
+	    m_gta_version_target(GTA_VERSION_TARGET)
 	{
 		g_pointers = this;
 
