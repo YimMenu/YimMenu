@@ -185,15 +185,12 @@ namespace big::entity
 		if (hnd->m_entity_type != 3 && hnd->m_entity_type != 4 && hnd->m_entity_type != 5)
 			LOG(VERBOSE) << "Entity Type: " << (int)hnd->m_entity_type;
 
-		if (network_has_control_of_entity(hnd->m_net_object))
-			return true;
-
-		for (int i = 0; i < timeout; i++)
+		for (int i = 0; i <= timeout; ++i)
 		{
-			g_pointers->m_gta.m_request_control(hnd->m_net_object);
-
 			if (network_has_control_of_entity(hnd->m_net_object))
 				return true;
+
+			g_pointers->m_gta.m_request_control(hnd->m_net_object);
 
 			if (timeout != 0)
 				script::get_current()->yield();
