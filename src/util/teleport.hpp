@@ -1,6 +1,7 @@
 #pragma once
 #include "blip.hpp"
 #include "entity.hpp"
+#include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "services/players/player_service.hpp"
 #include "vehicle.hpp"
@@ -111,7 +112,11 @@ namespace big::teleport
 					break;
 			}
 
-			entity::delete_entity(hnd);
+			g_fiber_pool->queue_job([hnd] {
+				auto ent = hnd;
+				entity::take_control_of(ent);
+				entity::delete_entity(ent);
+			});
 
 			std::erase_if(g.m_remote_player_teleports, [veh_id](auto& obj) {
 				return obj.first == veh_id;
