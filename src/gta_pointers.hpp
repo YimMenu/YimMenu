@@ -154,6 +154,7 @@ namespace big
 		functions::get_sync_type_info m_get_sync_type_info;
 		functions::get_net_object m_get_net_object;
 		functions::read_bitbuffer_into_sync_tree m_read_bitbuffer_into_sync_tree;
+		PVOID m_update_sync_tree;
 		//Sync Signatures END
 
 		PVOID m_receive_net_message;
