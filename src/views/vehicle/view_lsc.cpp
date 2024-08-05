@@ -80,7 +80,7 @@ namespace big
 				tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
 				is_bennys     = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
-				has_clan_logo = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(player_vehicle, self::id);
+				has_clan_logo = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(player_vehicle, 0);
 				vehicle_cannot_accept_clan_logo = scr_functions::vehicle_cannot_accept_clan_logo.call<bool>(player_vehicle);
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
