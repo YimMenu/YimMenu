@@ -3,6 +3,8 @@
 #include "gta_pointers_layout_info.hpp"
 #include "sc_pointers_layout_info.hpp"
 
+#define GTA_VERSION_TARGET "1.69-3274"
+
 namespace big
 {
 	constexpr auto pointers::get_gta_batch()
@@ -447,6 +449,15 @@ namespace big
             [](memory::handle ptr)
             {
                 g_pointers->m_gta.m_read_bitbuffer_into_sync_tree = ptr.add(1).rip().as<functions::read_bitbuffer_into_sync_tree>();
+            }
+        },
+        // Update Sync Tree
+        {
+            "UST",
+            "E8 ? ? ? ? 45 84 ED 75 1B",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_update_sync_tree = ptr.add(1).rip().as<PVOID>();
             }
         },
         // Model Hash Table
@@ -2024,7 +2035,8 @@ namespace big
 
 	pointers::pointers() :
 	    m_gta_pointers_cache(g_file_manager.get_project_file("./cache/gta_pointers.bin")),
-	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin"))
+	    m_sc_pointers_cache(g_file_manager.get_project_file("./cache/sc_pointers.bin")),
+	    m_gta_version_target(GTA_VERSION_TARGET)
 	{
 		g_pointers = this;
 

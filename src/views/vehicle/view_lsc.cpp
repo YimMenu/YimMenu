@@ -2,7 +2,7 @@
 #include "fiber_pool.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "services/vehicle_helper/vehicle_helper.hpp"
+#include "script_function.hpp"
 #include "util/vehicle.hpp"
 #include "views/view.hpp"
 
@@ -24,6 +24,8 @@ namespace big
 
 		static int selected_slot         = -1;
 		static bool is_bennys            = false;
+		static bool has_clan_logo        = false; 
+		static bool vehicle_cannot_accept_clan_logo = false; 
 		static int front_wheel_stock_mod = -1;
 		static int rear_wheel_stock_mod  = -1;
 
@@ -77,7 +79,9 @@ namespace big
 				tmp_mod_display_names[MOD_WINDOW_TINT].insert(lsc_window_tint_types.begin(), lsc_window_tint_types.end());
 				tmp_mod_display_names[MOD_WHEEL_TYPE].insert(lsc_wheel_styles.begin(), lsc_wheel_styles.end());
 
-				is_bennys = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
+				is_bennys     = owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_ORIGINAL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_BENNYS_BESPOKE || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_OPEN_WHEEL || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_STREET || owned_mods[MOD_WHEEL_TYPE] == WHEEL_TYPE_TRACK;
+				has_clan_logo = GRAPHICS::DOES_VEHICLE_HAVE_CREW_EMBLEM(player_vehicle, 0);
+				vehicle_cannot_accept_clan_logo = scr_functions::vehicle_cannot_accept_clan_logo.call<bool>(player_vehicle);
 
 				for (int slot = MOD_SPOILERS; slot <= MOD_LIGHTBAR; slot++)
 				{
@@ -260,26 +264,21 @@ namespace big
 				VEHICLE::TOGGLE_VEHICLE_MOD(player_vehicle, MOD_TYRE_SMOKE, owned_mods[MOD_TYRE_SMOKE]);
 			});
 		}
-		rage::fvector3 blank;
-		float scale;
-		if (GetVehicleInfoForClanLogo(model, blank, blank, blank, scale))
+		if (!vehicle_cannot_accept_clan_logo)
 		{
-			auto has_clan_logo = (bool*)&owned_mods[MOD_HAS_CLAN_LOGO];
-			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), has_clan_logo))
+			if (ImGui::Checkbox("CLAN_LOGO"_T.data(), &has_clan_logo))
 			{
-				if (*has_clan_logo)
-				{
-					g_fiber_pool->queue_job([] {
-						vehicle_helper::add_clan_logo_to_vehicle(player_vehicle, self::ped);
-					});
-				}
-				else
-				{
-					g_fiber_pool->queue_job([] {
+				g_fiber_pool->queue_job([] {
+					if (has_clan_logo)
+					{
+						scr_functions::add_clan_logo_to_vehicle.call<bool>(&player_vehicle, self::id);
+					}
+					else
+					{
 						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 0);
 						GRAPHICS::REMOVE_VEHICLE_CREW_EMBLEM(player_vehicle, 1);
-					});
-				}
+					}
+				});
 			}
 		}
 
