@@ -1,6 +1,6 @@
 #pragma once
-#include <pugixml.hpp>
 #include <gta/fidevice.hpp>
+#include <pugixml.hpp>
 
 namespace big
 {
@@ -19,10 +19,10 @@ namespace big
 
 		static void add_wrapper_call_back(std::function<void(yim_fipackfile& rpf_wrapper, std::filesystem::path path)> cb);
 
-		static void traverse_rpf_file(const std::u8string& path, int depth = 0);
+		static void traverse_rpf_file(const std::string& path, int depth = 0);
 		static void for_each_fipackfile();
 
-		std::vector<std::filesystem::path> get_file_paths(std::string parent = {});
+		std::vector<std::string> get_file_paths(std::string parent = {});
 
 		const char* get_name();
 
