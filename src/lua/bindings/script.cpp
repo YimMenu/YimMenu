@@ -3,7 +3,6 @@
 
 #include "lua/lua_manager.hpp"
 #include "gta_util.hpp"
-#include "script_function.hpp"
 #include "lua/bindings/network.hpp"
 #include "memory/pattern.hpp"
 #include "services/script_patcher/script_patcher_service.hpp"
@@ -204,27 +203,6 @@ namespace lua::script
 		if (auto program = big::gta_util::find_script_program(rage::joaat(script_name)))
 			big::g_script_patcher_service->on_script_load(program);
 	}
-	
-	// Lua API: function
-	// Table: script
-	// Name: call_function
-	// Param: name: string: The name of the script function.
-	// Param: script_name: string: The name of the script.
-	// Param: pattern: string: The pattern to scan for within the script.
-	// Param offset: integer: The position within the pattern.
-	// Param _args: table: The arguments to pass to the script function.
-	// Calls a function from the specified script.
-	// **Example Usage:**
-	// ```lua
-	// script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
-	// ```
-	static void call_function(const std::string& name, const std::string& script_name, const std::string& pattern, int offset, sol::table _args)
-	{
-		auto args = convert_sequence<uint64_t>(_args);
-
-		big::script_function script_function(name, rage::joaat(script_name), pattern, offset);
-		script_function(args);
-	}
 
 	// Lua API: function
 	// Table: script
@@ -250,7 +228,6 @@ namespace lua::script
 		ns["is_active"]             = is_active;
 		ns["execute_as_script"]     = execute_as_script;
 		ns["add_patch"]             = add_patch;
-		ns["call_function"]         = call_function;
 		ns["start_launcher_script"] = start_launcher_script;
 
 		auto usertype = state.new_usertype<script_util>("script_util");

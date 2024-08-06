@@ -106,22 +106,6 @@ Adds a patch for the specified script.
 script.add_patch("fm_content_xmas_truck", "Flickering Fix", "56 ? ? 4F ? ? 40 ? 5D ? ? ? 74", 0, {0x2B, 0x00, 0x00})
 ```
 
-### `call_function(name, script_name, pattern, offset, _args)`
-
-Calls a function from the specified script.
-
-- **Parameters:**
-  - `name` (string): The name of the script function.
-  - `script_name` (string): The name of the script.
-  - `pattern` (string): The pattern to scan for within the script.
-  - `offset` (integer): The position within the pattern.
-  - `_args` (table): The arguments to pass to the script function.
-
-**Example Usage:**
-```lua
-script.call_function("Collect Collectible", "freemode", "2D 05 33 00 00", 0, {17, 0, 1, 1, 0})
-```
-
 ### `start_launcher_script(script_name)`
 
 Tries to start a launcher script. Needs to be called in the fiber pool or a loop.

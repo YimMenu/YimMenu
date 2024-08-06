@@ -63,6 +63,18 @@ Rips the current memory address and returns a new pointer object.
 pointer = pointer:rip(offset)
 ```
 
+### `get_int()`
+
+Retrieves the value stored at the memory address as the specified type.
+
+- **Returns:**
+  - `number`: the value stored at the memory address as the specified type.
+
+**Example Usage:**
+```lua
+number = pointer:get_int()
+```
+
 ### `get_byte()`
 
 Retrieves the value stored at the memory address as the specified type.
@@ -121,6 +133,18 @@ Retrieves the value stored at the memory address as the specified type.
 **Example Usage:**
 ```lua
 number = pointer:get_qword()
+```
+
+### `set_int(value)`
+
+Sets the value at the memory address to the specified value of the given type.
+
+- **Parameters:**
+  - `value` (number): new value.
+
+**Example Usage:**
+```lua
+pointer:set_int(value)
 ```
 
 ### `set_byte(value)`
