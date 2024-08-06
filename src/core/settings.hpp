@@ -309,8 +309,9 @@ namespace big
 			bool force_relay_connections = false;
 			bool stop_traffic            = true;
 			bool desync_kick             = false;
+			bool explosion_spam          = false;
 
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic, desync_kick)
+			NLOHMANN_DEFINE_TYPE_INTRUSIVE(protections, script_events, rid_join, receive_pickup, admin_check, kick_rejoin, force_relay_connections, stop_traffic, desync_kick, explosion_spam)
 		} protections{};
 
 		struct self

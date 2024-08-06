@@ -861,10 +861,17 @@ namespace big
 		}
 		case eNetworkEvents::EXPLOSION_EVENT:
 		{
-			if (plyr && plyr->block_explosions)
+			if (plyr)
 			{
-				g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
-				return;
+				auto rate_limit_reached = g.protections.explosion_spam && plyr->m_explosion_rate_limit.process() && plyr->m_explosion_rate_limit.exceeded_last_process();
+				if (plyr->block_explosions || rate_limit_reached)
+				{
+					g_pointers->m_gta.m_send_event_ack(event_manager, source_player, target_player, event_index, event_handled_bitset);
+					if (rate_limit_reached)
+						g_notification_service.push_warning("PROTECTIONS"_T.data(), std::format("{} {}.", source_player->get_name(), "EXPLOSION_RATE_LIMIT_MESSAGE"_T));
+
+					return;
+				}
 			}
 
 			scan_explosion_event(source_player, buffer);
