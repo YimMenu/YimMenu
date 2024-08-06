@@ -1,3 +1,4 @@
+#include "core/data/bullet_impact_types.hpp"
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
 #include "gta/net_game_event.hpp"
@@ -259,7 +260,7 @@ namespace big
 		return false;
 	}
 
-	void scan_explosion_event(CNetGamePlayer* player, rage::datBitBuffer* buffer)
+	void scan_explosion_event(player_ptr plyr, CNetGamePlayer* player, rage::datBitBuffer* buffer)
 	{
 		uint16_t f186;
 		uint16_t targetEntity;
@@ -384,6 +385,29 @@ namespace big
 			session::add_infraction(g_player_service->get_by_id(player->m_player_id), Infraction::BLAME_EXPLOSION_DETECTED);
 			LOGF(stream::net_events, WARNING, "{} sent an EXPLOSION_EVENT with addOwnedExplosion enabled and with the wrong owner", player->get_name());
 			return;
+		}
+
+		// logs all type of explosion including owned one, fire, water hydrant etc, one without damage but camerashake, npcs shooting explosive ammo from planes from source client etc
+		if (g.debug.logs.explosion_event && plyr)
+		{
+			static player_ptr last_exp_player  = nullptr;
+			static eExplosionTag last_exp_type = eExplosionTag::DONTCARE;
+			std::chrono::system_clock::time_point last_exp_time{};
+
+			auto time_now = std::chrono::system_clock::now();
+			if (last_exp_player != plyr || last_exp_type != explosionType || (time_now - last_exp_time < 1s))
+			{
+				auto exp_type_itr = BULLET_IMPACTS.find(explosionType);
+				LOGF(WARNING,
+				    "EXPLOSION_EVENT from {} (Distance- {} Type- {})",
+				    player->get_name(),
+				    math::distance_between_vectors(*plyr->get_ped()->get_position(), {posX, posY, posZ}),
+				    exp_type_itr != BULLET_IMPACTS.end() ? exp_type_itr->second : "?");
+			}
+
+			last_exp_player = plyr;
+			last_exp_type   = explosionType;
+			last_exp_time   = time_now;
 		}
 
 		if (g.session.explosion_karma && g_local_player
@@ -867,7 +891,8 @@ namespace big
 				return;
 			}
 
-			scan_explosion_event(source_player, buffer);
+			scan_explosion_event(plyr, source_player, buffer);
+
 			break;
 		}
 		case eNetworkEvents::WEAPON_DAMAGE_EVENT:
