@@ -1940,6 +1940,15 @@ namespace big
             {
                 g_pointers->m_gta.m_begin_scaleform = ptr.as<functions::begin_scaleform>();
             }
+        },
+        // Get Ped Fear Percentage
+        {
+            "GPFP",
+            "48 89 5C 24 ? 57 48 83 EC ? 48 8B DA 0F B6 52",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_get_ped_fear_percentage = ptr.as<functions::get_ped_fear_percentage>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 

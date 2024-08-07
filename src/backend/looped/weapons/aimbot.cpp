@@ -6,7 +6,7 @@
 #include "util/pools.hpp"
 #include "services/friends/friends_service.hpp"
 #include "services/player_database/player_database_service.hpp"
-#include "util/blip.hpp"
+#include "util/ped.hpp"
 
 namespace big
 {
@@ -164,7 +164,7 @@ namespace big
 						continue;
 				}
 
-				if (g_aimbot_only_on_enemy.is_enabled() && blip::is_ped_a_friend(ped_handle))
+				if (g_aimbot_only_on_enemy.is_enabled() && ped::is_ped_a_friend(ped_handle, ped))
 				{
 					continue;
 				}

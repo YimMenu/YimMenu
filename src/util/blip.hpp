@@ -18,6 +18,4 @@ namespace big::blip
 	rage::CBlip* get_selected_blip();
 
 	rage::CBlip* get_blip_from_blip_id(Blip);
-
-	bool is_ped_a_friend(Ped);
 }

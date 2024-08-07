@@ -408,6 +408,8 @@ namespace big
 		uint32_t* m_game_lifetime;
 
 		functions::begin_scaleform m_begin_scaleform;
+
+		functions::get_ped_fear_percentage m_get_ped_fear_percentage;
 	};
 #pragma pack(pop)
 	static_assert(sizeof(gta_pointers) % 8 == 0, "Pointers are not properly aligned");

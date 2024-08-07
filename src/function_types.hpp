@@ -225,4 +225,6 @@ namespace big::functions
 	using create_chat_guid = void (*)(GUID* guid);
 
 	using begin_scaleform = bool (*)(uint32_t* scaleform, const char* method);
+
+	using get_ped_fear_percentage = float (*)(CPed* from, CPed* to);
 }

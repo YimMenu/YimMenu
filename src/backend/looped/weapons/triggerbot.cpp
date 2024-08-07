@@ -4,7 +4,7 @@
 #include "util/entity.hpp"
 #include "services/friends/friends_service.hpp"
 #include "services/player_database/player_database_service.hpp"
-#include "util/blip.hpp"
+#include "util/ped.hpp"
 
 namespace big
 {
@@ -49,7 +49,7 @@ namespace big
 								return;
 						}
 
-						if (g.weapons.aimbot.only_on_enemy && blip::is_ped_a_friend(ped))
+						if (g.weapons.aimbot.only_on_enemy && ped::is_ped_a_friend(ped, ped_ptr))
 						{
 							return;
 						}
