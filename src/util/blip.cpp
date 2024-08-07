@@ -113,6 +113,8 @@ namespace big::blip
 		/*if (PED::GET_PED_TYPE(ped_handle) != PED_TYPE_ANIMAL)
 			LOG(INFO) << " PED_TYPE " << PED::GET_PED_TYPE(ped_handle) << " hated " << is_hated_relationship << " combat " << is_in_combat << " enemy " << is_enemy << " blip_color " << blip_color;*/
 
+		//g_pointers->m_gta.m_is_ped_an_enemy(g_local_player, ped_ptr); //"48 89 5C 24 ? 57 48 83 EC ? 48 8B DA 0F B6 52"
+
 		return (!is_hated_relationship && !is_in_combat && !is_enemy);
 	}
 }

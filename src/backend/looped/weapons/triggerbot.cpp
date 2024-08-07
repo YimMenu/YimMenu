@@ -32,8 +32,8 @@ namespace big
 							return;
 
 						const bool trace_hit_non_player = g.weapons.aimbot.only_on_player && !ped_ptr->m_player_info;
-						const bool we_in_the_same_vehicle = self::veh != 0 && ped_ptr->m_vehicle == g_player_service->get_self()->get_current_vehicle();
-						if (trace_hit_non_player || we_in_the_same_vehicle)
+						const bool are_we_in_the_same_vehicle = self::veh != 0 && self::veh == PED::GET_VEHICLE_PED_IS_IN(ped, TRUE);
+						if (trace_hit_non_player || are_we_in_the_same_vehicle)
 						{
 							return;
 						}
