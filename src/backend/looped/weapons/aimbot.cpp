@@ -152,6 +152,10 @@ namespace big
 				{
 					continue;
 				}
+
+				auto weapon_info = g_local_player->m_weapon_manager->m_weapon_info;
+				if (PED::GET_PED_CONFIG_FLAG(ped_handle, 9, TRUE) || !g_pointers->m_gta.m_can_do_damage_to_ped(g_local_player, weapon_info, ped)) //Can't do damage to them, skip.
+					continue;
 				
 				if (g.weapons.aimbot.exclude_friends && ped->m_player_info)
 				{

@@ -38,6 +38,10 @@ namespace big
 							return;
 						}
 
+						auto weapon_info = g_local_player->m_weapon_manager->m_weapon_info;
+						if (PED::GET_PED_CONFIG_FLAG(ped, 9, TRUE) || !g_pointers->m_gta.m_can_do_damage_to_ped(g_local_player, weapon_info, ped_ptr)) //Can't do damage to them, skip.
+							return;
+
 						if (g.weapons.aimbot.exclude_friends && ped_ptr->m_player_info)
 						{
 							auto rockstar_id = ped_ptr->m_player_info->m_net_player_data.m_gamer_handle.m_rockstar_id;

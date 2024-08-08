@@ -227,4 +227,5 @@ namespace big::functions
 	using begin_scaleform = bool (*)(uint32_t* scaleform, const char* method);
 
 	using get_ped_fear_percentage = float (*)(CPed* from, CPed* to);
+	using can_do_damage_to_ped = bool (*)(CPed* from, CWeaponInfo* current_weapon, CPed* target);
 }

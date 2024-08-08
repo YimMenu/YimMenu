@@ -1949,6 +1949,15 @@ namespace big
             {
                 g_pointers->m_gta.m_get_ped_fear_percentage = ptr.as<functions::get_ped_fear_percentage>();
             }
+        },
+        // Can Do Damage
+        {
+            "CDD",
+            "E8 ? ? ? ? 45 8A C4 84 C0",
+            [](memory::handle ptr)
+            {
+                g_pointers->m_gta.m_can_do_damage_to_ped = ptr.add(1).rip().as<functions::can_do_damage_to_ped>();
+            }
         }
         >(); // don't leave a trailing comma at the end
 
